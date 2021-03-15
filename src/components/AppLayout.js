@@ -1,17 +1,17 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const AppLayout = ({ children }) => {
-    return (
-        <div>
-            <div>Tab</div>
-            {children}
-        </div>
-    );
+const AppLayout = ({children}) => {
+	return (
+		<div>
+			<div>Tab</div>
+			{children}
+		</div>
+	);
 };
 
 AppLayout.propTypes = {
-    children: PropTypes.node.isRequired,
+	children: PropTypes.node.isRequired,
 };
 
 export default AppLayout;
