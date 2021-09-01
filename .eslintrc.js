@@ -27,6 +27,12 @@ module.exports = {
 		'react/no-render-return-value': 2,
 		'react/no-unknown-property': 2,
 		'react/require-render-return': 2, //render method를 작성할때 return 이 없으면 경고
+		'no-unused-vars': [
+			'warn',
+			{
+				varsIgnorePattern: '^h$',
+			},
+		],
 	},
 	settings: {
 		react: {
