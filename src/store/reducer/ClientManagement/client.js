@@ -98,7 +98,7 @@ export const findAllAction = createAsyncThunk('FIND_ALL', async (payload) => {
 			},
 			headers: {
 				Authorization: `Bearer ${payload.access_token}`,
-				Range: `${payload.first}-${payload.last}`,
+				Range: `elements=${payload.first}-${payload.last}`,
 			},
 			baseURL: baseUrl.openApi,
 		});
