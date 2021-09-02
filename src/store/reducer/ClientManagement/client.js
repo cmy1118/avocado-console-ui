@@ -89,7 +89,7 @@ export const findByIdAction = createAsyncThunk(
 	},
 );
 
-//todo : this function requires access_token, companyId, start range and last range
+//todo : this function requires access_token, companyId, first range and last range
 export const findAllAction = createAsyncThunk('FIND_ALL', async (payload) => {
 	try {
 		const response = await axios.get(
@@ -97,7 +97,7 @@ export const findAllAction = createAsyncThunk('FIND_ALL', async (payload) => {
 			{
 				headers: {
 					Authorization: `Bearer ${payload.access_token}`,
-					Range: `${payload.start}-${payload.last}`,
+					Range: `${payload.first}-${payload.last}`,
 				},
 				baseURL: baseUrl.openApi,
 			},
