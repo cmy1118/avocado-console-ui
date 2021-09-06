@@ -1,1 +1,1 @@
-# avocado-admin-ui
+# avocado-console-ui
