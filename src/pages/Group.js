@@ -1,13 +1,13 @@
 import React from 'react';
 import IamLayout from '../components/Layouts/IamLayout';
-import DashBoard from '../components/IAM/DashBoard';
+import GroupSpace from '../components/Group/GroupSpace';
 
-const Main = () => {
+const Group = () => {
 	return (
 		<IamLayout>
-			<DashBoard />
+			<GroupSpace />
 		</IamLayout>
 	);
 };
 
-export default Main;
+export default Group;

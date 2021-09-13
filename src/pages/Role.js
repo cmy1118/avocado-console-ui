@@ -1,13 +1,13 @@
 import React from 'react';
 import IamLayout from '../components/Layouts/IamLayout';
-import DashBoard from '../components/IAM/DashBoard';
+import RoleSpace from '../components/Role/RoleSpace';
 
-const Main = () => {
+const Role = () => {
 	return (
 		<IamLayout>
-			<DashBoard />
+			<RoleSpace />
 		</IamLayout>
 	);
 };
 
-export default Main;
+export default Role;

@@ -1,13 +1,13 @@
 import React from 'react';
 import IamLayout from '../components/Layouts/IamLayout';
-import DashBoard from '../components/IAM/DashBoard';
+import PolicySpace from '../components/Policy/PolicySpace';
 
-const Main = () => {
+const Policy = () => {
 	return (
 		<IamLayout>
-			<DashBoard />
+			<PolicySpace />
 		</IamLayout>
 	);
 };
 
-export default Main;
+export default Policy;

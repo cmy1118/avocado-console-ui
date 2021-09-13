@@ -1,6 +1,6 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {baseUrl} from '../../../api/constants';
+import {baseUrl} from '../../api/constants';
 
 //todo : this function requires access_token, id, companyId, name and password
 export const createAction = createAsyncThunk('CREATE', async (payload) => {
