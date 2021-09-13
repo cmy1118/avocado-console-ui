@@ -4,7 +4,7 @@ import {_NavContainer} from '../../styles/components/style';
 const UserNav = () => {
 	return (
 		<_NavContainer>
-			<div>Use Nav</div>
+			<div>사용자</div>
 		</_NavContainer>
 	);
 };

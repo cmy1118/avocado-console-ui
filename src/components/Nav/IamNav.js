@@ -10,7 +10,8 @@ const IamNav = () => {
 	}, [isOpened]);
 	return (
 		<_NavContainer>
-			<div>대시보드</div>
+			<div>IAM</div>
+			<Link to='/'>대시보드</Link>
 			<div>
 				접근 관리 <button onClick={onClickFoldOrUnFoldFolder}>B</button>
 			</div>
