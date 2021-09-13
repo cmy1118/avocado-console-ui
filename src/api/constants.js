@@ -1,4 +1,8 @@
+import base64 from 'base-64'
 // API Constant
+
+export const ENCODE_DATA = base64.encode(`${'web'}:${'123456789'}`);
+export const Authorization = `Basic ${ENCODE_DATA}`;
 
 export const baseUrl = {
 	openApi:

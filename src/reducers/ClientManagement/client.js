@@ -2,114 +2,90 @@ import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {baseUrl} from '../../api/constants';
 
+const NAME = 'client';
+
 //todo : this function requires access_token, id, companyId, name and password
-export const createAction = createAsyncThunk('CREATE', async (payload) => {
-	try {
-		const response = await axios.post(
-			`/open/api/v1/clients`,
-			{
-				id: payload.id,
-				companyId: payload.companyId,
-				name: payload.name,
-				password: payload.password,
+const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
+	const response = await axios.post(
+		`/open/api/v1/clients`,
+		{
+			id: payload.id,
+			companyId: payload.companyId,
+			name: payload.name,
+			password: payload.password,
+		},
+		{
+			headers: {
+				Authorization: `Bearer ${payload.access_token}`,
+				'Content-Type': 'application/json',
 			},
-			{
-				headers: {
-					Authorization: `Bearer ${payload.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseUrl.openApi,
-			},
-		);
-		return response.data;
-	} catch (err) {
-		return err;
-	}
+			baseURL: baseUrl.openApi,
+		},
+	);
+	return response.data;
 });
 
 //todo : this function requires access_token, id, name and password
-export const updateAction = createAsyncThunk('UPDATE', async (payload) => {
-	try {
-		const response = await axios.put(
-			`/open/api/v1/clients/${payload.id}`,
-			{
-				name: payload.name,
-				password: payload.password,
-			},
-			{
-				headers: {
-					Authorization: `Bearer ${payload.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseUrl.openApi,
-			},
-		);
-		return response.data;
-	} catch (err) {
-		return err;
-	}
-});
-
-//todo : this function requires access_token and id
-export const deleteAction = createAsyncThunk('DELETE', async (payload) => {
-	try {
-		const response = await axios.delete(
-			`/open/api/v1/clients/${payload.id}`,
-			{
-				headers: {
-					Authorization: `Bearer ${payload.access_token}`,
-				},
-				baseURL: baseUrl.openApi,
-			},
-		);
-		return response.data;
-	} catch (err) {
-		return err;
-	}
-});
-
-//todo : this function requires access_token and id
-export const findByIdAction = createAsyncThunk(
-	'FIND_BY_ID',
-	async (payload) => {
-		try {
-			const response = await axios.get(
-				`/open/api/v1/clients/${payload.id}`,
-				{
-					headers: {
-						Authorization: `Bearer ${payload.access_token}`,
-					},
-					baseURL: baseUrl.openApi,
-				},
-			);
-			return response.data;
-		} catch (err) {
-			return err;
-		}
-	},
-);
-
-//todo : this function requires access_token, companyId, first range and last range
-export const findAllAction = createAsyncThunk('FIND_ALL', async (payload) => {
-	try {
-		const response = await axios.get(`/open/api/v1/clients`, {
-			params: {
-				companyId: payload.companyId,
-			},
+const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
+	const response = await axios.put(
+		`/open/api/v1/clients/${payload.id}`,
+		{
+			name: payload.name,
+			password: payload.password,
+		},
+		{
 			headers: {
 				Authorization: `Bearer ${payload.access_token}`,
-				Range: `elements=${payload.first}-${payload.last}`,
+				'Content-Type': 'application/json',
+			},
+			baseURL: baseUrl.openApi,
+		},
+	);
+	return response.data;
+});
+
+//todo : this function requires access_token and id
+const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
+	const response = await axios.delete(`/open/api/v1/clients/${payload.id}`, {
+		headers: {
+			Authorization: `Bearer ${payload.access_token}`,
+		},
+		baseURL: baseUrl.openApi,
+	});
+	return response.data;
+});
+
+//todo : this function requires access_token and id
+const findByIdAction = createAsyncThunk(
+	`${NAME}/FIND_BY_ID`,
+	async (payload) => {
+		const response = await axios.get(`/open/api/v1/clients/${payload.id}`, {
+			headers: {
+				Authorization: `Bearer ${payload.access_token}`,
 			},
 			baseURL: baseUrl.openApi,
 		});
 		return response.data;
-	} catch (err) {
-		return err;
-	}
+	},
+);
+
+//todo : this function requires access_token, companyId, first range and last range
+const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
+	const response = await axios.get(`/open/api/v1/clients`, {
+		params: {
+			companyId: payload.companyId,
+		},
+		headers: {
+			Authorization: `Bearer ${payload.access_token}`,
+			Range: `elements=${payload.first}-${payload.last}`,
+		},
+		baseURL: baseUrl.openApi,
+	});
+	return response.data;
 });
 
 const slice = createSlice({
-	name: 'client',
+	name: NAME,
 	initialState: {
 		client: null,
 		loading: false,
@@ -180,11 +156,11 @@ const slice = createSlice({
 });
 
 const selectAllState = createSelector(
-	(state) => state.data,
+	(state) => state.client,
 	(state) => state.error,
 	(state) => state.loading,
-	(data, error, loading) => {
-		return {data, error, loading};
+	(client, error, loading) => {
+		return {client, error, loading};
 	},
 );
 
@@ -194,4 +170,10 @@ export const clientSelector = {
 
 export const CLIENT = slice.name;
 export const clientReducer = slice.reducer;
-export const clientAction = slice.actions;
+export const clientAction = {
+	createAction,
+	updateAction,
+	deleteAction,
+	findByIdAction,
+	findAllAction,
+};

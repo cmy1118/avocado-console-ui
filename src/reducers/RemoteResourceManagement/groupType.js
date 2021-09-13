@@ -1,26 +1,19 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
+import * as _ from 'lodash';
 import {baseUrl} from '../../api/constants';
 
-const NAME = 'user';
+const NAME = 'groupType';
 
-//todo : this function requires id, companyId, name, password, email, telephone and mobile
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
 		const {client} = getState().client;
-		// eslint-disable-next-line no-console
-		console.log(client);
 		const response = await axios.post(
-			`/open/api/v1/users`,
+			`/open/api/v1/remote/resources/group-types`,
 			{
-				id: payload.id,
-				companyId: payload.companyId,
-				name: payload.name,
-				password: payload.password,
-				email: payload.email,
-				telephone: payload.telephone,
-				mobile: payload.mobile,
+				name: payload.name, //desc: 그룹 유형 명 / type: string
+				description: payload.description, //desc: 설명 / type: string
 			},
 			{
 				headers: {
@@ -33,17 +26,16 @@ const createAction = createAsyncThunk(
 		return response.data;
 	},
 );
-//todo : this function requires uid, name and password
 const updateAction = createAsyncThunk(
 	`${NAME}/UPDATE`,
 	async (payload, {getState}) => {
 		const {client} = getState().client;
 
 		const response = await axios.put(
-			`/open/api/v1/users/${payload.uid}`,
+			`/open/api/v1/remote/resources/group-types/${payload.id}`,
 			{
-				name: payload.name,
-				password: payload.password,
+				name: payload.name, //desc: 그룹 유형 명 / type: string
+				description: payload.description, //desc: 설명 / type: string
 			},
 			{
 				headers: {
@@ -57,17 +49,17 @@ const updateAction = createAsyncThunk(
 	},
 );
 
-//todo : this function requires uid
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
 		const {client} = getState().client;
 
 		const response = await axios.delete(
-			`/open/api/v1/users/${payload.uid}`,
+			`/open/api/v1/remote/resources/group-types/${payload.id}`,
 			{
 				headers: {
 					Authorization: `${client.token_type} ${client.access_token}`,
+					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
 			},
@@ -76,17 +68,17 @@ const deleteAction = createAsyncThunk(
 	},
 );
 
-//todo : this function requires id
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
 		const {client} = getState().client;
 
 		const response = await axios.get(
-			`/open/api/v1/users/id/${payload.id}`,
+			`/open/api/v1/remote/resources/group-types/${payload.id}`,
 			{
 				headers: {
 					Authorization: `${client.token_type} ${client.access_token}`,
+					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
 			},
@@ -95,38 +87,25 @@ const findByIdAction = createAsyncThunk(
 	},
 );
 
-//todo : this function requires uid
-const findByUidAction = createAsyncThunk(
-	`${NAME}/FIND_BY_UID`,
-	async (payload, {getState}) => {
-		const {client} = getState().client;
-
-		const response = await axios.get(`/open/api/v1/users/${payload.uid}`, {
-			headers: {
-				Authorization: `${client.token_type} ${client.access_token}`,
-			},
-			baseURL: baseUrl.openApi,
-		});
-		return response.data;
-	},
-);
-
-//todo : this function requires companyId, first range and last range
 const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
 		const {client} = getState().client;
 
-		const response = await axios.get(`/open/api/v1/users`, {
-			params: {
-				companyId: payload.companyId,
+		const response = await axios.get(
+			`/open/api/v1/remote/resources/group-types`,
+			{
+				params: {
+					...(payload.name && {type: payload.name}),
+				},
+				headers: {
+					Authorization: `${client.token_type} ${client.access_token}`,
+					'Content-Type': 'application/json',
+					Range: `elements=${payload.first}-${payload.last}`,
+				},
+				baseURL: baseUrl.openApi,
 			},
-			headers: {
-				Authorization: `${client.token_type} ${client.access_token}`,
-				Range: `elements=${payload.first}-${payload.last}`,
-			},
-			baseURL: baseUrl.openApi,
-		});
+		);
 		return response.data;
 	},
 );
@@ -134,7 +113,7 @@ const findAllAction = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
-		user: null,
+		types: [],
 		loading: false,
 		error: null,
 	},
@@ -143,8 +122,7 @@ const slice = createSlice({
 		[createAction.pending]: (state) => {
 			state.loading = true;
 		},
-		[createAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+		[createAction.fulfilled]: (state) => {
 			state.loading = false;
 		},
 		[createAction.rejected]: (state, action) => {
@@ -155,8 +133,7 @@ const slice = createSlice({
 		[updateAction.pending]: (state) => {
 			state.loading = true;
 		},
-		[updateAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+		[updateAction.fulfilled]: (state) => {
 			state.loading = false;
 		},
 		[updateAction.rejected]: (state, action) => {
@@ -167,8 +144,7 @@ const slice = createSlice({
 		[deleteAction.pending]: (state) => {
 			state.loading = true;
 		},
-		[deleteAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+		[deleteAction.fulfilled]: (state) => {
 			state.loading = false;
 		},
 		[deleteAction.rejected]: (state, action) => {
@@ -180,22 +156,15 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByIdAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+			//todo : 정보가 수정되었을 경우 update 해줄 수 있도록 로직 수정해야 함.
+			//  우선은 그대로 작성.
+			state.types = _.uniqBy(
+				state.types.concat(action.payload),
+				(e) => e.id,
+			);
 			state.loading = false;
 		},
 		[findByIdAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-
-		[findByUidAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[findByUidAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
-			state.loading = false;
-		},
-		[findByUidAction.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
 		},
@@ -204,7 +173,12 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findAllAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+			//todo : 정보가 수정되었을 경우 update 해줄 수 있도록 로직 수정해야 함.
+			//  우선은 그대로 작성.
+			state.types = _.uniqBy(
+				state.types.concat(action.payload),
+				(e) => e.id,
+			);
 			state.loading = false;
 		},
 		[findAllAction.rejected]: (state, action) => {
@@ -215,25 +189,24 @@ const slice = createSlice({
 });
 
 const selectAllState = createSelector(
-	(state) => state.user,
+	(state) => state.resources,
 	(state) => state.error,
 	(state) => state.loading,
-	(user, error, loading) => {
-		return {user, error, loading};
+	(resources, error, loading) => {
+		return {resources, error, loading};
 	},
 );
 
-export const userSelector = {
-	all: (state) => selectAllState(state[USER]),
+export const groupTypeSelector = {
+	all: (state) => selectAllState(state[GROUP_TYPE]),
 };
 
-export const USER = slice.name;
-export const userReducer = slice.reducer;
-export const userAction = {
+export const GROUP_TYPE = slice.name;
+export const groupTypeReducer = slice.reducer;
+export const groupTypeAction = {
 	createAction,
 	updateAction,
 	deleteAction,
 	findByIdAction,
-	findByUidAction,
 	findAllAction,
 };
