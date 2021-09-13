@@ -1,10 +1,11 @@
 import React from 'react';
+import {_NavContainer} from '../../styles/components/style';
 
 const UserNav = () => {
 	return (
-		<div>
+		<_NavContainer>
 			<div>Use Nav</div>
-		</div>
+		</_NavContainer>
 	);
 };
 
