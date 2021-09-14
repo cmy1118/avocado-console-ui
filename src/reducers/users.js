@@ -6,7 +6,7 @@ const slice = createSlice({
 		//groups, authType, MFA, tags, lastConsoleLogin, creationDate는 다른 곳으로 빠질 예정 => 아직 다른 부분 생성 전이라 users에 추가
 		users: [
 			{
-				id: faker.random.uuid(),
+				id: faker.datatype.uuid(),
 				name: faker.name.findName(),
 				groups: [],
 				status: 0,
@@ -18,7 +18,7 @@ const slice = createSlice({
 				creationDate: faker.date.future(),
 			},
 			{
-				id: faker.random.uuid(),
+				id: faker.datatype.uuid(),
 				name: faker.name.findName(),
 				groups: [],
 				status: 0,
@@ -30,7 +30,7 @@ const slice = createSlice({
 				creationDate: faker.date.future(),
 			},
 			{
-				id: faker.random.uuid(),
+				id: faker.datatype.uuid(),
 				name: faker.name.findName(),
 				groups: [],
 				status: 0,
