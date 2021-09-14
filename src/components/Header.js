@@ -10,7 +10,14 @@ const _Container = styled.div`
 const Header = () => {
 	return (
 		<_Container>
-			<div>Avocado Console Management</div>
+			<div>
+				{/*<HoverButton*/}
+				{/*	margin_right={'6px'}*/}
+				{/*>*/}
+				{/*	{burgerMenuIcon}*/}
+				{/*</HoverButton>*/}
+				Avocado Console Management
+			</div>
 			<div>Search bar</div>
 			<div>Icons</div>
 		</_Container>
