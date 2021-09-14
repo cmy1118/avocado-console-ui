@@ -1,7 +1,5 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
-import User from '../../pages/User';
 import {Route} from 'react-router-dom';
 
 const RouteWithLayout = ({layout, component, ...rest}) => {
