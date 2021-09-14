@@ -4,8 +4,9 @@ const slice = createSlice({
 	name: 'users',
 	initialState: {
 		//groups, authType, MFA, tags, lastConsoleLogin, creationDate는 다른 곳으로 빠질 예정 => 아직 다른 부분 생성 전이라 users에 추가
-		users: [
-			{
+		users: Array(20)
+			.fill()
+			.map((v, i) => ({
 				id: faker.datatype.uuid(),
 				name: faker.name.findName(),
 				groups: [],
@@ -15,35 +16,29 @@ const slice = createSlice({
 				passwordExpiryTime: faker.date.future(),
 				tags: [],
 				lastConsoleLogin: faker.date.past(),
-				creationDate: faker.date.future(),
-			},
-			{
-				id: faker.datatype.uuid(),
-				name: faker.name.findName(),
-				groups: [],
-				status: 0,
-				authType: 'ID/PW',
-				MFA: null,
-				passwordExpiryTime: faker.date.future(),
-				tags: [],
-				lastConsoleLogin: faker.date.past(),
-				creationDate: faker.date.future(),
-			},
-			{
-				id: faker.datatype.uuid(),
-				name: faker.name.findName(),
-				groups: [],
-				status: 0,
-				authType: 'ID/PW',
-				MFA: null,
-				passwordExpiryTime: faker.date.future(),
-				tags: [],
-				lastConsoleLogin: faker.date.past(),
-				creationDate: faker.date.future(),
-			},
-		],
+				creationDate: faker.date.past(),
+			})),
 	},
-	reducers: {},
+	reducers: {
+		loadUsers: (state, action) => {
+			state.users.push(
+				...Array(20)
+					.fill()
+					.map((v, i) => ({
+						id: faker.datatype.uuid(),
+						name: faker.name.findName(),
+						groups: [],
+						status: 0,
+						authType: 'ID/PW',
+						MFA: null,
+						passwordExpiryTime: faker.date.future(),
+						tags: [],
+						lastConsoleLogin: faker.date.past(),
+						creationDate: faker.date.past(),
+					})),
+			);
+		},
+	},
 });
 
 const selectAllState = createSelector(
