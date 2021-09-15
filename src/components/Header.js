@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {burgerMenuIcon} from '../icons/icons';
 import {HoverButton} from '../styles/components/icons';
 import MenuButtons from './Header/MenuButtons';
+import useInput from '../hooks/useInput';
 
 const _Container = styled.div`
 	display: flex;
@@ -15,6 +16,8 @@ const _Title = styled.div`
 `;
 
 const Header = () => {
+	const [searchInput, onChangeSearchInput] = useInput('');
+
 	const onClickCloseNav = useCallback(() => {
 		document.querySelector('.iam-nav-bar').classList.toggle('close');
 	}, []);
@@ -27,7 +30,12 @@ const Header = () => {
 				</HoverButton>
 				Avocado Console Management
 			</_Title>
-			<input type={'search'} placeholder='Search...' />
+			<input
+				type={'search'}
+				value={searchInput}
+				onChange={onChangeSearchInput}
+				placeholder='Search...'
+			/>
 			<MenuButtons />
 		</_Container>
 	);
