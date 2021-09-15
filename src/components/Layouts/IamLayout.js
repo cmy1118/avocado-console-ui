@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import IamNav from '../Nav/IamNav';
 import Header from '../Header';
+import Aside from '../Aside/Aside';
 
 const _Space = styled.div`
 	display: flex;
@@ -16,6 +17,7 @@ const IamLayout = ({children}) => {
 			<_Space>
 				<IamNav />
 				{children}
+				<Aside />
 			</_Space>
 		</>
 	);

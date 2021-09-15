@@ -2,6 +2,7 @@ import React, {useCallback} from 'react';
 import styled from 'styled-components';
 import {burgerMenuIcon} from '../icons/icons';
 import {HoverButton} from '../styles/components/icons';
+import MenuButtons from './Header/MenuButtons';
 
 const _Container = styled.div`
 	display: flex;
@@ -26,8 +27,8 @@ const Header = () => {
 				</HoverButton>
 				Avocado Console Management
 			</_Title>
-			<div>Search bar</div>
-			<div>Icons</div>
+			<input type={'search'} placeholder='Search...' />
+			<MenuButtons />
 		</_Container>
 	);
 };

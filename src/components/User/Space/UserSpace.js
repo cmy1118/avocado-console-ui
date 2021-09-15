@@ -9,13 +9,6 @@ const UserSpace = () => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(usersSelector.all);
 
-	// useEffect(() => {
-	// 	dispatch(usersAction.loadUsers());
-	// }, []);
-	//
-	// useEffect(() => {
-	// 	console.log(users);
-	// }, [users]);
 	return (
 		<_IamContainer>
 			<_PathContainer>
