@@ -16,7 +16,10 @@ const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
 
 	const {users} = useSelector(usersSelector.all);
-	const user = useMemo(() => users.find((v) => v.id === userId));
+	const user = useMemo(() => users.find((v) => v.uid === userId), [
+		users,
+		userId,
+	]);
 
 	// if userId does not exist, direct to 404 page
 	useEffect(() => {
@@ -33,11 +36,11 @@ const UserDescriptionSpace = ({userId}) => {
 					<div>{' > '}</div>
 					<Link to='/user'>사용자</Link>
 					<div>{' > '}</div>
-					<Link to={`/user/${userId}`}>{userId}</Link>
+					<Link to={`/user/${userId}`}>{user?.id}</Link>
 				</_PathContainer>
 			</div>
 			<_Title>
-				<div>요약 [ {userId} ]</div>
+				<div>요약 [ {user?.id} ]</div>
 				<button>삭제</button>
 			</_Title>
 

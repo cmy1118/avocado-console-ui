@@ -10,13 +10,13 @@ const AddUser = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
-	const [id, onChangeId, setId] = useInput('ambacc244');
-	const [name, onChangeName, setName] = useInput('이영애	');
-	const [email, onChangeEmail, setEmail] = useInput('ambacc244@google.com');
+	const [id, onChangeId, setId] = useInput('test');
+	const [name, onChangeName, setName] = useInput('테스트');
+	const [email, onChangeEmail, setEmail] = useInput('test@netand.co.kr');
 	const [telephone, onChangeTelephone, setTelephone] = useInput(
-		'010-9434-5272',
+		'010-0000-0000',
 	);
-	const [mobile, onChangeMobile, setMobile] = useInput('010-9434-5272');
+	const [mobile, onChangeMobile, setMobile] = useInput('010-0000-0000');
 
 	const onClickCancelAddUser = useCallback(() => {
 		history.push('/user');

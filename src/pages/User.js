@@ -1,16 +1,11 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import UserSpace from '../components/User/Space/UserSpace';
 import AddUserSpace from '../components/User/Space/AddUserSpace';
 import UserDescriptionSpace from '../components/User/Space/UserDescriptionSpace';
 
-import {useDispatch, useSelector} from 'react-redux';
-import {usersAction, usersSelector} from '../reducers/users';
-
 const User = ({match}) => {
-	const dispatch = useDispatch();
-
 	return (
 		<>
 			{match.path === '/user/add' ? (

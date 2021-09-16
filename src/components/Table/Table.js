@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {_IamContainer, _PathContainer} from '../../styles/components/style';
@@ -21,6 +21,8 @@ import TableHeader from './header/TableHeader';
 
 const Table = ({columns, data}) => {
 	const dispatch = useDispatch();
+	const history = useHistory();
+
 	const {
 		getTableProps,
 		getTableBodyProps,
