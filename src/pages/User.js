@@ -1,11 +1,10 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 import UserSpace from '../components/User/Space/UserSpace';
 import AddUserSpace from '../components/User/Space/AddUserSpace';
 import UserDescriptionSpace from '../components/User/Space/UserDescriptionSpace';
 import IamLayout from '../components/Layouts/IamLayout';
-import faker from 'faker';
 import {useDispatch, useSelector} from 'react-redux';
 import {usersAction, usersSelector} from '../reducers/users';
 
@@ -72,7 +71,7 @@ const User = ({match}) => {
 	}, []);
 	useEffect(() => {
 		console.log('users data', users, columns);
-	}, []);
+	}, [users, columns]);
 	/*****************************************************/
 
 	// const data = useMemo(
