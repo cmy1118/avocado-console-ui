@@ -49,7 +49,13 @@ const Table = ({columns, data}) => {
 		{
 			columns,
 			data,
-			initialState: {},
+			/********************************************************/
+			//  roberto :  userColmn_update
+			//
+			/********************************************************/
+			initialState: {pageSize: 50},
+			/********************************************************/
+
 			disableSortRemove: true,
 		},
 		useSortBy,
@@ -82,15 +88,11 @@ const Table = ({columns, data}) => {
 	const onClickOpenSelectColumn = useCallback(async () => {
 		dispatch(dialogBoxAction.openForm({key: 'hideColumn'}));
 	}, [dispatch]);
-	/********************************************************/
-	//  roberto :  userTable_update
-	//
-	/********************************************************/
+
 	const getSelectedRowUid = (uid) => {
 		console.log('clicked uid:', uid);
 		history.push(`/user/${uid}`);
 	};
-	/********************************************************/
 
 	return (
 		<div>
