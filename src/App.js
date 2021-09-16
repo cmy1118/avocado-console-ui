@@ -2,28 +2,93 @@ import React from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import {Main, User, Group, Role, Policy, NotFound} from './pages';
+import RouteWithLayout from './components/Layouts/RouteWithLayout';
+import IamLayout from './components/Layouts/IamLayout';
 
 const App = () => {
 	return (
 		<BrowserRouter>
 			<Switch>
-				<Route path='/' exact component={Main} />
+				<RouteWithLayout
+					path='/'
+					exact
+					component={Main}
+					layout={IamLayout}
+				/>
 
-				<Route path='/user/add' exact component={User} />
-				<Route path='/user/:id' component={User} />
-				<Route path='/user' component={User} />
+				<RouteWithLayout
+					path='/user/add'
+					exact
+					component={User}
+					layout={IamLayout}
+				/>
+				<RouteWithLayout
+					path='/user/:id'
+					component={User}
+					layout={IamLayout}
+				/>
+				<RouteWithLayout
+					path='/user'
+					component={User}
+					layout={IamLayout}
+				/>
 
-				<Route path='/group/add' exact component={Group} />
-				<Route path='/group/:id' component={Group} />
-				<Route path='/group' component={Group} />
+				<RouteWithLayout
+					path='/group/add'
+					exact
+					component={Group}
+					layout={IamLayout}
+				/>
+				<RouteWithLayout
+					path='/group/type'
+					exact
+					component={Group}
+					layout={IamLayout}
+				/>
+				<RouteWithLayout
+					path='/group/:id'
+					component={Group}
+					layout={IamLayout}
+				/>
+				<RouteWithLayout
+					path='/group'
+					component={Group}
+					layout={IamLayout}
+				/>
 
-				<Route path='/role/add' exact component={Role} />
-				<Route path='/role/:id' component={Role} />
-				<Route path='/role' component={Role} />
+				<RouteWithLayout
+					path='/role/add'
+					exact
+					component={Role}
+					layout={IamLayout}
+				/>
+				<RouteWithLayout
+					path='/role/:id'
+					component={Role}
+					layout={IamLayout}
+				/>
+				<RouteWithLayout
+					path='/role'
+					component={Role}
+					layout={IamLayout}
+				/>
 
-				<Route path='/policy/add' exact component={Policy} />
-				<Route path='/policy/:id' component={Policy} />
-				<Route path='/policy' component={Policy} />
+				<RouteWithLayout
+					path='/policy/add'
+					exact
+					component={Policy}
+					layout={IamLayout}
+				/>
+				<RouteWithLayout
+					path='/policy/:id'
+					component={Policy}
+					layout={IamLayout}
+				/>
+				<RouteWithLayout
+					path='/policy'
+					component={Policy}
+					layout={IamLayout}
+				/>
 
 				<Route component={NotFound} />
 			</Switch>

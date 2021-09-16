@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import UserNav from '../Nav/UserNav';
 import Header from '../Header';
 import styled from 'styled-components';

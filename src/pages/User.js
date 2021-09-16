@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import UserSpace from '../components/User/Space/UserSpace';
 import AddUserSpace from '../components/User/Space/AddUserSpace';
 import UserDescriptionSpace from '../components/User/Space/UserDescriptionSpace';
-import IamLayout from '../components/Layouts/IamLayout';
+
 import {useDispatch, useSelector} from 'react-redux';
 import {usersAction, usersSelector} from '../reducers/users';
 
@@ -69,32 +69,14 @@ const User = ({match}) => {
 	useEffect(() => {
 		dispatch(usersAction.loadUsers());
 	}, []);
+
 	useEffect(() => {
 		console.log('users data', users, columns);
 	}, [users, columns]);
 	/*****************************************************/
 
-	// const data = useMemo(
-	// 	() =>
-	// 		Array(20)
-	// 			.fill()
-	// 			.map(() => ({
-	// 				id: faker.datatype.uuid(),
-	// 				name: faker.name.findName(),
-	// 				groups: [],
-	// 				status: 0,
-	// 				authType: 'ID/PW',
-	// 				MFA: null,
-	// 				passwordExpiryTime: faker.date.future(),
-	// 				tags: [],
-	// 				lastConsoleLogin: faker.date.past(),
-	// 				creationDate: faker.date.past(),
-	// 			})),
-	// 	[],
-	// );
-
 	return (
-		<IamLayout>
+		<>
 			{match.path === '/user/add' ? (
 				<AddUserSpace />
 			) : match.params?.id ? (
@@ -102,7 +84,7 @@ const User = ({match}) => {
 			) : (
 				<UserSpace />
 			)}
-		</IamLayout>
+		</>
 	);
 };
 

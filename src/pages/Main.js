@@ -1,12 +1,12 @@
 import React from 'react';
-import IamLayout from '../components/Layouts/IamLayout';
 import DashBoard from '../components/IAM/DashBoard';
+import {_MainContainer} from '../styles/components/style';
 
 const Main = () => {
 	return (
-		<IamLayout>
+		<_MainContainer>
 			<DashBoard />
-		</IamLayout>
+		</_MainContainer>
 	);
 };
 
