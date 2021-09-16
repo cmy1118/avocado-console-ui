@@ -15,7 +15,6 @@ const Pagination = ({
 	setPageSize,
 	onClickOpenSelectColumn,
 }) => {
-	console.log('pageSize', pageSize);
 	return (
 		<div>
 			<div className='pagination'>
