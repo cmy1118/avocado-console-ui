@@ -1,12 +1,12 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Link, useHistory} from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {_IamContainer, _PathContainer} from '../../../styles/components/style';
 
 import Table from '../../Table/Table';
 import styled from 'styled-components';
-import {usersSelector} from '../../../reducers/users';
+import {usersAction, usersSelector} from '../../../reducers/users';
 
 const _Title = styled.div`
 	display: flex;
@@ -14,6 +14,8 @@ const _Title = styled.div`
 `;
 
 const UserSpace = () => {
+	const dispatch = useDispatch();
+
 	const history = useHistory();
 	const {users, usersColumns} = useSelector(usersSelector.all);
 
@@ -21,6 +23,9 @@ const UserSpace = () => {
 		history.push('/user/add');
 	}, []);
 
+	useEffect(() => {
+		console.log('users data', users, usersColumns);
+	}, [users, usersColumns]);
 	return (
 		<_IamContainer>
 			<_PathContainer>
@@ -45,8 +50,5 @@ const UserSpace = () => {
 		</_IamContainer>
 	);
 };
-UserSpace.propTypes = {
-	columns: PropTypes.array.isRequired,
-	data: PropTypes.array.isRequired,
-};
+UserSpace.propTypes = {};
 export default UserSpace;

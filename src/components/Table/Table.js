@@ -21,7 +21,6 @@ import TableHeader from './header/TableHeader';
 
 const Table = ({columns, data}) => {
 	const dispatch = useDispatch();
-
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -82,6 +81,15 @@ const Table = ({columns, data}) => {
 	const onClickOpenSelectColumn = useCallback(async () => {
 		dispatch(dialogBoxAction.openForm({key: 'hideColumn'}));
 	}, [dispatch]);
+	/********************************************************/
+	//  roberto :  userTable_update
+	//
+	/********************************************************/
+	const getSelectedRowUid = (uid) => {
+		console.log('clicked uid:', uid);
+		history.push(`/user/${uid}`);
+	};
+	/********************************************************/
 
 	return (
 		<div>
@@ -147,6 +155,21 @@ const Table = ({columns, data}) => {
 											<td
 												{...cell.getCellProps()}
 												key={index}
+												/********************************************************/
+												//  roberto :  userTable_update
+												//
+												//  * column id  가 id 인곳에만 적용
+												//  * row.original.uid  : uid 정보
+												/********************************************************/
+												onClick={() => {
+													cell.column.id === 'id'
+														? getSelectedRowUid(
+																row.original
+																	.uid,
+														  )
+														: '';
+												}}
+												/********************************************************/
 											>
 												{cell.render('Cell')}
 											</td>
