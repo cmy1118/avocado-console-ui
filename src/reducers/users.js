@@ -1,5 +1,6 @@
 import {createSelector, createSlice} from '@reduxjs/toolkit';
 import faker from 'faker';
+import {useMemo} from 'react';
 const slice = createSlice({
 	name: 'users',
 	initialState: {
@@ -13,14 +14,61 @@ const slice = createSlice({
 				status: 0,
 				authType: 'ID/PW',
 				MFA: null,
-				passwordExpiryTime: faker.date.future(),
+				passwordExpiryTime: String(faker.date.future()),
+				// passwordExpiryTime: 1,
 				tags: [],
-				lastConsoleLogin: faker.date.past(),
-				creationDate: faker.date.past(),
+				lastConsoleLogin: String(faker.date.past()),
+				creationDate: String(faker.date.past()),
 			})),
+
+		usersColumns: [
+			// accessor : 해당 열을 data 객체의 어느 속성을 읽어야하는지를 명시
+			// Header   : 테이블 헤더에 보여줄 텍스트를 명시
+			{
+				accessor: 'id',
+				Header: '사용자계정',
+			},
+			{
+				accessor: 'name',
+				Header: '이름',
+			},
+			{
+				accessor: 'groups',
+				Header: '그룹',
+			},
+			{
+				accessor: 'status',
+				Header: '계정상태',
+			},
+			{
+				accessor: 'authType',
+				Header: '인증유형',
+			},
+			{
+				accessor: 'MFA',
+				Header: 'MFA',
+			},
+			{
+				accessor: 'passwordExpiryTime',
+				Header: '비밀번호 수명',
+			},
+			{
+				accessor: 'tags',
+				Header: '태그',
+			},
+			{
+				accessor: 'lastConsoleLogin',
+				Header: '마지막 콘솔 로그인',
+			},
+			{
+				accessor: 'creationDate',
+				Header: '생성 일시',
+			},
+		],
 	},
 	reducers: {
 		loadUsers: (state, action) => {
+			console.log('faker.date.future():', faker.date.future());
 			state.users.push(
 				...Array(20)
 					.fill()
@@ -31,21 +79,25 @@ const slice = createSlice({
 						status: 0,
 						authType: 'ID/PW',
 						MFA: null,
-						passwordExpiryTime: faker.date.future(),
+						passwordExpiryTime: String(faker.date.future()),
+						// passwordExpiryTime: 1,
 						tags: [],
-						lastConsoleLogin: faker.date.past(),
-						creationDate: faker.date.past(),
+						lastConsoleLogin: String(faker.date.past()),
+						creationDate: String(faker.date.past()),
 					})),
 			);
+			state.columns;
 		},
 	},
 });
 
 const selectAllState = createSelector(
 	(state) => state.users,
-	(users) => {
+	(state) => state.usersColumns,
+	(users, usersColumns) => {
 		return {
 			users,
+			usersColumns,
 		};
 	},
 );

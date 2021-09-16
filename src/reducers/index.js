@@ -1,6 +1,7 @@
 import {combineReducers} from '@reduxjs/toolkit';
 import {CLIENT, clientReducer} from './ClientManagement/client';
 import {USER, userReducer} from './UserManagement/user';
+import {DIALOG_BOX, dialogBoxReducer} from './dialogBoxs';
 import {
 	REMOTE_RESOURCE,
 	remoteResourceReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
 	[USER]: userReducer,
 	[REMOTE_RESOURCE]: remoteResourceReducer,
 	[GROUP_TYPE]: groupTypeReducer,
+	[DIALOG_BOX]: dialogBoxReducer,
 });
 
 export default rootReducer;

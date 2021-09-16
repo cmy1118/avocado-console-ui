@@ -1,9 +1,14 @@
 module.exports = {
 	// parser : JavaScript transpiler 및 ES 언어 features 을 조정할 수 있습니다.
 	parser: 'babel-eslint', // bable-eslint : ESLint가 Babel에 의해 변환 된 소스 코드에서 실행될 수 있도록하는 파서입니다.
+	parserOptions: {
+		jsx: true,
+		ecmaVersion: 2020,
+	},
 	env: {
 		browser: true, // ex) document, setInterval, clearInterval
 		node: true,
+		es6: true,
 	},
 	plugins: ['react', 'prettier'], //jsx, prettier 활성화
 	rules: {
@@ -16,6 +21,8 @@ module.exports = {
 		'no-dupe-args': 2,
 		'no-dupe-keys': 2,
 		'no-unreachable': 2,
+		'no-unused-vars': 1,
+		'no-case-declarations': 2,
 		'react/jsx-key': 2,
 		'react/jsx-no-duplicate-props': 2,
 		'react/jsx-no-undef': 2,
@@ -27,10 +34,11 @@ module.exports = {
 		'react/no-render-return-value': 2,
 		'react/no-unknown-property': 2,
 		'react/require-render-return': 2, //render method를 작성할때 return 이 없으면 경고
-		'no-unused-vars': [
+		'react-hooks/rules-of-hooks': 'error',
+		'react-hooks/exhaustive-deps': [
 			'warn',
 			{
-				varsIgnorePattern: '^h$',
+				additionalHooks: '^useAsyncEffect$',
 			},
 		],
 	},
@@ -42,5 +50,10 @@ module.exports = {
 	globals: {
 		naver: 'readonly', // global 변수 naver 설정
 	},
-	extends: ['eslint:recommended', 'plugin:react/recommended', 'prettier'], // 확장하고 싶은 기본 규칙 추가 ex) ["eslint:recommended", "plugin:react/recommended"]
+	extends: [
+		'eslint:recommended',
+		'plugin:react/recommended',
+		'prettier',
+		'plugin:react-hooks/recommended',
+	], // 확장하고 싶은 기본 규칙 추가 ex) ["eslint:recommended", "plugin:react/recommended"]
 };
