@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import PropTypes from 'prop-types';
 import {_IamContainer, _PathContainer} from '../../../styles/components/style';
 
 import Table from '../../Table/Table';
 import styled from 'styled-components';
 import {usersAction, usersSelector} from '../../../reducers/users';
+import {usersColumns} from '../UserColumns';
 
 const _Title = styled.div`
 	display: flex;
@@ -14,18 +14,15 @@ const _Title = styled.div`
 `;
 
 const UserSpace = () => {
-	const dispatch = useDispatch();
-
 	const history = useHistory();
-	const {users, usersColumns} = useSelector(usersSelector.all);
+	const {users} = useSelector(usersSelector.all);
+	const Users = useMemo(() => users, []);
+	const UsersColumns = useMemo(() => usersColumns, []);
 
 	const onCLickLinkToAddUser = useCallback(() => {
 		history.push('/user/add');
 	}, []);
 
-	useEffect(() => {
-		console.log('users data', users, usersColumns);
-	}, [users, usersColumns]);
 	return (
 		<_IamContainer>
 			<_PathContainer>
@@ -45,7 +42,7 @@ const UserSpace = () => {
 			{/*/*******************************************************/}
 			{/*  접근관리 설정에따른  Table 컴포넌트                         */}
 			{/*/*******************************************************/}
-			<Table columns={usersColumns} data={users} />
+			<Table columns={UsersColumns} data={Users} />
 			{/*/*******************************************************/}
 		</_IamContainer>
 	);
