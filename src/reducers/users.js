@@ -3,10 +3,12 @@ import faker from 'faker';
 const slice = createSlice({
 	name: 'users',
 	initialState: {
+		user_index: 0,
 		//groups, authType, MFA, tags, lastConsoleLogin, creationDate는 다른 곳으로 빠질 예정 => 아직 다른 부분 생성 전이라 users에 추가
 		users: Array(20)
 			.fill()
 			.map(() => ({
+				uid: faker.datatype.uuid(),
 				id: faker.datatype.uuid(),
 				name: faker.name.findName(),
 				email: faker.internet.email(),
@@ -28,6 +30,7 @@ const slice = createSlice({
 				...Array(20)
 					.fill()
 					.map(() => ({
+						uid: faker.datatype.uuid(),
 						id: faker.datatype.uuid(),
 						name: faker.name.findName(),
 						email: faker.internet.email(),
@@ -46,6 +49,7 @@ const slice = createSlice({
 		},
 		addUser: (state, action) => {
 			state.users.push({
+				uid: action.payload.id + '_' + state.user_index.toString(),
 				id: action.payload.id,
 				name: action.payload.name,
 				email: action.payload.email,
@@ -60,6 +64,7 @@ const slice = createSlice({
 				lastConsoleLogin: null,
 				creationDate: new Date(),
 			});
+			state.user_index++;
 		},
 	},
 });

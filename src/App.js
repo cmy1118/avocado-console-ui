@@ -40,6 +40,12 @@ const App = () => {
 					layout={IamLayout}
 				/>
 				<RouteWithLayout
+					path='/group/type'
+					exact
+					component={Group}
+					layout={IamLayout}
+				/>
+				<RouteWithLayout
 					path='/group/:id'
 					component={Group}
 					layout={IamLayout}
