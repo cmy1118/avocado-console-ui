@@ -73,7 +73,6 @@ const slice = createSlice({
 	},
 	reducers: {
 		loadUsers: (state, action) => {
-			console.log('faker.date.future():', faker.date.future());
 			state.users.push(
 				...Array(20)
 					.fill()
@@ -109,10 +108,10 @@ const slice = createSlice({
 				status: 5,
 				authType: 'ID/PW',
 				MFA: null,
-				passwordExpiryTime: faker.date.future(),
+				passwordExpiryTime: String(faker.date.future()),
 				tags: [],
 				lastConsoleLogin: null,
-				creationDate: new Date(),
+				creationDate: String(new Date()),
 			});
 			state.user_index++;
 		},

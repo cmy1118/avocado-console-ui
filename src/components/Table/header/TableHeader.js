@@ -4,24 +4,20 @@ import Pagination from './Pagination';
 import Search from './Search';
 
 const TableHeader = ({
-	columns,
-	data,
 	pageSize,
 	gotoPage,
 	canPreviousPage,
 	previousPage,
 	nextPage,
 	canNextPage,
-	pageCount,
 	pageOptions,
 	pageIndex,
 	setPageSize,
-	setGlobalFilter,
 	onClickOpenSelectColumn,
 }) => {
 	return (
 		<>
-			<Search onSubmit={setGlobalFilter} />
+			{/*<Search onSubmit={setGlobalFilter} />*/}
 			<Pagination
 				onClickOpenSelectColumn={onClickOpenSelectColumn}
 				pageSize={pageSize}
@@ -39,8 +35,8 @@ const TableHeader = ({
 	);
 };
 TableHeader.propTypes = {
-	columns: PropTypes.array,
-	data: PropTypes.array,
+	columns: PropTypes.array.isRequired,
+	data: PropTypes.array.isRequired,
 	pageSize: PropTypes.number.isRequired,
 	gotoPage: PropTypes.func.isRequired,
 	canPreviousPage: PropTypes.bool.isRequired,
@@ -51,7 +47,6 @@ TableHeader.propTypes = {
 	pageOptions: PropTypes.array.isRequired,
 	pageIndex: PropTypes.number.isRequired,
 	setPageSize: PropTypes.func.isRequired,
-	setGlobalFilter: PropTypes.func,
 	onClickOpenSelectColumn: PropTypes.func.isRequired,
 };
 export default TableHeader;
