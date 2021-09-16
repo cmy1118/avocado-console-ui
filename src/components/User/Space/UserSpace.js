@@ -32,7 +32,7 @@ const UserSpace = () => {
 			</_PathContainer>
 
 			<_Title>
-				<div>사용자:</div>
+				<div>사용자: {users.length}</div>
 				<div>
 					<button onClick={onCLickLinkToAddUser}>사용자 생성</button>
 					<button>삭제</button>

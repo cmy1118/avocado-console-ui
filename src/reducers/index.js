@@ -12,10 +12,12 @@ import {
 } from './RemoteResourceManagement/groupType';
 import {SETTING, settingReducer} from './setting';
 import {USERS, usersReducer} from './users';
+import {GROUPS, groupsReducer} from './groups';
 
 const rootReducer = combineReducers({
 	[SETTING]: settingReducer,
 	[USERS]: usersReducer,
+	[GROUPS]: groupsReducer,
 	[CLIENT]: clientReducer,
 	[USER]: userReducer,
 	[REMOTE_RESOURCE]: remoteResourceReducer,

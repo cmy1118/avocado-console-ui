@@ -3,11 +3,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 
 import {dialogBoxAction, dialogBoxSelector} from '../../../reducers/dialogBoxs';
-import {usersSelector} from '../../../reducers/users';
 import SettingsCheckbox from '../settings/SettingsCheckbox';
 import PropTypes from 'prop-types';
-// import {IconButton} from '../../../styles/components/icon';
-// import {DialogBoxHeader} from '../../../styles/components/disalogBox';
 
 const _DialogBox = styled.div`
 	z-index: 99;
