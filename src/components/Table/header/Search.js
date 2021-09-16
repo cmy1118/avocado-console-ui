@@ -15,7 +15,7 @@ function Search({onSubmit}) {
 	);
 }
 Search.propTypes = {
-	onSubmit: PropTypes.func.isRequired,
+	onSubmit: PropTypes.func,
 };
 
 export default Search;

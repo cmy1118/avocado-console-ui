@@ -59,6 +59,6 @@ const SelectColumnDialogBox = ({allColumns, getToggleHideAllColumnsProps}) => {
 };
 SelectColumnDialogBox.propTypes = {
 	allColumns: PropTypes.array.isRequired,
-	getToggleHideAllColumnsProps: PropTypes.array.isRequired,
+	getToggleHideAllColumnsProps: PropTypes.func.isRequired,
 };
 export default SelectColumnDialogBox;

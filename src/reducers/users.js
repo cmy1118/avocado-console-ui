@@ -98,7 +98,7 @@ const slice = createSlice({
 			state.columns;
 		},
 		addUser: (state, action) => {
-			state.users.push({
+			state.users.unshift({
 				uid: action.payload.id + '_' + state.user_index.toString(),
 				id: action.payload.id,
 				name: action.payload.name,

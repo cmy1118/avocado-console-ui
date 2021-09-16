@@ -66,13 +66,13 @@ const User = ({match}) => {
 	/*****************************************************/
 	//  칼럼설정
 	/*****************************************************/
-	useEffect(() => {
-		dispatch(usersAction.loadUsers());
-	}, []);
+	// useEffect(() => {
+	// 	dispatch(usersAction.loadUsers());
+	// }, []);
 
-	useEffect(() => {
-		console.log('users data', users, columns);
-	}, [users, columns]);
+	// useEffect(() => {
+	// 	console.log('users data', users, columns);
+	// }, [users, columns]);
 	/*****************************************************/
 
 	return (

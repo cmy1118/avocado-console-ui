@@ -1,11 +1,10 @@
 import React, {useCallback} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import PropTypes from 'prop-types';
-import {_IamContainer, _PathContainer} from '../../../styles/components/style';
-
-import Table from '../../Table/Table';
 import styled from 'styled-components';
+
+import {_IamContainer, _PathContainer} from '../../../styles/components/style';
+import Table from '../../Table/Table';
 import {usersSelector} from '../../../reducers/users';
 
 const _Title = styled.div`
@@ -45,8 +44,5 @@ const UserSpace = () => {
 		</_IamContainer>
 	);
 };
-UserSpace.propTypes = {
-	columns: PropTypes.array.isRequired,
-	data: PropTypes.array.isRequired,
-};
+
 export default UserSpace;

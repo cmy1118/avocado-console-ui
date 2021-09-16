@@ -79,6 +79,7 @@ const Table = ({columns, data}) => {
 			]);
 		},
 	);
+
 	const onClickOpenSelectColumn = useCallback(async () => {
 		dispatch(dialogBoxAction.openForm({key: 'hideColumn'}));
 	}, [dispatch]);

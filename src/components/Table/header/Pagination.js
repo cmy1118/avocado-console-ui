@@ -77,10 +77,10 @@ const Pagination = ({
 
 Pagination.propTypes = {
 	gotoPage: PropTypes.func.isRequired,
-	canPreviousPage: PropTypes.array.isRequired,
-	previousPage: PropTypes.array.isRequired,
-	nextPage: PropTypes.array.isRequired,
-	canNextPage: PropTypes.array.isRequired,
+	canPreviousPage: PropTypes.bool.isRequired,
+	previousPage: PropTypes.func.isRequired,
+	nextPage: PropTypes.func.isRequired,
+	canNextPage: PropTypes.bool.isRequired,
 	pageCount: PropTypes.number.isRequired,
 	pageOptions: PropTypes.array.isRequired,
 	pageIndex: PropTypes.number.isRequired,

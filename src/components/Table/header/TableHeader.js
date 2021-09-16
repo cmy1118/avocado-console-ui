@@ -39,19 +39,19 @@ const TableHeader = ({
 	);
 };
 TableHeader.propTypes = {
-	columns: PropTypes.array.isRequired,
-	data: PropTypes.array.isRequired,
+	columns: PropTypes.array,
+	data: PropTypes.array,
 	pageSize: PropTypes.number.isRequired,
 	gotoPage: PropTypes.func.isRequired,
-	canPreviousPage: PropTypes.array.isRequired,
-	previousPage: PropTypes.array.isRequired,
-	nextPage: PropTypes.array.isRequired,
-	canNextPage: PropTypes.array.isRequired,
+	canPreviousPage: PropTypes.bool.isRequired,
+	previousPage: PropTypes.func.isRequired,
+	nextPage: PropTypes.func.isRequired,
+	canNextPage: PropTypes.bool.isRequired,
 	pageCount: PropTypes.number.isRequired,
 	pageOptions: PropTypes.array.isRequired,
 	pageIndex: PropTypes.number.isRequired,
 	setPageSize: PropTypes.func.isRequired,
-	setGlobalFilter: PropTypes.func.isRequired,
+	setGlobalFilter: PropTypes.func,
 	onClickOpenSelectColumn: PropTypes.func.isRequired,
 };
 export default TableHeader;
