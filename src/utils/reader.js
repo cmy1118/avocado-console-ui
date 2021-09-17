@@ -16,3 +16,15 @@ export const statusReader = (status) => {
 			return;
 	}
 };
+
+export const passwordExpiryTimeReader = (data) => {
+	let diffDate = new Date(data) - new Date();
+
+	return diffDate + '일전';
+};
+
+export const groupReader = (data) => {
+	if (data.length === 0) return '';
+	if (data.length === 1) return data[0];
+	return data[0] + ' 외 ' + (data.length - 1).toString();
+};

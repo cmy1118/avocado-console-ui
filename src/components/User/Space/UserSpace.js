@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import {

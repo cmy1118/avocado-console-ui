@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -12,11 +12,16 @@ import TableHeader from './header/TableHeader';
 import {groupTypeColumns, usersColumns} from '../../utils/tableColumns';
 import {groupsSelector} from '../../reducers/groups';
 import {usersSelector} from '../../reducers/users';
+import {
+	groupReader,
+	passwordExpiryTimeReader,
+	statusReader,
+} from '../../utils/reader';
 
 const Table = ({tableKey}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const {groupTypes} = useSelector(groupsSelector.all);
+	const {groupTypes, groups} = useSelector(groupsSelector.all);
 	const {users} = useSelector(usersSelector.all);
 
 	const columns = useMemo(() => {
@@ -33,22 +38,34 @@ const Table = ({tableKey}) => {
 	}, [tableKey]);
 
 	const data = useMemo(() => {
-		console.log(tableKey);
 		switch (tableKey) {
 			case 'users':
-				return users;
+				return users.map((v) => ({
+					...v,
+					groups: groupReader(
+						v.groups.map(
+							(val) =>
+								groups.find((val2) => val2.id === val).name,
+						),
+					),
+					status: statusReader(v.status),
+					passwordExpiryTime: passwordExpiryTimeReader(
+						v.passwordExpiryTime,
+					),
+				}));
 
 			case 'groupTypes':
-				return groupTypes;
+				return groupTypes.map((v) => ({
+					...v,
+					numberOfGroups: groups.filter(
+						(val) => val.clientGroupTypeId === v.id,
+					).length,
+				}));
 
 			default:
 				return [];
 		}
-	}, [tableKey, users, groupTypes]);
-
-	useEffect(() => {
-		console.log(columns, data);
-	}, [columns, data]);
+	}, [tableKey, users, groupTypes, groups]);
 
 	const {
 		getTableProps,
