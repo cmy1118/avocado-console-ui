@@ -1,22 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import {_IamContainer, _PathContainer} from '../../../styles/components/style';
+import {IamContainer, PathContainer} from '../../../styles/components/style';
 
 const PolicyDescriptionSpace = ({policyId}) => {
 	return (
-		<_IamContainer>
+		<IamContainer>
 			<div>
-				<_PathContainer>
+				<PathContainer>
 					<Link to='/'>IAM</Link>
 					<div>{' > '}</div>
 					<Link to='/policy'>정책</Link>
 					<div>{' > '}</div>
 					<Link to={`/policy/${policyId}`}>{policyId}</Link>
-				</_PathContainer>
+				</PathContainer>
 			</div>
 			<div>Rolicy Description Space</div>
-		</_IamContainer>
+		</IamContainer>
 	);
 };
 

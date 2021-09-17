@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-export const _IamContainer = styled.div`
+export const IamContainer = styled.div`
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 `;
 
-export const _NavContainer = styled.div`
+export const NavContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 255px;
@@ -18,16 +18,16 @@ export const _NavContainer = styled.div`
 	}
 `;
 
-export const _NavItemList = styled.div`
+export const NavItemList = styled.div`
 	display: flex;
 	flex-direction: column;
 `;
 
-export const _PathContainer = styled.div`
+export const PathContainer = styled.div`
 	display: flex;
 `;
 
-export const _AsideContainer = styled.div`
+export const AsideContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 255px;
@@ -38,6 +38,11 @@ export const _AsideContainer = styled.div`
 	}
 `;
 
-export const _MainContainer = styled.div`
+export const MainContainer = styled.div`
 	flex: 1;
+`;
+
+export const SubTitle = styled.div`
+	display: flex;
+	justify-content: space-between;
 `;

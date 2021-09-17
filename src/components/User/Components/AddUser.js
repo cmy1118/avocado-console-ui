@@ -5,6 +5,7 @@ import useInput from '../../../hooks/useInput';
 import {usersAction} from '../../../reducers/users';
 import {useDispatch} from 'react-redux';
 import {Form} from '../../../styles/components/form';
+import {SubTitle} from '../../../styles/components/style';
 
 const AddUser = () => {
 	const history = useHistory();
@@ -20,7 +21,7 @@ const AddUser = () => {
 
 	const onClickCancelAddUser = useCallback(() => {
 		history.push('/user');
-	}, []);
+	}, [history]);
 
 	const onSubmitAddUser = useCallback(
 		(e) => {
@@ -42,20 +43,33 @@ const AddUser = () => {
 			setTelephone('');
 			setMobile('');
 		},
-		[id, name, email, telephone, mobile],
+		[
+			dispatch,
+			id,
+			name,
+			email,
+			telephone,
+			mobile,
+			setId,
+			setName,
+			setEmail,
+			setTelephone,
+			setMobile,
+		],
 	);
 
 	return (
 		<>
-			<div>사용자 기본 정보</div>
+			<SubTitle>
+				<div>사용자 기본 정보</div>
 
-			<div>
-				<button form={'add-user-form'} type={'submit'}>
-					사용자 생성
-				</button>
-				<button onClick={onClickCancelAddUser}>취소</button>
-			</div>
-
+				<div>
+					<button form={'add-user-form'} type={'submit'}>
+						사용자 생성
+					</button>
+					<button onClick={onClickCancelAddUser}>취소</button>
+				</div>
+			</SubTitle>
 			<Form id={'add-user-form'} onSubmit={onSubmitAddUser}>
 				<input
 					type='text'

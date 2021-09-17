@@ -1,8 +1,8 @@
-import React, {forwardRef, useEffect} from 'react';
+import React, {forwardRef, useEffect, useRef} from 'react';
+import PropTypes from 'prop-types';
 
-// eslint-disable-next-line react/display-name,react/prop-types
 const SettingsCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
-	const defaultRef = React.useRef();
+	const defaultRef = useRef();
 	const resolvedRef = ref || defaultRef;
 
 	useEffect(() => {
@@ -15,5 +15,11 @@ const SettingsCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 		</>
 	);
 });
+
+SettingsCheckbox.propTypes = {
+	indeterminate: PropTypes.bool,
+};
+
+SettingsCheckbox.displayName = 'SettingsCheckbox';
 
 export default SettingsCheckbox;

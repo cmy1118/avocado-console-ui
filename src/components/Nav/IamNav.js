@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
 
-import {_NavContainer, _NavItemList} from '../../styles/components/style';
+import {NavContainer, NavItemList} from '../../styles/components/style';
 import {Link} from 'react-router-dom';
 import {IconButton} from '../../styles/components/icons';
 import {arrowDownIcon, arrowRightIcon} from '../../icons/icons';
@@ -17,7 +17,7 @@ const IamNav = () => {
 		setIsUnfolded(!isUnfolded);
 	}, [isUnfolded]);
 	return (
-		<_NavContainer className={'iam-nav-bar'}>
+		<NavContainer className={'iam-nav-bar'}>
 			<div>IAM</div>
 			<Link to='/'>대시보드</Link>
 			<_NavItem>
@@ -31,14 +31,14 @@ const IamNav = () => {
 				</IconButton>
 			</_NavItem>
 			{isUnfolded && (
-				<_NavItemList>
+				<NavItemList>
 					<Link to='/user'>사용자</Link>
 					<Link to='/group'>사용자 그룹</Link>
 					<Link to='/role'>역할</Link>
 					<Link to='/policy'>정책</Link>
-				</_NavItemList>
+				</NavItemList>
 			)}
-		</_NavContainer>
+		</NavContainer>
 	);
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import {_IamContainer, _PathContainer} from '../../../styles/components/style';
+import {IamContainer, PathContainer} from '../../../styles/components/style';
 
 import AddTagToUser from '../Components/AddTagToUser';
 import AssignRoleToUser from '../Components/AssignRoleToUser';
@@ -10,14 +10,14 @@ import AddUser from '../Components/AddUser';
 
 const AddUserSpace = () => {
 	return (
-		<_IamContainer>
-			<_PathContainer>
+		<IamContainer>
+			<PathContainer>
 				<Link to='/'>IAM</Link>
 				<div>{' > '}</div>
 				<Link to='/user'>사용자</Link>
 				<div>{' > '}</div>
 				<Link to='/user/add'>사용자 추가</Link>
-			</_PathContainer>
+			</PathContainer>
 
 			<AddUser />
 
@@ -26,7 +26,7 @@ const AddUserSpace = () => {
 			<AssignRoleToUser />
 
 			<AddTagToUser />
-		</_IamContainer>
+		</IamContainer>
 	);
 };
 

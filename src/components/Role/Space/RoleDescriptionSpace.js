@@ -1,22 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import {_IamContainer, _PathContainer} from '../../../styles/components/style';
+import {IamContainer, PathContainer} from '../../../styles/components/style';
 
 const RoleDescriptionSpace = ({roleId}) => {
 	return (
-		<_IamContainer>
+		<IamContainer>
 			<div>
-				<_PathContainer>
+				<PathContainer>
 					<Link to='/'>IAM</Link>
 					<div>{' > '}</div>
 					<Link to='/role'>역할</Link>
 					<div>{' > '}</div>
 					<Link to={`/role/${roleId}`}>{roleId}</Link>
-				</_PathContainer>
+				</PathContainer>
 			</div>
 			<div>Role Description Space</div>
-		</_IamContainer>
+		</IamContainer>
 	);
 };
 

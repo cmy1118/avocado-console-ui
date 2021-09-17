@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import {Link, useHistory} from 'react-router-dom';
-import {_IamContainer, _PathContainer} from '../../../styles/components/style';
+import {IamContainer, PathContainer} from '../../../styles/components/style';
 import styled from 'styled-components';
 import {useSelector} from 'react-redux';
 import {usersSelector} from '../../../reducers/users';
@@ -29,15 +29,15 @@ const UserDescriptionSpace = ({userId}) => {
 	}, [userId, user]);
 
 	return (
-		<_IamContainer>
+		<IamContainer>
 			<div>
-				<_PathContainer>
+				<PathContainer>
 					<Link to='/'>IAM</Link>
 					<div>{' > '}</div>
 					<Link to='/user'>사용자</Link>
 					<div>{' > '}</div>
 					<Link to={`/user/${userId}`}>{user?.id}</Link>
-				</_PathContainer>
+				</PathContainer>
 			</div>
 			<_Title>
 				<div>요약 [ {user?.id} ]</div>
@@ -52,7 +52,7 @@ const UserDescriptionSpace = ({userId}) => {
 				<li>계정 사용기간 : ??</li>
 				<li>비밀번호 사용기간 :??</li>
 			</ul>
-		</_IamContainer>
+		</IamContainer>
 	);
 };
 

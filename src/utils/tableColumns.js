@@ -1,6 +1,8 @@
+// accessor : 해당 열을 data 객체의 어느 속성을 읽어야하는지를 명시
+// Header   : 테이블 헤더에 보여줄 텍스트를 명시
+import {useMemo} from 'react';
+
 export const usersColumns = [
-	// accessor : 해당 열을 data 객체의 어느 속성을 읽어야하는지를 명시
-	// Header   : 테이블 헤더에 보여줄 텍스트를 명시
 	{
 		accessor: 'id',
 		Header: '사용자계정',
@@ -40,5 +42,24 @@ export const usersColumns = [
 	{
 		accessor: 'creationDate',
 		Header: '생성 일시',
+	},
+];
+
+export const groupTypeColumns = [
+	{
+		Header: '그룹 유형',
+		accessor: 'name',
+	},
+	{
+		Header: '그룹 수',
+		accessor: 'numberOfGroups',
+	},
+	{
+		Header: '설명',
+		accessor: 'description',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
 	},
 ];

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Pagination from './Pagination';
-import Search from './Search';
 
 const TableHeader = ({
 	pageSize,
@@ -17,7 +16,6 @@ const TableHeader = ({
 }) => {
 	return (
 		<>
-			{/*<Search onSubmit={setGlobalFilter} />*/}
 			<Pagination
 				onClickOpenSelectColumn={onClickOpenSelectColumn}
 				pageSize={pageSize}
@@ -35,8 +33,6 @@ const TableHeader = ({
 	);
 };
 TableHeader.propTypes = {
-	columns: PropTypes.array.isRequired,
-	data: PropTypes.array.isRequired,
 	pageSize: PropTypes.number.isRequired,
 	gotoPage: PropTypes.func.isRequired,
 	canPreviousPage: PropTypes.bool.isRequired,

@@ -1,33 +1,59 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {Link, useHistory} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
-import {_IamContainer, _PathContainer} from '../../styles/components/style';
-import {usersAction, usersSelector} from '../../reducers/users';
 
-/*react-table*/
 import './styles.css';
 import SettingsCheckbox from './settings/SettingsCheckbox';
-import {
-	useTable,
-	useGlobalFilter,
-	useSortBy,
-	useRowSelect,
-	usePagination,
-} from 'react-table';
+import {useTable, useSortBy, useRowSelect, usePagination} from 'react-table';
 import {dialogBoxAction} from '../../reducers/dialogBoxs';
 import SelectColumnDialogBox from './Form/SelectColumnDialogBox';
 import TableHeader from './header/TableHeader';
+import {groupTypeColumns, usersColumns} from '../../utils/tableColumns';
+import {groupsSelector} from '../../reducers/groups';
+import {usersSelector} from '../../reducers/users';
 
-const Table = ({columns, data}) => {
+const Table = ({tableKey}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const {groupTypes} = useSelector(groupsSelector.all);
+	const {users} = useSelector(usersSelector.all);
+
+	const columns = useMemo(() => {
+		switch (tableKey) {
+			case 'users':
+				return usersColumns;
+
+			case 'groupTypes':
+				return groupTypeColumns;
+
+			default:
+				return [];
+		}
+	}, [tableKey]);
+
+	const data = useMemo(() => {
+		console.log(tableKey);
+		switch (tableKey) {
+			case 'users':
+				return users;
+
+			case 'groupTypes':
+				return groupTypes;
+
+			default:
+				return [];
+		}
+	}, [tableKey, users, groupTypes]);
+
+	useEffect(() => {
+		console.log(columns, data);
+	}, [columns, data]);
 
 	const {
 		getTableProps,
 		getTableBodyProps,
 		headerGroups,
-		rows,
 		prepareRow,
 		//hide column
 		allColumns,
@@ -37,27 +63,16 @@ const Table = ({columns, data}) => {
 		canPreviousPage,
 		canNextPage,
 		pageOptions,
-		pageCount,
 		gotoPage,
 		nextPage,
 		previousPage,
 		setPageSize,
-		dataDispatch,
-		tableViewProps,
-		setGlobalFilter,
-		state: {pageIndex, pageSize, selectedRowIds},
-		...rest
+		state: {pageIndex, pageSize},
 	} = useTable(
 		{
 			columns,
 			data,
-			/********************************************************/
-			//  roberto :  userColmn_update
-			//
-			/********************************************************/
 			initialState: {pageSize: 50},
-			/********************************************************/
-
 			disableSortRemove: true,
 		},
 		useSortBy,
@@ -92,7 +107,6 @@ const Table = ({columns, data}) => {
 	}, [dispatch]);
 
 	const getSelectedRowUid = (uid) => {
-		console.log('clicked uid:', uid);
 		history.push(`/user/${uid}`);
 	};
 
@@ -101,11 +115,7 @@ const Table = ({columns, data}) => {
 			<div>
 				<div>
 					<TableHeader
-						columns={columns}
-						data={data}
-						onClickOpenSelectColumn={onClickOpenSelectColumn}
 						pageSize={pageSize}
-						setPageSize={setPageSize}
 						gotoPage={gotoPage}
 						canPreviousPage={canPreviousPage}
 						previousPage={previousPage}
@@ -114,7 +124,8 @@ const Table = ({columns, data}) => {
 						pageCount={pageIndex}
 						pageOptions={pageOptions}
 						pageIndex={pageIndex}
-						setGlobalFilter={setGlobalFilter}
+						setPageSize={setPageSize}
+						onClickOpenSelectColumn={onClickOpenSelectColumn}
 					/>
 				</div>
 				<div>
@@ -135,11 +146,6 @@ const Table = ({columns, data}) => {
 											>
 												{column.render('Header')}
 												<span>
-													{/*{column.isSorted*/}
-													{/*	? column.isSortedDesc*/}
-													{/*		? ' 🔽'*/}
-													{/*		: ' 🔼'*/}
-													{/*	: ''}*/}
 													{column.isSortedDesc
 														? ' 🔽'
 														: ' 🔼'}
@@ -151,7 +157,6 @@ const Table = ({columns, data}) => {
 							))}
 						</thead>
 						<tbody {...getTableBodyProps()}>
-							{/*{rows.map((row, index) => {*/}
 							{page.map((row, index) => {
 								prepareRow(row);
 								return (
@@ -194,7 +199,6 @@ const Table = ({columns, data}) => {
 	);
 };
 Table.propTypes = {
-	columns: PropTypes.array.isRequired,
-	data: PropTypes.array.isRequired,
+	tableKey: PropTypes.string.isRequired,
 };
 export default Table;
