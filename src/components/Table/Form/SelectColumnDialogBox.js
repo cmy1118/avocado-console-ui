@@ -32,21 +32,25 @@ const SelectColumnDialogBox = ({allColumns, getToggleHideAllColumnsProps}) => {
 					{' '}
 					<button onClick={onClickCloseDialogBox}>{'❎'}</button>
 				</span>
-				<div>
-					<SettingsCheckbox {...getToggleHideAllColumnsProps()} />{' '}
-					전체선택
-				</div>
-				{allColumns.map((column) => (
-					<div key={column.id}>
-						<label>
-							<input
-								type='checkbox'
-								{...column.getToggleHiddenProps()}
-							/>{' '}
-							{column.id}
-						</label>
-					</div>
-				))}
+				{/*<div>*/}
+				{/*	<SettingsCheckbox {...getToggleHideAllColumnsProps()} />{' '}*/}
+				{/*	전체선택*/}
+				{/*</div>*/}
+				{allColumns.map((column) =>
+					column.id !== 'selection' ? (
+						<div key={column.id}>
+							<label>
+								<input
+									type='checkbox'
+									{...column.getToggleHiddenProps()}
+								/>{' '}
+								{column.Header}
+							</label>
+						</div>
+					) : (
+						''
+					),
+				)}
 				<br />
 			</div>
 		</_DialogBox>
