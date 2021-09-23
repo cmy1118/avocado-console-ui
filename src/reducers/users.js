@@ -212,8 +212,33 @@ const slice = createSlice({
 			});
 			state.userIndex++;
 		},
+		/******************************************/
+		/* roberto : Table_update 삭제 기능추가
+		/*
+        /******************************************/
+
+		deleteUser: (state, action) => {
+			let users = state.users;
+			action.payload.currentTarget.map((target) => {
+				users = onDeleteUser(users, target);
+			});
+			state.users = users;
+		},
+		/******************************************/
 	},
 });
+
+/******************************************/
+/* roberto : Table_update 삭제 기능추가
+/*
+/******************************************/
+function onDeleteUser(users, target) {
+	users.map((u, index) => {
+		u.id === target.id ? users.splice(index, 1) : '';
+	});
+	return users;
+}
+/******************************************/
 
 const selectAllState = createSelector(
 	(state) => state.users,

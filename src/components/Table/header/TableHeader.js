@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import PropTypes from 'prop-types';
 import Pagination from './Pagination';
 
@@ -45,4 +45,4 @@ TableHeader.propTypes = {
 	setPageSize: PropTypes.func.isRequired,
 	onClickOpenSelectColumn: PropTypes.func.isRequired,
 };
-export default TableHeader;
+export default memo(TableHeader);

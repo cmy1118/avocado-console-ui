@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useEffect, useCallback, useMemo, useState, memo} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -9,63 +9,12 @@ import {useTable, useSortBy, useRowSelect, usePagination} from 'react-table';
 import {dialogBoxAction} from '../../reducers/dialogBoxs';
 import SelectColumnDialogBox from './Form/SelectColumnDialogBox';
 import TableHeader from './header/TableHeader';
-import {groupTypeColumns, usersColumns} from '../../utils/tableColumns';
-import {groupsSelector} from '../../reducers/groups';
-import {usersSelector} from '../../reducers/users';
-import {
-	groupReader,
-	passwordExpiryTimeReader,
-	statusReader,
-} from '../../utils/reader';
+import {useMountedLayoutEffect} from 'react-table';
 
-const Table = ({tableKey}) => {
+const Table = ({columns, data, onSelectedRowsChange}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const {groupTypes, groups} = useSelector(groupsSelector.all);
-	const {users} = useSelector(usersSelector.all);
-
-	const columns = useMemo(() => {
-		switch (tableKey) {
-			case 'users':
-				return usersColumns;
-
-			case 'groupTypes':
-				return groupTypeColumns;
-
-			default:
-				return [];
-		}
-	}, [tableKey]);
-
-	const data = useMemo(() => {
-		switch (tableKey) {
-			case 'users':
-				return users.map((v) => ({
-					...v,
-					groups: groupReader(
-						v.groups.map(
-							(val) =>
-								groups.find((val2) => val2.id === val).name,
-						),
-					),
-					status: statusReader(v.status),
-					passwordExpiryTime: passwordExpiryTimeReader(
-						v.passwordExpiryTime,
-					),
-				}));
-
-			case 'groupTypes':
-				return groupTypes.map((v) => ({
-					...v,
-					numberOfGroups: groups.filter(
-						(val) => val.clientGroupTypeId === v.id,
-					).length,
-				}));
-
-			default:
-				return [];
-		}
-	}, [tableKey, users, groupTypes, groups]);
+	const INITIAL_SELECTED_ROW_IDS = {};
 
 	const {
 		getTableProps,
@@ -84,13 +33,16 @@ const Table = ({tableKey}) => {
 		nextPage,
 		previousPage,
 		setPageSize,
-		state: {pageIndex, pageSize},
+		//select
+		selectedFlatRows,
+		state: {pageIndex, pageSize, selectedRowIds},
 	} = useTable(
 		{
 			columns,
 			data,
 			initialState: {pageSize: 50},
 			disableSortRemove: true,
+			selectedRowIds: INITIAL_SELECTED_ROW_IDS,
 		},
 		useSortBy,
 		usePagination,
@@ -118,6 +70,27 @@ const Table = ({tableKey}) => {
 			]);
 		},
 	);
+
+	//****************************************************************//
+	// * roberto : Table_update 선택기능추가
+	//
+	//   checkbox event 발생시 마다 id 저장 가눙
+	//
+	//   * useMountedLayoutEffect 쓴이유 :
+	//   useEffect 와달리 Dom 을 그리기 전에 수행하기 떄문에,
+	//   useMountedLayoutEffect 함수 내부의 코드를 실행하고
+	//   다른 Dom 요소들을 페인트 하기위해 사용했습니다.
+	//****************************************************************//
+	useMountedLayoutEffect(() => {
+		const selectedIds = Object.keys(selectedRowIds);
+		const selectedRowsData = selectedIds
+			.map((x) => data[x])
+			.filter((x) => {
+				return x != null;
+			});
+		onSelectedRowsChange(selectedRowsData);
+	}, [onSelectedRowsChange, selectedRowIds, dispatch, selectedFlatRows]);
+	//****************************************************************//
 
 	const onClickOpenSelectColumn = useCallback(async () => {
 		dispatch(dialogBoxAction.openForm({key: 'hideColumn'}));
@@ -216,6 +189,8 @@ const Table = ({tableKey}) => {
 	);
 };
 Table.propTypes = {
-	tableKey: PropTypes.string.isRequired,
+	columns: PropTypes.array.isRequired,
+	data: PropTypes.array.isRequired,
+	onSelectedRowsChange: PropTypes.func.isRequired,
 };
-export default Table;
+export default memo(Table);
