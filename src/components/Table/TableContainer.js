@@ -1,5 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {groupTypeColumns, usersColumns} from '../../utils/tableColumns';
+import {
+	groupColumns,
+	groupTypeColumns,
+	usersColumns,
+} from '../../utils/tableColumns';
 import {
 	groupReader,
 	passwordExpiryTimeReader,
@@ -21,6 +25,9 @@ const TableContainer = ({tableKey}) => {
 		switch (tableKey) {
 			case 'users':
 				return usersColumns;
+
+			case 'groups':
+				return groupColumns;
 
 			case 'groupTypes':
 				return groupTypeColumns;
@@ -45,6 +52,12 @@ const TableContainer = ({tableKey}) => {
 					passwordExpiryTime: passwordExpiryTimeReader(
 						v.passwordExpiryTime,
 					),
+				}));
+
+			case 'groups':
+				return groups.map((v) => ({
+					...v,
+					numberOfUsers: v.members.length,
 				}));
 
 			case 'groupTypes':
