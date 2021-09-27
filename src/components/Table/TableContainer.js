@@ -17,8 +17,6 @@ import {groupsSelector} from '../../reducers/groups';
 import {currentTargetAction} from '../../reducers/currentTarget';
 
 const TableContainer = ({tableKey}) => {
-	console.log('TableContainer 렌더링 ');
-
 	const {users} = useSelector(usersSelector.all);
 	const {groupTypes, groups} = useSelector(groupsSelector.all);
 	const dispatch = useDispatch();
@@ -79,8 +77,10 @@ const TableContainer = ({tableKey}) => {
 
 	useEffect(() => {
 		selectedRows &&
-			dispatch(currentTargetAction.setCurrentTarget(selectedRows));
-	}, [dispatch, selectedRows]);
+			dispatch(
+				currentTargetAction.setCurrentTarget({selectedRows, tableKey}),
+			);
+	}, [dispatch, selectedRows, tableKey]);
 
 	return (
 		<div>
