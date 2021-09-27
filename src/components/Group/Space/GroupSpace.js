@@ -33,7 +33,7 @@ const GroupSpace = () => {
 			{/*  접근관리 설정에따른  TableContainer 컴포넌트                 */}
 			{/*/*******************************************************/}
 			{/*<Table tableKey='users' />*/}
-			<TableContainer tableKey='groupTypes' />
+			<TableContainer tableKey='groups' />
 
 			{/*/*******************************************************/}
 		</IamContainer>

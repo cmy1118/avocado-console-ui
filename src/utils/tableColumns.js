@@ -45,6 +45,33 @@ export const usersColumns = [
 	},
 ];
 
+export const groupColumns = [
+	{
+		Header: '그룹 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '그룹 유형',
+		accessor: 'clientGroupTypeId',
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
+	},
+	{
+		Header: '권한',
+		accessor: 'roles',
+	},
+	{
+		Header: '상위 그룹',
+		accessor: 'parentId',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+
 export const groupTypeColumns = [
 	{
 		Header: '그룹 유형',
