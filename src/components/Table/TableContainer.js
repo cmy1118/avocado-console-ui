@@ -77,8 +77,10 @@ const TableContainer = ({tableKey}) => {
 
 	useEffect(() => {
 		selectedRows &&
-			dispatch(currentTargetAction.setCurrentTarget(selectedRows));
-	}, [dispatch, selectedRows]);
+			dispatch(
+				currentTargetAction.setCurrentTarget({selectedRows, tableKey}),
+			);
+	}, [dispatch, selectedRows, tableKey]);
 
 	return (
 		<div>
