@@ -16,3 +16,5 @@ export const settingIcon = <span className='material-icons'>settings</span>;
 export const notificationIcon = (
 	<span className='material-icons'>notifications</span>
 );
+
+export const closeIcon = <span className='material-icons'>close</span>;

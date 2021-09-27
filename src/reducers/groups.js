@@ -122,18 +122,18 @@ const slice = createSlice({
 				members: [],
 				roles: [],
 				parentId: null,
-				creationDate: String(new Date()),
+				creationDate: new Date().toLocaleString(),
 			});
 			state.groupIndex++;
 		},
 
 		addGroupType: (state, action) => {
 			state.groupTypes.unshift({
-				id: 'groupType' + state.groupTypeIndex.toString(),
+				id: 'groupType_' + state.groupTypeIndex.toString(),
 				name: action.payload.name,
 				parentId: action.payload.parentId,
 				description: action.payload.description,
-				creationDate: String(new Date()),
+				creationDate: new Date().toLocaleString(),
 			});
 			state.groupTypeIndex++;
 		},

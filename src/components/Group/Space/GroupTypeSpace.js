@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
 	IamContainer,
 	PathContainer,
@@ -6,13 +6,19 @@ import {
 } from '../../../styles/components/style';
 import {Link, useHistory} from 'react-router-dom';
 import TableContainer from '../../Table/TableContainer';
+import AddGroupTypeDialogBox from '../../DialogBoxs/Form/AddGroupTypeDialogBox';
 
 const GroupTypeSpace = () => {
 	const history = useHistory();
+	const [isAddGroupTypeOpened, setIsAddGroupTypeOpened] = useState(false);
 
 	const onClickAddGroup = useCallback(() => {
 		history.push('/group/add');
 	}, [history]);
+
+	const onClickOpenAddGroupTypeDialogBox = useCallback(() => {
+		setIsAddGroupTypeOpened(true);
+	}, []);
 
 	return (
 		<IamContainer>
@@ -27,7 +33,9 @@ const GroupTypeSpace = () => {
 			<SubTitle>
 				<div>그룹 유형 관리</div>
 				<div>
-					<button>그룹유형 추가 생성</button>
+					<button onClick={onClickOpenAddGroupTypeDialogBox}>
+						그룹유형 추가 생성
+					</button>
 					<button>그룹유형 저장</button>
 					<button>그룹유형 삭제</button>
 					<button onClick={onClickAddGroup}>취소</button>
@@ -35,6 +43,10 @@ const GroupTypeSpace = () => {
 			</SubTitle>
 
 			<TableContainer tableKey='groupTypes' />
+			<AddGroupTypeDialogBox
+				isOpened={isAddGroupTypeOpened}
+				setIsOpened={setIsAddGroupTypeOpened}
+			/>
 		</IamContainer>
 	);
 };
