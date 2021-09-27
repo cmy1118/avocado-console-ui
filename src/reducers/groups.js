@@ -3,25 +3,28 @@ import {createSelector, createSlice} from '@reduxjs/toolkit';
 const slice = createSlice({
 	name: 'groups',
 	initialState: {
-		groupTypeIndex: 0,
+		groupTypeIndex: 4,
 		groupIndex: 0,
 
 		groupTypes: [
 			{
 				id: 'groupType1',
 				name: '사용자 레벨',
+				parentId: null,
 				description: '사용자 권한 레벨을 분류하기 위한 유형',
 				creationDate: '2021.03.02 15:55:32',
 			},
 			{
 				id: 'groupType2',
 				name: '직무',
+				parentId: null,
 				description: '사용자의 직무 유형',
 				creationDate: '2021.03.02 15:55:32',
 			},
 			{
 				id: 'groupType3',
 				name: '조직',
+				parentId: null,
 				description: '회사의 조직',
 				creationDate: '2021.03.02 15:55:32',
 			},
@@ -125,9 +128,10 @@ const slice = createSlice({
 		},
 
 		addGroupType: (state, action) => {
-			state.groups.unshift({
-				id: 'groupType_' + state.groupTypeIndex.toString(),
+			state.groupTypes.unshift({
+				id: 'groupType' + state.groupTypeIndex.toString(),
 				name: action.payload.name,
+				parentId: action.payload.parentId,
 				description: action.payload.description,
 				creationDate: String(new Date()),
 			});

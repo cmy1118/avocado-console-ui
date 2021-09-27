@@ -1,9 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {IamContainer, PathContainer} from '../../../styles/components/style';
 import AddGroup from '../Components/AddGroup';
+import {useSelector} from 'react-redux';
+import {groupsSelector} from '../../../reducers/groups';
 
 const AddGroupSpace = () => {
+	/***********************************************************************
+	 * roberto: userGroup_update
+	 *
+	 ***********************************************************************/
+
+	/***********************************************************************/
+
 	return (
 		<IamContainer>
 			<PathContainer>

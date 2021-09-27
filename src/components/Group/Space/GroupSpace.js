@@ -5,6 +5,7 @@ import {
 	SubTitle,
 } from '../../../styles/components/style';
 import {Link, useHistory} from 'react-router-dom';
+import TableContainer from '../../Table/TableContainer';
 
 const GroupSpace = () => {
 	const history = useHistory();
@@ -27,7 +28,14 @@ const GroupSpace = () => {
 					<button>삭제</button>
 				</div>
 			</SubTitle>
-			{/*TODO: group table*/}
+			{/*/*******************************************************/}
+			{/*  roberto : Table_update 선택기능추가                      */}
+			{/*  접근관리 설정에따른  TableContainer 컴포넌트                 */}
+			{/*/*******************************************************/}
+			{/*<Table tableKey='users' />*/}
+			<TableContainer tableKey='groupTypes' />
+
+			{/*/*******************************************************/}
 		</IamContainer>
 	);
 };

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Search from './Search';
+import {selectedPageSize} from '../settings/SettingsPage';
 
 const Pagination = ({
 	gotoPage,
@@ -61,7 +62,7 @@ const Pagination = ({
 						setPageSize(Number(e.target.value));
 					}}
 				>
-					{[30, 50, 100, 200].map((pageSize) => (
+					{selectedPageSize.map((pageSize) => (
 						<option key={pageSize} value={pageSize}>
 							Show {pageSize}
 						</option>

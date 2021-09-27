@@ -10,7 +10,6 @@ import {dialogBoxAction} from '../../reducers/dialogBoxs';
 import SelectColumnDialogBox from './Form/SelectColumnDialogBox';
 import TableHeader from './header/TableHeader';
 import {useMountedLayoutEffect} from 'react-table';
-
 const Table = ({columns, data, onSelectedRowsChange}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
