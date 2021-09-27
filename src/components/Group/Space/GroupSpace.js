@@ -32,9 +32,7 @@ const GroupSpace = () => {
 			{/*  roberto : Table_update 선택기능추가                      */}
 			{/*  접근관리 설정에따른  TableContainer 컴포넌트                 */}
 			{/*/*******************************************************/}
-			{/*<Table tableKey='users' />*/}
 			<TableContainer tableKey='groupTypes' />
-
 			{/*/*******************************************************/}
 		</IamContainer>
 	);

@@ -5,14 +5,10 @@ import {
 	SubTitle,
 } from '../../../styles/components/style';
 import {Link, useHistory} from 'react-router-dom';
-import {useSelector} from 'react-redux';
-import {groupsSelector} from '../../../reducers/groups';
-import Table from '../../Table/Table';
-import {groupTypeColumns} from '../../../utils/tableColumns';
+import TableContainer from '../../Table/TableContainer';
 
 const GroupTypeSpace = () => {
 	const history = useHistory();
-	const {groupTypes} = useSelector(groupsSelector.all);
 
 	const onClickAddGroup = useCallback(() => {
 		history.push('/group/add');
@@ -38,7 +34,7 @@ const GroupTypeSpace = () => {
 				</div>
 			</SubTitle>
 
-			<Table tableKey='groupTypes' />
+			<TableContainer tableKey='groupTypes' />
 		</IamContainer>
 	);
 };

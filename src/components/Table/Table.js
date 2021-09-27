@@ -1,6 +1,6 @@
-import React, {useEffect, useCallback, useMemo, useState, memo} from 'react';
+import React, {useCallback, memo} from 'react';
 import {useHistory} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import './styles.css';

@@ -1,6 +1,5 @@
 // accessor : 해당 열을 data 객체의 어느 속성을 읽어야하는지를 명시
 // Header   : 테이블 헤더에 보여줄 텍스트를 명시
-import {useMemo} from 'react';
 
 export const usersColumns = [
 	{
