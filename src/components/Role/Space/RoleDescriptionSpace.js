@@ -10,9 +10,9 @@ const RoleDescriptionSpace = ({roleId}) => {
 				<PathContainer>
 					<Link to='/'>IAM</Link>
 					<div>{' > '}</div>
-					<Link to='/role'>역할</Link>
+					<Link to='/roles'>역할</Link>
 					<div>{' > '}</div>
-					<Link to={`/role/${roleId}`}>{roleId}</Link>
+					<Link to={`/roles/${roleId}`}>{roleId}</Link>
 				</PathContainer>
 			</div>
 			<div>Role Description Space</div>

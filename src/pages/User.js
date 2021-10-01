@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 import UserSpace from '../components/User/Space/UserSpace';
@@ -6,9 +6,13 @@ import AddUserSpace from '../components/User/Space/AddUserSpace';
 import UserDescriptionSpace from '../components/User/Space/UserDescriptionSpace';
 
 const User = ({match}) => {
+	useEffect(() => {
+		console.log(match.params);
+	}, [match]);
+
 	return (
 		<>
-			{match.path === '/user/add' ? (
+			{match.path === '/users/add' ? (
 				<AddUserSpace />
 			) : match.params?.id ? (
 				<UserDescriptionSpace userId={match.params.id} />

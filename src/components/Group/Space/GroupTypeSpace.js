@@ -12,8 +12,8 @@ const GroupTypeSpace = () => {
 	const history = useHistory();
 	const [isAddGroupTypeOpened, setIsAddGroupTypeOpened] = useState(false);
 
-	const onClickAddGroup = useCallback(() => {
-		history.push('/group/add');
+	const onClickAddGroups = useCallback(() => {
+		history.push('/groups/add');
 	}, [history]);
 
 	const onClickOpenAddGroupTypeDialogBox = useCallback(() => {
@@ -25,9 +25,9 @@ const GroupTypeSpace = () => {
 			<PathContainer>
 				<Link to='/'>IAM</Link>
 				<div>{' > '}</div>
-				<Link to='/group'>사용자 그룹</Link>
+				<Link to='/groups'>사용자 그룹</Link>
 				<div>{' > '}</div>
-				<Link to='/group/type'>그룹 유형 관리</Link>
+				<Link to='/groups/types'>그룹 유형 관리</Link>
 			</PathContainer>
 
 			<SubTitle>
@@ -38,7 +38,7 @@ const GroupTypeSpace = () => {
 					</button>
 					<button>그룹유형 저장</button>
 					<button>그룹유형 삭제</button>
-					<button onClick={onClickAddGroup}>취소</button>
+					<button onClick={onClickAddGroups}>취소</button>
 				</div>
 			</SubTitle>
 

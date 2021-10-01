@@ -17,14 +17,14 @@ const UserSpace = () => {
 	const {users} = useSelector(usersSelector.all);
 	const {currentTarget} = useSelector(currentTargetSelector.all);
 
-	const onCLickLinkToAddUser = useCallback(() => {
-		history.push('/user/add');
+	const onClickLinkToAddUserPage = useCallback(() => {
+		history.push('/users/add');
 	}, [history]);
 
 	/******************************************/
 	/* roberto : Table_update
     /******************************************/
-	const onCLickLinkToDeleteUser = useCallback(() => {
+	const onClickDeleteUsers = useCallback(() => {
 		dispatch(usersAction.deleteUser({currentTarget}));
 	}, [dispatch, currentTarget]);
 	/******************************************/
@@ -34,14 +34,16 @@ const UserSpace = () => {
 			<PathContainer>
 				<Link to='/'>IAM</Link>
 				<div>{' > '}</div>
-				<Link to='/user'>사용자</Link>
+				<Link to='/users'>사용자</Link>
 			</PathContainer>
 
 			<SubTitle>
 				<div>사용자: {users.length}</div>
 				<div>
-					<button onClick={onCLickLinkToAddUser}>사용자 생성</button>
-					<button onClick={onCLickLinkToDeleteUser}>삭제</button>
+					<button onClick={onClickLinkToAddUserPage}>
+						사용자 생성
+					</button>
+					<button onClick={onClickDeleteUsers}>삭제</button>
 				</div>
 			</SubTitle>
 

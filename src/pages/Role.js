@@ -8,7 +8,7 @@ import AddRoleSpace from '../components/Role/Space/AddRoleSpace';
 const Role = ({match}) => {
 	return (
 		<>
-			{match.path === '/role/add' ? (
+			{match.path === '/roles/add' ? (
 				<AddRoleSpace />
 			) : match.params?.id ? (
 				<RoleDescriptionSpace roleId={match.params.id} />

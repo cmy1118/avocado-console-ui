@@ -17,75 +17,75 @@ const App = () => {
 				/>
 
 				<RouteWithLayout
-					path='/user/add'
+					path='/users/add'
 					exact
 					component={User}
 					layout={IamLayout}
 				/>
 				<RouteWithLayout
-					path='/user/:id'
+					path='/users/:id'
 					component={User}
 					layout={IamLayout}
 				/>
 				<RouteWithLayout
-					path='/user'
+					path='/users'
 					component={User}
 					layout={IamLayout}
 				/>
 
 				<RouteWithLayout
-					path='/group/add'
+					path='/groups/add'
 					exact
 					component={Group}
 					layout={IamLayout}
 				/>
 				<RouteWithLayout
-					path='/group/type'
+					path='/groups/types'
 					exact
 					component={Group}
 					layout={IamLayout}
 				/>
 				<RouteWithLayout
-					path='/group/:id'
+					path='/groups/:id'
 					component={Group}
 					layout={IamLayout}
 				/>
 				<RouteWithLayout
-					path='/group'
+					path='/groups'
 					component={Group}
 					layout={IamLayout}
 				/>
 
 				<RouteWithLayout
-					path='/role/add'
+					path='/roles/add'
 					exact
 					component={Role}
 					layout={IamLayout}
 				/>
 				<RouteWithLayout
-					path='/role/:id'
+					path='/roles/:id'
 					component={Role}
 					layout={IamLayout}
 				/>
 				<RouteWithLayout
-					path='/role'
+					path='/roles'
 					component={Role}
 					layout={IamLayout}
 				/>
 
 				<RouteWithLayout
-					path='/policy/add'
+					path='/policies/add'
 					exact
 					component={Policy}
 					layout={IamLayout}
 				/>
 				<RouteWithLayout
-					path='/policy/:id'
+					path='/policies/:id'
 					component={Policy}
 					layout={IamLayout}
 				/>
 				<RouteWithLayout
-					path='/policy'
+					path='/policies'
 					component={Policy}
 					layout={IamLayout}
 				/>

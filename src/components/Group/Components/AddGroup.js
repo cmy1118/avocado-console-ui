@@ -2,7 +2,6 @@ import React, {useCallback, useState} from 'react';
 import {SubTitle} from '../../../styles/components/style';
 import {useHistory} from 'react-router-dom';
 import {Form} from '../../../styles/components/form';
-import {usersAction} from '../../../reducers/users';
 import {useDispatch, useSelector} from 'react-redux';
 import {groupsSelector, groupsAction} from '../../../reducers/groups';
 import useInput from '../../../hooks/useInput';
@@ -38,11 +37,11 @@ const AddGroup = () => {
 
 	/***********************************************************************/
 	const onClickManageGroupType = useCallback(() => {
-		history.push('/group/type');
+		history.push('/groups/types');
 	}, [history]);
 
 	const onClickCancelAddGroup = useCallback(() => {
-		history.push('/group');
+		history.push('/groups');
 	}, [history]);
 
 	const onSubmitAddGroup = useCallback(

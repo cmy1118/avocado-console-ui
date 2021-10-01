@@ -10,9 +10,9 @@ const GroupDescriptionSpace = ({groupId}) => {
 				<PathContainer>
 					<Link to='/'>IAM</Link>
 					<div>{' > '}</div>
-					<Link to='/group'>사용자 그룹</Link>
+					<Link to='/groups'>사용자 그룹</Link>
 					<div>{' > '}</div>
-					<Link to={`/group/${groupId}`}>{groupId}</Link>
+					<Link to={`/groups/${groupId}`}>{groupId}</Link>
 				</PathContainer>
 			</div>
 			<div>Group Description Space</div>

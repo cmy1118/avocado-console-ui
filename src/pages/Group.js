@@ -9,9 +9,9 @@ import GroupTypeSpace from '../components/Group/Space/GroupTypeSpace';
 const Group = ({match}) => {
 	return (
 		<>
-			{match.path === '/group/add' ? (
+			{match.path === '/groups/add' ? (
 				<AddGroupSpace />
-			) : match.path === '/group/type' ? (
+			) : match.path === '/groups/types' ? (
 				<GroupTypeSpace />
 			) : match.params?.id ? (
 				<GroupDescriptionSpace groupId={match.params.id} />

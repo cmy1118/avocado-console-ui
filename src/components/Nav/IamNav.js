@@ -13,7 +13,7 @@ const _NavItem = styled.div`
 const IamNav = () => {
 	const [isUnfolded, setIsUnfolded] = useState(false);
 
-	const onClickFoldOrUnFoldFolder = useCallback(() => {
+	const onClickFoldFolder = useCallback(() => {
 		setIsUnfolded(!isUnfolded);
 	}, [isUnfolded]);
 	return (
@@ -25,17 +25,17 @@ const IamNav = () => {
 				<IconButton
 					size={'sm'}
 					margin={'0px 0px 0px 12px'}
-					onClick={onClickFoldOrUnFoldFolder}
+					onClick={onClickFoldFolder}
 				>
 					{isUnfolded ? arrowDownIcon : arrowRightIcon}
 				</IconButton>
 			</_NavItem>
 			{isUnfolded && (
 				<NavItemList>
-					<Link to='/user'>사용자</Link>
-					<Link to='/group'>사용자 그룹</Link>
-					<Link to='/role'>역할</Link>
-					<Link to='/policy'>정책</Link>
+					<Link to='/users'>사용자</Link>
+					<Link to='/groups'>사용자 그룹</Link>
+					<Link to='/roles'>역할</Link>
+					<Link to='/policies'>정책</Link>
 				</NavItemList>
 			)}
 		</NavContainer>

@@ -96,7 +96,7 @@ const Table = ({columns, data, onSelectedRowsChange}) => {
 	}, [dispatch]);
 
 	const getSelectedRowUid = (uid) => {
-		history.push(`/user/${uid}`);
+		history.push(`/users/${uid}`);
 	};
 
 	return (

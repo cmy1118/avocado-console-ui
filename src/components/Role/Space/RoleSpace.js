@@ -8,7 +8,7 @@ const RoleSpace = () => {
 			<PathContainer>
 				<Link to='/'>IAM</Link>
 				<div>{' > '}</div>
-				<Link to='/role'>역할</Link>
+				<Link to='/roles'>역할</Link>
 			</PathContainer>
 			<div>Role Space</div>
 		</IamContainer>

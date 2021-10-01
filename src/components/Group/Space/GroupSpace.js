@@ -11,7 +11,7 @@ const GroupSpace = () => {
 	const history = useHistory();
 
 	const onCLickLinkToAddGroup = useCallback(() => {
-		history.push('/group/add');
+		history.push('/groups/add');
 	}, [history]);
 
 	return (
@@ -19,7 +19,7 @@ const GroupSpace = () => {
 			<PathContainer>
 				<Link to='/'>IAM</Link>
 				<div>{' > '}</div>
-				<Link to='/group'>사용자 그룹</Link>
+				<Link to='/groups'>사용자 그룹</Link>
 			</PathContainer>
 			<SubTitle>
 				<div>사용자 그룹: </div>

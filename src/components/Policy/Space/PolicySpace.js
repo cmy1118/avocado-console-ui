@@ -8,7 +8,7 @@ const PolicySpace = () => {
 			<PathContainer>
 				<Link to='/'>IAM</Link>
 				<div>{' > '}</div>
-				<Link to='/policy'>정책</Link>
+				<Link to='/policies'>정책</Link>
 			</PathContainer>
 			<div>Rolicy Space</div>
 		</IamContainer>

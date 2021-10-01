@@ -8,9 +8,9 @@ const AddRoleSpace = () => {
 			<PathContainer>
 				<Link to='/'>IAM</Link>
 				<div>{' > '}</div>
-				<Link to='/role'>역할</Link>
+				<Link to='/roles'>역할</Link>
 				<div>{' > '}</div>
-				<Link to='/role/add'>역할 추가</Link>
+				<Link to='/roles/add'>역할 추가</Link>
 			</PathContainer>
 			<div>Add Role Space</div>
 		</IamContainer>

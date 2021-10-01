@@ -18,9 +18,9 @@ const AddGroupSpace = () => {
 			<PathContainer>
 				<Link to='/'>IAM</Link>
 				<div>{' > '}</div>
-				<Link to='/group'>사용자 그룹</Link>
+				<Link to='/groups'>사용자 그룹</Link>
 				<div>{' > '}</div>
-				<Link to='/group/add'>사용자 그룹 생성</Link>
+				<Link to='/groups/add'>사용자 그룹 생성</Link>
 			</PathContainer>
 
 			<AddGroup />

@@ -8,7 +8,7 @@ import PolicyDescriptionSpace from '../components/Policy/Space/PolicyDescription
 const Policy = ({match}) => {
 	return (
 		<>
-			{match.path === '/policy/add' ? (
+			{match.path === '/policies/add' ? (
 				<AddRolicySpace />
 			) : match.params?.id ? (
 				<PolicyDescriptionSpace policyId={match.params.id} />

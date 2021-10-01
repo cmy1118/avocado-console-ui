@@ -8,9 +8,9 @@ const AddRolicySpace = () => {
 			<PathContainer>
 				<Link to='/'>IAM</Link>
 				<div>{' > '}</div>
-				<Link to='/policy'>정책</Link>
+				<Link to='/policies'>정책</Link>
 				<div>{' > '}</div>
-				<Link to='/policy/add'>정책 추가</Link>
+				<Link to='/policies/add'>정책 추가</Link>
 			</PathContainer>
 			<div>Add Rolicy Space</div>
 		</IamContainer>

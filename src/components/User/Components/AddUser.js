@@ -20,7 +20,7 @@ const AddUser = () => {
 	const [mobile, onChangeMobile, setMobile] = useInput('010-0000-0000');
 
 	const onClickCancelAddUser = useCallback(() => {
-		history.push('/user');
+		history.push('/users');
 	}, [history]);
 
 	const onSubmitAddUser = useCallback(

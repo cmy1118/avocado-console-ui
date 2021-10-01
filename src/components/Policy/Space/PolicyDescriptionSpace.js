@@ -10,9 +10,9 @@ const PolicyDescriptionSpace = ({policyId}) => {
 				<PathContainer>
 					<Link to='/'>IAM</Link>
 					<div>{' > '}</div>
-					<Link to='/policy'>정책</Link>
+					<Link to='/policies'>정책</Link>
 					<div>{' > '}</div>
-					<Link to={`/policy/${policyId}`}>{policyId}</Link>
+					<Link to={`/policies/${policyId}`}>{policyId}</Link>
 				</PathContainer>
 			</div>
 			<div>Rolicy Description Space</div>

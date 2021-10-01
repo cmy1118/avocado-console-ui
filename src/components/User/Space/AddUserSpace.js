@@ -14,9 +14,9 @@ const AddUserSpace = () => {
 			<PathContainer>
 				<Link to='/'>IAM</Link>
 				<div>{' > '}</div>
-				<Link to='/user'>사용자</Link>
+				<Link to='/users'>사용자</Link>
 				<div>{' > '}</div>
-				<Link to='/user/add'>사용자 추가</Link>
+				<Link to='/users/add'>사용자 추가</Link>
 			</PathContainer>
 
 			<AddUser />
