@@ -6,9 +6,12 @@ import {
 } from '../../../styles/components/style';
 import {Link, useHistory} from 'react-router-dom';
 import TableContainer from '../../Table/TableContainer';
+import {useSelector} from 'react-redux';
+import {groupsSelector} from '../../../reducers/groups';
 
 const GroupSpace = () => {
 	const history = useHistory();
+	const {groups} = useSelector(groupsSelector.all);
 
 	const onCLickLinkToAddGroup = useCallback(() => {
 		history.push('/groups/add');
@@ -22,7 +25,7 @@ const GroupSpace = () => {
 				<Link to='/groups'>사용자 그룹</Link>
 			</PathContainer>
 			<SubTitle>
-				<div>사용자 그룹: </div>
+				<div>사용자 그룹: {groups.length} </div>
 				<div>
 					<button onClick={onCLickLinkToAddGroup}>그룹 생성</button>
 					<button>삭제</button>
@@ -32,7 +35,9 @@ const GroupSpace = () => {
 			{/*  roberto : Table_update 선택기능추가                      */}
 			{/*  접근관리 설정에따른  TableContainer 컴포넌트                 */}
 			{/*/*******************************************************/}
-			<TableContainer tableKey='groupTypes' />
+			{/*<Table tableKey='users' />*/}
+			<TableContainer tableKey='groups' />
+
 			{/*/*******************************************************/}
 		</IamContainer>
 	);
