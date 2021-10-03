@@ -3,6 +3,7 @@ import {
 	groupColumns,
 	groupTypeColumns,
 	usersColumns,
+	addUsersToGroupColumns,
 } from '../../utils/tableColumns';
 import {
 	groupReader,
@@ -32,6 +33,8 @@ const TableContainer = ({tableKey}) => {
 			case 'groupTypes':
 				return groupTypeColumns;
 
+			case 'addUsersToGroup':
+				return addUsersToGroupColumns;
 			default:
 				return [];
 		}
@@ -66,6 +69,12 @@ const TableContainer = ({tableKey}) => {
 					numberOfGroups: groups.filter(
 						(val) => val.clientGroupTypeId === v.id,
 					).length,
+				}));
+
+			case 'addUsersToGroup':
+				return users.map((v) => ({
+					...v,
+					groupsLength: v.groups.length,
 				}));
 
 			default:

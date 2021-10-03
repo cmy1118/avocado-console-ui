@@ -2,17 +2,9 @@ import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {IamContainer, PathContainer} from '../../../styles/components/style';
 import AddGroup from '../Components/AddGroup';
-import {useSelector} from 'react-redux';
-import {groupsSelector} from '../../../reducers/groups';
+import TableContainer from '../../Table/TableContainer';
 
 const AddGroupSpace = () => {
-	/***********************************************************************
-	 * roberto: userGroup_update
-	 *
-	 ***********************************************************************/
-
-	/***********************************************************************/
-
 	return (
 		<IamContainer>
 			<PathContainer>
@@ -22,8 +14,9 @@ const AddGroupSpace = () => {
 				<div>{' > '}</div>
 				<Link to='/group/add'>사용자 그룹 생성</Link>
 			</PathContainer>
-
 			<AddGroup />
+			그룹에 사용자 추가
+			<TableContainer tableKey='addUsersToGroup' />
 		</IamContainer>
 	);
 };
