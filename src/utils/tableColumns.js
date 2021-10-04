@@ -89,3 +89,25 @@ export const groupTypeColumns = [
 		accessor: 'creationDate',
 	},
 ];
+export const addUsersToGroupColumns = [
+	{
+		Header: '사용자 계정',
+		accessor: 'id',
+	},
+	{
+		Header: '사용자 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '그룹 수',
+		accessor: 'groupsLength',
+	},
+	{
+		Header: '마지막 콘솔 로그인',
+		accessor: 'lastConsoleLogin',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];

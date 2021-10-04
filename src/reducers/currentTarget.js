@@ -1,4 +1,5 @@
 import {createSelector, createSlice} from '@reduxjs/toolkit';
+import {indexOf} from 'lodash';
 
 const slice = createSlice({
 	name: 'currentTarget',
@@ -9,24 +10,42 @@ const slice = createSlice({
 	reducers: {
 		setCurrentTarget: (state, action) => {
 			const tablekey = action.payload.tableKey;
-			if (tablekey === 'users') {
-				state.currentTarget = [];
-				action.payload.selectedRows.map((selected) => {
-					const data = {
-						uid: selected.uid,
-						tablekey: tablekey,
-					};
-					state.currentTarget.push(data);
-				});
+			const selectedRows = action.payload.selectedRows;
+			const isTablekey = state.currentTarget.find(
+				(e) => e.tablekey === tablekey,
+			);
+			let CeckedElement = [];
+
+			const CurrentTargetChecked = (tablekey) => {
+				if (Array.isArray(selectedRows) && selectedRows.length === 0) {
+					state.currentTarget.find(
+						(v) => v.tablekey === tablekey,
+					).selected = [];
+				} else {
+					if (tablekey === 'users') {
+						selectedRows.map((v) => {
+							CeckedElement.push(v.uid);
+						});
+					} else {
+						selectedRows.map((v) => {
+							CeckedElement.push(v.id);
+						});
+					}
+
+					state.currentTarget.find(
+						(v) => v.tablekey === tablekey,
+					).selected = CeckedElement;
+				}
+			};
+
+			if (isTablekey) {
+				CurrentTargetChecked(tablekey);
 			} else {
-				state.currentTarget = [];
-				action.payload.selectedRows.map((selected) => {
-					const data = {
-						id: selected.id,
-						tablekey: tablekey,
-					};
-					state.currentTarget.push(data);
+				state.currentTarget.push({
+					tablekey: tablekey,
+					selected: [],
 				});
+				CurrentTargetChecked(tablekey);
 			}
 		},
 	},
