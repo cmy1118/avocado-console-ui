@@ -1,7 +1,7 @@
 import React from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
-import {Main, User, Group, Role, Policy, NotFound} from './pages';
+import {Main, User, Group, Role, Policy, NotFound, Test} from './pages';
 import RouteWithLayout from './components/Layouts/RouteWithLayout';
 import IamLayout from './components/Layouts/IamLayout';
 
@@ -89,6 +89,7 @@ const App = () => {
 					component={Policy}
 					layout={IamLayout}
 				/>
+				<Route path='/test' component={Test} />
 
 				<Route component={NotFound} />
 			</Switch>
