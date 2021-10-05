@@ -1,10 +1,12 @@
 import React, {useCallback} from 'react';
 import PropTypes from 'prop-types';
 import {useTable} from 'react-table';
+import {useDispatch} from 'react-redux';
+import {groupsAction} from '../../reducers/groups';
+import {settingAction} from '../../reducers/setting';
 
 const TableTest = ({tableKey, data, columns}) => {
-	const [records, setRecords] = React.useState(data);
-
+	const dispatch = useDispatch();
 	const getRowId = React.useCallback((v) => {
 		return v.id;
 	}, []);
@@ -16,7 +18,7 @@ const TableTest = ({tableKey, data, columns}) => {
 		rows,
 		prepareRow,
 	} = useTable({
-		data: records,
+		data,
 		columns,
 		getRowId,
 	});
@@ -37,6 +39,15 @@ const TableTest = ({tableKey, data, columns}) => {
 			console.log(e.dataTransfer.getData('id'));
 			console.log(e.dataTransfer.getData('target'));
 			console.log(tableKey);
+			if (e.dataTransfer.getData('target') !== tableKey) {
+				dispatch(
+					settingAction.changeTable({
+						start: e.dataTransfer.getData('target'),
+						id: e.dataTransfer.getData('id'),
+						end: tableKey,
+					}),
+				);
+			}
 		},
 		[tableKey],
 	);
