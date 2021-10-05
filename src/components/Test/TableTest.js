@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import PropTypes from 'prop-types';
 import {useTable} from 'react-table';
 
-const TableTest = ({data, columns}) => {
+const TableTest = ({tableKey, data, columns}) => {
 	const [records, setRecords] = React.useState(data);
 
 	const getRowId = React.useCallback((v) => {
@@ -21,12 +21,37 @@ const TableTest = ({data, columns}) => {
 		getRowId,
 	});
 
-	const onDragStart = useCallback((e) => {
-		console.log(e.target);
+	const onDragStart = useCallback(
+		(e) => {
+			// console.log(e.target.id);
+			// console.log(tableKey);
+			e.dataTransfer.setData('id', e.target.id);
+			e.dataTransfer.setData('target', tableKey);
+		},
+		[tableKey],
+	);
+
+	const onDrop = useCallback(
+		(e) => {
+			e.preventDefault();
+			console.log(e.dataTransfer.getData('id'));
+			console.log(e.dataTransfer.getData('target'));
+			console.log(tableKey);
+		},
+		[tableKey],
+	);
+
+	const onDragOver = useCallback((e) => {
+		e.preventDefault();
 	}, []);
 
 	return (
-		<table {...getTableProps()} style={{border: 'solid 1px blue'}}>
+		<table
+			{...getTableProps()}
+			style={{border: 'solid 1px blue'}}
+			onDrop={onDrop}
+			onDragOver={onDragOver}
+		>
 			<thead>
 				{headerGroups.map((headerGroup, id) => (
 					<tr key={id} {...headerGroup.getHeaderGroupProps()}>
@@ -52,6 +77,7 @@ const TableTest = ({data, columns}) => {
 					prepareRow(row);
 					return (
 						<tr
+							id={row.id}
 							key={row.id}
 							{...row.getRowProps()}
 							draggable={true}
@@ -81,6 +107,7 @@ const TableTest = ({data, columns}) => {
 };
 
 TableTest.propTypes = {
+	tableKey: PropTypes.string.isRequired,
 	data: PropTypes.object.isRequired,
 	columns: PropTypes.object.isRequired,
 };

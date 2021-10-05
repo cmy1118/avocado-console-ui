@@ -61,10 +61,10 @@ const Test = () => {
 	);
 
 	return (
-		<>
-			<TableTest columns={columns} data={data1} />
-			<TableTest columns={columns} data={data2} />
-		</>
+		<div style={{display: 'flex'}}>
+			<TableTest columns={columns} data={data1} tableKey={'table1'} />
+			<TableTest columns={columns} data={data2} tableKey={'table2'} />
+		</div>
 	);
 };
 
