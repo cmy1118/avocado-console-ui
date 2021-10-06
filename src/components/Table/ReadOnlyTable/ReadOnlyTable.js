@@ -10,7 +10,7 @@ import {dialogBoxAction} from '../../reducers/dialogBoxs';
 import SelectColumnDialogBox from './OpenForm/SelectColumnDialogBox';
 import TableHeader from './Tableheader/TableHeader';
 import {useMountedLayoutEffect} from 'react-table';
-const Table = ({columns, data, onSelectedRowsChange}) => {
+const ReadOnlyTable = ({columns, data, onSelectedRowsChange}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const INITIAL_SELECTED_ROW_IDS = {};
@@ -187,9 +187,9 @@ const Table = ({columns, data, onSelectedRowsChange}) => {
 		</div>
 	);
 };
-Table.propTypes = {
+ReadOnlyTable.propTypes = {
 	columns: PropTypes.array.isRequired,
 	data: PropTypes.array.isRequired,
 	onSelectedRowsChange: PropTypes.func.isRequired,
 };
-export default memo(Table);
+export default memo(ReadOnlyTable);

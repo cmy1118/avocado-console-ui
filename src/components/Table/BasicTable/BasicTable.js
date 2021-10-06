@@ -7,10 +7,10 @@ import './styles.css';
 import SettingsCheckbox from './settings/SettingsCheckbox';
 import {useTable, useSortBy, useRowSelect, usePagination} from 'react-table';
 import {dialogBoxAction} from '../../reducers/dialogBoxs';
-import SelectColumnDialogBox from './OpenForm/SelectColumnDialogBox';
+import SelectColumnDialogBox from './Form/SelectColumnDialogBox';
 import TableHeader from './Tableheader/TableHeader';
 import {useMountedLayoutEffect} from 'react-table';
-const Table = ({columns, data, onSelectedRowsChange}) => {
+const BasicTable = ({columns, data, onSelectedRowsChange}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const INITIAL_SELECTED_ROW_IDS = {};
@@ -187,9 +187,9 @@ const Table = ({columns, data, onSelectedRowsChange}) => {
 		</div>
 	);
 };
-Table.propTypes = {
+BasicTable.propTypes = {
 	columns: PropTypes.array.isRequired,
 	data: PropTypes.array.isRequired,
 	onSelectedRowsChange: PropTypes.func.isRequired,
 };
-export default memo(Table);
+export default memo(BasicTable);

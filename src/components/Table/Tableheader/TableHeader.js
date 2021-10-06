@@ -1,6 +1,8 @@
 import React, {memo} from 'react';
 import PropTypes from 'prop-types';
-import Pagination from './Pagination';
+import Pagination from './components/Pagination';
+import SelectColumn from './components/SelectColumn';
+import PageSizing from './components/PageSizing';
 
 const TableHeader = ({
 	pageSize,
@@ -17,9 +19,6 @@ const TableHeader = ({
 	return (
 		<>
 			<Pagination
-				onClickOpenSelectColumn={onClickOpenSelectColumn}
-				pageSize={pageSize}
-				setPageSize={setPageSize}
 				gotoPage={gotoPage}
 				canPreviousPage={canPreviousPage}
 				previousPage={previousPage}
@@ -29,6 +28,8 @@ const TableHeader = ({
 				pageOptions={pageOptions}
 				pageIndex={pageIndex}
 			/>
+			<PageSizing setPageSize={setPageSize} pageSize={pageSize} />
+			<SelectColumn onClickOpenSelectColumn={onClickOpenSelectColumn} />
 		</>
 	);
 };

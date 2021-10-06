@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 
 import {dialogBoxAction, dialogBoxSelector} from '../../../reducers/dialogBoxs';
-import SettingsCheckbox from '../settings/SettingsCheckbox';
 import PropTypes from 'prop-types';
 
 const _DialogBox = styled.div`

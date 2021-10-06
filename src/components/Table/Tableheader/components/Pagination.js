@@ -1,7 +1,5 @@
-import React, {Component} from 'react';
+import React, {Component, memo} from 'react';
 import PropTypes from 'prop-types';
-import Search from './Search';
-import {selectedPageSize} from '../settings/SettingsPage';
 
 const Pagination = ({
 	gotoPage,
@@ -12,9 +10,6 @@ const Pagination = ({
 	pageCount,
 	pageOptions,
 	pageIndex,
-	pageSize,
-	setPageSize,
-	onClickOpenSelectColumn,
 }) => {
 	return (
 		<div>
@@ -55,22 +50,6 @@ const Pagination = ({
             style={{ width: '100px' }}
           />
         </span>{' '} */}
-				{/* 페이지 사이즈 조정  */}
-				<select
-					value={pageSize}
-					onChange={(e) => {
-						setPageSize(Number(e.target.value));
-					}}
-				>
-					{selectedPageSize.map((pageSize) => (
-						<option key={pageSize} value={pageSize}>
-							Show {pageSize}
-						</option>
-					))}
-				</select>
-				<span>
-					<button onClick={onClickOpenSelectColumn}>{'✅'}</button>
-				</span>
 			</div>
 		</div>
 	);
@@ -85,9 +64,6 @@ Pagination.propTypes = {
 	pageCount: PropTypes.number.isRequired,
 	pageOptions: PropTypes.array.isRequired,
 	pageIndex: PropTypes.number.isRequired,
-	pageSize: PropTypes.number.isRequired,
-	setPageSize: PropTypes.func.isRequired,
-	onClickOpenSelectColumn: PropTypes.func.isRequired,
 };
 
-export default Pagination;
+export default memo(Pagination);
