@@ -111,3 +111,23 @@ export const addUsersToGroupColumns = [
 		accessor: 'creationDate',
 	},
 ];
+
+export const addTagsToUserColumns = [
+	{
+		Header: 'Key(태그명)',
+		accessor: 'name',
+	},
+	{
+		Header: '값(태그)',
+		accessor: 'value',
+	},
+	{
+		Header: '권한 수',
+		accessor: 'rolesLength',
+		// eslint-disable-next-line react/display-name
+		// Cell: (callObj) => (
+		// eslint-disable-next-line react/react-in-jsx-scope
+		// <button onClick={() => console.log(callObj)}>하이</button>
+		// ),
+	},
+];
