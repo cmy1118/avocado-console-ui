@@ -26,7 +26,7 @@ const TableTest = ({tableKey, data, columns}) => {
 		(e) => {
 			e.dataTransfer.setData('id', e.target.id);
 			e.dataTransfer.setData('target', tableKey);
-			e.target.style.opacity = '0.5';
+			e.target.style.opacity = '0.1';
 		},
 		[tableKey],
 	);

@@ -1,10 +1,9 @@
 import React, {useCallback} from 'react';
 import PropTypes from 'prop-types';
-import {usePagination, useRowSelect, useSortBy, useTable} from 'react-table';
+import {usePagination, useSortBy, useTable} from 'react-table';
 import {useDispatch} from 'react-redux';
 import {settingAction} from '../../../reducers/setting';
 import DnD1TableHeader from './DnD1TableHeader';
-import Pagination from '../header/Pagination';
 
 const DnD1Table = ({tableKey, data, columns}) => {
 	const dispatch = useDispatch();
