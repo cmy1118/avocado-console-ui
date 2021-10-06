@@ -8,15 +8,8 @@ import {useTable, useSortBy, useRowSelect, usePagination} from 'react-table';
 import {dialogBoxAction} from '../../reducers/dialogBoxs';
 import TableHeader from './Tableheader/TableHeader';
 import {useMountedLayoutEffect} from 'react-table';
+import SelectColumnDialogBox from '../Table/OpenForm/SelectColumnDialogBox';
 
-function SelectColumnDialogBox(props) {
-	return null;
-}
-
-SelectColumnDialogBox.propTypes = {
-	allColumns: PropTypes.any,
-	getToggleHideAllColumnsProps: PropTypes.func,
-};
 const Table = ({columns, data, onSelectedRowsChange}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();

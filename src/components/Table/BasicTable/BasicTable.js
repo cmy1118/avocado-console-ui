@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import SettingsCheckbox from './settings/SettingsCheckbox';
 import {useTable, useSortBy, useRowSelect, usePagination} from 'react-table';
 import {dialogBoxAction} from '../../reducers/dialogBoxs';
-import SelectColumnDialogBox from './Form/SelectColumnDialogBox';
+import SelectColumnDialogBox from '../OpenForm/SelectColumnDialogBox';
 import TableHeader from './Tableheader/TableHeader';
 import {useMountedLayoutEffect} from 'react-table';
 const BasicTable = ({columns, data, onSelectedRowsChange}) => {
