@@ -6,9 +6,6 @@ import {settingAction} from '../../../reducers/setting';
 
 const DnDTable2 = ({tableKey, data, columns}) => {
 	const dispatch = useDispatch();
-	const getRowId = React.useCallback((v) => {
-		return v.id;
-	}, []);
 
 	const {
 		getTableProps,
@@ -20,7 +17,6 @@ const DnDTable2 = ({tableKey, data, columns}) => {
 		{
 			data,
 			columns,
-			getRowId,
 		},
 		useSortBy,
 	);
@@ -48,13 +44,13 @@ const DnDTable2 = ({tableKey, data, columns}) => {
 						break;
 					default:
 						//has to delete
-						dispatch(
-							settingAction.changeTable({
-								start: e.dataTransfer.getData('target'),
-								id: e.dataTransfer.getData('id'),
-								end: tableKey,
-							}),
-						);
+						// dispatch(
+						// 	settingAction.changeTable({
+						// 		start: e.dataTransfer.getData('target'),
+						// 		id: e.dataTransfer.getData('id'),
+						// 		end: tableKey,
+						// 	}),
+						// );
 						break;
 				}
 			}

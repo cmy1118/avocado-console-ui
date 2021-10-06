@@ -1,7 +1,6 @@
 import React from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
-import './styles/styles.css';
 import {Main, User, Group, Role, Policy, NotFound} from './pages';
 import RouteWithLayout from './components/Layouts/RouteWithLayout';
 import IamLayout from './components/Layouts/IamLayout';

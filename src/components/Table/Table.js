@@ -48,7 +48,7 @@ const Table = ({columns, data, onSelectedRowsChange}) => {
 			data,
 			initialState: {pageSize: 50},
 			disableSortRemove: true,
-			selectedRowIds: INITIAL_SELECTED_ROW_IDS,
+			selectedRowIds: {},
 		},
 		useSortBy,
 		usePagination,
