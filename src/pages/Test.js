@@ -2,6 +2,7 @@ import React from 'react';
 import TableTest from '../components/Test/TableTest';
 import {useSelector} from 'react-redux';
 import {settingSelector} from '../reducers/setting';
+import DnD1Table from '../components/Table/DnD1Table/DnD1Table';
 
 const Test = () => {
 	const {data1, data2} = useSelector(settingSelector.all);
@@ -65,8 +66,8 @@ const Test = () => {
 
 	return (
 		<div style={{display: 'flex'}}>
-			<TableTest columns={columns} data={data1} tableKey={'table1'} />
-			<TableTest columns={columns} data={data2} tableKey={'table2'} />
+			<DnD1Table columns={columns} data={data1} tableKey={'table1'} />
+			<DnD1Table columns={columns} data={data2} tableKey={'table2'} />
 		</div>
 	);
 };

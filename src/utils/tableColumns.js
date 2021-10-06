@@ -89,3 +89,22 @@ export const groupTypeColumns = [
 		accessor: 'creationDate',
 	},
 ];
+
+export const rolesIncludedInUserOnAddPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type', //has to be changed
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];

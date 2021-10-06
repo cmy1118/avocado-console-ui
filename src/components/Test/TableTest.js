@@ -2,7 +2,6 @@ import React, {useCallback} from 'react';
 import PropTypes from 'prop-types';
 import {useTable} from 'react-table';
 import {useDispatch} from 'react-redux';
-import {groupsAction} from '../../reducers/groups';
 import {settingAction} from '../../reducers/setting';
 
 const TableTest = ({tableKey, data, columns}) => {
@@ -25,10 +24,9 @@ const TableTest = ({tableKey, data, columns}) => {
 
 	const onDragStart = useCallback(
 		(e) => {
-			// console.log(e.target.id);
-			// console.log(tableKey);
 			e.dataTransfer.setData('id', e.target.id);
 			e.dataTransfer.setData('target', tableKey);
+			e.target.style.opacity = '0.5';
 		},
 		[tableKey],
 	);
@@ -36,9 +34,7 @@ const TableTest = ({tableKey, data, columns}) => {
 	const onDrop = useCallback(
 		(e) => {
 			e.preventDefault();
-			console.log(e.dataTransfer.getData('id'));
-			console.log(e.dataTransfer.getData('target'));
-			console.log(tableKey);
+
 			if (e.dataTransfer.getData('target') !== tableKey) {
 				dispatch(
 					settingAction.changeTable({
@@ -56,27 +52,22 @@ const TableTest = ({tableKey, data, columns}) => {
 		e.preventDefault();
 	}, []);
 
+	const onDragEnd = useCallback((e) => {
+		e.target.style.opacity = '';
+	}, []);
+
 	return (
 		<table
 			{...getTableProps()}
-			style={{border: 'solid 1px blue'}}
 			onDrop={onDrop}
 			onDragOver={onDragOver}
+			onDragEnd={onDragEnd}
 		>
 			<thead>
 				{headerGroups.map((headerGroup, id) => (
 					<tr key={id} {...headerGroup.getHeaderGroupProps()}>
 						{headerGroup.headers.map((column, id) => (
-							<th
-								key={id}
-								{...column.getHeaderProps()}
-								style={{
-									borderBottom: 'solid 3px red',
-									background: 'aliceblue',
-									color: 'black',
-									fontWeight: 'bold',
-								}}
-							>
+							<th key={id} {...column.getHeaderProps()}>
 								{column.render('Header')}
 							</th>
 						))}
@@ -96,15 +87,7 @@ const TableTest = ({tableKey, data, columns}) => {
 						>
 							{row.cells.map((cell, id) => {
 								return (
-									<td
-										key={id}
-										{...cell.getCellProps()}
-										style={{
-											padding: '10px',
-											border: 'solid 1px gray',
-											background: 'papayawhip',
-										}}
-									>
+									<td key={id} {...cell.getCellProps()}>
 										{cell.render('Cell')}
 									</td>
 								);

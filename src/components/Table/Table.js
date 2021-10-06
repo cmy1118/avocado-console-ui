@@ -8,8 +8,8 @@ import SettingsCheckbox from './settings/SettingsCheckbox';
 import {useTable, useSortBy, useRowSelect, usePagination} from 'react-table';
 import {dialogBoxAction} from '../../reducers/dialogBoxs';
 import SelectColumnDialogBox from './Form/SelectColumnDialogBox';
-import TableHeader from './header/TableHeader';
 import {useMountedLayoutEffect} from 'react-table';
+import TableHeader from './header/TableHeader';
 const Table = ({columns, data, onSelectedRowsChange}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
