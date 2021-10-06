@@ -3,7 +3,6 @@ import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import './styles.css';
 import SettingsCheckbox from './settings/SettingsCheckbox';
 import {useTable, useSortBy, useRowSelect, usePagination} from 'react-table';
 import {dialogBoxAction} from '../../reducers/dialogBoxs';

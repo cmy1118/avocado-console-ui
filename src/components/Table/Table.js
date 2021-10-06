@@ -3,13 +3,20 @@ import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import './styles.css';
 import SettingsCheckbox from './settings/SettingsCheckbox';
 import {useTable, useSortBy, useRowSelect, usePagination} from 'react-table';
 import {dialogBoxAction} from '../../reducers/dialogBoxs';
-import SelectColumnDialogBox from './OpenForm/SelectColumnDialogBox';
 import TableHeader from './Tableheader/TableHeader';
 import {useMountedLayoutEffect} from 'react-table';
+
+function SelectColumnDialogBox(props) {
+	return null;
+}
+
+SelectColumnDialogBox.propTypes = {
+	allColumns: PropTypes.any,
+	getToggleHideAllColumnsProps: PropTypes.func,
+};
 const Table = ({columns, data, onSelectedRowsChange}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
