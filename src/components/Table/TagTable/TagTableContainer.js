@@ -5,17 +5,17 @@ import {
 	groupColumns,
 	groupTypeColumns,
 	usersColumns,
-} from '../../utils/tableColumns';
+} from '../../../utils/tableColumns';
 import {
 	groupReader,
 	passwordExpiryTimeReader,
 	statusReader,
-} from '../../utils/reader';
+} from '../../../utils/reader';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
-import {usersSelector} from '../../reducers/users';
-import {groupsSelector} from '../../reducers/groups';
-import {currentTargetAction} from '../../reducers/currentTarget';
+import {usersSelector} from '../../../reducers/users';
+import {groupsSelector} from '../../../reducers/groups';
+import {currentTargetAction} from '../../../reducers/currentTarget';
 import TagTable from './TagTable';
 
 const keys = {

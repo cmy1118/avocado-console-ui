@@ -3,11 +3,12 @@ import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import SettingsCheckbox from './settings/SettingsCheckbox';
+import SettingsCheckbox from '../settings/SettingsCheckbox';
 import {useTable, useSortBy, useRowSelect, usePagination} from 'react-table';
-import {dialogBoxAction} from '../../reducers/dialogBoxs';
+import {dialogBoxAction} from '../../../reducers/dialogBoxs';
 import {useMountedLayoutEffect} from 'react-table';
-import TagTableHeader from './Tableheader/components/TagTableHeader';
+import TagTableHeader from './TagTableHeader';
+import SelectColumnDialogBox from '../OpenForm/SelectColumnDialogBox';
 
 const TagTable = ({
 	columns,
@@ -176,6 +177,10 @@ const TagTable = ({
 					</table>
 				</div>
 			</div>
+			<SelectColumnDialogBox
+				allColumns={allColumns}
+				getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
+			/>
 		</div>
 	);
 };

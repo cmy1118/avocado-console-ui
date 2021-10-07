@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {selectedPageSize} from '../../settings/SettingsPage';
+import {selectedPageSize} from '../settings/SettingsPage';
 
 const TagPagination = ({
 	gotoPage,

@@ -1,5 +1,5 @@
 import React from 'react';
-import TagTableContainer from '../../Table/TagTableContainer';
+import TagTableContainer from '../../Table/TagTable/TagTableContainer';
 
 const AddTagToUser = () => {
 	return (

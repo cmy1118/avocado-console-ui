@@ -54,7 +54,8 @@ const SelectColumnDialogBox = ({allColumns, getToggleHideAllColumnsProps}) => {
 			</div>
 		</_DialogBox>
 	) : (
-		false
+		<></>
+		// false
 	);
 };
 SelectColumnDialogBox.propTypes = {
