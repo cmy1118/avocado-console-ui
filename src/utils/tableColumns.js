@@ -1,6 +1,8 @@
 // accessor : 해당 열을 data 객체의 어느 속성을 읽어야하는지를 명시
 // Header   : 테이블 헤더에 보여줄 텍스트를 명시
 
+import TableInput from './TableInput';
+
 export const usersColumns = [
 	{
 		accessor: 'id',
@@ -129,5 +131,23 @@ export const rolesIncludedInUserOnAddPageColumns = [
 	{
 		Header: '생성 일시',
 		accessor: 'creationDate',
+	},
+];
+export const addTagsToUserColumns = [
+	{
+		Header: 'Key(태그명)',
+		accessor: 'name',
+		// eslint-disable-next-line react/display-name,react/react-in-jsx-scope
+		Cell: (cellObj) => <TableInput obj={cellObj} />,
+	},
+	{
+		Header: '값(태그)',
+		accessor: 'value',
+		// eslint-disable-next-line react/display-name,react/react-in-jsx-scope
+		Cell: (cellObj) => <TableInput obj={cellObj} />,
+	},
+	{
+		Header: '권한 수',
+		accessor: 'rolesLength',
 	},
 ];

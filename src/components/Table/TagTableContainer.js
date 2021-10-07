@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {
+	addTagsToUserColumns,
+	addUsersToGroupColumns,
 	groupColumns,
 	groupTypeColumns,
 	usersColumns,
-	addUsersToGroupColumns,
-	addTagsToUserColumns,
 } from '../../utils/tableColumns';
 import {
 	groupReader,
@@ -12,17 +12,18 @@ import {
 	statusReader,
 } from '../../utils/reader';
 import PropTypes from 'prop-types';
-import Table from './Table';
 import {useDispatch, useSelector} from 'react-redux';
 import {usersSelector} from '../../reducers/users';
 import {groupsSelector} from '../../reducers/groups';
 import {currentTargetAction} from '../../reducers/currentTarget';
+import TagTable from './TagTable';
 
 const keys = {
 	users: 'users',
 };
 
-const TableContainer = ({tableKey}) => {
+const TagTableContainer = ({tableKey}) => {
+	const [selectedRows, setSelectedRows] = useState([]);
 	const {users, userTags} = useSelector(usersSelector.all);
 	const {groupTypes, groups} = useSelector(groupsSelector.all);
 	const dispatch = useDispatch();
@@ -96,8 +97,6 @@ const TableContainer = ({tableKey}) => {
 		}
 	}, [tableKey, users, groups, groupTypes, userTags]);
 
-	const [selectedRows, setSelectedRows] = useState([]);
-
 	useEffect(() => {
 		selectedRows &&
 			dispatch(
@@ -107,7 +106,7 @@ const TableContainer = ({tableKey}) => {
 
 	return (
 		<div>
-			<Table
+			<TagTable
 				columns={columns}
 				data={data}
 				onSelectedRowsChange={setSelectedRows}
@@ -116,7 +115,7 @@ const TableContainer = ({tableKey}) => {
 	);
 };
 
-TableContainer.propTypes = {
+TagTableContainer.propTypes = {
 	tableKey: PropTypes.string.isRequired,
 };
-export default TableContainer;
+export default TagTableContainer;

@@ -167,6 +167,20 @@ const slice = createSlice({
 				creationDate: '2020.03.12 20:44:02',
 			},
 		],
+		userTags: [
+			{
+				uid: 'user1',
+				name: 'abc',
+				value: 'abc',
+				permissions: ['a', 'b', 'c'],
+			},
+			{
+				uid: 'user1',
+				name: 'a',
+				value: 'a',
+				permissions: ['a'],
+			},
+		],
 	},
 	reducers: {
 		loadUsers: (state, action) => {
@@ -242,9 +256,11 @@ function onDeleteUser(users, target) {
 
 const selectAllState = createSelector(
 	(state) => state.users,
-	(users) => {
+	(state) => state.userTags,
+	(users, userTags) => {
 		return {
 			users,
+			userTags,
 		};
 	},
 );
