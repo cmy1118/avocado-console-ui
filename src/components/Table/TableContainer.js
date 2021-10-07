@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {usersSelector} from '../../reducers/users';
 import {groupsSelector} from '../../reducers/groups';
 import {currentTargetAction} from '../../reducers/currentTarget';
-import {columnsAsType} from '../../utils/TableColumns';
+import {columnsAsType} from '../../utils/TableColumns/index';
 
 const TableContainer = ({tableKey}) => {
 	const {users, userTags} = useSelector(usersSelector.all);
