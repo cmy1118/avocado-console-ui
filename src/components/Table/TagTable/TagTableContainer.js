@@ -1,12 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {
-	addTagsToUserColumns,
-	addUsersToGroupColumns,
-	groupColumns,
-	groupTypeColumns,
-	usersColumns,
-} from '../../../utils/tableColumns';
-import {
 	groupReader,
 	passwordExpiryTimeReader,
 	statusReader,
@@ -17,6 +10,15 @@ import {usersSelector} from '../../../reducers/users';
 import {groupsSelector} from '../../../reducers/groups';
 import {currentTargetAction} from '../../../reducers/currentTarget';
 import TagTable from './TagTable';
+import {
+	addTagsToUserColumns,
+	usersColumns,
+} from '../../../utils/TableColumns/users';
+import {
+	addUsersToGroupColumns,
+	groupColumns,
+	groupTypeColumns,
+} from '../../../utils/TableColumns/groups';
 
 const keys = {
 	users: 'users',

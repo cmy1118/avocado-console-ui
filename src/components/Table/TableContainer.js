@@ -1,12 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {
-	groupColumns,
-	groupTypeColumns,
-	usersColumns,
-	addUsersToGroupColumns,
-	addTagsToUserColumns,
-} from '../../utils/tableColumns';
-import {
 	groupReader,
 	passwordExpiryTimeReader,
 	statusReader,
@@ -17,10 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {usersSelector} from '../../reducers/users';
 import {groupsSelector} from '../../reducers/groups';
 import {currentTargetAction} from '../../reducers/currentTarget';
-
-const keys = {
-	users: 'users',
-};
+import {columnsAsType} from '../../utils/TableColumns';
 
 const TableContainer = ({tableKey}) => {
 	const {users, userTags} = useSelector(usersSelector.all);
@@ -28,24 +18,7 @@ const TableContainer = ({tableKey}) => {
 	const dispatch = useDispatch();
 
 	const columns = useMemo(() => {
-		switch (tableKey) {
-			case keys.users:
-				return usersColumns;
-
-			case 'groups':
-				return groupColumns;
-
-			case 'groupTypes':
-				return groupTypeColumns;
-
-			case 'addUsersToGroup':
-				return addUsersToGroupColumns;
-
-			case 'addTagsToUser':
-				return addTagsToUserColumns;
-			default:
-				return [];
-		}
+		return columnsAsType[tableKey];
 	}, [tableKey]);
 
 	const data = useMemo(() => {
