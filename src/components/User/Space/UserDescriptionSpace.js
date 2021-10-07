@@ -9,7 +9,7 @@ import {statusReader} from '../../../utils/reader';
 import {Tab, TabItem} from '../../../styles/components/tab';
 import UserInfo from '../Components/UserInfo';
 import UserGroups from '../Components/UserGroups';
-import queryString from 'querystring';
+import qs from 'qs';
 
 const _Title = styled.div`
 	display: flex;
@@ -79,14 +79,15 @@ const UserDescriptionSpace = ({userId}) => {
 					<TabItem onClick={onClickChangeTab('tag')}>태그</TabItem>
 				</Tab>
 
-				{queryString.parse(search).tabs === 'user' && (
-					<UserInfo userId={userId} />
+				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+					'user' && <UserInfo userId={userId} />}
+				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+					'group' && <UserGroups userId={userId} />}
+				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+					'role' && <div>role</div>}
+				{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'tag' && (
+					<div>tag</div>
 				)}
-				{queryString.parse(search).tabs === 'group' && (
-					<UserGroups userId={userId} />
-				)}
-				{queryString.parse(search).tabs === 'role' && <div>role</div>}
-				{queryString.parse(search).tabs === 'tag' && <div>tag</div>}
 			</div>
 		</IamContainer>
 	);

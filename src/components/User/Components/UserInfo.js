@@ -25,25 +25,25 @@ const UserInfo = ({userId}) => {
 
 			<ul>
 				<li>
-					사용자 ID: <input value={user.id} />
+					사용자 ID: <input value={user.id} readOnly />
 				</li>
 				<li>
-					사용자 이름: <input value={user.name} />
+					사용자 이름: <input value={user.name} readOnly />
 				</li>
 				<li>
-					사용자 비밀번호 : <input value={'**********'} />
+					사용자 비밀번호 : <input value={'**********'} readOnly />
 					<button onClick={onClickChangePassword}>
 						비밀번호 변경
 					</button>
 				</li>
 				<li>
-					이메일 주소 : <input value={user.email} />
+					이메일 주소 : <input value={user.email} readOnly />
 				</li>
 				<li>
-					전화번호 :<input value={user.telephone} />
+					전화번호 :<input value={user.telephone} readOnly />
 				</li>
 				<li>
-					모바일 번호 : <input value={user.mobile} />
+					모바일 번호 : <input value={user.mobile} readOnly />
 				</li>
 			</ul>
 		</div>
