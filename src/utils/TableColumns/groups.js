@@ -1,7 +1,10 @@
+import {LINK} from '../detail';
+
 export const groupColumns = [
 	{
 		Header: '그룹 이름',
 		accessor: 'name',
+		id: LINK,
 	},
 	{
 		Header: '그룹 유형',
@@ -28,6 +31,7 @@ export const groupTypeColumns = [
 	{
 		Header: '그룹 유형',
 		accessor: 'name',
+		id: LINK,
 	},
 	{
 		Header: '그룹 수',
@@ -46,6 +50,7 @@ export const addUsersToGroupColumns = [
 	{
 		Header: '사용자 계정',
 		accessor: 'id',
+		id: LINK,
 	},
 	{
 		Header: '사용자 이름',

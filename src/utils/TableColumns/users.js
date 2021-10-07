@@ -1,9 +1,10 @@
 import TableInput from '../TableInput';
-
+import {LINK} from '../detail';
 export const usersColumns = [
 	{
 		accessor: 'id',
 		Header: '사용자계정',
+		id: LINK,
 	},
 	{
 		accessor: 'name',
@@ -49,6 +50,7 @@ export const addTagsToUserColumns = [
 		accessor: 'name',
 		// eslint-disable-next-line react/display-name,react/react-in-jsx-scope
 		Cell: (cellObj) => <TableInput obj={cellObj} />,
+		id: LINK,
 	},
 	{
 		Header: '값(태그)',
@@ -65,6 +67,7 @@ export const rolesIncludedInUserOnAddPageColumns = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
+		id: LINK,
 	},
 	{
 		Header: '역할 유형',

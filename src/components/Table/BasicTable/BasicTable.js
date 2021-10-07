@@ -1,15 +1,15 @@
 import React, {useCallback, memo} from 'react';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
-
 import SettingsCheckbox from './settings/SettingsCheckbox';
 import {useTable, useSortBy, useRowSelect, usePagination} from 'react-table';
 import {dialogBoxAction} from '../../reducers/dialogBoxs';
-import SelectColumnDialogBox from '../OpenForm/SelectColumnDialogBox';
 import TableHeader from './Tableheader/TableHeader';
 import {useMountedLayoutEffect} from 'react-table';
-const BasicTable = ({columns, data, onSelectedRowsChange}) => {
+import SelectColumnDialogBox from '../Table/OpenForm/SelectColumnDialogBox';
+
+const Table = ({columns, data, onSelectedRowsChange}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const INITIAL_SELECTED_ROW_IDS = {};
@@ -40,7 +40,7 @@ const BasicTable = ({columns, data, onSelectedRowsChange}) => {
 			data,
 			initialState: {pageSize: 50},
 			disableSortRemove: true,
-			selectedRowIds: INITIAL_SELECTED_ROW_IDS,
+			selectedRowIds: {},
 		},
 		useSortBy,
 		usePagination,
@@ -98,6 +98,28 @@ const BasicTable = ({columns, data, onSelectedRowsChange}) => {
 		history.push(`/users/${uid}`);
 	};
 
+	//****************************************************************//
+	// * BasicTable 상세페이지 이동 기능
+	//  - param 쿼리 파라미터 고려 추가
+	//  - uid , id 값 고려 추가
+	//****************************************************************//
+	const href = window.location.href;
+	const segments = new URL(href).pathname.split('/');
+	const param = segments.pop() || segments.pop();
+	const UID = 'uid';
+	let paramId = '';
+
+	const goToDetail = (cell, row) => {
+		const isUid = Object.keys(row.original).includes(UID);
+		if (isUid) {
+			paramId = row.original.uid;
+		} else {
+			paramId = row.original.id;
+		}
+		history.push(`/${param}/${paramId}`);
+	};
+	//****************************************************************//
+
 	return (
 		<div>
 			<div>
@@ -154,19 +176,25 @@ const BasicTable = ({columns, data, onSelectedRowsChange}) => {
 												{...cell.getCellProps()}
 												key={index}
 												/********************************************************/
-												//  roberto :  userTable_update
-												//
-												//  * column id  가 id 인곳에만 적용
-												//  * row.original.uid  : uid 정보
-												/********************************************************/
 												onClick={() => {
-													cell.column.id === 'id'
-														? getSelectedRowUid(
-																row.original
-																	.uid,
-														  )
-														: '';
+													if (
+														cell.column.id ===
+														'link'
+													) {
+														console.log(
+															'cell',
+															cell,
+															index,
+														);
+														console.log(
+															'row',
+															row,
+															index,
+														);
+														goToDetail(cell, row);
+													}
 												}}
+
 												/********************************************************/
 											>
 												{cell.render('Cell')}
@@ -186,9 +214,9 @@ const BasicTable = ({columns, data, onSelectedRowsChange}) => {
 		</div>
 	);
 };
-BasicTable.propTypes = {
+Table.propTypes = {
 	columns: PropTypes.array.isRequired,
 	data: PropTypes.array.isRequired,
 	onSelectedRowsChange: PropTypes.func.isRequired,
 };
-export default memo(BasicTable);
+export default memo(Table);
