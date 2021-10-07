@@ -12,9 +12,9 @@ const slice = createSlice({
 			const tablekey = action.payload.tableKey;
 			const selectedRows = action.payload.selectedRows;
 			const isTablekey = state.currentTarget.find(
-				(e) => e.tablekey === tablekey,
+				(v) => v.tablekey === tablekey,
 			);
-			let CeckedElement = [];
+			let CheckedElement = [];
 
 			const CurrentTargetChecked = (tablekey) => {
 				if (Array.isArray(selectedRows) && selectedRows.length === 0) {
@@ -24,17 +24,17 @@ const slice = createSlice({
 				} else {
 					if (tablekey === 'users') {
 						selectedRows.map((v) => {
-							CeckedElement.push(v.uid);
+							CheckedElement.push(v.uid);
 						});
 					} else {
 						selectedRows.map((v) => {
-							CeckedElement.push(v.id);
+							CheckedElement.push(v.id);
 						});
 					}
 
 					state.currentTarget.find(
 						(v) => v.tablekey === tablekey,
-					).selected = CeckedElement;
+					).selected = CheckedElement;
 				}
 			};
 
@@ -48,9 +48,20 @@ const slice = createSlice({
 				CurrentTargetChecked(tablekey);
 			}
 		},
-	},
 
-	extraReducers: {},
+		changeSelectedRows: (state, action) => {
+			state.currentTarget = state.currentTarget.filter(
+				(v) => v.tableKey !== action.payload.tableKey,
+			);
+			state.currentTarget.push(action.payload);
+		},
+
+		setSelectedRows: (state, action) => {
+			state.currentTarget = state.currentTarget.filter(
+				(v) => v.tableKey !== action.payload.tableKey,
+			);
+		},
+	},
 });
 
 const selectAllState = createSelector(

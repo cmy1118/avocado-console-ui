@@ -1,4 +1,4 @@
-import React, {Component, memo} from 'react';
+import React, {memo} from 'react';
 import PropTypes from 'prop-types';
 import {selectedPageSize} from '../../settings/SettingsPage';
 
@@ -24,7 +24,6 @@ const PageSizing = ({pageSize, setPageSize}) => {
 PageSizing.propTypes = {
 	pageSize: PropTypes.number.isRequired,
 	setPageSize: PropTypes.func.isRequired,
-	// onClickOpenSelectColumn: PropTypes.func.isRequired,
 };
 
 export default memo(PageSizing);

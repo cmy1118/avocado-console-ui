@@ -131,3 +131,17 @@ export const rolesIncludedInUserOnAddPageColumns = [
 		accessor: 'creationDate',
 	},
 ];
+
+export const getColumns = (key) => {
+	switch (key) {
+		case 'users':
+			return usersColumns;
+		case 'groups':
+			return groupColumns;
+		case 'groupTypes':
+			return groupTypeColumns;
+
+		default:
+			return [];
+	}
+};
