@@ -23,6 +23,7 @@ const keys = {
 };
 
 const TagTableContainer = ({tableKey}) => {
+	const [selectedRows, setSelectedRows] = useState([]);
 	const {users, userTags} = useSelector(usersSelector.all);
 	const {groupTypes, groups} = useSelector(groupsSelector.all);
 	const dispatch = useDispatch();
@@ -96,25 +97,6 @@ const TagTableContainer = ({tableKey}) => {
 		}
 	}, [tableKey, users, groups, groupTypes, userTags]);
 
-	const [selectedRows, setSelectedRows] = useState([]);
-
-	const updateData = (rowIndex, columnId, value) => {
-		// We also turn on the flag to not reset the page
-		console.log(rowIndex, columnId, value);
-
-		// setData((old) =>
-		// 	old.map((row, index) => {
-		// 		if (index === rowIndex) {
-		// 			return {
-		// 				...old[rowIndex],
-		// 				[columnId]: value,
-		// 			};
-		// 		}
-		// 		return row;
-		// 	}),
-		// );
-	};
-
 	useEffect(() => {
 		selectedRows &&
 			dispatch(
@@ -128,8 +110,6 @@ const TagTableContainer = ({tableKey}) => {
 				columns={columns}
 				data={data}
 				onSelectedRowsChange={setSelectedRows}
-				updateData={updateData}
-				blackList={['selection', 'rolesLength']}
 			/>
 		</div>
 	);

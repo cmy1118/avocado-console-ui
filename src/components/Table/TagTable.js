@@ -10,25 +10,18 @@ import {dialogBoxAction} from '../../reducers/dialogBoxs';
 import SelectColumnDialogBox from './Form/SelectColumnDialogBox';
 import {useMountedLayoutEffect} from 'react-table';
 import TagTableHeader from './header/TagTableHeader';
-import EditableCell from '../../utils/EditableCell';
 
 const TagTable = ({
 	columns,
 	data,
 	onSelectedRowsChange,
-	isSelectable = true,
-	isPagingEnable = true,
-	isFilterable = true,
-	updateData,
-	blackList,
+	isSelectable = false,
+	isPagingEnable = false,
+	isFilterable = false,
 }) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const INITIAL_SELECTED_ROW_IDS = {};
-
-	const defaultColumn = {
-		EditCell: EditableCell,
-	};
 
 	const {
 		getTableProps,
@@ -57,8 +50,6 @@ const TagTable = ({
 			initialState: {pageSize: 50},
 			disableSortRemove: true,
 			selectedRowIds: INITIAL_SELECTED_ROW_IDS,
-			defaultColumn: defaultColumn,
-			updateData: updateData,
 		},
 		useSortBy,
 		usePagination,
@@ -114,17 +105,6 @@ const TagTable = ({
 
 	const getSelectedRowUid = (uid) => {
 		history.push(`/users/${uid}`);
-	};
-
-	const onClickCell = (page, row, cell) => {
-		console.log(page);
-		console.log(row);
-		console.log(cell);
-		// switch (cell.columns.id) {
-		// 	case 'id': {
-		// 		getSelectedRowUid(row.original.uid);
-		// 	}
-		// }
 	};
 
 	return (
@@ -187,21 +167,8 @@ const TagTable = ({
 											<td
 												{...cell.getCellProps()}
 												key={index}
-												onClick={() =>
-													onClickCell(page, row, cell)
-												}
 											>
-												{/*<input*/}
-												{/*	type='text'*/}
-												{/*	value={cell.render('Cell')}*/}
-												{/*/>*/}
 												{cell.render('Cell')}
-
-												{/*{blackList.includes(*/}
-												{/*	cell.column.id,*/}
-												{/*)*/}
-												{/*	? cell.render('Cell')*/}
-												{/*	: cell.render('EditCell')}*/}
 											</td>
 										))}
 									</tr>
@@ -226,7 +193,5 @@ TagTable.propTypes = {
 	isSelectable: PropTypes.bool,
 	isPagingEnable: PropTypes.bool,
 	isFilterable: PropTypes.bool,
-	updateData: PropTypes.func,
-	blackList: PropTypes.array,
 };
 export default memo(TagTable);
