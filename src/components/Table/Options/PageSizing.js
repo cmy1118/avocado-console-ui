@@ -1,6 +1,6 @@
-import React, {memo} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {selectedPageSize} from '../../settings/SettingsPage';
+import {selectedPageSize} from '../../../utils/SettingsPage';
 
 const PageSizing = ({pageSize, setPageSize}) => {
 	return (
@@ -26,4 +26,4 @@ PageSizing.propTypes = {
 	setPageSize: PropTypes.func.isRequired,
 };
 
-export default memo(PageSizing);
+export default PageSizing;

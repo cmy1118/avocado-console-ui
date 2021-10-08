@@ -1,4 +1,4 @@
-import React, {Component, memo} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const Pagination = ({
@@ -38,18 +38,6 @@ const Pagination = ({
 						{pageIndex + 1} of {pageOptions.length}
 					</strong>{' '}
 				</span>
-				{/* <span>
-          | Go to page:{' '}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={e => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              gotoPage(page)
-            }}
-            style={{ width: '100px' }}
-          />
-        </span>{' '} */}
 			</div>
 		</div>
 	);
@@ -66,4 +54,4 @@ Pagination.propTypes = {
 	pageIndex: PropTypes.number.isRequired,
 };
 
-export default memo(Pagination);
+export default Pagination;

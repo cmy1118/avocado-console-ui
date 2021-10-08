@@ -1,25 +1,19 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {
 	groupReader,
 	passwordExpiryTimeReader,
 	statusReader,
 } from '../../utils/reader';
 import PropTypes from 'prop-types';
-import Table from './Table';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {usersSelector} from '../../reducers/users';
 import {groupsSelector} from '../../reducers/groups';
-import {currentTargetAction} from '../../reducers/currentTarget';
-import {columnsAsType} from '../../utils/TableColumns/index';
+import Table from './Table';
+import {getColumnsAsKey} from '../../utils/TableColumns';
 
 const TableContainer = ({tableKey}) => {
 	const {users, userTags} = useSelector(usersSelector.all);
 	const {groupTypes, groups} = useSelector(groupsSelector.all);
-	const dispatch = useDispatch();
-
-	const columns = useMemo(() => {
-		return columnsAsType[tableKey];
-	}, [tableKey]);
 
 	const data = useMemo(() => {
 		switch (tableKey) {
@@ -69,23 +63,12 @@ const TableContainer = ({tableKey}) => {
 		}
 	}, [tableKey, users, groups, groupTypes, userTags]);
 
-	const [selectedRows, setSelectedRows] = useState([]);
-
-	useEffect(() => {
-		selectedRows &&
-			dispatch(
-				currentTargetAction.setCurrentTarget({selectedRows, tableKey}),
-			);
-	}, [dispatch, selectedRows, tableKey]);
-
 	return (
-		<div>
-			<Table
-				columns={columns}
-				data={data}
-				onSelectedRowsChange={setSelectedRows}
-			/>
-		</div>
+		<Table
+			columns={getColumnsAsKey[tableKey]}
+			data={data}
+			isSelectable={true}
+		/>
 	);
 };
 
