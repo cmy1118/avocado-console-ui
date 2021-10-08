@@ -33,7 +33,14 @@ const GroupSpace = () => {
 					<button>삭제</button>
 				</div>
 			</SubTitle>
-			<TableContainer tableKey='groups' />
+			<TableContainer
+				tableKey='groups'
+				isPageable={true}
+				isNumberOfRowsAdjustable={true}
+				isColumnFilterable={true}
+				isSortable={true}
+				isSelectable={true}
+			/>
 		</IamContainer>
 	);
 };

@@ -10,8 +10,21 @@ import {usersSelector} from '../../reducers/users';
 import {groupsSelector} from '../../reducers/groups';
 import Table from './Table';
 import {getColumnsAsKey} from '../../utils/TableColumns';
+import requiredIf from 'react-required-if';
 
-const TableContainer = ({tableKey}) => {
+const TableContainer = ({
+	tableKey,
+	isSearchable = false,
+	isSearchFilterable = false,
+	isRefreshable = false,
+	isPageable = false,
+	isNumberOfRowsAdjustable = false,
+	isColumnFilterable = false,
+	isSortable = false,
+	isSelectable = false,
+	isDnDPossible = false,
+	dndKey,
+}) => {
 	const {users, userTags} = useSelector(usersSelector.all);
 	const {groupTypes, groups} = useSelector(groupsSelector.all);
 
@@ -65,15 +78,34 @@ const TableContainer = ({tableKey}) => {
 
 	return (
 		<Table
-			key={tableKey}
+			tableKey={tableKey}
 			columns={getColumnsAsKey[tableKey]}
 			data={data}
-			isSelectable={true}
+			isSearchable={isSearchable}
+			isSearchFilterable={isSearchFilterable}
+			isRefreshable={isRefreshable}
+			isPageable={isPageable}
+			isNumberOfRowsAdjustable={isNumberOfRowsAdjustable}
+			isColumnFilterable={isColumnFilterable}
+			isSortable={isSortable}
+			isSelectable={isSelectable}
+			isDnDPossible={isDnDPossible}
+			dndKey={dndKey}
 		/>
 	);
 };
 
 TableContainer.propTypes = {
 	tableKey: PropTypes.string.isRequired,
+	isSearchable: PropTypes.bool,
+	isSearchFilterable: PropTypes.bool,
+	isRefreshable: PropTypes.bool,
+	isPageable: PropTypes.bool,
+	isNumberOfRowsAdjustable: PropTypes.bool,
+	isColumnFilterable: PropTypes.bool,
+	isSortable: PropTypes.bool,
+	isSelectable: PropTypes.bool,
+	isDnDPossible: PropTypes.bool,
+	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 export default TableContainer;
