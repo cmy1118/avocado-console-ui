@@ -1,7 +1,7 @@
 import {createSelector, createSlice} from '@reduxjs/toolkit';
 
 const slice = createSlice({
-	name: 'dialogBox',
+	name: 'DIALOG_BOX',
 	initialState: {
 		alert: {open: false},
 		form: {open: true, key: 'default'},
@@ -30,10 +30,13 @@ const selectAllState = createSelector(
 	},
 );
 
-export const dialogBoxSelector = {
-	all: (state) => selectAllState(state[DIALOG_BOX]),
+// NAME 의 value 값으로 변수명 선언
+const DIALOG_BOX = {
+	name: slice.name,
+	reducer: slice.reducer,
+	selector: (state) => selectAllState(state[slice.name]),
+	action: slice.actions,
+	asyncAction: {},
 };
 
-export const DIALOG_BOX = slice.name;
-export const dialogBoxReducer = slice.reducer;
-export const dialogBoxAction = slice.actions;
+export default DIALOG_BOX;

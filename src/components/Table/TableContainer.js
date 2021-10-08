@@ -8,11 +8,11 @@ import {
 import PropTypes from 'prop-types';
 import Table from './Table';
 import {useDispatch, useSelector} from 'react-redux';
-import {currentTargetAction} from '../../reducers/currentTarget';
 import {columnsAsType} from '../../utils/TableColumns/index';
 import IAM_USER from '../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../reducers/api/IAM/User/Group/groupType';
+import CURRENT_TARGET from '../../reducers/currentTarget';
 
 const TableContainer = ({tableKey}) => {
 	const {users} = useSelector(IAM_USER.selector);
@@ -78,7 +78,10 @@ const TableContainer = ({tableKey}) => {
 	useEffect(() => {
 		selectedRows &&
 			dispatch(
-				currentTargetAction.setCurrentTarget({selectedRows, tableKey}),
+				CURRENT_TARGET.action.setCurrentTarget({
+					selectedRows,
+					tableKey,
+				}),
 			);
 	}, [dispatch, selectedRows, tableKey]);
 

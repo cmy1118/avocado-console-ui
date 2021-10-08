@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 
 import SettingsCheckbox from './settings/SettingsCheckbox';
 import {useTable, useSortBy, useRowSelect, usePagination} from 'react-table';
-import {dialogBoxAction} from '../../reducers/dialogBoxs';
 import TableHeader from './Tableheader/TableHeader';
 import {useMountedLayoutEffect} from 'react-table';
 import SelectColumnDialogBox from '../Table/OpenForm/SelectColumnDialogBox';
+import DIALOG_BOX from '../../reducers/dialogBoxs';
 
 const Table = ({columns, data, onSelectedRowsChange}) => {
 	const dispatch = useDispatch();
@@ -92,7 +92,7 @@ const Table = ({columns, data, onSelectedRowsChange}) => {
 	//****************************************************************//
 
 	const onClickOpenSelectColumn = useCallback(async () => {
-		dispatch(dialogBoxAction.openForm({key: 'hideColumn'}));
+		dispatch(DIALOG_BOX.action.openForm({key: 'hideColumn'}));
 	}, [dispatch]);
 
 	const getSelectedRowUid = (uid) => {

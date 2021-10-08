@@ -1,9 +1,9 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import * as _ from 'lodash';
-import {baseUrl} from '../../../api/constants';
+import {baseUrl} from '../../../../api/constants';
 
-const NAME = 'groupType';
+const NAME = 'RRM_GROUP_TYPE';
 
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
@@ -197,16 +197,19 @@ const selectAllState = createSelector(
 	},
 );
 
-export const groupTypeSelector = {
-	all: (state) => selectAllState(state[GROUP_TYPE]),
+// NAME 의 value 값으로 변수명 선언
+const RRM_GROUP_TYPE = {
+	name: slice.name,
+	reducer: slice.reducer,
+	selector: (state) => selectAllState(state[slice.name]),
+	action: slice.actions,
+	asyncAction: {
+		createAction,
+		updateAction,
+		deleteAction,
+		findByIdAction,
+		findAllAction,
+	},
 };
 
-export const GROUP_TYPE = slice.name;
-export const groupTypeReducer = slice.reducer;
-export const groupTypeAction = {
-	createAction,
-	updateAction,
-	deleteAction,
-	findByIdAction,
-	findAllAction,
-};
+export default RRM_GROUP_TYPE;

@@ -2,7 +2,7 @@ import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {baseUrl} from '../../../../../api/constants';
 
-const NAME = 'client';
+const NAME = 'IAM_CLIENT';
 
 //todo : this function requires access_token, id, companyId, name and password
 const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
@@ -164,16 +164,19 @@ const selectAllState = createSelector(
 	},
 );
 
-export const clientSelector = {
-	all: (state) => selectAllState(state[CLIENT]),
+// NAME 의 value 값으로 변수명 선언
+const IAM_CLIENT = {
+	name: slice.name,
+	reducer: slice.reducer,
+	selector: (state) => selectAllState(state[slice.name]),
+	action: slice.actions,
+	asyncAction: {
+		createAction,
+		updateAction,
+		deleteAction,
+		findByIdAction,
+		findAllAction,
+	},
 };
 
-export const CLIENT = slice.name;
-export const clientReducer = slice.reducer;
-export const clientAction = {
-	createAction,
-	updateAction,
-	deleteAction,
-	findByIdAction,
-	findAllAction,
-};
+export default IAM_CLIENT;

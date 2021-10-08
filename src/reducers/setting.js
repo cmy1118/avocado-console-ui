@@ -1,7 +1,7 @@
 import {createSelector, createSlice} from '@reduxjs/toolkit';
 
 const slice = createSlice({
-	name: 'setting',
+	name: 'SETTING',
 	initialState: {
 		theme: 'light', // light, dark
 		language: 'ko-KR', // language ko-KR - korean, en-US - english
@@ -90,9 +90,13 @@ const selectAllState = createSelector(
 	},
 );
 
-export const settingSelector = {
-	all: (state) => selectAllState(state[SETTING]),
+// NAME 의 value 값으로 변수명 선언
+const SETTING = {
+	name: slice.name,
+	reducer: slice.reducer,
+	selector: (state) => selectAllState(state[slice.name]),
+	action: slice.actions,
+	asyncAction: {},
 };
-export const SETTING = slice.name;
-export const settingReducer = slice.reducer;
-export const settingAction = slice.actions;
+
+export default SETTING;

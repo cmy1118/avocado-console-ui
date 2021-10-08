@@ -8,14 +8,14 @@ import {
 } from '../../../styles/components/style';
 
 import TableContainer from '../../Table/TableContainer';
-import {currentTargetSelector} from '../../../reducers/currentTarget';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
 
 const UserSpace = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {users} = useSelector(IAM_USER.selector);
-	const {currentTarget} = useSelector(currentTargetSelector.all);
+	const {currentTarget} = useSelector(CURRENT_TARGET.selector);
 
 	const onClickLinkToAddUserPage = useCallback(() => {
 		history.push('/users/add');

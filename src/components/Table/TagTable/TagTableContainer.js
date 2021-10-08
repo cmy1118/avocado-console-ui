@@ -6,7 +6,6 @@ import {
 } from '../../../utils/reader';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
-import {currentTargetAction} from '../../../reducers/currentTarget';
 import TagTable from './TagTable';
 import {
 	addTagsToUserColumns,
@@ -20,6 +19,7 @@ import {
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
 
 const keys = {
 	users: 'users',
@@ -104,7 +104,10 @@ const TagTableContainer = ({tableKey}) => {
 	useEffect(() => {
 		selectedRows &&
 			dispatch(
-				currentTargetAction.setCurrentTarget({selectedRows, tableKey}),
+				CURRENT_TARGET.action.setCurrentTarget({
+					selectedRows,
+					tableKey,
+				}),
 			);
 	}, [dispatch, selectedRows, tableKey]);
 

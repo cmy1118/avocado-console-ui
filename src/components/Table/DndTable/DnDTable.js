@@ -9,9 +9,9 @@ import {
 } from 'react-table';
 import {useDispatch} from 'react-redux';
 import DnD1TableHeader from './DnDTableHeader';
-import {settingAction} from '../../../reducers/setting';
 import SettingsCheckbox from '../settings/SettingsCheckbox';
-import {currentTargetAction} from '../../../reducers/currentTarget';
+import SETTING from '../../../reducers/setting';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
 
 const DnDTable = ({
 	tableKey,
@@ -112,7 +112,7 @@ const DnDTable = ({
 					default:
 						//has to delete
 						dispatch(
-							settingAction.changeTable({
+							SETTING.action.changeTable({
 								start: e.dataTransfer.getData('target'),
 								id: e.dataTransfer.getData('id'),
 								end: tableKey,
@@ -132,7 +132,7 @@ const DnDTable = ({
 	useMountedLayoutEffect(() => {
 		isSelectable &&
 			dispatch(
-				currentTargetAction.changeSelectedRows({
+				CURRENT_TARGET.action.changeSelectedRows({
 					tableKey: tableKey,
 					selected: Object.keys(selectedRowIds),
 				}),
@@ -143,7 +143,7 @@ const DnDTable = ({
 		return () => {
 			isSelectable &&
 				dispatch(
-					currentTargetAction.setSelectedRows({
+					CURRENT_TARGET.action.setSelectedRows({
 						tableKey: tableKey,
 					}),
 				);

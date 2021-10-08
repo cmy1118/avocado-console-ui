@@ -1,9 +1,9 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import * as _ from 'lodash';
-import {baseUrl} from '../../../api/constants';
+import {baseUrl} from '../../../../api/constants';
 
-const NAME = 'remoteResource';
+const NAME = 'RRM_RESOURCE';
 
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
@@ -270,18 +270,20 @@ const selectAllState = createSelector(
 	},
 );
 
-export const remoteResourceSelector = {
-	all: (state) => selectAllState(state[REMOTE_RESOURCE]),
+const RRM_RESOURCE = {
+	name: slice.name,
+	reducer: slice.reducer,
+	selector: (state) => selectAllState(state[slice.name]),
+	action: slice.actions,
+	asyncAction: {
+		createAction,
+		updateAction,
+		deleteAction,
+		findByIdAction,
+		findAllBasicAction,
+		findAllServicePortAction,
+		findAllTagAction,
+	},
 };
 
-export const REMOTE_RESOURCE = slice.name;
-export const remoteResourceReducer = slice.reducer;
-export const remoteResourceAction = {
-	createAction,
-	updateAction,
-	deleteAction,
-	findByIdAction,
-	findAllBasicAction,
-	findAllServicePortAction,
-	findAllTagAction,
-};
+export default RRM_RESOURCE;

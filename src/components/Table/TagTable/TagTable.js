@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 
 import SettingsCheckbox from '../settings/SettingsCheckbox';
 import {useTable, useSortBy, useRowSelect, usePagination} from 'react-table';
-import {dialogBoxAction} from '../../../reducers/dialogBoxs';
 import {useMountedLayoutEffect} from 'react-table';
 import TagTableHeader from './TagTableHeader';
 import SelectColumnDialogBox from '../OpenForm/SelectColumnDialogBox';
+import DIALOG_BOX from '../../../reducers/dialogBoxs';
 
 const TagTable = ({
 	columns,
@@ -99,7 +99,7 @@ const TagTable = ({
 	//****************************************************************//
 
 	const onClickOpenSelectColumn = useCallback(async () => {
-		dispatch(dialogBoxAction.openForm({key: 'hideColumn'}));
+		dispatch(DIALOG_BOX.action.openForm({key: 'hideColumn'}));
 	}, [dispatch]);
 
 	const getSelectedRowUid = (uid) => {

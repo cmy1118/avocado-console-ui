@@ -1,18 +1,18 @@
 import {combineReducers} from '@reduxjs/toolkit';
-import {CLIENT, clientReducer} from './api/IAM/Client/Client/client';
 import IAM_USER from './api/IAM/User/User/user';
-import {DIALOG_BOX, dialogBoxReducer} from './dialogBoxs';
-import {REMOTE_RESOURCE, remoteResourceReducer} from './api/RRM/remoteResource';
-import {GROUP_TYPE, groupTypeReducer} from './api/RRM/groupType';
-import {SETTING, settingReducer} from './setting';
-import {CURRENT_TARGET, currentTargetReducer} from './currentTarget';
 import IAM_USER_GROUP_TYPE from './api/IAM/User/Group/groupType';
 import IAM_USER_GROUP from './api/IAM/User/Group/group';
 import IAM_USER_GROUP_MEMBER from './api/IAM/User/Group/groupMember';
+import IAM_CLIENT from './api/IAM/Client/Client/client';
+import SETTING from './setting';
+import DIALOG_BOX from './dialogBoxs';
+import CURRENT_TARGET from './currentTarget';
+import RRM_RESOURCE from './api/RRM/Resource/resource';
+import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
 
 const rootReducer = combineReducers({
-	[SETTING]: settingReducer,
-	[CLIENT]: clientReducer,
+	[SETTING.name]: SETTING.reducer,
+	[IAM_CLIENT.name]: IAM_CLIENT.reducer,
 
 	/******************************************/
 	/* seob : IAM - User reducers
@@ -22,15 +22,18 @@ const rootReducer = combineReducers({
 	[IAM_USER_GROUP_TYPE.name]: IAM_USER_GROUP_TYPE.reducer,
 	[IAM_USER_GROUP_MEMBER.name]: IAM_USER_GROUP_MEMBER.reducer,
 	/******************************************/
-
-	[REMOTE_RESOURCE]: remoteResourceReducer,
-	[GROUP_TYPE]: groupTypeReducer,
-	[DIALOG_BOX]: dialogBoxReducer,
+	/******************************************/
+	/* seob : RRM reducers
+    /******************************************/
+	[RRM_RESOURCE.name]: RRM_RESOURCE.reducer,
+	[RRM_GROUP_TYPE.name]: RRM_GROUP_TYPE.reducer,
 	/******************************************/
 	/* roberto : Table_update 선택기능추가
     /******************************************/
-	[CURRENT_TARGET]: currentTargetReducer,
+	[CURRENT_TARGET.name]: CURRENT_TARGET.reducer,
 	/******************************************/
+
+	[DIALOG_BOX.name]: DIALOG_BOX.reducer,
 });
 
 export default rootReducer;
