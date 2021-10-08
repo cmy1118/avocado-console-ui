@@ -26,5 +26,11 @@ export const passwordExpiryTimeReader = (data) => {
 export const groupReader = (data) => {
 	if (data.length === 0) return '';
 	if (data.length === 1) return data[0];
-	return data[0] + ' 외 ' + (data.length - 1).toString();
+	return `${data[0]} 외 ${data.length - 1}`;
+};
+
+export const tagReader = (data) => {
+	if (data.length === 0) return '없음';
+	if (data.length === 1) return data[0].value;
+	return `${data[0].value} 외 ${data.length - 1}`;
 };

@@ -7,8 +7,8 @@ import {
 import {Link, useHistory} from 'react-router-dom';
 import TableContainer from '../../Table/TableContainer';
 import {useSelector} from 'react-redux';
-import {groupsSelector} from '../../../reducers/groups';
-import {usersSelector} from '../../../reducers/users';
+import {groupsSelector} from '../../../reducers/api/IAM/Group/groups';
+import {usersSelector} from '../../../reducers/api/IAM/User/users';
 
 const GroupSpace = () => {
 	const history = useHistory();

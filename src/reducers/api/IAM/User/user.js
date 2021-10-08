@@ -1,6 +1,6 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {baseUrl} from '../../api/constants';
+import {baseUrl} from '../../../../api/constants';
 
 const NAME = 'user';
 
@@ -134,7 +134,91 @@ const findAllAction = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
-		user: null,
+		users: [
+			{
+				uid: 'user1',
+				id: 'ambacc244',
+				name: '이영애',
+				email: 'ambacc244@netand.co.kr',
+				telephone: '010-9434-5272',
+				mobile: '010-9434-5272',
+				groups: ['group2', 'group4', 'group8'],
+				status: 0,
+				authType: 'ID/PW',
+				MFA: null,
+				passwordExpiryTime: '2023.02.12 20:44:02',
+				tags: [
+					{name: 'level', value: 'Admin', permissions: []},
+					{name: 'type', value: 'white', permissions: [1, 2, 3]},
+				],
+				lastConsoleLogin: '2020.05.12 20:44:02',
+				creationDate: '2020.01.12 20:44:02',
+			},
+			{
+				uid: 'user2',
+				id: 'seob717',
+				name: '심유섭',
+				email: 'seob717@netand.co.kr',
+				telephone: '010-9688-5549',
+				mobile: '010-9688-5549',
+				groups: ['group2', 'group4', 'group8'],
+				status: 1,
+				authType: 'ID/PW',
+				MFA: null,
+				passwordExpiryTime: '2023.04.12 20:44:02',
+				tags: [{name: 'type', value: 'white', permissions: [1, 2, 3]}],
+				lastConsoleLogin: '2020.06.12 20:44:02',
+				creationDate: '2020.03.12 20:44:02',
+			},
+			{
+				uid: 'user3',
+				id: 'roberto',
+				name: '박건욱',
+				email: 'roberto@netand.co.kr',
+				telephone: '010-2225-1154',
+				mobile: '010-2225-1154',
+				groups: ['group3', 'group4', 'group8'],
+				status: 2,
+				authType: 'ID/PW',
+				MFA: null,
+				passwordExpiryTime: '2022.12.12 20:44:02',
+				tags: [{name: 'level', value: 'Admin', permissions: []}],
+				lastConsoleLogin: null,
+				creationDate: '2020.03.12 20:44:02',
+			},
+			{
+				uid: 'user4',
+				id: 'aaa',
+				name: '이에이',
+				email: 'aaa@netand.co.kr',
+				telephone: '010-1111-1111',
+				mobile: '010-1111-1111',
+				groups: ['group1'],
+				status: 3,
+				authType: 'ID/PW',
+				MFA: null,
+				passwordExpiryTime: '2022.01.12 20:44:02',
+				tags: [],
+				lastConsoleLogin: null,
+				creationDate: '2020.03.12 20:44:02',
+			},
+			{
+				uid: 'user5',
+				id: 'bbb',
+				name: '이비',
+				email: 'bbb@netand.co.kr',
+				telephone: '010-1111-1111',
+				mobile: '010-1111-1111',
+				groups: ['group1'],
+				status: 4,
+				authType: 'ID/PW',
+				MFA: null,
+				passwordExpiryTime: '2022.03.12 20:44:02',
+				tags: [],
+				lastConsoleLogin: null,
+				creationDate: '2020.03.12 20:44:02',
+			},
+		],
 		loading: false,
 		error: null,
 	},
@@ -215,11 +299,11 @@ const slice = createSlice({
 });
 
 const selectAllState = createSelector(
-	(state) => state.user,
+	(state) => state.users,
 	(state) => state.error,
 	(state) => state.loading,
-	(user, error, loading) => {
-		return {user, error, loading};
+	(users, error, loading) => {
+		return {users, error, loading};
 	},
 );
 

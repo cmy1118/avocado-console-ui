@@ -3,7 +3,10 @@ import {SubTitle} from '../../../styles/components/style';
 import {useHistory} from 'react-router-dom';
 import {Form} from '../../../styles/components/form';
 import {useDispatch, useSelector} from 'react-redux';
-import {groupsSelector, groupsAction} from '../../../reducers/groups';
+import {
+	groupsSelector,
+	groupsAction,
+} from '../../../reducers/api/IAM/Group/groups';
 import useInput from '../../../hooks/useInput';
 
 const AddGroup = () => {

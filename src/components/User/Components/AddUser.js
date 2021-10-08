@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import {useHistory} from 'react-router-dom';
 
 import useInput from '../../../hooks/useInput';
-import {usersAction} from '../../../reducers/users';
+import {usersAction} from '../../../reducers/api/IAM/User/users';
 import {useDispatch} from 'react-redux';
 import {Form} from '../../../styles/components/form';
 import {SubTitle} from '../../../styles/components/style';

@@ -1,7 +1,7 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import * as _ from 'lodash';
-import {baseUrl} from '../../api/constants';
+import {baseUrl} from '../../../api/constants';
 
 const NAME = 'remoteResource';
 

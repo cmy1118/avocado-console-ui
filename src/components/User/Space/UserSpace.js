@@ -7,7 +7,7 @@ import {
 	SubTitle,
 } from '../../../styles/components/style';
 
-import {usersAction, usersSelector} from '../../../reducers/users';
+import {usersAction, usersSelector} from '../../../reducers/api/IAM/User/users';
 import TableContainer from '../../Table/TableContainer';
 import {currentTargetSelector} from '../../../reducers/currentTarget';
 

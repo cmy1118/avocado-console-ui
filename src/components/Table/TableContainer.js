@@ -3,17 +3,18 @@ import {
 	groupReader,
 	passwordExpiryTimeReader,
 	statusReader,
+	tagReader,
 } from '../../utils/reader';
 import PropTypes from 'prop-types';
 import Table from './Table';
 import {useDispatch, useSelector} from 'react-redux';
-import {usersSelector} from '../../reducers/users';
-import {groupsSelector} from '../../reducers/groups';
+import {groupsSelector} from '../../reducers/api/IAM/Group/groups';
 import {currentTargetAction} from '../../reducers/currentTarget';
 import {columnsAsType} from '../../utils/TableColumns/index';
+import {userSelector} from '../../reducers/api/IAM/User/user';
 
 const TableContainer = ({tableKey}) => {
-	const {users, userTags} = useSelector(usersSelector.all);
+	const {users} = useSelector(userSelector.all);
 	const {groupTypes, groups} = useSelector(groupsSelector.all);
 	const dispatch = useDispatch();
 
@@ -26,6 +27,7 @@ const TableContainer = ({tableKey}) => {
 			case 'users':
 				return users.map((v) => ({
 					...v,
+					tags: tagReader(v.tags),
 					groups: groupReader(
 						v.groups.map(
 							(val) =>
@@ -58,16 +60,16 @@ const TableContainer = ({tableKey}) => {
 					groupsLength: v.groups.length,
 				}));
 
-			case 'addTagsToUser':
-				return userTags.map((v) => ({
-					...v,
-					rolesLength: v.permissions.length,
-				}));
+			// case 'addTagsToUser':
+			// 	return users.map((v) => ({
+			// 		uid: v.uid,
+			// 		...v.tags,
+			// 	}));
 
 			default:
 				return [];
 		}
-	}, [tableKey, users, groups, groupTypes, userTags]);
+	}, [tableKey, users, groups, groupTypes]);
 
 	const [selectedRows, setSelectedRows] = useState([]);
 

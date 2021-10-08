@@ -4,7 +4,7 @@ import {Link, useHistory, useLocation} from 'react-router-dom';
 import {IamContainer, PathContainer} from '../../../styles/components/style';
 import styled from 'styled-components';
 import {useSelector} from 'react-redux';
-import {usersSelector} from '../../../reducers/users';
+import {usersSelector} from '../../../reducers/api/IAM/User/users';
 import {statusReader} from '../../../utils/reader';
 import {Tab, TabItem} from '../../../styles/components/tab';
 import UserInfo from '../Components/UserInfo';
@@ -18,7 +18,7 @@ const _Title = styled.div`
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
-	const {search} = useLocation();
+	const {search, location} = useLocation();
 	const {users} = useSelector(usersSelector.all);
 
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
@@ -35,6 +35,9 @@ const UserDescriptionSpace = ({userId}) => {
 		},
 		[],
 	);
+
+	console.log(qs.parse(history.location));
+	console.log(qs.parse(search, {ignoreQueryPrefix: true}));
 
 	// if userId does not exist, direct to 404 page
 	useEffect(() => {

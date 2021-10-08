@@ -1,11 +1,15 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import PropTypes from 'prop-types';
-import {usersSelector} from '../../../reducers/users';
+import {usersSelector} from '../../../reducers/api/IAM/User/users';
 import {TabContentsTitle} from '../../../styles/components/tab';
+import IdentificationDialogBox from '../../DialogBoxs/Form/IdentificationDialogBox';
+import ChangePasswordDialogBox from '../../DialogBoxs/Form/ChangePasswordDialogBox';
 
 const UserInfo = ({userId}) => {
+	const [isIdentificationOpened, setIsIdentificationOpened] = useState(false);
+	const [isChangePasswordOpened, setIsChangePasswordOpened] = useState(false);
 	const {users} = useSelector(usersSelector.all);
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
@@ -14,7 +18,9 @@ const UserInfo = ({userId}) => {
 
 	const onClickChangeUser = useCallback(() => {}, []);
 
-	const onClickChangePassword = useCallback(() => {});
+	const onClickOpenIdentificationDialogBox = useCallback(() => {
+		setIsIdentificationOpened(true);
+	});
 
 	return (
 		<div>
@@ -32,7 +38,7 @@ const UserInfo = ({userId}) => {
 				</li>
 				<li>
 					사용자 비밀번호 : <input value={'**********'} readOnly />
-					<button onClick={onClickChangePassword}>
+					<button onClick={onClickOpenIdentificationDialogBox}>
 						비밀번호 변경
 					</button>
 				</li>
@@ -46,6 +52,14 @@ const UserInfo = ({userId}) => {
 					모바일 번호 : <input value={user.mobile} readOnly />
 				</li>
 			</ul>
+			<IdentificationDialogBox
+				isOpened={isIdentificationOpened}
+				setIsOpened={setIsIdentificationOpened}
+			/>
+			<ChangePasswordDialogBox
+				isOpened={isChangePasswordOpened}
+				setIsOpened={setIsChangePasswordOpened}
+			/>
 		</div>
 	);
 };

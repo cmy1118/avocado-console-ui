@@ -1,18 +1,12 @@
 import {combineReducers} from '@reduxjs/toolkit';
-import {CLIENT, clientReducer} from './ClientManagement/client';
-import {USER, userReducer} from './UserManagement/user';
+import {CLIENT, clientReducer} from './api/IAM/Client/client';
+import {USER, userReducer} from './api/IAM/User/user';
 import {DIALOG_BOX, dialogBoxReducer} from './dialogBoxs';
-import {
-	REMOTE_RESOURCE,
-	remoteResourceReducer,
-} from './RemoteResourceManagement/remoteResource';
-import {
-	GROUP_TYPE,
-	groupTypeReducer,
-} from './RemoteResourceManagement/groupType';
+import {REMOTE_RESOURCE, remoteResourceReducer} from './api/RRM/remoteResource';
+import {GROUP_TYPE, groupTypeReducer} from './api/RRM/groupType';
 import {SETTING, settingReducer} from './setting';
-import {USERS, usersReducer} from './users';
-import {GROUPS, groupsReducer} from './groups';
+import {USERS, usersReducer} from './api/IAM/User/users';
+import {GROUPS, groupsReducer} from './api/IAM/Group/groups';
 import {CURRENT_TARGET, currentTargetReducer} from './currentTarget';
 
 const rootReducer = combineReducers({

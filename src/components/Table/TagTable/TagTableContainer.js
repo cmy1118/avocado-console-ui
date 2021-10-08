@@ -6,8 +6,7 @@ import {
 } from '../../../utils/reader';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
-import {usersSelector} from '../../../reducers/users';
-import {groupsSelector} from '../../../reducers/groups';
+import {groupsSelector} from '../../../reducers/api/IAM/Group/groups';
 import {currentTargetAction} from '../../../reducers/currentTarget';
 import TagTable from './TagTable';
 import {
@@ -19,6 +18,7 @@ import {
 	groupColumns,
 	groupTypeColumns,
 } from '../../../utils/TableColumns/groups';
+import {userSelector} from '../../../reducers/api/IAM/User/user';
 
 const keys = {
 	users: 'users',
@@ -26,7 +26,7 @@ const keys = {
 
 const TagTableContainer = ({tableKey}) => {
 	const [selectedRows, setSelectedRows] = useState([]);
-	const {users, userTags} = useSelector(usersSelector.all);
+	const {users} = useSelector(userSelector.all);
 	const {groupTypes, groups} = useSelector(groupsSelector.all);
 	const dispatch = useDispatch();
 
@@ -88,16 +88,16 @@ const TagTableContainer = ({tableKey}) => {
 					groupsLength: v.groups.length,
 				}));
 
-			case 'addTagsToUser':
-				return userTags.map((v) => ({
-					...v,
-					rolesLength: v.permissions.length,
-				}));
+			// case 'addTagsToUser':
+			// 	return userTags.map((v) => ({
+			// 		...v,
+			// 		rolesLength: v.permissions.length,
+			// 	}));
 
 			default:
 				return [];
 		}
-	}, [tableKey, users, groups, groupTypes, userTags]);
+	}, [tableKey, users, groups, groupTypes]);
 
 	useEffect(() => {
 		selectedRows &&
