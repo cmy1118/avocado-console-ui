@@ -65,6 +65,7 @@ const TableContainer = ({tableKey}) => {
 
 	return (
 		<Table
+			key={tableKey}
 			columns={getColumnsAsKey[tableKey]}
 			data={data}
 			isSelectable={true}
