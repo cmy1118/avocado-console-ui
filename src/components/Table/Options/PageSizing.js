@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {selectedPageSize} from '../../../utils/SettingsPage';
+import {selectedPageSize} from '../../../utils/data';
 
 const PageSizing = ({pageSize, setPageSize}) => {
 	return (

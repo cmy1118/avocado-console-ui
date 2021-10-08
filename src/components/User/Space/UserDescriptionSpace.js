@@ -5,7 +5,7 @@ import {IamContainer, PathContainer} from '../../../styles/components/style';
 import styled from 'styled-components';
 import {useSelector} from 'react-redux';
 import {usersSelector} from '../../../reducers/users';
-import {statusReader} from '../../../utils/reader';
+import {statusConvertor} from '../../../utils/tableDataConvertor';
 import {Tab, TabItem} from '../../../styles/components/tab';
 import UserInfo from '../Components/UserInfo';
 import UserGroups from '../Components/UserGroups';
@@ -63,7 +63,7 @@ const UserDescriptionSpace = ({userId}) => {
 
 				<ul>
 					<li>사용자 : {user?.name}</li>
-					<li>사용자 계정 상태 : {statusReader(user?.status)}</li>
+					<li>사용자 계정 상태 : {statusConvertor(user?.status)}</li>
 					<li>마지막 콘솔 로그인 : {user?.lastConsoleLogin}</li>
 					<li>생성 일시 : {user?.creationDate}</li>
 					<li>계정 사용기간 : ??</li>
