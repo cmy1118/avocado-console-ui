@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import useInput from '../../../hooks/useInput';
 import {closeIcon} from '../../../icons/icons';
 import {useDispatch} from 'react-redux';
-import {groupsAction} from '../../../reducers/api/IAM/Group/groups';
+import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 
 const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
 	const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
 		console.log(name, description);
 
 		dispatch(
-			groupsAction.addGroupType({
+			IAM_USER_GROUP_TYPE.action.addGroupType({
 				name: name,
 				parentId: null,
 				description: description,

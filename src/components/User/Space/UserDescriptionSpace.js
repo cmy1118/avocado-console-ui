@@ -4,12 +4,12 @@ import {Link, useHistory, useLocation} from 'react-router-dom';
 import {IamContainer, PathContainer} from '../../../styles/components/style';
 import styled from 'styled-components';
 import {useSelector} from 'react-redux';
-import {usersSelector} from '../../../reducers/api/IAM/User/users';
 import {statusReader} from '../../../utils/reader';
 import {Tab, TabItem} from '../../../styles/components/tab';
 import UserInfo from '../Components/UserInfo';
 import UserGroups from '../Components/UserGroups';
 import qs from 'qs';
+import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 
 const _Title = styled.div`
 	display: flex;
@@ -19,7 +19,7 @@ const _Title = styled.div`
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
 	const {search, location} = useLocation();
-	const {users} = useSelector(usersSelector.all);
+	const {users} = useSelector(IAM_USER.selector);
 
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,

@@ -1,8 +1,8 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {baseUrl} from '../../../../api/constants';
+import {baseUrl} from '../../../../../api/constants';
 
-const NAME = 'user';
+const NAME = 'IAM_USER_GROUP_TYPE';
 
 //todo : this function requires id, companyId, name, password, email, telephone and mobile
 const createAction = createAsyncThunk(
@@ -134,95 +134,47 @@ const findAllAction = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
-		users: [
+		index: 4,
+		//groups, authType, MFA, tags, lastConsoleLogin, creationDate는 다른 곳으로 빠질 예정 => 아직 다른 부분 생성 전이라 users에 추가
+		groupTypes: [
 			{
-				uid: 'user1',
-				id: 'ambacc244',
-				name: '이영애',
-				email: 'ambacc244@netand.co.kr',
-				telephone: '010-9434-5272',
-				mobile: '010-9434-5272',
-				groups: ['group2', 'group4', 'group8'],
-				status: 0,
-				authType: 'ID/PW',
-				MFA: null,
-				passwordExpiryTime: '2023.02.12 20:44:02',
-				tags: [
-					{name: 'level', value: 'Admin', permissions: []},
-					{name: 'type', value: 'white', permissions: [1, 2, 3]},
-				],
-				lastConsoleLogin: '2020.05.12 20:44:02',
-				creationDate: '2020.01.12 20:44:02',
+				id: 'groupType1',
+				name: '사용자 레벨',
+				parentId: null,
+				description: '사용자 권한 레벨을 분류하기 위한 유형',
+				creationDate: '2021.03.02 15:55:32',
 			},
 			{
-				uid: 'user2',
-				id: 'seob717',
-				name: '심유섭',
-				email: 'seob717@netand.co.kr',
-				telephone: '010-9688-5549',
-				mobile: '010-9688-5549',
-				groups: ['group2', 'group4', 'group8'],
-				status: 1,
-				authType: 'ID/PW',
-				MFA: null,
-				passwordExpiryTime: '2023.04.12 20:44:02',
-				tags: [{name: 'type', value: 'white', permissions: [1, 2, 3]}],
-				lastConsoleLogin: '2020.06.12 20:44:02',
-				creationDate: '2020.03.12 20:44:02',
+				id: 'groupType2',
+				name: '직무',
+				parentId: null,
+				description: '사용자의 직무 유형',
+				creationDate: '2021.03.02 15:55:32',
 			},
 			{
-				uid: 'user3',
-				id: 'roberto',
-				name: '박건욱',
-				email: 'roberto@netand.co.kr',
-				telephone: '010-2225-1154',
-				mobile: '010-2225-1154',
-				groups: ['group3', 'group4', 'group8'],
-				status: 2,
-				authType: 'ID/PW',
-				MFA: null,
-				passwordExpiryTime: '2022.12.12 20:44:02',
-				tags: [{name: 'level', value: 'Admin', permissions: []}],
-				lastConsoleLogin: null,
-				creationDate: '2020.03.12 20:44:02',
-			},
-			{
-				uid: 'user4',
-				id: 'aaa',
-				name: '이에이',
-				email: 'aaa@netand.co.kr',
-				telephone: '010-1111-1111',
-				mobile: '010-1111-1111',
-				groups: ['group1'],
-				status: 3,
-				authType: 'ID/PW',
-				MFA: null,
-				passwordExpiryTime: '2022.01.12 20:44:02',
-				tags: [],
-				lastConsoleLogin: null,
-				creationDate: '2020.03.12 20:44:02',
-			},
-			{
-				uid: 'user5',
-				id: 'bbb',
-				name: '이비',
-				email: 'bbb@netand.co.kr',
-				telephone: '010-1111-1111',
-				mobile: '010-1111-1111',
-				groups: ['group1'],
-				status: 4,
-				authType: 'ID/PW',
-				MFA: null,
-				passwordExpiryTime: '2022.03.12 20:44:02',
-				tags: [],
-				lastConsoleLogin: null,
-				creationDate: '2020.03.12 20:44:02',
+				id: 'groupType3',
+				name: '조직',
+				parentId: null,
+				description: '회사의 조직',
+				creationDate: '2021.03.02 15:55:32',
 			},
 		],
+
 		loading: false,
 		error: null,
 	},
-	reducers: {},
+	reducers: {
+		addGroupType: (state, {payload}) => {
+			state.groupTypes.unshift({
+				id: 'groupType_' + state.index.toString(),
+				name: payload.name,
+				parentId: payload.parentId,
+				description: payload.description,
+				creationDate: new Date().toLocaleString(),
+			});
+			state.index++;
+		},
+	},
 	extraReducers: {
 		[createAction.pending]: (state) => {
 			state.loading = true;
@@ -298,26 +250,28 @@ const slice = createSlice({
 	},
 });
 
+// 외부에서 사용할 값만 selector 에 넣어주시면 됩니다.
 const selectAllState = createSelector(
-	(state) => state.users,
-	(state) => state.error,
-	(state) => state.loading,
-	(users, error, loading) => {
-		return {users, error, loading};
+	(state) => state.groupTypes,
+	(groupTypes) => {
+		return {groupTypes};
 	},
 );
 
-export const userSelector = {
-	all: (state) => selectAllState(state[USER]),
+// NAME 의 value 값으로 변수명 선언
+const IAM_USER_GROUP_TYPE = {
+	name: slice.name,
+	reducer: slice.reducer,
+	selector: (state) => selectAllState(state[slice.name]),
+	action: slice.actions,
+	asyncAction: {
+		createAction,
+		updateAction,
+		deleteAction,
+		findByIdAction,
+		findByUidAction,
+		findAllAction,
+	},
 };
 
-export const USER = slice.name;
-export const userReducer = slice.reducer;
-export const userAction = {
-	createAction,
-	updateAction,
-	deleteAction,
-	findByIdAction,
-	findByUidAction,
-	findAllAction,
-};
+export default IAM_USER_GROUP_TYPE;

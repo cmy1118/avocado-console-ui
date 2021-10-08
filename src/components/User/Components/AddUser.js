@@ -2,10 +2,10 @@ import React, {useCallback} from 'react';
 import {useHistory} from 'react-router-dom';
 
 import useInput from '../../../hooks/useInput';
-import {usersAction} from '../../../reducers/api/IAM/User/users';
 import {useDispatch} from 'react-redux';
 import {Form} from '../../../styles/components/form';
 import {SubTitle} from '../../../styles/components/style';
+import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 
 const AddUser = () => {
 	const history = useHistory();
@@ -28,7 +28,7 @@ const AddUser = () => {
 			e.preventDefault();
 
 			dispatch(
-				usersAction.addUser({
+				IAM_USER.action.addUser({
 					id: id,
 					name: name,
 					email: email,

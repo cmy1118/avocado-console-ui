@@ -8,14 +8,16 @@ import {
 import PropTypes from 'prop-types';
 import Table from './Table';
 import {useDispatch, useSelector} from 'react-redux';
-import {groupsSelector} from '../../reducers/api/IAM/Group/groups';
 import {currentTargetAction} from '../../reducers/currentTarget';
 import {columnsAsType} from '../../utils/TableColumns/index';
-import {userSelector} from '../../reducers/api/IAM/User/user';
+import IAM_USER from '../../reducers/api/IAM/User/User/user';
+import IAM_USER_GROUP from '../../reducers/api/IAM/User/Group/group';
+import IAM_USER_GROUP_TYPE from '../../reducers/api/IAM/User/Group/groupType';
 
 const TableContainer = ({tableKey}) => {
-	const {users} = useSelector(userSelector.all);
-	const {groupTypes, groups} = useSelector(groupsSelector.all);
+	const {users} = useSelector(IAM_USER.selector);
+	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const dispatch = useDispatch();
 
 	const columns = useMemo(() => {

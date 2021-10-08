@@ -2,15 +2,15 @@ import React, {useCallback, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import PropTypes from 'prop-types';
-import {usersSelector} from '../../../reducers/api/IAM/User/users';
 import {TabContentsTitle} from '../../../styles/components/tab';
 import IdentificationDialogBox from '../../DialogBoxs/Form/IdentificationDialogBox';
 import ChangePasswordDialogBox from '../../DialogBoxs/Form/ChangePasswordDialogBox';
+import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 
 const UserInfo = ({userId}) => {
 	const [isIdentificationOpened, setIsIdentificationOpened] = useState(false);
 	const [isChangePasswordOpened, setIsChangePasswordOpened] = useState(false);
-	const {users} = useSelector(usersSelector.all);
+	const {users} = useSelector(IAM_USER.selector);
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
 		userId,

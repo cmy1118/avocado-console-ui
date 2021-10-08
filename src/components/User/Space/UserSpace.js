@@ -7,14 +7,14 @@ import {
 	SubTitle,
 } from '../../../styles/components/style';
 
-import {usersAction, usersSelector} from '../../../reducers/api/IAM/User/users';
 import TableContainer from '../../Table/TableContainer';
 import {currentTargetSelector} from '../../../reducers/currentTarget';
+import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 
 const UserSpace = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const {users} = useSelector(usersSelector.all);
+	const {users} = useSelector(IAM_USER.selector);
 	const {currentTarget} = useSelector(currentTargetSelector.all);
 
 	const onClickLinkToAddUserPage = useCallback(() => {
@@ -25,7 +25,7 @@ const UserSpace = () => {
 	/* roberto : Table_update
     /******************************************/
 	const onClickDeleteUsers = useCallback(() => {
-		dispatch(usersAction.deleteUser({currentTarget}));
+		dispatch(IAM_USER.action.deleteUser({currentTarget}));
 	}, [dispatch, currentTarget]);
 	/******************************************/
 

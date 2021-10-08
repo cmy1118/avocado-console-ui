@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 import useInput from '../../../hooks/useInput';
 import {closeIcon} from '../../../icons/icons';
 import {useDispatch} from 'react-redux';
-import {groupsAction} from '../../../reducers/api/IAM/Group/groups';
 
 const ChangePasswordDialogBox = ({isOpened, setIsOpened}) => {
 	const dispatch = useDispatch();
@@ -25,13 +24,6 @@ const ChangePasswordDialogBox = ({isOpened, setIsOpened}) => {
 	const onSubmitForm = useCallback(() => {
 		console.log(name, description);
 
-		// dispatch(
-		// 	groupsAction.addGroupType({
-		// 		name: name,
-		// 		parentId: null,
-		// 		description: description,
-		// 	}),
-		// );
 		setIsOpened(false);
 	}, [description, name]);
 
