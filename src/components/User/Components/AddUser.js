@@ -1,61 +1,38 @@
 import React, {useCallback} from 'react';
 import {useHistory} from 'react-router-dom';
-
-import useInput from '../../../hooks/useInput';
 import {useDispatch} from 'react-redux';
 import {Form} from '../../../styles/components/form';
 import {SubTitle} from '../../../styles/components/style';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 
+import {useForm} from 'react-hook-form';
+import {ErrorMessage} from '@hookform/error-message';
+
+const regex = {
+	email: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
+	telephone: /^\d{2,3}-\d{3,4}-\d{4}$/,
+	mobile: /^\d{3}-\d{3,4}-\d{4}$/,
+};
+
 const AddUser = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-
-	const [id, onChangeId, setId] = useInput('test');
-	const [name, onChangeName, setName] = useInput('테스트');
-	const [email, onChangeEmail, setEmail] = useInput('test@netand.co.kr');
-	const [telephone, onChangeTelephone, setTelephone] = useInput(
-		'010-0000-0000',
-	);
-	const [mobile, onChangeMobile, setMobile] = useInput('010-0000-0000');
+	const {
+		register,
+		formState: {errors},
+		handleSubmit,
+	} = useForm({criteriaMode: 'all'});
 
 	const onClickCancelAddUser = useCallback(() => {
 		history.push('/users');
 	}, [history]);
 
 	const onSubmitAddUser = useCallback(
-		(e) => {
-			e.preventDefault();
-
-			dispatch(
-				IAM_USER.action.addUser({
-					id: id,
-					name: name,
-					email: email,
-					telephone: telephone,
-					mobile: mobile,
-				}),
-			);
-
-			setId('');
-			setName('');
-			setEmail('');
-			setTelephone('');
-			setMobile('');
+		(data) => {
+			console.log(data);
+			dispatch(IAM_USER.action.addUser(data));
 		},
-		[
-			dispatch,
-			id,
-			name,
-			email,
-			telephone,
-			mobile,
-			setId,
-			setName,
-			setEmail,
-			setTelephone,
-			setMobile,
-		],
+		[dispatch],
 	);
 
 	return (
@@ -70,44 +47,106 @@ const AddUser = () => {
 					<button onClick={onClickCancelAddUser}>취소</button>
 				</div>
 			</SubTitle>
-			<Form id={'add-user-form'} onSubmit={onSubmitAddUser}>
+			<Form id={'add-user-form'} onSubmit={handleSubmit(onSubmitAddUser)}>
 				<input
-					type='text'
-					value={id}
-					onChange={onChangeId}
+					value={'user'}
+					required
 					placeholder={'사용자 계정 ID'}
-					required
+					{...register('id', {
+						required: 'id is required',
+						minLength: {
+							value: 4,
+							message: "It's shorter than the minimum length",
+						},
+						maxLength: {
+							value: 10,
+							message: "It's longer than the maximum length.",
+						},
+					})}
 				/>
+				<ErrorMessage errors={errors} name='id'>
+					{({messages}) =>
+						messages &&
+						Object.entries(messages).map(([type, message]) => (
+							<p key={type}>{message}</p>
+						))
+					}
+				</ErrorMessage>
 				<input
-					type='text'
-					value={name}
-					onChange={onChangeName}
+					value={'테스트'}
+					required
 					placeholder={'사용자 명'}
-					required
+					{...register('name', {
+						required: 'name is required',
+					})}
 				/>
+				<ErrorMessage errors={errors} name='name'>
+					{({messages}) =>
+						messages &&
+						Object.entries(messages).map(([type, message]) => (
+							<p key={type}>{message}</p>
+						))
+					}
+				</ErrorMessage>
 				<input
-					type='email'
-					value={email}
-					onChange={onChangeEmail}
+					value={'avocado@netand.co.kr'}
+					required
 					placeholder={'이메일 주소'}
-					required
+					{...register('email', {
+						required: 'email is required',
+						pattern: {
+							value: regex.email,
+							message: 'invalid email address',
+						},
+					})}
 				/>
+				<ErrorMessage errors={errors} name='email'>
+					{({messages}) =>
+						messages &&
+						Object.entries(messages).map(([type, message]) => (
+							<p key={type}>{message}</p>
+						))
+					}
+				</ErrorMessage>
 				<input
-					type='tel'
-					value={telephone}
-					onChange={onChangeTelephone}
-					pattern='[0]{0,1}[0-9]{2}-[0-9]{4}-[0-9]{4}'
+					value={'02-1234-5678'}
+					required
 					placeholder={'전화번호 형식: +82-(0)70-4469-6801'}
-					required
+					{...register('telephone', {
+						pattern: {
+							value: regex.telephone,
+							message: 'invalid telephone number',
+						},
+					})}
 				/>
+				<ErrorMessage errors={errors} name='telephone'>
+					{({messages}) =>
+						messages &&
+						Object.entries(messages).map(([type, message]) => (
+							<p key={type}>{message}</p>
+						))
+					}
+				</ErrorMessage>
 				<input
-					type='tel'
-					value={mobile}
-					onChange={onChangeMobile}
-					pattern='[0]{0,1}[0-9]{2}-[0-9]{4}-[0-9]{4}'
-					placeholder={'모바일전화번호 형식: +82-(0)70-4469-6801'}
+					value={'010-1234-1410'}
 					required
-				/>
+					placeholder={'모바일전화번호 형식: +82-(0)70-4469-6801'}
+					{...register('mobile', {
+						required: 'mobile number is required',
+						pattern: {
+							value: regex.mobile,
+							message: 'invalid mobile number',
+						},
+					})}
+				/>{' '}
+				<ErrorMessage errors={errors} name='mobile'>
+					{({messages}) =>
+						messages &&
+						Object.entries(messages).map(([type, message]) => (
+							<p key={type}>{message}</p>
+						))
+					}
+				</ErrorMessage>
 			</Form>
 		</>
 	);
