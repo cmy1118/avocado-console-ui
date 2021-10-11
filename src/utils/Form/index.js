@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm} from 'react-hook-form';
 import PropTypes from 'prop-types';
@@ -12,11 +12,14 @@ export const _Form = styled.form`
 const Form = ({id, schema, children, onSubmit}) => {
 	const {
 		register,
-		formState: {errors},
+		formState: {errors, isSubmitSuccessful},
 		handleSubmit,
 		reset,
-		control,
 	} = useForm({resolver: yupResolver(schema)});
+
+	useEffect(() => {
+		if (isSubmitSuccessful) reset();
+	}, [isSubmitSuccessful, reset]);
 
 	return (
 		<_Form id={id} onSubmit={handleSubmit(onSubmit)}>
@@ -27,7 +30,6 @@ const Form = ({id, schema, children, onSubmit}) => {
 								...child.props,
 								register: register,
 								errors: errors,
-								control: control,
 								key: child.props.name,
 							},
 					  })

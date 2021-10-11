@@ -22,7 +22,7 @@ const Input = ({name, register, errors, placeholder}) => {
 };
 
 Input.propTypes = {
-	name: PropTypes.string,
+	name: PropTypes.string.isRequired,
 	register: PropTypes.func,
 	errors: PropTypes.object,
 	control: PropTypes.object,
