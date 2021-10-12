@@ -42,7 +42,13 @@ const GroupTypeSpace = () => {
 				</div>
 			</SubTitle>
 
-			<TableContainer tableKey='groupTypes' />
+			<TableContainer
+				tableKey='groupTypes'
+				isPageable={true}
+				isNumberOfRowsAdjustable={true}
+				isColumnFilterable={true}
+				isSelectable={true}
+			/>
 			<AddGroupTypeDialogBox
 				isOpened={isAddGroupTypeOpened}
 				setIsOpened={setIsAddGroupTypeOpened}

@@ -1,4 +1,4 @@
-export const statusReader = (status) => {
+export const statusConverter = (status) => {
 	switch (status) {
 		case 0:
 			return '정상';
@@ -17,19 +17,19 @@ export const statusReader = (status) => {
 	}
 };
 
-export const passwordExpiryTimeReader = (data) => {
+export const passwordExpiryTimeConverter = (data) => {
 	let diffDate = new Date(data) - new Date();
 
 	return diffDate + '일전';
 };
 
-export const groupReader = (data) => {
+export const numberOfGroupsConverter = (data) => {
 	if (data.length === 0) return '';
 	if (data.length === 1) return data[0];
 	return `${data[0]} 외 ${data.length - 1}`;
 };
 
-export const tagReader = (data) => {
+export const tagConverter = (data) => {
 	if (data.length === 0) return '없음';
 	if (data.length === 1) return data[0].value;
 	return `${data[0].value} 외 ${data.length - 1}`;

@@ -16,7 +16,14 @@ const AddGroupSpace = () => {
 			</PathContainer>
 			<AddGroup />
 			그룹에 사용자 추가
-			<TableContainer tableKey='addUsersToGroup' />
+			{/*<TableContainer*/}
+			{/*	tableKey='addUsersToGroup'*/}
+			{/*	isPageable={true}*/}
+			{/*	isNumberOfRowsAdjustable={true}*/}
+			{/*	isColumnFilterable={true}*/}
+			{/*	isSortable={true}*/}
+			{/*	isDnDPossible={true}*/}
+			{/*/>*/}
 		</IamContainer>
 	);
 };

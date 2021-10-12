@@ -1,43 +1,52 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {
-	groupReader,
-	passwordExpiryTimeReader,
-	statusReader,
-	tagReader,
-} from '../../utils/reader';
+import React, {useMemo} from 'react';
 import PropTypes from 'prop-types';
-import Table from './Table';
+
 import {useDispatch, useSelector} from 'react-redux';
-import {columnsAsType} from '../../utils/TableColumns/index';
+import {getColumnsAsKey} from '../../utils/TableColumns/index';
 import IAM_USER from '../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../reducers/api/IAM/User/Group/groupType';
-import CURRENT_TARGET from '../../reducers/currentTarget';
+import Table from './Table';
+import {
+	numberOfGroupsConverter,
+	passwordExpiryTimeConverter,
+	statusConverter,
+	tagConverter,
+} from '../../utils/tableDataConverter';
 
-const TableContainer = ({tableKey}) => {
+const TableContainer = ({
+	tableKey,
+	isSearchable = false,
+	isSearchFilterable = false,
+	isRefreshable = false,
+	isPageable = false,
+	isNumberOfRowsAdjustable = false,
+	isColumnFilterable = false,
+	isSortable = false,
+	isSelectable = false,
+	isDnDPossible = false,
+	dndKey,
+}) => {
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const dispatch = useDispatch();
-
-	const columns = useMemo(() => {
-		return columnsAsType[tableKey];
-	}, [tableKey]);
 
 	const data = useMemo(() => {
 		switch (tableKey) {
 			case 'users':
 				return users.map((v) => ({
 					...v,
-					tags: tagReader(v.tags),
-					groups: groupReader(
+
+					tags: tagConverter(v.tags),
+					groups: numberOfGroupsConverter(
 						v.groups.map(
 							(val) =>
 								groups.find((val2) => val2.id === val).name,
 						),
 					),
-					status: statusReader(v.status),
-					passwordExpiryTime: passwordExpiryTimeReader(
+					status: statusConverter(v.status),
+					passwordExpiryTime: passwordExpiryTimeConverter(
 						v.passwordExpiryTime,
 					),
 				}));
@@ -73,30 +82,36 @@ const TableContainer = ({tableKey}) => {
 		}
 	}, [tableKey, users, groups, groupTypes]);
 
-	const [selectedRows, setSelectedRows] = useState([]);
-
-	useEffect(() => {
-		selectedRows &&
-			dispatch(
-				CURRENT_TARGET.action.setCurrentTarget({
-					selectedRows,
-					tableKey,
-				}),
-			);
-	}, [dispatch, selectedRows, tableKey]);
-
 	return (
-		<div>
-			<Table
-				columns={columns}
-				data={data}
-				onSelectedRowsChange={setSelectedRows}
-			/>
-		</div>
+		<Table
+			tableKey={tableKey}
+			columns={getColumnsAsKey[tableKey]}
+			data={data}
+			isSearchable={isSearchable}
+			isSearchFilterable={isSearchFilterable}
+			isRefreshable={isRefreshable}
+			isPageable={isPageable}
+			isNumberOfRowsAdjustable={isNumberOfRowsAdjustable}
+			isColumnFilterable={isColumnFilterable}
+			isSortable={isSortable}
+			isSelectable={isSelectable}
+			isDnDPossible={isDnDPossible}
+			dndKey={dndKey}
+		/>
 	);
 };
 
 TableContainer.propTypes = {
 	tableKey: PropTypes.string.isRequired,
+	isSearchable: PropTypes.bool,
+	isSearchFilterable: PropTypes.bool,
+	isRefreshable: PropTypes.bool,
+	isPageable: PropTypes.bool,
+	isNumberOfRowsAdjustable: PropTypes.bool,
+	isColumnFilterable: PropTypes.bool,
+	isSortable: PropTypes.bool,
+	isSelectable: PropTypes.bool,
+	isDnDPossible: PropTypes.bool,
+	dndKey: PropTypes.string,
 };
 export default TableContainer;

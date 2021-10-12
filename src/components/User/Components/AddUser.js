@@ -3,9 +3,9 @@ import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {SubTitle} from '../../../styles/components/style';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
-import Form from '../../../utils/Form';
+import Form from '../../RecycleComponents/Form';
 import * as yup from 'yup';
-import Input from '../../../utils/Form/Input';
+import FormTextBox from '../../RecycleComponents/FormTextBox';
 
 const AddUser = () => {
 	const history = useHistory();
@@ -51,11 +51,11 @@ const AddUser = () => {
 				schema={schema}
 				onSubmit={onSubmitAddUser}
 			>
-				<Input name={'id'} placeholder={'id'} />
-				<Input name={'name'} placeholder={'name'} />
-				<Input name={'email'} placeholder={'email'} />
-				<Input name={'telephone'} placeholder={'telephone'} />
-				<Input name={'mobile'} placeholder={'mobile'} />
+				<FormTextBox name={'id'} placeholder={'id'} />
+				<FormTextBox name={'name'} placeholder={'name'} />
+				<FormTextBox name={'email'} placeholder={'email'} />
+				<FormTextBox name={'telephone'} placeholder={'telephone'} />
+				<FormTextBox name={'mobile'} placeholder={'mobile'} />
 			</Form>
 		</>
 	);

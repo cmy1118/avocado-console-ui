@@ -226,30 +226,6 @@ const slice = createSlice({
 		error: null,
 	},
 	reducers: {
-		loadUsers: (state, action) => {
-			state.users.push(
-				...Array(30)
-					.fill()
-					.map(() => ({
-						uid: faker.datatype.uuid(),
-						id: faker.datatype.uuid(),
-						name: faker.name.findName(),
-						email: faker.internet.email(),
-						telephone: faker.phone.phoneNumber(),
-						mobile: faker.phone.phoneNumber(),
-						groups: [],
-						status: 0,
-						authType: 'ID/PW',
-						MFA: null,
-						passwordExpiryTime: String(faker.date.future()),
-						// passwordExpiryTime: 1,
-						tags: [],
-						lastConsoleLogin: String(faker.date.past()),
-						creationDate: String(faker.date.past()),
-					})),
-			);
-			state.columns;
-		},
 		addUser: (state, action) => {
 			state.users.unshift({
 				uid: action.payload.id + '_' + state.index.toString(),
@@ -269,10 +245,6 @@ const slice = createSlice({
 			});
 			state.index++;
 		},
-		/******************************************/
-		/* roberto : Table_update 삭제 기능추가
-		/*
-        /******************************************/
 
 		deleteUser: (state, action) => {
 			let users = state.users;

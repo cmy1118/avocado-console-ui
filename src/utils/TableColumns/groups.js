@@ -1,4 +1,4 @@
-import {LINK} from '../detail';
+import {LINK} from '../data';
 
 export const groupColumns = [
 	{
@@ -27,6 +27,7 @@ export const groupColumns = [
 		accessor: 'creationDate',
 	},
 ];
+
 export const groupTypeColumns = [
 	{
 		Header: '그룹 유형',
@@ -46,6 +47,7 @@ export const groupTypeColumns = [
 		accessor: 'creationDate',
 	},
 ];
+
 export const addUsersToGroupColumns = [
 	{
 		Header: '사용자 계정',
