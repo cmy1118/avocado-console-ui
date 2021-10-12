@@ -6,6 +6,7 @@ import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import Form from '../../RecycleComponents/Form';
 import * as yup from 'yup';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
+import FormSelectBox from '../../RecycleComponents/FormSelectBox';
 
 const AddUser = () => {
 	const history = useHistory();
@@ -56,6 +57,10 @@ const AddUser = () => {
 				<FormTextBox name={'email'} placeholder={'email'} />
 				<FormTextBox name={'telephone'} placeholder={'telephone'} />
 				<FormTextBox name={'mobile'} placeholder={'mobile'} />
+				<FormSelectBox
+					name={'fruits'}
+					options={['apple', 'banana', 'orange']}
+				/>
 			</Form>
 		</>
 	);
