@@ -34,3 +34,8 @@ export const tagConverter = (data) => {
 	if (data.length === 1) return data[0].value;
 	return `${data[0].value} 외 ${data.length - 1}`;
 };
+
+export const roleTypeConverter = (companyId) => {
+	if (companyId) return 'Private';
+	return 'Public';
+};

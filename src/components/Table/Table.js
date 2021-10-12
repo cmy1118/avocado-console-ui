@@ -9,6 +9,7 @@ import {
 	useTable,
 } from 'react-table';
 import {useDispatch} from 'react-redux';
+
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
 import FilterColumnsContextMenu from '../ContextMenu/FilterColumnsContextMenu';
@@ -36,10 +37,6 @@ const Table = ({
 		return v.id;
 	}, []);
 
-	const [
-		isColumnFilterContextMenuOpened,
-		setIsColumnFilterContextMenuOpened,
-	] = useState(false);
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -136,10 +133,6 @@ const Table = ({
 		e.preventDefault();
 	}, []);
 
-	const onClickSelectColumns = useCallback(() => {
-		setIsColumnFilterContextMenuOpened(true);
-	}, [setIsColumnFilterContextMenuOpened]);
-
 	useMountedLayoutEffect(() => {
 		isSelectable &&
 			dispatch(
@@ -181,7 +174,7 @@ const Table = ({
 				isNumberOfRowsAdjustable={isNumberOfRowsAdjustable}
 				isColumnFilterable={isColumnFilterable}
 				isSelectable={isSelectable}
-				onClickSelectColumns={onClickSelectColumns}
+				allColumns={allColumns}
 			/>
 
 			<table
@@ -245,13 +238,6 @@ const Table = ({
 					})}
 				</tbody>
 			</table>
-			{isColumnFilterable && (
-				<FilterColumnsContextMenu
-					isOpened={isColumnFilterContextMenuOpened}
-					setIsOpened={setIsColumnFilterContextMenuOpened}
-					allColumns={allColumns}
-				/>
-			)}
 		</div>
 	);
 };

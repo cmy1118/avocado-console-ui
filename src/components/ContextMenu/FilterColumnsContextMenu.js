@@ -1,25 +1,28 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useRef} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import {useDropdownMenu, useRootClose} from 'react-overlays';
 
 const _Container = styled.div`
 	z-index: 99;
 	position: absolute;
-	top: 30%;
-	left: 80%;
-	right: auto;
-	bottom: auto;
-	transform: translate(-50%, -50%);
 	width: 460px;
+	background: lightblue;
 `;
 
 const FilterColumnsContextMenu = ({isOpened, setIsOpened, allColumns}) => {
+	const ref = useRef();
+
 	const onClickCloseContextMenu = useCallback(() => {
 		setIsOpened(false);
 	}, [setIsOpened]);
 
+	useRootClose(ref, onClickCloseContextMenu, {
+		disabled: !isOpened,
+	});
+
 	return isOpened ? (
-		<_Container style={{background: 'lightblue'}}>
+		<_Container ref={ref} alignEnd>
 			<div>
 				표시되는 열선택
 				<span>

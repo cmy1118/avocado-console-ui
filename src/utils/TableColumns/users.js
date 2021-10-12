@@ -65,6 +65,7 @@ export const addTagsToUserColumns = [
 		accessor: 'rolesLength',
 	},
 ];
+
 export const rolesIncludedInUserOnAddPageColumns = [
 	{
 		Header: '역할 이름',
@@ -73,7 +74,7 @@ export const rolesIncludedInUserOnAddPageColumns = [
 	},
 	{
 		Header: '역할 유형',
-		accessor: 'type', //has to be changed
+		accessor: 'type',
 	},
 	{
 		Header: '사용자 수',
@@ -82,5 +83,16 @@ export const rolesIncludedInUserOnAddPageColumns = [
 	{
 		Header: '생성 일시',
 		accessor: 'creationDate',
+	},
+];
+
+export const rolesExcludedFromUserOnAddPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
 	},
 ];

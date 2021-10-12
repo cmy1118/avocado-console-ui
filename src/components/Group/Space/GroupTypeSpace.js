@@ -1,4 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react';
+import {useSelector} from 'react-redux';
+
 import {
 	IamContainer,
 	PathContainer,
@@ -7,10 +9,9 @@ import {
 import {Link, useHistory} from 'react-router-dom';
 import AddGroupTypeDialogBox from '../../DialogBoxs/Form/AddGroupTypeDialogBox';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
-import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
-import Table from '../../Table/Table';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
+import Table from '../../Table/Table';
 
 const GroupTypeSpace = () => {
 	const history = useHistory();
