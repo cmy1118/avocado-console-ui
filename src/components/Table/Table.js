@@ -155,6 +155,8 @@ const Table = ({
 			isSelectable &&
 				dispatch(
 					CURRENT_TARGET.action.setSelectedRows({
+						//테이블 처음 렌더링시 selectedRowIds => {} 값으로 초기화됨
+						selectedRows: selectedRowIds,
 						tableKey: tableKey,
 					}),
 				);
