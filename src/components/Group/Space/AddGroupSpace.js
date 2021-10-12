@@ -16,7 +16,7 @@ const AddGroupSpace = () => {
 			<AddGroup />
 			그룹에 사용자 추가
 			{/*<TableContainer*/}
-			{/*	tableKey='addUsersToGroup'*/}
+			{/*	tableKey='usersIncludedInGroupOnAddPage'*/}
 			{/*	isPageable={true}*/}
 			{/*	isNumberOfRowsAdjustable={true}*/}
 			{/*	isColumnFilterable={true}*/}

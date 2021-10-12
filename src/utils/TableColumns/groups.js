@@ -48,7 +48,7 @@ export const groupTypeColumns = [
 	},
 ];
 
-export const addUsersToGroupColumns = [
+export const usersIncludedInGroupOnAddPageColumns = [
 	{
 		Header: '사용자 계정',
 		accessor: 'id',
