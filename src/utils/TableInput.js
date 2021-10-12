@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 const TableInput = ({obj}) => {
 	const [value, setValue] = useState(obj.value);
+	console.log(obj);
 	const onChange = (e) => {
 		setValue(e.target.value);
 	};

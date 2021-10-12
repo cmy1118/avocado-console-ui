@@ -13,13 +13,14 @@ const AddUser = () => {
 
 	// 이부분은 만들어서 넣어주면 됩니다.
 	const phoneRegex = /^[0-9]{3}[-]+[0-9]{4}[-]+[0-9]{4}$/;
-	const schema = yup.object().shape({
+
+	const schema = {
 		id: yup.string().min(2).max(10, 'content').required(),
 		name: yup.string().required(),
 		email: yup.string().email().required(),
 		telephone: yup.string().matches(phoneRegex, 'invalid phone').required(),
 		mobile: yup.string().matches(phoneRegex, 'invalid phone').required(),
-	});
+	};
 
 	const onClickCancelAddUser = useCallback(() => {
 		history.push('/users');

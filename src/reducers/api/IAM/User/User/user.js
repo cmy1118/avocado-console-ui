@@ -9,7 +9,7 @@ const NAME = 'IAM_USER';
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 		// eslint-disable-next-line no-console
 		console.log(client);
 		const response = await axios.post(
@@ -38,7 +38,7 @@ const createAction = createAsyncThunk(
 const updateAction = createAsyncThunk(
 	`${NAME}/UPDATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.put(
 			`/open/api/v1/users/${payload.uid}`,
@@ -62,7 +62,7 @@ const updateAction = createAsyncThunk(
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.delete(
 			`/open/api/v1/users/${payload.uid}`,
@@ -81,7 +81,7 @@ const deleteAction = createAsyncThunk(
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.get(
 			`/open/api/v1/users/id/${payload.id}`,
@@ -100,7 +100,7 @@ const findByIdAction = createAsyncThunk(
 const findByUidAction = createAsyncThunk(
 	`${NAME}/FIND_BY_UID`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.get(`/open/api/v1/users/${payload.uid}`, {
 			headers: {
@@ -116,7 +116,7 @@ const findByUidAction = createAsyncThunk(
 const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.get(`/open/api/v1/users`, {
 			params: {

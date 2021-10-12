@@ -90,11 +90,13 @@ const TagTableContainer = ({tableKey}) => {
 					groupsLength: v.groups.length,
 				}));
 
-			// case 'addTagsToUser':
-			// 	return userTags.map((v) => ({
-			// 		...v,
-			// 		rolesLength: v.permissions.length,
-			// 	}));
+			case 'addTagsToUser': {
+				const tags = users.find((v) => v.uid === 'user1').tags;
+				return tags.map((v) => ({
+					...v,
+					rolesLength: v.permissions.length,
+				}));
+			}
 
 			default:
 				return [];
