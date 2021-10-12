@@ -1,7 +1,7 @@
 import React, {forwardRef, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 
-const SettingsCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
+const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 	const defaultRef = useRef();
 	const resolvedRef = ref || defaultRef;
 
@@ -9,17 +9,13 @@ const SettingsCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 		resolvedRef.current.indeterminate = indeterminate;
 	}, [resolvedRef, indeterminate]);
 
-	return (
-		<>
-			<input type='checkbox' ref={resolvedRef} {...rest} />
-		</>
-	);
+	return <input type='checkbox' ref={resolvedRef} {...rest} />;
 });
 
-SettingsCheckbox.propTypes = {
+TableCheckbox.propTypes = {
 	indeterminate: PropTypes.bool,
 };
 
-SettingsCheckbox.displayName = 'SettingsCheckbox';
+TableCheckbox.displayName = 'TableCheckbox';
 
-export default SettingsCheckbox;
+export default TableCheckbox;

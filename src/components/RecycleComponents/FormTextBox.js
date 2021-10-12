@@ -1,8 +1,8 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {ErrorMessage} from '@hookform/error-message';
 import PropTypes from 'prop-types';
 
-const Input = ({name, register, errors, placeholder}) => {
+const FormTextBox = ({name, register, errors, placeholder}) => {
 	return (
 		<>
 			<input placeholder={placeholder} {...register(name)} />
@@ -18,7 +18,7 @@ const Input = ({name, register, errors, placeholder}) => {
 	);
 };
 
-Input.propTypes = {
+FormTextBox.propTypes = {
 	name: PropTypes.string.isRequired,
 	register: PropTypes.func,
 	errors: PropTypes.object,
@@ -26,4 +26,4 @@ Input.propTypes = {
 	placeholder: PropTypes.string,
 };
 
-export default Input;
+export default FormTextBox;

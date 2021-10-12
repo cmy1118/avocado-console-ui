@@ -1,24 +1,8 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import {IamContainer, PathContainer} from '../../../styles/components/style';
 import {Link} from 'react-router-dom';
-import DnDTable from '../../Table/DndTable/DnDTable';
-import {useSelector} from 'react-redux';
-import SETTING from '../../../reducers/setting';
 
 const PolicySpace = () => {
-	const {data1, data2} = useSelector(SETTING.selector);
-
-	const columns = [
-		{
-			Header: 'id',
-			accessor: 'id',
-		},
-		{
-			Header: 'name',
-			accessor: 'name',
-		},
-	];
-
 	return (
 		<IamContainer>
 			<PathContainer>
@@ -26,22 +10,8 @@ const PolicySpace = () => {
 				<div>{' > '}</div>
 				<Link to='/policies'>정책</Link>
 			</PathContainer>
-			<div>Rolicy Space</div>
-			<div style={{display: 'flex'}}>
-				<DnDTable
-					tableKey={'table1'}
-					columns={columns}
-					data={data1}
-					isSelectable={true}
-					between={'1'}
-				/>
-				<DnDTable
-					tableKey={'table2'}
-					columns={columns}
-					data={data2}
-					between={'1'}
-				/>
-			</div>
+			<div>Policy Space</div>
+			<div style={{display: 'flex'}}></div>
 		</IamContainer>
 	);
 };

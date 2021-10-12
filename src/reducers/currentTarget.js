@@ -7,47 +7,6 @@ const slice = createSlice({
 	},
 
 	reducers: {
-		setCurrentTarget: (state, action) => {
-			const tablekey = action.payload.tableKey;
-			const selectedRows = action.payload.selectedRows;
-			const isTablekey = state.currentTarget.find(
-				(v) => v.tablekey === tablekey,
-			);
-			let CheckedElement = [];
-
-			const CurrentTargetChecked = (tablekey) => {
-				if (Array.isArray(selectedRows) && selectedRows.length === 0) {
-					state.currentTarget.find(
-						(v) => v.tablekey === tablekey,
-					).selected = [];
-				} else {
-					if (tablekey === 'users') {
-						selectedRows.map((v) => {
-							CheckedElement.push(v.uid);
-						});
-					} else {
-						selectedRows.map((v) => {
-							CheckedElement.push(v.id);
-						});
-					}
-
-					state.currentTarget.find(
-						(v) => v.tablekey === tablekey,
-					).selected = CheckedElement;
-				}
-			};
-
-			if (isTablekey) {
-				CurrentTargetChecked(tablekey);
-			} else {
-				state.currentTarget.push({
-					tablekey: tablekey,
-					selected: [],
-				});
-				CurrentTargetChecked(tablekey);
-			}
-		},
-
 		changeSelectedRows: (state, action) => {
 			state.currentTarget = state.currentTarget.filter(
 				(v) => v.tableKey !== action.payload.tableKey,

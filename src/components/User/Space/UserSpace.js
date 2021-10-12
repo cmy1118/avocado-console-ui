@@ -46,7 +46,14 @@ const UserSpace = () => {
 					<button onClick={onClickDeleteUsers}>삭제</button>
 				</div>
 			</SubTitle>
-			<TableContainer tableKey='users' />
+			<TableContainer
+				tableKey='users'
+				isPageable={true}
+				isNumberOfRowsAdjustable={true}
+				isColumnFilterable={true}
+				isSortable={true}
+				isSelectable={true}
+			/>
 		</IamContainer>
 	);
 };

@@ -1,5 +1,6 @@
-import TableInput from '../TableInput';
-import {LINK} from '../detail';
+import TableTextBox from '../../components/RecycleComponents/TableTextBox';
+import {LINK} from '../data';
+
 export const usersColumns = [
 	{
 		accessor: 'id',
@@ -49,14 +50,15 @@ export const addTagsToUserColumns = [
 		Header: 'Key(태그명)',
 		accessor: 'name',
 		// eslint-disable-next-line react/display-name,react/react-in-jsx-scope
-		Cell: (cellObj) => <TableInput obj={cellObj} />,
+		Cell: (cellObj) => <TableTextBox obj={cellObj} />,
+
 		id: LINK,
 	},
 	{
 		Header: '값(태그)',
 		accessor: 'value',
 		// eslint-disable-next-line react/display-name,react/react-in-jsx-scope
-		Cell: (cellObj) => <TableInput obj={cellObj} />,
+		Cell: (cellObj) => <TableTextBox obj={cellObj} />,
 	},
 	{
 		Header: '권한 수',
