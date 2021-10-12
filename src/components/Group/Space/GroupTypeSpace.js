@@ -1,16 +1,29 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {
 	IamContainer,
 	PathContainer,
 	SubTitle,
 } from '../../../styles/components/style';
 import {Link, useHistory} from 'react-router-dom';
-import TableContainer from '../../Table/TableContainer';
 import AddGroupTypeDialogBox from '../../DialogBoxs/Form/AddGroupTypeDialogBox';
+import {getColumnsAsKey} from '../../../utils/TableColumns';
+import {useSelector} from 'react-redux';
+import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
+import Table from '../../Table/Table';
 
 const GroupTypeSpace = () => {
 	const history = useHistory();
 	const [isAddGroupTypeOpened, setIsAddGroupTypeOpened] = useState(false);
+	const {groupTypes, groups} = useSelector(IAM_USER_GROUP.selector);
+
+	const data = useMemo(() => {
+		return groupTypes.map((v) => ({
+			...v,
+			numberOfGroups: groups.filter(
+				(val) => val.clientGroupTypeId === v.id,
+			).length,
+		}));
+	}, [groupTypes, groups]);
 
 	const onClickAddGroups = useCallback(() => {
 		history.push('/groups/add');
@@ -42,8 +55,10 @@ const GroupTypeSpace = () => {
 				</div>
 			</SubTitle>
 
-			<TableContainer
+			<Table
 				tableKey='groupTypes'
+				columns={getColumnsAsKey['groupTypes']}
+				data={data}
 				isPageable={true}
 				isNumberOfRowsAdjustable={true}
 				isColumnFilterable={true}

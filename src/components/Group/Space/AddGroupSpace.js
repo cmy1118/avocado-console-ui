@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {IamContainer, PathContainer} from '../../../styles/components/style';
 import AddGroup from '../Components/AddGroup';
-import TableContainer from '../../Table/TableContainer';
 
 const AddGroupSpace = () => {
 	return (

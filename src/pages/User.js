@@ -6,10 +6,6 @@ import AddUserSpace from '../components/User/Space/AddUserSpace';
 import UserDescriptionSpace from '../components/User/Space/UserDescriptionSpace';
 
 const User = ({match}) => {
-	useEffect(() => {
-		console.log(match.params);
-	}, [match]);
-
 	return (
 		<>
 			{match.path === '/users/add' ? (

@@ -1,19 +1,27 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
 	IamContainer,
 	PathContainer,
 	SubTitle,
 } from '../../../styles/components/style';
 import {Link, useHistory} from 'react-router-dom';
-import TableContainer from '../../Table/TableContainer';
+
 import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
-import IAM_USER from '../../../reducers/api/IAM/User/User/user';
+
+import {getColumnsAsKey} from '../../../utils/TableColumns';
+import Table from '../../Table/Table';
 
 const GroupSpace = () => {
 	const history = useHistory();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const {users} = useSelector(IAM_USER.selector);
+
+	const data = useMemo(() => {
+		return groups.map((v) => ({
+			...v,
+			numberOfUsers: v.members.length,
+		}));
+	}, [groups]);
 
 	const onCLickLinkToAddGroup = useCallback(() => {
 		history.push('/groups/add');
@@ -33,8 +41,10 @@ const GroupSpace = () => {
 					<button>삭제</button>
 				</div>
 			</SubTitle>
-			<TableContainer
+			<Table
 				tableKey='groups'
+				columns={getColumnsAsKey['groups']}
+				data={data}
 				isPageable={true}
 				isNumberOfRowsAdjustable={true}
 				isColumnFilterable={true}
