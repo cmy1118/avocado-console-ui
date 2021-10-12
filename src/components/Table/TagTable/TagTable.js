@@ -1,4 +1,4 @@
-import React, {useCallback, memo, useEffect} from 'react';
+import React, {useCallback, memo, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -21,6 +21,7 @@ const TagTable = ({
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const INITIAL_SELECTED_ROW_IDS = {};
+	const [tagToggle, setTagToggle] = useState(false);
 
 	const {
 		getTableProps,
@@ -166,6 +167,9 @@ const TagTable = ({
 											<td
 												{...cell.getCellProps()}
 												key={index}
+												onDoubleClick={() =>
+													setTagToggle(true)
+												}
 											>
 												{cell.render('Cell')}
 											</td>

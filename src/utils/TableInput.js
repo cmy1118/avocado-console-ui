@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const TableInput = ({obj}) => {
 	const [value, setValue] = useState(obj.value);
-	console.log(obj);
+	const [toggle, setToggle] = useState(false);
 	const onChange = (e) => {
 		setValue(e.target.value);
 	};
@@ -23,19 +23,26 @@ const TableInput = ({obj}) => {
 		};
 		originalData.splice(index, 1, editedData);
 		console.log(originalData);
+		setToggle(false);
 	};
 	useEffect(() => {
 		setValue(obj.value);
 	}, [obj]);
 
 	return (
-		<input
-			// style={{border: 'none'}}
-			type={typeof obj.value}
-			value={value}
-			onChange={onChange}
-			onBlur={onBlur}
-		/>
+		<div onDoubleClick={() => setToggle(true)}>
+			{toggle ? (
+				<input
+					// style={{border: 'none'}}
+					type={typeof obj.value}
+					value={value}
+					onChange={onChange}
+					onBlur={onBlur}
+				/>
+			) : (
+				<div>{value}</div>
+			)}
+		</div>
 	);
 };
 
