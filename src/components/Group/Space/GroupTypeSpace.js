@@ -10,11 +10,13 @@ import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import Table from '../../Table/Table';
+import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 
 const GroupTypeSpace = () => {
 	const history = useHistory();
 	const [isAddGroupTypeOpened, setIsAddGroupTypeOpened] = useState(false);
-	const {groupTypes, groups} = useSelector(IAM_USER_GROUP.selector);
+	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
 	const data = useMemo(() => {
 		return groupTypes.map((v) => ({
