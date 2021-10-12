@@ -1,13 +1,17 @@
-import {addTagsToUserColumns, usersColumns} from './users';
-import {addUsersToGroupColumns, groupColumns, groupTypeColumns} from './groups';
+import {addTagsToUserOnAddPageColumns, usersColumns} from './users';
+import {
+	usersIncludedInGroupOnAddPageColumns,
+	groupColumns,
+	groupTypeColumns,
+} from './groups';
 
 // 형식 { key : columns }
 export const getColumnsAsKey = {
 	/* users */
 	users: usersColumns,
-	addTagsToUser: addTagsToUserColumns,
+	addTagsToUserOnAddPage: addTagsToUserOnAddPageColumns,
 	/* groups */
 	groups: groupColumns,
 	groupTypes: groupTypeColumns,
-	addUsersToGroup: addUsersToGroupColumns,
+	usersIncludedInGroupOnAddPage: usersIncludedInGroupOnAddPageColumns,
 };

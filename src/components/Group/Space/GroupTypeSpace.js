@@ -11,6 +11,7 @@ import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import Table from '../../Table/Table';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
+import {tableKeys} from '../../../utils/data';
 
 const GroupTypeSpace = () => {
 	const history = useHistory();
@@ -58,8 +59,8 @@ const GroupTypeSpace = () => {
 			</SubTitle>
 
 			<Table
-				tableKey='groupTypes'
-				columns={getColumnsAsKey['groupTypes']}
+				tableKey={tableKeys.groupTypes}
+				columns={getColumnsAsKey[tableKeys.groupTypes]}
 				data={data}
 				isPageable={true}
 				isNumberOfRowsAdjustable={true}

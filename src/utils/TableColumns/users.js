@@ -45,7 +45,7 @@ export const usersColumns = [
 	},
 ];
 
-export const addTagsToUserColumns = [
+export const addTagsToUserOnAddPageColumns = [
 	{
 		Header: 'Key(태그명)',
 		accessor: 'name',

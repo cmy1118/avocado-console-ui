@@ -11,6 +11,7 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import Table from '../../Table/Table';
+import {tableKeys} from '../../../utils/data';
 
 const GroupSpace = () => {
 	const history = useHistory();
@@ -42,8 +43,8 @@ const GroupSpace = () => {
 				</div>
 			</SubTitle>
 			<Table
-				tableKey='groups'
-				columns={getColumnsAsKey['groups']}
+				tableKey={tableKeys.groups}
+				columns={getColumnsAsKey[tableKeys.groups]}
 				data={data}
 				isPageable={true}
 				isNumberOfRowsAdjustable={true}
