@@ -1,5 +1,4 @@
 import {createSelector, createSlice} from '@reduxjs/toolkit';
-import {indexOf} from 'lodash';
 
 const slice = createSlice({
 	name: 'currentTarget',

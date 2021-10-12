@@ -1,4 +1,4 @@
-export const statusConvertor = (status) => {
+export const statusConverter = (status) => {
 	switch (status) {
 		case 0:
 			return '정상';
@@ -17,13 +17,13 @@ export const statusConvertor = (status) => {
 	}
 };
 
-export const passwordExpiryTimeConvertor = (data) => {
+export const passwordExpiryTimeConverter = (data) => {
 	let diffDate = new Date(data) - new Date();
 
 	return diffDate + '일전';
 };
 
-export const numberOfGroupsConvertor = (data) => {
+export const numberOfGroupsConverter = (data) => {
 	if (data.length === 0) return '';
 	if (data.length === 1) return data[0];
 	return data[0] + ' 외 ' + (data.length - 1).toString();

@@ -47,7 +47,6 @@ const Table = ({
 		headerGroups,
 		prepareRow,
 		allColumns,
-		getToggleHideAllColumnsProps,
 		page, // Instead of using 'rows', we'll use page,
 		canPreviousPage,
 		canNextPage,
@@ -227,7 +226,7 @@ const Table = ({
 					))}
 				</thead>
 				<tbody {...getTableBodyProps()}>
-					{page.map((row, i) => {
+					{page.map((row) => {
 						prepareRow(row);
 						return (
 							<tr

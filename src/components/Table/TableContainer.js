@@ -1,9 +1,9 @@
 import React, {useMemo} from 'react';
 import {
-	numberOfGroupsConvertor,
-	passwordExpiryTimeConvertor,
-	statusConvertor,
-} from '../../utils/tableDataConvertor';
+	numberOfGroupsConverter,
+	passwordExpiryTimeConverter,
+	statusConverter,
+} from '../../utils/tableDataConverter';
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
 import {usersSelector} from '../../reducers/users';
@@ -33,14 +33,14 @@ const TableContainer = ({
 			case 'users':
 				return users.map((v) => ({
 					...v,
-					groups: numberOfGroupsConvertor(
+					groups: numberOfGroupsConverter(
 						v.groups.map(
 							(val) =>
 								groups.find((val2) => val2.id === val).name,
 						),
 					),
-					status: statusConvertor(v.status),
-					passwordExpiryTime: passwordExpiryTimeConvertor(
+					status: statusConverter(v.status),
+					passwordExpiryTime: passwordExpiryTimeConverter(
 						v.passwordExpiryTime,
 					),
 				}));
