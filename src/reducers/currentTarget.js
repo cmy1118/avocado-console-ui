@@ -1,8 +1,7 @@
 import {createSelector, createSlice} from '@reduxjs/toolkit';
-import {indexOf} from 'lodash';
 
 const slice = createSlice({
-	name: 'currentTarget',
+	name: 'CURRENT_TARGET',
 	initialState: {
 		currentTarget: [],
 	},
@@ -74,9 +73,12 @@ const selectAllState = createSelector(
 	},
 );
 
-export const currentTargetSelector = {
-	all: (state) => selectAllState(state[CURRENT_TARGET]),
+const CURRENT_TARGET = {
+	name: slice.name,
+	reducer: slice.reducer,
+	selector: (state) => selectAllState(state[slice.name]),
+	action: slice.actions,
+	asyncAction: {},
 };
-export const CURRENT_TARGET = slice.name;
-export const currentTargetReducer = slice.reducer;
-export const currentTargetAction = slice.actions;
+
+export default CURRENT_TARGET;

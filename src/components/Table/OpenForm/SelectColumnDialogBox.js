@@ -2,8 +2,8 @@ import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 
-import {dialogBoxAction, dialogBoxSelector} from '../../../reducers/dialogBoxs';
 import PropTypes from 'prop-types';
+import DIALOG_BOX from '../../../reducers/dialogBoxs';
 
 const _DialogBox = styled.div`
 	z-index: 99;
@@ -18,9 +18,9 @@ const _DialogBox = styled.div`
 
 const SelectColumnDialogBox = ({allColumns, getToggleHideAllColumnsProps}) => {
 	const dispatch = useDispatch();
-	const {form} = useSelector(dialogBoxSelector.all);
+	const {form} = useSelector(DIALOG_BOX.selector);
 	const onClickCloseDialogBox = useCallback(async () => {
-		await dispatch(dialogBoxAction.closeForm());
+		await dispatch(DIALOG_BOX.action.closeForm());
 	}, [dispatch]);
 
 	return form.open && form.key === 'hideColumn' ? (

@@ -4,12 +4,12 @@ import {Link, useHistory, useLocation} from 'react-router-dom';
 import {IamContainer, PathContainer} from '../../../styles/components/style';
 import styled from 'styled-components';
 import {useSelector} from 'react-redux';
-import {usersSelector} from '../../../reducers/users';
 import {statusReader} from '../../../utils/reader';
 import {Tab, TabItem} from '../../../styles/components/tab';
 import UserInfo from '../Components/UserInfo';
 import UserGroups from '../Components/UserGroups';
-import queryString from 'querystring';
+import qs from 'qs';
+import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 
 const _Title = styled.div`
 	display: flex;
@@ -18,8 +18,8 @@ const _Title = styled.div`
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
-	const {search} = useLocation();
-	const {users} = useSelector(usersSelector.all);
+	const {search, location} = useLocation();
+	const {users} = useSelector(IAM_USER.selector);
 
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
@@ -35,6 +35,9 @@ const UserDescriptionSpace = ({userId}) => {
 		},
 		[],
 	);
+
+	console.log(qs.parse(history.location));
+	console.log(qs.parse(search, {ignoreQueryPrefix: true}));
 
 	// if userId does not exist, direct to 404 page
 	useEffect(() => {
@@ -79,14 +82,15 @@ const UserDescriptionSpace = ({userId}) => {
 					<TabItem onClick={onClickChangeTab('tag')}>태그</TabItem>
 				</Tab>
 
-				{queryString.parse(search).tabs === 'user' && (
-					<UserInfo userId={userId} />
+				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+					'user' && <UserInfo userId={userId} />}
+				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+					'group' && <UserGroups userId={userId} />}
+				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+					'role' && <div>role</div>}
+				{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'tag' && (
+					<div>tag</div>
 				)}
-				{queryString.parse(search).tabs === 'group' && (
-					<UserGroups userId={userId} />
-				)}
-				{queryString.parse(search).tabs === 'role' && <div>role</div>}
-				{queryString.parse(search).tabs === 'tag' && <div>tag</div>}
 			</div>
 		</IamContainer>
 	);

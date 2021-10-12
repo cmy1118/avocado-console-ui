@@ -10,9 +10,8 @@ import PropTypes from 'prop-types';
 import useInput from '../../../hooks/useInput';
 import {closeIcon} from '../../../icons/icons';
 import {useDispatch} from 'react-redux';
-import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 
-const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
+const IdentificationDialogBox = ({isOpened, setIsOpened}) => {
 	const dispatch = useDispatch();
 
 	const [name, onChangeName] = useInput('');
@@ -23,16 +22,8 @@ const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
 	}, [setIsOpened]);
 
 	const onSubmitForm = useCallback(() => {
-		console.log(name, description);
-
-		dispatch(
-			IAM_USER_GROUP_TYPE.action.addGroupType({
-				name: name,
-				parentId: null,
-				description: description,
-			}),
-		);
 		setIsOpened(false);
+		console.log('인증 완료 api 받아서 패스워드 변경 폼 open 처리');
 	}, [description, name]);
 
 	return (
@@ -43,7 +34,7 @@ const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
 			shouldCloseOnOverlayClick={false}
 		>
 			<DialogBoxHeader>
-				<div>Add Group Type Dialog Box</div>
+				<div>Identification Dialog Box</div>
 				<IconButton onClick={onClickCloseDialogBox}>
 					{closeIcon}
 				</IconButton>
@@ -52,15 +43,18 @@ const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
 			<Form onSubmit={onSubmitForm}>
 				<input
 					type='text'
-					placeholder={'그룹 유형'}
+					placeholder={'E-mail 주소'}
 					onChange={onChangeName}
 					required
 				/>
-				<textarea
-					placeholder={'설명'}
+				<button type='button'>인증번호 전송</button>
+				<input
+					type='number'
+					placeholder={'인증번호 입력'}
 					onChange={onChangeDescription}
 					required
 				/>
+				<button>인증하기</button>
 			</Form>
 
 			<DialogBoxFooter>
@@ -71,9 +65,9 @@ const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
 	);
 };
 
-AddGroupTypeDialogBox.propTypes = {
+IdentificationDialogBox.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 };
 
-export default AddGroupTypeDialogBox;
+export default IdentificationDialogBox;

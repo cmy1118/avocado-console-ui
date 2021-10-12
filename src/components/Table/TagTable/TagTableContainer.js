@@ -6,9 +6,6 @@ import {
 } from '../../../utils/reader';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
-import {usersSelector} from '../../../reducers/users';
-import {groupsSelector} from '../../../reducers/groups';
-import {currentTargetAction} from '../../../reducers/currentTarget';
 import TagTable from './TagTable';
 import {
 	addTagsToUserColumns,
@@ -19,6 +16,10 @@ import {
 	groupColumns,
 	groupTypeColumns,
 } from '../../../utils/TableColumns/groups';
+import IAM_USER from '../../../reducers/api/IAM/User/User/user';
+import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
+import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
 
 const keys = {
 	users: 'users',
@@ -26,8 +27,9 @@ const keys = {
 
 const TagTableContainer = ({tableKey}) => {
 	const [selectedRows, setSelectedRows] = useState([]);
-	const {users, userTags} = useSelector(usersSelector.all);
-	const {groupTypes, groups} = useSelector(groupsSelector.all);
+	const {users} = useSelector(IAM_USER.selector);
+	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const dispatch = useDispatch();
 
 	const columns = useMemo(() => {
@@ -88,21 +90,26 @@ const TagTableContainer = ({tableKey}) => {
 					groupsLength: v.groups.length,
 				}));
 
-			case 'addTagsToUser':
-				return userTags.map((v) => ({
+			case 'addTagsToUser': {
+				const tags = users.find((v) => v.uid === 'user1').tags;
+				return tags.map((v) => ({
 					...v,
 					rolesLength: v.permissions.length,
 				}));
+			}
 
 			default:
 				return [];
 		}
-	}, [tableKey, users, groups, groupTypes, userTags]);
+	}, [tableKey, users, groups, groupTypes]);
 
 	useEffect(() => {
 		selectedRows &&
 			dispatch(
-				currentTargetAction.setCurrentTarget({selectedRows, tableKey}),
+				CURRENT_TARGET.action.setCurrentTarget({
+					selectedRows,
+					tableKey,
+				}),
 			);
 	}, [dispatch, selectedRows, tableKey]);
 

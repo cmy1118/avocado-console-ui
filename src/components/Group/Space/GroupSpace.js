@@ -7,13 +7,13 @@ import {
 import {Link, useHistory} from 'react-router-dom';
 import TableContainer from '../../Table/TableContainer';
 import {useSelector} from 'react-redux';
-import {groupsSelector} from '../../../reducers/groups';
-import {usersSelector} from '../../../reducers/users';
+import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
+import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 
 const GroupSpace = () => {
 	const history = useHistory();
-	const {groups} = useSelector(groupsSelector.all);
-	const {users} = useSelector(usersSelector.all);
+	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {users} = useSelector(IAM_USER.selector);
 
 	const onCLickLinkToAddGroup = useCallback(() => {
 		history.push('/groups/add');

@@ -3,15 +3,10 @@ import {IamContainer, PathContainer} from '../../../styles/components/style';
 import {Link} from 'react-router-dom';
 import DnDTable from '../../Table/DndTable/DnDTable';
 import {useSelector} from 'react-redux';
-import {settingSelector} from '../../../reducers/setting';
-import {
-	groupReader,
-	passwordExpiryTimeReader,
-	statusReader,
-} from '../../../utils/reader';
+import SETTING from '../../../reducers/setting';
 
 const PolicySpace = () => {
-	const {data1, data2} = useSelector(settingSelector.all);
+	const {data1, data2} = useSelector(SETTING.selector);
 
 	const columns = [
 		{

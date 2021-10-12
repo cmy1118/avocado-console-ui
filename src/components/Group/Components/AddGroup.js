@@ -3,8 +3,9 @@ import {SubTitle} from '../../../styles/components/style';
 import {useHistory} from 'react-router-dom';
 import {Form} from '../../../styles/components/form';
 import {useDispatch, useSelector} from 'react-redux';
-import {groupsSelector, groupsAction} from '../../../reducers/groups';
 import useInput from '../../../hooks/useInput';
+import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
+import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 
 const AddGroup = () => {
 	const history = useHistory();
@@ -13,7 +14,8 @@ const AddGroup = () => {
 	 * roberto: userGroup_update
 	 *
 	 ***********************************************************************/
-	const {groupTypes, groups} = useSelector(groupsSelector.all);
+	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
 	const [groupTypesId, setGroupTypesId] = useState('');
 	const [selectedGroupName, setSelectedGroupName] = useState('');
@@ -47,9 +49,8 @@ const AddGroup = () => {
 	const onSubmitAddGroup = useCallback(
 		(e) => {
 			e.preventDefault();
-
 			dispatch(
-				groupsAction.addGroupType({
+				IAM_USER_GROUP_TYPE.action.addGroupType({
 					name: groupName,
 					parentId: selectedParentGroup,
 					description: null,

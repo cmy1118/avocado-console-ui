@@ -10,9 +10,8 @@ import PropTypes from 'prop-types';
 import useInput from '../../../hooks/useInput';
 import {closeIcon} from '../../../icons/icons';
 import {useDispatch} from 'react-redux';
-import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 
-const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
+const ChangePasswordDialogBox = ({isOpened, setIsOpened}) => {
 	const dispatch = useDispatch();
 
 	const [name, onChangeName] = useInput('');
@@ -25,13 +24,6 @@ const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
 	const onSubmitForm = useCallback(() => {
 		console.log(name, description);
 
-		dispatch(
-			IAM_USER_GROUP_TYPE.action.addGroupType({
-				name: name,
-				parentId: null,
-				description: description,
-			}),
-		);
 		setIsOpened(false);
 	}, [description, name]);
 
@@ -43,7 +35,7 @@ const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
 			shouldCloseOnOverlayClick={false}
 		>
 			<DialogBoxHeader>
-				<div>Add Group Type Dialog Box</div>
+				<div>Identification Dialog Box</div>
 				<IconButton onClick={onClickCloseDialogBox}>
 					{closeIcon}
 				</IconButton>
@@ -52,13 +44,20 @@ const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
 			<Form onSubmit={onSubmitForm}>
 				<input
 					type='text'
-					placeholder={'그룹 유형'}
+					placeholder={'E-mail 주소'}
 					onChange={onChangeName}
 					required
 				/>
-				<textarea
-					placeholder={'설명'}
-					onChange={onChangeDescription}
+				<input
+					type='text'
+					placeholder={'E-mail 주소'}
+					onChange={onChangeName}
+					required
+				/>
+				<input
+					type='text'
+					placeholder={'E-mail 주소'}
+					onChange={onChangeName}
 					required
 				/>
 			</Form>
@@ -71,9 +70,9 @@ const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
 	);
 };
 
-AddGroupTypeDialogBox.propTypes = {
+ChangePasswordDialogBox.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 };
 
-export default AddGroupTypeDialogBox;
+export default ChangePasswordDialogBox;
