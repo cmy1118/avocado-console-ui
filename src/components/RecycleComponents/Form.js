@@ -10,13 +10,23 @@ export const _Form = styled.form`
 	flex-direction: column;
 `;
 
-const Form = ({id, schema = {}, children, onSubmit}) => {
+const Form = ({id, schema = {}, children, onSubmit, watcher}) => {
 	const {
 		register,
 		formState: {errors, isSubmitSuccessful},
 		handleSubmit,
 		reset,
+		watch,
 	} = useForm({resolver: yupResolver(yup.object().shape(schema))});
+
+	useEffect(() => {
+		if (!watcher) return;
+		// throttle or debounce 작업이 필요할 듯.
+		const subscription = watch((value) => {
+			watcher(value);
+		});
+		return () => subscription?.unsubscribe();
+	}, [watch]);
 
 	useEffect(() => {
 		if (isSubmitSuccessful) reset();
@@ -25,7 +35,7 @@ const Form = ({id, schema = {}, children, onSubmit}) => {
 	return (
 		<_Form id={id} onSubmit={handleSubmit(onSubmit)}>
 			{React.Children.map(children, (child) => {
-				return child.props.name
+				return child?.props?.name
 					? React.createElement(child.type, {
 							...{
 								...child.props,
@@ -45,6 +55,7 @@ Form.propTypes = {
 	children: PropTypes.array,
 	schema: PropTypes.object,
 	onSubmit: PropTypes.func,
+	watcher: PropTypes.func,
 };
 
 export default Form;

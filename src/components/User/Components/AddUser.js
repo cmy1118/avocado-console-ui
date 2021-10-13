@@ -7,6 +7,7 @@ import Form from '../../RecycleComponents/Form';
 import * as yup from 'yup';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
 import FormSelectBox from '../../RecycleComponents/FormSelectBox';
+import {formKeys} from '../../../utils/data';
 
 const AddUser = () => {
 	const history = useHistory();
@@ -41,14 +42,14 @@ const AddUser = () => {
 				<div>사용자 기본 정보</div>
 
 				<div>
-					<button form={'add-user-form'} type={'submit'}>
+					<button form={formKeys.addUserForm} type={'submit'}>
 						사용자 생성
 					</button>
 					<button onClick={onClickCancelAddUser}>취소</button>
 				</div>
 			</SubTitle>
 			<Form
-				id={'add-user-form'}
+				id={formKeys.addUserForm}
 				schema={schema}
 				onSubmit={onSubmitAddUser}
 			>
@@ -57,10 +58,6 @@ const AddUser = () => {
 				<FormTextBox name={'email'} placeholder={'email'} />
 				<FormTextBox name={'telephone'} placeholder={'telephone'} />
 				<FormTextBox name={'mobile'} placeholder={'mobile'} />
-				<FormSelectBox
-					name={'fruits'}
-					options={['apple', 'banana', 'orange']}
-				/>
 			</Form>
 		</>
 	);

@@ -5,11 +5,11 @@ import {
 	DialogBoxHeader,
 } from '../../../styles/components/dialogBox';
 import {IconButton} from '../../../styles/components/icons';
-import {Form} from '../../../styles/components/form';
 import PropTypes from 'prop-types';
 import useInput from '../../../hooks/useInput';
 import {closeIcon} from '../../../icons/icons';
 import {useDispatch} from 'react-redux';
+import Form from '../../RecycleComponents/Form';
 
 const IdentificationDialogBox = ({isOpened, setIsOpened}) => {
 	const dispatch = useDispatch();

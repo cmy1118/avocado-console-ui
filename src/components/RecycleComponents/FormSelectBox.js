@@ -2,32 +2,29 @@ import React from 'react';
 import {ErrorMessage} from '@hookform/error-message';
 import PropTypes from 'prop-types';
 
-const FormSelectBox = ({name, register, errors, options}) => {
+const FormSelectBox = ({
+	name,
+	register,
+	errors,
+	placeholder,
+	options,
+	...rest
+}) => {
 	return (
-		<>
-			<select {...register(name)}>
-				{options.map((v, i) => {
-					return (
-						<option key={i} value={v}>
-							{v}
-						</option>
-					);
-				})}
-			</select>
-			<ErrorMessage errors={errors} name={name}>
-				{({messages}) =>
-					messages &&
-					Object.entries(messages).map(([type, message]) => (
-						<p key={type}>{message}</p>
-					))
-				}
-			</ErrorMessage>
-		</>
+		<select {...register(name)} {...rest}>
+			<option value=''>{placeholder}</option>
+			{options.map((v) => (
+				<option key={v.value} value={v.value}>
+					{v.name}
+				</option>
+			))}
+		</select>
 	);
 };
 
 FormSelectBox.propTypes = {
 	name: PropTypes.string.isRequired,
+	placeholder: PropTypes.string.isRequired,
 	options: PropTypes.array.isRequired,
 	register: PropTypes.func,
 	errors: PropTypes.object,
