@@ -31,3 +31,8 @@ export const tableKeys = {
 	groups: 'groups', // 사용자 그룹
 	usersIncludedInGroupOnAddPage: 'usersIncludedInGroupOnAddPage',
 };
+
+export const formKeys = {
+	addUserForm: 'add-user-form',
+	addGroupForm: 'add-group-form',
+};

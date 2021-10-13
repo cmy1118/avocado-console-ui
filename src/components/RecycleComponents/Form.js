@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {useForm} from 'react-hook-form';
+import {useForm, useWatch} from 'react-hook-form';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import * as yup from 'yup';
@@ -16,6 +16,8 @@ const Form = ({id, schema = {}, children, onSubmit}) => {
 		formState: {errors, isSubmitSuccessful},
 		handleSubmit,
 		reset,
+		watch,
+		control,
 	} = useForm({resolver: yupResolver(yup.object().shape(schema))});
 
 	useEffect(() => {
@@ -25,12 +27,14 @@ const Form = ({id, schema = {}, children, onSubmit}) => {
 	return (
 		<_Form id={id} onSubmit={handleSubmit(onSubmit)}>
 			{React.Children.map(children, (child) => {
-				return child.props.name
+				return child?.props?.name
 					? React.createElement(child.type, {
 							...{
 								...child.props,
 								register: register,
 								errors: errors,
+								watch: watch,
+								control: control,
 								key: child.props.name,
 							},
 					  })

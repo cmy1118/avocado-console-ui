@@ -6,6 +6,8 @@ import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import Form from '../../RecycleComponents/Form';
 import * as yup from 'yup';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
+import FormComboBox from '../../RecycleComponents/FormComboBox';
+import {formKeys} from '../../../utils/data';
 
 const AddUser = () => {
 	const history = useHistory();
@@ -40,14 +42,14 @@ const AddUser = () => {
 				<div>사용자 기본 정보</div>
 
 				<div>
-					<button form={'add-user-form'} type={'submit'}>
+					<button form={formKeys.addUserForm} type={'submit'}>
 						사용자 생성
 					</button>
 					<button onClick={onClickCancelAddUser}>취소</button>
 				</div>
 			</SubTitle>
 			<Form
-				id={'add-user-form'}
+				id={formKeys.addUserForm}
 				schema={schema}
 				onSubmit={onSubmitAddUser}
 			>

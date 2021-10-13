@@ -1,11 +1,16 @@
 import React, {useCallback, useState} from 'react';
 import {SubTitle} from '../../../styles/components/style';
 import {useHistory} from 'react-router-dom';
-import {Form} from '../../../styles/components/form';
 import {useDispatch, useSelector} from 'react-redux';
 import useInput from '../../../hooks/useInput';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
+import FormComboBox from '../../RecycleComponents/FormComboBox';
+import Form from '../../RecycleComponents/Form';
+import FormTextBox from '../../RecycleComponents/FormTextBox';
+import * as yup from 'yup';
+import {useForm} from 'react-hook-form';
+import {formKeys} from '../../../utils/data';
 
 const AddGroup = () => {
 	const history = useHistory();
@@ -18,24 +23,6 @@ const AddGroup = () => {
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
 	const [groupTypesId, setGroupTypesId] = useState('');
-	const [selectedGroupName, setSelectedGroupName] = useState('');
-	const [type, setType] = useState([]);
-	const [selectedParentGroup, setSelectedParentGroup] = useState('');
-	const [groupName, onChangeGroupName, setGroupName] = useInput('test');
-
-	const ComboGroupTypes = (e) => {
-		const selectedId = e.target.value.split('**')[0];
-		const selected = e.target.value.split('**')[1];
-		setGroupTypesId(selectedId);
-		setSelectedGroupName(selected);
-		setSelectedParentGroup('');
-		setType(groups.filter((x) => x.clientGroupTypeId == selectedId));
-	};
-
-	const ComboGroups = (e) => {
-		const selected = e.target.value;
-		setSelectedParentGroup(selected);
-	};
 
 	/***********************************************************************/
 	const onClickManageGroupType = useCallback(() => {
@@ -46,19 +33,22 @@ const AddGroup = () => {
 		history.push('/groups');
 	}, [history]);
 
-	const onSubmitAddGroup = useCallback(
-		(e) => {
-			e.preventDefault();
-			dispatch(
-				IAM_USER_GROUP_TYPE.action.addGroupType({
-					name: groupName,
-					parentId: selectedParentGroup,
-					description: null,
-				}),
-			);
-		},
-		[dispatch, groupName, selectedParentGroup],
-	);
+	const onSubmitAddGroup = useCallback((data) => {
+		console.log(data);
+		// dispatch(
+		// 	IAM_USER_GROUP_TYPE.action.addGroupType({
+		// 		name: groupName,
+		// 		parentId: selectedParentGroup,
+		// 		description: null,
+		// 	}),
+		// );
+	}, []);
+
+	const schema = {
+		groupType: yup.string().required(),
+		groupId: yup.string().required(),
+		name: yup.string().max(120).required(),
+	};
 
 	return (
 		<>
@@ -69,45 +59,39 @@ const AddGroup = () => {
 					<button onClick={onClickManageGroupType}>
 						그룹 유형 관리
 					</button>
-					<button form={'add-group-form'} type={'submit'}>
+					<button form={formKeys.addGroupForm} type={'submit'}>
 						그룹 생성
 					</button>
 					<button onClick={onClickCancelAddGroup}>취소</button>
 				</div>
 			</SubTitle>
 
-			<div className='selectOption'>
-				<select onChange={ComboGroupTypes}>
-					<option value=''>그룹유형선택</option>
-					{groupTypes.map((item) => (
-						<option
-							key={item.id}
-							value={item.id + '**' + item.name}
-						>
-							{item.name}
-						</option>
-					))}
-				</select>
-				{groupTypesId ? (
-					<select onChange={ComboGroups}>
-						<option value=''>상위그룹 선택</option>
-						{type.map((item) => (
-							<option key={item.id}>{item.name}</option>
-						))}
-					</select>
-				) : (
-					''
-				)}
-			</div>
-
-			<Form id={'add-group-form'} onSubmit={onSubmitAddGroup}>
-				<input
-					type='text'
-					// value={id}
-					onChange={onChangeGroupName}
-					placeholder={'그룹 명'}
-					required
+			<Form
+				id={formKeys.addGroupForm}
+				onSubmit={onSubmitAddGroup}
+				schema={schema}
+			>
+				{/*예시로 생성한 SelectBox 입니다.*/}
+				<FormComboBox
+					placeholder='그룹 유형 선택'
+					name={'groupType'}
+					options={groupTypes.map((v) => {
+						return {value: v.id, name: v.name};
+					})}
+					setValue={setGroupTypesId}
 				/>
+				{groupTypesId && (
+					<FormComboBox
+						placeholder={'상위 그룹 선택'}
+						name={'groupId'}
+						options={groups
+							.filter((x) => x.clientGroupTypeId === groupTypesId)
+							.map((v) => {
+								return {value: v.id, name: v.name};
+							})}
+					/>
+				)}
+				<FormTextBox name={'name'} placeholder={'group name'} />
 			</Form>
 		</>
 	);

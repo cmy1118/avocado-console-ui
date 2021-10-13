@@ -3,23 +3,31 @@ import {ErrorMessage} from '@hookform/error-message';
 import PropTypes from 'prop-types';
 import {useWatch} from 'react-hook-form';
 
-const FormTextBox = ({
+const FormComboBox = ({
 	name,
 	register,
 	errors,
-	control,
-	setValue,
 	placeholder,
+	options,
+	setValue,
+	control,
 }) => {
 	const value = useWatch({name, control});
 	useEffect(() => {
-		console.log(value);
 		if (setValue) setValue(value);
 	}, [value]);
-
 	return (
 		<>
-			<input placeholder={placeholder} {...register(name)} />
+			<select {...register(name)}>
+				<option value='' hidden>
+					{placeholder}
+				</option>
+				{options.map((v) => (
+					<option key={v.value} value={v.value}>
+						{v.name}
+					</option>
+				))}
+			</select>
 			<ErrorMessage errors={errors} name={name}>
 				{({messages}) =>
 					messages &&
@@ -32,13 +40,15 @@ const FormTextBox = ({
 	);
 };
 
-FormTextBox.propTypes = {
+FormComboBox.propTypes = {
 	name: PropTypes.string.isRequired,
+	placeholder: PropTypes.string.isRequired,
+	options: PropTypes.array.isRequired,
 	register: PropTypes.func,
+	watch: PropTypes.func,
+	setValue: PropTypes.func,
 	errors: PropTypes.object,
 	control: PropTypes.object,
-	setValue: PropTypes.func,
-	placeholder: PropTypes.string,
 };
 
-export default FormTextBox;
+export default FormComboBox;
