@@ -6,7 +6,7 @@ import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import Form from '../../RecycleComponents/Form';
 import * as yup from 'yup';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
-import FormSelectBox from '../../RecycleComponents/FormSelectBox';
+import FormComboBox from '../../RecycleComponents/FormComboBox';
 import {formKeys} from '../../../utils/data';
 
 const AddUser = () => {

@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import useInput from '../../../hooks/useInput';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
-import FormSelectBox from '../../RecycleComponents/FormSelectBox';
+import FormComboBox from '../../RecycleComponents/FormComboBox';
 import Form from '../../RecycleComponents/Form';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
 import * as yup from 'yup';
@@ -72,7 +72,7 @@ const AddGroup = () => {
 				schema={schema}
 			>
 				{/*예시로 생성한 SelectBox 입니다.*/}
-				<FormSelectBox
+				<FormComboBox
 					placeholder='그룹 유형 선택'
 					name={'groupType'}
 					options={groupTypes.map((v) => {
@@ -81,7 +81,7 @@ const AddGroup = () => {
 					setValue={setGroupTypesId}
 				/>
 				{groupTypesId && (
-					<FormSelectBox
+					<FormComboBox
 						placeholder={'상위 그룹 선택'}
 						name={'groupId'}
 						options={groups

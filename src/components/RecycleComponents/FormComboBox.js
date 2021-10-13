@@ -3,7 +3,7 @@ import {ErrorMessage} from '@hookform/error-message';
 import PropTypes from 'prop-types';
 import {useWatch} from 'react-hook-form';
 
-const FormSelectBox = ({
+const FormComboBox = ({
 	name,
 	register,
 	errors,
@@ -40,7 +40,7 @@ const FormSelectBox = ({
 	);
 };
 
-FormSelectBox.propTypes = {
+FormComboBox.propTypes = {
 	name: PropTypes.string.isRequired,
 	placeholder: PropTypes.string.isRequired,
 	options: PropTypes.array.isRequired,
@@ -51,4 +51,4 @@ FormSelectBox.propTypes = {
 	control: PropTypes.object,
 };
 
-export default FormSelectBox;
+export default FormComboBox;
