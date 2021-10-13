@@ -39,3 +39,8 @@ export const roleTypeConverter = (companyId) => {
 	if (companyId) return 'Private';
 	return 'Public';
 };
+
+export const parentGroupConverter = (parentId) => {
+	if (parentId) return parentId;
+	return '없음';
+};

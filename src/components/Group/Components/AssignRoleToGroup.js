@@ -11,7 +11,7 @@ const _Tables = styled.div`
 	display: flex;
 `;
 
-const AssignRoleToUser = ({selectedRoles, setSelectedRoles}) => {
+const AssignRoleToGroup = ({selectedRoles, setSelectedRoles}) => {
 	const {roles} = useSelector(IAM_ROLES.selector);
 
 	const data1 = useMemo(() => {
@@ -55,9 +55,9 @@ const AssignRoleToUser = ({selectedRoles, setSelectedRoles}) => {
 	);
 };
 
-AssignRoleToUser.propTypes = {
+AssignRoleToGroup.propTypes = {
 	selectedRoles: PropTypes.array.isRequired,
 	setSelectedRoles: PropTypes.func.isRequired,
 };
 
-export default AssignRoleToUser;
+export default AssignRoleToGroup;

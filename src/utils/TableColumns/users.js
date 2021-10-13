@@ -96,3 +96,107 @@ export const rolesExcludedFromUserOnAddPageColumns = [
 		accessor: 'type',
 	},
 ];
+
+export const userGroupsSummaryColumns = [
+	{
+		Header: '그룹 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '그룹 유형',
+		accessor: 'clientGroupType',
+	},
+	{
+		Header: '권한 수',
+		accessor: 'numberOfRoles',
+	},
+	{
+		Header: '상위 그룹',
+		accessor: 'parentGroup',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+	{
+		Header: '부여 일시',
+		accessor: 'grantData',
+	},
+	{
+		Header: '부여 사용자',
+		accessor: 'grantUser',
+	},
+];
+
+export const userAuthSummaryColumns = [
+	{
+		Header: '인증 유형',
+		accessor: 'type',
+	},
+	{
+		Header: '대체 인증',
+		accessor: 'alterAuth',
+	},
+	{
+		Header: 'MFA(다중인증)',
+		accessor: 'mfa',
+	},
+	{
+		Header: '본인 확인 인증',
+		accessor: 'verification',
+	},
+	{
+		Header: 'Fail Over',
+		accessor: 'failOver',
+	},
+];
+
+export const userRolesSummaryColumns = [
+	{
+		Header: '권한',
+		accessor: 'name',
+	},
+	{
+		Header: '권한 상세',
+		accessor: 'description',
+	},
+	{
+		Header: '정책 명',
+		accessor: 'policyName',
+	},
+	{
+		Header: 'Role 이름',
+		accessor: 'roleName',
+	},
+	{
+		Header: '부여 대상',
+		accessor: 'authTarget',
+	},
+	{
+		Header: '부여 일시',
+		accessor: 'grantData',
+	},
+	{
+		Header: '부여 사용자',
+		accessor: 'grantUser',
+	},
+];
+
+export const userTagsSummaryColumns = [
+	{
+		Header: 'key(태그명)',
+		accessor: 'name',
+	},
+	{
+		Header: '값(태그)',
+		accessor: 'value',
+	},
+	{
+		Header: '권한 수',
+		accessor: 'numberOfPermissions',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];

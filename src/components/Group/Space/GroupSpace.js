@@ -11,17 +11,22 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import Table from '../../Table/Table';
+import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 
 const GroupSpace = () => {
 	const history = useHistory();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
 	const data = useMemo(() => {
 		return groups.map((v) => ({
 			...v,
+			clientGroupType: groupTypes.find(
+				(val) => val.id === v.clientGroupTypeId,
+			).name,
 			numberOfUsers: v.members.length,
 		}));
-	}, [groups]);
+	}, [groups, groupTypes]);
 
 	const onCLickLinkToAddGroup = useCallback(() => {
 		history.push('/groups/add');
