@@ -1,8 +1,22 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ErrorMessage} from '@hookform/error-message';
 import PropTypes from 'prop-types';
+import {useWatch} from 'react-hook-form';
 
-const FormTextBox = ({name, register, errors, placeholder}) => {
+const FormTextBox = ({
+	name,
+	register,
+	errors,
+	control,
+	setValue,
+	placeholder,
+}) => {
+	const value = useWatch({name, control});
+	useEffect(() => {
+		console.log(value);
+		if (setValue) setValue(value);
+	}, [value]);
+
 	return (
 		<>
 			<input placeholder={placeholder} {...register(name)} />
@@ -23,6 +37,7 @@ FormTextBox.propTypes = {
 	register: PropTypes.func,
 	errors: PropTypes.object,
 	control: PropTypes.object,
+	setValue: PropTypes.func,
 	placeholder: PropTypes.string,
 };
 

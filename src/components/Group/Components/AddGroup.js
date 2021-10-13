@@ -23,24 +23,6 @@ const AddGroup = () => {
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
 	const [groupTypesId, setGroupTypesId] = useState('');
-	const [selectedGroupName, setSelectedGroupName] = useState('');
-	const [type, setType] = useState([]);
-	const [selectedParentGroup, setSelectedParentGroup] = useState('');
-	const [groupName, onChangeGroupName, setGroupName] = useInput('test');
-
-	const ComboGroupTypes = (e) => {
-		const selectedId = e.target.value.split('**')[0];
-		const selected = e.target.value.split('**')[1];
-		setGroupTypesId(selectedId);
-		setSelectedGroupName(selected);
-		// setSelectedParentGroup('');
-		setType(groups.filter((x) => x.clientGroupTypeId === selectedId));
-	};
-
-	const ComboGroups = (e) => {
-		const selected = e.target.value;
-		setSelectedParentGroup(selected);
-	};
 
 	/***********************************************************************/
 	const onClickManageGroupType = useCallback(() => {
@@ -68,11 +50,6 @@ const AddGroup = () => {
 		name: yup.string().max(120).required(),
 	};
 
-	const watcher = (data) => {
-		setGroupTypesId(data.groupType);
-		setType(groups.filter((x) => x.clientGroupTypeId === data.groupType));
-	};
-
 	return (
 		<>
 			<SubTitle>
@@ -93,7 +70,6 @@ const AddGroup = () => {
 				id={formKeys.addGroupForm}
 				onSubmit={onSubmitAddGroup}
 				schema={schema}
-				watcher={watcher}
 			>
 				{/*예시로 생성한 SelectBox 입니다.*/}
 				<FormSelectBox
@@ -102,19 +78,19 @@ const AddGroup = () => {
 					options={groupTypes.map((v) => {
 						return {value: v.id, name: v.name};
 					})}
+					setValue={setGroupTypesId}
 				/>
-				{groupTypesId ? (
+				{groupTypesId && (
 					<FormSelectBox
 						placeholder={'상위 그룹 선택'}
 						name={'groupId'}
-						options={type.map((v) => {
-							return {value: v.id, name: v.name};
-						})}
+						options={groups
+							.filter((x) => x.clientGroupTypeId === groupTypesId)
+							.map((v) => {
+								return {value: v.id, name: v.name};
+							})}
 					/>
-				) : (
-					''
 				)}
-				{/*예시로 생성한 SelectBox 입니다.*/}
 				<FormTextBox name={'name'} placeholder={'group name'} />
 			</Form>
 		</>

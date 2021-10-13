@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {useForm} from 'react-hook-form';
+import {useForm, useWatch} from 'react-hook-form';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import * as yup from 'yup';
@@ -10,23 +10,15 @@ export const _Form = styled.form`
 	flex-direction: column;
 `;
 
-const Form = ({id, schema = {}, children, onSubmit, watcher}) => {
+const Form = ({id, schema = {}, children, onSubmit}) => {
 	const {
 		register,
 		formState: {errors, isSubmitSuccessful},
 		handleSubmit,
 		reset,
 		watch,
+		control,
 	} = useForm({resolver: yupResolver(yup.object().shape(schema))});
-
-	useEffect(() => {
-		if (!watcher) return;
-		// throttle or debounce 작업이 필요할 듯.
-		const subscription = watch((value) => {
-			watcher(value);
-		});
-		return () => subscription?.unsubscribe();
-	}, [watch]);
 
 	useEffect(() => {
 		if (isSubmitSuccessful) reset();
@@ -41,6 +33,8 @@ const Form = ({id, schema = {}, children, onSubmit, watcher}) => {
 								...child.props,
 								register: register,
 								errors: errors,
+								watch: watch,
+								control: control,
 								key: child.props.name,
 							},
 					  })
@@ -55,7 +49,6 @@ Form.propTypes = {
 	children: PropTypes.array,
 	schema: PropTypes.object,
 	onSubmit: PropTypes.func,
-	watcher: PropTypes.func,
 };
 
 export default Form;
