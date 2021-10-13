@@ -9,6 +9,7 @@ import DIALOG_BOX from './dialogBoxs';
 import CURRENT_TARGET from './currentTarget';
 import RRM_RESOURCE from './api/RRM/Resource/resource';
 import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
+import IAM_ROLES from './api/IAM/User/Role/roles';
 
 const rootReducer = combineReducers({
 	[SETTING.name]: SETTING.reducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
 	[IAM_USER_GROUP.name]: IAM_USER_GROUP.reducer,
 	[IAM_USER_GROUP_TYPE.name]: IAM_USER_GROUP_TYPE.reducer,
 	[IAM_USER_GROUP_MEMBER.name]: IAM_USER_GROUP_MEMBER.reducer,
+	[IAM_ROLES.name]: IAM_ROLES.reducer,
 	/******************************************/
 	/******************************************/
 	/* seob : RRM reducers

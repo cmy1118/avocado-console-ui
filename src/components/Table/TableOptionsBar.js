@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import PageSizing from './Options/PageSizing';
 import ColumnFilter from './Options/ColumnFilter';
 import Pagination from './Options/Pagination';
 import styled from 'styled-components';
+import FilterColumnsContextMenu from '../ContextMenu/FilterColumnsContextMenu';
 
 const _Container = styled.div`
 	display: flex;
@@ -26,8 +27,17 @@ const TableOptionsBar = ({
 	pageIndex = 0,
 	pageSize,
 	setPageSize,
-	onClickSelectColumns,
+	allColumns,
 }) => {
+	const [
+		isColumnFilterContextMenuOpened,
+		setIsColumnFilterContextMenuOpened,
+	] = useState(false);
+
+	const onClickSelectColumns = useCallback(() => {
+		setIsColumnFilterContextMenuOpened(true);
+	}, [setIsColumnFilterContextMenuOpened]);
+
 	return (
 		<_Container>
 			{/*{isSearchable <Search/>}*/}
@@ -49,7 +59,16 @@ const TableOptionsBar = ({
 				<PageSizing pageSize={pageSize} setPageSize={setPageSize} />
 			)}
 			{isColumnFilterable && (
-				<ColumnFilter onClickOpenSelectColumn={onClickSelectColumns} />
+				<div>
+					<ColumnFilter
+						onClickOpenSelectColumn={onClickSelectColumns}
+					/>
+					<FilterColumnsContextMenu
+						isOpened={isColumnFilterContextMenuOpened}
+						setIsOpened={setIsColumnFilterContextMenuOpened}
+						allColumns={allColumns}
+					/>
+				</div>
 			)}
 		</_Container>
 	);
@@ -72,7 +91,7 @@ TableOptionsBar.propTypes = {
 	pageIndex: PropTypes.number.isRequired,
 	pageSize: PropTypes.number.isRequired,
 	setPageSize: PropTypes.func.isRequired,
-	onClickSelectColumns: PropTypes.func,
+	allColumns: PropTypes.array.isRequired,
 };
 
 export default TableOptionsBar;

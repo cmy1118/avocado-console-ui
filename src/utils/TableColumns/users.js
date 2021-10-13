@@ -5,7 +5,6 @@ export const usersColumns = [
 	{
 		accessor: 'id',
 		Header: '사용자계정',
-		id: LINK,
 	},
 	{
 		accessor: 'name',
@@ -51,8 +50,7 @@ export const addTagsToUserOnAddPageColumns = [
 		accessor: 'name',
 		// eslint-disable-next-line react/display-name,react/react-in-jsx-scope
 		Cell: (cellObj) => <TableTextBox obj={cellObj} />,
-
-		id: LINK,
+		// id: LINK,
 	},
 	{
 		Header: '값(태그)',
@@ -65,15 +63,16 @@ export const addTagsToUserOnAddPageColumns = [
 		accessor: 'rolesLength',
 	},
 ];
+
 export const rolesIncludedInUserOnAddPageColumns = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
-		id: LINK,
+		// id: LINK,
 	},
 	{
 		Header: '역할 유형',
-		accessor: 'type', //has to be changed
+		accessor: 'type',
 	},
 	{
 		Header: '사용자 수',
@@ -84,3 +83,120 @@ export const rolesIncludedInUserOnAddPageColumns = [
 		accessor: 'creationDate',
 	},
 ];
+
+export const rolesExcludedFromUserOnAddPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
+	},
+];
+
+export const userGroupsSummaryColumns = [
+	{
+		Header: '그룹 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '그룹 유형',
+		accessor: 'clientGroupType',
+	},
+	{
+		Header: '권한 수',
+		accessor: 'numberOfRoles',
+	},
+	{
+		Header: '상위 그룹',
+		accessor: 'parentGroup',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+	{
+		Header: '부여 일시',
+		accessor: 'grantData',
+	},
+	{
+		Header: '부여 사용자',
+		accessor: 'grantUser',
+	},
+];
+
+export const userAuthSummaryColumns = [
+	{
+		Header: '인증 유형',
+		accessor: 'type',
+	},
+	{
+		Header: '대체 인증',
+		accessor: 'alterAuth',
+	},
+	{
+		Header: 'MFA(다중인증)',
+		accessor: 'mfa',
+	},
+	{
+		Header: '본인 확인 인증',
+		accessor: 'verification',
+	},
+	{
+		Header: 'Fail Over',
+		accessor: 'failOver',
+	},
+];
+
+export const userRolesSummaryColumns = [
+	{
+		Header: '권한',
+		accessor: 'name',
+	},
+	{
+		Header: '권한 상세',
+		accessor: 'description',
+	},
+	{
+		Header: '정책 명',
+		accessor: 'policyName',
+	},
+	{
+		Header: 'Role 이름',
+		accessor: 'roleName',
+	},
+	{
+		Header: '부여 대상',
+		accessor: 'authTarget',
+	},
+	{
+		Header: '부여 일시',
+		accessor: 'grantData',
+	},
+	{
+		Header: '부여 사용자',
+		accessor: 'grantUser',
+	},
+];
+
+export const userTagsSummaryColumns = [
+	{
+		Header: 'key(태그명)',
+		accessor: 'name',
+	},
+	{
+		Header: '값(태그)',
+		accessor: 'value',
+	},
+	{
+		Header: '권한 수',
+		accessor: 'numberOfPermissions',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+
+export const addTagsToUserColumns = [];

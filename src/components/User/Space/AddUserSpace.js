@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import {IamContainer, PathContainer} from '../../../styles/components/style';
@@ -9,6 +9,8 @@ import AddUserToGroup from '../Components/AddUserToGroup';
 import AddUser from '../Components/AddUser';
 
 const AddUserSpace = () => {
+	const [selectedRoles, setSelectedRoles] = useState([]);
+
 	return (
 		<IamContainer>
 			<PathContainer>
@@ -23,7 +25,10 @@ const AddUserSpace = () => {
 
 			<AddUserToGroup />
 
-			<AssignRoleToUser />
+			<AssignRoleToUser
+				selectedRoles={selectedRoles}
+				setSelectedRoles={setSelectedRoles}
+			/>
 
 			<AddTagToUser />
 		</IamContainer>

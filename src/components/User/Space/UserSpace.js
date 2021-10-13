@@ -76,11 +76,11 @@ const UserSpace = () => {
 				tableKey={tableKeys.users}
 				columns={getColumnsAsKey[tableKeys.users]}
 				data={data}
-				isPageable={true}
-				isNumberOfRowsAdjustable={true}
-				isColumnFilterable={true}
-				isSortable={true}
-				isSelectable={true}
+				isPageable
+				isNumberOfRowsAdjustable
+				isColumnFilterable
+				isSortable
+				isSelectable
 			/>
 		</IamContainer>
 	);

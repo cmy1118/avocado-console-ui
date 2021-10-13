@@ -1,28 +1,32 @@
 import React, {useCallback, useMemo} from 'react';
+import {Link, useHistory} from 'react-router-dom';
+
 import {
 	IamContainer,
 	PathContainer,
 	SubTitle,
 } from '../../../styles/components/style';
-import {Link, useHistory} from 'react-router-dom';
-
 import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
-
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import Table from '../../Table/Table';
 import {tableKeys} from '../../../utils/data';
+import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 
 const GroupSpace = () => {
 	const history = useHistory();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
 	const data = useMemo(() => {
 		return groups.map((v) => ({
 			...v,
+			clientGroupType: groupTypes.find(
+				(val) => val.id === v.clientGroupTypeId,
+			).name,
 			numberOfUsers: v.members.length,
 		}));
-	}, [groups]);
+	}, [groups, groupTypes]);
 
 	const onCLickLinkToAddGroup = useCallback(() => {
 		history.push('/groups/add');
@@ -46,11 +50,11 @@ const GroupSpace = () => {
 				tableKey={tableKeys.groups}
 				columns={getColumnsAsKey[tableKeys.groups]}
 				data={data}
-				isPageable={true}
-				isNumberOfRowsAdjustable={true}
-				isColumnFilterable={true}
-				isSortable={true}
-				isSelectable={true}
+				isPageable
+				isNumberOfRowsAdjustable
+				isColumnFilterable
+				isSortable
+				isSelectable
 			/>
 		</IamContainer>
 	);
