@@ -88,7 +88,7 @@ export const groupsIncludedInUserOnAddPageColumns = [
 	{
 		Header: '그룹명',
 		accessor: 'name',
-		// id: LINK,
+		id: LINK,
 	},
 	{
 		Header: '그룹 유형',
@@ -115,6 +115,6 @@ export const groupsExcludedFromUserOnAddPageColumns = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'type', //has to be changed
+		accessor: 'clientGroupTypeId', //has to be changed
 	},
 ];

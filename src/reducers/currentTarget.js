@@ -3,23 +3,36 @@ import {createSelector, createSlice} from '@reduxjs/toolkit';
 const slice = createSlice({
 	name: 'CURRENT_TARGET',
 	initialState: {
-		currentTarget: [],
+		currentTarget: {},
 	},
-
 	reducers: {
 		changeSelectedRows: (state, action) => {
-			state.currentTarget = state.currentTarget.filter(
-				(v) => v.tableKey !== action.payload.tableKey,
-			);
-			state.currentTarget.push(action.payload);
+			state.currentTarget[action.payload.tableKey] =
+				action.payload.selected;
 		},
-
 		setSelectedRows: (state, action) => {
-			state.currentTarget = state.currentTarget.filter(
-				(v) => v.tableKey !== action.payload.tableKey,
-			);
+			delete state.currentTarget[action.payload.tableKey];
 		},
 	},
+
+	// initialState: {
+	// 	currentTarget: [],
+	// },
+	//
+	// reducers: {
+	// 	changeSelectedRows: (state, action) => {
+	// 		state.currentTarget = state.currentTarget.filter(
+	// 			(v) => v.tableKey !== action.payload.tableKey,
+	// 		);
+	// 		state.currentTarget.push(action.payload);
+	// 	},
+	//
+	// 	setSelectedRows: (state, action) => {
+	// 		state.currentTarget = state.currentTarget.filter(
+	// 			(v) => v.tableKey !== action.payload.tableKey,
+	// 		);
+	// 	},
+	// },
 });
 
 const selectAllState = createSelector(

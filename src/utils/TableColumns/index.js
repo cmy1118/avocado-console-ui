@@ -2,6 +2,7 @@ import {
 	addTagsToUserColumns,
 	usersColumns,
 	groupsIncludedInUserOnAddPageColumns,
+	groupsExcludedFromUserOnAddPageColumns,
 } from './users';
 import {addUsersToGroupColumns, groupColumns, groupTypeColumns} from './groups';
 
@@ -11,6 +12,7 @@ export const getColumnsAsKey = {
 	users: usersColumns,
 	addTagsToUser: addTagsToUserColumns,
 	groupsIncludedInUserOnAddPageColumns: groupsIncludedInUserOnAddPageColumns,
+	groupsExcludedFromUserOnAddPageColumns: groupsExcludedFromUserOnAddPageColumns,
 	/* groups */
 	groups: groupColumns,
 	groupTypes: groupTypeColumns,

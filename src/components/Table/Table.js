@@ -96,6 +96,15 @@ const Table = ({
 
 	const onDragStart = useCallback(
 		(e) => {
+			/********************************************/
+			dispatch(
+				CURRENT_TARGET.action.changeSelectedRows({
+					tableKey: tableKey,
+					selected: e.target.id,
+				}),
+			);
+			/********************************************/
+
 			e.dataTransfer.setData('id', e.target.id);
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
@@ -112,11 +121,11 @@ const Table = ({
 		(e) => {
 			e.preventDefault();
 
-			console.log(
-				e.dataTransfer.getData('tableKey'),
-				e.dataTransfer.getData('id'),
-				tableKey,
-			);
+			// console.log(
+			// 	e.dataTransfer.getData('tableKey'),
+			// 	e.dataTransfer.getData('id'),
+			// 	tableKey,
+			// );
 
 			if (
 				e.dataTransfer.getData('tableKey') !== tableKey &&
@@ -152,6 +161,7 @@ const Table = ({
 	//componentWillUnmount
 	useEffect(() => {
 		return () => {
+			console.log('selectedRowIds', selectedRowIds);
 			isSelectable &&
 				dispatch(
 					CURRENT_TARGET.action.setSelectedRows({
