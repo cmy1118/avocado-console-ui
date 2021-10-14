@@ -5,30 +5,30 @@ import Table from '../../Table/Table';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useDispatch, useSelector} from 'react-redux';
 
-const AddTagToUser = () => {
+const AddTagToGroup = () => {
 	const dispatch = useDispatch();
-	const {user, currentTarget} = useSelector(CURRENT_TARGET.selector);
-	const columns = getColumnsAsKey[tableKeys.addTagsToUserOnAddPage];
-	const target = currentTarget[tableKeys.addTagsToUserOnAddPage];
+	const {group, currentTarget} = useSelector(CURRENT_TARGET.selector);
+	const columns = getColumnsAsKey[tableKeys.addTagsToGroupOnAddPage];
+	const target = currentTarget[tableKeys.addTagsToGroupOnAddPage];
 
 	const onClickAddRow = useCallback(() => {
-		dispatch(CURRENT_TARGET.action.addTagDataOnAddUser());
+		dispatch(CURRENT_TARGET.action.addTagDataOnAddGroup());
 	}, [dispatch]);
 
 	const onClickDeleteRow = useCallback(() => {
 		if (!target) return;
-		dispatch(CURRENT_TARGET.action.deleteTagDataOnAddUser(target));
+		dispatch(CURRENT_TARGET.action.deleteTagDataOnAddGroup(target));
 	}, [dispatch, target]);
 
 	const data = useMemo(() => {
-		return user.tags.map((v, i) => {
+		return group.tags.map((v, i) => {
 			return {
 				...v,
 				id: i,
 				rolesLength: v.roles.length,
 			};
 		});
-	}, [user]);
+	}, [group]);
 
 	return (
 		<>
@@ -39,7 +39,7 @@ const AddTagToUser = () => {
 				<button onClick={onClickDeleteRow}>태그 삭제</button>
 			</div>
 			<Table
-				tableKey={tableKeys.addTagsToUserOnAddPage}
+				tableKey={tableKeys.addTagsToGroupOnAddPage}
 				data={data}
 				columns={columns}
 				isSelectable
@@ -47,4 +47,4 @@ const AddTagToUser = () => {
 		</>
 	);
 };
-export default AddTagToUser;
+export default AddTagToGroup;

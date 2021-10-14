@@ -12,7 +12,12 @@ const slice = createSlice({
 				{name: 'type', value: 'white', roles: [1]},
 			],
 		},
-		group: {data: [], users: [], roles: [], tags: []},
+		group: {
+			data: [],
+			users: [],
+			roles: [],
+			tags: [],
+		},
 		role: {},
 		currentTarget: {},
 	},
@@ -40,7 +45,7 @@ const slice = createSlice({
 		},
 
 		// tags
-		addTagData: (state) => {
+		addTagDataOnAddUser: (state) => {
 			const newData = {
 				name: '',
 				value: '',
@@ -48,13 +53,32 @@ const slice = createSlice({
 			};
 			state.user.tags.push(newData);
 		},
-		deleteTagData: (state, {payload}) => {
+		deleteTagDataOnAddUser: (state, {payload}) => {
+			if (!payload) return;
 			for (let value of payload) {
 				state.user.tags.splice(value, 1);
 			}
 		},
-		saveTagData: (state, {payload}) => {
+		saveTagDataOnAddUser: (state, {payload}) => {
 			state.user.tags = payload;
+		},
+		//
+		addTagDataOnAddGroup: (state) => {
+			const newData = {
+				name: '',
+				value: '',
+				roles: [],
+			};
+			state.group.tags.push(newData);
+		},
+		deleteTagDataOnAddGroup: (state, {payload}) => {
+			if (!payload) return;
+			for (let value of payload) {
+				state.group.tags.splice(value, 1);
+			}
+		},
+		saveTagDataOnAddGroup: (state, {payload}) => {
+			state.group.tags = payload;
 		},
 	},
 });

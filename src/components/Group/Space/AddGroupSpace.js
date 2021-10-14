@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {IamContainer, PathContainer} from '../../../styles/components/style';
 import AddGroup from '../Components/AddGroup';
 import AssignRoleToGroup from '../Components/AssignRoleToGroup';
+import AddTagToGroup from '../Components/AddTagToGroup';
 
 const AddGroupSpace = () => {
 	const [selectedRoles, setSelectedRoles] = useState([]);
@@ -22,6 +23,8 @@ const AddGroupSpace = () => {
 				selectedRoles={selectedRoles}
 				setSelectedRoles={setSelectedRoles}
 			/>
+
+			<AddTagToGroup />
 		</IamContainer>
 	);
 };

@@ -1,4 +1,7 @@
 import {LINK} from '../data';
+import TableTextBox from '../../components/RecycleComponents/TableTextBox';
+import CURRENT_TARGET from '../../reducers/currentTarget';
+import React from 'react';
 
 export const groupColumns = [
 	{
@@ -69,6 +72,38 @@ export const usersIncludedInGroupOnAddPageColumns = [
 	{
 		Header: '생성 일시',
 		accessor: 'creationDate',
+	},
+];
+
+export const addTagsToGroupOnAddPageColumns = [
+	{
+		Header: 'Key(태그명)',
+		accessor: 'name',
+		Cell: function Component(cellObj) {
+			return (
+				<TableTextBox
+					cellObj={cellObj}
+					onSubmit={CURRENT_TARGET.action.saveTagDataOnAddGroup}
+				/>
+			);
+		},
+		// id: LINK,
+	},
+	{
+		Header: '값(태그)',
+		accessor: 'value',
+		Cell: function Component(cellObj) {
+			return (
+				<TableTextBox
+					cellObj={cellObj}
+					onSubmit={CURRENT_TARGET.action.saveTagDataOnAddGroup}
+				/>
+			);
+		},
+	},
+	{
+		Header: '권한 수',
+		accessor: 'rolesLength',
 	},
 ];
 

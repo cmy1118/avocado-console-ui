@@ -53,7 +53,7 @@ export const addTagsToUserOnAddPageColumns = [
 			return (
 				<TableTextBox
 					cellObj={cellObj}
-					onSubmit={CURRENT_TARGET.action.saveTagData}
+					onSubmit={CURRENT_TARGET.action.saveTagDataOnAddUser}
 				/>
 			);
 		},
@@ -66,7 +66,7 @@ export const addTagsToUserOnAddPageColumns = [
 			return (
 				<TableTextBox
 					cellObj={cellObj}
-					onSubmit={CURRENT_TARGET.action.saveTagData}
+					onSubmit={CURRENT_TARGET.action.saveTagDataOnAddUser}
 				/>
 			);
 		},
@@ -211,5 +211,3 @@ export const userTagsSummaryColumns = [
 		accessor: 'creationDate',
 	},
 ];
-
-export const addTagsToUserColumns = [];
