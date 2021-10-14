@@ -1,9 +1,12 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import * as _ from 'lodash';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
+import {useDispatch} from 'react-redux';
 
-const TableTextBox = ({obj}) => {
-	const [value, setValue] = useState(obj.value);
+const TableTextBox = ({cellObj, onSubmit}) => {
+	const dispatch = useDispatch();
+	const ref = useRef(null);
+	const [isOpenInput, setIsOpenInput] = useState(!cellObj.value);
+	const [value, setValue] = useState(cellObj.value);
 
 	const onChange = useCallback(
 		(e) => {
@@ -14,40 +17,48 @@ const TableTextBox = ({obj}) => {
 
 	const onBlur = useCallback(
 		(e) => {
-			console.log(obj.column.id);
-			console.log(obj.row.original);
-			const originalData = obj.data;
+			const originalData = cellObj.data;
 			const index = originalData.findIndex(
-				(v) =>
-					v.id === obj.row.original.id &&
-					v.name === obj.row.original.name,
+				(v) => v.id === cellObj.row.original.id,
 			);
 			const editedData = {
-				...obj.row.original,
-				[obj.column.id]: e.target.value,
+				...cellObj.row.original,
+				[cellObj.column.id]: e.target.value,
 			};
-			originalData.splice(index, 1, editedData);
-			console.log(originalData);
+			const changedData = originalData.slice();
+			changedData.splice(index, 1, editedData);
+			dispatch(onSubmit(changedData));
+			setIsOpenInput(false);
 		},
-		[obj],
+		[cellObj, dispatch, onSubmit],
 	);
 
 	useEffect(() => {
-		setValue(obj.value);
-	}, [obj]);
+		setValue(cellObj.value);
+		!cellObj.value && setIsOpenInput(true);
+	}, [cellObj]);
 
-	return (
+	useEffect(() => {
+		if (cellObj.column.Header === cellObj.columns[0].Header)
+			ref.current?.focus();
+	}, [cellObj.column.Header, cellObj.columns]);
+
+	return isOpenInput ? (
 		<input
-			type={typeof obj.value}
+			ref={ref}
+			type={typeof cellObj.value}
 			value={value}
 			onChange={onChange}
 			onBlur={onBlur}
 		/>
+	) : (
+		<div onDoubleClick={() => setIsOpenInput(true)}>{value}</div>
 	);
 };
 
 TableTextBox.propTypes = {
-	obj: PropTypes.object.isRequired,
+	cellObj: PropTypes.object.isRequired,
+	onSubmit: PropTypes.func.isRequired,
 };
 
 export default TableTextBox;

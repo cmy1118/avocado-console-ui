@@ -50,6 +50,7 @@ const Table = ({
 		nextPage,
 		previousPage,
 		setPageSize,
+		flatRows,
 		state: {pageIndex, pageSize, selectedRowIds},
 	} = useTable(
 		{

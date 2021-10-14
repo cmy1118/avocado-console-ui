@@ -1,5 +1,6 @@
+import React from 'react';
 import TableTextBox from '../../components/RecycleComponents/TableTextBox';
-import {LINK} from '../data';
+import CURRENT_TARGET from '../../reducers/currentTarget';
 
 export const usersColumns = [
 	{
@@ -48,15 +49,27 @@ export const addTagsToUserOnAddPageColumns = [
 	{
 		Header: 'Key(태그명)',
 		accessor: 'name',
-		// eslint-disable-next-line react/display-name,react/react-in-jsx-scope
-		Cell: (cellObj) => <TableTextBox obj={cellObj} />,
+		Cell: function Component(cellObj) {
+			return (
+				<TableTextBox
+					cellObj={cellObj}
+					onSubmit={CURRENT_TARGET.action.saveTagData}
+				/>
+			);
+		},
 		// id: LINK,
 	},
 	{
 		Header: '값(태그)',
 		accessor: 'value',
-		// eslint-disable-next-line react/display-name,react/react-in-jsx-scope
-		Cell: (cellObj) => <TableTextBox obj={cellObj} />,
+		Cell: function Component(cellObj) {
+			return (
+				<TableTextBox
+					cellObj={cellObj}
+					onSubmit={CURRENT_TARGET.action.saveTagData}
+				/>
+			);
+		},
 	},
 	{
 		Header: '권한 수',

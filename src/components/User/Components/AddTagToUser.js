@@ -1,27 +1,47 @@
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {tableKeys} from '../../../utils/data';
-import {useSelector} from 'react-redux';
-import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import Table from '../../Table/Table';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
+import {useDispatch, useSelector} from 'react-redux';
 
 const AddTagToUser = () => {
-	const {users} = useSelector(IAM_USER.selector);
+	const dispatch = useDispatch();
+	const {user, currentTarget} = useSelector(CURRENT_TARGET.selector);
 	const columns = getColumnsAsKey[tableKeys.addTagsToUserOnAddPage];
-	const data = [];
+	const target = currentTarget[tableKeys.addTagsToUserOnAddPage];
+
+	const onClickAddRow = useCallback(() => {
+		dispatch(CURRENT_TARGET.action.addTagData());
+	}, [dispatch]);
+
+	const onClickDeleteRow = useCallback(() => {
+		dispatch(CURRENT_TARGET.action.deleteTagData(target));
+	}, [dispatch, target]);
+
+	const data = useMemo(() => {
+		return user.tags.map((v, i) => {
+			return {
+				...v,
+				id: i,
+				rolesLength: v.roles.length,
+			};
+		});
+	}, [user]);
 
 	return (
 		<>
 			<div>태그 추가</div>
 
 			<div>
-				<button>태그 추가</button>
-				<button>태그 삭제</button>
+				<button onClick={onClickAddRow}>태그 추가</button>
+				<button onClick={onClickDeleteRow}>태그 삭제</button>
 			</div>
 			<Table
 				tableKey={tableKeys.addTagsToUserOnAddPage}
 				data={data}
 				columns={columns}
+				isSelectable
 			/>
 		</>
 	);

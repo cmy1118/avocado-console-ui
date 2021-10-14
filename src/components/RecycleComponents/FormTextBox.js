@@ -12,10 +12,10 @@ const FormTextBox = ({
 	placeholder,
 }) => {
 	const value = useWatch({name, control});
+
 	useEffect(() => {
-		console.log(value);
 		if (setValue) setValue(value);
-	}, [value]);
+	}, [setValue, value]);
 
 	return (
 		<>

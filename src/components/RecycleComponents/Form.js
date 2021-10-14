@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {useForm, useWatch} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import * as yup from 'yup';

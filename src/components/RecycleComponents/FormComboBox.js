@@ -15,7 +15,7 @@ const FormComboBox = ({
 	const value = useWatch({name, control});
 	useEffect(() => {
 		if (setValue) setValue(value);
-	}, [value]);
+	}, [setValue, value]);
 	return (
 		<>
 			<select {...register(name)}>
