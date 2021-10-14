@@ -52,6 +52,7 @@ const UserDescriptionSpace = ({userId}) => {
 	const tagData = useMemo(() => {
 		return user.tags.map((v) => ({
 			...v,
+			id: v.name,
 			numberOfPermissions: v.permissions.length,
 		}));
 	}, [user]);
@@ -84,6 +85,7 @@ const UserDescriptionSpace = ({userId}) => {
 					<Link to={`/users/${userId}`}>{user?.id}</Link>
 				</PathContainer>
 			</div>
+
 			<div>
 				<_Title>
 					<div>요약 [ {user?.id} ]</div>

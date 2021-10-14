@@ -30,6 +30,9 @@ export const tableKeys = {
 	groupTypes: 'groupTypes', // 그룹 유형 관리
 	groups: 'groups', // 사용자 그룹
 	usersIncludedInGroupOnAddPage: 'usersIncludedInGroupOnAddPage',
+	groupUsersSummary: 'groupUsersSummary',
+	groupRolesSummary: 'groupRolesSummary',
+	groupTagsSummary: 'groupTagsSummary',
 };
 
 export const formKeys = {

@@ -11,7 +11,10 @@ import {
 } from './users';
 import {
 	groupColumns,
+	groupRolesSummaryColumns,
+	groupTagsSummaryColumns,
 	groupTypeColumns,
+	groupUsersSummaryColumns,
 	usersIncludedInGroupOnAddPageColumns,
 } from './groups';
 
@@ -32,4 +35,7 @@ getColumnsAsKey = {
 	groups: groupColumns,
 	groupTypes: groupTypeColumns,
 	usersIncludedInGroupOnAddPage: usersIncludedInGroupOnAddPageColumns,
+	groupUsersSummary: groupUsersSummaryColumns,
+	groupRolesSummary: groupRolesSummaryColumns,
+	groupTagsSummary: groupTagsSummaryColumns,
 };
