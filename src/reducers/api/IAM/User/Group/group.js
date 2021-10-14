@@ -147,6 +147,10 @@ const slice = createSlice({
 				parentId: null,
 				path: '/group1',
 				creationDate: '2021.03.02 15:55:32',
+				tags: [
+					{name: 'level', value: 'Admin', permissions: []},
+					{name: 'type', value: 'white', permissions: [1, 2, 3]},
+				],
 			},
 			{
 				id: 'group2',

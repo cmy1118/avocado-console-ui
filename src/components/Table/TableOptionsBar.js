@@ -12,12 +12,6 @@ const _Container = styled.div`
 
 const TableOptionsBar = ({
 	tableKey,
-	isSearchable = false,
-	isSearchFilterable = false,
-	isRefreshable = false,
-	isPageable = false,
-	isNumberOfRowsAdjustable = false,
-	isColumnFilterable = false,
 	gotoPage,
 	canPreviousPage,
 	previousPage,
@@ -27,6 +21,12 @@ const TableOptionsBar = ({
 	pageIndex = 0,
 	pageSize,
 	setPageSize,
+	isSearchable = false,
+	isSearchFilterable = false,
+	isRefreshable = false,
+	isPageable = false,
+	isNumberOfRowsAdjustable = false,
+	isColumnFilterable = false,
 	allColumns,
 }) => {
 	const [

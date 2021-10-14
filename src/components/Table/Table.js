@@ -174,7 +174,6 @@ const Table = ({
 				isPageable={isPageable}
 				isNumberOfRowsAdjustable={isNumberOfRowsAdjustable}
 				isColumnFilterable={isColumnFilterable}
-				isSelectable={isSelectable}
 				allColumns={allColumns}
 			/>
 
