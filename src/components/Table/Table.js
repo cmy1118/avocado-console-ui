@@ -76,6 +76,8 @@ const Table = ({
 							<div>
 								<TableCheckbox
 									{...getToggleAllPageRowsSelectedProps()}
+									row={data.map((v) => v.id)}
+									tablekey={tableKey}
 								/>
 							</div>
 						),
@@ -137,48 +139,6 @@ const Table = ({
 	const onDragOver = useCallback((e) => {
 		e.preventDefault();
 	}, []);
-
-	// 체크박스 변화 감지
-	useMountedLayoutEffect(() => {
-		// console.log('data', data);
-		console.log('====================');
-		console.log('선택된 아이템', selectedItem);
-		// console.log('Object.keys(selectedRowIds)', Object.keys(selectedRowIds));
-		// console.log(selectedItem.length === data.length);
-		// console.log(Object.keys(selectedRowIds).length === data.length);
-
-		console.log('추가 ::: ', [
-			...Object.keys(selectedRowIds).filter(
-				(v) => !selectedItem.includes(v),
-			),
-			// ...selectedItem,
-		]);
-		console.log(
-			'삭제 ::: ',
-			selectedItem.filter(
-				(v) => !Object.keys(selectedRowIds).includes(v),
-			),
-		);
-
-		const selected = _.uniq([
-			...selectedItem,
-			...Object.keys(selectedRowIds),
-		]);
-
-		console.log(selected);
-		isSelectable &&
-			dispatch(
-				CURRENT_TARGET.action.changeSelectedRows({
-					tableKey: tableKey,
-					selected:
-						selectedItem.length === data.length &&
-						selected.length === data.length
-							? []
-							: selected,
-				}),
-			);
-	}, [data, isSelectable, selectedRowIds, tableKey]);
-	// componentWillUnmount
 
 	useEffect(() => {
 		return () => {
@@ -258,17 +218,12 @@ const Table = ({
 											{
 												tableKey,
 												selected: selectedItem.includes(
-													row.original.id,
+													row.id,
 												)
 													? selectedItem.filter(
-															(v) =>
-																v !==
-																row.original.id,
+															(v) => v !== row.id,
 													  )
-													: [
-															...selectedItem,
-															row.original.id,
-													  ],
+													: [...selectedItem, row.id],
 											},
 										),
 									)

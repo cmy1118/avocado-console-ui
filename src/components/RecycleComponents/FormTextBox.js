@@ -1,7 +1,12 @@
 import React, {useEffect} from 'react';
 import {ErrorMessage} from '@hookform/error-message';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import {useWatch} from 'react-hook-form';
+
+const Container = styled.div`
+	display: flex;
+`;
 
 const FormTextBox = ({
 	name,
@@ -12,6 +17,7 @@ const FormTextBox = ({
 	placeholder,
 	defaultValue,
 	label,
+	children,
 }) => {
 	const value = useWatch({name, control});
 
@@ -20,7 +26,7 @@ const FormTextBox = ({
 	}, [setValue, value]);
 
 	return (
-		<div>
+		<Container>
 			{label && <label htmlFor={name}>{label}</label>}
 			<input
 				value={defaultValue}
@@ -36,7 +42,10 @@ const FormTextBox = ({
 					))
 				}
 			</ErrorMessage>
-		</div>
+			{React.Children.map(children, (child) => {
+				return child;
+			})}
+		</Container>
 	);
 };
 
@@ -49,6 +58,7 @@ FormTextBox.propTypes = {
 	placeholder: PropTypes.string,
 	defaultValue: PropTypes.string,
 	label: PropTypes.string,
+	children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 
 export default FormTextBox;
