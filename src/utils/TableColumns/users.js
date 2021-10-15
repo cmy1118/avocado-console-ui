@@ -1,11 +1,16 @@
 import React from 'react';
-import TableTextBox from '../../components/RecycleComponents/TableTextBox';
+import TableTextBox from '../ColumnCells/TableTextBox';
 import CURRENT_TARGET from '../../reducers/currentTarget';
+import {LINK} from '../data';
+import TableLink from '../ColumnCells/TableLink';
 
 export const usersColumns = [
 	{
 		accessor: 'id',
 		Header: '사용자계정',
+		Cell: function Component(cellObj) {
+			return <TableLink cellObj={cellObj} />;
+		},
 	},
 	{
 		accessor: 'name',

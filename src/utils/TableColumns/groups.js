@@ -1,5 +1,5 @@
 import {LINK} from '../data';
-import TableTextBox from '../../components/RecycleComponents/TableTextBox';
+import TableTextBox from '../ColumnCells/TableTextBox';
 import CURRENT_TARGET from '../../reducers/currentTarget';
 import React from 'react';
 

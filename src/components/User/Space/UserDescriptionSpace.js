@@ -47,7 +47,7 @@ const UserDescriptionSpace = ({userId}) => {
 				).name,
 				parentGroup: parentGroupConverter(v.parentId),
 			}));
-	}, [groups]);
+	}, [groupTypes, groups, user]);
 
 	const tagData = useMemo(() => {
 		return user.tags.map((v) => ({
@@ -64,7 +64,7 @@ const UserDescriptionSpace = ({userId}) => {
 				search: `tabs=${v}`,
 			});
 		},
-		[],
+		[history, userId],
 	);
 
 	// if userId does not exist, direct to 404 page
@@ -72,7 +72,7 @@ const UserDescriptionSpace = ({userId}) => {
 		if (userId && !user) {
 			history.push('/404');
 		}
-	}, [userId, user]);
+	}, [userId, user, history]);
 
 	return (
 		<IamContainer>
