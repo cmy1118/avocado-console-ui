@@ -1,6 +1,7 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
+import * as _ from 'lodash';
 import {
 	useMountedLayoutEffect,
 	usePagination,
@@ -8,7 +9,7 @@ import {
 	useSortBy,
 	useTable,
 } from 'react-table';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
@@ -35,6 +36,9 @@ const Table = ({
 		if (v.uid) return v.uid;
 		return v.id;
 	}, []);
+
+	const {currentTarget} = useSelector(CURRENT_TARGET.selector);
+	const selectedItem = currentTarget[tableKey] || [];
 
 	const {
 		getTableProps,
@@ -81,6 +85,8 @@ const Table = ({
 								<TableCheckbox
 									// eslint-disable-next-line react/prop-types,react/display-name
 									{...row.getToggleRowSelectedProps()}
+									row={row}
+									tablekey={tableKey}
 								/>
 							</div>
 						),
@@ -132,28 +138,60 @@ const Table = ({
 		e.preventDefault();
 	}, []);
 
+	// 체크박스 변화 감지
 	useMountedLayoutEffect(() => {
+		// console.log('data', data);
+		console.log('====================');
+		console.log('선택된 아이템', selectedItem);
+		// console.log('Object.keys(selectedRowIds)', Object.keys(selectedRowIds));
+		// console.log(selectedItem.length === data.length);
+		// console.log(Object.keys(selectedRowIds).length === data.length);
+
+		console.log('추가 ::: ', [
+			...Object.keys(selectedRowIds).filter(
+				(v) => !selectedItem.includes(v),
+			),
+			// ...selectedItem,
+		]);
+		console.log(
+			'삭제 ::: ',
+			selectedItem.filter(
+				(v) => !Object.keys(selectedRowIds).includes(v),
+			),
+		);
+
+		const selected = _.uniq([
+			...selectedItem,
+			...Object.keys(selectedRowIds),
+		]);
+
+		console.log(selected);
 		isSelectable &&
 			dispatch(
 				CURRENT_TARGET.action.changeSelectedRows({
 					tableKey: tableKey,
-					selected: Object.keys(selectedRowIds),
+					selected:
+						selectedItem.length === data.length &&
+						selected.length === data.length
+							? []
+							: selected,
 				}),
 			);
-	}, [isSelectable, selectedRowIds, tableKey]);
-	//componentWillUnmount
+	}, [data, isSelectable, selectedRowIds, tableKey]);
+	// componentWillUnmount
+
 	useEffect(() => {
 		return () => {
 			isSelectable &&
 				dispatch(
 					CURRENT_TARGET.action.setSelectedRows({
-						//테이블 처음 렌더링시 selectedRowIds => {} 값으로 초기화됨
+						// 테이블 처음 렌더링시 selectedRowIds => {} 값으로 초기화됨
 						selectedRows: selectedRowIds,
 						tableKey: tableKey,
 					}),
 				);
 		};
-	}, [isSelectable, tableKey]);
+	}, []); // 1번만 실행되기 때문에 비워주셔야 합니다.
 
 	return (
 		<div>
@@ -214,6 +252,27 @@ const Table = ({
 						prepareRow(row);
 						return (
 							<tr
+								onClick={() =>
+									dispatch(
+										CURRENT_TARGET.action.changeSelectedRows(
+											{
+												tableKey,
+												selected: selectedItem.includes(
+													row.original.id,
+												)
+													? selectedItem.filter(
+															(v) =>
+																v !==
+																row.original.id,
+													  )
+													: [
+															...selectedItem,
+															row.original.id,
+													  ],
+											},
+										),
+									)
+								}
 								draggable={isDnDPossible ? 'true' : 'false'}
 								id={
 									row.original.uid
