@@ -27,4 +27,5 @@ export const tableKeys = {
 export const formKeys = {
 	addUserForm: 'add-user-form',
 	addGroupForm: 'add-group-form',
+	userInfoForm: 'user-info-form',
 };

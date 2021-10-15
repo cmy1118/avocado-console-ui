@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import * as yup from 'yup';
 
-export const _Form = styled.form`
-	display: flex;
-	flex-direction: column;
-`;
+// export const _Form = styled.form`
+// 	display: flex;
+// 	flex-direction: column;
+// `;
 
 const Form = ({id, schema = {}, children, onSubmit}) => {
 	const {
@@ -25,7 +25,7 @@ const Form = ({id, schema = {}, children, onSubmit}) => {
 	}, [isSubmitSuccessful, reset]);
 
 	return (
-		<_Form id={id} onSubmit={handleSubmit(onSubmit)}>
+		<form id={id} onSubmit={handleSubmit(onSubmit)}>
 			{React.Children.map(children, (child) => {
 				return child?.props?.name
 					? React.createElement(child.type, {
@@ -40,7 +40,7 @@ const Form = ({id, schema = {}, children, onSubmit}) => {
 					  })
 					: child;
 			})}
-		</_Form>
+		</form>
 	);
 };
 

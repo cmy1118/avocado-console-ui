@@ -10,6 +10,8 @@ const FormTextBox = ({
 	control,
 	setValue,
 	placeholder,
+	defaultValue,
+	label,
 }) => {
 	const value = useWatch({name, control});
 
@@ -18,8 +20,14 @@ const FormTextBox = ({
 	}, [setValue, value]);
 
 	return (
-		<>
-			<input placeholder={placeholder} {...register(name)} />
+		<div>
+			{label && <label htmlFor={name}>{label}</label>}
+			<input
+				value={defaultValue}
+				readOnly={defaultValue}
+				placeholder={placeholder}
+				{...register(name)}
+			/>
 			<ErrorMessage errors={errors} name={name}>
 				{({messages}) =>
 					messages &&
@@ -28,7 +36,7 @@ const FormTextBox = ({
 					))
 				}
 			</ErrorMessage>
-		</>
+		</div>
 	);
 };
 
@@ -39,6 +47,8 @@ FormTextBox.propTypes = {
 	control: PropTypes.object,
 	setValue: PropTypes.func,
 	placeholder: PropTypes.string,
+	defaultValue: PropTypes.string,
+	label: PropTypes.string,
 };
 
 export default FormTextBox;

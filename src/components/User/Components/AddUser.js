@@ -6,7 +6,6 @@ import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import Form from '../../RecycleComponents/Form';
 import * as yup from 'yup';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
-import FormComboBox from '../../RecycleComponents/FormComboBox';
 import {formKeys} from '../../../utils/data';
 
 const AddUser = () => {
@@ -48,6 +47,7 @@ const AddUser = () => {
 					<button onClick={onClickCancelAddUser}>취소</button>
 				</div>
 			</SubTitle>
+			{/*<form id={formKeys.addUserForm} onSubmit={}></form>*/}
 			<Form
 				id={formKeys.addUserForm}
 				schema={schema}
