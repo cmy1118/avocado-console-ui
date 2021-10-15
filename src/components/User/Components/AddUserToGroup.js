@@ -9,19 +9,37 @@ import {
 } from '../../../utils/TableColumns/users';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {element} from 'prop-types';
+let dropDataTypeId = [];
+let dropDataId = [];
+let allArr = [];
 
 const AddUserToGroup = () => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {currentTarget} = useSelector(CURRENT_TARGET.selector);
 	const [dropData, setDropData] = useState([]);
+
+	const groupArr2 = (dropDataId) => {
+		allArr = groups.filter((v) => dropDataId.includes(v.id));
+	};
 	/***************************+*****************************/
 	// COLUMN_DATA
 	/********************************************************/
 	const dataLeft = useMemo(() => {
 		//COLUMN_FILTERING
-		const dropDataTypeId = groups.find(
-			(v) => v.id === currentTarget['groupsIncludedInUserOnAddPage'],
-		)?.clientGroupTypeId;
+		if (dropDataTypeId) {
+			const selectGroupType = groups.find(
+				(v) => v.id === currentTarget['groupsIncludedInUserOnAddPage'],
+			)?.clientGroupTypeId;
+
+			if (dropDataTypeId.includes(selectGroupType)) {
+				const index = dropDataTypeId.indexOf(
+					currentTarget['groupsIncludedInUserOnAddPage'],
+				);
+				dropDataTypeId.splice(index, 1);
+			} else {
+				dropDataTypeId.push(selectGroupType);
+			}
+		}
 
 		if (dropDataTypeId) {
 			return groups
@@ -39,24 +57,33 @@ const AddUserToGroup = () => {
 	}, [currentTarget, groups]);
 
 	const dataRight = useMemo(() => {
-		let arr = [];
-		dropData?.map((v) => {
-			arr = [...arr, ...groups.filter((s) => s.id === v)];
-		});
-		return arr.map((v) => ({
+		console.log(1);
+		const groupArr = groups.filter((v) => dropDataId.includes(v.id));
+		console.log('allArr:', allArr);
+		return allArr.map((v) => ({
 			...v,
 		}));
-	}, [dropData]);
+	}, [currentTarget, dropDataId, groupArr2]);
 	/********************************************************/
 	useEffect(() => {
-		const result = [
-			...new Set([
-				...dropData,
-				currentTarget['groupsIncludedInUserOnAddPage'],
-			]),
-		];
-		setDropData((prev) => result.filter((n) => n));
-	}, [currentTarget]);
+		console.log(2);
+		/********************************************************/
+		// *dropDataId : 선택된 행들의 groupid 배열
+		//  -모든 상태변수 전역 관리
+		/********************************************************/
+		const currentGroupId = currentTarget['groupsIncludedInUserOnAddPage'];
+		if (dropDataId.includes(currentGroupId)) {
+			//선택되있으면 삭제
+			const index = dropDataId.indexOf(currentGroupId);
+			dropDataId.splice(index, 1);
+		} else {
+			//선택안되있으면 추가
+			dropDataId.push(currentGroupId);
+		}
+		groupArr2(dropDataId);
+		console.log('dropDataId:', dropDataId);
+		/********************************************************/
+	}, [currentTarget, dropDataId]);
 
 	return (
 		<>
