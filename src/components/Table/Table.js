@@ -120,7 +120,8 @@ const Table = ({
 			// );
 			dispatch(
 				CURRENT_TARGET.action.changeDropId({
-					tableKey: e.dataTransfer.getData('dndKey'),
+					tableKey: e.dataTransfer.getData('tableKey'),
+					dndKey: e.dataTransfer.getData('dndKey'),
 					DropId: e.dataTransfer.getData('id'),
 				}),
 			);

@@ -56,6 +56,7 @@ const AddUserToGroup = () => {
 					isNumberOfRowsAdjustable={true}
 					isColumnFilterable={true}
 					isSortable={true}
+					isSelectable={true}
 					isDnDPossible={true}
 					dndKey={'groupsIncludedInUserOnAddPage_DndKey'}
 				/>
@@ -71,6 +72,7 @@ const AddUserToGroup = () => {
 					isNumberOfRowsAdjustable={true}
 					isColumnFilterable={true}
 					isSortable={true}
+					isSelectable={true}
 					isDnDPossible={true}
 					dndKey={'groupsIncludedInUserOnAddPage_DndKey'}
 				/>

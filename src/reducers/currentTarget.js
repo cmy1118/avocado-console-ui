@@ -16,13 +16,21 @@ const slice = createSlice({
 			delete state.currentTarget[action.payload.tableKey];
 		},
 		changeDropId: (state, action) => {
-			state.currentDropId[action.payload.tableKey] = changeId(
-				state.currentDropId[action.payload.tableKey],
-				action.payload.DropId,
-			);
+			if (state.currentTarget[action.payload.tableKey]?.length) {
+				state.currentDropId[
+					action.payload.dndKey
+				] = state.currentTarget[action.payload.tableKey].map((id) => {
+					changeId(state.currentDropId[action.payload.dndKey], id);
+				});
+			} else {
+				state.currentDropId[action.payload.dndKey] = changeId(
+					state.currentDropId[action.payload.dndKey],
+					action.payload.DropId,
+				);
+			}
 		},
 		setDropId: (state, action) => {
-			delete state.currentDropId[action.payload.tableKey];
+			delete state.currentDropId[action.payload.dndKey];
 		},
 	},
 });
