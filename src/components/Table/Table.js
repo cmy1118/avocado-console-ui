@@ -112,10 +112,16 @@ const Table = ({
 		(e) => {
 			e.preventDefault();
 
+			// dispatch(
+			// 	CURRENT_TARGET.action.changeSelectedRows({
+			// 		tableKey: e.dataTransfer.getData('tableKey'),
+			// 		selected: e.dataTransfer.getData('id'),
+			// 	}),
+			// );
 			dispatch(
-				CURRENT_TARGET.action.changeSelectedRows({
-					tableKey: e.dataTransfer.getData('tableKey'),
-					selected: e.dataTransfer.getData('id'),
+				CURRENT_TARGET.action.changeDropId({
+					tableKey: e.dataTransfer.getData('dndKey'),
+					DropId: e.dataTransfer.getData('id'),
 				}),
 			);
 
@@ -153,7 +159,6 @@ const Table = ({
 	//componentWillUnmount
 	useEffect(() => {
 		return () => {
-			console.log('selectedRowIds', selectedRowIds);
 			isSelectable &&
 				dispatch(
 					CURRENT_TARGET.action.setSelectedRows({

@@ -1,9 +1,11 @@
 import {createSelector, createSlice} from '@reduxjs/toolkit';
+import {changeId} from '../utils/redux';
 
 const slice = createSlice({
 	name: 'CURRENT_TARGET',
 	initialState: {
 		currentTarget: {},
+		currentDropId: {},
 	},
 	reducers: {
 		changeSelectedRows: (state, action) => {
@@ -13,34 +15,26 @@ const slice = createSlice({
 		setSelectedRows: (state, action) => {
 			delete state.currentTarget[action.payload.tableKey];
 		},
+		changeDropId: (state, action) => {
+			state.currentDropId[action.payload.tableKey] = changeId(
+				state.currentDropId[action.payload.tableKey],
+				action.payload.DropId,
+			);
+		},
+		setDropId: (state, action) => {
+			delete state.currentDropId[action.payload.tableKey];
+		},
 	},
-
-	// initialState: {
-	// 	currentTarget: [],
-	// },
-	//
-	// reducers: {
-	// 	changeSelectedRows: (state, action) => {
-	// 		state.currentTarget = state.currentTarget.filter(
-	// 			(v) => v.tableKey !== action.payload.tableKey,
-	// 		);
-	// 		state.currentTarget.push(action.payload);
-	// 	},
-	//
-	// 	setSelectedRows: (state, action) => {
-	// 		state.currentTarget = state.currentTarget.filter(
-	// 			(v) => v.tableKey !== action.payload.tableKey,
-	// 		);
-	// 	},
-	// },
 });
 
 const selectAllState = createSelector(
 	(state) => state.currentTarget,
+	(state) => state.currentDropId,
 
-	(currentTarget) => {
+	(currentTarget, currentDropId) => {
 		return {
 			currentTarget,
+			currentDropId,
 		};
 	},
 );
