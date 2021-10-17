@@ -101,6 +101,40 @@ export const rolesIncludedInUserOnAddPageColumns = [
 		accessor: 'creationDate',
 	},
 ];
+export const groupsIncludedInUserOnAddPageColumns = [
+	{
+		Header: '그룹명',
+		accessor: 'name',
+		id: LINK,
+	},
+	{
+		Header: '그룹 유형',
+		accessor: 'clientGroupTypeId',
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
+	},
+	{
+		Header: '권한',
+		accessor: 'roles',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+export const groupsExcludedFromUserOnAddPageColumns = [
+	{
+		Header: '그룹명',
+		accessor: 'name',
+		id: LINK,
+	},
+	{
+		Header: '그룹 유형',
+		accessor: 'clientGroupTypeId', //has to be changed
+	},
+];
 
 export const rolesExcludedFromUserOnAddPageColumns = [
 	{

@@ -116,10 +116,18 @@ const Table = ({
 		(e) => {
 			e.preventDefault();
 
-			console.log(
-				e.dataTransfer.getData('tableKey'),
-				e.dataTransfer.getData('id'),
-				tableKey,
+			// dispatch(
+			// 	CURRENT_TARGET.action.changeSelectedRows({
+			// 		tableKey: e.dataTransfer.getData('tableKey'),
+			// 		selected: e.dataTransfer.getData('id'),
+			// 	}),
+			// );
+			dispatch(
+				CURRENT_TARGET.action.changeDropId({
+					tableKey: e.dataTransfer.getData('tableKey'),
+					dndKey: e.dataTransfer.getData('dndKey'),
+					DropId: e.dataTransfer.getData('id'),
+				}),
 			);
 
 			if (

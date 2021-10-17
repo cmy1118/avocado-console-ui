@@ -1,4 +1,5 @@
 import {createSelector, createSlice} from '@reduxjs/toolkit';
+import {changeId} from '../utils/redux';
 
 const slice = createSlice({
 	name: 'CURRENT_TARGET',
@@ -20,6 +21,7 @@ const slice = createSlice({
 		},
 		role: {},
 		currentTarget: {},
+		currentDropId: {},
 	},
 
 	reducers: {
@@ -36,6 +38,18 @@ const slice = createSlice({
 			state.user.roles = state.user.roles.concat(
 				state.currentTarget[action.payload.from],
 			);
+			delete state.currentTarget[action.payload.tableKey];
+		},
+		changeDropId: (state, action) => {
+			state.currentTarget[action.payload.tableKey].map((id) => {
+				state.currentDropId[action.payload.dndKey] = changeId(
+					state.currentDropId[action.payload.dndKey],
+					id,
+				);
+			});
+		},
+		setDropId: (state, action) => {
+			delete state.currentDropId[action.payload.dndKey];
 		},
 
 		deletedRolesFromUser: (state, action) => {
@@ -85,12 +99,14 @@ const slice = createSlice({
 
 const selectAllState = createSelector(
 	(state) => state.currentTarget,
+	(state) => state.currentDropId,
 	(state) => state.user,
 	(state) => state.group,
 	(state) => state.role,
-	(currentTarget, user, group, role) => {
+	(currentTarget, currentDropId,user, group, role) => {
 		return {
 			currentTarget,
+			currentDropId,
 			user,
 			group,
 			role,
