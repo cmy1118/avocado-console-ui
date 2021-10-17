@@ -52,12 +52,12 @@ const AddUserToGroup = () => {
 						getColumnsAsKey['groupsIncludedInUserOnAddPageColumns']
 					}
 					data={dataLeft}
-					isPageable={true}
-					isNumberOfRowsAdjustable={true}
-					isColumnFilterable={true}
-					isSortable={true}
-					isSelectable={true}
-					isDnDPossible={true}
+					isPageable
+					isNumberOfRowsAdjustable
+					isColumnFilterable
+					isSortable
+					isSelectable
+					isDnDPossible
 					dndKey={'groupsIncludedInUserOnAddPage_DndKey'}
 				/>
 				<Table
@@ -68,12 +68,12 @@ const AddUserToGroup = () => {
 						]
 					}
 					data={dataRight}
-					isPageable={true}
-					isNumberOfRowsAdjustable={true}
-					isColumnFilterable={true}
-					isSortable={true}
-					isSelectable={true}
-					isDnDPossible={true}
+					isPageable
+					isNumberOfRowsAdjustable
+					isColumnFilterable
+					isSortable
+					isSelectable
+					isDnDPossible
 					dndKey={'groupsIncludedInUserOnAddPage_DndKey'}
 				/>
 			</div>

@@ -7,8 +7,7 @@ import {
 	userRolesSummaryColumns,
 	usersColumns,
 	userTagsSummaryColumns,
-
-	addTagsToUserColumns,
+	addUsersToGroupColumns,
 	groupsIncludedInUserOnAddPageColumns,
 	groupsExcludedFromUserOnAddPageColumns,
 } from './users';
@@ -20,7 +19,6 @@ import {
 	groupTypeColumns,
 	groupUsersSummaryColumns,
 	usersIncludedInGroupOnAddPageColumns,
-	addUsersToGroupColumns,
 } from './groups';
 
 // 형식 { key : columns }
@@ -35,8 +33,7 @@ getColumnsAsKey = {
 	userAuthSummary: userAuthSummaryColumns,
 	userRolesSummary: userRolesSummaryColumns,
 	userTagsSummary: userTagsSummaryColumns,
-
-	addTagsToUser: addTagsToUserColumns,
+	addUsersToGroup: addUsersToGroupColumns,
 	groupsIncludedInUserOnAddPageColumns: groupsIncludedInUserOnAddPageColumns,
 	groupsExcludedFromUserOnAddPageColumns: groupsExcludedFromUserOnAddPageColumns,
 	/* groups */
