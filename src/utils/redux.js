@@ -8,12 +8,11 @@ export function changeId(arr, id) {
 	} else {
 		arr = [id];
 	}
-	console.log('arr', arr);
 	return arr;
 }
 
 export function deleteId(arr, id) {
-	const index = arr.findIndex((v) => v.id === id);
+	const index = arr.findIndex((v) => v === id);
 	arr.splice(index, 1);
 	return arr;
 }

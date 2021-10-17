@@ -16,18 +16,12 @@ const slice = createSlice({
 			delete state.currentTarget[action.payload.tableKey];
 		},
 		changeDropId: (state, action) => {
-			if (state.currentTarget[action.payload.tableKey]?.length) {
-				state.currentDropId[
-					action.payload.dndKey
-				] = state.currentTarget[action.payload.tableKey].map((id) => {
-					changeId(state.currentDropId[action.payload.dndKey], id);
-				});
-			} else {
+			state.currentTarget[action.payload.tableKey].map((id) => {
 				state.currentDropId[action.payload.dndKey] = changeId(
 					state.currentDropId[action.payload.dndKey],
-					action.payload.DropId,
+					id,
 				);
-			}
+			});
 		},
 		setDropId: (state, action) => {
 			delete state.currentDropId[action.payload.dndKey];
