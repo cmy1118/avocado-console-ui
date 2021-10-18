@@ -7,8 +7,8 @@ export const usersColumns = [
 	{
 		accessor: 'id',
 		Header: '사용자계정',
-		Cell: function Component(cellObj) {
-			return <TableLink cellObj={cellObj} />;
+		Cell: function Component(props) {
+			return <TableLink props={props} />;
 		},
 	},
 	{
@@ -53,31 +53,42 @@ export const addTagsToUserOnAddPageColumns = [
 	{
 		Header: 'Key(태그명)',
 		accessor: 'name',
-		Cell: function Component(cellObj) {
-			return (
-				<TableTextBox
-					cellObj={cellObj}
-					onSubmit={CURRENT_TARGET.action.saveTagDataOnAddUser}
-				/>
-			);
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
 		},
 		// id: LINK,
 	},
 	{
 		Header: '값(태그)',
 		accessor: 'value',
-		Cell: function Component(cellObj) {
-			return (
-				<TableTextBox
-					cellObj={cellObj}
-					onSubmit={CURRENT_TARGET.action.saveTagDataOnAddUser}
-				/>
-			);
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
 		},
 	},
 	{
 		Header: '권한 수',
-		accessor: 'rolesLength',
+		accessor: 'numberOfPermissions',
+	},
+];
+
+export const addTagToUserOnDescPageColumns = [
+	{
+		Header: 'Key(태그명)',
+		accessor: 'name',
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
+		},
+	},
+	{
+		Header: '값(태그)',
+		accessor: 'value',
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
+		},
+	},
+	{
+		Header: '권한 수',
+		accessor: 'numberOfPermissions',
 	},
 ];
 

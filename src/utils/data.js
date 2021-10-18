@@ -8,6 +8,7 @@ export const tableKeys = {
 	users: 'users', // 사용자
 	addTagsToUserOnAddPage: 'addTagsToUserOnAddPage', // 사용자 생성시 태그 추가
 	addTagsToUser: 'addTagsToUser',
+	addTagToUserOnDescPage: 'addTagToUserOnDescPage', // 사용자 상세페이지 탭 태그 추가
 	rolesIncludedInUserOnAddPage: 'rolesIncludedInUserOnAddPage',
 	rolesExcludedFromUserOnAddPage: 'rolesExcludedFromUserOnAddPage',
 	userGroupsSummary: 'userGroupsSummary',

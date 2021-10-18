@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {tableKeys} from '../../../utils/data';
 import Table from '../../Table/Table';
@@ -10,6 +10,10 @@ const AddTagToUser = () => {
 	const {user, currentTarget} = useSelector(CURRENT_TARGET.selector);
 	const columns = getColumnsAsKey[tableKeys.addTagsToUserOnAddPage];
 	const target = currentTarget[tableKeys.addTagsToUserOnAddPage];
+
+	const [tagData, setTagData] = useState([]);
+
+	console.log(tagData);
 
 	const onClickAddRow = useCallback(() => {
 		dispatch(CURRENT_TARGET.action.addTagDataOnAddUser());
@@ -25,7 +29,7 @@ const AddTagToUser = () => {
 			return {
 				...v,
 				id: i,
-				rolesLength: v.roles.length,
+				numberOfPermissions: v.permissions.length,
 			};
 		});
 	}, [user]);
@@ -43,6 +47,7 @@ const AddTagToUser = () => {
 				data={data}
 				columns={columns}
 				isSelectable
+				setData={setTagData}
 			/>
 		</>
 	);

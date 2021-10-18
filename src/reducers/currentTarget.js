@@ -8,8 +8,9 @@ const slice = createSlice({
 			groups: [],
 			roles: [],
 			tags: [
-				{name: 'level', value: 'Admin', roles: [1, 2, 3]},
-				{name: 'type', value: 'white', roles: [1]},
+				// 특정 유저가 존재하지 않는경우 임시로 데이터를 저장하기 위한 공간
+				{name: 'level', value: 'Admin', permissions: [1, 2, 3]},
+				{name: 'type', value: 'white', permissions: [1]},
 			],
 		},
 		group: {
@@ -46,12 +47,26 @@ const slice = createSlice({
 
 		// tags
 		addTagDataOnAddUser: (state) => {
-			const newData = {
-				name: '',
-				value: '',
-				roles: [],
-			};
-			state.user.tags.push(newData);
+			const lastData = state.user.tags.slice().pop();
+			console.log({...lastData});
+			let isExistEmptyValue = false;
+			Object.keys(lastData).forEach((v) => {
+				// 권한, 권한 수는 policy가 완료되면 수정이 필요. 우선은 빈 값 체크에서 제외.
+				if (!lastData[v] && v !== 'permissions') {
+					isExistEmptyValue = true;
+				}
+			});
+
+			if (isExistEmptyValue) {
+				console.log('빈 값이 존재합니다.');
+			} else {
+				const newData = {
+					name: '',
+					value: '',
+					permissions: [],
+				};
+				state.user.tags.push(newData);
+			}
 		},
 		deleteTagDataOnAddUser: (state, {payload}) => {
 			if (!payload) return;
@@ -60,14 +75,20 @@ const slice = createSlice({
 			}
 		},
 		saveTagDataOnAddUser: (state, {payload}) => {
-			state.user.tags = payload;
+			state.user.tags = payload.map((v) => {
+				return {
+					name: v.name,
+					value: v.value,
+					permissions: v.permissions,
+				};
+			});
 		},
 		//
 		addTagDataOnAddGroup: (state) => {
 			const newData = {
 				name: '',
 				value: '',
-				roles: [],
+				permissions: [],
 			};
 			state.group.tags.push(newData);
 		},

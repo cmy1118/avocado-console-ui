@@ -41,6 +41,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 			numberOfPermissions: v.permissions.length,
 		}));
 	}, [group]);
+
 	// if groupId does not exist, direct to 404 page
 	useEffect(() => {
 		if (groupId && !group) {

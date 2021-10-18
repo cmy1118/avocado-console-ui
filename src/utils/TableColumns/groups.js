@@ -8,8 +8,8 @@ export const groupColumns = [
 	{
 		Header: '그룹 이름',
 		accessor: 'name',
-		Cell: function Component(cellObj) {
-			return <TableLink cellObj={cellObj} />;
+		Cell: function Component(props) {
+			return <TableLink props={props} />;
 		},
 	},
 	{
@@ -82,31 +82,20 @@ export const addTagsToGroupOnAddPageColumns = [
 	{
 		Header: 'Key(태그명)',
 		accessor: 'name',
-		Cell: function Component(cellObj) {
-			return (
-				<TableTextBox
-					cellObj={cellObj}
-					onSubmit={CURRENT_TARGET.action.saveTagDataOnAddGroup}
-				/>
-			);
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
 		},
-		// id: LINK,
 	},
 	{
 		Header: '값(태그)',
 		accessor: 'value',
-		Cell: function Component(cellObj) {
-			return (
-				<TableTextBox
-					cellObj={cellObj}
-					onSubmit={CURRENT_TARGET.action.saveTagDataOnAddGroup}
-				/>
-			);
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
 		},
 	},
 	{
 		Header: '권한 수',
-		accessor: 'rolesLength',
+		accessor: 'numberOfPermissions',
 	},
 ];
 

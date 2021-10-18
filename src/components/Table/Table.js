@@ -29,6 +29,7 @@ const Table = ({
 	isSelectable = false,
 	isDnDPossible = false,
 	dndKey,
+	setData,
 }) => {
 	const dispatch = useDispatch();
 
@@ -155,6 +156,15 @@ const Table = ({
 		};
 	}, []); // 1번만 실행되기 때문에 비워주셔야 합니다.
 
+	// useEffect(() => {
+	// 	console.log(page);
+	// 	setData(
+	// 		page.map((v) => {
+	// 			return v.original;
+	// 		}),
+	// 	);
+	// }, [page, setData]);
+
 	return (
 		<div>
 			<TableOptionsBar
@@ -214,22 +224,6 @@ const Table = ({
 						prepareRow(row);
 						return (
 							<tr
-								onClick={() =>
-									dispatch(
-										CURRENT_TARGET.action.changeSelectedRows(
-											{
-												tableKey,
-												selected: selectedItem.includes(
-													row.id,
-												)
-													? selectedItem.filter(
-															(v) => v !== row.id,
-													  )
-													: [...selectedItem, row.id],
-											},
-										),
-									)
-								}
 								draggable={isDnDPossible ? 'true' : 'false'}
 								id={
 									row.original.uid
@@ -244,11 +238,13 @@ const Table = ({
 								{...row.getRowProps()}
 								onDragStart={onDragStart}
 							>
-								{row.cells.map((cell, i) => (
-									<td key={i} {...cell.getCellProps()}>
-										{cell.render('Cell')}
-									</td>
-								))}
+								{row.cells.map((cell, i) => {
+									return (
+										<td key={i} {...cell.getCellProps}>
+											{cell.render('Cell', {setData})}
+										</td>
+									);
+								})}
 							</tr>
 						);
 					})}
@@ -271,6 +267,7 @@ Table.propTypes = {
 	isSortable: PropTypes.bool,
 	isSelectable: PropTypes.bool,
 	isDnDPossible: PropTypes.bool,
+	setData: PropTypes.func,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 

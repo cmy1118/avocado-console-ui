@@ -1,5 +1,6 @@
 import {
 	addTagsToUserOnAddPageColumns,
+	addTagToUserOnDescPageColumns,
 	rolesExcludedFromUserOnAddPageColumns,
 	rolesIncludedInUserOnAddPageColumns,
 	userAuthSummaryColumns,
@@ -30,6 +31,7 @@ getColumnsAsKey = {
 	userAuthSummary: userAuthSummaryColumns,
 	userRolesSummary: userRolesSummaryColumns,
 	userTagsSummary: userTagsSummaryColumns,
+	addTagToUserOnDescPage: addTagToUserOnDescPageColumns,
 	/* groups */
 	groups: groupColumns,
 	groupTypes: groupTypeColumns,
