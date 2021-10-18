@@ -76,7 +76,9 @@ const Table = ({
 							<div>
 								<TableCheckbox
 									{...getToggleAllPageRowsSelectedProps()}
-									row={data.map((v) => v.id)}
+									row={data.map(
+										(v) => (v.uid ? v.uid : v.id), // id로 통일해야 할 것 같습니다.
+									)}
 									tablekey={tableKey}
 								/>
 							</div>
