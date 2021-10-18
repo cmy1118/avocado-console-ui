@@ -26,8 +26,18 @@ const slice = createSlice({
 
 	reducers: {
 		changeSelectedRows: (state, action) => {
-			state.currentTarget[action.payload.tableKey] =
-				action.payload.selected;
+			if (
+				Object.keys(state.currentTarget).includes(
+					action.payload.tableKey,
+				)
+			) {
+				state.currentTarget[action.payload.tableKey] =
+					action.payload.selected;
+			} else {
+				state.currentTarget = {};
+				state.currentTarget[action.payload.tableKey] =
+					action.payload.selected;
+			}
 		},
 
 		setSelectedRows: (state, action) => {
@@ -47,6 +57,7 @@ const slice = createSlice({
 					id,
 				);
 			});
+			state.currentTarget = {};
 		},
 		setDropId: (state, action) => {
 			delete state.currentDropId[action.payload.dndKey];
@@ -103,7 +114,7 @@ const selectAllState = createSelector(
 	(state) => state.user,
 	(state) => state.group,
 	(state) => state.role,
-	(currentTarget, currentDropId,user, group, role) => {
+	(currentTarget, currentDropId, user, group, role) => {
 		return {
 			currentTarget,
 			currentDropId,
