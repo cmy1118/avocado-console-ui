@@ -29,6 +29,7 @@ const Table = ({
 	isSelectable = false,
 	isDnDPossible = false,
 	dndKey,
+	setData,
 }) => {
 	const dispatch = useDispatch();
 
@@ -108,40 +109,32 @@ const Table = ({
 		[tableKey, dndKey],
 	);
 
-	const onDragEnd = useCallback((e) => {
-		e.target.style.opacity = '';
-	}, []);
+	const onDragEnd = useCallback(
+		(e) => {
+			setData(data.filter((v) => v.id !== e.target.id).map((x) => x.id));
+			e.target.style.opacity = '';
+		},
+		[data, setData],
+	);
 
 	const onDrop = useCallback(
 		(e) => {
 			e.preventDefault();
 
-			// dispatch(
-			// 	CURRENT_TARGET.action.changeSelectedRows({
-			// 		tableKey: e.dataTransfer.getData('tableKey'),
-			// 		selected: e.dataTransfer.getData('id'),
-			// 	}),
-			// );
-			dispatch(
-				CURRENT_TARGET.action.changeDropId({
-					tableKey: e.dataTransfer.getData('tableKey'),
-					dndKey: e.dataTransfer.getData('dndKey'),
-					DropId: e.dataTransfer.getData('id'),
-				}),
-			);
+			console.log({
+				tableKey: e.dataTransfer.getData('tableKey'),
+				dndKey: e.dataTransfer.getData('dndKey'),
+				DropId: e.dataTransfer.getData('id'),
+			});
 
-			if (
-				e.dataTransfer.getData('tableKey') !== tableKey &&
-				e.dataTransfer.getData('dndKey') === dndKey
-			) {
-				//TODO: add actions depends on tableKey
-				switch (tableKey) {
-					default:
-						break;
-				}
-			}
+			console.log(data.map((v) => v.id));
+
+			setData &&
+				setData(
+					data.map((v) => v.id).concat(e.dataTransfer.getData('id')),
+				);
 		},
-		[tableKey, dndKey],
+		[data, setData],
 	);
 
 	const onDragOver = useCallback((e) => {
@@ -277,6 +270,7 @@ Table.propTypes = {
 	isSortable: PropTypes.bool,
 	isSelectable: PropTypes.bool,
 	isDnDPossible: PropTypes.bool,
+	setData: PropTypes.func,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 
