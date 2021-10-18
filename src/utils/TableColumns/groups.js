@@ -2,12 +2,15 @@ import {LINK} from '../data';
 import TableTextBox from '../ColumnCells/TableTextBox';
 import CURRENT_TARGET from '../../reducers/currentTarget';
 import React from 'react';
+import TableLink from '../ColumnCells/TableLink';
 
 export const groupColumns = [
 	{
 		Header: '그룹 이름',
 		accessor: 'name',
-		id: LINK,
+		Cell: function Component(cellObj) {
+			return <TableLink cellObj={cellObj} />;
+		},
 	},
 	{
 		Header: '그룹 유형',
