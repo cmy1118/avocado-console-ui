@@ -1,19 +1,11 @@
 import React, {useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
-import * as _ from 'lodash';
-import {
-	useMountedLayoutEffect,
-	usePagination,
-	useRowSelect,
-	useSortBy,
-	useTable,
-} from 'react-table';
-import {useDispatch, useSelector} from 'react-redux';
+import {usePagination, useRowSelect, useSortBy, useTable} from 'react-table';
+import {useDispatch} from 'react-redux';
 
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
-import CURRENT_TARGET from '../../reducers/currentTarget';
 
 const Table = ({
 	tableKey,
@@ -30,6 +22,7 @@ const Table = ({
 	isDnDPossible = false,
 	dndKey,
 	setData,
+	setPage,
 }) => {
 	const dispatch = useDispatch();
 
@@ -37,9 +30,6 @@ const Table = ({
 		if (v.uid) return v.uid;
 		return v.id;
 	}, []);
-
-	const {currentTarget} = useSelector(CURRENT_TARGET.selector);
-	const selectedItem = currentTarget[tableKey] || [];
 
 	const {
 		getTableProps,
@@ -55,7 +45,8 @@ const Table = ({
 		nextPage,
 		previousPage,
 		setPageSize,
-		state: {pageIndex, pageSize, selectedRowIds},
+		selectedFlatRows,
+		state: {pageIndex, pageSize},
 	} = useTable(
 		{
 			data,
@@ -74,26 +65,23 @@ const Table = ({
 						id: 'selection',
 						// eslint-disable-next-line react/prop-types,react/display-name
 						Header: ({getToggleAllPageRowsSelectedProps}) => (
-							<div>
-								<TableCheckbox
-									{...getToggleAllPageRowsSelectedProps()}
-									row={data.map(
-										(v) => (v.uid ? v.uid : v.id), // id로 통일해야 할 것 같습니다.
-									)}
-									tablekey={tableKey}
-								/>
-							</div>
+							<TableCheckbox
+								{...getToggleAllPageRowsSelectedProps()}
+								row={data.map(
+									(v) => (v.uid ? v.uid : v.id), // id로 통일해야 할 것 같습니다.
+								)}
+								page={page.map((v) => v.isSelected)}
+								tablekey={tableKey}
+							/>
 						),
 						// eslint-disable-next-line react/prop-types,react/display-name
 						Cell: ({row}) => (
-							<div>
-								<TableCheckbox
-									// eslint-disable-next-line react/prop-types,react/display-name
-									{...row.getToggleRowSelectedProps()}
-									row={row}
-									tablekey={tableKey}
-								/>
-							</div>
+							<TableCheckbox
+								// eslint-disable-next-line react/prop-types,react/display-name
+								{...row.getToggleRowSelectedProps()}
+								row={row}
+								tablekey={tableKey}
+							/>
 						),
 					},
 					...columns,
@@ -103,6 +91,9 @@ const Table = ({
 
 	const onDragStart = useCallback(
 		(e) => {
+			if (e.target.firstChild.childNodes[0].type === 'checkbox') {
+				e.target.firstChild.childNodes[0].checked = true;
+			}
 			e.dataTransfer.setData('id', e.target.id);
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
@@ -113,7 +104,13 @@ const Table = ({
 
 	const onDragEnd = useCallback(
 		(e) => {
-			setData(data.filter((v) => v.id !== e.target.id).map((x) => x.id));
+			if (e.target.firstChild.childNodes[0].type === 'checkbox') {
+				e.target.firstChild.childNodes[0].checked = false;
+			}
+			setData &&
+				setData(
+					data.filter((v) => v.id !== e.target.id).map((x) => x.id),
+				);
 			e.target.style.opacity = '';
 		},
 		[data, setData],
@@ -144,26 +141,11 @@ const Table = ({
 	}, []);
 
 	useEffect(() => {
-		return () => {
-			isSelectable &&
-				dispatch(
-					CURRENT_TARGET.action.setSelectedRows({
-						// 테이블 처음 렌더링시 selectedRowIds => {} 값으로 초기화됨
-						selectedRows: selectedRowIds,
-						tableKey: tableKey,
-					}),
-				);
-		};
-	}, []); // 1번만 실행되기 때문에 비워주셔야 합니다.
-
-	// useEffect(() => {
-	// 	console.log(page);
-	// 	setData(
-	// 		page.map((v) => {
-	// 			return v.original;
-	// 		}),
-	// 	);
-	// }, [page, setData]);
+		setPage && setPage(page);
+		console.log(selectedFlatRows);
+		// console.log(page);
+		// console.log(selectedFlatRows);
+	}, [setPage, page, selectedFlatRows]);
 
 	return (
 		<div>
@@ -268,6 +250,7 @@ Table.propTypes = {
 	isSelectable: PropTypes.bool,
 	isDnDPossible: PropTypes.bool,
 	setData: PropTypes.func,
+	setPage: PropTypes.func,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 

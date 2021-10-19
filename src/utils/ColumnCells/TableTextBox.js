@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 
 const TableTextBox = ({cell}) => {
