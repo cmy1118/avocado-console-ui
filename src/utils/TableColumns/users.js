@@ -7,8 +7,8 @@ export const usersColumns = [
 	{
 		accessor: 'id',
 		Header: '사용자계정',
-		Cell: function Component(props) {
-			return <TableLink props={props} />;
+		Cell: function Component(cell) {
+			return <TableLink cell={cell} />;
 		},
 	},
 	{

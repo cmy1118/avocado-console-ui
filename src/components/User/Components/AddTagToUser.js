@@ -9,11 +9,9 @@ const AddTagToUser = () => {
 	const {user} = useSelector(CURRENT_TARGET.selector);
 	const columns = getColumnsAsKey[tableKeys.addTagsToUserOnAddPage];
 	const [data, setData] = useState(user.tags);
-	const [page, setPage] = useState([]);
+	const [selected, setSelected] = useState({});
 
-	console.log(page);
-	// console.log(data);
-	// console.log(page);
+	console.log(selected);
 
 	const tagData = useMemo(() => {
 		return data.map((v) => {
@@ -55,7 +53,8 @@ const AddTagToUser = () => {
 				columns={columns}
 				isSelectable
 				setData={setData}
-				setPage={setPage}
+				setSelected={setSelected}
+				selected={selected}
 			/>
 		</>
 	);

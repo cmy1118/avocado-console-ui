@@ -8,8 +8,8 @@ export const groupColumns = [
 	{
 		Header: '그룹 이름',
 		accessor: 'name',
-		Cell: function Component(props) {
-			return <TableLink props={props} />;
+		Cell: function Component(cell) {
+			return <TableLink cell={cell} />;
 		},
 	},
 	{

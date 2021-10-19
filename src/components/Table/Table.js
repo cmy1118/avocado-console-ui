@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
 import {usePagination, useRowSelect, useSortBy, useTable} from 'react-table';
@@ -22,10 +22,9 @@ const Table = ({
 	isDnDPossible = false,
 	dndKey,
 	setData,
-	setPage,
+	setSelected,
+	selected,
 }) => {
-	const dispatch = useDispatch();
-
 	const getRowId = useCallback((v) => {
 		if (v.uid) return v.uid;
 		return v.id;
@@ -45,8 +44,7 @@ const Table = ({
 		nextPage,
 		previousPage,
 		setPageSize,
-		selectedFlatRows,
-		state: {pageIndex, pageSize},
+		state: {pageIndex, pageSize, selectedRowIds},
 	} = useTable(
 		{
 			data,
@@ -70,7 +68,6 @@ const Table = ({
 								row={data.map(
 									(v) => (v.uid ? v.uid : v.id), // id로 통일해야 할 것 같습니다.
 								)}
-								page={page.map((v) => v.isSelected)}
 								tablekey={tableKey}
 							/>
 						),
@@ -141,11 +138,8 @@ const Table = ({
 	}, []);
 
 	useEffect(() => {
-		setPage && setPage(page);
-		console.log(selectedFlatRows);
-		// console.log(page);
-		// console.log(selectedFlatRows);
-	}, [setPage, page, selectedFlatRows]);
+		setSelected && setSelected(selectedRowIds);
+	}, [setSelected, selectedRowIds]);
 
 	return (
 		<div>
@@ -250,7 +244,8 @@ Table.propTypes = {
 	isSelectable: PropTypes.bool,
 	isDnDPossible: PropTypes.bool,
 	setData: PropTypes.func,
-	setPage: PropTypes.func,
+	setSelected: PropTypes.func,
+	selected: PropTypes.object,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 
