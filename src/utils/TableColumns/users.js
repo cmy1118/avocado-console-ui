@@ -1,6 +1,5 @@
 import React from 'react';
 import TableTextBox from '../ColumnCells/TableTextBox';
-import CURRENT_TARGET from '../../reducers/currentTarget';
 import TableLink from '../ColumnCells/TableLink';
 
 export const usersColumns = [
@@ -92,25 +91,6 @@ export const addTagToUserOnDescPageColumns = [
 	},
 ];
 
-export const rolesIncludedInUserOnAddPageColumns = [
-	{
-		Header: '역할 이름',
-		accessor: 'name',
-		// id: LINK,
-	},
-	{
-		Header: '역할 유형',
-		accessor: 'type',
-	},
-	{
-		Header: '사용자 수',
-		accessor: 'numberOfUsers',
-	},
-	{
-		Header: '생성 일시',
-		accessor: 'creationDate',
-	},
-];
 export const groupsIncludedInUserOnAddPageColumns = [
 	{
 		Header: '그룹명',
@@ -145,6 +125,26 @@ export const groupsExcludedFromUserOnAddPageColumns = [
 ];
 
 export const rolesExcludedFromUserOnAddPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+		// id: LINK,
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+
+export const rolesIncludedInUserOnAddPageColumns = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
@@ -274,6 +274,44 @@ export const addUsersToGroupColumns = [
 	{
 		Header: '마지막 콘솔 로그인',
 		accessor: 'lastConsoleLogin',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+
+export const rolesIncludedInUserOnDescPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+
+export const rolesExcludedFormUserOnDescPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
 	},
 	{
 		Header: '생성 일시',

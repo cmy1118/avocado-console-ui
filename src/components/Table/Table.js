@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
 import {
@@ -33,8 +33,6 @@ const Table = ({
 		if (v.uid) return v.uid;
 		return v.id;
 	}, []);
-
-	const [testSel, setTestSel] = useState({});
 
 	const {
 		getTableProps,
@@ -144,11 +142,17 @@ const Table = ({
 				DropId: e.dataTransfer.getData('ids'),
 			});
 
-			setData &&
-				setData([
-					...data.map((v) => v.id),
-					...e.dataTransfer.getData('ids').split(','),
-				]);
+			const fromTableKey = e.dataTransfer.getData('tableKey');
+			const fromDndKey = e.dataTransfer.getData('dndKey');
+
+			if (fromTableKey !== tableKey && fromDndKey === dndKey) {
+				setData &&
+					setData(
+						data
+							.map((v) => v.id)
+							.concat(e.dataTransfer.getData('id')),
+					);
+			}
 		},
 		[data, setData],
 	);
@@ -157,14 +161,13 @@ const Table = ({
 		e.preventDefault();
 	}, []);
 
-	// useMountedLayoutEffect(() => {
-	// 	setTestSel(Object.keys(selectedRowIds));
-	// }, [selectedRowIds]);
+	// useEffect(() => {
+	// 	setSelected && setSelected(selectedRowIds);
+	// }, [setSelected, selectedRowIds]);
 
-	useEffect(() => {
-		console.log(selectedRowIds);
-		setSelected && setSelected(selectedRowIds);
-	}, [selectedRowIds, setSelected]);
+	useMountedLayoutEffect(() => {
+		isSelectable && setSelected && setSelected(Object.keys(selectedRowIds));
+	}, [isSelectable, selectedRowIds, setSelected]);
 
 	return (
 		<div>
@@ -270,7 +273,7 @@ Table.propTypes = {
 	isDnDPossible: PropTypes.bool,
 	setData: PropTypes.func,
 	setSelected: PropTypes.func,
-	selected: PropTypes.string,
+	selected: PropTypes.array,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 

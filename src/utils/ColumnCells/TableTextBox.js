@@ -12,7 +12,6 @@ const TableTextBox = ({cell}) => {
 	const handlePressEnter = useCallback(
 		(e) => {
 			if (e.keyCode === 13) {
-				console.log(e.target.value);
 				cell.setData([
 					...cell.data.filter((v) => v.id !== cell.row.original.id),
 					{...cell.row.original, [cell.column.id]: e.target.value},

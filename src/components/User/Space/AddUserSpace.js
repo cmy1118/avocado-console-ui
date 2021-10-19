@@ -9,7 +9,7 @@ import AddUserToGroup from '../Components/AddUserToGroup';
 import AddUser from '../Components/AddUser';
 
 const AddUserSpace = () => {
-	const [selectedRoles, setSelectedRoles] = useState([]);
+	const [addedRoles, setAddedRoles] = useState([]);
 
 	return (
 		<IamContainer>
@@ -26,8 +26,8 @@ const AddUserSpace = () => {
 			<AddUserToGroup />
 
 			<AssignRoleToUser
-				selectedRoles={selectedRoles}
-				setSelectedRoles={setSelectedRoles}
+				addedRoles={addedRoles}
+				setAddedRoles={setAddedRoles}
 			/>
 
 			<AddTagToUser />
