@@ -91,15 +91,40 @@ const Table = ({
 				]);
 		},
 	);
-
 	const onDragStart = useCallback(
 		(e) => {
 			if (e.target.firstChild.childNodes[0].type === 'checkbox') {
-				e.target.firstChild.childNodes[0].checked = true;
+				const rowId = rows[0].id;
+				console.log('rows.id', rows[0].id);
+				const what = rows.filter((v) => v.id === rowId).isSelected;
+				console.log('what:', what);
+
+				rows.filter((v) => v.id === rowId).isSelected = true;
+				console.log('rows', rows);
+
+				// rows[0].id.isSelected = true;
+				// const rowId = rows[0].id.isSekected ;
+				// console.log('rowId?:', rowId);
+				// selectedRowIds[rowId] = true;
+				// if (selectedRowIds) {
+				// 	selectedRowIds.rowId = true;
+				// } else {
+				// 	selectedRowIds.rowId = true;
+				// }
 			}
 			e.dataTransfer.setData(
 				'ids',
-				rows.filter((v) => v.isSelected).map((x) => x.id),
+				rows
+					.filter((v) => v.isSelected)
+					.map((x) => x.id)
+					.toString(),
+			);
+			console.log(
+				'set-data:',
+				rows
+					.filter((v) => v.isSelected)
+					.map((x) => x.id)
+					.toString(),
 			);
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
@@ -107,48 +132,30 @@ const Table = ({
 		},
 		[rows, tableKey, dndKey],
 	);
-
-	console.log(rows.filter((v) => v.isSelected).map((x) => x.id));
-
 	const onDragEnd = useCallback(
 		(e) => {
-			// if (e.target.firstChild.childNodes[0].type === 'checkbox') {
-			// 	e.target.firstChild.childNodes[0].checked = false;
-			// }
-			console.log(e.dataTransfer.getData('ids'));
-
-			setData &&
-				setData(
-					data
-						.filter(
-							(v) =>
-								!e.dataTransfer
-									.getData('ids')
-									.split(',')
-									.includes(v.id),
-						)
-						.map((x) => x.id),
-				);
+			console.log(
+				":::e.dataTransfer.getData('ids'):",
+				e.dataTransfer.getData('ids'),
+			);
+			const arr = rows.filter((v) => !v.isSelected).map((x) => x.id);
+			console.log(':::arr:', arr);
+			setData && setData(arr);
 			e.target.style.opacity = '';
 		},
-		[data, setData],
+		[rows, setData],
 	);
 
 	const onDrop = useCallback(
 		(e) => {
 			e.preventDefault();
-
-			console.log({
-				tableKey: e.dataTransfer.getData('tableKey'),
-				dndKey: e.dataTransfer.getData('dndKey'),
-				DropId: e.dataTransfer.getData('ids'),
-			});
-
+			// const arr = e.dataTransfer.getData('ids').split(',');
 			setData &&
 				setData([
 					...data.map((v) => v.id),
 					...e.dataTransfer.getData('ids').split(','),
-				]);
+				]); // 	]);
+			console.log('get-data:', e.dataTransfer.getData('ids'));
 		},
 		[data, setData],
 	);
