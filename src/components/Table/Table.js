@@ -72,7 +72,7 @@ const Table = ({
 						Header: ({getToggleAllPageRowsSelectedProps}) => (
 							<TableCheckbox
 								{...getToggleAllPageRowsSelectedProps()}
-								selected={rows.map((v) => v.isSelected)}
+								rows={rows}
 								tablekey={tableKey}
 							/>
 						),
@@ -82,7 +82,7 @@ const Table = ({
 								// eslint-disable-next-line react/prop-types,react/display-name
 								{...row.getToggleRowSelectedProps()}
 								row={row}
-								selected={rows.map((v) => v.isSelected)}
+								rows={rows}
 								tablekey={tableKey}
 							/>
 						),
@@ -156,10 +156,6 @@ const Table = ({
 	const onDragOver = useCallback((e) => {
 		e.preventDefault();
 	}, []);
-
-	// useMountedLayoutEffect(() => {
-	// 	setTestSel(Object.keys(selectedRowIds));
-	// }, [selectedRowIds]);
 
 	useEffect(() => {
 		console.log(selectedRowIds);

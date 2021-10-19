@@ -1,28 +1,90 @@
-import React, {forwardRef, useEffect, useMemo, useRef, useState} from 'react';
+import React, {
+	forwardRef,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
+import * as _ from 'lodash';
 import PropTypes from 'prop-types';
+import {useDispatch, useSelector} from 'react-redux';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
 
 const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
+	const dispatch = useDispatch();
+	const {lange} = useSelector(CURRENT_TARGET.selector);
 	const defaultRef = useRef();
-	const [selectedRowIds, setSelectedRowIds] = useState([]);
-	const [lastId, setLastId] = useState(null);
-
-	const [value, setValue] = useState(false);
-	// console.log(rest?.row); // index, isSelected
-	// console.log(rest.selected);
+	const [selectedRowIds, setSelectedRowIds] = useState(
+		rest.rows.map((v) => v.isSelected),
+	);
+	const [lastIndex, setLastIndex] = useState(null);
 	const resolvedRef = ref || defaultRef;
 
-	// console.log(selectedRowIds);
+	const customRest = useMemo(() => {
+		const selected = rest.rows.filter((v) => v.isSelected).map((x) => x.id);
+		return {
+			...rest,
+			checked:
+				rest.title === 'Toggle All Current Page Rows Selected'
+					? rest.checked
+					: lange[rest.tablekey]
+					? rest.row.index >= lange[rest.tablekey].min &&
+					  rest.row.index <= lange[rest.tablekey].max
+						? true
+						: rest.checked
+					: rest.checked,
+		};
+	}, [lange, rest]);
+
+	const handleClick = useCallback(
+		(e) => {
+			if (rest.title !== 'Toggle All Current Page Rows Selected') {
+				if (e.shiftKey) {
+					const currentIndex = rest.rows.findIndex(
+						(v) => v.id === rest.row.id,
+					);
+					if (lastIndex) {
+						console.log(currentIndex);
+						const max = _.max([lastIndex, currentIndex]);
+						const min = _.min([lastIndex, currentIndex]);
+
+						dispatch(
+							CURRENT_TARGET.action.setShiftLange({
+								tableKey: rest.tablekey,
+								lange: {min, max},
+							}),
+						);
+					}
+				}
+			}
+		},
+		[dispatch, lastIndex, rest],
+	);
+
+	// useEffect(() => {
+	// 	if (lange[rest.tablekey] && rest.row) {
+	// 		if (
+	// 			rest.row.index >= lange[rest.tablekey].min &&
+	// 			rest.row.index <= lange[rest.tablekey].max
+	// 		) {
+	// 			rest.check = true;
+	// 		}
+	// 	}
+	// }, [lange, rest]);
 
 	useEffect(() => {
-		const index = selectedRowIds.filter((v, i) => {
-			if (rest.selected[i] !== v) return i;
-		});
-
-		if (index) {
-			// console.log(index);
-			setSelectedRowIds(rest.selected);
+		const index = selectedRowIds.findIndex(
+			(v, i) => rest.rows.map((v) => v.isSelected)[i] !== v,
+		);
+		if (index !== -1) {
+			const isSelected = selectedRowIds.find(
+				(v, i) => rest.rows.map((v) => v.isSelected)[i] !== v,
+			);
+			if (!isSelected) setLastIndex(index);
+			setSelectedRowIds(rest.rows.map((v) => v.isSelected));
 		}
-	}, [rest.selected, selectedRowIds]);
+	}, [lastIndex, rest, selectedRowIds]);
 
 	useEffect(() => {
 		resolvedRef.current.indeterminate = indeterminate;
@@ -31,9 +93,9 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 	return (
 		<input
 			type='checkbox'
-			// onClick={handleClick}
+			onClick={handleClick}
 			ref={resolvedRef}
-			{...rest}
+			{...customRest}
 		/>
 	);
 });
