@@ -24,7 +24,7 @@ const AssignRoleToGroup = ({addedRoles, setAddedRoles}) => {
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
-				numberOfGroups: v.groups.length,
+				numberOfUsers: v.users.length,
 			}));
 	}, [roles, addedRoles]);
 
