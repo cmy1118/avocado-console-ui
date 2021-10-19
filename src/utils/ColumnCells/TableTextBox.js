@@ -1,64 +1,56 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import {useDispatch} from 'react-redux';
 
-const TableTextBox = ({cellObj, onSubmit}) => {
-	const dispatch = useDispatch();
+const TableTextBox = ({cell}) => {
 	const ref = useRef(null);
-	const [isOpenInput, setIsOpenInput] = useState(!cellObj.value);
-	const [value, setValue] = useState(cellObj.value);
+	const [value, setValue] = useState(cell.row.original[cell.column.id]);
 
-	const onChange = useCallback(
+	const handleChange = useCallback((e) => {
+		setValue(e.target.value);
+	}, []);
+
+	const handlePressEnter = useCallback(
 		(e) => {
-			setValue(e.target.value);
+			if (e.keyCode === 13) {
+				console.log(e.target.value);
+				cell.setData([
+					...cell.data.filter((v) => v.id !== cell.row.original.id),
+					{...cell.row.original, [cell.column.id]: e.target.value},
+				]);
+			}
 		},
-		[setValue],
+		[cell],
 	);
 
-	const onBlur = useCallback(
+	const handleBlur = useCallback(
 		(e) => {
-			const originalData = cellObj.data;
-			const index = originalData.findIndex(
-				(v) => v.id === cellObj.row.original.id,
-			);
-			const editedData = {
-				...cellObj.row.original,
-				[cellObj.column.id]: e.target.value,
-			};
-			const changedData = originalData.slice();
-			changedData.splice(index, 1, editedData);
-			dispatch(onSubmit(changedData));
-			setIsOpenInput(false);
+			cell.setData([
+				...cell.data.filter((v) => v.id !== cell.row.original.id),
+				{...cell.row.original, [cell.column.id]: e.target.value},
+			]);
 		},
-		[cellObj, dispatch, onSubmit],
+		[cell],
 	);
 
-	useEffect(() => {
-		setValue(cellObj.value);
-		!cellObj.value && setIsOpenInput(true);
-	}, [cellObj]);
+	// todo : 첫번째 input focus
+	// useEffect(() => {
+	// ref.current?.focus();
+	// }, []);
 
-	useEffect(() => {
-		if (cellObj.column.Header === cellObj.columns[0].Header)
-			ref.current?.focus();
-	}, [cellObj.column.Header, cellObj.columns]);
-
-	return isOpenInput ? (
+	return (
 		<input
 			ref={ref}
-			type={typeof cellObj.value}
+			type='text'
 			value={value}
-			onChange={onChange}
-			onBlur={onBlur}
+			onKeyUp={handlePressEnter}
+			onBlur={handleBlur}
+			onChange={handleChange}
 		/>
-	) : (
-		<div onDoubleClick={() => setIsOpenInput(true)}>{value}</div>
 	);
 };
 
 TableTextBox.propTypes = {
-	cellObj: PropTypes.object.isRequired,
-	onSubmit: PropTypes.func.isRequired,
+	cell: PropTypes.object.isRequired,
 };
 
 export default TableTextBox;

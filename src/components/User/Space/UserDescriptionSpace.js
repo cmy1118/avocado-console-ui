@@ -19,6 +19,7 @@ import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType'
 import Table from '../../Table/Table';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {tableKeys} from '../../../utils/data';
+import UserTags from '../Components/UserTags';
 
 const _Title = styled.div`
 	display: flex;
@@ -131,7 +132,7 @@ const UserDescriptionSpace = ({userId}) => {
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 					'role' && <div>role</div>}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'tag' && (
-					<div>tag</div>
+					<UserTags userId={userId} />
 				)}
 			</div>
 		</IamContainer>

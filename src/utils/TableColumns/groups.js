@@ -2,12 +2,15 @@ import {LINK} from '../data';
 import TableTextBox from '../ColumnCells/TableTextBox';
 import CURRENT_TARGET from '../../reducers/currentTarget';
 import React from 'react';
+import TableLink from '../ColumnCells/TableLink';
 
 export const groupColumns = [
 	{
 		Header: '그룹 이름',
 		accessor: 'name',
-		id: LINK,
+		Cell: function Component(props) {
+			return <TableLink props={props} />;
+		},
 	},
 	{
 		Header: '그룹 유형',
@@ -79,31 +82,20 @@ export const addTagsToGroupOnAddPageColumns = [
 	{
 		Header: 'Key(태그명)',
 		accessor: 'name',
-		Cell: function Component(cellObj) {
-			return (
-				<TableTextBox
-					cellObj={cellObj}
-					onSubmit={CURRENT_TARGET.action.saveTagDataOnAddGroup}
-				/>
-			);
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
 		},
-		// id: LINK,
 	},
 	{
 		Header: '값(태그)',
 		accessor: 'value',
-		Cell: function Component(cellObj) {
-			return (
-				<TableTextBox
-					cellObj={cellObj}
-					onSubmit={CURRENT_TARGET.action.saveTagDataOnAddGroup}
-				/>
-			);
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
 		},
 	},
 	{
 		Header: '권한 수',
-		accessor: 'rolesLength',
+		accessor: 'numberOfPermissions',
 	},
 ];
 

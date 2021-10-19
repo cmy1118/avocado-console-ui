@@ -25,7 +25,7 @@ const AddTagToGroup = () => {
 			return {
 				...v,
 				id: i,
-				rolesLength: v.roles.length,
+				numberOfPermissions: v.permissions.length,
 			};
 		});
 	}, [group]);

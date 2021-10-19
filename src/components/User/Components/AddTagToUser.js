@@ -1,34 +1,42 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {tableKeys} from '../../../utils/data';
 import Table from '../../Table/Table';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const AddTagToUser = () => {
-	const dispatch = useDispatch();
-	const {user, currentTarget} = useSelector(CURRENT_TARGET.selector);
+	const {user} = useSelector(CURRENT_TARGET.selector);
 	const columns = getColumnsAsKey[tableKeys.addTagsToUserOnAddPage];
-	const target = currentTarget[tableKeys.addTagsToUserOnAddPage];
+	const [data, setData] = useState(user.tags);
 
-	const onClickAddRow = useCallback(() => {
-		dispatch(CURRENT_TARGET.action.addTagDataOnAddUser());
-	}, [dispatch]);
+	console.log(data);
 
-	const onClickDeleteRow = useCallback(() => {
-		if (!target) return;
-		dispatch(CURRENT_TARGET.action.deleteTagDataOnAddUser(target));
-	}, [dispatch, target]);
-
-	const data = useMemo(() => {
-		return user.tags.map((v, i) => {
+	const tagData = useMemo(() => {
+		return data.map((v) => {
 			return {
 				...v,
-				id: i,
-				rolesLength: v.roles.length,
+				id: v.name,
+				numberOfPermissions: v.permissions.length,
 			};
 		});
-	}, [user]);
+	}, [data]);
+
+	const onClickAddRow = useCallback(() => {
+		console.log(data);
+		setData([
+			...data,
+			{
+				name: '',
+				value: '',
+				permissions: [],
+			},
+		]);
+	}, [data]);
+
+	const onClickDeleteRow = useCallback(() => {
+		console.log(data);
+	}, [data]);
 
 	return (
 		<>
@@ -40,9 +48,10 @@ const AddTagToUser = () => {
 			</div>
 			<Table
 				tableKey={tableKeys.addTagsToUserOnAddPage}
-				data={data}
+				data={tagData}
 				columns={columns}
 				isSelectable
+				setData={setData}
 			/>
 		</>
 	);
