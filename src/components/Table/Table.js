@@ -1,8 +1,13 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
-import {usePagination, useRowSelect, useSortBy, useTable} from 'react-table';
-import {useDispatch} from 'react-redux';
+import {
+	useMountedLayoutEffect,
+	usePagination,
+	useRowSelect,
+	useSortBy,
+	useTable,
+} from 'react-table';
 
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
@@ -123,12 +128,17 @@ const Table = ({
 				DropId: e.dataTransfer.getData('id'),
 			});
 
-			console.log(data.map((v) => v.id));
+			const fromTableKey = e.dataTransfer.getData('tableKey');
+			const fromDndKey = e.dataTransfer.getData('dndKey');
 
-			setData &&
-				setData(
-					data.map((v) => v.id).concat(e.dataTransfer.getData('id')),
-				);
+			if (fromTableKey !== tableKey && fromDndKey === dndKey) {
+				setData &&
+					setData(
+						data
+							.map((v) => v.id)
+							.concat(e.dataTransfer.getData('id')),
+					);
+			}
 		},
 		[data, setData],
 	);
@@ -137,9 +147,13 @@ const Table = ({
 		e.preventDefault();
 	}, []);
 
-	useEffect(() => {
-		setSelected && setSelected(selectedRowIds);
-	}, [setSelected, selectedRowIds]);
+	// useEffect(() => {
+	// 	setSelected && setSelected(selectedRowIds);
+	// }, [setSelected, selectedRowIds]);
+
+	useMountedLayoutEffect(() => {
+		isSelectable && setSelected && setSelected(Object.keys(selectedRowIds));
+	}, [isSelectable, selectedRowIds, setSelected]);
 
 	return (
 		<div>
@@ -245,7 +259,7 @@ Table.propTypes = {
 	isDnDPossible: PropTypes.bool,
 	setData: PropTypes.func,
 	setSelected: PropTypes.func,
-	selected: PropTypes.object,
+	selected: PropTypes.array,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 

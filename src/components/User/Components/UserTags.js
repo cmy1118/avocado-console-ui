@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {tableKeys} from '../../../utils/data';
 import Table from '../../Table/Table';
-import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
+
 let index = 0;
 
 const UserTags = ({userId}) => {

@@ -78,6 +78,36 @@ export const usersIncludedInGroupOnAddPageColumns = [
 	},
 ];
 
+export const rolesExcludedFromGroupOnAddPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+
+export const rolesIncludedInGroupOnAddPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
+	},
+];
+
 export const addTagsToGroupOnAddPageColumns = [
 	{
 		Header: 'Key(태그명)',
@@ -169,6 +199,43 @@ export const groupTagsSummaryColumns = [
 	{
 		Header: '권한 수',
 		accessor: 'numberOfPermissions',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+
+export const rolesIncludedInGroupOnDescPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+export const rolesExcludedFormGroupOnDescPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
 	},
 	{
 		Header: '생성 일시',

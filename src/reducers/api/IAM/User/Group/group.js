@@ -143,7 +143,7 @@ const slice = createSlice({
 				name: 'User',
 				clientGroupTypeId: 'groupType1',
 				members: ['user4', 'user5', 'user6', 'user7'],
-				roles: [],
+				roles: ['role1', 'role2'],
 				parentId: null,
 				path: '/group1',
 				creationDate: '2021.03.02 15:55:32',
@@ -157,7 +157,7 @@ const slice = createSlice({
 				name: 'Manager',
 				clientGroupTypeId: 'groupType1',
 				members: ['user1', 'user2'],
-				roles: [],
+				roles: ['role1', 'role6'],
 				parentId: null,
 				path: '/group2',
 				creationDate: '2021.03.02 15:55:32',
@@ -167,7 +167,7 @@ const slice = createSlice({
 				name: 'Admin',
 				clientGroupTypeId: 'groupType1',
 				members: ['user3'],
-				roles: [],
+				roles: ['role5', 'role6'],
 				parentId: null,
 				path: '/group3',
 				creationDate: '2021.03.02 15:55:32',
@@ -177,7 +177,7 @@ const slice = createSlice({
 				name: 'Develop',
 				clientGroupTypeId: 'groupType2',
 				members: ['user1', 'user2', 'user3'],
-				roles: [],
+				roles: ['role3', 'role4', 'role5'],
 				parentId: null,
 				path: '/group4',
 				creationDate: '2021.03.02 15:55:32',
@@ -246,6 +246,20 @@ const slice = createSlice({
 				creationDate: new Date().toLocaleString(),
 			});
 			state.index++;
+		},
+
+		addRolesToGroup: (state, action) => {
+			const group = state.groups.find((v) => v.id === action.payload.id);
+
+			group.roles = group.roles.concat(action.payload.roles);
+		},
+
+		deleteRolesFromGroup: (state, action) => {
+			const group = state.groups.find((v) => v.id === action.payload.id);
+
+			group.roles = group.roles.filter(
+				(v) => !action.payload.roles.includes(v),
+			);
 		},
 	},
 	extraReducers: {

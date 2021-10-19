@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 	const defaultRef = useRef();
-	console.log(rest);
 	const resolvedRef = ref || defaultRef;
 
 	useEffect(() => {
