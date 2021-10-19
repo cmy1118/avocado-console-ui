@@ -1,8 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
-import {usePagination, useRowSelect, useSortBy, useTable} from 'react-table';
-import {useDispatch} from 'react-redux';
+import {
+	useMountedLayoutEffect,
+	usePagination,
+	useRowSelect,
+	useSortBy,
+	useTable,
+} from 'react-table';
 
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
@@ -23,12 +28,13 @@ const Table = ({
 	dndKey,
 	setData,
 	setSelected,
-	selected,
 }) => {
 	const getRowId = useCallback((v) => {
 		if (v.uid) return v.uid;
 		return v.id;
 	}, []);
+
+	const [testSel, setTestSel] = useState({});
 
 	const {
 		getTableProps,
@@ -37,6 +43,7 @@ const Table = ({
 		prepareRow,
 		allColumns,
 		page, // Instead of using 'rows', we'll use page,
+		rows,
 		canPreviousPage,
 		canNextPage,
 		pageOptions,
@@ -51,7 +58,7 @@ const Table = ({
 			columns,
 			initialState: {pageSize: 50},
 			getRowId,
-			selectedRowIds: {},
+			// selectedRowIds: {},
 		},
 		useSortBy,
 		usePagination,
@@ -65,9 +72,7 @@ const Table = ({
 						Header: ({getToggleAllPageRowsSelectedProps}) => (
 							<TableCheckbox
 								{...getToggleAllPageRowsSelectedProps()}
-								row={data.map(
-									(v) => (v.uid ? v.uid : v.id), // id로 통일해야 할 것 같습니다.
-								)}
+								selected={rows.map((v) => v.isSelected)}
 								tablekey={tableKey}
 							/>
 						),
@@ -77,6 +82,7 @@ const Table = ({
 								// eslint-disable-next-line react/prop-types,react/display-name
 								{...row.getToggleRowSelectedProps()}
 								row={row}
+								selected={rows.map((v) => v.isSelected)}
 								tablekey={tableKey}
 							/>
 						),
@@ -91,22 +97,37 @@ const Table = ({
 			if (e.target.firstChild.childNodes[0].type === 'checkbox') {
 				e.target.firstChild.childNodes[0].checked = true;
 			}
-			e.dataTransfer.setData('id', e.target.id);
+			e.dataTransfer.setData(
+				'ids',
+				rows.filter((v) => v.isSelected).map((x) => x.id),
+			);
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
 			e.target.style.opacity = '0.2';
 		},
-		[tableKey, dndKey],
+		[rows, tableKey, dndKey],
 	);
+
+	console.log(rows.filter((v) => v.isSelected).map((x) => x.id));
 
 	const onDragEnd = useCallback(
 		(e) => {
-			if (e.target.firstChild.childNodes[0].type === 'checkbox') {
-				e.target.firstChild.childNodes[0].checked = false;
-			}
+			// if (e.target.firstChild.childNodes[0].type === 'checkbox') {
+			// 	e.target.firstChild.childNodes[0].checked = false;
+			// }
+			console.log(e.dataTransfer.getData('ids'));
+
 			setData &&
 				setData(
-					data.filter((v) => v.id !== e.target.id).map((x) => x.id),
+					data
+						.filter(
+							(v) =>
+								!e.dataTransfer
+									.getData('ids')
+									.split(',')
+									.includes(v.id),
+						)
+						.map((x) => x.id),
 				);
 			e.target.style.opacity = '';
 		},
@@ -120,15 +141,14 @@ const Table = ({
 			console.log({
 				tableKey: e.dataTransfer.getData('tableKey'),
 				dndKey: e.dataTransfer.getData('dndKey'),
-				DropId: e.dataTransfer.getData('id'),
+				DropId: e.dataTransfer.getData('ids'),
 			});
 
-			console.log(data.map((v) => v.id));
-
 			setData &&
-				setData(
-					data.map((v) => v.id).concat(e.dataTransfer.getData('id')),
-				);
+				setData([
+					...data.map((v) => v.id),
+					...e.dataTransfer.getData('ids').split(','),
+				]);
 		},
 		[data, setData],
 	);
@@ -137,9 +157,14 @@ const Table = ({
 		e.preventDefault();
 	}, []);
 
+	// useMountedLayoutEffect(() => {
+	// 	setTestSel(Object.keys(selectedRowIds));
+	// }, [selectedRowIds]);
+
 	useEffect(() => {
+		console.log(selectedRowIds);
 		setSelected && setSelected(selectedRowIds);
-	}, [setSelected, selectedRowIds]);
+	}, [selectedRowIds, setSelected]);
 
 	return (
 		<div>
@@ -245,7 +270,7 @@ Table.propTypes = {
 	isDnDPossible: PropTypes.bool,
 	setData: PropTypes.func,
 	setSelected: PropTypes.func,
-	selected: PropTypes.object,
+	selected: PropTypes.string,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 

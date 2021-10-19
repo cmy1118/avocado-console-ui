@@ -11,8 +11,6 @@ const AddTagToUser = () => {
 	const [data, setData] = useState(user.tags);
 	const [selected, setSelected] = useState({});
 
-	console.log(selected);
-
 	const tagData = useMemo(() => {
 		return data.map((v) => {
 			return {
@@ -54,7 +52,7 @@ const AddTagToUser = () => {
 				isSelectable
 				setData={setData}
 				setSelected={setSelected}
-				selected={selected}
+				selected={Object.keys(selected).pop()}
 			/>
 		</>
 	);
