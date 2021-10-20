@@ -1,4 +1,6 @@
+import {LINK} from '../data';
 import TableTextBox from '../ColumnCells/TableTextBox';
+import CURRENT_TARGET from '../../reducers/currentTarget';
 import React from 'react';
 import TableLink from '../ColumnCells/TableLink';
 
@@ -49,6 +51,36 @@ export const groupTypeColumns = [
 	{
 		Header: '생성 일시',
 		accessor: 'creationDate',
+	},
+];
+
+export const rolesExcludedFromGroupOnAddPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+
+export const rolesIncludedInGroupOnAddPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
 	},
 ];
 
@@ -179,5 +211,42 @@ export const usersExcludedFromGroupOnAddPageColumns = [
 	{
 		Header: '사용자 명',
 		accessor: 'name', //has to be changed
+	},
+];
+
+export const rolesIncludedInGroupOnDescPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+export const rolesExcludedFormGroupOnDescPageColumns = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
 	},
 ];

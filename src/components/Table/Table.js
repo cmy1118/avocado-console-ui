@@ -33,7 +33,6 @@ const Table = ({
 		if (v.uid) return v.uid;
 		return v.id;
 	}, []);
-
 	const [testSel, setTestSel] = useState({});
 
 	const {
@@ -222,7 +221,7 @@ const Table = ({
 										: row.original.id
 								}
 								{...row.getRowProps()}
-								onDragStart={onDragStart(row)}
+								onDragStart={onDragStart}
 							>
 								{row.cells.map((cell, i) => {
 									return (
@@ -255,7 +254,7 @@ Table.propTypes = {
 	isDnDPossible: PropTypes.bool,
 	setData: PropTypes.func,
 	setSelected: PropTypes.func,
-	selected: PropTypes.string,
+	selected: PropTypes.array,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 

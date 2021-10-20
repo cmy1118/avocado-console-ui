@@ -146,6 +146,7 @@ const slice = createSlice({
 				telephone: '010-9434-5272',
 				mobile: '010-9434-5272',
 				groups: ['group2', 'group4', 'group8'],
+				roles: ['role1', 'role2'],
 				status: 0,
 				authType: 'ID/PW',
 				MFA: null,
@@ -165,6 +166,7 @@ const slice = createSlice({
 				telephone: '010-9688-5549',
 				mobile: '010-9688-5549',
 				groups: ['group2', 'group4', 'group8'],
+				roles: ['role2', 'role4'],
 				status: 1,
 				authType: 'ID/PW',
 				MFA: null,
@@ -181,6 +183,7 @@ const slice = createSlice({
 				telephone: '010-2225-1154',
 				mobile: '010-2225-1154',
 				groups: ['group3', 'group4', 'group8'],
+				roles: ['role5', 'role6'],
 				status: 2,
 				authType: 'ID/PW',
 				MFA: null,
@@ -332,6 +335,20 @@ const slice = createSlice({
 				users = onDeleteUser(users, target);
 			});
 			state.users = users;
+		},
+
+		addRolesToUser: (state, action) => {
+			const user = state.users.find((v) => v.uid === action.payload.uid);
+
+			user.roles = user.roles.concat(action.payload.roles);
+		},
+
+		deleteRolesFromUser: (state, action) => {
+			const user = state.users.find((v) => v.uid === action.payload.uid);
+
+			user.roles = user.roles.filter(
+				(v) => !action.payload.roles.includes(v),
+			);
 		},
 	},
 	extraReducers: {

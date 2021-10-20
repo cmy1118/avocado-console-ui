@@ -10,8 +10,21 @@ export const DialogBox = styled(Modal)`
 	bottom: auto;
 	transform: translate(-50%, -50%);
 `;
+
 export const DialogBoxHeader = styled.div`
 	display: flex;
 	justify-content: space-between;
 `;
 export const DialogBoxFooter = styled.div``;
+
+export const AlertDialogBox = styled(DialogBox)`
+	z-index: 15;
+`;
+
+export const AlertDialogBoxContent = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+`;
+
+export const AlertDialogBoxText = styled.div``;

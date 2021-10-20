@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 
 const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 	const defaultRef = useRef();
+
 	const [selectedRowIds, setSelectedRowIds] = useState([]);
 	const [lastId, setLastId] = useState(null);
 
 	const [value, setValue] = useState(false);
 	// console.log(rest?.row); // index, isSelected
 	// console.log(rest.selected);
+
 	const resolvedRef = ref || defaultRef;
 
 	// console.log(selectedRowIds);

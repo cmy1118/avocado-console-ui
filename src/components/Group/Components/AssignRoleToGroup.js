@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
@@ -12,57 +12,89 @@ const _Tables = styled.div`
 	display: flex;
 `;
 
-const AssignRoleToGroup = ({selectedRoles, setSelectedRoles}) => {
+const AssignRoleToGroup = () => {
 	const {roles} = useSelector(IAM_ROLES.selector);
+	const [rightDataIds, setRightDataIds] = useState([]);
 
-	const data1 = useMemo(() => {
-		return roles
-			.filter((v) => !selectedRoles.includes(v.id))
-			.map((v) => ({...v, type: roleTypeConverter(v.companyId)}));
-	}, [roles]);
+	const [selectedExcludedRoles, setSelectedExcludedRoles] = useState([]);
+	const [selectedIncludedRoles, setSelectedIncludedRoles] = useState([]);
 
-	const data2 = useMemo(() => {
+	const dataLeft = useMemo(() => {
 		return roles
-			.filter((v) => selectedRoles.includes(v.id))
+			.filter((v) => !rightDataIds.includes(v.id))
+			.map((v) => ({
+				...v,
+				type: roleTypeConverter(v.companyId),
+				numberOfUsers: v.users.length,
+			}));
+	}, [roles, rightDataIds]);
+
+	const dataRight = useMemo(() => {
+		return roles
+			.filter((v) => rightDataIds.includes(v.id))
 			.map((v) => ({...v, type: roleTypeConverter(v.companyId)}));
-	}, [roles]);
+	}, [roles, rightDataIds]);
+
+	const onClickDeleteRolesFromGroup = useCallback(() => {
+		setRightDataIds(
+			rightDataIds.filter((v) => !selectedIncludedRoles.includes(v)),
+		);
+	}, [rightDataIds, selectedIncludedRoles]);
+
+	const onClickAddRolesToGroup = useCallback(() => {
+		setRightDataIds([...rightDataIds, ...selectedExcludedRoles]);
+	}, [rightDataIds, selectedExcludedRoles]);
 
 	return (
 		<>
 			<div>권한 추가</div>
 			<_Tables>
 				<Table
-					data={data1}
-					tableKey={tableKeys.rolesIncludedInUserOnAddPage}
+					data={dataLeft}
+					tableKey={tableKeys.rolesExcludedFromGroupOnAddPage}
 					columns={
-						getColumnsAsKey[tableKeys.rolesIncludedInUserOnAddPage]
+						getColumnsAsKey[
+							tableKeys.rolesExcludedFromGroupOnAddPage
+						]
 					}
 					isPageable
 					isNumberOfRowsAdjustable
 					isColumnFilterable
 					isSortable
+					isSelectable
+					isDnDPossible
+					dndKey={'role'}
+					selected={selectedExcludedRoles}
+					setSelected={setSelectedExcludedRoles}
 				/>
+
 				<div>
-					<div>추가 Roles: {selectedRoles.length}건</div>
+					<button onClick={onClickAddRolesToGroup}>-&gt;</button>
+					<button onClick={onClickDeleteRolesFromGroup}>&lt;-</button>
+				</div>
+
+				<div>
+					<div>추가 Roles: {rightDataIds.length}건</div>
 					<Table
-						data={data2}
-						tableKey={tableKeys.rolesExcludedFromUserOnAddPage}
+						data={dataRight}
+						tableKey={tableKeys.rolesIncludedInGroupOnAddPage}
 						columns={
 							getColumnsAsKey[
-								tableKeys.rolesExcludedFromUserOnAddPage
+								tableKeys.rolesIncludedInGroupOnAddPage
 							]
 						}
 						isSortable
+						isSelectable
+						isDnDPossible
+						dndKey={'role'}
+						setData={setRightDataIds}
+						selected={selectedIncludedRoles}
+						setSelected={setSelectedIncludedRoles}
 					/>
 				</div>
 			</_Tables>
 		</>
 	);
-};
-
-AssignRoleToGroup.propTypes = {
-	selectedRoles: PropTypes.array.isRequired,
-	setSelectedRoles: PropTypes.func.isRequired,
 };
 
 export default AssignRoleToGroup;

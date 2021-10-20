@@ -15,16 +15,22 @@ export const tableKeys = {
 	userAuthSummary: 'userAuthSummary',
 	userRolesSummary: 'userRolesSummary',
 	userTagsSummary: 'userTagsSummary',
+	rolesIncludedInUserOnDescPage: 'rolesIncludedInUserOnDescPage',
+	rolesExcludedFormUserOnDescPage: 'rolesExcludedFormUserOnDescPage',
 	/* groups */
 	groupTypes: 'groupTypes', // 그룹 유형 관리
 	groups: 'groups', // 사용자 그룹
 	//사용자 그룹에 추가
 	usersIncludedInGroupOnAddPage: 'usersIncludedInGroupOnAddPage',
 	usersExcludedFromGroupOnAddPage: 'usersExcludedFromGroupOnAddPage',
+	rolesIncludedInGroupOnAddPage: 'rolesIncludedInGroupOnAddPage',
+	rolesExcludedFromGroupOnAddPage: 'rolesExcludedFromGroupOnAddPage',
 	addTagsToGroupOnAddPage: 'addTagsToGroupOnAddPage',
 	groupUsersSummary: 'groupUsersSummary',
 	groupRolesSummary: 'groupRolesSummary',
 	groupTagsSummary: 'groupTagsSummary',
+	rolesIncludedInGroupOnDescPage: 'rolesIncludedInGroupOnDescPage',
+	rolesExcludedFormGroupOnDescPage: 'rolesExcludedFormGroupOnDescPage',
 };
 
 export const formKeys = {

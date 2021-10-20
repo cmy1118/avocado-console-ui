@@ -11,6 +11,8 @@ import {
 	addUsersToGroupColumns,
 	groupsIncludedInUserOnAddPageColumns,
 	groupsExcludedFromUserOnAddPageColumns,
+	rolesIncludedInUserOnDescPageColumns,
+	rolesExcludedFormUserOnDescPageColumns,
 } from './users';
 import {
 	groupColumns,
@@ -21,10 +23,15 @@ import {
 	groupUsersSummaryColumns,
 	usersIncludedInGroupOnAddPageColumns,
 	usersExcludedFromGroupOnAddPageColumns,
+	rolesIncludedInGroupOnAddPageColumns,
+	rolesExcludedFromGroupOnAddPageColumns,
+	rolesIncludedInGroupOnDescPageColumns,
+	rolesExcludedFormGroupOnDescPageColumns,
 } from './groups';
 
 // 형식 { key : columns }
 export let getColumnsAsKey;
+
 getColumnsAsKey = {
 	/* users */
 	users: usersColumns, // 사용자
@@ -39,14 +46,21 @@ getColumnsAsKey = {
 	groupsIncludedInUserOnAddPageColumns: groupsIncludedInUserOnAddPageColumns,
 	groupsExcludedFromUserOnAddPageColumns: groupsExcludedFromUserOnAddPageColumns,
 
+	rolesIncludedInUserOnDescPage: rolesIncludedInUserOnDescPageColumns,
+	rolesExcludedFormUserOnDescPage: rolesExcludedFormUserOnDescPageColumns,
 	/* groups */
 	groups: groupColumns,
 	groupTypes: groupTypeColumns,
 	addTagsToGroupOnAddPage: addTagsToGroupOnAddPageColumns, // 그룹 생성페이지 태그 추가
+	usersIncludedInGroupOnAddPage: usersIncludedInGroupOnAddPageColumns,
+	rolesIncludedInGroupOnAddPage: rolesIncludedInGroupOnAddPageColumns,
+	rolesExcludedFromGroupOnAddPage: rolesExcludedFromGroupOnAddPageColumns,
 	groupUsersSummary: groupUsersSummaryColumns,
 	groupRolesSummary: groupRolesSummaryColumns,
 	groupTagsSummary: groupTagsSummaryColumns,
 	addTagToUserOnDescPage: addTagToUserOnDescPageColumns,
 	usersIncludedInGroupOnAddPageColumns: usersIncludedInGroupOnAddPageColumns,
 	usersExcludedFromGroupOnAddPageColumns: usersExcludedFromGroupOnAddPageColumns,
+	rolesIncludedInGroupOnDescPage: rolesIncludedInGroupOnDescPageColumns,
+	rolesExcludedFormGroupOnDescPage: rolesExcludedFormGroupOnDescPageColumns,
 };

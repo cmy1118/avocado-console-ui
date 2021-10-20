@@ -13,6 +13,8 @@ const slice = createSlice({
 				description:
 					'사용자 레벨의 최고 관리자인 Manager에게 부여된 역할 (기본 제공)',
 				companyId: null,
+				users: ['user1'],
+				groups: ['group1', 'group2'],
 				policies: ['policy1', 'policy2', 'policy3'],
 				creationDate: '2021.03.02 15:55:32',
 			},
@@ -21,6 +23,8 @@ const slice = createSlice({
 				name: 'admin-role',
 				description: 'Admin 사용자에게 부여 하는 역할',
 				companyId: null,
+				users: ['user1', 'user2'],
+				groups: ['group1'],
 				policies: ['policy1', 'policy2'],
 				creationDate: '2021.03.02 15:55:32',
 			},
@@ -28,6 +32,8 @@ const slice = createSlice({
 				id: 'role3',
 				name: 'user-role',
 				description: '일반 User에게 부여 하는 역할',
+				users: [],
+				groups: ['group4'],
 				companyId: null,
 				policies: [],
 				creationDate: '2021.03.02 15:55:32',
@@ -37,6 +43,8 @@ const slice = createSlice({
 				name: 'guest-role',
 				description: 'Guest 사용자에게 부여하는 역할',
 				companyId: null,
+				users: ['user2'],
+				groups: ['group4'],
 				policies: [],
 				creationDate: '2021.03.02 15:55:32',
 			},
@@ -44,7 +52,9 @@ const slice = createSlice({
 				id: 'role5',
 				name: 'developerOnly-role',
 				description: '개발자에게 부여하기 위한 기본 역할',
-				companyId: 'netand',
+				companyId: 'Netand',
+				users: ['user3'],
+				groups: ['group3', 'group4'],
 				policies: [],
 				creationDate: '2021.03.02 15:55:32',
 			},
@@ -53,12 +63,64 @@ const slice = createSlice({
 				name: 'operation-role',
 				description: '운영자에게 부여하기 위한 기본 역할',
 				companyId: null,
+				users: ['user3'],
+				groups: ['group2', 'group3'],
 				policies: [],
 				creationDate: '2021.03.02 15:55:32',
 			},
 		],
 	},
-	reducers: {},
+	reducers: {
+		addRolesToUser: (state, action) => {
+			const roles = state.roles.filter((v) =>
+				action.payload.roles.includes(v.id),
+			);
+
+			roles.map((v) => {
+				v.users.push(action.payload.uid);
+				return v;
+			});
+		},
+
+		deleteRolesFromUser: (state, action) => {
+			const roles = state.roles.filter((v) =>
+				action.payload.roles.includes(v.id),
+			);
+
+			roles.map((v) => {
+				const index = v.users.findIndex(
+					(val) => val === action.payload.uid,
+				);
+				v.users.splice(index, 1);
+				return v;
+			});
+		},
+
+		addRolesToGroup: (state, action) => {
+			const roles = state.roles.filter((v) =>
+				action.payload.roles.includes(v.id),
+			);
+
+			roles.map((v) => {
+				v.groups.push(action.payload.id);
+				return v;
+			});
+		},
+
+		deleteRolesFromGroup: (state, action) => {
+			const roles = state.roles.filter((v) =>
+				action.payload.roles.includes(v.id),
+			);
+
+			roles.map((v) => {
+				const index = v.groups.findIndex(
+					(val) => val === action.payload.id,
+				);
+				v.groups.splice(index, 1);
+				return v;
+			});
+		},
+	},
 });
 
 const selectAllState = createSelector(

@@ -7,8 +7,6 @@ import AddTagToGroup from '../Components/AddTagToGroup';
 import UsersIncludedInGroup from '../Components/UsersIncludedInGroup';
 
 const AddGroupSpace = () => {
-	const [selectedRoles, setSelectedRoles] = useState([]);
-
 	return (
 		<IamContainer>
 			<PathContainer>
@@ -19,11 +17,10 @@ const AddGroupSpace = () => {
 				<Link to='/groups/add'>사용자 그룹 생성</Link>
 			</PathContainer>
 			<AddGroup />
+
+			<AssignRoleToGroup />
 			<UsersIncludedInGroup />
-			<AssignRoleToGroup
-				selectedRoles={selectedRoles}
-				setSelectedRoles={setSelectedRoles}
-			/>
+
 
 			<AddTagToGroup />
 		</IamContainer>
