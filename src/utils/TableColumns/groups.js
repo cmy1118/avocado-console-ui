@@ -1,6 +1,4 @@
-import {LINK} from '../data';
 import TableTextBox from '../ColumnCells/TableTextBox';
-import CURRENT_TARGET from '../../reducers/currentTarget';
 import React from 'react';
 import TableLink from '../ColumnCells/TableLink';
 
@@ -47,30 +45,6 @@ export const groupTypeColumns = [
 	{
 		Header: '설명',
 		accessor: 'description',
-	},
-	{
-		Header: '생성 일시',
-		accessor: 'creationDate',
-	},
-];
-
-export const usersIncludedInGroupOnAddPageColumns = [
-	{
-		Header: '사용자 계정',
-		accessor: 'id',
-		id: LINK,
-	},
-	{
-		Header: '사용자 이름',
-		accessor: 'name',
-	},
-	{
-		Header: '그룹 수',
-		accessor: 'groupsLength',
-	},
-	{
-		Header: '마지막 콘솔 로그인',
-		accessor: 'lastConsoleLogin',
 	},
 	{
 		Header: '생성 일시',
@@ -173,5 +147,37 @@ export const groupTagsSummaryColumns = [
 	{
 		Header: '생성 일시',
 		accessor: 'creationDate',
+	},
+];
+export const usersIncludedInGroupOnAddPageColumns = [
+	{
+		Header: '사용자 계정',
+		accessor: 'id',
+	},
+	{
+		Header: '사용자 명',
+		accessor: 'name',
+	},
+	{
+		Header: '그룹 수',
+		accessor: 'groupsLength',
+	},
+	{
+		Header: '마지막 콘솔 로그인 ',
+		accessor: 'lastConsoleLogin',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+export const usersExcludedFromGroupOnAddPageColumns = [
+	{
+		Header: '사용자 계정',
+		accessor: 'id',
+	},
+	{
+		Header: '사용자 명',
+		accessor: 'name', //has to be changed
 	},
 ];

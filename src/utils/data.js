@@ -18,7 +18,9 @@ export const tableKeys = {
 	/* groups */
 	groupTypes: 'groupTypes', // 그룹 유형 관리
 	groups: 'groups', // 사용자 그룹
+	//사용자 그룹에 추가
 	usersIncludedInGroupOnAddPage: 'usersIncludedInGroupOnAddPage',
+	usersExcludedFromGroupOnAddPage: 'usersExcludedFromGroupOnAddPage',
 	addTagsToGroupOnAddPage: 'addTagsToGroupOnAddPage',
 	groupUsersSummary: 'groupUsersSummary',
 	groupRolesSummary: 'groupRolesSummary',

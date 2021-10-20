@@ -94,6 +94,7 @@ const Table = ({
 	const onDragStart = useCallback(
 		(row) => (e) => {
 			if (e.target.firstChild.childNodes[0].type === 'checkbox') {
+				e.target.firstChild.childNodes[0].checked = true;
 				const rowId = row.id;
 				rows.filter((v) => v.id === rowId)[0].isSelected = true;
 			}
@@ -104,13 +105,13 @@ const Table = ({
 					.map((x) => x.id)
 					.toString(),
 			);
-			// console.log(
-			// 	'set-data:',
-			// 	rows
-			// 		.filter((v) => v.isSelected)
-			// 		.map((x) => x.id)
-			// 		.toString(),
-			// );
+			console.log(
+				'set-data:',
+				rows
+					.filter((v) => v.isSelected)
+					.map((x) => x.id)
+					.toString(),
+			);
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
 			e.target.style.opacity = '0.2';

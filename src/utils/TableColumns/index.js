@@ -20,6 +20,7 @@ import {
 	groupTypeColumns,
 	groupUsersSummaryColumns,
 	usersIncludedInGroupOnAddPageColumns,
+	usersExcludedFromGroupOnAddPageColumns,
 } from './groups';
 
 // 형식 { key : columns }
@@ -37,13 +38,15 @@ getColumnsAsKey = {
 	addUsersToGroup: addUsersToGroupColumns,
 	groupsIncludedInUserOnAddPageColumns: groupsIncludedInUserOnAddPageColumns,
 	groupsExcludedFromUserOnAddPageColumns: groupsExcludedFromUserOnAddPageColumns,
-	addTagToUserOnDescPage: addTagToUserOnDescPageColumns,
+
 	/* groups */
 	groups: groupColumns,
 	groupTypes: groupTypeColumns,
 	addTagsToGroupOnAddPage: addTagsToGroupOnAddPageColumns, // 그룹 생성페이지 태그 추가
-	usersIncludedInGroupOnAddPage: usersIncludedInGroupOnAddPageColumns,
 	groupUsersSummary: groupUsersSummaryColumns,
 	groupRolesSummary: groupRolesSummaryColumns,
 	groupTagsSummary: groupTagsSummaryColumns,
+	addTagToUserOnDescPage: addTagToUserOnDescPageColumns,
+	usersIncludedInGroupOnAddPageColumns: usersIncludedInGroupOnAddPageColumns,
+	usersExcludedFromGroupOnAddPageColumns: usersExcludedFromGroupOnAddPageColumns,
 };

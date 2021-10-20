@@ -4,6 +4,7 @@ import {IamContainer, PathContainer} from '../../../styles/components/style';
 import AddGroup from '../Components/AddGroup';
 import AssignRoleToGroup from '../Components/AssignRoleToGroup';
 import AddTagToGroup from '../Components/AddTagToGroup';
+import UsersIncludedInGroup from '../Components/UsersIncludedInGroup';
 
 const AddGroupSpace = () => {
 	const [selectedRoles, setSelectedRoles] = useState([]);
@@ -18,7 +19,7 @@ const AddGroupSpace = () => {
 				<Link to='/groups/add'>사용자 그룹 생성</Link>
 			</PathContainer>
 			<AddGroup />
-
+			<UsersIncludedInGroup />
 			<AssignRoleToGroup
 				selectedRoles={selectedRoles}
 				setSelectedRoles={setSelectedRoles}
