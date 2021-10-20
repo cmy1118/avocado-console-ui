@@ -221,7 +221,7 @@ const Table = ({
 										: row.original.id
 								}
 								{...row.getRowProps()}
-								onDragStart={onDragStart}
+								onDragStart={onDragStart(row)}
 							>
 								{row.cells.map((cell, i) => {
 									return (
