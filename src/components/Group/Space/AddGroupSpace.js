@@ -17,10 +17,8 @@ const AddGroupSpace = () => {
 				<Link to='/groups/add'>사용자 그룹 생성</Link>
 			</PathContainer>
 			<AddGroup />
-
-			<AssignRoleToGroup />
 			<UsersIncludedInGroup />
-
+			<AssignRoleToGroup />
 
 			<AddTagToGroup />
 		</IamContainer>

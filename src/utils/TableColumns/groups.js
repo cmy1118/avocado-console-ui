@@ -183,8 +183,9 @@ export const groupTagsSummaryColumns = [
 ];
 export const usersIncludedInGroupOnAddPageColumns = [
 	{
+		//:TODO  uid-> id , id->_id
 		Header: '사용자 계정',
-		accessor: 'id',
+		accessor: '_id',
 	},
 	{
 		Header: '사용자 명',
@@ -205,8 +206,9 @@ export const usersIncludedInGroupOnAddPageColumns = [
 ];
 export const usersExcludedFromGroupOnAddPageColumns = [
 	{
+		//:TODO  uid-> id , id->_id
 		Header: '사용자 계정',
-		accessor: 'id',
+		accessor: '_id',
 	},
 	{
 		Header: '사용자 명',
