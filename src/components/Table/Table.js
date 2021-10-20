@@ -1,13 +1,7 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
-import {
-	useMountedLayoutEffect,
-	usePagination,
-	useRowSelect,
-	useSortBy,
-	useTable,
-} from 'react-table';
+import {usePagination, useRowSelect, useSortBy, useTable} from 'react-table';
 
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
@@ -33,8 +27,6 @@ const Table = ({
 		if (v.uid) return v.uid;
 		return v.id;
 	}, []);
-
-	const [testSel, setTestSel] = useState({});
 
 	const {
 		getTableProps,
