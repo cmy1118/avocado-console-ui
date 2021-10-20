@@ -92,25 +92,10 @@ const Table = ({
 		},
 	);
 	const onDragStart = useCallback(
-		(e) => {
+		(row) => (e) => {
 			if (e.target.firstChild.childNodes[0].type === 'checkbox') {
-				const rowId = rows[0].id;
-				console.log('rows.id', rows[0].id);
-				const what = rows.filter((v) => v.id === rowId).isSelected;
-				console.log('what:', what);
-
-				rows.filter((v) => v.id === rowId).isSelected = true;
-				console.log('rows', rows);
-
-				// rows[0].id.isSelected = true;
-				// const rowId = rows[0].id.isSekected ;
-				// console.log('rowId?:', rowId);
-				// selectedRowIds[rowId] = true;
-				// if (selectedRowIds) {
-				// 	selectedRowIds.rowId = true;
-				// } else {
-				// 	selectedRowIds.rowId = true;
-				// }
+				const rowId = row.id;
+				rows.filter((v) => v.id === rowId)[0].isSelected = true;
 			}
 			e.dataTransfer.setData(
 				'ids',
@@ -119,13 +104,13 @@ const Table = ({
 					.map((x) => x.id)
 					.toString(),
 			);
-			console.log(
-				'set-data:',
-				rows
-					.filter((v) => v.isSelected)
-					.map((x) => x.id)
-					.toString(),
-			);
+			// console.log(
+			// 	'set-data:',
+			// 	rows
+			// 		.filter((v) => v.isSelected)
+			// 		.map((x) => x.id)
+			// 		.toString(),
+			// );
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
 			e.target.style.opacity = '0.2';
@@ -149,27 +134,19 @@ const Table = ({
 	const onDrop = useCallback(
 		(e) => {
 			e.preventDefault();
-			// const arr = e.dataTransfer.getData('ids').split(',');
 			setData &&
 				setData([
 					...data.map((v) => v.id),
 					...e.dataTransfer.getData('ids').split(','),
 				]); // 	]);
-			console.log('get-data:', e.dataTransfer.getData('ids'));
+			// console.log('get-data:', e.dataTransfer.getData('ids'));
 		},
 		[data, setData],
 	);
-
 	const onDragOver = useCallback((e) => {
 		e.preventDefault();
 	}, []);
-
-	// useMountedLayoutEffect(() => {
-	// 	setTestSel(Object.keys(selectedRowIds));
-	// }, [selectedRowIds]);
-
 	useEffect(() => {
-		console.log(selectedRowIds);
 		setSelected && setSelected(selectedRowIds);
 	}, [selectedRowIds, setSelected]);
 
@@ -244,7 +221,7 @@ const Table = ({
 										: row.original.id
 								}
 								{...row.getRowProps()}
-								onDragStart={onDragStart}
+								onDragStart={onDragStart(row)}
 							>
 								{row.cells.map((cell, i) => {
 									return (
