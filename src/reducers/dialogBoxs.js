@@ -4,20 +4,13 @@ const slice = createSlice({
 	name: 'DIALOG_BOX',
 	initialState: {
 		alert: {open: false},
-		form: {open: true, key: 'default'},
 	},
 	reducers: {
-		// openAlert: (state, action) => {
-		// 	state.alert = {open: true, key: action.payload.key};
-		// },
-		// closeAlert: (state) => {
-		// 	state.alert = {open: false};
-		// },
-		openForm: (state, action) => {
-			state.form = {open: true, key: action.payload.key};
+		openAlert: (state, action) => {
+			state.alert = {open: true, key: action.payload.key};
 		},
-		closeForm: (state) => {
-			state.form = {open: false};
+		closeAlert: (state) => {
+			state.alert = {open: false};
 		},
 	},
 });
@@ -25,8 +18,8 @@ const slice = createSlice({
 const selectAllState = createSelector(
 	(state) => state.alert,
 	(state) => state.form,
-	(alert, form) => {
-		return {alert, form};
+	(alert) => {
+		return {alert};
 	},
 );
 

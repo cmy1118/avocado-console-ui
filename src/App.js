@@ -4,6 +4,9 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import {Main, User, Group, Role, Policy, NotFound} from './pages';
 import RouteWithLayout from './components/Layouts/RouteWithLayout';
 import IamLayout from './components/Layouts/IamLayout';
+import ConfirmDialogBox from './components/DialogBoxs/Alert/ConfirmDialogBox';
+import WarningDialogBox from './components/DialogBoxs/Alert/WarningDialogBox';
+import DeleteDialogBox from './components/DialogBoxs/Alert/DeleteDialogBox';
 
 const App = () => {
 	return (
@@ -91,6 +94,9 @@ const App = () => {
 				/>
 				<Route component={NotFound} />
 			</Switch>
+			<ConfirmDialogBox />
+			<WarningDialogBox />
+			<DeleteDialogBox />
 		</BrowserRouter>
 	);
 };
