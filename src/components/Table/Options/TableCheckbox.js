@@ -14,12 +14,17 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 
 	const handleClick = useCallback(
 		(e) => {
+			if (e.target.isBetween) {
+				delete e.target.isBetween;
+				return;
+			}
 			if (e.shiftKey) {
 				// todo : 마지막 체크값이 존재하는지 검사
 				let isLastChecked = false;
 				checkboxes.forEach((checkbox) => {
 					if (checkbox.lastChecked) isLastChecked = true;
 				});
+
 				// todo : 마지막 체크값이 존재하는 경우
 				if (isLastChecked) {
 					// todo : 현재 선택한 값이 마지막 체크된 체크박스가 아닌 경우들만
@@ -32,6 +37,7 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 									checkbox.lastChecked ||
 									checkbox === e.target
 								) {
+									console.log('open / close');
 									isBetween = !isBetween;
 								} else {
 									if (isBetween) {
@@ -50,17 +56,26 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 									checkbox.lastChecked ||
 									checkbox === e.target
 								) {
+									console.log('open / close');
 									isBetween = !isBetween;
 									if (isBetween) {
 										if (checkbox.lastChecked) {
-											checkbox.isBetween = true;
+											// checkbox.isBetween = true;
+											checkbox.click();
 										}
-										checkbox.click();
+										console.log('checkbox :: ', checkbox);
+									} else {
+										if (checkbox.lastChecked)
+											checkbox.click();
 									}
 								} else {
 									if (isBetween) {
 										if (checkbox.checked) {
 											checkbox.isBetween = true;
+											console.log(
+												'checkbox :: ',
+												checkbox,
+											);
 											checkbox.click();
 										}
 									}
@@ -70,13 +85,12 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 					}
 				}
 			}
-
 			// todo : 현재 타겟의 마지막 체크 true
 			checkboxes.forEach((checkbox) => {
 				delete checkbox.lastChecked;
+				delete e.target.isBetween;
 			});
-			if (!e.target.isBetween) e.target.lastChecked = true;
-			else delete e.target.isBetween;
+			e.target.lastChecked = true;
 		},
 		[checkboxes],
 	);
