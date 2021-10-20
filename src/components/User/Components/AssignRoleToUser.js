@@ -11,41 +11,57 @@ import {tableKeys} from '../../../utils/data';
 const _Tables = styled.div`
 	display: flex;
 `;
-
-const AssignRoleToUser = ({addedRoles, setAddedRoles}) => {
+const AssignRoleToUser = () => {
 	const {roles} = useSelector(IAM_ROLES.selector);
-
-	const [selectedExcludedRoles, setSelectedExcludedRoles] = useState([]);
-	const [selectedIncludedRoles, setSelectedIncludedRoles] = useState([]);
+	const [rightDataIds, setRightDataIds] = useState([]);
+	const [select, setSelect] = useState([]);
+	const leftTableKey = tableKeys.rolesExcludedFromUserOnAddPage;
+	const RightTableKey = tableKeys.rolesIncludedInUserOnAddPage;
 
 	const excludedRoles = useMemo(() => {
 		return roles
-			.filter((v) => !addedRoles.includes(v.id))
+			.filter((v) => !rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
 				numberOfUsers: v.users.length,
 			}));
-	}, [roles, addedRoles]);
+	}, [roles, rightDataIds]);
 
 	const includedRoles = useMemo(() => {
 		return roles
-			.filter((v) => addedRoles.includes(v.id))
+			.filter((v) => rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
 			}));
-	}, [roles, addedRoles]);
+	}, [roles, rightDataIds]);
 
-	const onClickDeleteRolesFromUser = useCallback(() => {
-		setAddedRoles(
-			addedRoles.filter((v) => !selectedIncludedRoles.includes(v)),
+	const onClickLeftDropButton = useCallback(() => {
+		console.log('select??:', select);
+		console.log('select id ??', select[leftTableKey]);
+		console.log(
+			'select id object key  ??',
+			Object.keys(select[leftTableKey]),
 		);
-	}, [setAddedRoles, addedRoles, selectedIncludedRoles]);
+		console.log('???', rightDataIds);
+		setRightDataIds(
+			// ...rightDataIds.map((v) => v.id),
+			// ...Object.key(select[leftTableKey]),
+			Object.keys(select[leftTableKey]),
+		);
+		console.log('!!!', rightDataIds);
+	}, [leftTableKey, rightDataIds, select, setRightDataIds]);
 
-	const onClickAddRolesToUser = useCallback(() => {
-		setAddedRoles([...addedRoles, ...selectedExcludedRoles]);
-	}, [setAddedRoles, addedRoles, selectedExcludedRoles]);
+	const onClickRightDropButton = useCallback(
+		(e) => {
+			// console.log('!!!!!!!!!right - select??:', select);
+			// const arr = rows.filter((v) => !v.isSelected).map((x) => x.id);
+			// // console.log(':::arr:', arr);
+			// setData && setData(arr);
+		},
+		[select],
+	);
 
 	return (
 		<>
@@ -66,17 +82,16 @@ const AssignRoleToUser = ({addedRoles, setAddedRoles}) => {
 					isSelectable
 					isDnDPossible
 					dndKey={'role'}
-					selected={selectedExcludedRoles}
-					setSelected={setSelectedExcludedRoles}
+					setSelect={setSelect}
 				/>
 
 				<div>
-					<button onClick={onClickAddRolesToUser}>-&gt;</button>
-					<button onClick={onClickDeleteRolesFromUser}>&lt;-</button>
+					<button onClick={onClickLeftDropButton}>-&gt;</button>
+					<button onClick={onClickRightDropButton}>&lt;-</button>
 				</div>
 
 				<div>
-					<div>추가 Roles: {addedRoles.length}건</div>
+					<div>추가 Roles: {rightDataIds.length}건</div>
 					<Table
 						data={includedRoles}
 						tableKey={tableKeys.rolesIncludedInUserOnAddPage}
@@ -89,19 +104,13 @@ const AssignRoleToUser = ({addedRoles, setAddedRoles}) => {
 						isSelectable
 						isDnDPossible
 						dndKey={'role'}
-						setData={setAddedRoles}
-						selected={selectedIncludedRoles}
-						setSelected={setSelectedIncludedRoles}
+						setData={setRightDataIds}
+						setSelect={setSelect}
 					/>
 				</div>
 			</_Tables>
 		</>
 	);
-};
-
-AssignRoleToUser.propTypes = {
-	addedRoles: PropTypes.array.isRequired,
-	setAddedRoles: PropTypes.func.isRequired,
 };
 
 export default AssignRoleToUser;

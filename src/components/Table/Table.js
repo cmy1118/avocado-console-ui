@@ -27,7 +27,7 @@ const Table = ({
 	isDnDPossible = false,
 	dndKey,
 	setData,
-	setSelected,
+	setSelect,
 }) => {
 	const getRowId = useCallback((v) => {
 		if (v.uid) return v.uid;
@@ -124,7 +124,7 @@ const Table = ({
 				e.dataTransfer.getData('ids'),
 			);
 			const arr = rows.filter((v) => !v.isSelected).map((x) => x.id);
-			console.log(':::arr:', arr);
+			// console.log(':::arr:', arr);
 			setData && setData(arr);
 			e.target.style.opacity = '';
 		},
@@ -146,9 +146,21 @@ const Table = ({
 	const onDragOver = useCallback((e) => {
 		e.preventDefault();
 	}, []);
+
+	const selectedDropBtton = useCallback(
+		(selectedRowIds) => {
+			const data = {};
+			data[tableKey] = selectedRowIds;
+			console.log('!!selectedDropBtton-data:', data);
+			setSelect && setSelect(data);
+		},
+		[setSelect, tableKey],
+	);
 	useEffect(() => {
-		setSelected && setSelected(selectedRowIds);
-	}, [selectedRowIds, setSelected]);
+		selectedRowIds && selectedDropBtton(selectedRowIds);
+		// setSelect(data);
+		// setSelected && setSelected(selectedRowIds);
+	}, [tableKey, selectedRowIds, selectedDropBtton]);
 
 	return (
 		<div>
@@ -253,7 +265,7 @@ Table.propTypes = {
 	isSelectable: PropTypes.bool,
 	isDnDPossible: PropTypes.bool,
 	setData: PropTypes.func,
-	setSelected: PropTypes.func,
+	setSelect: PropTypes.func,
 	selected: PropTypes.array,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
