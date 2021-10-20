@@ -38,6 +38,10 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 									checkbox === e.target
 								) {
 									console.log('open / close');
+									if (!checkbox.checked) {
+										checkbox.isBetween = true;
+										checkbox.click();
+									}
 									isBetween = !isBetween;
 								} else {
 									if (isBetween) {
