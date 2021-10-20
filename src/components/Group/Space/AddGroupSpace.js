@@ -6,8 +6,6 @@ import AssignRoleToGroup from '../Components/AssignRoleToGroup';
 import AddTagToGroup from '../Components/AddTagToGroup';
 
 const AddGroupSpace = () => {
-	const [addedRoles, setAddedRoles] = useState([]);
-
 	return (
 		<IamContainer>
 			<PathContainer>
@@ -19,10 +17,7 @@ const AddGroupSpace = () => {
 			</PathContainer>
 			<AddGroup />
 
-			<AssignRoleToGroup
-				addedRoles={addedRoles}
-				setAddedRoles={setAddedRoles}
-			/>
+			<AssignRoleToGroup />
 
 			<AddTagToGroup />
 		</IamContainer>

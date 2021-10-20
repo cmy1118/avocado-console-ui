@@ -12,44 +12,45 @@ const _Tables = styled.div`
 	display: flex;
 `;
 
-const AssignRoleToGroup = ({addedRoles, setAddedRoles}) => {
+const AssignRoleToGroup = () => {
 	const {roles} = useSelector(IAM_ROLES.selector);
+	const [rightDataIds, setRightDataIds] = useState([]);
 
 	const [selectedExcludedRoles, setSelectedExcludedRoles] = useState([]);
 	const [selectedIncludedRoles, setSelectedIncludedRoles] = useState([]);
 
-	const excludedRoles = useMemo(() => {
+	const dataLeft = useMemo(() => {
 		return roles
-			.filter((v) => !addedRoles.includes(v.id))
+			.filter((v) => !rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
 				numberOfUsers: v.users.length,
 			}));
-	}, [roles, addedRoles]);
+	}, [roles, rightDataIds]);
 
-	const includedRoles = useMemo(() => {
+	const dataRight = useMemo(() => {
 		return roles
-			.filter((v) => addedRoles.includes(v.id))
+			.filter((v) => rightDataIds.includes(v.id))
 			.map((v) => ({...v, type: roleTypeConverter(v.companyId)}));
-	}, [roles, addedRoles]);
+	}, [roles, rightDataIds]);
 
 	const onClickDeleteRolesFromGroup = useCallback(() => {
-		setAddedRoles(
-			addedRoles.filter((v) => !selectedIncludedRoles.includes(v)),
+		setRightDataIds(
+			rightDataIds.filter((v) => !selectedIncludedRoles.includes(v)),
 		);
-	}, [setAddedRoles, addedRoles, selectedIncludedRoles]);
+	}, [rightDataIds, selectedIncludedRoles]);
 
 	const onClickAddRolesToGroup = useCallback(() => {
-		setAddedRoles([...addedRoles, ...selectedExcludedRoles]);
-	}, [setAddedRoles, addedRoles, selectedExcludedRoles]);
+		setRightDataIds([...rightDataIds, ...selectedExcludedRoles]);
+	}, [rightDataIds, selectedExcludedRoles]);
 
 	return (
 		<>
 			<div>권한 추가</div>
 			<_Tables>
 				<Table
-					data={excludedRoles}
+					data={dataLeft}
 					tableKey={tableKeys.rolesExcludedFromGroupOnAddPage}
 					columns={
 						getColumnsAsKey[
@@ -73,9 +74,9 @@ const AssignRoleToGroup = ({addedRoles, setAddedRoles}) => {
 				</div>
 
 				<div>
-					<div>추가 Roles: {addedRoles.length}건</div>
+					<div>추가 Roles: {rightDataIds.length}건</div>
 					<Table
-						data={includedRoles}
+						data={dataRight}
 						tableKey={tableKeys.rolesIncludedInGroupOnAddPage}
 						columns={
 							getColumnsAsKey[
@@ -86,7 +87,7 @@ const AssignRoleToGroup = ({addedRoles, setAddedRoles}) => {
 						isSelectable
 						isDnDPossible
 						dndKey={'role'}
-						setData={setAddedRoles}
+						setData={setRightDataIds}
 						selected={selectedIncludedRoles}
 						setSelected={setSelectedIncludedRoles}
 					/>
@@ -94,11 +95,6 @@ const AssignRoleToGroup = ({addedRoles, setAddedRoles}) => {
 			</_Tables>
 		</>
 	);
-};
-
-AssignRoleToGroup.propTypes = {
-	addedRoles: PropTypes.array.isRequired,
-	setAddedRoles: PropTypes.func.isRequired,
 };
 
 export default AssignRoleToGroup;
