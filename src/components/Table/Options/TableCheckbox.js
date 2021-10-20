@@ -15,35 +15,49 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 	const resolvedRef = ref || defaultRef;
 
 	const handleClick = useCallback(
-		(e) => {
+		async (e) => {
 			let inBetween = false;
 
-			checkboxes.forEach((checkbox) => {
-				if (checkbox.lastChecked)
-					console.log('Last Target!!:::', e.target);
-			});
-			if (e.shiftKey && e.target.checked) {
-				checkboxes.forEach((checkbox) => {
-					if (
-						checkbox === e.target ||
-						checkbox.lastChecked === true
-					) {
+			// checkboxes.forEach((checkbox) => {
+			// 	if (checkbox.lastChecked && checkbox !== e.target) {
+			// 		console.log('Last Target!!:::', checkbox);
+			// 	}
+			// });
+			if (e.shiftKey) {
+				await checkboxes.forEach((checkbox) => {
+					if (checkbox === e.target || checkbox.lastChecked) {
+						console.log('open/close');
 						inBetween = !inBetween;
 					}
+
 					if (inBetween) {
-						console.log('in Between!!:::', checkbox);
-						if (
-							checkbox !== e.target &&
-							checkbox.lastChecked !== true
-						) {
-							checkbox.isBetween = true;
-							checkbox.click();
+						if (e.target.lastChecked) {
+							console.log('in Between!! & lastChecked!!');
+							inBetween = !inBetween;
+						} else {
+							console.log('in Between!!:::', checkbox);
+							if (checkbox.lastChecked)
+								console.log('last checked', checkbox);
+							if (
+								checkbox !== e.target &&
+								!checkbox.lastChecked
+							) {
+								checkbox.isBetween = true;
+								checkbox.click();
+								// if (!checkbox.checked) {
+								// 	checkbox.click();
+								// }
+							}
 						}
 					}
-					delete checkbox.lastChecked;
 				});
 			}
-			if (!e.target.isBetween) e.target.lastChecked = true;
+			if (!e.target.isBetween) {
+				await checkboxes.forEach((checkbox) => {
+					delete checkbox.lastChecked;
+				});
+				e.target.lastChecked = true;
+			}
 			delete e.target.isBetween;
 		},
 		[checkboxes],
