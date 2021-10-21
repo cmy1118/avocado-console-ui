@@ -148,18 +148,15 @@ const Table = ({
 		(selectedRowIds) => {
 			const data = {};
 			data[tableKey] = selectedRowIds;
-			// console.log('!!selectedDropBtton-data:', data);
 			setSelect && setSelect(data);
 		},
 		[setSelect, tableKey],
 	);
 
 	useEffect(() => {
-		selectedRowIds && selectedDropBtton(selectedRowIds);
-		// console.log(selectedRowIds);
 		setSelect && setSelect(Object.keys(selectedRowIds));
 		selectedRowIds && selectedDropBtton(selectedRowIds);
-	}, [tableKey, selectedRowIds, selectedDropBtton, setSelect]);
+	}, [selectedRowIds, setSelect]);
 
 	return (
 		<div>

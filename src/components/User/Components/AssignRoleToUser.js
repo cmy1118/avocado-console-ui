@@ -13,6 +13,7 @@ const _Tables = styled.div`
 `;
 const leftTableKey = tableKeys.rolesExcludedFromUserOnAddPage;
 const RightTableKey = tableKeys.rolesIncludedInUserOnAddPage;
+
 const AssignRoleToUser = () => {
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
