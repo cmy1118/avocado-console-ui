@@ -1,130 +1,126 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
-
-import {roleTypeConverter} from '../../../utils/tableDataConverter';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
-import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
+import Table from '../../Table/Table';
 import {tableKeys} from '../../../utils/data';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
-import Table from '../../Table/Table';
+import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 
-const RightTableKey = tableKeys.rolesIncludedInUserOnDescPage;
-const leftTableKey = tableKeys.rolesExcludedFormUserOnDescPage;
+const RightTableKey = tableKeys.groupsIncludedInUserOnDescPage;
+const leftTableKey = tableKeys.groupsExcludedFromUserOnDescPage;
 
-const UserRolesTab = ({userId}) => {
+const UserGroupsTab = ({userId}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
-	const {roles} = useSelector(IAM_ROLES.selector);
+	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const [select, setSelect] = useState([]);
-
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
 		userId,
 	]);
 
-	const [rightDataIds, setRightDataIds] = useState(user.roles);
+	const [rightDataIds, setRightDataIds] = useState(user.groups);
+	console.log('rightDataIds', rightDataIds);
 
 	const dataLeft = useMemo(() => {
-		return roles
+		return groups
 			.filter((v) => rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
-				type: roleTypeConverter(v.companyId),
-				numberOfUsers: v.users.length,
+				numberOfRoles: v.roles.length,
 			}));
-	}, [rightDataIds, roles]);
+	}, [groups, rightDataIds]);
 
 	const dataRight = useMemo(() => {
-		return roles
+		return groups
 			.filter((v) => !rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
-				type: roleTypeConverter(v.companyId),
-				numberOfUsers: v.users.length,
+				numberOfRoles: v.roles.length,
 			}));
-	}, [rightDataIds, roles]);
-
+	}, [groups, rightDataIds]);
+	//삭제
 	const onClickDeleteRolesFromUser = useCallback(() => {
+		console.log('DeleteRolesFromUser', Object.keys(select[RightTableKey]));
+
 		dispatch(
-			IAM_USER.action.deleteRolesFromUser({
+			IAM_USER.action.deleteGroupsFromUser({
 				uid: userId,
-				roles: Object.keys(select[RightTableKey]),
+				groups: Object.keys(select[RightTableKey]),
 			}),
 		);
 		dispatch(
-			IAM_ROLES.action.deleteRolesFromUser({
+			IAM_USER_GROUP.action.deleteGroupsFromUser({
 				uid: userId,
-				roles: Object.keys(select[RightTableKey]),
+				groups: Object.keys(select[RightTableKey]),
 			}),
 		);
 	}, [dispatch, select, userId]);
 
 	const onClickAddRolesToUser = useCallback(() => {
+		console.log('AddRolesToUser', Object.keys(select[leftTableKey]));
+
 		dispatch(
-			IAM_USER.action.addRolesToUser({
+			IAM_USER.action.addGroupsToUser({
 				uid: userId,
-				roles: Object.keys(select[leftTableKey]),
+				groups: Object.keys(select[leftTableKey]),
 			}),
 		);
 		dispatch(
-			IAM_ROLES.action.addRolesToUser({
+			IAM_USER_GROUP.action.addGroupsToUser({
 				uid: userId,
-				roles: Object.keys(select[leftTableKey]),
+				groups: Object.keys(select[leftTableKey]),
 			}),
 		);
 	}, [dispatch, select, userId]);
 
 	useEffect(() => {
-		setRightDataIds(user.roles);
-	}, [user.roles]);
+		setRightDataIds(user.groups);
+	}, [user.groups]);
 
 	return (
 		<>
 			<div>
-				이 사용자의 권한: {dataLeft.length}{' '}
+				이 사용자의 그룹: {dataLeft.length}{' '}
 				<button onClick={onClickDeleteRolesFromUser}>삭제</button>
 			</div>
 			<Table
 				data={dataLeft}
-				tableKey={tableKeys.rolesIncludedInUserOnDescPage}
-				columns={
-					getColumnsAsKey[tableKeys.rolesIncludedInUserOnDescPage]
-				}
+				tableKey={RightTableKey}
+				columns={getColumnsAsKey[RightTableKey]}
 				isPageable
 				isNumberOfRowsAdjustable
 				isColumnFilterable
 				isSortable
 				isSelectable
 				isDnDPossible
-				dndKey={'role'}
+				dndKey={'groups'}
 				setSelect={setSelect}
 			/>
 			<div>
-				이 사용자의 다른권한 : {dataRight.length}{' '}
-				<button onClick={onClickAddRolesToUser}>권한 추가</button>
+				이 사용자의 다른그룹 : {dataRight.length}{' '}
+				<button onClick={onClickAddRolesToUser}>그룹 추가</button>
 			</div>
 			<Table
 				data={dataRight}
-				tableKey={tableKeys.rolesExcludedFormUserOnDescPage}
-				columns={
-					getColumnsAsKey[tableKeys.rolesExcludedFormUserOnDescPage]
-				}
+				tableKey={leftTableKey}
+				columns={getColumnsAsKey[leftTableKey]}
 				isPageable
 				isNumberOfRowsAdjustable
 				isColumnFilterable
 				isSortable
 				isSelectable
 				isDnDPossible
-				dndKey={'role'}
+				dndKey={'groups'}
 				setSelect={setSelect}
 			/>
 		</>
 	);
 };
 
-UserRolesTab.propTypes = {
+UserGroupsTab.propTypes = {
 	userId: PropTypes.string.isRequired,
 };
 
-export default UserRolesTab;
+export default UserGroupsTab;

@@ -7,8 +7,8 @@ import qs from 'qs';
 
 import {IamContainer, PathContainer} from '../../../styles/components/style';
 import {Tab, TabItem} from '../../../styles/components/tab';
-import UserInfo from '../Components/UserInfo';
-import UserGroups from '../Components/UserGroups';
+import UserInfoTab from '../Components/UserInfoTab';
+import UserGroupsTab from '../Components/UserGroupsTab';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import UserTags from '../Components/UserTags';
 import UserSummary from '../Components/UserSummary';
@@ -74,9 +74,9 @@ const UserDescriptionSpace = ({userId}) => {
 				</Tab>
 
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-					'user' && <UserInfo userId={userId} />}
+					'user' && <UserInfoTab userId={userId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-					'group' && <UserGroups userId={userId} />}
+					'group' && <UserGroupsTab userId={userId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 					'role' && <UserRolesTab userId={userId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'tag' && (

@@ -1,4 +1,9 @@
 //페이지 범위
+import {
+	groupsExcludedFromUserOnDescPageColumns,
+	groupsIncludedInUserOnDescPageColumns,
+} from './TableColumns/users';
+
 export const selectedPageSize = [3, 7, 100, 200];
 //Link Columns 설정값
 export const LINK = 'link';
@@ -17,6 +22,8 @@ export const tableKeys = {
 	userTagsSummary: 'userTagsSummary',
 	rolesIncludedInUserOnDescPage: 'rolesIncludedInUserOnDescPage',
 	rolesExcludedFormUserOnDescPage: 'rolesExcludedFormUserOnDescPage',
+	groupsIncludedInUserOnDescPage: 'groupsIncludedInUserOnDescPage', // 이 사용자의 그룹
+	groupsExcludedFromUserOnDescPage: 'groupsExcludedFromUserOnDescPage', //이 사용자의 다른그룹
 	/* groups */
 	groupTypes: 'groupTypes', // 그룹 유형 관리
 	groups: 'groups', // 사용자 그룹

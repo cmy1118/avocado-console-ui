@@ -318,3 +318,53 @@ export const rolesExcludedFormUserOnDescPageColumns = [
 		accessor: 'creationDate',
 	},
 ];
+// 이 사용자의 그룹
+export const groupsIncludedInUserOnDescPageColumns = [
+	{
+		Header: '그룹 명',
+		accessor: 'name',
+	},
+	{
+		Header: '그룹 유형',
+		accessor: 'clientGroupTypeId',
+	},
+	{
+		Header: '권한 수',
+		accessor: 'numberOfRoles',
+	},
+	{
+		Header: '상위 그룹',
+		accessor: 'numberOfPermissions',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+	// {
+	// 	Header: '부여 일시',
+	// 	accessor: 'creationDate',
+	// },
+];
+//이 사용자의 다른그룹
+export const groupsExcludedFromUserOnDescPageColumns = [
+	{
+		Header: '그룹 명',
+		accessor: 'name',
+	},
+	{
+		Header: '그룹 유형',
+		accessor: 'clientGroupTypeId',
+	},
+	{
+		Header: '권한 수',
+		accessor: 'numberOfRoles',
+	},
+	{
+		Header: '상위 그룹',
+		accessor: 'numberOfPermissions',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];

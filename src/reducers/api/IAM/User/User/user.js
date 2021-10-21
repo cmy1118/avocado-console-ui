@@ -374,6 +374,20 @@ const slice = createSlice({
 				(v) => !action.payload.roles.includes(v),
 			);
 		},
+
+		addGroupsToUser: (state, action) => {
+			const user = state.users.find((v) => v.uid === action.payload.uid);
+
+			user.groups = user.groups.concat(action.payload.groups);
+		},
+
+		deleteGroupsFromUser: (state, action) => {
+			const user = state.users.find((v) => v.uid === action.payload.uid);
+
+			user.groups = user.groups.filter(
+				(v) => !action.payload.groups.includes(v),
+			);
+		},
 	},
 	extraReducers: {
 		[createAction.pending]: (state) => {

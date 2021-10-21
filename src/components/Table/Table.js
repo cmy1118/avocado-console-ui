@@ -1,13 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
-import {
-	useMountedLayoutEffect,
-	usePagination,
-	useRowSelect,
-	useSortBy,
-	useTable,
-} from 'react-table';
+import {usePagination, useRowSelect, useSortBy, useTable} from 'react-table';
 
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
@@ -144,19 +138,19 @@ const Table = ({
 		e.preventDefault();
 	}, []);
 
-	// const selectedDropBtton = useCallback(
-	// 	(selectedRowIds) => {
-	// 		const data = {};
-	// 		data[tableKey] = selectedRowIds;
-	// 		setSelect && setSelect(data);
-	// 	},
-	// 	[setSelect, tableKey],
-	// );
+	const selectedDropBtton = useCallback(
+		(selectedRowIds) => {
+			const data = {};
+			data[tableKey] = selectedRowIds;
+			setSelect && setSelect(data);
+		},
+		[setSelect, tableKey],
+	);
 
 	useEffect(() => {
 		setSelect && setSelect(Object.keys(selectedRowIds));
-		// selectedRowIds && selectedDropBtton(selectedRowIds);
-	}, [selectedRowIds, setSelect]);
+		selectedRowIds && selectedDropBtton(selectedRowIds);
+	}, [selectedDropBtton, selectedRowIds, setSelect]);
 
 	return (
 		<div>

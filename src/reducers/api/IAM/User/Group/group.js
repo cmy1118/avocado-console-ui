@@ -247,7 +247,7 @@ const slice = createSlice({
 			});
 			state.index++;
 		},
-
+		//사용자 상세 권한 Tap
 		addRolesToGroup: (state, action) => {
 			const group = state.groups.find((v) => v.id === action.payload.id);
 
@@ -260,6 +260,29 @@ const slice = createSlice({
 			group.roles = group.roles.filter(
 				(v) => !action.payload.roles.includes(v),
 			);
+		},
+		//사용자 상세 그룹 Tap
+		addGroupsToUser: (state, action) => {
+			const group = state.groups.filter((v) =>
+				action.payload.groups.includes(v.id),
+			);
+
+			group.map((v) => {
+				v.members.push(action.payload.uid);
+				return v;
+			});
+		},
+		deleteGroupsFromUser: (state, action) => {
+			const group = state.groups.filter((v) =>
+				action.payload.groups.includes(v.id),
+			);
+			group.map((v) => {
+				const index = v.members.findIndex(
+					(val) => val === action.payload.uid,
+				);
+				v.members.splice(index, 1);
+				return v;
+			});
 		},
 	},
 	extraReducers: {

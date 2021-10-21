@@ -13,6 +13,8 @@ import {
 	groupsExcludedFromUserOnAddPageColumns,
 	rolesIncludedInUserOnDescPageColumns,
 	rolesExcludedFormUserOnDescPageColumns,
+	groupsIncludedInUserOnDescPageColumns, // 이 사용자의 그룹
+	groupsExcludedFromUserOnDescPageColumns, //이 사용자의 다른그룹
 } from './users';
 import {
 	groupColumns,
@@ -48,6 +50,8 @@ getColumnsAsKey = {
 
 	rolesIncludedInUserOnDescPage: rolesIncludedInUserOnDescPageColumns,
 	rolesExcludedFormUserOnDescPage: rolesExcludedFormUserOnDescPageColumns,
+	groupsIncludedInUserOnDescPage: groupsIncludedInUserOnDescPageColumns, // 이 사용자의 그룹
+	groupsExcludedFromUserOnDescPage: groupsExcludedFromUserOnDescPageColumns, //이 사용자의 다른그룹
 	/* groups */
 	groups: groupColumns,
 	groupTypes: groupTypeColumns,

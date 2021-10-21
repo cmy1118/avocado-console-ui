@@ -10,7 +10,7 @@ import {formKeys} from '../../../utils/data';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
 import Form from '../../RecycleComponents/Form';
 
-const UserInfo = ({userId}) => {
+const UserInfoTab = ({userId}) => {
 	const [isIdentificationOpened, setIsIdentificationOpened] = useState(false);
 	const [isChangePasswordOpened, setIsChangePasswordOpened] = useState(false);
 	const {users} = useSelector(IAM_USER.selector);
@@ -86,8 +86,8 @@ const UserInfo = ({userId}) => {
 	);
 };
 
-UserInfo.propTypes = {
+UserInfoTab.propTypes = {
 	userId: PropTypes.string.isRequired,
 };
 
-export default UserInfo;
+export default UserInfoTab;
