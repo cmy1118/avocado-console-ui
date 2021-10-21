@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
@@ -15,36 +15,43 @@ const RightTableKey = 'usersExcludedFromGroupOnAddPage';
 
 const UsersIncludedInGroup = () => {
 	const {users} = useSelector(IAM_USER.selector);
-	const [select, setSelect] = useState([]);
 	const [rightDataIds, setRightDataIds] = useState([]);
+	const [select, setSelect] = useState([]);
+	const [selected, setSelected] = useState([]);
 	//uid -> id , id -> _id 변경
-	const _users = users.map(({uid: id, id: _id, ...rest}) => ({
-		id,
-		_id,
-		...rest,
-	}));
+
 	const dataLeft = useMemo(() => {
-		const dropDataName = _users
+		const dropDataName = users
+			.map(({uid: id, id: _id, ...rest}) => ({
+				id,
+				_id,
+				...rest,
+			}))
 			.filter((v) => rightDataIds.includes(v.id))
 			.map((v) => v.name);
-		return _users
+		return users
 			.filter((v) => !dropDataName.includes(v.name))
 			.map((v) => ({
 				...v,
 			}));
-	}, [_users, rightDataIds]);
+	}, [users, rightDataIds]);
 
 	const dataRight = useMemo(() => {
-		return _users
+		return users
+			.map(({uid: id, id: _id, ...rest}) => ({
+				id,
+				_id,
+				...rest,
+			}))
 			.filter((v) => rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 			}));
-	}, [_users, rightDataIds]);
+	}, [users, rightDataIds]);
 
 	return (
 		<>
-			<div>그룹에 사용자에 추가ㅇㅇㅇ</div>
+			<div>그룹에 사용자에 추가 </div>
 			<_Tables>
 				<Table
 					data={dataLeft}
@@ -59,7 +66,7 @@ const UsersIncludedInGroup = () => {
 					isSelectable
 					isDnDPossible
 					dndKey={DndKey}
-					// setSelect={setSelect}
+					setSelect={setSelect}
 				/>
 				<DropButton
 					leftTableKey={leftTableKey}
@@ -85,7 +92,8 @@ const UsersIncludedInGroup = () => {
 						isSelectable
 						isDnDPossible
 						dndKey={DndKey}
-						// setSelect={setSelect}
+						setData={setRightDataIds}
+						setSelect={setSelect}
 					/>
 				</div>
 			</_Tables>

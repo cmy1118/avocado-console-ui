@@ -144,18 +144,18 @@ const Table = ({
 		e.preventDefault();
 	}, []);
 
-	const selectedDropBtton = useCallback(
-		(selectedRowIds) => {
-			const data = {};
-			data[tableKey] = selectedRowIds;
-			setSelect && setSelect(data);
-		},
-		[setSelect, tableKey],
-	);
+	// const selectedDropBtton = useCallback(
+	// 	(selectedRowIds) => {
+	// 		const data = {};
+	// 		data[tableKey] = selectedRowIds;
+	// 		setSelect && setSelect(data);
+	// 	},
+	// 	[setSelect, tableKey],
+	// );
 
 	useEffect(() => {
 		setSelect && setSelect(Object.keys(selectedRowIds));
-		selectedRowIds && selectedDropBtton(selectedRowIds);
+		// selectedRowIds && selectedDropBtton(selectedRowIds);
 	}, [selectedRowIds, setSelect]);
 
 	return (
@@ -262,7 +262,6 @@ Table.propTypes = {
 	isDnDPossible: PropTypes.bool,
 	setData: PropTypes.func,
 	setSelect: PropTypes.func,
-	selected: PropTypes.array,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 

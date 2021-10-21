@@ -95,8 +95,8 @@ const UserRolesTab = ({userId}) => {
 				isColumnFilterable
 				isSortable
 				isSelectable
-				selected={selectedIncludedRoles}
-				setSelected={setSelectedIncludedRoles}
+				// select={selectedIncludedRoles}
+				setSelect={setSelectedIncludedRoles}
 				isDnDPossible
 				dndKey={'role'}
 			/>
@@ -115,8 +115,8 @@ const UserRolesTab = ({userId}) => {
 				isColumnFilterable
 				isSortable
 				isSelectable
-				selected={selectedExcludedRoles}
-				setSelected={setSelectedExcludedRoles}
+				// selected={selectedExcludedRoles}
+				setSelect={setSelectedExcludedRoles}
 				isDnDPossible
 				dndKey={'role'}
 			/>

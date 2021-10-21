@@ -64,8 +64,8 @@ const AssignRoleToGroup = () => {
 					isSelectable
 					isDnDPossible
 					dndKey={'role'}
-					selected={selectedExcludedRoles}
-					setSelected={setSelectedExcludedRoles}
+					// select={selectedExcludedRoles}
+					setSelect={setSelectedExcludedRoles}
 				/>
 
 				<div>
@@ -88,8 +88,8 @@ const AssignRoleToGroup = () => {
 						isDnDPossible
 						dndKey={'role'}
 						setData={setRightDataIds}
-						selected={selectedIncludedRoles}
-						setSelected={setSelectedIncludedRoles}
+						select={selectedIncludedRoles}
+						setSelect={setSelectedIncludedRoles}
 					/>
 				</div>
 			</_Tables>

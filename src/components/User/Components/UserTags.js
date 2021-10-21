@@ -6,7 +6,6 @@ import {useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 
-
 const UserTags = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
@@ -23,7 +22,7 @@ const UserTags = ({userId}) => {
 		}) || [],
 	);
 
-	const [selected, setSelected] = useState([]);
+	const [select, setSelect] = useState([]);
 
 	const columns = getColumnsAsKey[tableKeys.addTagToUserOnDescPage];
 
@@ -49,13 +48,13 @@ const UserTags = ({userId}) => {
 	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		if (selected[0]) {
-			console.log(selected);
-			setData(data.filter((v) => !selected.includes(v.name)));
+		if (select[0]) {
+			console.log(select);
+			setData(data.filter((v) => !select.includes(v.name)));
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
-	}, [data, selected]);
+	}, [data, select]);
 
 	console.log(data);
 
@@ -74,7 +73,7 @@ const UserTags = ({userId}) => {
 				columns={columns}
 				isSelectable
 				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
-				setSelect={setSelected}
+				setSelect={setSelect}
 			/>
 		</>
 	);

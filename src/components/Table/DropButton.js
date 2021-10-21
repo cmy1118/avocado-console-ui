@@ -32,7 +32,10 @@ const DropButton = ({
 };
 
 DropButton.propTypes = {
-	select: PropTypes.array.isRequired,
+	select: PropTypes.oneOfType([
+		PropTypes.object.isRequired,
+		PropTypes.array.isRequired,
+	]),
 	rightDataIds: PropTypes.array.isRequired,
 	setRightDataIds: PropTypes.func.isRequired,
 	leftTableKey: PropTypes.string.isRequired,
