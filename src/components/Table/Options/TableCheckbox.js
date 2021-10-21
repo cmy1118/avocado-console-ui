@@ -1,16 +1,12 @@
-import React, {
-	forwardRef,
-	useCallback,
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import React, {forwardRef, useCallback, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 
 const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 	const defaultRef = useRef();
 	const resolvedRef = ref || defaultRef;
-	const checkboxes = document.querySelectorAll(`.${rest.tablekey}`);
+	const checkboxes = document.querySelectorAll(
+		`.${rest.tablekey}[type='checkbox']`,
+	);
 
 	const handleClick = useCallback(
 		(e) => {
