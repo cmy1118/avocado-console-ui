@@ -3,6 +3,7 @@ import {
 	groupsExcludedFromUserOnDescPageColumns,
 	groupsIncludedInUserOnDescPageColumns,
 } from './TableColumns/users';
+import {usersIncludedInGroupOnDescPageColumns} from './TableColumns/groups';
 
 export const selectedPageSize = [3, 7, 100, 200];
 //Link Columns 설정값
@@ -38,6 +39,8 @@ export const tableKeys = {
 	groupTagsSummary: 'groupTagsSummary',
 	rolesIncludedInGroupOnDescPage: 'rolesIncludedInGroupOnDescPage',
 	rolesExcludedFormGroupOnDescPage: 'rolesExcludedFormGroupOnDescPage',
+	usersIncludedInGroupOnDescPage: 'usersIncludedInGroupOnDescPage',
+	usersExcludedFromGroupOnDescPage: 'usersExcludedFromGroupOnDescPage',
 };
 
 export const formKeys = {

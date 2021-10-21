@@ -21,7 +21,6 @@ const UserGroupsTab = ({userId}) => {
 	]);
 
 	const [rightDataIds, setRightDataIds] = useState(user.groups);
-	console.log('rightDataIds', rightDataIds);
 
 	const dataLeft = useMemo(() => {
 		return groups
@@ -42,8 +41,6 @@ const UserGroupsTab = ({userId}) => {
 	}, [groups, rightDataIds]);
 	//삭제
 	const onClickDeleteRolesFromUser = useCallback(() => {
-		console.log('DeleteRolesFromUser', Object.keys(select[RightTableKey]));
-
 		dispatch(
 			IAM_USER.action.deleteGroupsFromUser({
 				uid: userId,
@@ -59,8 +56,6 @@ const UserGroupsTab = ({userId}) => {
 	}, [dispatch, select, userId]);
 
 	const onClickAddRolesToUser = useCallback(() => {
-		console.log('AddRolesToUser', Object.keys(select[leftTableKey]));
-
 		dispatch(
 			IAM_USER.action.addGroupsToUser({
 				uid: userId,

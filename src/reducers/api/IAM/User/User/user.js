@@ -388,6 +388,30 @@ const slice = createSlice({
 				(v) => !action.payload.groups.includes(v),
 			);
 		},
+		//그룹 상세 상용자Tab
+		addUsersToGroup: (state, action) => {
+			const users = state.users.filter((v) =>
+				action.payload.users.includes(v.uid),
+			);
+
+			users.map((v) => {
+				v.groups.push(action.payload.id);
+				return v;
+			});
+		},
+		deleteUsersFromGroup: (state, action) => {
+			const users = state.users.filter((v) =>
+				action.payload.users.includes(v.uid),
+			);
+
+			users.map((v) => {
+				const index = v.groups.findIndex(
+					(val) => val === action.payload.id,
+				);
+				v.groups.splice(index, 1);
+				return v;
+			});
+		},
 	},
 	extraReducers: {
 		[createAction.pending]: (state) => {

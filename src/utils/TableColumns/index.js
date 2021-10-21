@@ -29,6 +29,8 @@ import {
 	rolesExcludedFromGroupOnAddPageColumns,
 	rolesIncludedInGroupOnDescPageColumns,
 	rolesExcludedFormGroupOnDescPageColumns,
+	usersIncludedInGroupOnDescPageColumns, // 그룹 상세페이지 사용자Tab
+	usersExcludedFromGroupOnDescPageColumns, // 그룹 상세페이지 사용자Tab
 } from './groups';
 
 // 형식 { key : columns }
@@ -36,7 +38,7 @@ export let getColumnsAsKey;
 
 getColumnsAsKey = {
 	/* users */
-	users: usersColumns, // 사용자
+	users: usersColumns,
 	addTagsToUserOnAddPage: addTagsToUserOnAddPageColumns, // 사용자 생성페이지 태그 추가
 	rolesIncludedInUserOnAddPage: rolesIncludedInUserOnAddPageColumns, // 사용자 생성 페이지 권한 추가 (왼)
 	rolesExcludedFromUserOnAddPage: rolesExcludedFromUserOnAddPageColumns, // 사용자 생성 페이지 권한 추가 (오)
@@ -67,4 +69,6 @@ getColumnsAsKey = {
 	usersExcludedFromGroupOnAddPageColumns: usersExcludedFromGroupOnAddPageColumns,
 	rolesIncludedInGroupOnDescPage: rolesIncludedInGroupOnDescPageColumns,
 	rolesExcludedFormGroupOnDescPage: rolesExcludedFormGroupOnDescPageColumns,
+	usersIncludedInGroupOnDescPage: usersIncludedInGroupOnDescPageColumns, // 그룹 상세페이지 사용자Tab
+	usersExcludedFromGroupOnDescPage: usersExcludedFromGroupOnDescPageColumns, // 그룹 상세페이지 사용자Tab
 };

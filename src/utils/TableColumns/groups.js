@@ -251,3 +251,47 @@ export const rolesExcludedFormGroupOnDescPageColumns = [
 		accessor: 'creationDate',
 	},
 ];
+export const usersIncludedInGroupOnDescPageColumns = [
+	{
+		Header: '사용자 계정',
+		accessor: '_id',
+	},
+	{
+		Header: '사용자 명',
+		accessor: 'name',
+	},
+	{
+		Header: '그룹 수',
+		accessor: 'groupsLength',
+	},
+	{
+		Header: '마지막 콘솔 로그인',
+		accessor: 'lastConsoleLogin',
+	},
+	{
+		Header: '생성일시',
+		accessor: 'creationDate',
+	},
+];
+export const usersExcludedFromGroupOnDescPageColumns = [
+	{
+		Header: '사용자 계정',
+		accessor: '_id',
+	},
+	{
+		Header: '사용자 명',
+		accessor: 'name',
+	},
+	{
+		Header: '그룹 수',
+		accessor: 'groupsLength',
+	},
+	{
+		Header: '마지막 콘솔 로그인',
+		accessor: 'lastConsoleLogin',
+	},
+	{
+		Header: '생성일시',
+		accessor: 'creationDate',
+	},
+];

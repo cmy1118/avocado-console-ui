@@ -261,7 +261,22 @@ const slice = createSlice({
 				(v) => !action.payload.roles.includes(v),
 			);
 		},
-		//사용자 상세 그룹 Tap
+		//그룹 상세 상용자Tab
+
+		addUsersToGroup: (state, action) => {
+			const group = state.groups.find((v) => v.id === action.payload.id);
+
+			group.members = group.members.concat(action.payload.users);
+		},
+
+		deleteUsersFromGroup: (state, action) => {
+			const group = state.groups.find((v) => v.id === action.payload.id);
+
+			group.members = group.members.filter(
+				(v) => !action.payload.users.includes(v),
+			);
+		},
+		//사용자 상세 그룹Tap
 		addGroupsToUser: (state, action) => {
 			const group = state.groups.filter((v) =>
 				action.payload.groups.includes(v.id),

@@ -10,6 +10,7 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {Tab, TabItem} from '../../../styles/components/tab';
 import GroupRolesTab from '../Components/GroupRolesTab';
 import GroupSummary from '../Components/GroupSummary';
+import GroupUsersTab from '../Components/GroupUsersTab';
 
 const _Title = styled.div`
 	display: flex;
@@ -73,7 +74,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 				</Tab>
 
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-					'user' && <div>users</div>}
+					'user' && <GroupUsersTab groupId={groupId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 					'role' && <GroupRolesTab groupId={groupId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'tag' && (
