@@ -10,7 +10,7 @@ import {Tab, TabItem} from '../../../styles/components/tab';
 import UserInfo from '../Components/UserInfo';
 import UserGroups from '../Components/UserGroups';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
-import UserTags from '../Components/UserTags';
+import UserOnDescPageTags from '../Components/UserOnDescPageTags';
 import UserSummary from '../Components/UserSummary';
 import UserRolesTab from '../Components/UserRolesTab';
 
@@ -80,7 +80,7 @@ const UserDescriptionSpace = ({userId}) => {
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 					'role' && <UserRolesTab userId={userId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'tag' && (
-					<UserTags userId={userId} />
+					<UserOnDescPageTags userId={userId} />
 				)}
 			</div>
 		</IamContainer>

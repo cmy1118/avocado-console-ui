@@ -180,6 +180,30 @@ export const groupTagsSummaryColumns = [
 		accessor: 'creationDate',
 	},
 ];
+export const addTagToGroupOnDescPageColumns = [
+	{
+		Header: 'key(태그명)',
+		accessor: 'name',
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} isFocus />;
+		},
+	},
+	{
+		Header: '값(태그)',
+		accessor: 'value',
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
+		},
+	},
+	{
+		Header: '권한 수',
+		accessor: 'numberOfPermissions',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
 export const usersIncludedInGroupOnAddPageColumns = [
 	{
 		//:TODO  uid-> id , id->_id

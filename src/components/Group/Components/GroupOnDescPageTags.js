@@ -4,17 +4,16 @@ import {tableKeys} from '../../../utils/data';
 import Table from '../../Table/Table';
 import {useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
-import IAM_USER from '../../../reducers/api/IAM/User/User/user';
+import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 
-
-const UserTags = ({userId}) => {
-	const {users} = useSelector(IAM_USER.selector);
-	const user = useMemo(() => users.find((v) => v.uid === userId), [
-		users,
-		userId,
+const GroupOnDescPageTags = ({groupId}) => {
+	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const group = useMemo(() => groups.find((v) => v.id === groupId), [
+		groupId,
+		groups,
 	]);
 	const [data, setData] = useState(
-		user.tags.map((v) => {
+		group.tags.map((v) => {
 			return {
 				...v,
 				id: v.name,
@@ -23,12 +22,11 @@ const UserTags = ({userId}) => {
 		}) || [],
 	);
 
-	const [selected, setSelected] = useState([]);
+	const [select, setSelect] = useState([]);
 
-	const columns = getColumnsAsKey[tableKeys.addTagToUserOnDescPage];
+	const columns = getColumnsAsKey[tableKeys.addTagToGroupOnDescPage];
 
 	const onClickAddRow = useCallback(() => {
-		console.log(data);
 		const lastValues = data.slice().pop();
 		if (lastValues.name === '' || lastValues.value === '') {
 			alert('입력하지 않은 값이 있습니다.');
@@ -49,15 +47,13 @@ const UserTags = ({userId}) => {
 	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		if (selected[0]) {
-			console.log(selected);
-			setData(data.filter((v) => !selected.includes(v.name)));
+		if (select[0]) {
+			console.log(select);
+			setData(data.filter((v) => !select.includes(v.name)));
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
-	}, [data, selected]);
-
-	console.log(data);
+	}, [data, select]);
 
 	return (
 		<>
@@ -69,19 +65,19 @@ const UserTags = ({userId}) => {
 				<button onClick={onClickDeleteRow}>태그 삭제</button>
 			</div>
 			<Table
-				tableKey={tableKeys.addTagToUserOnDescPage}
+				tableKey={tableKeys.addTagToGroupOnDescPage}
 				data={data}
 				columns={columns}
 				isSelectable
 				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
-				setSelect={setSelected}
+				setSelect={setSelect}
 			/>
 		</>
 	);
 };
 
-UserTags.propTypes = {
-	userId: PropTypes.string,
+GroupOnDescPageTags.propTypes = {
+	groupId: PropTypes.string,
 };
 
-export default UserTags;
+export default GroupOnDescPageTags;

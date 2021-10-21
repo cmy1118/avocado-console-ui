@@ -10,6 +10,7 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {Tab, TabItem} from '../../../styles/components/tab';
 import GroupRolesTab from '../Components/GroupRolesTab';
 import GroupSummary from '../Components/GroupSummary';
+import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
 
 const _Title = styled.div`
 	display: flex;
@@ -34,14 +35,14 @@ const GroupDescriptionSpace = ({groupId}) => {
 				search: `tabs=${v}`,
 			});
 		},
-		[],
+		[groupId, history],
 	);
 	// if groupId does not exist, direct to 404 page
 	useEffect(() => {
 		if (groupId && !group) {
 			history.push('/404');
 		}
-	}, [groupId, group]);
+	}, [groupId, group, history]);
 
 	return (
 		<IamContainer>
@@ -77,7 +78,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 					'role' && <GroupRolesTab groupId={groupId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'tag' && (
-					<div>tag</div>
+					<GroupOnDescPageTags groupId={groupId} />
 				)}
 			</div>
 		</IamContainer>
