@@ -4,21 +4,20 @@ import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {tableKeys} from '../../../utils/data';
 
 const _Tables = styled.div`
 	display: flex;
 `;
+const leftTableKey = tableKeys.rolesExcludedFromUserOnAddPage;
+const RightTableKey = tableKeys.rolesIncludedInUserOnAddPage;
 const AssignRoleToUser = () => {
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
 	const [select, setSelect] = useState([]);
-	const leftTableKey = tableKeys.rolesExcludedFromUserOnAddPage;
-	const RightTableKey = tableKeys.rolesIncludedInUserOnAddPage;
 
-	const excludedRoles = useMemo(() => {
+	const dataLeft = useMemo(() => {
 		return roles
 			.filter((v) => !rightDataIds.includes(v.id))
 			.map((v) => ({
@@ -28,7 +27,7 @@ const AssignRoleToUser = () => {
 			}));
 	}, [roles, rightDataIds]);
 
-	const includedRoles = useMemo(() => {
+	const dataRight = useMemo(() => {
 		return roles
 			.filter((v) => rightDataIds.includes(v.id))
 			.map((v) => ({
@@ -38,37 +37,26 @@ const AssignRoleToUser = () => {
 	}, [roles, rightDataIds]);
 
 	const onClickLeftDropButton = useCallback(() => {
-		console.log('select??:', select);
-		console.log('select id ??', select[leftTableKey]);
-		console.log(
-			'select id object key  ??',
-			Object.keys(select[leftTableKey]),
-		);
-		console.log('???', rightDataIds);
-		setRightDataIds(
-			// ...rightDataIds.map((v) => v.id),
-			// ...Object.key(select[leftTableKey]),
-			Object.keys(select[leftTableKey]),
-		);
-		console.log('!!!', rightDataIds);
+		setRightDataIds &&
+			setRightDataIds(
+				rightDataIds.concat(Object.keys(select[leftTableKey])),
+			);
 	}, [leftTableKey, rightDataIds, select, setRightDataIds]);
 
-	const onClickRightDropButton = useCallback(
-		(e) => {
-			// console.log('!!!!!!!!!right - select??:', select);
-			// const arr = rows.filter((v) => !v.isSelected).map((x) => x.id);
-			// // console.log(':::arr:', arr);
-			// setData && setData(arr);
-		},
-		[select],
-	);
+	const onClickRightDropButton = useCallback(() => {
+		setRightDataIds(
+			rightDataIds.filter(
+				(v) => !Object.keys(select[RightTableKey]).includes(v),
+			),
+		);
+	}, [RightTableKey, rightDataIds, select]);
 
 	return (
 		<>
 			<div>권한 추가</div>
 			<_Tables>
 				<Table
-					data={excludedRoles}
+					data={dataLeft}
 					tableKey={tableKeys.rolesExcludedFromUserOnAddPage}
 					columns={
 						getColumnsAsKey[
@@ -93,7 +81,7 @@ const AssignRoleToUser = () => {
 				<div>
 					<div>추가 Roles: {rightDataIds.length}건</div>
 					<Table
-						data={includedRoles}
+						data={dataRight}
 						tableKey={tableKeys.rolesIncludedInUserOnAddPage}
 						columns={
 							getColumnsAsKey[

@@ -3,11 +3,15 @@ import Table from '../../Table/Table';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
+import {tableKeys} from '../../../utils/data';
 const DndKey = 'groupsIncludedInUserOnAddPage_DndKey';
+const leftTableKey = 'groupsIncludedInUserOnAddPage';
+const RightTableKey = 'groupsExcludedFromUserOnAddPage';
 
 const AddUserToGroup = () => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
+	const [select, setSelect] = useState([]);
 
 	const dataLeft = useMemo(() => {
 		const dropDataTypeId = groups
