@@ -14,11 +14,6 @@ import UserOnDescPageTags from '../Components/UserOnDescPageTags';
 import UserSummary from '../Components/UserSummary';
 import UserRolesTab from '../Components/UserRolesTab';
 
-const _Title = styled.div`
-	display: flex;
-	justify-content: space-between;
-`;
-
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
 	const {search} = useLocation();
@@ -57,11 +52,6 @@ const UserDescriptionSpace = ({userId}) => {
 					<Link to={`/users/${userId}`}>{user?.id}</Link>
 				</PathContainer>
 			</div>
-
-			<_Title>
-				<div>요약 [ {user?.id} ]</div>
-				<button>삭제</button>
-			</_Title>
 
 			<UserSummary userId={userId} />
 

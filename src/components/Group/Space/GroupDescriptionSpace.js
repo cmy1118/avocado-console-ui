@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import {Link, useHistory, useLocation} from 'react-router-dom';
-import styled from 'styled-components';
 import {useSelector} from 'react-redux';
 import qs from 'qs';
 
@@ -11,11 +10,6 @@ import {Tab, TabItem} from '../../../styles/components/tab';
 import GroupRolesTab from '../Components/GroupRolesTab';
 import GroupSummary from '../Components/GroupSummary';
 import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
-
-const _Title = styled.div`
-	display: flex;
-	justify-content: space-between;
-`;
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
@@ -55,14 +49,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 					<Link to={`/groups/${groupId}`}>{groupId}</Link>
 				</PathContainer>
 			</div>
-
-			<_Title>
-				<div>요약 [ {group?.name} ]</div>
-				<div>
-					<button>그룹명 편집</button>
-					<button>삭제</button>
-				</div>
-			</_Title>
 
 			<GroupSummary groupId={groupId} />
 
