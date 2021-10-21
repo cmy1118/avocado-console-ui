@@ -6,6 +6,7 @@ import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
 import styled from 'styled-components';
 import {tableKeys} from '../../../utils/data';
+import DropButton from '../../Table/DropButton';
 
 const _Tables = styled.div`
 	display: flex;
@@ -36,21 +37,6 @@ const AssignRoleToUser = () => {
 			}));
 	}, [roles, rightDataIds]);
 
-	const onClickLeftDropButton = useCallback(() => {
-		setRightDataIds &&
-			setRightDataIds(
-				rightDataIds.concat(Object.keys(select[leftTableKey])),
-			);
-	}, [leftTableKey, rightDataIds, select, setRightDataIds]);
-
-	const onClickRightDropButton = useCallback(() => {
-		setRightDataIds(
-			rightDataIds.filter(
-				(v) => !Object.keys(select[RightTableKey]).includes(v),
-			),
-		);
-	}, [RightTableKey, rightDataIds, select]);
-
 	return (
 		<>
 			<div>권한 추가</div>
@@ -73,11 +59,13 @@ const AssignRoleToUser = () => {
 					setSelect={setSelect}
 				/>
 
-				<div>
-					<button onClick={onClickLeftDropButton}>-&gt;</button>
-					<button onClick={onClickRightDropButton}>&lt;-</button>
-				</div>
-
+				<DropButton
+					leftTableKey={leftTableKey}
+					RightTableKey={RightTableKey}
+					select={select}
+					rightDataIds={rightDataIds}
+					setRightDataIds={setRightDataIds}
+				/>
 				<div>
 					<div>추가 Roles: {rightDataIds.length}건</div>
 					<Table
