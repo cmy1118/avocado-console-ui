@@ -99,9 +99,6 @@ const Table = ({
 		},
 		[rows, tableKey, dndKey],
 	);
-
-	console.log(rows.filter((v) => v.isSelected).map((x) => x.id));
-
 	const onDragEnd = useCallback(
 		(e) => {
 			// if (e.target.firstChild.childNodes[0].type === 'checkbox') {
@@ -151,7 +148,7 @@ const Table = ({
 
 	useEffect(() => {
 		console.log(selectedRowIds);
-		setSelected && setSelected(selectedRowIds);
+		setSelected && setSelected(Object.keys(selectedRowIds));
 	}, [selectedRowIds, setSelected]);
 
 	return (

@@ -151,8 +151,18 @@ const slice = createSlice({
 				MFA: null,
 				passwordExpiryTime: '2023.02.12 20:44:02',
 				tags: [
-					{name: 'level', value: 'Admin', permissions: []},
-					{name: 'type', value: 'White', permissions: [1, 2, 3]},
+					{
+						name: 'level',
+						value: 'Admin',
+						permissions: [],
+						creationDate: '2021.03.02 15:55:32',
+					},
+					{
+						name: 'type',
+						value: 'White',
+						permissions: [1, 2, 3],
+						creationDate: '2021.03.02 15:55:32',
+					},
 				],
 				lastConsoleLogin: '2020.05.12 20:44:02',
 				creationDate: '2020.01.12 20:44:02',
@@ -169,7 +179,14 @@ const slice = createSlice({
 				authType: 'ID/PW',
 				MFA: null,
 				passwordExpiryTime: '2023.04.12 20:44:02',
-				tags: [{name: 'type', value: 'white', permissions: [1, 2, 3]}],
+				tags: [
+					{
+						name: 'type',
+						value: 'white',
+						permissions: [1, 2, 3],
+						creationDate: '2021.03.02 15:55:32',
+					},
+				],
 				lastConsoleLogin: '2020.06.12 20:44:02',
 				creationDate: '2020.03.12 20:44:02',
 			},
@@ -185,7 +202,14 @@ const slice = createSlice({
 				authType: 'ID/PW',
 				MFA: null,
 				passwordExpiryTime: '2022.12.12 20:44:02',
-				tags: [{name: 'level', value: 'Admin', permissions: []}],
+				tags: [
+					{
+						name: 'level',
+						value: 'Admin',
+						permissions: [],
+						creationDate: '2021.03.02 15:55:32',
+					},
+				],
 				lastConsoleLogin: null,
 				creationDate: '2020.03.12 20:44:02',
 			},

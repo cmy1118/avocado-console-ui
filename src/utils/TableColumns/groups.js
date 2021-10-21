@@ -1,6 +1,5 @@
 import {LINK} from '../data';
 import TableTextBox from '../ColumnCells/TableTextBox';
-import CURRENT_TARGET from '../../reducers/currentTarget';
 import React from 'react';
 import TableLink from '../ColumnCells/TableLink';
 
@@ -83,7 +82,7 @@ export const addTagsToGroupOnAddPageColumns = [
 		Header: 'Key(태그명)',
 		accessor: 'name',
 		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} />;
+			return <TableTextBox cell={cell} isFocus />;
 		},
 	},
 	{

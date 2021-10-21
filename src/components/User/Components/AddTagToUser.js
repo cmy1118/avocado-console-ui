@@ -23,6 +23,11 @@ const AddTagToUser = () => {
 
 	const onClickAddRow = useCallback(() => {
 		console.log(data);
+		const lastValues = data.slice().pop();
+		if (lastValues.name === '' || lastValues.value === '') {
+			alert('입력하지 않은 값이 있습니다.');
+			return;
+		}
 		setData([
 			...data,
 			{

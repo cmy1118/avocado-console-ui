@@ -1,6 +1,5 @@
 import React from 'react';
 import TableTextBox from '../ColumnCells/TableTextBox';
-import CURRENT_TARGET from '../../reducers/currentTarget';
 import TableLink from '../ColumnCells/TableLink';
 
 export const usersColumns = [
@@ -54,7 +53,7 @@ export const addTagsToUserOnAddPageColumns = [
 		Header: 'Key(태그명)',
 		accessor: 'name',
 		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} />;
+			return <TableTextBox cell={cell} isFocus />;
 		},
 		// id: LINK,
 	},
@@ -76,7 +75,7 @@ export const addTagToUserOnDescPageColumns = [
 		Header: 'Key(태그명)',
 		accessor: 'name',
 		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} />;
+			return <TableTextBox cell={cell} isFocus />;
 		},
 	},
 	{
