@@ -23,6 +23,7 @@ const slice = createSlice({
 		role: {},
 		currentTarget: {},
 		currentDropId: {},
+		lange: {},
 	},
 
 	reducers: {
@@ -39,6 +40,10 @@ const slice = createSlice({
 				state.currentTarget[action.payload.tableKey] =
 					action.payload.selected;
 			}
+		},
+
+		setShiftLange: (state, {payload}) => {
+			state.lange[payload.tableKey] = payload.lange;
 		},
 
 		setSelectedRows: (state, action) => {
@@ -135,13 +140,15 @@ const selectAllState = createSelector(
 	(state) => state.user,
 	(state) => state.group,
 	(state) => state.role,
-	(currentTarget, currentDropId, user, group, role) => {
+	(state) => state.lange,
+	(currentTarget, currentDropId, user, group, role, lange) => {
 		return {
 			currentTarget,
 			currentDropId,
 			user,
 			group,
 			role,
+			lange,
 		};
 	},
 );

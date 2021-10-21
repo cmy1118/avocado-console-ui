@@ -1,7 +1,7 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 
-const TableTextBox = ({cell}) => {
+const TableTextBox = ({cell, isFocus = false}) => {
 	const ref = useRef(null);
 	const [value, setValue] = useState(cell.row.original[cell.column.id]);
 
@@ -16,6 +16,7 @@ const TableTextBox = ({cell}) => {
 					...cell.data.filter((v) => v.id !== cell.row.original.id),
 					{...cell.row.original, [cell.column.id]: e.target.value},
 				]);
+				// e.target
 			}
 		},
 		[cell],
@@ -32,9 +33,9 @@ const TableTextBox = ({cell}) => {
 	);
 
 	// todo : 첫번째 input focus
-	// useEffect(() => {
-	// ref.current?.focus();
-	// }, []);
+	useEffect(() => {
+		isFocus && value === '' && ref.current?.focus();
+	}, []);
 
 	return (
 		<input
@@ -50,6 +51,7 @@ const TableTextBox = ({cell}) => {
 
 TableTextBox.propTypes = {
 	cell: PropTypes.object.isRequired,
+	isFocus: PropTypes.bool,
 };
 
 export default TableTextBox;

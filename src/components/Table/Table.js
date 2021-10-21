@@ -33,7 +33,6 @@ const Table = ({
 		if (v.uid) return v.uid;
 		return v.id;
 	}, []);
-	const [testSel, setTestSel] = useState({});
 
 	const {
 		getTableProps,
@@ -71,7 +70,6 @@ const Table = ({
 						Header: ({getToggleAllPageRowsSelectedProps}) => (
 							<TableCheckbox
 								{...getToggleAllPageRowsSelectedProps()}
-								selected={rows.map((v) => v.isSelected)}
 								tablekey={tableKey}
 							/>
 						),
@@ -80,8 +78,6 @@ const Table = ({
 							<TableCheckbox
 								// eslint-disable-next-line react/prop-types,react/display-name
 								{...row.getToggleRowSelectedProps()}
-								row={row}
-								selected={rows.map((v) => v.isSelected)}
 								tablekey={tableKey}
 							/>
 						),
@@ -143,6 +139,7 @@ const Table = ({
 		},
 		[data, setData],
 	);
+
 	const onDragOver = useCallback((e) => {
 		e.preventDefault();
 	}, []);
@@ -156,11 +153,14 @@ const Table = ({
 		},
 		[setSelect, tableKey],
 	);
+
 	useEffect(() => {
 		selectedRowIds && selectedDropBtton(selectedRowIds);
-		// setSelect(data);
-		// setSelected && setSelected(selectedRowIds);
-	}, [tableKey, selectedRowIds, selectedDropBtton]);
+		console.log(selectedRowIds);
+		setSelect && setSelect(Object.keys(selectedRowIds));
+		selectedRowIds && selectedDropBtton(selectedRowIds);
+
+	}, [tableKey, selectedRowIds, selectedDropBtton, setSelect]);
 
 	return (
 		<div>

@@ -53,7 +53,7 @@ export const addTagsToUserOnAddPageColumns = [
 		Header: 'Key(태그명)',
 		accessor: 'name',
 		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} />;
+			return <TableTextBox cell={cell} isFocus />;
 		},
 		// id: LINK,
 	},
@@ -75,7 +75,7 @@ export const addTagToUserOnDescPageColumns = [
 		Header: 'Key(태그명)',
 		accessor: 'name',
 		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} />;
+			return <TableTextBox cell={cell} isFocus />;
 		},
 	},
 	{
