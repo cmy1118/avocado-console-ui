@@ -1,13 +1,11 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {tableKeys} from '../../../utils/data';
 import Table from '../../Table/Table';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useSelector} from 'react-redux';
-import PropTypes from 'prop-types';
-import AddUser from './AddUser';
 
-const AddTagToUser = ({setAllData}) => {
+const AddTagToUser = () => {
 	const {user} = useSelector(CURRENT_TARGET.selector);
 	const columns = getColumnsAsKey[tableKeys.addTagsToUserOnAddPage];
 	const [data, setData] = useState(user.tags);
@@ -48,10 +46,6 @@ const AddTagToUser = ({setAllData}) => {
 		}
 	}, [data, select]);
 
-	useEffect(() => {
-		setAllData({key: tableKeys.addTagsToUserOnAddPage, data: tagData});
-	}, [setAllData, tagData]);
-
 	return (
 		<>
 			<div>태그 추가</div>
@@ -67,13 +61,9 @@ const AddTagToUser = ({setAllData}) => {
 				isSelectable
 				setData={setData}
 				setSelect={setSelect}
-				// selected={Object.keys(selected).pop()}
 			/>
 		</>
 	);
-};
-AddTagToUser.propTypes = {
-	setAllData: PropTypes.func.isRequired,
 };
 
 export default AddTagToUser;

@@ -1,9 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
-
-import {roleTypeConverter} from '../../../utils/tableDataConverter';
-import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {tableKeys} from '../../../utils/data';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import Table from '../../Table/Table';
@@ -24,13 +21,6 @@ const GroupUsersTab = ({groupId}) => {
 		groupId,
 	]);
 	const [rightDataIds, setRightDataIds] = useState(group.members);
-	//
-	// users
-	// 	.map(({uid: id, id: _id, ...rest}) => ({
-	// 		id,
-	// 		_id,
-	// 		...rest,
-	// 	}))
 
 	const dataLeft = useMemo(() => {
 		return users
@@ -99,9 +89,10 @@ const GroupUsersTab = ({groupId}) => {
 				isSearchable
 				dndKey={'role'}
 				setSelect={setSelect}
+				setData={setRightDataIds}
 			/>
 			<div>
-				이 그룹의 다 른권한 : {dataRight.length}
+				이 그룹의 다른권한 : {dataRight.length}
 				<button onClick={onClickAddRolesToGroup}>권한 추가</button>
 			</div>
 			<Table
@@ -117,6 +108,8 @@ const GroupUsersTab = ({groupId}) => {
 				isSearchable
 				dndKey={'role'}
 				setSelect={setSelect}
+				setData={setRightDataIds}
+				control
 			/>
 		</>
 	);

@@ -1,9 +1,9 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
 import {
-	usePagination,
 	useGlobalFilter,
+	usePagination,
 	useRowSelect,
 	useSortBy,
 	useTable,
@@ -138,11 +138,11 @@ const Table = ({
 		[dndKey, setData, control, data],
 	);
 
-	const onDragOver = (e) => {
+	const onDragOver = useCallback((e) => {
 		e.preventDefault();
-	};
+	}, []);
 
-	const selectedDropBtton = useCallback(
+	const selectedDropButton = useCallback(
 		(selectedRowIds) => {
 			const data = {};
 			data[tableKey] = selectedRowIds;
@@ -154,8 +154,8 @@ const Table = ({
 	useEffect(() => {
 		console.log(selectedRowIds);
 		setSelect && setSelect(Object.keys(selectedRowIds));
-		selectedRowIds && selectedDropBtton(selectedRowIds);
-	}, [selectedRowIds, setSelect, selectedDropBtton]);
+		selectedRowIds && selectedDropButton(selectedRowIds);
+	}, [selectedRowIds, setSelect, selectedDropButton]);
 
 	return (
 		<div>

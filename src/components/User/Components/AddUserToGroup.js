@@ -1,9 +1,8 @@
-import React, {useMemo, useState, useEffect} from 'react';
+import React, {useMemo, useState} from 'react';
 import Table from '../../Table/Table';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
-import {tableKeys} from '../../../utils/data';
 import DropButton from '../../Table/DropButton';
 import styled from 'styled-components';
 
@@ -11,13 +10,11 @@ const _Tables = styled.div`
 	display: flex;
 `;
 
-import PropTypes from 'prop-types';
-
 const DndKey = 'groupsIncludedInUserOnAddPage_DndKey';
 const leftTableKey = 'groupsIncludedInUserOnAddPage';
 const RightTableKey = 'groupsExcludedFromUserOnAddPage';
 
-const AddUserToGroup = ({setAllData}) => {
+const AddUserToGroup = () => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
 	const [select, setSelect] = useState([]);
@@ -41,10 +38,6 @@ const AddUserToGroup = ({setAllData}) => {
 				...v,
 			}));
 	}, [groups, rightDataIds]);
-
-	useEffect(() => {
-		setAllData({key: 'groupsExcludedFromUserOnAddPage', data: dataRight});
-	}, [setAllData, dataRight]);
 
 	return (
 		<>
@@ -99,9 +92,6 @@ const AddUserToGroup = ({setAllData}) => {
 			</_Tables>
 		</>
 	);
-};
-AddUserToGroup.propTypes = {
-	setAllData: PropTypes.func.isRequired,
 };
 
 export default AddUserToGroup;

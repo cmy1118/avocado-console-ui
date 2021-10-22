@@ -93,6 +93,7 @@ const UserGroupsTab = ({userId}) => {
 				isSearchable
 				dndKey={'groups'}
 				setSelect={setSelect}
+				setData={setRightDataIds}
 			/>
 			<div>
 				이 사용자의 다른그룹 : {dataRight.length}{' '}
@@ -111,6 +112,8 @@ const UserGroupsTab = ({userId}) => {
 				isSearchable
 				dndKey={'groups'}
 				setSelect={setSelect}
+				setData={setRightDataIds}
+				control
 			/>
 		</>
 	);

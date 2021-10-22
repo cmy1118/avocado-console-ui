@@ -4,7 +4,6 @@ import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {tableKeys} from '../../../utils/data';
 
@@ -65,7 +64,7 @@ const AssignRoleToGroup = () => {
 					isDnDPossible
 					dndKey={'role'}
 					isSearchable
-					// select={selectedExcludedRoles}
+					setData={setRightDataIds}
 					setSelect={setSelectedExcludedRoles}
 				/>
 
@@ -89,7 +88,7 @@ const AssignRoleToGroup = () => {
 						isDnDPossible
 						dndKey={'role'}
 						setData={setRightDataIds}
-						select={selectedIncludedRoles}
+						control
 						setSelect={setSelectedIncludedRoles}
 					/>
 				</div>

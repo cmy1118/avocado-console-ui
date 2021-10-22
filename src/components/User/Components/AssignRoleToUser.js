@@ -1,15 +1,12 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import Table from '../../Table/Table';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {tableKeys} from '../../../utils/data';
 import DropButton from '../../Table/DropButton';
-import AddUser from './AddUser';
-import {rolesExcludedFromUserOnAddPageColumns} from '../../../utils/TableColumns/users';
 
 const _Tables = styled.div`
 	display: flex;
@@ -17,7 +14,7 @@ const _Tables = styled.div`
 const leftTableKey = tableKeys.rolesExcludedFromUserOnAddPage;
 const RightTableKey = tableKeys.rolesIncludedInUserOnAddPage;
 
-const AssignRoleToUser = ({setAllData}) => {
+const AssignRoleToUser = () => {
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
 	const [select, setSelect] = useState([]);
@@ -40,12 +37,7 @@ const AssignRoleToUser = ({setAllData}) => {
 				type: roleTypeConverter(v.companyId),
 			}));
 	}, [roles, rightDataIds]);
-	useEffect(() => {
-		setAllData({
-			key: tableKeys.rolesIncludedInUserOnAddPage,
-			data: dataRight,
-		});
-	}, [setAllData, dataRight]);
+
 	return (
 		<>
 			<div>권한 추가</div>
@@ -67,6 +59,7 @@ const AssignRoleToUser = ({setAllData}) => {
 					isSearchable
 					dndKey={'role'}
 					setSelect={setSelect}
+					setData={setRightDataIds}
 				/>
 
 				<DropButton
@@ -92,14 +85,12 @@ const AssignRoleToUser = ({setAllData}) => {
 						dndKey={'role'}
 						setData={setRightDataIds}
 						setSelect={setSelect}
+						control
 					/>
 				</div>
 			</_Tables>
 		</>
 	);
-};
-AssignRoleToUser.propTypes = {
-	setAllData: PropTypes.func.isRequired,
 };
 
 export default AssignRoleToUser;

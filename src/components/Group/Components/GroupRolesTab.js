@@ -95,6 +95,7 @@ const GroupRolesTab = ({groupId}) => {
 				isSearchable
 				dndKey={'role'}
 				setSelect={setSelect}
+				setData={setRightDataIds}
 			/>
 			<div>
 				이 그룹의 다른권한 : {dataRight.length}
@@ -113,6 +114,8 @@ const GroupRolesTab = ({groupId}) => {
 				isSearchable
 				dndKey={'role'}
 				setSelect={setSelect}
+				setData={setRightDataIds}
+				control
 			/>
 		</>
 	);
