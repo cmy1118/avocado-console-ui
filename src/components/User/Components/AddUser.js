@@ -7,8 +7,9 @@ import Form from '../../RecycleComponents/Form';
 import * as yup from 'yup';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
 import {formKeys} from '../../../utils/data';
+import PropTypes from 'prop-types';
 
-const AddUser = () => {
+const AddUser = ({setAllData, setIsOpened}) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
@@ -46,10 +47,10 @@ const AddUser = () => {
 
 	const onSubmitAddUser = useCallback(
 		(data) => {
-			console.log(data);
-			dispatch(IAM_USER.action.addUser(data));
+			setAllData({key: 'userInfo', data});
+			setIsOpened(true);
 		},
-		[dispatch],
+		[setAllData, setIsOpened],
 	);
 
 	return (
@@ -70,13 +71,39 @@ const AddUser = () => {
 				schema={schema}
 				onSubmit={onSubmitAddUser}
 			>
-				<FormTextBox name={'id'} placeholder={'id'} />
-				<FormTextBox name={'name'} placeholder={'name'} />
-				<FormTextBox name={'email'} placeholder={'email'} />
-				<FormTextBox name={'telephone'} placeholder={'telephone'} />
-				<FormTextBox name={'mobile'} placeholder={'mobile'} />
+				<FormTextBox
+					name={'id'}
+					defaultValue={'AvocadoGood'}
+					placeholder={'id'}
+				/>
+				<FormTextBox
+					name={'name'}
+					defaultValue={'아보카도'}
+					placeholder={'name'}
+				/>
+				<FormTextBox
+					name={'email'}
+					defaultValue={'avocado@netand.co.kr'}
+					placeholder={'email'}
+				/>
+				<FormTextBox
+					name={'telephone'}
+					defaultValue={'02-1234-1234'}
+					placeholder={'telephone'}
+				/>
+				<FormTextBox
+					name={'mobile'}
+					defaultValue={'010-1234-1234'}
+					placeholder={'mobile'}
+				/>
 			</Form>
 		</>
 	);
 };
+
+AddUser.propTypes = {
+	setAllData: PropTypes.func.isRequired,
+	setIsOpened: PropTypes.func.isRequired,
+};
+
 export default AddUser;

@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 
-const UserTags = ({userId}) => {
+const UserOnDescPageTags = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
@@ -27,7 +27,6 @@ const UserTags = ({userId}) => {
 	const columns = getColumnsAsKey[tableKeys.addTagToUserOnDescPage];
 
 	const onClickAddRow = useCallback(() => {
-		console.log(data);
 		const lastValues = data.slice().pop();
 		if (lastValues.name === '' || lastValues.value === '') {
 			alert('입력하지 않은 값이 있습니다.');
@@ -56,8 +55,6 @@ const UserTags = ({userId}) => {
 		}
 	}, [data, select]);
 
-	console.log(data);
-
 	return (
 		<>
 			<div>태그 추가</div>
@@ -79,8 +76,8 @@ const UserTags = ({userId}) => {
 	);
 };
 
-UserTags.propTypes = {
+UserOnDescPageTags.propTypes = {
 	userId: PropTypes.string,
 };
 
-export default UserTags;
+export default UserOnDescPageTags;

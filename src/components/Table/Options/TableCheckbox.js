@@ -1,4 +1,11 @@
-import React, {forwardRef, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {
+	forwardRef,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import PropTypes from 'prop-types';
 
 const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
@@ -23,6 +30,18 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 
 				// todo : 마지막 체크값이 존재하는 경우
 				if (isLastChecked) {
+					// todo : 마지막 체크값이 전체선택 체크박스인 경우 return
+					let isAllCheck = false;
+					checkboxes.forEach((checkbox) => {
+						if (
+							checkbox.title ===
+								'Toggle All Current Page Rows Selected' &&
+							checkbox.lastChecked
+						)
+							isAllCheck = true;
+					});
+					if (isAllCheck) return;
+
 					// todo : 현재 선택한 값이 마지막 체크된 체크박스가 아닌 경우들만
 					if (!e.target.lastChecked) {
 						// todo : checked ::: [ false => true ] 사이에 해당되는 친구들은 모두 true
@@ -59,13 +78,18 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 									console.log('open / close');
 									isBetween = !isBetween;
 									if (isBetween) {
-										if (checkbox.lastChecked) {
-											// checkbox.isBetween = true;
+										if (
+											checkbox.lastChecked &&
+											checkbox.checked
+										) {
 											checkbox.click();
 										}
 										console.log('checkbox :: ', checkbox);
 									} else {
-										if (checkbox.lastChecked)
+										if (
+											checkbox.lastChecked &&
+											checkbox.checked
+										)
 											checkbox.click();
 									}
 								} else {
@@ -83,6 +107,8 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 							});
 						}
 					}
+				} else {
+					//
 				}
 			}
 			// todo : 현재 타겟의 마지막 체크 true

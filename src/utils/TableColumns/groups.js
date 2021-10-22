@@ -37,15 +37,23 @@ export const groupTypeColumns = [
 	{
 		Header: '그룹 유형',
 		accessor: 'name',
-		// id: LINK,
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} isFocus />;
+		},
 	},
 	{
 		Header: '그룹 수',
 		accessor: 'numberOfGroups',
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
+		},
 	},
 	{
 		Header: '설명',
 		accessor: 'description',
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
+		},
 	},
 	{
 		Header: '생성 일시',
@@ -170,6 +178,30 @@ export const groupTagsSummaryColumns = [
 	{
 		Header: '값(태그)',
 		accessor: 'value',
+	},
+	{
+		Header: '권한 수',
+		accessor: 'numberOfPermissions',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+export const addTagToGroupOnDescPageColumns = [
+	{
+		Header: 'key(태그명)',
+		accessor: 'name',
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} isFocus />;
+		},
+	},
+	{
+		Header: '값(태그)',
+		accessor: 'value',
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
+		},
 	},
 	{
 		Header: '권한 수',

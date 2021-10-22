@@ -1,12 +1,15 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {tableKeys} from '../../../utils/data';
 import DropButton from '../../Table/DropButton';
+import AddUser from './AddUser';
+import {rolesExcludedFromUserOnAddPageColumns} from '../../../utils/TableColumns/users';
 
 const _Tables = styled.div`
 	display: flex;
@@ -15,6 +18,7 @@ const leftTableKey = tableKeys.rolesExcludedFromUserOnAddPage;
 const RightTableKey = tableKeys.rolesIncludedInUserOnAddPage;
 
 const AssignRoleToUser = () => {
+const AssignRoleToUser = ({setAllData}) => {
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
 	const [select, setSelect] = useState([]);
@@ -89,6 +93,9 @@ const AssignRoleToUser = () => {
 			</_Tables>
 		</>
 	);
+};
+AssignRoleToUser.propTypes = {
+	setAllData: PropTypes.func.isRequired,
 };
 
 export default AssignRoleToUser;

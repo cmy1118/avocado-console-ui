@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm} from 'react-hook-form';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import * as yup from 'yup';
 
 // export const _Form = styled.form`
@@ -46,7 +45,7 @@ const Form = ({id, schema = {}, children, onSubmit}) => {
 
 Form.propTypes = {
 	id: PropTypes.string,
-	children: PropTypes.array,
+	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	schema: PropTypes.object,
 	onSubmit: PropTypes.func,
 };

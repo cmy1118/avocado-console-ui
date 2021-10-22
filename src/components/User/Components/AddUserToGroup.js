@@ -11,11 +11,13 @@ const _Tables = styled.div`
 	display: flex;
 `;
 
+import PropTypes from 'prop-types';
+
 const DndKey = 'groupsIncludedInUserOnAddPage_DndKey';
 const leftTableKey = 'groupsIncludedInUserOnAddPage';
 const RightTableKey = 'groupsExcludedFromUserOnAddPage';
 
-const AddUserToGroup = () => {
+const AddUserToGroup = ({setAllData}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
 	const [select, setSelect] = useState([]);
@@ -40,6 +42,10 @@ const AddUserToGroup = () => {
 			}));
 	}, [groups, rightDataIds]);
 
+	useEffect(() => {
+		setAllData({key: 'groupsExcludedFromUserOnAddPage', data: dataRight});
+	}, [setAllData, dataRight]);
+
 	return (
 		<>
 			<div>그룹에 사용자에 추가</div>
@@ -58,6 +64,7 @@ const AddUserToGroup = () => {
 					isDnDPossible
 					isSearchable
 					dndKey={DndKey}
+					setData={setRightDataIds}
 					setSelect={setSelect}
 				/>
 				<DropButton
@@ -86,11 +93,15 @@ const AddUserToGroup = () => {
 						dndKey={DndKey}
 						setData={setRightDataIds}
 						setSelect={setSelect}
+						control
 					/>
 				</div>
 			</_Tables>
 		</>
 	);
+};
+AddUserToGroup.propTypes = {
+	setAllData: PropTypes.func.isRequired,
 };
 
 export default AddUserToGroup;

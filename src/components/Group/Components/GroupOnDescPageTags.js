@@ -1,30 +1,32 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {tableKeys} from '../../../utils/data';
 import Table from '../../Table/Table';
-import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
-import AddUser from './AddUser';
+import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 
-const AddTagToUser = ({setAllData}) => {
-	const {user} = useSelector(CURRENT_TARGET.selector);
-	const columns = getColumnsAsKey[tableKeys.addTagsToUserOnAddPage];
-	const [data, setData] = useState(user.tags);
-	const [select, setSelect] = useState({});
-
-	const tagData = useMemo(() => {
-		return data.map((v) => {
+const GroupOnDescPageTags = ({groupId}) => {
+	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const group = useMemo(() => groups.find((v) => v.id === groupId), [
+		groupId,
+		groups,
+	]);
+	const [data, setData] = useState(
+		group.tags.map((v) => {
 			return {
 				...v,
 				id: v.name,
 				numberOfPermissions: v.permissions.length,
 			};
-		});
-	}, [data]);
+		}) || [],
+	);
+
+	const [select, setSelect] = useState([]);
+
+	const columns = getColumnsAsKey[tableKeys.addTagToGroupOnDescPage];
 
 	const onClickAddRow = useCallback(() => {
-		console.log(data);
 		const lastValues = data.slice().pop();
 		if (lastValues.name === '' || lastValues.value === '') {
 			alert('입력하지 않은 값이 있습니다.');
@@ -40,17 +42,18 @@ const AddTagToUser = ({setAllData}) => {
 		]);
 	}, [data]);
 
+	const onClickSaveRow = useCallback(() => {
+		console.log(data);
+	}, [data]);
+
 	const onClickDeleteRow = useCallback(() => {
 		if (select[0]) {
+			console.log(select);
 			setData(data.filter((v) => !select.includes(v.name)));
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
 	}, [data, select]);
-
-	useEffect(() => {
-		setAllData({key: tableKeys.addTagsToUserOnAddPage, data: tagData});
-	}, [setAllData, tagData]);
 
 	return (
 		<>
@@ -58,18 +61,23 @@ const AddTagToUser = ({setAllData}) => {
 
 			<div>
 				<button onClick={onClickAddRow}>태그 추가</button>
+				<button onClick={onClickSaveRow}>태그 저장</button>
 				<button onClick={onClickDeleteRow}>태그 삭제</button>
 			</div>
 			<Table
-				tableKey={tableKeys.addTagsToUserOnAddPage}
-				data={tagData}
+				tableKey={tableKeys.addTagToGroupOnDescPage}
+				data={data}
 				columns={columns}
 				isSelectable
-				setData={setData}
+				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
 				setSelect={setSelect}
-				// selected={Object.keys(selected).pop()}
 			/>
 		</>
 	);
 };
-export default AddTagToUser;
+
+GroupOnDescPageTags.propTypes = {
+	groupId: PropTypes.string,
+};
+
+export default GroupOnDescPageTags;

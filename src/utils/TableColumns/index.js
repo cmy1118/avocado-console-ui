@@ -31,6 +31,7 @@ import {
 	rolesExcludedFormGroupOnDescPageColumns,
 	usersIncludedInGroupOnDescPageColumns, // 그룹 상세페이지 사용자Tab
 	usersExcludedFromGroupOnDescPageColumns, // 그룹 상세페이지 사용자Tab
+	addTagToGroupOnDescPageColumns,
 } from './groups';
 
 // 형식 { key : columns }
@@ -64,6 +65,7 @@ getColumnsAsKey = {
 	groupUsersSummary: groupUsersSummaryColumns,
 	groupRolesSummary: groupRolesSummaryColumns,
 	groupTagsSummary: groupTagsSummaryColumns,
+	addTagToGroupOnDescPage: addTagToGroupOnDescPageColumns,
 	addTagToUserOnDescPage: addTagToUserOnDescPageColumns,
 	usersIncludedInGroupOnAddPageColumns: usersIncludedInGroupOnAddPageColumns,
 	usersExcludedFromGroupOnAddPageColumns: usersExcludedFromGroupOnAddPageColumns,
