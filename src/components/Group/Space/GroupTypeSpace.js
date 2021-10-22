@@ -19,23 +19,44 @@ const GroupTypeSpace = () => {
 	const [isAddGroupTypeOpened, setIsAddGroupTypeOpened] = useState(false);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
-
-	const data = useMemo(() => {
-		return groupTypes.map((v) => ({
+	const [select, setSelect] = useState([]);
+	const [data, setData] = useState(
+		groupTypes.map((v) => ({
 			...v,
 			numberOfGroups: groups.filter(
 				(val) => val.clientGroupTypeId === v.id,
 			).length,
-		}));
-	}, [groupTypes, groups]);
+		})),
+	);
 
 	const onClickAddGroups = useCallback(() => {
 		history.push('/groups/add');
 	}, [history]);
 
 	const onClickOpenAddGroupTypeDialogBox = useCallback(() => {
-		setIsAddGroupTypeOpened(true);
-	}, []);
+		setData([
+			...data,
+			{
+				name: '',
+				numberOfGroups: 0,
+				description: '',
+				creationDate: new Date().toLocaleString(),
+			},
+		]);
+	}, [data]);
+
+	const onClickSaveGroupTypes = useCallback(() => {
+		console.log(data);
+	}, [data]);
+
+	const onClickDeleteGroupTypes = useCallback(() => {
+		console.log(select);
+		if (select[0]) {
+			setData(data.filter((v) => !select.includes(v.id)));
+		} else {
+			alert('선택된 값이 없습니다.');
+		}
+	}, [data, select]);
 
 	return (
 		<IamContainer>
@@ -53,8 +74,12 @@ const GroupTypeSpace = () => {
 					<button onClick={onClickOpenAddGroupTypeDialogBox}>
 						그룹유형 추가 생성
 					</button>
-					<button>그룹유형 저장</button>
-					<button>그룹유형 삭제</button>
+					<button onClick={onClickSaveGroupTypes}>
+						그룹유형 저장
+					</button>
+					<button onClick={onClickDeleteGroupTypes}>
+						그룹유형 삭제
+					</button>
 					<button onClick={onClickAddGroups}>취소</button>
 				</div>
 			</SubTitle>
@@ -67,6 +92,8 @@ const GroupTypeSpace = () => {
 				isNumberOfRowsAdjustable
 				isColumnFilterable
 				isSelectable
+				setData={setData}
+				setSelect={setSelect}
 			/>
 			<AddGroupTypeDialogBox
 				isOpened={isAddGroupTypeOpened}

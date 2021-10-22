@@ -1,15 +1,17 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {tableKeys} from '../../../utils/data';
 import Table from '../../Table/Table';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useSelector} from 'react-redux';
+import PropTypes from 'prop-types';
+import AddUser from './AddUser';
 
-const AddTagToUser = () => {
+const AddTagToUser = ({setAllData}) => {
 	const {user} = useSelector(CURRENT_TARGET.selector);
 	const columns = getColumnsAsKey[tableKeys.addTagsToUserOnAddPage];
 	const [data, setData] = useState(user.tags);
-	const [selected, setSelected] = useState({});
+	const [select, setSelect] = useState({});
 
 	const tagData = useMemo(() => {
 		return data.map((v) => {
@@ -39,8 +41,16 @@ const AddTagToUser = () => {
 	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		console.log(data);
-	}, [data]);
+		if (select[0]) {
+			setData(data.filter((v) => !select.includes(v.name)));
+		} else {
+			alert('선택된 값이 없습니다.');
+		}
+	}, [data, select]);
+
+	useEffect(() => {
+		setAllData({key: tableKeys.addTagsToUserOnAddPage, data: tagData});
+	}, [setAllData, tagData]);
 
 	return (
 		<>
@@ -56,10 +66,14 @@ const AddTagToUser = () => {
 				columns={columns}
 				isSelectable
 				setData={setData}
-				setSelected={setSelected}
-				selected={Object.keys(selected).pop()}
+				setSelect={setSelect}
 			/>
 		</>
 	);
 };
+
+AddTagToUser.propTypes = {
+	setAllData: PropTypes.func.isRequired,
+};
+
 export default AddTagToUser;

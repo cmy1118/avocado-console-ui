@@ -10,15 +10,18 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const _DialogBox = styled(DialogBox)`
-	//	스타일 적용 필요
+	padding: 30px;
+	width: 70%;
+	border: 1px solid;
+	background: white;
 `;
 
-const ModalFormContainer = ({
+const ModalTableContainer = ({
 	isOpened,
 	setIsOpened,
 	title,
-	formKey,
 	children,
+	handleSubmit,
 }) => {
 	const onClickCloseDialogBox = useCallback(() => {
 		setIsOpened(false);
@@ -46,7 +49,7 @@ const ModalFormContainer = ({
 				<button type={'button'} onClick={onClickCloseDialogBox}>
 					Cancel
 				</button>
-				<button form={formKey} type={'submit'}>
+				<button onClick={handleSubmit} type={'submit'}>
 					Save
 				</button>
 			</DialogBoxFooter>
@@ -54,13 +57,13 @@ const ModalFormContainer = ({
 	);
 };
 
-ModalFormContainer.propTypes = {
+ModalTableContainer.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
-	formKey: PropTypes.string.isRequired,
+	handleSubmit: PropTypes.func.isRequired,
 	title: PropTypes.string.isRequired,
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 		.isRequired,
 };
 
-export default ModalFormContainer;
+export default ModalTableContainer;

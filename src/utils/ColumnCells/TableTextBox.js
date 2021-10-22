@@ -4,19 +4,24 @@ import PropTypes from 'prop-types';
 const TableTextBox = ({cell, isFocus = false}) => {
 	const ref = useRef(null);
 	const [value, setValue] = useState(cell.row.original[cell.column.id]);
+	const [isOpened, setIsOpened] = useState(!value);
 
 	const handleChange = useCallback((e) => {
 		setValue(e.target.value);
 	}, []);
-
 	const handlePressEnter = useCallback(
 		(e) => {
+			if (!e.target.value) return;
 			if (e.keyCode === 13) {
-				cell.setData([
-					...cell.data.filter((v) => v.id !== cell.row.original.id),
-					{...cell.row.original, [cell.column.id]: e.target.value},
-				]);
-				// e.target
+				const data = cell.data;
+				data.pop();
+				data.push({
+					...cell.row.original,
+					[cell.column.id]: e.target.value,
+				});
+				if (!cell.setData) return;
+				cell.setData(data);
+				setIsOpened(false);
 			}
 		},
 		[cell],
@@ -24,10 +29,16 @@ const TableTextBox = ({cell, isFocus = false}) => {
 
 	const handleBlur = useCallback(
 		(e) => {
-			cell.setData([
-				...cell.data.filter((v) => v.id !== cell.row.original.id),
-				{...cell.row.original, [cell.column.id]: e.target.value},
-			]);
+			if (!e.target.value) return;
+			const data = cell.data;
+			data.pop();
+			data.push({
+				...cell.row.original,
+				[cell.column.id]: e.target.value,
+			});
+			if (!cell.setData) return;
+			cell.setData(data);
+			setIsOpened(false);
 		},
 		[cell],
 	);
@@ -37,7 +48,7 @@ const TableTextBox = ({cell, isFocus = false}) => {
 		isFocus && value === '' && ref.current?.focus();
 	}, []);
 
-	return (
+	return isOpened ? (
 		<input
 			ref={ref}
 			type='text'
@@ -46,6 +57,8 @@ const TableTextBox = ({cell, isFocus = false}) => {
 			onBlur={handleBlur}
 			onChange={handleChange}
 		/>
+	) : (
+		<div onDoubleClick={() => setIsOpened(true)}>{value}</div>
 	);
 };
 

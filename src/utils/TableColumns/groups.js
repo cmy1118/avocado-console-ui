@@ -37,15 +37,23 @@ export const groupTypeColumns = [
 	{
 		Header: '그룹 유형',
 		accessor: 'name',
-		// id: LINK,
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} isFocus />;
+		},
 	},
 	{
 		Header: '그룹 수',
 		accessor: 'numberOfGroups',
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
+		},
 	},
 	{
 		Header: '설명',
 		accessor: 'description',
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
+		},
 	},
 	{
 		Header: '생성 일시',

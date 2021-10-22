@@ -1,11 +1,13 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
+import PropTypes from 'prop-types';
+
 const DndKey = 'groupsIncludedInUserOnAddPage_DndKey';
 
-const AddUserToGroup = () => {
+const AddUserToGroup = ({setAllData}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
 
@@ -29,6 +31,10 @@ const AddUserToGroup = () => {
 			}));
 	}, [groups, rightDataIds]);
 
+	useEffect(() => {
+		setAllData({key: 'groupsExcludedFromUserOnAddPage', data: dataRight});
+	}, [setAllData, dataRight]);
+
 	return (
 		<>
 			<div>그룹에 사용자에 추가</div>
@@ -46,6 +52,7 @@ const AddUserToGroup = () => {
 					isSelectable
 					isDnDPossible
 					dndKey={DndKey}
+					setData={setRightDataIds}
 				/>
 				<Table
 					tableKey='groupsExcludedFromUserOnAddPage'
@@ -63,10 +70,14 @@ const AddUserToGroup = () => {
 					isDnDPossible
 					dndKey={DndKey}
 					setData={setRightDataIds}
+					control
 				/>
 			</div>
 		</>
 	);
+};
+AddUserToGroup.propTypes = {
+	setAllData: PropTypes.func.isRequired,
 };
 
 export default AddUserToGroup;

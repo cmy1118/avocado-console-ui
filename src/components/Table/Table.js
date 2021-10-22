@@ -2,7 +2,6 @@ import React, {useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
 import {usePagination, useRowSelect, useSortBy, useTable} from 'react-table';
-
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
 
@@ -21,6 +20,7 @@ const Table = ({
 	isDnDPossible = false,
 	dndKey,
 	setData,
+	control = false,
 	setSelect,
 }) => {
 	const getRowId = useCallback((v) => {
@@ -35,7 +35,6 @@ const Table = ({
 		prepareRow,
 		allColumns,
 		page, // Instead of using 'rows', we'll use page,
-		rows,
 		canPreviousPage,
 		canNextPage,
 		pageOptions,
@@ -82,63 +81,60 @@ const Table = ({
 	);
 	const onDragStart = useCallback(
 		(row) => (e) => {
-			if (e.target.firstChild.childNodes[0].type === 'checkbox') {
-				e.target.firstChild.childNodes[0].checked = true;
-				const rowId = row.id;
-				rows.filter((v) => v.id === rowId)[0].isSelected = true;
+			console.log('onDragStart ::: ', tableKey);
+			const firstTarget = e.target.firstChild.childNodes[0];
+			console.log(firstTarget);
+			const selected = Object.keys(selectedRowIds);
+			if (firstTarget.type === 'checkbox' && !firstTarget.checked) {
+				firstTarget.click();
+				selected.push(row.id);
 			}
+			e.dataTransfer.setData('ids', selected.toString());
 			e.dataTransfer.setData(
-				'ids',
-				rows
-					.filter((v) => v.isSelected)
-					.map((x) => x.id)
-					.toString(),
+				'prevIds',
+				data.map((v) => v.id),
 			);
-			console.log(
-				'set-data:',
-				rows
-					.filter((v) => v.isSelected)
-					.map((x) => x.id)
-					.toString(),
-			);
+			console.log('set-data:', selected);
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
-			e.target.style.opacity = '0.2';
 		},
-		[rows, tableKey, dndKey],
-	);
-	const onDragEnd = useCallback(
-		(e) => {
-			console.log(
-				":::e.dataTransfer.getData('ids'):",
-				e.dataTransfer.getData('ids'),
-			);
-			const arr = rows.filter((v) => !v.isSelected).map((x) => x.id);
-			// console.log(':::arr:', arr);
-			setData && setData(arr);
-			e.target.style.opacity = '';
-		},
-		[rows, setData],
+		[data, dndKey, selectedRowIds, tableKey],
 	);
 
 	const onDrop = useCallback(
 		(e) => {
 			e.preventDefault();
-			setData &&
-				setData([
-					...data.map((v) => v.id),
-					...e.dataTransfer.getData('ids').split(','),
-				]); // 	]);
-			// console.log('get-data:', e.dataTransfer.getData('ids'));
+			if (e.dataTransfer.getData('dndKey') !== dndKey) return;
+
+			if (setData) {
+				control // data를 control하는 쪽이면? 추가 아니면 삭제
+					? setData([
+							...data.map((v) => v.id),
+							...e.dataTransfer.getData('ids').split(','),
+					  ])
+					: setData(
+							e.dataTransfer
+								.getData('prevIds')
+								.split(',')
+								.filter(
+									(v) =>
+										!e.dataTransfer
+											.getData('ids')
+											.split(',')
+											.includes(v),
+								),
+					  );
+			}
 		},
-		[data, setData],
+		[dndKey, setData, control, data],
 	);
 
-	const onDragOver = useCallback((e) => {
+	const onDragOver = (e) => {
 		e.preventDefault();
-	}, []);
+	};
 
 	useEffect(() => {
+		console.log(selectedRowIds);
 		setSelect && setSelect(Object.keys(selectedRowIds));
 	}, [selectedRowIds, setSelect]);
 
@@ -166,9 +162,9 @@ const Table = ({
 
 			<table
 				{...getTableProps()}
+				className={tableKey}
 				onDrop={onDrop}
 				onDragOver={onDragOver}
-				onDragEnd={onDragEnd}
 			>
 				<thead>
 					{headerGroups.map((headerGroup, i) => (
@@ -201,6 +197,11 @@ const Table = ({
 						prepareRow(row);
 						return (
 							<tr
+								style={{
+									background: row.isSelected
+										? 'lightgray'
+										: 'white',
+								}}
 								draggable={isDnDPossible ? 'true' : 'false'}
 								id={
 									row.original.uid
@@ -246,7 +247,7 @@ Table.propTypes = {
 	isDnDPossible: PropTypes.bool,
 	setData: PropTypes.func,
 	setSelect: PropTypes.func,
-	selected: PropTypes.array,
+	control: PropTypes.bool,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 
