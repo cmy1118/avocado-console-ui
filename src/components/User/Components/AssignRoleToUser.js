@@ -17,7 +17,6 @@ const _Tables = styled.div`
 const leftTableKey = tableKeys.rolesExcludedFromUserOnAddPage;
 const RightTableKey = tableKeys.rolesIncludedInUserOnAddPage;
 
-const AssignRoleToUser = () => {
 const AssignRoleToUser = ({setAllData}) => {
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
@@ -41,7 +40,12 @@ const AssignRoleToUser = ({setAllData}) => {
 				type: roleTypeConverter(v.companyId),
 			}));
 	}, [roles, rightDataIds]);
-
+	useEffect(() => {
+		setAllData({
+			key: tableKeys.rolesIncludedInUserOnAddPage,
+			data: dataRight,
+		});
+	}, [setAllData, dataRight]);
 	return (
 		<>
 			<div>권한 추가</div>

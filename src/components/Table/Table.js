@@ -140,7 +140,7 @@ const Table = ({
 
 	const onDragOver = (e) => {
 		e.preventDefault();
-	}, []);
+	};
 
 	const selectedDropBtton = useCallback(
 		(selectedRowIds) => {
@@ -155,7 +155,7 @@ const Table = ({
 		console.log(selectedRowIds);
 		setSelect && setSelect(Object.keys(selectedRowIds));
 		selectedRowIds && selectedDropBtton(selectedRowIds);
-	}, [selectedRowIds, setSelect,selectedDropBtton]);
+	}, [selectedRowIds, setSelect, selectedDropBtton]);
 
 	return (
 		<div>

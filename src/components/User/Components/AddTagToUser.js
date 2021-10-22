@@ -72,4 +72,8 @@ const AddTagToUser = ({setAllData}) => {
 		</>
 	);
 };
+AddTagToUser.propTypes = {
+	setAllData: PropTypes.func.isRequired,
+};
+
 export default AddTagToUser;
