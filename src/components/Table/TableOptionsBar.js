@@ -76,7 +76,7 @@ const TableOptionsBar = ({
 };
 TableOptionsBar.propTypes = {
 	tableKey: PropTypes.string.isRequired,
-	isSearchable: PropTypes.func.isRequired,
+	isSearchable: PropTypes.bool.isRequired,
 	isSearchFilterable: PropTypes.bool.isRequired,
 	isRefreshable: PropTypes.bool.isRequired,
 	isPageable: PropTypes.bool.isRequired,

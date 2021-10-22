@@ -254,7 +254,7 @@ Table.propTypes = {
 	tableKey: PropTypes.string.isRequired,
 	data: PropTypes.array.isRequired,
 	columns: PropTypes.array.isRequired,
-	isSearchable: PropTypes.func,
+	isSearchable: PropTypes.bool,
 	isSearchFilterable: PropTypes.bool,
 	isRefreshable: PropTypes.bool,
 	isPageable: PropTypes.bool,
