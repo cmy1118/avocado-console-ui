@@ -1,7 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
-import {usePagination, useRowSelect, useSortBy, useTable} from 'react-table';
+import {
+	usePagination,
+	useGlobalFilter,
+	useRowSelect,
+	useSortBy,
+	useTable,
+} from 'react-table';
 
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
@@ -43,6 +49,7 @@ const Table = ({
 		nextPage,
 		previousPage,
 		setPageSize,
+		setGlobalFilter,
 		state: {pageIndex, pageSize, selectedRowIds},
 	} = useTable(
 		{
@@ -52,6 +59,7 @@ const Table = ({
 			getRowId,
 			// selectedRowIds: {},
 		},
+		useGlobalFilter,
 		useSortBy,
 		usePagination,
 		useRowSelect,
@@ -166,6 +174,7 @@ const Table = ({
 				pageSize={pageSize}
 				setPageSize={setPageSize}
 				isSearchable={isSearchable}
+				setGlobalFilter={setGlobalFilter}
 				isSearchFilterable={isSearchFilterable}
 				isRefreshable={isRefreshable}
 				isPageable={isPageable}
@@ -245,7 +254,7 @@ Table.propTypes = {
 	tableKey: PropTypes.string.isRequired,
 	data: PropTypes.array.isRequired,
 	columns: PropTypes.array.isRequired,
-	isSearchable: PropTypes.bool,
+	isSearchable: PropTypes.func,
 	isSearchFilterable: PropTypes.bool,
 	isRefreshable: PropTypes.bool,
 	isPageable: PropTypes.bool,

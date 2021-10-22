@@ -90,6 +90,7 @@ const UserGroupsTab = ({userId}) => {
 				isSortable
 				isSelectable
 				isDnDPossible
+				isSearchable
 				dndKey={'groups'}
 				setSelect={setSelect}
 			/>
@@ -107,6 +108,7 @@ const UserGroupsTab = ({userId}) => {
 				isSortable
 				isSelectable
 				isDnDPossible
+				isSearchable
 				dndKey={'groups'}
 				setSelect={setSelect}
 			/>

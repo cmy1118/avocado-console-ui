@@ -184,7 +184,7 @@ export const usersIncludedInGroupOnAddPageColumns = [
 	{
 		//:TODO  uid-> id , id->_id
 		Header: '사용자 계정',
-		accessor: '_id',
+		accessor: 'id',
 	},
 	{
 		Header: '사용자 명',
@@ -254,7 +254,7 @@ export const rolesExcludedFormGroupOnDescPageColumns = [
 export const usersIncludedInGroupOnDescPageColumns = [
 	{
 		Header: '사용자 계정',
-		accessor: '_id',
+		accessor: 'id',
 	},
 	{
 		Header: '사용자 명',
@@ -276,7 +276,7 @@ export const usersIncludedInGroupOnDescPageColumns = [
 export const usersExcludedFromGroupOnDescPageColumns = [
 	{
 		Header: '사용자 계정',
-		accessor: '_id',
+		accessor: 'id',
 	},
 	{
 		Header: '사용자 명',

@@ -92,6 +92,7 @@ const GroupRolesTab = ({groupId}) => {
 				isSortable
 				isSelectable
 				isDnDPossible
+				isSearchable
 				dndKey={'role'}
 				setSelect={setSelect}
 			/>
@@ -109,6 +110,7 @@ const GroupRolesTab = ({groupId}) => {
 				isSortable
 				isSelectable
 				isDnDPossible
+				isSearchable
 				dndKey={'role'}
 				setSelect={setSelect}
 			/>

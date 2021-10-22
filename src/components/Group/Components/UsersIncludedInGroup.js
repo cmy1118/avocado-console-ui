@@ -17,8 +17,6 @@ const UsersIncludedInGroup = () => {
 	const {users} = useSelector(IAM_USER.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
 	const [select, setSelect] = useState([]);
-	const [selected, setSelected] = useState([]);
-	//uid -> id , id -> _id 변경
 
 	const dataLeft = useMemo(() => {
 		const dropDataName = users
@@ -65,6 +63,7 @@ const UsersIncludedInGroup = () => {
 					isSortable
 					isSelectable
 					isDnDPossible
+					isSearchable
 					dndKey={DndKey}
 					setSelect={setSelect}
 				/>

@@ -56,6 +56,7 @@ const AddUserToGroup = () => {
 					isSortable
 					isSelectable
 					isDnDPossible
+					isSearchable
 					dndKey={DndKey}
 					setSelect={setSelect}
 				/>

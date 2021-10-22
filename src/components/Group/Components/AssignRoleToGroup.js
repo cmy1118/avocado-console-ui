@@ -64,6 +64,7 @@ const AssignRoleToGroup = () => {
 					isSelectable
 					isDnDPossible
 					dndKey={'role'}
+					isSearchable
 					// select={selectedExcludedRoles}
 					setSelect={setSelectedExcludedRoles}
 				/>

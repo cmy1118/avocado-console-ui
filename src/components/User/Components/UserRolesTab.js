@@ -97,6 +97,7 @@ const UserRolesTab = ({userId}) => {
 				isSortable
 				isSelectable
 				isDnDPossible
+				isSearchable
 				dndKey={'role'}
 				setSelect={setSelect}
 			/>
@@ -116,6 +117,7 @@ const UserRolesTab = ({userId}) => {
 				isSortable
 				isSelectable
 				isDnDPossible
+				isSearchable
 				dndKey={'role'}
 				setSelect={setSelect}
 			/>

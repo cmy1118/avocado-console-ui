@@ -5,6 +5,7 @@ import ColumnFilter from './Options/ColumnFilter';
 import Pagination from './Options/Pagination';
 import styled from 'styled-components';
 import FilterColumnsContextMenu from '../ContextMenu/FilterColumnsContextMenu';
+import Search from './Options/Search';
 
 const _Container = styled.div`
 	display: flex;
@@ -21,6 +22,7 @@ const TableOptionsBar = ({
 	pageIndex = 0,
 	pageSize,
 	setPageSize,
+	setGlobalFilter,
 	isSearchable = false,
 	isSearchFilterable = false,
 	isRefreshable = false,
@@ -37,10 +39,9 @@ const TableOptionsBar = ({
 	const onClickSelectColumns = useCallback(() => {
 		setIsColumnFilterContextMenuOpened(true);
 	}, [setIsColumnFilterContextMenuOpened]);
-
 	return (
 		<_Container>
-			{/*{isSearchable <Search/>}*/}
+			{isSearchable && <Search onSubmit={setGlobalFilter} />}
 			{/*{isSearchFilterable <SearchFilter/>}*/}
 			{/*{isRefreshable <Refresher/>}*/}
 			{isPageable && (
@@ -75,7 +76,7 @@ const TableOptionsBar = ({
 };
 TableOptionsBar.propTypes = {
 	tableKey: PropTypes.string.isRequired,
-	isSearchable: PropTypes.bool.isRequired,
+	isSearchable: PropTypes.func.isRequired,
 	isSearchFilterable: PropTypes.bool.isRequired,
 	isRefreshable: PropTypes.bool.isRequired,
 	isPageable: PropTypes.bool.isRequired,
@@ -92,6 +93,7 @@ TableOptionsBar.propTypes = {
 	pageSize: PropTypes.number.isRequired,
 	setPageSize: PropTypes.func.isRequired,
 	allColumns: PropTypes.array.isRequired,
+	setGlobalFilter: PropTypes.func.isRequired,
 };
 
 export default TableOptionsBar;

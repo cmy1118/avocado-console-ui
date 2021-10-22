@@ -55,6 +55,7 @@ const GroupSpace = () => {
 				isColumnFilterable
 				isSortable
 				isSelectable
+				isSearchable
 			/>
 		</IamContainer>
 	);

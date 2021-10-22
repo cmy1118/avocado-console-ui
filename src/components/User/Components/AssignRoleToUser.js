@@ -56,6 +56,7 @@ const AssignRoleToUser = () => {
 					isSortable
 					isSelectable
 					isDnDPossible
+					isSearchable
 					dndKey={'role'}
 					setSelect={setSelect}
 				/>

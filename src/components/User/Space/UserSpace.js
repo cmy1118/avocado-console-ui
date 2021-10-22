@@ -82,6 +82,7 @@ const UserSpace = () => {
 				isColumnFilterable
 				isSortable
 				isSelectable
+				isSearchable
 			/>
 		</IamContainer>
 	);
