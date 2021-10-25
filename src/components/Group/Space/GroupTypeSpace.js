@@ -85,8 +85,8 @@ const GroupTypeSpace = () => {
 			</SubTitle>
 
 			<Table
-				tableKey={tableKeys.groups.add.type}
-				columns={tableColumns[tableKeys.groups.add.type]}
+				tableKey={tableKeys.groups.type}
+				columns={tableColumns[tableKeys.groups.type]}
 				data={data}
 				isPageable
 				isNumberOfRowsAdjustable

@@ -4,7 +4,7 @@ export const tableKeys = Object.freeze({
 		add: {
 			groups: {
 				include: 'USER_ADD_GROUPS_INCLUDE',
-				exclude: 'USER_ADD_GROUPS_EXCLUDE', // submit 되는 테이블
+				exclude: 'USER_ADD_GROUPS_EXCLUDE',
 			},
 			roles: {
 				include: 'USER_ADD_ROLES_INCLUDE',
@@ -38,8 +38,8 @@ export const tableKeys = Object.freeze({
 	},
 	groups: {
 		basic: 'GROUP',
+		type: 'GROUP_TYPE',
 		add: {
-			type: 'GROUP_ADD_TYPE',
 			users: {
 				include: 'GROUP_ADD_USERS_INCLUDE',
 				exclude: 'GROUP_ADD_USERS_EXCLUDE',
@@ -90,7 +90,24 @@ export const tableKeys = Object.freeze({
 			permission: 'ROLE_SUMMARY_PERMISSION',
 			user: 'ROLE_SUMMARY_USER',
 			group: 'ROLE_SUMMARY_GROUP',
-			tabs: {}, // 아직 설계없음.
+			tabs: {
+				permissions: {
+					include: 'ROLE_SUMMARY_PERMISSIONS_INCLUDE',
+					exclude: 'ROLE_SUMMARY_PERMISSIONS_EXCLUDE',
+				},
+				policies: {
+					include: 'ROLE_SUMMARY_POLICIES_INCLUDE',
+					exclude: 'ROLE_SUMMARY_POLICIES_EXCLUDE',
+				},
+				users: {
+					include: 'ROLE_SUMMARY_USERS_INCLUDE',
+					exclude: 'ROLE_SUMMARY_USERS_EXCLUDE',
+				},
+				groups: {
+					include: 'ROLE_SUMMARY_GROUPS_INCLUDE',
+					exclude: 'ROLE_SUMMARY_GROUPS_EXCLUDE',
+				},
+			},
 		},
 	},
 	policyAndPermission: {}, // 아직 설계 없음. 우선 네이밍 저렇게 할게요..

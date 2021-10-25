@@ -32,7 +32,7 @@ export const GROUP_COLUMN = [
 	},
 ];
 
-export const GROUP_ADD_TYPE_COLUMN = [
+export const GROUP_TYPE_COLUMN = [
 	{
 		Header: '그룹 유형',
 		accessor: 'name',

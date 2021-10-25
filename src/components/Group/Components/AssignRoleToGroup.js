@@ -51,7 +51,7 @@ const AssignRoleToGroup = () => {
 				<Table
 					data={dataLeft}
 					tableKey={tableKeys.groups.add.roles.include}
-					columns={tableKeys.groups.add.roles.include}
+					columns={tableColumns[tableKeys.groups.add.roles.include]}
 					isPageable
 					isNumberOfRowsAdjustable
 					isColumnFilterable
