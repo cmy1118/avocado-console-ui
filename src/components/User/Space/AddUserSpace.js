@@ -23,11 +23,6 @@ const AddUserSpace = () => {
 		console.log('api');
 	}, []);
 
-	console.log('userData :: ', userData);
-	console.log('userGroupData :: ', userGroupData);
-	console.log('userRoleData :: ', userRoleData);
-	console.log('userTagData :: ', userTagData);
-
 	return (
 		<IamContainer>
 			<PathContainer>

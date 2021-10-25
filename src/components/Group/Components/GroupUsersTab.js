@@ -18,7 +18,6 @@ const GroupUsersTab = ({groupId}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {users} = useSelector(IAM_USER.selector);
 	const [select, setSelect] = useState([]);
-
 	const group = useMemo(() => groups.find((v) => v.id === groupId), [
 		groups,
 		groupId,

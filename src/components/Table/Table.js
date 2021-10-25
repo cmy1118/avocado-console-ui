@@ -11,6 +11,16 @@ import {
 
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
+import DIALOG_BOX from '../../reducers/dialogBoxs';
+import {useDispatch} from 'react-redux';
+import {
+	dropMaxNumberOfData,
+	droptypeLimited,
+	isDropDataMaxNumber,
+	isDropTypeLimited,
+	maxNumberOfData,
+} from '../../utils/dropTableDataCheck';
+import {stringify} from 'qs';
 
 const Table = ({
 	tableKey,
@@ -30,9 +40,43 @@ const Table = ({
 	control = false,
 	setSelect,
 }) => {
+	const dispatch = useDispatch();
 	const getRowId = useCallback((v) => {
 		if (v.uid) return v.uid;
 		return v.id;
+	}, []);
+
+	const onDropCheckTableKey = useCallback((tableKey) => {
+		switch (tableKey) {
+			case 0:
+				return '?';
+			case 1:
+				return '?';
+			default:
+				return;
+		}
+	}, []);
+
+	const onDropCheckMaxNumber = useCallback(
+		(e, data, tableKey) => {
+			const key = isDropDataMaxNumber(tableKey);
+			const preDataLength = data.length;
+			const dropDataLength = e.dataTransfer.getData('ids').split(',')
+				.length;
+			if (preDataLength + dropDataLength > 10) {
+				const key = isDropDataMaxNumber(tableKey);
+				dispatch(DIALOG_BOX.action.openAlert({key: key}));
+				return false;
+			} else {
+				return true;
+			}
+		},
+		[dispatch],
+	);
+
+	const onDropCheckTypeLimited = useCallback((e, data, tableKey) => {
+		const key = isDropTypeLimited(tableKey);
+		dispatch(DIALOG_BOX.action.openAlert({key: key}));
 	}, []);
 
 	const {
@@ -50,6 +94,7 @@ const Table = ({
 		previousPage,
 		setPageSize,
 		setGlobalFilter,
+		selectedFlatRows,
 		state: {pageIndex, pageSize, selectedRowIds},
 	} = useTable(
 		{
@@ -88,36 +133,46 @@ const Table = ({
 				]);
 		},
 	);
+
 	const onDragStart = useCallback(
 		(row) => (e) => {
-			console.log('onDragStart ::: ', tableKey);
 			const firstTarget = e.target.firstChild.childNodes[0];
-			console.log(firstTarget);
+			e.dataTransfer.setData('go', selectedFlatRows);
+			const flatRows = selectedFlatRows;
 			const selected = Object.keys(selectedRowIds);
 			if (firstTarget.type === 'checkbox' && !firstTarget.checked) {
 				firstTarget.click();
 				selected.push(row.id);
+				flatRows.push(row);
 			}
-			e.dataTransfer.setData('ids', selected.toString());
 			e.dataTransfer.setData(
-				'prevIds',
-				data.map((v) => v.id),
+				'objects',
+				JSON.stringify(flatRows.toString()),
 			);
-			console.log('set-data:', selected);
+
+			e.dataTransfer.setData('ids', selected.toString());
+			e.dataTransfer.setData('flatRows', flatRows.toString());
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
 		},
-		[data, dndKey, selectedRowIds, tableKey],
+		[dndKey, selectedFlatRows, selectedRowIds, tableKey],
 	);
 
 	const onDrop = useCallback(
 		(e) => {
 			e.preventDefault();
-			if (e.dataTransfer.getData('dndKey') !== dndKey) return;
 
+			const flatRows = e.dataTransfer.getData('flatRows').split(',');
+			console.log('flatRows - drop:');
+
+			if (e.dataTransfer.getData('dndKey') !== dndKey) return;
 			if (setData) {
+				//유형별 1개 추가 가능
 				control // data를 control하는 쪽이면? 추가 아니면 삭제
-					? setData([
+					? // onDropCheckMaxNumber(e,tableKey) &&
+
+					  //     onDropCheckTypeLimited(tableKey, data) &&
+					  setData([
 							...data.map((v) => v.id),
 							...e.dataTransfer.getData('ids').split(','),
 					  ])
@@ -152,10 +207,9 @@ const Table = ({
 	);
 
 	useEffect(() => {
-		console.log(selectedRowIds);
 		setSelect && setSelect(Object.keys(selectedRowIds));
 		selectedRowIds && selectedDropBtton(selectedRowIds);
-	}, [selectedRowIds, setSelect, selectedDropBtton]);
+	}, [selectedRowIds, setSelect, selectedDropBtton, selectedFlatRows]);
 
 	return (
 		<div>

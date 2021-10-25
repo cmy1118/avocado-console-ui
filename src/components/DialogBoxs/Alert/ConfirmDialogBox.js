@@ -12,10 +12,21 @@ import {
 } from '../../../styles/components/dialogBox';
 
 //type: 'alert' or 'c'
-const alertMessages = {
-	duplicateGroupTypes: {
+export const alertMessages = {
+	//조건
+	singleCountGroupTypes: {
 		type: 'alert',
 		message: '그룹 유형별 1개의 그룹만 추가 가능합니다.',
+	},
+	singleCountRolesTypes: {
+		type: 'alert',
+		message: 'Private 유형은 한 사용자에게만 부여 가능합니다.',
+	},
+
+	//개수
+	maxNumberOfUsers: {
+		type: 'alert',
+		message: '최대 10개의 사용자만 추가 가능합니다.',
 	},
 	maxNumberOfGroups: {
 		type: 'alert',
