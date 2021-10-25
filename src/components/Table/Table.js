@@ -276,7 +276,10 @@ const Table = ({
 				</div>
 			))}
 
-			<button onClick={onClickResetFilters}>Clear all</button>
+			{selectedSearchFilters.length !== 0 && (
+				<button onClick={onClickResetFilters}>Clear all</button>
+			)}
+
 			<table
 				{...getTableProps()}
 				onDrop={onDrop}
