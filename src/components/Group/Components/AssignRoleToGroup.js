@@ -58,7 +58,7 @@ const AssignRoleToGroup = () => {
 					isSortable
 					isSelectable
 					isDnDPossible
-					dndKey={'role'}
+					dndKey={tableKeys.groups.add.roles.dnd}
 					isSearchable
 					setData={setRightDataIds}
 					setSelect={setSelectedExcludedRoles}
@@ -80,7 +80,7 @@ const AssignRoleToGroup = () => {
 						isSortable
 						isSelectable
 						isDnDPossible
-						dndKey={'role'}
+						dndKey={tableKeys.groups.add.roles.dnd}
 						setData={setRightDataIds}
 						control
 						setSelect={setSelectedIncludedRoles}

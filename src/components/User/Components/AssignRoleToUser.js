@@ -51,7 +51,7 @@ const AssignRoleToUser = () => {
 					isSelectable
 					isDnDPossible
 					isSearchable
-					dndKey={'role'}
+					dndKey={tableKeys.users.add.roles.dnd}
 					setSelect={setSelect}
 					setData={setRightDataIds}
 				/>
@@ -74,7 +74,7 @@ const AssignRoleToUser = () => {
 						isSortable
 						isSelectable
 						isDnDPossible
-						dndKey={'role'}
+						dndKey={tableKeys.users.add.roles.dnd}
 						setData={setRightDataIds}
 						setSelect={setSelect}
 						control

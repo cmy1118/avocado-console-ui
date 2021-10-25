@@ -98,7 +98,7 @@ const UserGroupsTab = ({userId}) => {
 				isSelectable
 				isDnDPossible
 				isSearchable
-				dndKey={'groups'}
+				dndKey={tableKeys.users.summary.tabs.groups.dnd}
 				setSelect={setSelect}
 				setData={setRightDataIds}
 			/>
@@ -119,7 +119,7 @@ const UserGroupsTab = ({userId}) => {
 				isSelectable
 				isDnDPossible
 				isSearchable
-				dndKey={'groups'}
+				dndKey={tableKeys.users.summary.tabs.groups.dnd}
 				setSelect={setSelect}
 				setData={setRightDataIds}
 				control

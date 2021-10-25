@@ -103,7 +103,7 @@ const UserRolesTab = ({userId}) => {
 				isSelectable
 				isDnDPossible
 				isSearchable
-				dndKey={'role'}
+				dndKey={tableKeys.users.summary.tabs.roles.dnd}
 				setSelect={setSelect}
 				setData={setRightDataIds}
 			/>
@@ -124,7 +124,7 @@ const UserRolesTab = ({userId}) => {
 				isSelectable
 				isDnDPossible
 				isSearchable
-				dndKey={'role'}
+				dndKey={tableKeys.users.summary.tabs.roles.dnd}
 				setSelect={setSelect}
 				setData={setRightDataIds}
 				control

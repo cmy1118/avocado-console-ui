@@ -11,8 +11,6 @@ const _Tables = styled.div`
 	display: flex;
 `;
 
-const DndKey = 'groupsIncludedInUserOnAddPage_DndKey';
-
 const AddUserToGroup = () => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
@@ -53,7 +51,7 @@ const AddUserToGroup = () => {
 					isSelectable
 					isDnDPossible
 					isSearchable
-					dndKey={DndKey}
+					dndKey={tableKeys.groups.add.users.dnd}
 					setData={setRightDataIds}
 					setSelect={setSelect}
 				/>
@@ -78,7 +76,7 @@ const AddUserToGroup = () => {
 						isSortable
 						isSelectable
 						isDnDPossible
-						dndKey={DndKey}
+						dndKey={tableKeys.groups.add.users.dnd}
 						setData={setRightDataIds}
 						setSelect={setSelect}
 						control

@@ -40,7 +40,7 @@ const GroupUsersTab = ({groupId}) => {
 			IAM_USER_GROUP.action.deleteUsersFromGroup({
 				id: groupId,
 				users: Object.keys(
-					select[tableKeys.groups.summary.tabs.roles.exclude],
+					select[tableKeys.groups.summary.tabs.users.exclude],
 				),
 			}),
 		);
@@ -48,7 +48,7 @@ const GroupUsersTab = ({groupId}) => {
 			IAM_USER.action.deleteUsersFromGroup({
 				id: groupId,
 				users: Object.keys(
-					select[tableKeys.groups.summary.tabs.roles.exclude],
+					select[tableKeys.groups.summary.tabs.users.exclude],
 				),
 			}),
 		);
@@ -59,7 +59,7 @@ const GroupUsersTab = ({groupId}) => {
 			IAM_USER_GROUP.action.addUsersToGroup({
 				id: groupId,
 				users: Object.keys(
-					select[tableKeys.groups.summary.tabs.roles.include],
+					select[tableKeys.groups.summary.tabs.users.include],
 				),
 			}),
 		);
@@ -67,7 +67,7 @@ const GroupUsersTab = ({groupId}) => {
 			IAM_USER.action.addUsersToGroup({
 				id: groupId,
 				users: Object.keys(
-					select[tableKeys.groups.summary.tabs.roles.include],
+					select[tableKeys.groups.summary.tabs.users.include],
 				),
 			}),
 		);
@@ -78,14 +78,16 @@ const GroupUsersTab = ({groupId}) => {
 	return (
 		<>
 			<div>
-				이 그룹의 권한 : {dataLeft.length}
-				<button onClick={onClickDeleteRolesFromGroup}>삭제</button>
+				이 그룹의 사용자 : {dataLeft.length}
+				<button onClick={onClickDeleteRolesFromGroup}>
+					사용자 삭제
+				</button>
 			</div>
 			<Table
 				data={dataLeft}
-				tableKey={tableKeys.groups.summary.tabs.roles.include}
+				tableKey={tableKeys.groups.summary.tabs.users.include}
 				columns={
-					tableColumns[tableKeys.groups.summary.tabs.roles.include]
+					tableColumns[tableKeys.groups.summary.tabs.users.include]
 				}
 				isPageable
 				isNumberOfRowsAdjustable
@@ -94,19 +96,19 @@ const GroupUsersTab = ({groupId}) => {
 				isSelectable
 				isDnDPossible
 				isSearchable
-				dndKey={'role'}
+				dndKey={tableKeys.groups.summary.tabs.users.dnd}
 				setSelect={setSelect}
 				setData={setRightDataIds}
 			/>
 			<div>
-				이 그룹의 다른권한 : {dataRight.length}
-				<button onClick={onClickAddRolesToGroup}>권한 추가</button>
+				이 그룹의 다른 사용자 : {dataRight.length}
+				<button onClick={onClickAddRolesToGroup}>사용자 추가</button>
 			</div>
 			<Table
 				data={dataRight}
-				tableKey={tableKeys.groups.summary.tabs.roles.exclude}
+				tableKey={tableKeys.groups.summary.tabs.users.exclude}
 				columns={
-					tableColumns[tableKeys.groups.summary.tabs.roles.exclude]
+					tableColumns[tableKeys.groups.summary.tabs.users.exclude]
 				}
 				isPageable
 				isNumberOfRowsAdjustable
@@ -115,7 +117,7 @@ const GroupUsersTab = ({groupId}) => {
 				isSelectable
 				isDnDPossible
 				isSearchable
-				dndKey={'role'}
+				dndKey={tableKeys.groups.summary.tabs.users.dnd}
 				setSelect={setSelect}
 				setData={setRightDataIds}
 				control

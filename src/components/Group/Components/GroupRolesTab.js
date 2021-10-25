@@ -101,7 +101,7 @@ const GroupRolesTab = ({groupId}) => {
 				isSelectable
 				isDnDPossible
 				isSearchable
-				dndKey={'role'}
+				dndKey={tableKeys.groups.summary.tabs.roles.dnd}
 				setSelect={setSelect}
 				setData={setRightDataIds}
 			/>
@@ -122,7 +122,7 @@ const GroupRolesTab = ({groupId}) => {
 				isSelectable
 				isDnDPossible
 				isSearchable
-				dndKey={'role'}
+				dndKey={tableKeys.groups.summary.tabs.roles.dnd}
 				setSelect={setSelect}
 				setData={setRightDataIds}
 				control

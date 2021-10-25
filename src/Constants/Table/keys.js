@@ -9,6 +9,7 @@ export const tableKeys = Object.freeze({
 			roles: {
 				include: 'USER_ADD_ROLES_INCLUDE',
 				exclude: 'USER_ADD_ROLES_EXCLUDE',
+				dnd: 'USER_ADD_ROLES_DND',
 			},
 			tag: 'USER_ADD_TAG',
 		},
@@ -21,10 +22,12 @@ export const tableKeys = Object.freeze({
 				groups: {
 					include: 'USER_SUMMARY_TABS_GROUPS_INCLUDE',
 					exclude: 'USER_SUMMARY_TABS_GROUPS_EXCLUDE',
+					dnd: 'USER_SUMMARY_TABS_GROUPS_DND',
 				},
 				roles: {
 					include: 'USER_SUMMARY_TABS_ROLES_INCLUDE',
 					exclude: 'USER_SUMMARY_TABS_ROLES_EXCLUDE',
+					dnd: 'USER_SUMMARY_TABS_ROLES_DND',
 				},
 				tags: {
 					basic: 'USER_SUMMARY_TABS_TAG',
@@ -40,10 +43,12 @@ export const tableKeys = Object.freeze({
 			users: {
 				include: 'GROUP_ADD_USERS_INCLUDE',
 				exclude: 'GROUP_ADD_USERS_EXCLUDE',
+				dnd: 'GROUP_ADD_USERS_DND',
 			},
 			roles: {
 				include: 'GROUP_ADD_ROLES_INCLUDE',
 				exclude: 'GROUP_ADD_ROLES_EXCLUDE',
+				dnd: 'GROUP_ADD_ROLES_DND',
 			},
 			tag: 'GROUP_ADD_TAG',
 		},
@@ -55,10 +60,12 @@ export const tableKeys = Object.freeze({
 				users: {
 					include: 'GROUP_SUMMARY_TABS_USERS_INCLUDE',
 					exclude: 'GROUP_SUMMARY_TABS_USERS_EXCLUDE',
+					dnd: 'GROUP_SUMMARY_TABS_USERS_DND',
 				},
 				roles: {
 					include: 'GROUP_SUMMARY_TABS_ROLES_INCLUDE',
-					exclude: 'GROUP_SUMMARY_TABS_ROLES_INCLUDE',
+					exclude: 'GROUP_SUMMARY_TABS_ROLES_EXCLUDE',
+					dnd: 'GROUP_SUMMARY_TABS_ROLES_DND',
 				},
 				tags: {
 					basic: 'GROUP_SUMMARY_TABS_TAG',

@@ -10,7 +10,6 @@ import {tableColumns} from '../../../Constants/Table/columns';
 const _Tables = styled.div`
 	display: flex;
 `;
-const DndKey = 'usersIncludedInGroupOnAddPage_DndKey';
 
 const UsersIncludedInGroup = () => {
 	const {users} = useSelector(IAM_USER.selector);
@@ -61,7 +60,7 @@ const UsersIncludedInGroup = () => {
 					isSelectable
 					isDnDPossible
 					isSearchable
-					dndKey={DndKey}
+					dndKey={tableKeys.groups.add.users.dnd}
 					setSelect={setSelect}
 					setData={setRightDataIds}
 				/>
@@ -86,7 +85,7 @@ const UsersIncludedInGroup = () => {
 						isSortable
 						isSelectable
 						isDnDPossible
-						dndKey={DndKey}
+						dndKey={tableKeys.groups.add.users.dnd}
 						setData={setRightDataIds}
 						setSelect={setSelect}
 						control
