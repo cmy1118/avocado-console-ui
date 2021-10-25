@@ -1,24 +1,20 @@
 import React, {useCallback, useMemo} from 'react';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
-import {tableKeys} from '../../../utils/data';
 import Table from '../../Table/Table';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
+import {tableColumns} from '../../../Constants/Table/columns';
+import {tableKeys} from '../../../Constants/Table/keys';
 
 const AddTagToGroup = () => {
-	const dispatch = useDispatch();
-	const {group, currentTarget} = useSelector(CURRENT_TARGET.selector);
-	const columns = getColumnsAsKey[tableKeys.addTagsToGroupOnAddPage];
-	const target = currentTarget[tableKeys.addTagsToGroupOnAddPage];
+	const {group} = useSelector(CURRENT_TARGET.selector);
 
 	const onClickAddRow = useCallback(() => {
-		dispatch(CURRENT_TARGET.action.addTagDataOnAddGroup());
-	}, [dispatch]);
+		console.log('추가 처리');
+	}, []);
 
 	const onClickDeleteRow = useCallback(() => {
-		if (!target) return;
-		dispatch(CURRENT_TARGET.action.deleteTagDataOnAddGroup(target));
-	}, [dispatch, target]);
+		console.log('삭제 처리');
+	}, []);
 
 	const data = useMemo(() => {
 		return group.tags.map((v, i) => {
@@ -39,9 +35,9 @@ const AddTagToGroup = () => {
 				<button onClick={onClickDeleteRow}>태그 삭제</button>
 			</div>
 			<Table
-				tableKey={tableKeys.addTagsToGroupOnAddPage}
+				tableKey={tableKeys.groups.add.tag}
 				data={data}
-				columns={columns}
+				columns={tableColumns[tableKeys.groups.add.tag]}
 				isSelectable
 			/>
 		</>

@@ -1,9 +1,8 @@
-import {LINK} from '../data';
 import TableTextBox from '../ColumnCells/TableTextBox';
 import React from 'react';
 import TableLink from '../ColumnCells/TableLink';
 
-export const groupColumns = [
+export const GROUP_COLUMN = [
 	{
 		Header: '그룹 이름',
 		accessor: 'name',
@@ -33,7 +32,7 @@ export const groupColumns = [
 	},
 ];
 
-export const groupTypeColumns = [
+export const GROUP_ADD_TYPE_COLUMN = [
 	{
 		Header: '그룹 유형',
 		accessor: 'name',
@@ -61,7 +60,7 @@ export const groupTypeColumns = [
 	},
 ];
 
-export const rolesExcludedFromGroupOnAddPageColumns = [
+export const GROUP_ADD_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
@@ -80,7 +79,7 @@ export const rolesExcludedFromGroupOnAddPageColumns = [
 	},
 ];
 
-export const rolesIncludedInGroupOnAddPageColumns = [
+export const GROUP_ADD_ROLES_INCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
@@ -91,7 +90,7 @@ export const rolesIncludedInGroupOnAddPageColumns = [
 	},
 ];
 
-export const addTagsToGroupOnAddPageColumns = [
+export const GROUP_ADD_TAG_COLUMN = [
 	{
 		Header: 'Key(태그명)',
 		accessor: 'name',
@@ -112,7 +111,7 @@ export const addTagsToGroupOnAddPageColumns = [
 	},
 ];
 
-export const groupUsersSummaryColumns = [
+export const GROUP_SUMMARY_USER_COLUMN = [
 	{
 		Header: '사용자 계정',
 		accessor: 'id',
@@ -139,7 +138,7 @@ export const groupUsersSummaryColumns = [
 	},
 ];
 
-export const groupRolesSummaryColumns = [
+export const GROUP_SUMMARY_PERMISSION_COLUMN = [
 	{
 		Header: '권한',
 		accessor: 'name',
@@ -170,7 +169,7 @@ export const groupRolesSummaryColumns = [
 	},
 ];
 
-export const groupTagsSummaryColumns = [
+export const GROUP_SUMMARY_TAG_COLUMN = [
 	{
 		Header: 'key(태그명)',
 		accessor: 'name',
@@ -188,7 +187,7 @@ export const groupTagsSummaryColumns = [
 		accessor: 'creationDate',
 	},
 ];
-export const addTagToGroupOnDescPageColumns = [
+export const GROUP_SUMMARY_TABS_TAG_COLUMN = [
 	{
 		Header: 'key(태그명)',
 		accessor: 'name',
@@ -207,12 +206,12 @@ export const addTagToGroupOnDescPageColumns = [
 		Header: '권한 수',
 		accessor: 'numberOfPermissions',
 	},
-	{
-		Header: '생성 일시',
-		accessor: 'creationDate',
-	},
+	// {
+	// 	Header: '생성 일시',
+	// 	accessor: 'creationDate',
+	// },
 ];
-export const usersIncludedInGroupOnAddPageColumns = [
+export const GROUP_ADD_USERS_EXCLUDE_COLUMN = [
 	{
 		//:TODO  uid-> id , id->_id
 		Header: '사용자 계정',
@@ -235,7 +234,8 @@ export const usersIncludedInGroupOnAddPageColumns = [
 		accessor: 'creationDate',
 	},
 ];
-export const usersExcludedFromGroupOnAddPageColumns = [
+
+export const GROUP_ADD_USERS_INCLUDE_COLUMN = [
 	{
 		//:TODO  uid-> id , id->_id
 		Header: '사용자 계정',
@@ -247,7 +247,7 @@ export const usersExcludedFromGroupOnAddPageColumns = [
 	},
 ];
 
-export const rolesIncludedInGroupOnDescPageColumns = [
+export const GROUP_SUMMARY_TABS_ROLES_INCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
@@ -265,7 +265,7 @@ export const rolesIncludedInGroupOnDescPageColumns = [
 		accessor: 'creationDate',
 	},
 ];
-export const rolesExcludedFormGroupOnDescPageColumns = [
+export const GROUP_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
@@ -283,7 +283,7 @@ export const rolesExcludedFormGroupOnDescPageColumns = [
 		accessor: 'creationDate',
 	},
 ];
-export const usersIncludedInGroupOnDescPageColumns = [
+export const GROUP_SUMMARY_TABS_USERS_INCLUDE_COLUMN = [
 	{
 		Header: '사용자 계정',
 		accessor: 'id',
@@ -305,7 +305,7 @@ export const usersIncludedInGroupOnDescPageColumns = [
 		accessor: 'creationDate',
 	},
 ];
-export const usersExcludedFromGroupOnDescPageColumns = [
+export const GROUP_SUMMARY_TABS_USERS_EXCLUDE_COLUMN = [
 	{
 		Header: '사용자 계정',
 		accessor: 'id',
@@ -325,5 +325,28 @@ export const usersExcludedFromGroupOnDescPageColumns = [
 	{
 		Header: '생성일시',
 		accessor: 'creationDate',
+	},
+];
+
+export const GROUP_SUMMARY_TABS_PERMISSION_COLUMN = [
+	{
+		Header: '권한',
+		accessor: 'name',
+	},
+	{
+		Header: '권한 상세',
+		accessor: 'description',
+	},
+	{
+		Header: '정책 명',
+		accessor: 'policyName',
+	},
+	{
+		Header: '부여 대상',
+		accessor: 'grantTag',
+	},
+	{
+		Header: '부여 일시',
+		accessor: 'grantData',
 	},
 ];

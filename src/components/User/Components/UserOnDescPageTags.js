@@ -1,10 +1,10 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
-import {tableKeys} from '../../../utils/data';
 import Table from '../../Table/Table';
 import {useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const UserOnDescPageTags = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
@@ -23,8 +23,6 @@ const UserOnDescPageTags = ({userId}) => {
 	);
 
 	const [select, setSelect] = useState([]);
-
-	const columns = getColumnsAsKey[tableKeys.addTagToUserOnDescPage];
 
 	const onClickAddRow = useCallback(() => {
 		const lastValues = data.slice().pop();
@@ -65,9 +63,9 @@ const UserOnDescPageTags = ({userId}) => {
 				<button onClick={onClickDeleteRow}>태그 삭제</button>
 			</div>
 			<Table
-				tableKey={tableKeys.addTagToUserOnDescPage}
+				tableKey={tableKeys.users.summary.tag}
 				data={data}
-				columns={columns}
+				columns={tableColumns[tableKeys.users.summary.tag]}
 				isSelectable
 				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
 				setSelect={setSelect}

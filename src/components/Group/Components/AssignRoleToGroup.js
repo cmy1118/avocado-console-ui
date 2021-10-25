@@ -1,11 +1,11 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
 import styled from 'styled-components';
-import {tableKeys} from '../../../utils/data';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const _Tables = styled.div`
 	display: flex;
@@ -50,12 +50,8 @@ const AssignRoleToGroup = () => {
 			<_Tables>
 				<Table
 					data={dataLeft}
-					tableKey={tableKeys.rolesExcludedFromGroupOnAddPage}
-					columns={
-						getColumnsAsKey[
-							tableKeys.rolesExcludedFromGroupOnAddPage
-						]
-					}
+					tableKey={tableKeys.groups.add.roles.include}
+					columns={tableKeys.groups.add.roles.include}
 					isPageable
 					isNumberOfRowsAdjustable
 					isColumnFilterable
@@ -77,11 +73,9 @@ const AssignRoleToGroup = () => {
 					<div>추가 Roles: {rightDataIds.length}건</div>
 					<Table
 						data={dataRight}
-						tableKey={tableKeys.rolesIncludedInGroupOnAddPage}
+						tableKey={tableKeys.groups.add.roles.exclude}
 						columns={
-							getColumnsAsKey[
-								tableKeys.rolesIncludedInGroupOnAddPage
-							]
+							tableColumns[tableKeys.groups.add.roles.exclude]
 						}
 						isSortable
 						isSelectable

@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import {
@@ -8,11 +8,11 @@ import {
 } from '../../../styles/components/style';
 import {Link, useHistory} from 'react-router-dom';
 import AddGroupTypeDialogBox from '../../DialogBoxs/Form/AddGroupTypeDialogBox';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
-import {tableKeys} from '../../../utils/data';
 import Table from '../../Table/Table';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const GroupTypeSpace = () => {
 	const history = useHistory();
@@ -85,8 +85,8 @@ const GroupTypeSpace = () => {
 			</SubTitle>
 
 			<Table
-				tableKey={tableKeys.groupTypes}
-				columns={getColumnsAsKey[tableKeys.groupTypes]}
+				tableKey={tableKeys.groups.add.type}
+				columns={tableColumns[tableKeys.groups.add.type]}
 				data={data}
 				isPageable
 				isNumberOfRowsAdjustable

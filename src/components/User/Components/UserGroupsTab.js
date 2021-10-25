@@ -3,12 +3,9 @@ import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import Table from '../../Table/Table';
-import {tableKeys} from '../../../utils/data';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
-
-const RightTableKey = tableKeys.groupsIncludedInUserOnDescPage;
-const leftTableKey = tableKeys.groupsExcludedFromUserOnDescPage;
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const UserGroupsTab = ({userId}) => {
 	const dispatch = useDispatch();
@@ -44,13 +41,17 @@ const UserGroupsTab = ({userId}) => {
 		dispatch(
 			IAM_USER.action.deleteGroupsFromUser({
 				uid: userId,
-				groups: Object.keys(select[RightTableKey]),
+				groups: Object.keys(
+					select[tableKeys.users.summary.tabs.groups.exclude],
+				),
 			}),
 		);
 		dispatch(
 			IAM_USER_GROUP.action.deleteGroupsFromUser({
 				uid: userId,
-				groups: Object.keys(select[RightTableKey]),
+				groups: Object.keys(
+					select[tableKeys.users.summary.tabs.groups.exclude],
+				),
 			}),
 		);
 	}, [dispatch, select, userId]);
@@ -59,13 +60,17 @@ const UserGroupsTab = ({userId}) => {
 		dispatch(
 			IAM_USER.action.addGroupsToUser({
 				uid: userId,
-				groups: Object.keys(select[leftTableKey]),
+				groups: Object.keys(
+					select[tableKeys.users.summary.tabs.groups.include],
+				),
 			}),
 		);
 		dispatch(
 			IAM_USER_GROUP.action.addGroupsToUser({
 				uid: userId,
-				groups: Object.keys(select[leftTableKey]),
+				groups: Object.keys(
+					select[tableKeys.users.summary.tabs.groups.include],
+				),
 			}),
 		);
 	}, [dispatch, select, userId]);
@@ -82,8 +87,10 @@ const UserGroupsTab = ({userId}) => {
 			</div>
 			<Table
 				data={dataLeft}
-				tableKey={RightTableKey}
-				columns={getColumnsAsKey[RightTableKey]}
+				tableKey={tableKeys.users.summary.tabs.groups.include}
+				columns={
+					tableColumns[tableKeys.users.summary.tabs.groups.include]
+				}
 				isPageable
 				isNumberOfRowsAdjustable
 				isColumnFilterable
@@ -101,8 +108,10 @@ const UserGroupsTab = ({userId}) => {
 			</div>
 			<Table
 				data={dataRight}
-				tableKey={leftTableKey}
-				columns={getColumnsAsKey[leftTableKey]}
+				tableKey={tableKeys.users.summary.tabs.groups.exclude}
+				columns={
+					tableColumns[tableKeys.users.summary.tabs.groups.exclude]
+				}
 				isPageable
 				isNumberOfRowsAdjustable
 				isColumnFilterable

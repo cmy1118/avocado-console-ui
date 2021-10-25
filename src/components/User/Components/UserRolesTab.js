@@ -5,12 +5,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
-import {tableKeys} from '../../../utils/data';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
 import Table from '../../Table/Table';
-
-const RightTableKey = tableKeys.rolesIncludedInUserOnDescPage;
-const leftTableKey = tableKeys.rolesExcludedFormUserOnDescPage;
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const UserRolesTab = ({userId}) => {
 	const dispatch = useDispatch();
@@ -49,13 +46,17 @@ const UserRolesTab = ({userId}) => {
 		dispatch(
 			IAM_USER.action.deleteRolesFromUser({
 				uid: userId,
-				roles: Object.keys(select[RightTableKey]),
+				roles: Object.keys(
+					select[tableKeys.users.summary.tabs.roles.exclude],
+				),
 			}),
 		);
 		dispatch(
 			IAM_ROLES.action.deleteRolesFromUser({
 				uid: userId,
-				roles: Object.keys(select[RightTableKey]),
+				roles: Object.keys(
+					select[tableKeys.users.summary.tabs.roles.exclude],
+				),
 			}),
 		);
 	}, [dispatch, select, userId]);
@@ -64,13 +65,17 @@ const UserRolesTab = ({userId}) => {
 		dispatch(
 			IAM_USER.action.addRolesToUser({
 				uid: userId,
-				roles: Object.keys(select[leftTableKey]),
+				roles: Object.keys(
+					select[tableKeys.users.summary.tabs.roles.include],
+				),
 			}),
 		);
 		dispatch(
 			IAM_ROLES.action.addRolesToUser({
 				uid: userId,
-				roles: Object.keys(select[leftTableKey]),
+				roles: Object.keys(
+					select[tableKeys.users.summary.tabs.roles.include],
+				),
 			}),
 		);
 	}, [dispatch, select, userId]);
@@ -87,9 +92,9 @@ const UserRolesTab = ({userId}) => {
 			</div>
 			<Table
 				data={dataLeft}
-				tableKey={tableKeys.rolesIncludedInUserOnDescPage}
+				tableKey={tableKeys.users.summary.tabs.roles.include}
 				columns={
-					getColumnsAsKey[tableKeys.rolesIncludedInUserOnDescPage]
+					tableColumns[tableKeys.users.summary.tabs.roles.include]
 				}
 				isPageable
 				isNumberOfRowsAdjustable
@@ -108,9 +113,9 @@ const UserRolesTab = ({userId}) => {
 			</div>
 			<Table
 				data={dataRight}
-				tableKey={tableKeys.rolesExcludedFormUserOnDescPage}
+				tableKey={tableKeys.users.summary.tabs.roles.exclude}
 				columns={
-					getColumnsAsKey[tableKeys.rolesExcludedFormUserOnDescPage]
+					tableColumns[tableKeys.users.summary.tabs.roles.exclude]
 				}
 				isPageable
 				isNumberOfRowsAdjustable

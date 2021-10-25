@@ -1,18 +1,17 @@
 import React, {useMemo, useState} from 'react';
 import Table from '../../Table/Table';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import DropButton from '../../Table/DropButton';
 import styled from 'styled-components';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const _Tables = styled.div`
 	display: flex;
 `;
 
 const DndKey = 'groupsIncludedInUserOnAddPage_DndKey';
-const leftTableKey = 'groupsIncludedInUserOnAddPage';
-const RightTableKey = 'groupsExcludedFromUserOnAddPage';
 
 const AddUserToGroup = () => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -44,10 +43,8 @@ const AddUserToGroup = () => {
 			<div>그룹에 사용자에 추가</div>
 			<_Tables>
 				<Table
-					tableKey='groupsIncludedInUserOnAddPage'
-					columns={
-						getColumnsAsKey['groupsIncludedInUserOnAddPageColumns']
-					}
+					tableKey={tableKeys.groups.add.users.exclude}
+					columns={tableColumns[tableKeys.groups.add.users.exclude]}
 					data={dataLeft}
 					isPageable
 					isNumberOfRowsAdjustable
@@ -61,8 +58,8 @@ const AddUserToGroup = () => {
 					setSelect={setSelect}
 				/>
 				<DropButton
-					leftTableKey={leftTableKey}
-					RightTableKey={RightTableKey}
+					leftTableKey={tableKeys.groups.add.users.exclude}
+					RightTableKey={tableKeys.groups.add.users.include}
 					select={select}
 					rightDataIds={rightDataIds}
 					setRightDataIds={setRightDataIds}
@@ -70,11 +67,9 @@ const AddUserToGroup = () => {
 				<div>
 					<div>추가 그룹: {rightDataIds.length}건</div>
 					<Table
-						tableKey='groupsExcludedFromUserOnAddPage'
+						tableKey={tableKeys.groups.add.users.include}
 						columns={
-							getColumnsAsKey[
-								'groupsExcludedFromUserOnAddPageColumns'
-							]
+							tableColumns[tableKeys.groups.add.users.include]
 						}
 						data={dataRight}
 						isPageable

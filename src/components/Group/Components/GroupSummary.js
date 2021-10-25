@@ -1,8 +1,6 @@
+import React, {useCallback, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import Table from '../../Table/Table';
-import {tableKeys} from '../../../utils/data';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
-import React, {useCallback, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
@@ -11,6 +9,8 @@ import styled from 'styled-components';
 import ModalFormContainer from '../../RecycleComponents/ModalFormContainer';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
 import Form from '../../RecycleComponents/Form';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const _Title = styled.div`
 	display: flex;
@@ -89,14 +89,14 @@ const GroupSummary = ({groupId}) => {
 			<div>사용자: {userData.length}</div>
 			<Table
 				data={userData}
-				tableKey={tableKeys.groupUsersSummary}
-				columns={getColumnsAsKey[tableKeys.groupUsersSummary]}
+				tableKey={tableKeys.groups.summary.user}
+				columns={tableColumns[tableKeys.groups.summary.user]}
 			/>
 			<div>태그: {tagData.length}</div>
 			<Table
 				data={tagData}
-				tableKey={tableKeys.groupTagsSummary}
-				columns={getColumnsAsKey[tableKeys.groupTagsSummary]}
+				tableKey={tableKeys.groups.summary.tag}
+				columns={tableColumns[tableKeys.groups.summary.tag]}
 			/>
 		</>
 	);

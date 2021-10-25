@@ -2,7 +2,7 @@ import React from 'react';
 import TableTextBox from '../ColumnCells/TableTextBox';
 import TableLink from '../ColumnCells/TableLink';
 
-export const usersColumns = [
+export const USER_COLUMN = [
 	{
 		accessor: 'id',
 		Header: '사용자계정',
@@ -48,7 +48,7 @@ export const usersColumns = [
 	},
 ];
 
-export const addTagsToUserOnAddPageColumns = [
+export const USER_ADD_TAG_COLUMN = [
 	{
 		Header: 'Key(태그명)',
 		accessor: 'name',
@@ -70,7 +70,7 @@ export const addTagsToUserOnAddPageColumns = [
 	},
 ];
 
-export const addTagToUserOnDescPageColumns = [
+export const USER_SUMMARY_TABS_TAG_COLUMN = [
 	{
 		Header: 'Key(태그명)',
 		accessor: 'name',
@@ -91,7 +91,7 @@ export const addTagToUserOnDescPageColumns = [
 	},
 ];
 
-export const groupsIncludedInUserOnAddPageColumns = [
+export const USER_ADD_GROUPS_EXCLUDE_COLUMN = [
 	{
 		Header: '그룹명',
 		accessor: 'name',
@@ -113,7 +113,7 @@ export const groupsIncludedInUserOnAddPageColumns = [
 		accessor: 'creationDate',
 	},
 ];
-export const groupsExcludedFromUserOnAddPageColumns = [
+export const USER_ADD_GROUPS_INCLUDE_COLUMN = [
 	{
 		Header: '그룹명',
 		accessor: 'name',
@@ -124,7 +124,7 @@ export const groupsExcludedFromUserOnAddPageColumns = [
 	},
 ];
 
-export const rolesExcludedFromUserOnAddPageColumns = [
+export const USER_ADD_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
@@ -144,7 +144,7 @@ export const rolesExcludedFromUserOnAddPageColumns = [
 	},
 ];
 
-export const rolesIncludedInUserOnAddPageColumns = [
+export const USER_ADD_ROLES_INCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
@@ -155,7 +155,7 @@ export const rolesIncludedInUserOnAddPageColumns = [
 	},
 ];
 
-export const userGroupsSummaryColumns = [
+export const USER_SUMMARY_GROUP_COLUMN = [
 	{
 		Header: '그룹 이름',
 		accessor: 'name',
@@ -186,7 +186,7 @@ export const userGroupsSummaryColumns = [
 	},
 ];
 
-export const userAuthSummaryColumns = [
+export const USER_SUMMARY_AUTH_COLUMN = [
 	{
 		Header: '인증 유형',
 		accessor: 'type',
@@ -209,7 +209,7 @@ export const userAuthSummaryColumns = [
 	},
 ];
 
-export const userRolesSummaryColumns = [
+export const USER_SUMMARY_PERMISSION_COLUMNS = [
 	{
 		Header: '권한',
 		accessor: 'name',
@@ -240,7 +240,30 @@ export const userRolesSummaryColumns = [
 	},
 ];
 
-export const userTagsSummaryColumns = [
+export const USER_SUMMARY_TABS_PERMISSION_COLUMN = [
+	{
+		Header: '권한',
+		accessor: 'name',
+	},
+	{
+		Header: '권한 상세',
+		accessor: 'description',
+	},
+	{
+		Header: '정책 명',
+		accessor: 'policyName',
+	},
+	{
+		Header: '부여 태그',
+		accessor: 'grantTag',
+	},
+	{
+		Header: '부여 일시',
+		accessor: 'grantData',
+	},
+];
+
+export const USER_SUMMARY_TAG_COLUMN = [
 	{
 		Header: 'key(태그명)',
 		accessor: 'name',
@@ -258,30 +281,8 @@ export const userTagsSummaryColumns = [
 		accessor: 'creationDate',
 	},
 ];
-export const addUsersToGroupColumns = [
-	{
-		Header: '사용자 계정',
-		accessor: 'id',
-	},
-	{
-		Header: '사용자 이름',
-		accessor: 'name',
-	},
-	{
-		Header: '그룹 수',
-		accessor: 'groupsLength',
-	},
-	{
-		Header: '마지막 콘솔 로그인',
-		accessor: 'lastConsoleLogin',
-	},
-	{
-		Header: '생성 일시',
-		accessor: 'creationDate',
-	},
-];
 
-export const rolesIncludedInUserOnDescPageColumns = [
+export const USER_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
@@ -300,7 +301,7 @@ export const rolesIncludedInUserOnDescPageColumns = [
 	},
 ];
 
-export const rolesExcludedFormUserOnDescPageColumns = [
+export const USER_SUMMARY_TABS_ROLES_INCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
@@ -308,18 +309,10 @@ export const rolesExcludedFormUserOnDescPageColumns = [
 	{
 		Header: '역할 유형',
 		accessor: 'type',
-	},
-	{
-		Header: '사용자 수',
-		accessor: 'numberOfUsers',
-	},
-	{
-		Header: '생성 일시',
-		accessor: 'creationDate',
 	},
 ];
 // 이 사용자의 그룹
-export const groupsIncludedInUserOnDescPageColumns = [
+export const USER_SUMMARY_TABS_GROUPS_INCLUDE_COLUMN = [
 	{
 		Header: '그룹 명',
 		accessor: 'name',
@@ -346,7 +339,7 @@ export const groupsIncludedInUserOnDescPageColumns = [
 	// },
 ];
 //이 사용자의 다른그룹
-export const groupsExcludedFromUserOnDescPageColumns = [
+export const USER_SUMMARY_TABS_GROUPS_EXCLUDE_COLUMN = [
 	{
 		Header: '그룹 명',
 		accessor: 'name',

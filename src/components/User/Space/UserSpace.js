@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -16,9 +16,8 @@ import {
 } from '../../../utils/tableDataConverter';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import Table from '../../Table/Table';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
-import {tableKeys} from '../../../utils/data';
-import DIALOG_BOX from '../../../reducers/dialogBoxs';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const UserSpace = () => {
 	const dispatch = useDispatch();
@@ -74,8 +73,8 @@ const UserSpace = () => {
 				</div>
 			</SubTitle>
 			<Table
-				tableKey={tableKeys.users}
-				columns={getColumnsAsKey[tableKeys.users]}
+				tableKey={tableKeys.users.basic}
+				columns={tableColumns[tableKeys.users.basic]}
 				data={data}
 				isPageable
 				isNumberOfRowsAdjustable

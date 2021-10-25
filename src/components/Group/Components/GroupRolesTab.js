@@ -4,13 +4,10 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
-import {tableKeys} from '../../../utils/data';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
 import Table from '../../Table/Table';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
-
-const RightTableKey = tableKeys.rolesIncludedInGroupOnDescPage;
-const leftTableKey = tableKeys.rolesExcludedFormGroupOnDescPage;
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const GroupRolesTab = ({groupId}) => {
 	const dispatch = useDispatch();
@@ -48,13 +45,17 @@ const GroupRolesTab = ({groupId}) => {
 		dispatch(
 			IAM_USER_GROUP.action.deleteRolesFromGroup({
 				id: groupId,
-				roles: Object.keys(select[RightTableKey]),
+				roles: Object.keys(
+					select[tableKeys.groups.summary.tabs.roles.exclude],
+				),
 			}),
 		);
 		dispatch(
 			IAM_ROLES.action.deleteRolesFromGroup({
 				id: groupId,
-				roles: Object.keys(select[RightTableKey]),
+				roles: Object.keys(
+					select[tableKeys.groups.summary.tabs.roles.exclude],
+				),
 			}),
 		);
 	}, [dispatch, groupId, select]);
@@ -63,16 +64,21 @@ const GroupRolesTab = ({groupId}) => {
 		dispatch(
 			IAM_USER_GROUP.action.addRolesToGroup({
 				id: groupId,
-				roles: Object.keys(select[leftTableKey]),
+				roles: Object.keys(
+					select[tableKeys.groups.summary.tabs.roles.include],
+				),
 			}),
 		);
 		dispatch(
 			IAM_ROLES.action.addRolesToGroup({
 				id: groupId,
-				roles: Object.keys(select[leftTableKey]),
+				roles: Object.keys(
+					select[tableKeys.groups.summary.tabs.roles.include],
+				),
 			}),
 		);
 	}, [dispatch, groupId, select]);
+
 	useEffect(() => {
 		setRightDataIds(group.roles);
 	}, [group.roles]);
@@ -84,8 +90,10 @@ const GroupRolesTab = ({groupId}) => {
 			</div>
 			<Table
 				data={dataLeft}
-				tableKey={RightTableKey}
-				columns={getColumnsAsKey[RightTableKey]}
+				tableKey={tableKeys.groups.summary.tabs.roles.include}
+				columns={
+					tableColumns[tableKeys.groups.summary.tabs.roles.include]
+				}
 				isPageable
 				isNumberOfRowsAdjustable
 				isColumnFilterable
@@ -103,8 +111,10 @@ const GroupRolesTab = ({groupId}) => {
 			</div>
 			<Table
 				data={dataRight}
-				tableKey={leftTableKey}
-				columns={getColumnsAsKey[leftTableKey]}
+				tableKey={tableKeys.groups.summary.tabs.roles.exclude}
+				columns={
+					tableColumns[tableKeys.groups.summary.tabs.roles.exclude]
+				}
 				isPageable
 				isNumberOfRowsAdjustable
 				isColumnFilterable

@@ -1,13 +1,12 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
-import {tableKeys} from '../../../utils/data';
 import Table from '../../Table/Table';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useSelector} from 'react-redux';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const AddTagToUser = () => {
 	const {user} = useSelector(CURRENT_TARGET.selector);
-	const columns = getColumnsAsKey[tableKeys.addTagsToUserOnAddPage];
 	const [data, setData] = useState(user.tags);
 	const [select, setSelect] = useState({});
 
@@ -55,9 +54,9 @@ const AddTagToUser = () => {
 				<button onClick={onClickDeleteRow}>태그 삭제</button>
 			</div>
 			<Table
-				tableKey={tableKeys.addTagsToUserOnAddPage}
+				tableKey={tableKeys.users.add.tag}
 				data={tagData}
-				columns={columns}
+				columns={tableColumns[tableKeys.users.add.tag]}
 				isSelectable
 				setData={setData}
 				setSelect={setSelect}

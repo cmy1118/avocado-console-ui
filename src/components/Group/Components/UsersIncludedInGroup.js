@@ -1,17 +1,16 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import Table from '../../Table/Table';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import styled from 'styled-components';
 import DropButton from '../../Table/DropButton';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const _Tables = styled.div`
 	display: flex;
 `;
 const DndKey = 'usersIncludedInGroupOnAddPage_DndKey';
-const leftTableKey = 'usersIncludedInGroupOnAddPage';
-const RightTableKey = 'usersExcludedFromGroupOnAddPage';
 
 const UsersIncludedInGroup = () => {
 	const {users} = useSelector(IAM_USER.selector);
@@ -53,10 +52,8 @@ const UsersIncludedInGroup = () => {
 			<_Tables>
 				<Table
 					data={dataLeft}
-					tableKey='usersIncludedInGroupOnAddPage'
-					columns={
-						getColumnsAsKey['usersIncludedInGroupOnAddPageColumns']
-					}
+					tableKey={tableKeys.groups.add.users.exclude}
+					columns={tableColumns[tableKeys.groups.add.users.exclude]}
 					isPageable
 					isNumberOfRowsAdjustable
 					isColumnFilterable
@@ -69,8 +66,8 @@ const UsersIncludedInGroup = () => {
 					setData={setRightDataIds}
 				/>
 				<DropButton
-					leftTableKey={leftTableKey}
-					RightTableKey={RightTableKey}
+					leftTableKey={tableKeys.groups.add.users.exclude}
+					RightTableKey={tableKeys.groups.add.users.include}
 					select={select}
 					rightDataIds={rightDataIds}
 					setRightDataIds={setRightDataIds}
@@ -79,11 +76,9 @@ const UsersIncludedInGroup = () => {
 					<div>추가 사용자: {rightDataIds.length}건</div>
 					<Table
 						data={dataRight}
-						tableKey='usersExcludedFromGroupOnAddPage'
+						tableKey={tableKeys.groups.add.users.include}
 						columns={
-							getColumnsAsKey[
-								'usersExcludedFromGroupOnAddPageColumns'
-							]
+							tableColumns[tableKeys.groups.add.users.include]
 						}
 						isPageable
 						isNumberOfRowsAdjustable

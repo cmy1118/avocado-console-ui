@@ -1,18 +1,16 @@
 import React, {useMemo, useState} from 'react';
 import Table from '../../Table/Table';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
 import styled from 'styled-components';
-import {tableKeys} from '../../../utils/data';
 import DropButton from '../../Table/DropButton';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const _Tables = styled.div`
 	display: flex;
 `;
-const leftTableKey = tableKeys.rolesExcludedFromUserOnAddPage;
-const RightTableKey = tableKeys.rolesIncludedInUserOnAddPage;
 
 const AssignRoleToUser = () => {
 	const {roles} = useSelector(IAM_ROLES.selector);
@@ -44,12 +42,8 @@ const AssignRoleToUser = () => {
 			<_Tables>
 				<Table
 					data={dataLeft}
-					tableKey={tableKeys.rolesExcludedFromUserOnAddPage}
-					columns={
-						getColumnsAsKey[
-							tableKeys.rolesExcludedFromUserOnAddPage
-						]
-					}
+					tableKey={tableKeys.users.add.roles.include}
+					columns={tableColumns[tableKeys.users.add.roles.include]}
 					isPageable
 					isNumberOfRowsAdjustable
 					isColumnFilterable
@@ -63,8 +57,8 @@ const AssignRoleToUser = () => {
 				/>
 
 				<DropButton
-					leftTableKey={leftTableKey}
-					RightTableKey={RightTableKey}
+					leftTableKey={tableKeys.users.add.roles.include}
+					RightTableKey={tableKeys.users.add.roles.exclude}
 					select={select}
 					rightDataIds={rightDataIds}
 					setRightDataIds={setRightDataIds}
@@ -73,11 +67,9 @@ const AssignRoleToUser = () => {
 					<div>추가 Roles: {rightDataIds.length}건</div>
 					<Table
 						data={dataRight}
-						tableKey={tableKeys.rolesIncludedInUserOnAddPage}
+						tableKey={tableKeys.users.add.roles.exclude}
 						columns={
-							getColumnsAsKey[
-								tableKeys.rolesIncludedInUserOnAddPage
-							]
+							tableColumns[tableKeys.users.add.roles.exclude]
 						}
 						isSortable
 						isSelectable
