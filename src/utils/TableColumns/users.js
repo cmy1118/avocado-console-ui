@@ -1,6 +1,10 @@
 import React from 'react';
 import TableTextBox from '../ColumnCells/TableTextBox';
 import TableLink from '../ColumnCells/TableLink';
+import SearchSelectionOption from '../../components/Table/Options/Search/SearchSelectionOption';
+import SearchTextBoxOption from '../../components/Table/Options/Search/SearchTextBoxOption';
+import {statusConverter} from '../tableDataConverter';
+import SearchCalenderOption from '../../components/Table/Options/Search/SearchCalenderOption';
 
 export const usersColumns = [
 	{
@@ -9,42 +13,63 @@ export const usersColumns = [
 		Cell: function Component(cell) {
 			return <TableLink cell={cell} />;
 		},
+		disableFilters: true,
 	},
 	{
 		accessor: 'name',
 		Header: '이름',
+		disableFilters: true,
 	},
 	{
 		accessor: 'groups',
 		Header: '그룹',
+		disableFilters: true,
 	},
 	{
 		accessor: 'status',
-		Header: '계정상태',
+		Header: '계정 상태',
+		filter: 'equals',
+		Filter: SearchSelectionOption,
+		Cell: function Component(v) {
+			return <div>{statusConverter(v.value)}</div>;
+		},
 	},
 	{
 		accessor: 'authType',
 		Header: '인증유형',
+		filter: 'equals',
+		Filter: SearchSelectionOption,
 	},
 	{
 		accessor: 'MFA',
 		Header: 'MFA',
+		filter: 'equals',
+		Filter: SearchSelectionOption,
 	},
 	{
 		accessor: 'passwordExpiryTime',
 		Header: '비밀번호 수명',
+		filter: 'equals',
+		Filter: SearchTextBoxOption,
+		Cell: function Component(v) {
+			return <div>{v.value}일전</div>;
+		},
 	},
 	{
 		accessor: 'tags',
 		Header: '태그',
+		disableFilters: true,
 	},
 	{
 		accessor: 'lastConsoleLogin',
 		Header: '마지막 콘솔 로그인',
+		disableFilters: true,
 	},
 	{
 		accessor: 'creationDate',
 		Header: '생성 일시',
+		filter: 'dateBetween',
+		Filter: SearchCalenderOption,
 	},
 ];
 
@@ -119,7 +144,7 @@ export const groupsExcludedFromUserOnAddPageColumns = [
 		accessor: 'name',
 	},
 	{
-		Header: '그룹 유형',
+		Header: '그룹유형',
 		accessor: 'clientGroupTypeId', //has to be changed
 	},
 ];

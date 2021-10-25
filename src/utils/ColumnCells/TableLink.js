@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import qs from 'qs';
 
 const TableLink = ({cell}) => {
-	console.log(cell);
 	const location = useLocation();
 	const [value, setValue] = useState(cell.value);
 	//****************************************************************//

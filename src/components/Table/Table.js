@@ -1,7 +1,9 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
 import {
+	useFilters,
+	useGlobalFilter,
 	useMountedLayoutEffect,
 	usePagination,
 	useRowSelect,
@@ -11,6 +13,27 @@ import {
 
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
+
+function dateBetweenFilterFn(rows, id, filterValues) {
+	let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;
+	let ed = filterValues[1] ? new Date(filterValues[1]) : undefined;
+
+	if (ed || sd) {
+		return rows.filter((r) => {
+			let time = new Date(r.values[id]);
+
+			if (ed && sd) {
+				return time >= sd && time <= ed;
+			} else if (sd) {
+				return time >= sd;
+			} else if (ed) {
+				return time <= ed;
+			}
+		});
+	} else {
+		return rows;
+	}
+}
 
 const Table = ({
 	tableKey,
@@ -29,6 +52,31 @@ const Table = ({
 	setData,
 	setSelected,
 }) => {
+	const filterTypes = React.useMemo(
+		() => ({
+			// fuzzyText: dateBetweenFilterFn,
+			dateBetween: dateBetweenFilterFn,
+			text: (rows, id, filterValue) => {
+				return rows.filter((row) => {
+					const rowValue = row.values[id];
+					return rowValue !== undefined
+						? String(rowValue)
+								.toLowerCase()
+								.startsWith(String(filterValue).toLowerCase())
+						: true;
+				});
+			},
+		}),
+		[],
+	);
+
+	const searchFilters = useMemo(() => {
+		return columns.filter((v) =>
+			Object.prototype.hasOwnProperty.call(v, 'filter'),
+		);
+	}, [columns]);
+	const [selectedSearchFilters, setSelectedSearchFilters] = useState([]);
+
 	const getRowId = useCallback((v) => {
 		if (v.uid) return v.uid;
 		return v.id;
@@ -49,6 +97,7 @@ const Table = ({
 		nextPage,
 		previousPage,
 		setPageSize,
+		setAllFilters,
 		state: {pageIndex, pageSize, selectedRowIds},
 	} = useTable(
 		{
@@ -56,8 +105,10 @@ const Table = ({
 			columns,
 			initialState: {pageSize: 50},
 			getRowId,
-			// selectedRowIds: {},
+			filterTypes,
 		},
+		useFilters,
+		useGlobalFilter,
 		useSortBy,
 		usePagination,
 		useRowSelect,
@@ -106,8 +157,6 @@ const Table = ({
 		[rows, tableKey, dndKey],
 	);
 
-	console.log(rows.filter((v) => v.isSelected).map((x) => x.id));
-
 	const onDragEnd = useCallback(
 		(e) => {
 			// if (e.target.firstChild.childNodes[0].type === 'checkbox') {
@@ -154,16 +203,16 @@ const Table = ({
 					);
 			}
 		},
-		[data, setData],
+		[data, dndKey, setData, tableKey],
 	);
 
 	const onDragOver = useCallback((e) => {
 		e.preventDefault();
 	}, []);
 
-	// useEffect(() => {
-	// 	setSelected && setSelected(selectedRowIds);
-	// }, [setSelected, selectedRowIds]);
+	const onClickResetFilters = useCallback(() => {
+		setAllFilters([]);
+	}, [setAllFilters]);
 
 	useMountedLayoutEffect(() => {
 		isSelectable && setSelected && setSelected(Object.keys(selectedRowIds));
@@ -184,6 +233,9 @@ const Table = ({
 				setPageSize={setPageSize}
 				isSearchable={isSearchable}
 				isSearchFilterable={isSearchFilterable}
+				searchFilters={searchFilters}
+				selectedSearchFilters={selectedSearchFilters}
+				setSelectedSearchFilters={setSelectedSearchFilters}
 				isRefreshable={isRefreshable}
 				isPageable={isPageable}
 				isNumberOfRowsAdjustable={isNumberOfRowsAdjustable}
@@ -191,6 +243,19 @@ const Table = ({
 				allColumns={allColumns}
 			/>
 
+			{headerGroups.map((headerGroup, i) => (
+				<div key={i} {...headerGroup.getHeaderGroupProps()}>
+					{headerGroup.headers.map((column, i) => (
+						<div key={i}>
+							{column.canFilter &&
+								// selectedSearchFilters.includes(column.id) &&
+								column.render('Filter')}
+						</div>
+					))}
+				</div>
+			))}
+
+			<button onClick={onClickResetFilters}>Clear all</button>
 			<table
 				{...getTableProps()}
 				onDrop={onDrop}
@@ -242,13 +307,13 @@ const Table = ({
 								{...row.getRowProps()}
 								onDragStart={onDragStart}
 							>
-								{row.cells.map((cell, i) => {
-									return (
-										<td key={i} {...cell.getCellProps}>
-											{cell.render('Cell', {setData})}
-										</td>
-									);
-								})}
+								{row.cells.map((cell, i) => (
+									<td key={i} {...cell.getCellProps}>
+										{cell.render('Cell', {
+											setData,
+										})}
+									</td>
+								))}
 							</tr>
 						);
 					})}

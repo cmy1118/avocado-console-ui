@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -11,14 +11,12 @@ import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {
 	numberOfGroupsConverter,
 	passwordExpiryTimeConverter,
-	statusConverter,
 	tagConverter,
 } from '../../../utils/tableDataConverter';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import Table from '../../Table/Table';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {tableKeys} from '../../../utils/data';
-import DIALOG_BOX from '../../../reducers/dialogBoxs';
 
 const UserSpace = () => {
 	const dispatch = useDispatch();
@@ -37,7 +35,6 @@ const UserSpace = () => {
 					(val) => groups.find((val2) => val2.id === val).name,
 				),
 			),
-			status: statusConverter(v.status),
 			passwordExpiryTime: passwordExpiryTimeConverter(
 				v.passwordExpiryTime,
 			),
@@ -77,6 +74,7 @@ const UserSpace = () => {
 				tableKey={tableKeys.users}
 				columns={getColumnsAsKey[tableKeys.users]}
 				data={data}
+				isSearchFilterable
 				isPageable
 				isNumberOfRowsAdjustable
 				isColumnFilterable

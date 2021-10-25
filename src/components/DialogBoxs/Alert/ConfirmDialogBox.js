@@ -11,7 +11,7 @@ import {
 	DialogBoxHeader,
 } from '../../../styles/components/dialogBox';
 
-//type: 'alert' or 'c'
+//type: 'alert' or 'confirm'
 const alertMessages = {
 	duplicateGroupTypes: {
 		type: 'alert',

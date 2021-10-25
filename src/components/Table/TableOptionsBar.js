@@ -1,12 +1,17 @@
 import PropTypes from 'prop-types';
 import React, {useCallback, useState} from 'react';
 import PageSizing from './Options/PageSizing';
-import ColumnFilter from './Options/ColumnFilter';
 import Pagination from './Options/Pagination';
 import styled from 'styled-components';
 import FilterColumnsContextMenu from '../ContextMenu/FilterColumnsContextMenu';
+import AddSearchOptionsContextMenu from '../ContextMenu/AddSearchOptionsContextMenu';
 
 const _Container = styled.div`
+	display: flex;
+	justify-content: space-between;
+`;
+
+const _OptionContainer = styled.div`
 	display: flex;
 `;
 
@@ -23,6 +28,9 @@ const TableOptionsBar = ({
 	setPageSize,
 	isSearchable = false,
 	isSearchFilterable = false,
+	searchFilters,
+	selectedSearchFilters,
+	setSelectedSearchFilters,
 	isRefreshable = false,
 	isPageable = false,
 	isNumberOfRowsAdjustable = false,
@@ -30,53 +38,82 @@ const TableOptionsBar = ({
 	allColumns,
 }) => {
 	const [
+		isSearchFilterContextMenuOpened,
+		setIsSearchFilterContextMenuOpened,
+	] = useState(false);
+	const [
 		isColumnFilterContextMenuOpened,
 		setIsColumnFilterContextMenuOpened,
 	] = useState(false);
 
-	const onClickSelectColumns = useCallback(() => {
+	const onClickOpenSearchFilterContextMenu = useCallback(() => {
+		setIsSearchFilterContextMenuOpened(true);
+	}, [setIsColumnFilterContextMenuOpened]);
+	const onClickOpenSelectColumnsContextMenu = useCallback(() => {
 		setIsColumnFilterContextMenuOpened(true);
 	}, [setIsColumnFilterContextMenuOpened]);
 
 	return (
 		<_Container>
-			{/*{isSearchable <Search/>}*/}
-			{/*{isSearchFilterable <SearchFilter/>}*/}
-			{/*{isRefreshable <Refresher/>}*/}
-			{isPageable && (
-				<Pagination
-					gotoPage={gotoPage}
-					canPreviousPage={canPreviousPage}
-					previousPage={previousPage}
-					nextPage={nextPage}
-					canNextPage={canNextPage}
-					pageCount={pageIndex}
-					pageOptions={pageOptions}
-					pageIndex={pageIndex}
-				/>
-			)}
-			{isNumberOfRowsAdjustable && (
-				<PageSizing pageSize={pageSize} setPageSize={setPageSize} />
-			)}
-			{isColumnFilterable && (
-				<div>
-					<ColumnFilter
-						onClickOpenSelectColumn={onClickSelectColumns}
+			<_OptionContainer>
+				{/*{isSearchable <Search/>}*/}
+				{isSearchFilterable && (
+					<div>
+						필터 추가
+						<button onClick={onClickOpenSearchFilterContextMenu}>
+							{'✅'}
+						</button>
+						<AddSearchOptionsContextMenu
+							isOpened={isSearchFilterContextMenuOpened}
+							setIsOpened={setIsSearchFilterContextMenuOpened}
+							allOptions={searchFilters}
+							selectedOptions={selectedSearchFilters}
+							setSelectedOptions={setSelectedSearchFilters}
+						/>
+					</div>
+				)}
+			</_OptionContainer>
+			<_OptionContainer>
+				{/*{isRefreshable <Refresher/>}*/}
+				{isPageable && (
+					<Pagination
+						gotoPage={gotoPage}
+						canPreviousPage={canPreviousPage}
+						previousPage={previousPage}
+						nextPage={nextPage}
+						canNextPage={canNextPage}
+						pageCount={pageIndex}
+						pageOptions={pageOptions}
+						pageIndex={pageIndex}
 					/>
-					<FilterColumnsContextMenu
-						isOpened={isColumnFilterContextMenuOpened}
-						setIsOpened={setIsColumnFilterContextMenuOpened}
-						allColumns={allColumns}
-					/>
-				</div>
-			)}
+				)}
+				{isNumberOfRowsAdjustable && (
+					<PageSizing pageSize={pageSize} setPageSize={setPageSize} />
+				)}
+				{isColumnFilterable && (
+					<div>
+						<button onClick={onClickOpenSelectColumnsContextMenu}>
+							{'✅'}
+						</button>
+						<FilterColumnsContextMenu
+							isOpened={isColumnFilterContextMenuOpened}
+							setIsOpened={setIsColumnFilterContextMenuOpened}
+							allColumns={allColumns}
+						/>
+					</div>
+				)}
+			</_OptionContainer>
 		</_Container>
 	);
 };
+
 TableOptionsBar.propTypes = {
 	tableKey: PropTypes.string.isRequired,
 	isSearchable: PropTypes.bool.isRequired,
 	isSearchFilterable: PropTypes.bool.isRequired,
+	searchFilters: PropTypes.array.isRequired,
+	selectedSearchFilters: PropTypes.array.isRequired,
+	setSelectedSearchFilters: PropTypes.func.isRequired,
 	isRefreshable: PropTypes.bool.isRequired,
 	isPageable: PropTypes.bool.isRequired,
 	isNumberOfRowsAdjustable: PropTypes.bool.isRequired,
