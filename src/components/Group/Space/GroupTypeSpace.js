@@ -13,6 +13,10 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 import {tableKeys} from '../../../utils/data';
 import Table from '../../Table/Table';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const GroupTypeSpace = () => {
 	const history = useHistory();
@@ -50,12 +54,14 @@ const GroupTypeSpace = () => {
 			<SubTitle>
 				<div>그룹 유형 관리</div>
 				<div>
-					<button onClick={onClickOpenAddGroupTypeDialogBox}>
+					<NormalButton onClick={onClickOpenAddGroupTypeDialogBox}>
 						그룹유형 추가 생성
-					</button>
-					<button>그룹유형 저장</button>
-					<button>그룹유형 삭제</button>
-					<button onClick={onClickAddGroups}>취소</button>
+					</NormalButton>
+					<NormalButton>그룹유형 저장</NormalButton>
+					<TransparentButton>그룹유형 삭제</TransparentButton>
+					<TransparentButton onClick={onClickAddGroups}>
+						취소
+					</TransparentButton>
 				</div>
 			</SubTitle>
 

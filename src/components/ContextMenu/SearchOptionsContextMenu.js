@@ -2,6 +2,10 @@ import React, {useCallback, useRef, useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {useRootClose} from 'react-overlays';
+import {
+	NormalBorderButton,
+	TransparentBorderButton,
+} from '../../styles/components/buttons';
 
 const _Container = styled.div`
 	z-index: 99;
@@ -74,8 +78,12 @@ const SearchOptionsContextMenu = ({
 				<br />
 			</div>
 			<div>
-				<button onClick={onClickCloseContextMenu}>취소</button>
-				<button onClick={onClickApplyFilters}>확인</button>
+				<TransparentBorderButton onClick={onClickCloseContextMenu}>
+					취소
+				</TransparentBorderButton>
+				<NormalBorderButton onClick={onClickApplyFilters}>
+					확인
+				</NormalBorderButton>
 			</div>
 		</_Container>
 	);

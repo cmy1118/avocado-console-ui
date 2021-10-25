@@ -11,6 +11,11 @@ import {
 	DialogBoxFooter,
 	DialogBoxHeader,
 } from '../../../styles/components/dialogBox';
+import {
+	DefaultButton,
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const DeleteDialogBox = () => {
 	const dispatch = useDispatch();
@@ -46,8 +51,12 @@ const DeleteDialogBox = () => {
 			</AlertDialogBoxContent>
 
 			<DialogBoxFooter>
-				<button onClick={onClickCloseDialogBox}>Cancel</button>
-				<button onClick={handleOnClickDeleteEvents}>Delete</button>
+				<TransparentButton onClick={onClickCloseDialogBox}>
+					Cancel
+				</TransparentButton>
+				<NormalButton onClick={handleOnClickDeleteEvents}>
+					Delete
+				</NormalButton>
 			</DialogBoxFooter>
 		</AlertDialogBox>
 	);

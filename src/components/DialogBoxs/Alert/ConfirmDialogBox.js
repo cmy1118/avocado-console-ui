@@ -10,6 +10,10 @@ import {
 	DialogBoxFooter,
 	DialogBoxHeader,
 } from '../../../styles/components/dialogBox';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 //type: 'alert' or 'confirm'
 const alertMessages = {
@@ -64,8 +68,10 @@ const ConfirmDialogBox = () => {
 			</AlertDialogBoxContent>
 
 			<DialogBoxFooter>
-				<button onClick={onClickCloseDialogBox}>Cancel</button>
-				<button onClick={onClickCloseDialogBox}>Ok</button>
+				<TransparentButton onClick={onClickCloseDialogBox}>
+					Cancel
+				</TransparentButton>
+				<NormalButton onClick={onClickCloseDialogBox}>Ok</NormalButton>
 			</DialogBoxFooter>
 		</AlertDialogBox>
 	);

@@ -10,6 +10,10 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {Tab, TabItem} from '../../../styles/components/tab';
 import GroupRolesTab from '../Components/GroupRolesTab';
 import GroupSummary from '../Components/GroupSummary';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const _Title = styled.div`
 	display: flex;
@@ -58,8 +62,8 @@ const GroupDescriptionSpace = ({groupId}) => {
 			<_Title>
 				<div>요약 [ {group?.name} ]</div>
 				<div>
-					<button>그룹명 편집</button>
-					<button>삭제</button>
+					<NormalButton>그룹명 편집</NormalButton>
+					<TransparentButton>삭제</TransparentButton>
 				</div>
 			</_Title>
 

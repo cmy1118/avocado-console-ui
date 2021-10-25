@@ -11,6 +11,10 @@ import FormTextBox from '../../RecycleComponents/FormTextBox';
 import * as yup from 'yup';
 import {useForm} from 'react-hook-form';
 import {formKeys} from '../../../utils/data';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const AddGroup = () => {
 	const history = useHistory();
@@ -56,13 +60,15 @@ const AddGroup = () => {
 				<div>사용자 그룹 이름 지정</div>
 
 				<div>
-					<button onClick={onClickManageGroupType}>
+					<NormalButton onClick={onClickManageGroupType}>
 						그룹 유형 관리
-					</button>
-					<button form={formKeys.addGroupForm} type={'submit'}>
+					</NormalButton>
+					<NormalButton form={formKeys.addGroupForm} type={'submit'}>
 						그룹 생성
-					</button>
-					<button onClick={onClickCancelAddGroup}>취소</button>
+					</NormalButton>
+					<TransparentButton onClick={onClickCancelAddGroup}>
+						취소
+					</TransparentButton>
 				</div>
 			</SubTitle>
 

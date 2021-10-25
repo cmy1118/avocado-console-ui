@@ -17,6 +17,10 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import Table from '../../Table/Table';
 import {getColumnsAsKey} from '../../../utils/TableColumns';
 import {tableKeys} from '../../../utils/data';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const UserSpace = () => {
 	const dispatch = useDispatch();
@@ -64,10 +68,12 @@ const UserSpace = () => {
 			<SubTitle>
 				<div>사용자: {users.length}</div>
 				<div>
-					<button onClick={onClickLinkToAddUserPage}>
+					<NormalButton onClick={onClickLinkToAddUserPage}>
 						사용자 생성
-					</button>
-					<button onClick={onClickDeleteUsers}>삭제</button>
+					</NormalButton>
+					<TransparentButton onClick={onClickDeleteUsers}>
+						삭제
+					</TransparentButton>
 				</div>
 			</SubTitle>
 			<Table

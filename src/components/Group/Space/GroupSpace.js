@@ -16,6 +16,10 @@ import {
 	parentGroupConverter,
 	rolesConverter,
 } from '../../../utils/tableDataConverter';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const GroupSpace = () => {
 	const history = useHistory();
@@ -48,8 +52,10 @@ const GroupSpace = () => {
 			<SubTitle>
 				<div>사용자 그룹: {groups.length} </div>
 				<div>
-					<button onClick={onCLickLinkToAddGroup}>그룹 생성</button>
-					<button>삭제</button>
+					<NormalButton onClick={onCLickLinkToAddGroup}>
+						그룹 생성
+					</NormalButton>
+					<TransparentButton>삭제</TransparentButton>
 				</div>
 			</SubTitle>
 			<Table

@@ -5,6 +5,7 @@ import Pagination from './Options/Pagination';
 import styled from 'styled-components';
 import FilterColumnsContextMenu from '../ContextMenu/FilterColumnsContextMenu';
 import SearchOptionsContextMenu from '../ContextMenu/SearchOptionsContextMenu';
+import {NormalBorderButton} from '../../styles/components/buttons';
 
 const _Container = styled.div`
 	display: flex;
@@ -61,10 +62,11 @@ const TableOptionsBar = ({
 				{/*{isSearchable <Search/>}*/}
 				{isSearchFilterable && (
 					<div>
-						필터 추가
-						<button onClick={onClickOpenSearchFilterContextMenu}>
-							{'✅'}
-						</button>
+						<NormalBorderButton
+							onClick={onClickOpenSearchFilterContextMenu}
+						>
+							필터 추가
+						</NormalBorderButton>
 						{isSearchFilterContextMenuOpened && (
 							<SearchOptionsContextMenu
 								isOpened={isSearchFilterContextMenuOpened}
