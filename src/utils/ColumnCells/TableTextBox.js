@@ -13,12 +13,14 @@ const TableTextBox = ({cell, isFocus = false}) => {
 		(e) => {
 			if (!e.target.value) return;
 			if (e.keyCode === 13) {
-				const data = cell.data;
+				const data = cell.data.slice();
+				if (!data) return;
 				data.pop();
 				data.push({
 					...cell.row.original,
 					[cell.column.id]: e.target.value,
 				});
+
 				if (!cell.setData) return;
 				cell.setData(data);
 				setIsOpened(false);
@@ -30,12 +32,14 @@ const TableTextBox = ({cell, isFocus = false}) => {
 	const handleBlur = useCallback(
 		(e) => {
 			if (!e.target.value) return;
-			const data = cell.data;
+			const data = cell.data.slice();
+			if (!data) return;
 			data.pop();
 			data.push({
 				...cell.row.original,
 				[cell.column.id]: e.target.value,
 			});
+
 			if (!cell.setData) return;
 			cell.setData(data);
 			setIsOpened(false);
@@ -46,7 +50,7 @@ const TableTextBox = ({cell, isFocus = false}) => {
 	// todo : 첫번째 input focus
 	useEffect(() => {
 		isFocus && value === '' && ref.current?.focus();
-	}, []);
+	}, [isFocus, value]);
 
 	return isOpened ? (
 		<input

@@ -1,18 +1,20 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
 import styled from 'styled-components';
 import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
 
 const _Tables = styled.div`
 	display: flex;
 `;
 
 const AssignRoleToUser = () => {
+	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
 	const [select, setSelect] = useState([]);
@@ -35,6 +37,15 @@ const AssignRoleToUser = () => {
 				type: roleTypeConverter(v.companyId),
 			}));
 	}, [roles, rightDataIds]);
+
+	useEffect(() => {
+		dispatch(
+			CURRENT_TARGET.action.addReadOnlyData({
+				title: tableKeys.users.add.roles.exclude,
+				data: dataRight,
+			}),
+		);
+	}, [dataRight, dispatch]);
 
 	return (
 		<>

@@ -9,7 +9,7 @@ import * as yup from 'yup';
 // 	flex-direction: column;
 // `;
 
-const Form = ({id, schema = {}, children, onSubmit}) => {
+const Form = ({id, schema = {}, children, onSubmit, autoReset = false}) => {
 	const {
 		register,
 		formState: {errors, isSubmitSuccessful},
@@ -20,8 +20,8 @@ const Form = ({id, schema = {}, children, onSubmit}) => {
 	} = useForm({resolver: yupResolver(yup.object().shape(schema))});
 
 	useEffect(() => {
-		if (isSubmitSuccessful) reset();
-	}, [isSubmitSuccessful, reset]);
+		if (autoReset && isSubmitSuccessful) reset();
+	}, [autoReset, isSubmitSuccessful, reset]);
 
 	return (
 		<form id={id} onSubmit={handleSubmit(onSubmit)}>
@@ -48,6 +48,7 @@ Form.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	schema: PropTypes.object,
 	onSubmit: PropTypes.func,
+	autoReset: PropTypes.bool,
 };
 
 export default Form;

@@ -1,17 +1,19 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
 import styled from 'styled-components';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
 
 const _Tables = styled.div`
 	display: flex;
 `;
 
 const AssignRoleToGroup = () => {
+	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
 
@@ -45,6 +47,15 @@ const AssignRoleToGroup = () => {
 		alert('에러 있어서 막아놨습니다.');
 		// setRightDataIds([...rightDataIds, ...selectedExcludedRoles]);
 	}, []);
+
+	useEffect(() => {
+		dispatch(
+			CURRENT_TARGET.action.addReadOnlyData({
+				title: tableKeys.groups.add.roles.include,
+				data: dataRight,
+			}),
+		);
+	}, [dataRight, dispatch]);
 
 	return (
 		<>

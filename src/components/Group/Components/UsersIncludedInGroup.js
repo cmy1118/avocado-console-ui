@@ -1,17 +1,19 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import styled from 'styled-components';
 import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
 
 const _Tables = styled.div`
 	display: flex;
 `;
 
 const UsersIncludedInGroup = () => {
+	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
 	const [select, setSelect] = useState([]);
@@ -44,6 +46,15 @@ const UsersIncludedInGroup = () => {
 				...v,
 			}));
 	}, [users, rightDataIds]);
+
+	useEffect(() => {
+		dispatch(
+			CURRENT_TARGET.action.addReadOnlyData({
+				title: tableKeys.groups.add.users.exclude,
+				data: dataRight,
+			}),
+		);
+	}, [dataRight, dispatch]);
 
 	return (
 		<>

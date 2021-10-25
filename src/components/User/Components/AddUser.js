@@ -5,10 +5,14 @@ import Form from '../../RecycleComponents/Form';
 import * as yup from 'yup';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
 import {formKeys} from '../../../utils/data';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
+import {useDispatch} from 'react-redux';
+import PropTypes from 'prop-types';
 
-const AddUser = () => {
+const AddUser = ({setIsOpened}) => {
 	const history = useHistory();
 
+	const dispatch = useDispatch();
 	// 이부분은 만들어서 넣어주면 됩니다.
 	const telephoneRegex = /^\d{2,3}-\d{3,4}-\d{4}$/;
 	const mobileRegex = /^[0-9]{3}[-]+[0-9]{4}[-]+[0-9]{4}$/;
@@ -41,9 +45,18 @@ const AddUser = () => {
 		history.push('/users');
 	}, [history]);
 
-	const onSubmitUserData = useCallback((data) => {
-		console.log(data);
-	}, []);
+	const onSubmitUserData = useCallback(
+		(data) => {
+			dispatch(
+				CURRENT_TARGET.action.addReadOnlyData({
+					title: 'user',
+					data: data,
+				}),
+			);
+			setIsOpened(true);
+		},
+		[dispatch, setIsOpened],
+	);
 
 	return (
 		<>
@@ -90,6 +103,10 @@ const AddUser = () => {
 			</Form>
 		</>
 	);
+};
+
+AddUser.propTypes = {
+	setIsOpened: PropTypes.func,
 };
 
 export default AddUser;

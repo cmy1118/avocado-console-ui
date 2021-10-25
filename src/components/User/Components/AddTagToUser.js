@@ -1,11 +1,12 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 
 const AddTagToUser = () => {
+	const dispatch = useDispatch();
 	const {user} = useSelector(CURRENT_TARGET.selector);
 	const [data, setData] = useState(user.tags);
 	const [select, setSelect] = useState({});
@@ -44,6 +45,15 @@ const AddTagToUser = () => {
 			alert('선택된 값이 없습니다.');
 		}
 	}, [data, select]);
+
+	useEffect(() => {
+		dispatch(
+			CURRENT_TARGET.action.addReadOnlyData({
+				title: tableKeys.users.add.tag,
+				data: tagData,
+			}),
+		);
+	}, [tagData, dispatch]);
 
 	return (
 		<>

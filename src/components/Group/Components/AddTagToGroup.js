@@ -1,9 +1,12 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {tableKeys} from '../../../Constants/Table/keys';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
+import {useDispatch} from 'react-redux';
 
 const AddTagToGroup = () => {
+	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
 	const [select, setSelect] = useState([]);
 	const onClickAddRow = useCallback(() => {
@@ -36,6 +39,15 @@ const AddTagToGroup = () => {
 			};
 		});
 	}, [data]);
+
+	useEffect(() => {
+		dispatch(
+			CURRENT_TARGET.action.addReadOnlyData({
+				title: tableKeys.groups.add.tag,
+				data: tagData,
+			}),
+		);
+	}, [tagData, dispatch]);
 
 	return (
 		<>

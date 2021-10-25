@@ -19,9 +19,7 @@ const FormComboBox = ({
 	return (
 		<>
 			<select {...register(name)}>
-				<option value='' hidden>
-					{placeholder}
-				</option>
+				<option value=''>{placeholder}</option>
 				{options.map((v) => (
 					<option key={v.value} value={v.value}>
 						{v.name}

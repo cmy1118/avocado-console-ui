@@ -24,6 +24,7 @@ const slice = createSlice({
 		currentTarget: {},
 		currentDropId: {},
 		lange: {},
+		readOnlyData: {},
 	},
 
 	reducers: {
@@ -131,6 +132,11 @@ const slice = createSlice({
 		saveTagDataOnAddGroup: (state, {payload}) => {
 			state.group.tags = payload;
 		},
+
+		// save readOnly data
+		addReadOnlyData: (state, {payload}) => {
+			state.readOnlyData[payload.title] = payload.data;
+		},
 	},
 });
 
@@ -141,7 +147,8 @@ const selectAllState = createSelector(
 	(state) => state.group,
 	(state) => state.role,
 	(state) => state.lange,
-	(currentTarget, currentDropId, user, group, role, lange) => {
+	(state) => state.readOnlyData,
+	(currentTarget, currentDropId, user, group, role, lange, readOnlyData) => {
 		return {
 			currentTarget,
 			currentDropId,
@@ -149,6 +156,7 @@ const selectAllState = createSelector(
 			group,
 			role,
 			lange,
+			readOnlyData,
 		};
 	},
 );
