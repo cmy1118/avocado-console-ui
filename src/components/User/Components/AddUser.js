@@ -8,6 +8,10 @@ import {formKeys} from '../../../utils/data';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const AddUser = ({setIsOpened}) => {
 	const history = useHistory();
@@ -64,10 +68,12 @@ const AddUser = ({setIsOpened}) => {
 				<div>사용자 기본 정보</div>
 
 				<div>
-					<button form={formKeys.addUserForm} type={'submit'}>
+					<NormalButton form={formKeys.addUserForm} type={'submit'}>
 						사용자 생성
-					</button>
-					<button onClick={onClickCancelAddUser}>취소</button>
+					</NormalButton>
+					<TransparentButton onClick={onClickCancelAddUser}>
+						취소
+					</TransparentButton>
 				</div>
 			</SubTitle>
 			<Form

@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 
 import {
@@ -16,8 +16,13 @@ import {
 	parentGroupConverter,
 	rolesConverter,
 } from '../../../utils/tableDataConverter';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const GroupSpace = () => {
+	const [select, setSelect] = useState([]);
 	const history = useHistory();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
@@ -38,6 +43,11 @@ const GroupSpace = () => {
 		history.push('/groups/add');
 	}, [history]);
 
+	const onClickDeleteGroup = useCallback(() => {
+		console.log(select);
+		console.log('여기서 api 요청');
+	}, [select]);
+
 	return (
 		<IamContainer>
 			<PathContainer>
@@ -48,8 +58,12 @@ const GroupSpace = () => {
 			<SubTitle>
 				<div>사용자 그룹: {groups.length} </div>
 				<div>
-					<button onClick={onCLickLinkToAddGroup}>그룹 생성</button>
-					<button>삭제</button>
+					<NormalButton onClick={onCLickLinkToAddGroup}>
+						그룹 생성
+					</NormalButton>
+					<TransparentButton onClick={onClickDeleteGroup}>
+						삭제
+					</TransparentButton>
 				</div>
 			</SubTitle>
 			<Table
@@ -62,6 +76,7 @@ const GroupSpace = () => {
 				isColumnFilterable
 				isSortable
 				isSelectable
+				setSelect={setSelect}
 			/>
 		</IamContainer>
 	);

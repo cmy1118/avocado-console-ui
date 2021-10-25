@@ -10,6 +10,10 @@ import useInput from '../../../hooks/useInput';
 import {closeIcon} from '../../../icons/icons';
 import {useDispatch} from 'react-redux';
 import Form from '../../RecycleComponents/Form';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const IdentificationDialogBox = ({isOpened, setIsOpened}) => {
 	const dispatch = useDispatch();
@@ -47,19 +51,21 @@ const IdentificationDialogBox = ({isOpened, setIsOpened}) => {
 					onChange={onChangeName}
 					required
 				/>
-				<button type='button'>인증번호 전송</button>
+				<NormalButton type='button'>인증번호 전송</NormalButton>
 				<input
 					type='number'
 					placeholder={'인증번호 입력'}
 					onChange={onChangeDescription}
 					required
 				/>
-				<button>인증하기</button>
+				<NormalButton>인증하기</NormalButton>
 			</Form>
 
 			<DialogBoxFooter>
-				<button onClick={onClickCloseDialogBox}>Cancel</button>
-				<button onClick={onSubmitForm}>Save</button>
+				<TransparentButton onClick={onClickCloseDialogBox}>
+					Cancel
+				</TransparentButton>
+				<NormalButton onClick={onSubmitForm}>Save</NormalButton>
 			</DialogBoxFooter>
 		</DialogBox>
 	);

@@ -11,6 +11,10 @@ import {closeIcon} from '../../../icons/icons';
 import {useDispatch} from 'react-redux';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 import Form from '../../RecycleComponents/Form';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
 	const dispatch = useDispatch();
@@ -64,8 +68,10 @@ const AddGroupTypeDialogBox = ({isOpened, setIsOpened}) => {
 			</Form>
 
 			<DialogBoxFooter>
-				<button onClick={onClickCloseDialogBox}>Cancel</button>
-				<button onClick={onSubmitForm}>Save</button>
+				<TransparentButton onClick={onClickCloseDialogBox}>
+					Cancel
+				</TransparentButton>
+				<NormalButton onClick={onSubmitForm}>Save</NormalButton>
 			</DialogBoxFooter>
 		</DialogBox>
 	);

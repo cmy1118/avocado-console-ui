@@ -9,8 +9,12 @@ import Form from '../../RecycleComponents/Form';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
 import * as yup from 'yup';
 import {formKeys} from '../../../utils/data';
-import CURRENT_TARGET from '../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
 
 const AddGroup = ({setIsOpened}) => {
 	const history = useHistory();
@@ -63,13 +67,15 @@ const AddGroup = ({setIsOpened}) => {
 				<div>사용자 그룹 이름 지정</div>
 
 				<div>
-					<button onClick={onClickManageGroupType}>
+					<NormalButton onClick={onClickManageGroupType}>
 						그룹 유형 관리
-					</button>
-					<button form={formKeys.addGroupForm} type={'submit'}>
+					</NormalButton>
+					<NormalButton form={formKeys.addGroupForm} type={'submit'}>
 						그룹 생성
-					</button>
-					<button onClick={onClickCancelAddGroup}>취소</button>
+					</NormalButton>
+					<TransparentButton onClick={onClickCancelAddGroup}>
+						취소
+					</TransparentButton>
 				</div>
 			</SubTitle>
 

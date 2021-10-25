@@ -8,6 +8,10 @@ import Table from '../../Table/Table';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const GroupRolesTab = ({groupId}) => {
 	const dispatch = useDispatch();
@@ -86,7 +90,9 @@ const GroupRolesTab = ({groupId}) => {
 		<>
 			<div>
 				이 그룹의 권한 : {dataLeft.length}
-				<button onClick={onClickDeleteRolesFromGroup}>삭제</button>
+				<TransparentButton onClick={onClickDeleteRolesFromGroup}>
+					삭제
+				</TransparentButton>
 			</div>
 			<Table
 				data={dataLeft}

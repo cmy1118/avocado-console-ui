@@ -10,13 +10,17 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {Tab, TabItem} from '../../../styles/components/tab';
 import GroupRolesTab from '../Components/GroupRolesTab';
 import GroupSummary from '../Components/GroupSummary';
-import GroupUsersTab from '../Components/GroupUsersTab';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const _Title = styled.div`
 	display: flex;
 	justify-content: space-between;
 `;
 import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
+import GroupUsersTab from '../Components/GroupUsersTab';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();

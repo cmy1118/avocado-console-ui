@@ -8,6 +8,10 @@ import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import Table from '../../Table/Table';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const UserRolesTab = ({userId}) => {
 	const dispatch = useDispatch();
@@ -88,7 +92,9 @@ const UserRolesTab = ({userId}) => {
 		<>
 			<div>
 				이 사용자의 권한: {dataLeft.length}{' '}
-				<button onClick={onClickDeleteRolesFromUser}>삭제</button>
+				<TransparentButton onClick={onClickDeleteRolesFromUser}>
+					삭제
+				</TransparentButton>
 			</div>
 			<Table
 				data={dataLeft}
@@ -109,7 +115,9 @@ const UserRolesTab = ({userId}) => {
 			/>
 			<div>
 				이 사용자의 다른권한 : {dataRight.length}{' '}
-				<button onClick={onClickAddRolesToUser}>권한 추가</button>
+				<NormalButton onClick={onClickAddRolesToUser}>
+					권한 추가
+				</NormalButton>
 			</div>
 			<Table
 				data={dataRight}

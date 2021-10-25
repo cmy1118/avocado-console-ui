@@ -1,9 +1,14 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
+import {useSelector} from 'react-redux';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const AddTagToUser = () => {
 	const dispatch = useDispatch();
@@ -60,8 +65,10 @@ const AddTagToUser = () => {
 			<div>태그 추가</div>
 
 			<div>
-				<button onClick={onClickAddRow}>태그 추가</button>
-				<button onClick={onClickDeleteRow}>태그 삭제</button>
+				<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
+				<TransparentButton onClick={onClickDeleteRow}>
+					태그 삭제
+				</TransparentButton>
 			</div>
 			<Table
 				tableKey={tableKeys.users.add.tag}

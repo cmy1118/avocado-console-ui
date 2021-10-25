@@ -10,6 +10,10 @@ import useInput from '../../../hooks/useInput';
 import {closeIcon} from '../../../icons/icons';
 import {useDispatch} from 'react-redux';
 import Form from '../../RecycleComponents/Form';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const ChangePasswordDialogBox = ({isOpened, setIsOpened}) => {
 	const dispatch = useDispatch();
@@ -62,8 +66,10 @@ const ChangePasswordDialogBox = ({isOpened, setIsOpened}) => {
 			</Form>
 
 			<DialogBoxFooter>
-				<button onClick={onClickCloseDialogBox}>Cancel</button>
-				<button onClick={onSubmitForm}>Save</button>
+				<TransparentButton onClick={onClickCloseDialogBox}>
+					Cancel
+				</TransparentButton>
+				<NormalButton onClick={onSubmitForm}>Save</NormalButton>
 			</DialogBoxFooter>
 		</DialogBox>
 	);

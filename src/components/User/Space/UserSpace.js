@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -15,13 +15,18 @@ import {
 } from '../../../utils/tableDataConverter';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import Table from '../../Table/Table';
-import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
+import {tableKeys} from '../../../Constants/Table/keys';
 
 const UserSpace = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
+	const [select, setSelect] = useState([]);
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {currentTarget} = useSelector(CURRENT_TARGET.selector);
@@ -49,8 +54,9 @@ const UserSpace = () => {
 	/* roberto : Table_update
     /******************************************/
 	const onClickDeleteUsers = useCallback(() => {
-		dispatch(IAM_USER.action.deleteUser({currentTarget}));
-	}, [dispatch, currentTarget]);
+		console.log(select);
+		console.log('여기서 api 요청');
+	}, [select]);
 	/******************************************/
 
 	return (
@@ -64,10 +70,12 @@ const UserSpace = () => {
 			<SubTitle>
 				<div>사용자: {users.length}</div>
 				<div>
-					<button onClick={onClickLinkToAddUserPage}>
+					<NormalButton onClick={onClickLinkToAddUserPage}>
 						사용자 생성
-					</button>
-					<button onClick={onClickDeleteUsers}>삭제</button>
+					</NormalButton>
+					<TransparentButton onClick={onClickDeleteUsers}>
+						삭제
+					</TransparentButton>
 				</div>
 			</SubTitle>
 			<Table
@@ -81,6 +89,7 @@ const UserSpace = () => {
 				isSortable
 				isSelectable
 				isSearchable
+				setSelect={setSelect}
 			/>
 		</IamContainer>
 	);
