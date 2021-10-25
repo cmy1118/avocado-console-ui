@@ -55,7 +55,6 @@ export const USER_ADD_TAG_COLUMN = [
 		Cell: function Component(cell) {
 			return <TableTextBox cell={cell} isFocus />;
 		},
-		// id: LINK,
 	},
 	{
 		Header: '값(태그)',
@@ -267,18 +266,20 @@ export const USER_SUMMARY_TAG_COLUMN = [
 	{
 		Header: 'key(태그명)',
 		accessor: 'name',
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} isFocus />;
+		},
 	},
 	{
 		Header: '값(태그)',
 		accessor: 'value',
+		Cell: function Component(cell) {
+			return <TableTextBox cell={cell} />;
+		},
 	},
 	{
 		Header: '권한 수',
 		accessor: 'numberOfPermissions',
-	},
-	{
-		Header: '생성 일시',
-		accessor: 'creationDate',
 	},
 ];
 
@@ -333,10 +334,6 @@ export const USER_SUMMARY_TABS_GROUPS_INCLUDE_COLUMN = [
 		Header: '생성 일시',
 		accessor: 'creationDate',
 	},
-	// {
-	// 	Header: '부여 일시',
-	// 	accessor: 'creationDate',
-	// },
 ];
 //이 사용자의 다른그룹
 export const USER_SUMMARY_TABS_GROUPS_EXCLUDE_COLUMN = [

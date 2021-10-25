@@ -41,8 +41,8 @@ const AddUserToGroup = () => {
 			<div>그룹에 사용자에 추가</div>
 			<_Tables>
 				<Table
-					tableKey={tableKeys.groups.add.users.exclude}
-					columns={tableColumns[tableKeys.groups.add.users.exclude]}
+					tableKey={tableKeys.users.add.groups.exclude}
+					columns={tableColumns[tableKeys.users.add.groups.exclude]}
 					data={dataLeft}
 					isPageable
 					isNumberOfRowsAdjustable
@@ -51,13 +51,13 @@ const AddUserToGroup = () => {
 					isSelectable
 					isDnDPossible
 					isSearchable
-					dndKey={tableKeys.groups.add.users.dnd}
+					dndKey={tableKeys.users.add.groups.dnd}
 					setData={setRightDataIds}
 					setSelect={setSelect}
 				/>
 				<DropButton
-					leftTableKey={tableKeys.groups.add.users.exclude}
-					RightTableKey={tableKeys.groups.add.users.include}
+					leftTableKey={tableKeys.users.add.groups.exclude}
+					RightTableKey={tableKeys.users.add.groups.include}
 					select={select}
 					rightDataIds={rightDataIds}
 					setRightDataIds={setRightDataIds}
@@ -65,9 +65,9 @@ const AddUserToGroup = () => {
 				<div>
 					<div>추가 그룹: {rightDataIds.length}건</div>
 					<Table
-						tableKey={tableKeys.groups.add.users.include}
+						tableKey={tableKeys.users.add.groups.include}
 						columns={
-							tableColumns[tableKeys.groups.add.users.include]
+							tableColumns[tableKeys.users.add.groups.include]
 						}
 						data={dataRight}
 						isPageable
@@ -76,7 +76,7 @@ const AddUserToGroup = () => {
 						isSortable
 						isSelectable
 						isDnDPossible
-						dndKey={tableKeys.groups.add.users.dnd}
+						dndKey={tableKeys.users.add.groups.dnd}
 						setData={setRightDataIds}
 						setSelect={setSelect}
 						control

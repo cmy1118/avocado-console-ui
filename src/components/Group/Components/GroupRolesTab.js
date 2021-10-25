@@ -46,7 +46,7 @@ const GroupRolesTab = ({groupId}) => {
 			IAM_USER_GROUP.action.deleteRolesFromGroup({
 				id: groupId,
 				roles: Object.keys(
-					select[tableKeys.groups.summary.tabs.roles.exclude],
+					select[tableKeys.groups.summary.tabs.roles.include],
 				),
 			}),
 		);
@@ -54,7 +54,7 @@ const GroupRolesTab = ({groupId}) => {
 			IAM_ROLES.action.deleteRolesFromGroup({
 				id: groupId,
 				roles: Object.keys(
-					select[tableKeys.groups.summary.tabs.roles.exclude],
+					select[tableKeys.groups.summary.tabs.roles.include],
 				),
 			}),
 		);
@@ -65,7 +65,7 @@ const GroupRolesTab = ({groupId}) => {
 			IAM_USER_GROUP.action.addRolesToGroup({
 				id: groupId,
 				roles: Object.keys(
-					select[tableKeys.groups.summary.tabs.roles.include],
+					select[tableKeys.groups.summary.tabs.roles.exclude],
 				),
 			}),
 		);
@@ -73,7 +73,7 @@ const GroupRolesTab = ({groupId}) => {
 			IAM_ROLES.action.addRolesToGroup({
 				id: groupId,
 				roles: Object.keys(
-					select[tableKeys.groups.summary.tabs.roles.include],
+					select[tableKeys.groups.summary.tabs.roles.exclude],
 				),
 			}),
 		);

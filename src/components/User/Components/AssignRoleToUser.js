@@ -42,8 +42,8 @@ const AssignRoleToUser = () => {
 			<_Tables>
 				<Table
 					data={dataLeft}
-					tableKey={tableKeys.users.add.roles.include}
-					columns={tableColumns[tableKeys.users.add.roles.include]}
+					tableKey={tableKeys.users.add.roles.exclude}
+					columns={tableColumns[tableKeys.users.add.roles.exclude]}
 					isPageable
 					isNumberOfRowsAdjustable
 					isColumnFilterable
@@ -57,8 +57,8 @@ const AssignRoleToUser = () => {
 				/>
 
 				<DropButton
-					leftTableKey={tableKeys.users.add.roles.include}
-					RightTableKey={tableKeys.users.add.roles.exclude}
+					leftTableKey={tableKeys.users.add.roles.exclude}
+					RightTableKey={tableKeys.users.add.roles.include}
 					select={select}
 					rightDataIds={rightDataIds}
 					setRightDataIds={setRightDataIds}
@@ -67,9 +67,9 @@ const AssignRoleToUser = () => {
 					<div>추가 Roles: {rightDataIds.length}건</div>
 					<Table
 						data={dataRight}
-						tableKey={tableKeys.users.add.roles.exclude}
+						tableKey={tableKeys.users.add.roles.include}
 						columns={
-							tableColumns[tableKeys.users.add.roles.exclude]
+							tableColumns[tableKeys.users.add.roles.include]
 						}
 						isSortable
 						isSelectable

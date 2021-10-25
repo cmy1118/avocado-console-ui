@@ -35,14 +35,16 @@ const AssignRoleToGroup = () => {
 	}, [roles, rightDataIds]);
 
 	const onClickDeleteRolesFromGroup = useCallback(() => {
-		setRightDataIds(
-			rightDataIds.filter((v) => !selectedIncludedRoles.includes(v)),
-		);
-	}, [rightDataIds, selectedIncludedRoles]);
+		alert('에러 있어서 막아놨습니다.');
+		// setRightDataIds(
+		// 	rightDataIds.filter((v) => !selectedIncludedRoles.includes(v)),
+		// );
+	}, []);
 
 	const onClickAddRolesToGroup = useCallback(() => {
-		setRightDataIds([...rightDataIds, ...selectedExcludedRoles]);
-	}, [rightDataIds, selectedExcludedRoles]);
+		alert('에러 있어서 막아놨습니다.');
+		// setRightDataIds([...rightDataIds, ...selectedExcludedRoles]);
+	}, []);
 
 	return (
 		<>

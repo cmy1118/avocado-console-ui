@@ -12,6 +12,7 @@ const GroupOnDescPageTags = ({groupId}) => {
 		groupId,
 		groups,
 	]);
+
 	const [data, setData] = useState(
 		group.tags.map((v) => {
 			return {
@@ -26,6 +27,7 @@ const GroupOnDescPageTags = ({groupId}) => {
 
 	const onClickAddRow = useCallback(() => {
 		const lastValues = data.slice().pop();
+		console.log(lastValues);
 		if (lastValues.name === '' || lastValues.value === '') {
 			alert('입력하지 않은 값이 있습니다.');
 			return;

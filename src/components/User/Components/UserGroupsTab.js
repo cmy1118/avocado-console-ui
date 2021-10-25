@@ -42,7 +42,7 @@ const UserGroupsTab = ({userId}) => {
 			IAM_USER.action.deleteGroupsFromUser({
 				uid: userId,
 				groups: Object.keys(
-					select[tableKeys.users.summary.tabs.groups.exclude],
+					select[tableKeys.users.summary.tabs.groups.include],
 				),
 			}),
 		);
@@ -50,7 +50,7 @@ const UserGroupsTab = ({userId}) => {
 			IAM_USER_GROUP.action.deleteGroupsFromUser({
 				uid: userId,
 				groups: Object.keys(
-					select[tableKeys.users.summary.tabs.groups.exclude],
+					select[tableKeys.users.summary.tabs.groups.include],
 				),
 			}),
 		);
@@ -61,7 +61,7 @@ const UserGroupsTab = ({userId}) => {
 			IAM_USER.action.addGroupsToUser({
 				uid: userId,
 				groups: Object.keys(
-					select[tableKeys.users.summary.tabs.groups.include],
+					select[tableKeys.users.summary.tabs.groups.exclude],
 				),
 			}),
 		);
@@ -69,7 +69,7 @@ const UserGroupsTab = ({userId}) => {
 			IAM_USER_GROUP.action.addGroupsToUser({
 				uid: userId,
 				groups: Object.keys(
-					select[tableKeys.users.summary.tabs.groups.include],
+					select[tableKeys.users.summary.tabs.groups.exclude],
 				),
 			}),
 		);

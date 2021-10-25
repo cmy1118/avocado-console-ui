@@ -47,7 +47,7 @@ const UserRolesTab = ({userId}) => {
 			IAM_USER.action.deleteRolesFromUser({
 				uid: userId,
 				roles: Object.keys(
-					select[tableKeys.users.summary.tabs.roles.exclude],
+					select[tableKeys.users.summary.tabs.roles.include],
 				),
 			}),
 		);
@@ -55,7 +55,7 @@ const UserRolesTab = ({userId}) => {
 			IAM_ROLES.action.deleteRolesFromUser({
 				uid: userId,
 				roles: Object.keys(
-					select[tableKeys.users.summary.tabs.roles.exclude],
+					select[tableKeys.users.summary.tabs.roles.include],
 				),
 			}),
 		);
@@ -66,7 +66,7 @@ const UserRolesTab = ({userId}) => {
 			IAM_USER.action.addRolesToUser({
 				uid: userId,
 				roles: Object.keys(
-					select[tableKeys.users.summary.tabs.roles.include],
+					select[tableKeys.users.summary.tabs.roles.exclude],
 				),
 			}),
 		);
@@ -74,7 +74,7 @@ const UserRolesTab = ({userId}) => {
 			IAM_ROLES.action.addRolesToUser({
 				uid: userId,
 				roles: Object.keys(
-					select[tableKeys.users.summary.tabs.roles.include],
+					select[tableKeys.users.summary.tabs.roles.exclude],
 				),
 			}),
 		);

@@ -1,30 +1,41 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
-import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {useSelector} from 'react-redux';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {tableKeys} from '../../../Constants/Table/keys';
 
 const AddTagToGroup = () => {
-	const {group} = useSelector(CURRENT_TARGET.selector);
-
+	const [data, setData] = useState([]);
+	const [select, setSelect] = useState([]);
 	const onClickAddRow = useCallback(() => {
-		console.log('추가 처리');
-	}, []);
+		console.log(data);
+		const lastValues = data.slice().pop();
+		if (lastValues?.name === '' || lastValues?.value === '') {
+			alert('입력하지 않은 값이 있습니다.');
+		}
+		setData([
+			...data,
+			{
+				name: '',
+				value: '',
+				permissions: [],
+			},
+		]);
+	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		console.log('삭제 처리');
-	}, []);
+		console.log(select);
+		console.log('삭제 처리 필요');
+	}, [select]);
 
-	const data = useMemo(() => {
-		return group.tags.map((v, i) => {
+	const tagData = useMemo(() => {
+		return data.map((v) => {
 			return {
 				...v,
-				id: i,
-				numberOfPermissions: v.permissions.length,
+				id: v?.name,
+				numberOfPermissions: v?.permissions.length,
 			};
 		});
-	}, [group]);
+	}, [data]);
 
 	return (
 		<>
@@ -36,9 +47,11 @@ const AddTagToGroup = () => {
 			</div>
 			<Table
 				tableKey={tableKeys.groups.add.tag}
-				data={data}
+				data={tagData}
 				columns={tableColumns[tableKeys.groups.add.tag]}
 				isSelectable
+				setData={setData}
+				setSelect={setSelect}
 			/>
 		</>
 	);

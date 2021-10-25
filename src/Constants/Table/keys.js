@@ -5,6 +5,7 @@ export const tableKeys = Object.freeze({
 			groups: {
 				include: 'USER_ADD_GROUPS_INCLUDE',
 				exclude: 'USER_ADD_GROUPS_EXCLUDE',
+				dnd: 'USER_ADD_GROUPS_DND',
 			},
 			roles: {
 				include: 'USER_ADD_ROLES_INCLUDE',
