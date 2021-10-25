@@ -15,11 +15,16 @@ const FormTextBox = ({
 	control,
 	setValue,
 	placeholder,
-	defaultValue,
 	label,
 	children,
+	defaultValue,
+	type,
+	autoFocus = false,
 }) => {
-	const value = useWatch({name, control});
+	const value = useWatch({
+		name,
+		control,
+	});
 
 	useEffect(() => {
 		if (setValue) setValue(value);
@@ -29,10 +34,11 @@ const FormTextBox = ({
 		<Container>
 			{label && <label htmlFor={name}>{label}</label>}
 			<input
-				value={defaultValue}
-				readOnly={defaultValue}
-				placeholder={placeholder}
 				{...register(name)}
+				type={type}
+				autoFocus={autoFocus}
+				defaultValue={defaultValue}
+				placeholder={placeholder}
 			/>
 			<ErrorMessage errors={errors} name={name}>
 				{({messages}) =>
@@ -58,6 +64,8 @@ FormTextBox.propTypes = {
 	placeholder: PropTypes.string,
 	defaultValue: PropTypes.string,
 	label: PropTypes.string,
+	type: PropTypes.string,
+	autoFocus: PropTypes.bool,
 	children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 

@@ -10,11 +10,13 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {Tab, TabItem} from '../../../styles/components/tab';
 import GroupRolesTab from '../Components/GroupRolesTab';
 import GroupSummary from '../Components/GroupSummary';
+import GroupUsersTab from '../Components/GroupUsersTab';
 
 const _Title = styled.div`
 	display: flex;
 	justify-content: space-between;
 `;
+import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
@@ -34,14 +36,14 @@ const GroupDescriptionSpace = ({groupId}) => {
 				search: `tabs=${v}`,
 			});
 		},
-		[],
+		[groupId, history],
 	);
 	// if groupId does not exist, direct to 404 page
 	useEffect(() => {
 		if (groupId && !group) {
 			history.push('/404');
 		}
-	}, [groupId, group]);
+	}, [groupId, group, history]);
 
 	return (
 		<IamContainer>
@@ -55,14 +57,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 				</PathContainer>
 			</div>
 
-			<_Title>
-				<div>요약 [ {group?.name} ]</div>
-				<div>
-					<button>그룹명 편집</button>
-					<button>삭제</button>
-				</div>
-			</_Title>
-
 			<GroupSummary groupId={groupId} />
 
 			<div>
@@ -73,11 +67,11 @@ const GroupDescriptionSpace = ({groupId}) => {
 				</Tab>
 
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-					'user' && <div>users</div>}
+					'user' && <GroupUsersTab groupId={groupId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 					'role' && <GroupRolesTab groupId={groupId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'tag' && (
-					<div>tag</div>
+					<GroupOnDescPageTags groupId={groupId} />
 				)}
 			</div>
 		</IamContainer>

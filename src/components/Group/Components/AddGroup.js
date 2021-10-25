@@ -2,17 +2,17 @@ import React, {useCallback, useState} from 'react';
 import {SubTitle} from '../../../styles/components/style';
 import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import useInput from '../../../hooks/useInput';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 import FormComboBox from '../../RecycleComponents/FormComboBox';
 import Form from '../../RecycleComponents/Form';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
 import * as yup from 'yup';
-import {useForm} from 'react-hook-form';
 import {formKeys} from '../../../utils/data';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
+import PropTypes from 'prop-types';
 
-const AddGroup = () => {
+const AddGroup = ({setIsOpened}) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	/***********************************************************************
@@ -33,20 +33,27 @@ const AddGroup = () => {
 		history.push('/groups');
 	}, [history]);
 
-	const onSubmitAddGroup = useCallback((data) => {
-		console.log(data);
-		// dispatch(
-		// 	IAM_USER_GROUP_TYPE.action.addGroupType({
-		// 		name: groupName,
-		// 		parentId: selectedParentGroup,
-		// 		description: null,
-		// 	}),
-		// );
-	}, []);
+	const onSubmitAddGroup = useCallback(
+		(data) => {
+			console.log(data);
+			dispatch(
+				CURRENT_TARGET.action.addReadOnlyData({
+					title: 'group',
+					data: data,
+				}),
+			);
+			console.log(data);
+			setIsOpened(true);
+		},
+		[dispatch, setIsOpened],
+	);
 
 	const schema = {
 		groupType: yup.string().required(),
-		groupId: yup.string().required(),
+		groupId:
+			groupTypesId === 'groupType1'
+				? yup.string().required()
+				: yup.string(),
 		name: yup.string().max(120).required(),
 	};
 
@@ -80,7 +87,7 @@ const AddGroup = () => {
 					})}
 					setValue={setGroupTypesId}
 				/>
-				{groupTypesId && (
+				{groupTypesId === 'groupType1' ? (
 					<FormComboBox
 						placeholder={'상위 그룹 선택'}
 						name={'groupId'}
@@ -90,11 +97,17 @@ const AddGroup = () => {
 								return {value: v.id, name: v.name};
 							})}
 					/>
+				) : (
+					<></>
 				)}
 				<FormTextBox name={'name'} placeholder={'group name'} />
 			</Form>
 		</>
 	);
+};
+
+AddGroup.propTypes = {
+	setIsOpened: PropTypes.func.isRequired,
 };
 
 export default AddGroup;

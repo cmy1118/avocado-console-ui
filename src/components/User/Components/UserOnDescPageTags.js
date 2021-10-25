@@ -1,14 +1,12 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
-import {tableKeys} from '../../../utils/data';
 import Table from '../../Table/Table';
 import {useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
-let index = 0;
-
-const UserTags = ({userId}) => {
+const UserOnDescPageTags = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
@@ -24,28 +22,36 @@ const UserTags = ({userId}) => {
 		}) || [],
 	);
 
-	const columns = getColumnsAsKey[tableKeys.addTagToUserOnDescPage];
+	const [select, setSelect] = useState([]);
 
 	const onClickAddRow = useCallback(() => {
-		console.log(data);
+		const lastValues = data.slice().pop();
+		if (lastValues.name === '' || lastValues.value === '') {
+			alert('입력하지 않은 값이 있습니다.');
+			return;
+		}
 		setData([
 			...data,
 			{
 				name: '',
-				id: index,
 				value: '',
 				permissions: [],
-				numberOfPermissions: 0,
 			},
 		]);
-		index++;
 	}, [data]);
 
-	const onClickDeleteRow = useCallback(() => {
+	const onClickSaveRow = useCallback(() => {
 		console.log(data);
 	}, [data]);
 
-	console.log(data);
+	const onClickDeleteRow = useCallback(() => {
+		if (select[0]) {
+			console.log(select);
+			setData(data.filter((v) => !select.includes(v.name)));
+		} else {
+			alert('선택된 값이 없습니다.');
+		}
+	}, [data, select]);
 
 	return (
 		<>
@@ -53,21 +59,23 @@ const UserTags = ({userId}) => {
 
 			<div>
 				<button onClick={onClickAddRow}>태그 추가</button>
+				<button onClick={onClickSaveRow}>태그 저장</button>
 				<button onClick={onClickDeleteRow}>태그 삭제</button>
 			</div>
 			<Table
-				tableKey={tableKeys.addTagToUserOnDescPage}
+				tableKey={tableKeys.users.summary.tag}
 				data={data}
-				columns={columns}
+				columns={tableColumns[tableKeys.users.summary.tag]}
 				isSelectable
 				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
+				setSelect={setSelect}
 			/>
 		</>
 	);
 };
 
-UserTags.propTypes = {
+UserOnDescPageTags.propTypes = {
 	userId: PropTypes.string,
 };
 
-export default UserTags;
+export default UserOnDescPageTags;

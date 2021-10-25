@@ -1,15 +1,15 @@
-import React, {useCallback, useMemo, useState} from 'react';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
-import {tableKeys} from '../../../utils/data';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const AddTagToUser = () => {
+	const dispatch = useDispatch();
 	const {user} = useSelector(CURRENT_TARGET.selector);
-	const columns = getColumnsAsKey[tableKeys.addTagsToUserOnAddPage];
 	const [data, setData] = useState(user.tags);
-	const [selected, setSelected] = useState({});
+	const [select, setSelect] = useState({});
 
 	const tagData = useMemo(() => {
 		return data.map((v) => {
@@ -23,6 +23,11 @@ const AddTagToUser = () => {
 
 	const onClickAddRow = useCallback(() => {
 		console.log(data);
+		const lastValues = data.slice().pop();
+		if (lastValues.name === '' || lastValues.value === '') {
+			alert('입력하지 않은 값이 있습니다.');
+			return;
+		}
 		setData([
 			...data,
 			{
@@ -34,8 +39,21 @@ const AddTagToUser = () => {
 	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		console.log(data);
-	}, [data]);
+		if (select[0]) {
+			setData(data.filter((v) => !select.includes(v.name)));
+		} else {
+			alert('선택된 값이 없습니다.');
+		}
+	}, [data, select]);
+
+	useEffect(() => {
+		dispatch(
+			CURRENT_TARGET.action.addReadOnlyData({
+				title: tableKeys.users.add.tag,
+				data: tagData,
+			}),
+		);
+	}, [tagData, dispatch]);
 
 	return (
 		<>
@@ -46,15 +64,15 @@ const AddTagToUser = () => {
 				<button onClick={onClickDeleteRow}>태그 삭제</button>
 			</div>
 			<Table
-				tableKey={tableKeys.addTagsToUserOnAddPage}
+				tableKey={tableKeys.users.add.tag}
 				data={tagData}
-				columns={columns}
+				columns={tableColumns[tableKeys.users.add.tag]}
 				isSelectable
 				setData={setData}
-				setSelected={setSelected}
-				selected={Object.keys(selected).pop()}
+				setSelect={setSelect}
 			/>
 		</>
 	);
 };
+
 export default AddTagToUser;

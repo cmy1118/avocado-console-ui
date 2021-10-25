@@ -8,10 +8,10 @@ import {
 } from '../../../styles/components/style';
 import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
 import Table from '../../Table/Table';
-import {tableKeys} from '../../../utils/data';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 import {
 	parentGroupConverter,
 	rolesConverter,
@@ -53,8 +53,8 @@ const GroupSpace = () => {
 				</div>
 			</SubTitle>
 			<Table
-				tableKey={tableKeys.groups}
-				columns={getColumnsAsKey[tableKeys.groups]}
+				tableKey={tableKeys.groups.basic}
+				columns={tableColumns[tableKeys.groups.basic]}
 				data={data}
 				isSearchFilterable
 				isPageable

@@ -1,34 +1,53 @@
-import React, {useCallback, useMemo} from 'react';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
-import {tableKeys} from '../../../utils/data';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
+import {tableColumns} from '../../../Constants/Table/columns';
+import {tableKeys} from '../../../Constants/Table/keys';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 const AddTagToGroup = () => {
 	const dispatch = useDispatch();
-	const {group, currentTarget} = useSelector(CURRENT_TARGET.selector);
-	const columns = getColumnsAsKey[tableKeys.addTagsToGroupOnAddPage];
-	const target = currentTarget[tableKeys.addTagsToGroupOnAddPage];
-
+	const [data, setData] = useState([]);
+	const [select, setSelect] = useState([]);
 	const onClickAddRow = useCallback(() => {
-		dispatch(CURRENT_TARGET.action.addTagDataOnAddGroup());
-	}, [dispatch]);
+		console.log(data);
+		const lastValues = data.slice().pop();
+		if (lastValues?.name === '' || lastValues?.value === '') {
+			alert('입력하지 않은 값이 있습니다.');
+		}
+		setData([
+			...data,
+			{
+				name: '',
+				value: '',
+				permissions: [],
+			},
+		]);
+	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		if (!target) return;
-		dispatch(CURRENT_TARGET.action.deleteTagDataOnAddGroup(target));
-	}, [dispatch, target]);
+		console.log(select);
+		console.log('삭제 처리 필요');
+	}, [select]);
 
-	const data = useMemo(() => {
-		return group.tags.map((v, i) => {
+	const tagData = useMemo(() => {
+		return data.map((v) => {
 			return {
 				...v,
-				id: i,
-				numberOfPermissions: v.permissions.length,
+				id: v?.name,
+				numberOfPermissions: v?.permissions.length,
 			};
 		});
-	}, [group]);
+	}, [data]);
+
+	useEffect(() => {
+		dispatch(
+			CURRENT_TARGET.action.addReadOnlyData({
+				title: tableKeys.groups.add.tag,
+				data: tagData,
+			}),
+		);
+	}, [tagData, dispatch]);
 
 	return (
 		<>
@@ -39,10 +58,12 @@ const AddTagToGroup = () => {
 				<button onClick={onClickDeleteRow}>태그 삭제</button>
 			</div>
 			<Table
-				tableKey={tableKeys.addTagsToGroupOnAddPage}
-				data={data}
-				columns={columns}
+				tableKey={tableKeys.groups.add.tag}
+				data={tagData}
+				columns={tableColumns[tableKeys.groups.add.tag]}
 				isSelectable
+				setData={setData}
+				setSelect={setSelect}
 			/>
 		</>
 	);

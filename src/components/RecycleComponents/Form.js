@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm} from 'react-hook-form';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import * as yup from 'yup';
 
 // export const _Form = styled.form`
@@ -10,7 +9,7 @@ import * as yup from 'yup';
 // 	flex-direction: column;
 // `;
 
-const Form = ({id, schema = {}, children, onSubmit}) => {
+const Form = ({id, schema = {}, children, onSubmit, autoReset = false}) => {
 	const {
 		register,
 		formState: {errors, isSubmitSuccessful},
@@ -21,8 +20,8 @@ const Form = ({id, schema = {}, children, onSubmit}) => {
 	} = useForm({resolver: yupResolver(yup.object().shape(schema))});
 
 	useEffect(() => {
-		if (isSubmitSuccessful) reset();
-	}, [isSubmitSuccessful, reset]);
+		if (autoReset && isSubmitSuccessful) reset();
+	}, [autoReset, isSubmitSuccessful, reset]);
 
 	return (
 		<form id={id} onSubmit={handleSubmit(onSubmit)}>
@@ -46,9 +45,10 @@ const Form = ({id, schema = {}, children, onSubmit}) => {
 
 Form.propTypes = {
 	id: PropTypes.string,
-	children: PropTypes.array,
+	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	schema: PropTypes.object,
 	onSubmit: PropTypes.func,
+	autoReset: PropTypes.bool,
 };
 
 export default Form;

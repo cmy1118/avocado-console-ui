@@ -1,9 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
-import DropButton from '../../Table/DropButton';
+import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import styled from 'styled-components';
+import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
@@ -12,36 +12,45 @@ const _Tables = styled.div`
 	display: flex;
 `;
 
-const AddUserToGroup = () => {
+const UsersIncludedInGroup = () => {
 	const dispatch = useDispatch();
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {users} = useSelector(IAM_USER.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
 	const [select, setSelect] = useState([]);
 
 	const dataLeft = useMemo(() => {
-		const dropDataTypeId = groups
+		const dropDataName = users
+			.map(({uid: id, id: _id, ...rest}) => ({
+				id,
+				_id,
+				...rest,
+			}))
 			.filter((v) => rightDataIds.includes(v.id))
-			.map((v) => v.clientGroupTypeId);
-		return groups
-			.filter((v) => !dropDataTypeId.includes(v.clientGroupTypeId))
+			.map((v) => v.name);
+		return users
+			.filter((v) => !dropDataName.includes(v.name))
 			.map((v) => ({
 				...v,
-				numberOfUsers: v.members.length,
 			}));
-	}, [groups, rightDataIds]);
+	}, [users, rightDataIds]);
 
 	const dataRight = useMemo(() => {
-		return groups
+		return users
+			.map(({uid: id, id: _id, ...rest}) => ({
+				id,
+				_id,
+				...rest,
+			}))
 			.filter((v) => rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 			}));
-	}, [groups, rightDataIds]);
+	}, [users, rightDataIds]);
 
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
-				title: tableKeys.users.add.groups.exclude,
+				title: tableKeys.groups.add.users.exclude,
 				data: dataRight,
 			}),
 		);
@@ -49,12 +58,12 @@ const AddUserToGroup = () => {
 
 	return (
 		<>
-			<div>그룹에 사용자에 추가</div>
+			<div>그룹에 사용자에 추가 </div>
 			<_Tables>
 				<Table
-					tableKey={tableKeys.users.add.groups.exclude}
-					columns={tableColumns[tableKeys.users.add.groups.exclude]}
 					data={dataLeft}
+					tableKey={tableKeys.groups.add.users.exclude}
+					columns={tableColumns[tableKeys.groups.add.users.exclude]}
 					isPageable
 					isNumberOfRowsAdjustable
 					isColumnFilterable
@@ -62,32 +71,32 @@ const AddUserToGroup = () => {
 					isSelectable
 					isDnDPossible
 					isSearchable
-					dndKey={tableKeys.users.add.groups.dnd}
-					setData={setRightDataIds}
+					dndKey={tableKeys.groups.add.users.dnd}
 					setSelect={setSelect}
+					setData={setRightDataIds}
 				/>
 				<DropButton
-					leftTableKey={tableKeys.users.add.groups.exclude}
-					RightTableKey={tableKeys.users.add.groups.include}
+					leftTableKey={tableKeys.groups.add.users.exclude}
+					RightTableKey={tableKeys.groups.add.users.include}
 					select={select}
 					rightDataIds={rightDataIds}
 					setRightDataIds={setRightDataIds}
 				/>
 				<div>
-					<div>추가 그룹: {rightDataIds.length}건</div>
+					<div>추가 사용자: {rightDataIds.length}건</div>
 					<Table
-						tableKey={tableKeys.users.add.groups.include}
-						columns={
-							tableColumns[tableKeys.users.add.groups.include]
-						}
 						data={dataRight}
+						tableKey={tableKeys.groups.add.users.include}
+						columns={
+							tableColumns[tableKeys.groups.add.users.include]
+						}
 						isPageable
 						isNumberOfRowsAdjustable
 						isColumnFilterable
 						isSortable
 						isSelectable
 						isDnDPossible
-						dndKey={tableKeys.users.add.groups.dnd}
+						dndKey={tableKeys.groups.add.users.dnd}
 						setData={setRightDataIds}
 						setSelect={setSelect}
 						control
@@ -98,4 +107,4 @@ const AddUserToGroup = () => {
 	);
 };
 
-export default AddUserToGroup;
+export default UsersIncludedInGroup;

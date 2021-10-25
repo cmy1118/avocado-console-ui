@@ -50,7 +50,8 @@ const Table = ({
 	isDnDPossible = false,
 	dndKey,
 	setData,
-	setSelected,
+	control = false,
+	setSelect,
 }) => {
 	const filterTypes = React.useMemo(
 		() => ({
@@ -88,7 +89,6 @@ const Table = ({
 		prepareRow,
 		allColumns,
 		page, // Instead of using 'rows', we'll use page,
-		rows,
 		canPreviousPage,
 		canNextPage,
 		pageOptions,
@@ -106,6 +106,7 @@ const Table = ({
 			getRowId,
 			filterTypes,
 		},
+		useGlobalFilter,
 		useFilters,
 		useGlobalFilter,
 		useSortBy,
@@ -120,7 +121,6 @@ const Table = ({
 						Header: ({getToggleAllPageRowsSelectedProps}) => (
 							<TableCheckbox
 								{...getToggleAllPageRowsSelectedProps()}
-								selected={rows.map((v) => v.isSelected)}
 								tablekey={tableKey}
 							/>
 						),
@@ -129,8 +129,6 @@ const Table = ({
 							<TableCheckbox
 								// eslint-disable-next-line react/prop-types,react/display-name
 								{...row.getToggleRowSelectedProps()}
-								row={row}
-								selected={rows.map((v) => v.isSelected)}
 								tablekey={tableKey}
 							/>
 						),
@@ -141,69 +139,56 @@ const Table = ({
 	);
 
 	const onDragStart = useCallback(
-		(e) => {
-			if (e.target.firstChild.childNodes[0].type === 'checkbox') {
-				e.target.firstChild.childNodes[0].checked = true;
+		(row) => (e) => {
+			console.log('onDragStart ::: ', tableKey);
+			const firstTarget = e.target.firstChild.childNodes[0];
+			console.log(firstTarget);
+			const selected = Object.keys(selectedRowIds);
+			if (firstTarget.type === 'checkbox' && !firstTarget.checked) {
+				firstTarget.click();
+				selected.push(row.id);
 			}
+			e.dataTransfer.setData('ids', selected.toString());
 			e.dataTransfer.setData(
-				'ids',
-				rows.filter((v) => v.isSelected).map((x) => x.id),
+				'prevIds',
+				data.map((v) => v.id),
 			);
+			console.log('set-data:', selected);
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
-			e.target.style.opacity = '0.2';
 		},
-		[rows, tableKey, dndKey],
+		[data, dndKey, selectedRowIds, tableKey],
 	);
 
-	const onDragEnd = useCallback(
-		(e) => {
-			// if (e.target.firstChild.childNodes[0].type === 'checkbox') {
-			// 	e.target.firstChild.childNodes[0].checked = false;
-			// }
-			console.log(e.dataTransfer.getData('ids'));
-
-			setData &&
-				setData(
-					data
-						.filter(
-							(v) =>
-								!e.dataTransfer
-									.getData('ids')
-									.split(',')
-									.includes(v.id),
-						)
-						.map((x) => x.id),
-				);
-			e.target.style.opacity = '';
-		},
-		[data, setData],
-	);
 
 	const onDrop = useCallback(
 		(e) => {
 			e.preventDefault();
+			if (e.dataTransfer.getData('dndKey') !== dndKey) return;
 
-			console.log({
-				tableKey: e.dataTransfer.getData('tableKey'),
-				dndKey: e.dataTransfer.getData('dndKey'),
-				DropId: e.dataTransfer.getData('ids'),
-			});
-
-			const fromTableKey = e.dataTransfer.getData('tableKey');
-			const fromDndKey = e.dataTransfer.getData('dndKey');
-
-			if (fromTableKey !== tableKey && fromDndKey === dndKey) {
-				setData &&
-					setData(
-						data
-							.map((v) => v.id)
-							.concat(e.dataTransfer.getData('id')),
+			if (setData) {
+				control // data를 control하는 쪽이면? 추가 아니면 삭제
+					? setData([
+						...data.map((v) => v.id),
+						...e.dataTransfer.getData('ids').split(','),
+					])
+					: setData(
+						e.dataTransfer
+							.getData('prevIds')
+							.split(',')
+							.filter(
+								(v) =>
+									!e.dataTransfer
+										.getData('ids')
+										.split(',')
+										.includes(v),
+							),
 					);
 			}
 		},
-		[data, dndKey, setData, tableKey],
+		[dndKey, setData, control, data],
 	);
+
 
 	const onDragOver = useCallback((e) => {
 		e.preventDefault();
@@ -224,8 +209,8 @@ const Table = ({
 	}, [setAllFilters]);
 
 	useMountedLayoutEffect(() => {
-		isSelectable && setSelected && setSelected(Object.keys(selectedRowIds));
-	}, [isSelectable, selectedRowIds, setSelected]);
+		isSelectable && setSelect && setSelect(Object.keys(selectedRowIds));
+	}, [isSelectable, selectedRowIds, setSelect]);
 
 	return (
 		<div>
@@ -284,7 +269,6 @@ const Table = ({
 				{...getTableProps()}
 				onDrop={onDrop}
 				onDragOver={onDragOver}
-				onDragEnd={onDragEnd}
 			>
 				<thead>
 					{headerGroups.map((headerGroup, i) => (
@@ -329,15 +313,15 @@ const Table = ({
 										: row.original.id
 								}
 								{...row.getRowProps()}
-								onDragStart={onDragStart}
+								onDragStart={onDragStart(row)}
 							>
-								{row.cells.map((cell, i) => (
-									<td key={i} {...cell.getCellProps}>
-										{cell.render('Cell', {
-											setData,
-										})}
-									</td>
-								))}
+								{row.cells.map((cell, i) => {
+									return (
+										<td key={i} {...cell.getCellProps}>
+											{cell.render('Cell', {setData})}
+										</td>
+									);
+								})}
 							</tr>
 						);
 					})}
@@ -361,8 +345,8 @@ Table.propTypes = {
 	isSelectable: PropTypes.bool,
 	isDnDPossible: PropTypes.bool,
 	setData: PropTypes.func,
-	setSelected: PropTypes.func,
-	selected: PropTypes.array,
+	setSelect: PropTypes.func,
+	control: PropTypes.bool,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 

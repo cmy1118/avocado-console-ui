@@ -23,9 +23,8 @@ const ChangePasswordDialogBox = ({isOpened, setIsOpened}) => {
 
 	const onSubmitForm = useCallback(() => {
 		console.log(name, description);
-
 		setIsOpened(false);
-	}, [description, name]);
+	}, [description, name, setIsOpened]);
 
 	return (
 		<DialogBox

@@ -7,17 +7,12 @@ import qs from 'qs';
 
 import {IamContainer, PathContainer} from '../../../styles/components/style';
 import {Tab, TabItem} from '../../../styles/components/tab';
-import UserInfo from '../Components/UserInfo';
-import UserGroups from '../Components/UserGroups';
+import UserInfoTab from '../Components/UserInfoTab';
+import UserGroupsTab from '../Components/UserGroupsTab';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
-import UserTags from '../Components/UserTags';
+import UserOnDescPageTags from '../Components/UserOnDescPageTags';
 import UserSummary from '../Components/UserSummary';
 import UserRolesTab from '../Components/UserRolesTab';
-
-const _Title = styled.div`
-	display: flex;
-	justify-content: space-between;
-`;
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
@@ -58,11 +53,6 @@ const UserDescriptionSpace = ({userId}) => {
 				</PathContainer>
 			</div>
 
-			<_Title>
-				<div>요약 [ {user?.id} ]</div>
-				<button>삭제</button>
-			</_Title>
-
 			<UserSummary userId={userId} />
 
 			<div>
@@ -74,13 +64,13 @@ const UserDescriptionSpace = ({userId}) => {
 				</Tab>
 
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-					'user' && <UserInfo userId={userId} />}
+					'user' && <UserInfoTab userId={userId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-					'group' && <UserGroups userId={userId} />}
+					'group' && <UserGroupsTab userId={userId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 					'role' && <UserRolesTab userId={userId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'tag' && (
-					<UserTags userId={userId} />
+					<UserOnDescPageTags userId={userId} />
 				)}
 			</div>
 		</IamContainer>

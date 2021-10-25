@@ -152,8 +152,18 @@ const slice = createSlice({
 				MFA: null,
 				passwordExpiryTime: '2023.02.12 20:44:02',
 				tags: [
-					{name: 'level', value: 'Admin', permissions: []},
-					{name: 'type', value: 'White', permissions: [1, 2, 3]},
+					{
+						name: 'level',
+						value: 'Admin',
+						permissions: [],
+						creationDate: '2021.03.02 15:55:32',
+					},
+					{
+						name: 'type',
+						value: 'White',
+						permissions: [1, 2, 3],
+						creationDate: '2021.03.02 15:55:32',
+					},
 				],
 				lastConsoleLogin: '2020.05.12 20:44:02',
 				creationDate: '2020.01.12 20:44:02',
@@ -171,7 +181,14 @@ const slice = createSlice({
 				authType: 'ID/PWD',
 				MFA: null,
 				passwordExpiryTime: '2023.04.12 20:44:02',
-				tags: [{name: 'type', value: 'white', permissions: [1, 2, 3]}],
+				tags: [
+					{
+						name: 'type',
+						value: 'white',
+						permissions: [1, 2, 3],
+						creationDate: '2021.03.02 15:55:32',
+					},
+				],
 				lastConsoleLogin: '2020.06.12 20:44:02',
 				creationDate: '2020.03.12 20:44:02',
 			},
@@ -188,7 +205,14 @@ const slice = createSlice({
 				authType: 'ID/PWD',
 				MFA: null,
 				passwordExpiryTime: '2022.12.12 20:44:02',
-				tags: [{name: 'level', value: 'Admin', permissions: []}],
+				tags: [
+					{
+						name: 'level',
+						value: 'Admin',
+						permissions: [],
+						creationDate: '2021.03.02 15:55:32',
+					},
+				],
 				lastConsoleLogin: null,
 				creationDate: '2020.03.12 20:44:02',
 			},
@@ -349,6 +373,44 @@ const slice = createSlice({
 			user.roles = user.roles.filter(
 				(v) => !action.payload.roles.includes(v),
 			);
+		},
+
+		addGroupsToUser: (state, action) => {
+			const user = state.users.find((v) => v.uid === action.payload.uid);
+
+			user.groups = user.groups.concat(action.payload.groups);
+		},
+
+		deleteGroupsFromUser: (state, action) => {
+			const user = state.users.find((v) => v.uid === action.payload.uid);
+
+			user.groups = user.groups.filter(
+				(v) => !action.payload.groups.includes(v),
+			);
+		},
+		//그룹 상세 상용자Tab
+		addUsersToGroup: (state, action) => {
+			const users = state.users.filter((v) =>
+				action.payload.users.includes(v.uid),
+			);
+
+			users.map((v) => {
+				v.groups.push(action.payload.id);
+				return v;
+			});
+		},
+		deleteUsersFromGroup: (state, action) => {
+			const users = state.users.filter((v) =>
+				action.payload.users.includes(v.uid),
+			);
+
+			users.map((v) => {
+				const index = v.groups.findIndex(
+					(val) => val === action.payload.id,
+				);
+				v.groups.splice(index, 1);
+				return v;
+			});
 		},
 	},
 	extraReducers: {

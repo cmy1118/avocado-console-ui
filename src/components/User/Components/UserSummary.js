@@ -4,13 +4,19 @@ import {
 	statusConverter,
 } from '../../../utils/tableDataConverter';
 import Table from '../../Table/Table';
-import {tableKeys} from '../../../utils/data';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
 import React, {useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
+import styled from 'styled-components';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
+
+const _Title = styled.div`
+	display: flex;
+	justify-content: space-between;
+`;
 
 const UserSummary = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
@@ -45,6 +51,11 @@ const UserSummary = ({userId}) => {
 
 	return (
 		<>
+			<_Title>
+				<div>요약 [ {user?.id} ]</div>
+				<button>삭제</button>
+			</_Title>
+
 			<ul>
 				<li>사용자 : {user?.name}</li>
 				<li>사용자 계정 상태 : {statusConverter(user?.status)}</li>
@@ -57,15 +68,15 @@ const UserSummary = ({userId}) => {
 			<div>그룹: {groupData.length}</div>
 			<Table
 				data={groupData}
-				tableKey={tableKeys.userGroupsSummary}
-				columns={getColumnsAsKey[tableKeys.userGroupsSummary]}
+				tableKey={tableKeys.users.summary.group}
+				columns={tableColumns[tableKeys.users.summary.group]}
 			/>
 
 			<div>태그: {tagData.length}</div>
 			<Table
 				data={tagData}
-				tableKey={tableKeys.userTagsSummary}
-				columns={getColumnsAsKey[tableKeys.userTagsSummary]}
+				tableKey={tableKeys.users.summary.tag}
+				columns={tableColumns[tableKeys.users.summary.tag]}
 			/>
 		</>
 	);

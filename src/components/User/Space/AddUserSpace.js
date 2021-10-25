@@ -7,9 +7,10 @@ import AddTagToUser from '../Components/AddTagToUser';
 import AssignRoleToUser from '../Components/AssignRoleToUser';
 import AddUserToGroup from '../Components/AddUserToGroup';
 import AddUser from '../Components/AddUser';
+import ReadOnly from '../Components/ReadOnly';
 
 const AddUserSpace = () => {
-	const [addedRoles, setAddedRoles] = useState([]);
+	const [isOpened, setIsOpened] = useState(false);
 
 	return (
 		<IamContainer>
@@ -20,17 +21,11 @@ const AddUserSpace = () => {
 				<div>{' > '}</div>
 				<Link to='/users/add'>사용자 추가</Link>
 			</PathContainer>
-
-			<AddUser />
-
+			<AddUser setIsOpened={setIsOpened} />
 			<AddUserToGroup />
-
-			<AssignRoleToUser
-				addedRoles={addedRoles}
-				setAddedRoles={setAddedRoles}
-			/>
-
+			<AssignRoleToUser />
 			<AddTagToUser />
+			<ReadOnly isOpened={isOpened} setIsOpened={setIsOpened} />
 		</IamContainer>
 	);
 };

@@ -1,70 +1,80 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
-import {getColumnsAsKey} from '../../../utils/TableColumns';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {tableKeys} from '../../../utils/data';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
 
 const _Tables = styled.div`
 	display: flex;
 `;
 
-const AssignRoleToGroup = ({addedRoles, setAddedRoles}) => {
+const AssignRoleToGroup = () => {
+	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
+	const [rightDataIds, setRightDataIds] = useState([]);
 
 	const [selectedExcludedRoles, setSelectedExcludedRoles] = useState([]);
 	const [selectedIncludedRoles, setSelectedIncludedRoles] = useState([]);
 
-	const excludedRoles = useMemo(() => {
+	const dataLeft = useMemo(() => {
 		return roles
-			.filter((v) => !addedRoles.includes(v.id))
+			.filter((v) => !rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
 				numberOfUsers: v.users.length,
 			}));
-	}, [roles, addedRoles]);
+	}, [roles, rightDataIds]);
 
-	const includedRoles = useMemo(() => {
+	const dataRight = useMemo(() => {
 		return roles
-			.filter((v) => addedRoles.includes(v.id))
+			.filter((v) => rightDataIds.includes(v.id))
 			.map((v) => ({...v, type: roleTypeConverter(v.companyId)}));
-	}, [roles, addedRoles]);
+	}, [roles, rightDataIds]);
 
 	const onClickDeleteRolesFromGroup = useCallback(() => {
-		setAddedRoles(
-			addedRoles.filter((v) => !selectedIncludedRoles.includes(v)),
-		);
-	}, [setAddedRoles, addedRoles, selectedIncludedRoles]);
+		alert('에러 있어서 막아놨습니다.');
+		// setRightDataIds(
+		// 	rightDataIds.filter((v) => !selectedIncludedRoles.includes(v)),
+		// );
+	}, []);
 
 	const onClickAddRolesToGroup = useCallback(() => {
-		setAddedRoles([...addedRoles, ...selectedExcludedRoles]);
-	}, [setAddedRoles, addedRoles, selectedExcludedRoles]);
+		alert('에러 있어서 막아놨습니다.');
+		// setRightDataIds([...rightDataIds, ...selectedExcludedRoles]);
+	}, []);
+
+	useEffect(() => {
+		dispatch(
+			CURRENT_TARGET.action.addReadOnlyData({
+				title: tableKeys.groups.add.roles.include,
+				data: dataRight,
+			}),
+		);
+	}, [dataRight, dispatch]);
 
 	return (
 		<>
 			<div>권한 추가</div>
 			<_Tables>
 				<Table
-					data={excludedRoles}
-					tableKey={tableKeys.rolesExcludedFromGroupOnAddPage}
-					columns={
-						getColumnsAsKey[
-							tableKeys.rolesExcludedFromGroupOnAddPage
-						]
-					}
+					data={dataLeft}
+					tableKey={tableKeys.groups.add.roles.include}
+					columns={tableColumns[tableKeys.groups.add.roles.include]}
 					isPageable
 					isNumberOfRowsAdjustable
 					isColumnFilterable
 					isSortable
 					isSelectable
 					isDnDPossible
-					dndKey={'role'}
-					selected={selectedExcludedRoles}
-					setSelected={setSelectedExcludedRoles}
+					dndKey={tableKeys.groups.add.roles.dnd}
+					isSearchable
+					setData={setRightDataIds}
+					setSelect={setSelectedExcludedRoles}
 				/>
 
 				<div>
@@ -73,32 +83,25 @@ const AssignRoleToGroup = ({addedRoles, setAddedRoles}) => {
 				</div>
 
 				<div>
-					<div>추가 Roles: {addedRoles.length}건</div>
+					<div>추가 Roles: {rightDataIds.length}건</div>
 					<Table
-						data={includedRoles}
-						tableKey={tableKeys.rolesIncludedInGroupOnAddPage}
+						data={dataRight}
+						tableKey={tableKeys.groups.add.roles.exclude}
 						columns={
-							getColumnsAsKey[
-								tableKeys.rolesIncludedInGroupOnAddPage
-							]
+							tableColumns[tableKeys.groups.add.roles.exclude]
 						}
 						isSortable
 						isSelectable
 						isDnDPossible
-						dndKey={'role'}
-						setData={setAddedRoles}
-						selected={selectedIncludedRoles}
-						setSelected={setSelectedIncludedRoles}
+						dndKey={tableKeys.groups.add.roles.dnd}
+						setData={setRightDataIds}
+						control
+						setSelect={setSelectedIncludedRoles}
 					/>
 				</div>
 			</_Tables>
 		</>
 	);
-};
-
-AssignRoleToGroup.propTypes = {
-	addedRoles: PropTypes.array.isRequired,
-	setAddedRoles: PropTypes.func.isRequired,
 };
 
 export default AssignRoleToGroup;

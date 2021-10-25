@@ -1,30 +1,125 @@
-import React, {forwardRef, useEffect, useMemo, useRef, useState} from 'react';
+import React, {
+	forwardRef,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import PropTypes from 'prop-types';
 
 const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 	const defaultRef = useRef();
-
-	const [selectedRowIds, setSelectedRowIds] = useState([]);
-	const [lastId, setLastId] = useState(null);
-
-	const [value, setValue] = useState(false);
-	// console.log(rest?.row); // index, isSelected
-	// console.log(rest.selected);
-
 	const resolvedRef = ref || defaultRef;
+	const checkboxes = document.querySelectorAll(
+		`.${rest.tablekey}[type='checkbox']`,
+	);
 
-	// console.log(selectedRowIds);
+	const handleClick = useCallback(
+		(e) => {
+			if (e.target.isBetween) {
+				delete e.target.isBetween;
+				return;
+			}
+			if (e.shiftKey) {
+				// todo : 마지막 체크값이 존재하는지 검사
+				let isLastChecked = false;
+				checkboxes.forEach((checkbox) => {
+					if (checkbox.lastChecked) isLastChecked = true;
+				});
 
-	useEffect(() => {
-		const index = selectedRowIds.filter((v, i) => {
-			if (rest.selected[i] !== v) return i;
-		});
+				// todo : 마지막 체크값이 존재하는 경우
+				if (isLastChecked) {
+					// todo : 마지막 체크값이 전체선택 체크박스인 경우 return
+					let isAllCheck = false;
+					checkboxes.forEach((checkbox) => {
+						if (
+							checkbox.title ===
+								'Toggle All Current Page Rows Selected' &&
+							checkbox.lastChecked
+						)
+							isAllCheck = true;
+					});
+					if (isAllCheck) return;
 
-		if (index) {
-			// console.log(index);
-			setSelectedRowIds(rest.selected);
-		}
-	}, [rest.selected, selectedRowIds]);
+					// todo : 현재 선택한 값이 마지막 체크된 체크박스가 아닌 경우들만
+					if (!e.target.lastChecked) {
+						// todo : checked ::: [ false => true ] 사이에 해당되는 친구들은 모두 true
+						if (e.target.checked) {
+							let isBetween = false;
+							checkboxes.forEach((checkbox) => {
+								if (
+									checkbox.lastChecked ||
+									checkbox === e.target
+								) {
+									console.log('open / close');
+									if (!checkbox.checked) {
+										checkbox.isBetween = true;
+										checkbox.click();
+									}
+									isBetween = !isBetween;
+								} else {
+									if (isBetween) {
+										if (!checkbox.checked) {
+											checkbox.isBetween = true;
+											checkbox.click();
+										}
+									}
+								}
+							});
+							// todo : checked ::: [ true => false ] 사이에 해당되는 친구들은 모두 false
+						} else {
+							let isBetween = false;
+							checkboxes.forEach((checkbox) => {
+								if (
+									checkbox.lastChecked ||
+									checkbox === e.target
+								) {
+									console.log('open / close');
+									isBetween = !isBetween;
+									if (isBetween) {
+										if (
+											checkbox.lastChecked &&
+											checkbox.checked
+										) {
+											checkbox.click();
+										}
+										console.log('checkbox :: ', checkbox);
+									} else {
+										if (
+											checkbox.lastChecked &&
+											checkbox.checked
+										)
+											checkbox.click();
+									}
+								} else {
+									if (isBetween) {
+										if (checkbox.checked) {
+											checkbox.isBetween = true;
+											console.log(
+												'checkbox :: ',
+												checkbox,
+											);
+											checkbox.click();
+										}
+									}
+								}
+							});
+						}
+					}
+				} else {
+					//
+				}
+			}
+			// todo : 현재 타겟의 마지막 체크 true
+			checkboxes.forEach((checkbox) => {
+				delete checkbox.lastChecked;
+				delete e.target.isBetween;
+			});
+			e.target.lastChecked = true;
+		},
+		[checkboxes],
+	);
 
 	useEffect(() => {
 		resolvedRef.current.indeterminate = indeterminate;
@@ -32,8 +127,9 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 
 	return (
 		<input
+			className={rest.tablekey}
 			type='checkbox'
-			// onClick={handleClick}
+			onClick={handleClick}
 			ref={resolvedRef}
 			{...rest}
 		/>

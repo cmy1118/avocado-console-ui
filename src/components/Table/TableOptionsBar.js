@@ -137,6 +137,7 @@ TableOptionsBar.propTypes = {
 	allColumns: PropTypes.array.isRequired,
 	filters: PropTypes.array.isRequired,
 	setAllFilters: PropTypes.func.isRequired,
+	setGlobalFilter: PropTypes.func.isRequired,
 };
 
 export default TableOptionsBar;
