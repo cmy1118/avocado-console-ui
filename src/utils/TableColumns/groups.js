@@ -3,6 +3,7 @@ import TableTextBox from '../ColumnCells/TableTextBox';
 import React from 'react';
 import TableLink from '../ColumnCells/TableLink';
 import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
+import {statusConverter} from '../tableDataConverter';
 
 export const groupColumns = [
 	{
@@ -55,6 +56,7 @@ export const groupTypeColumns = [
 		Header: '설명',
 		accessor: 'description',
 	},
+
 	{
 		Header: '생성 일시',
 		accessor: 'creationDate',
@@ -148,6 +150,13 @@ export const groupUsersSummaryColumns = [
 	{
 		Header: '그룹 수',
 		accessor: 'groupsLength',
+	},
+	{
+		Header: '계정 상태',
+		accessor: 'status',
+		Cell: function Component(v) {
+			return <div>{statusConverter(v.value)}</div>;
+		},
 	},
 	{
 		Header: '마지막 콘솔 로그인',

@@ -9,9 +9,9 @@ import {
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {
-	numberOfGroupsConverter,
+	groupsConverter,
 	passwordExpiryTimeConverter,
-	tagConverter,
+	tagsConverter,
 } from '../../../utils/tableDataConverter';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import Table from '../../Table/Table';
@@ -29,8 +29,7 @@ const UserSpace = () => {
 	const data = useMemo(() => {
 		return users.map((v) => ({
 			...v,
-			tags: tagConverter(v.tags),
-			groups: numberOfGroupsConverter(
+			groups: groupsConverter(
 				v.groups.map(
 					(val) => groups.find((val2) => val2.id === val).name,
 				),
@@ -38,6 +37,7 @@ const UserSpace = () => {
 			passwordExpiryTime: passwordExpiryTimeConverter(
 				v.passwordExpiryTime,
 			),
+			tags: tagsConverter(v.tags),
 		}));
 	}, [users, groups]);
 

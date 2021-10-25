@@ -12,6 +12,10 @@ import {getColumnsAsKey} from '../../../utils/TableColumns';
 import Table from '../../Table/Table';
 import {tableKeys} from '../../../utils/data';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
+import {
+	parentGroupConverter,
+	rolesConverter,
+} from '../../../utils/tableDataConverter';
 
 const GroupSpace = () => {
 	const history = useHistory();
@@ -21,9 +25,11 @@ const GroupSpace = () => {
 	const data = useMemo(() => {
 		return groups.map((v) => ({
 			...v,
+			roles: rolesConverter(v.roles),
 			clientGroupType: groupTypes.find(
 				(val) => val.id === v.clientGroupTypeId,
 			).name,
+			parentId: parentGroupConverter(v.parentId),
 			numberOfUsers: v.members.length,
 		}));
 	}, [groups, groupTypes]);

@@ -20,13 +20,18 @@ export const passwordExpiryTimeConverter = (data) => {
 	return diffDate;
 };
 
-export const numberOfGroupsConverter = (data) => {
-	if (data.length === 0) return '';
+export const groupsConverter = (data) => {
+	if (data.length === 0) return '없음';
 	if (data.length === 1) return data[0];
 	return `${data[0]} 외 ${data.length - 1}`;
 };
 
-export const tagConverter = (data) => {
+export const rolesConverter = (data) => {
+	if (data.length === 0) return '없음';
+	return '정의됨';
+};
+
+export const tagsConverter = (data) => {
 	if (data.length === 0) return '없음';
 	if (data.length === 1) return data[0].value;
 	return `${data[0].value} 외 ${data.length - 1}`;
