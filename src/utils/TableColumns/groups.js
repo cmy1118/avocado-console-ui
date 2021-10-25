@@ -1,8 +1,8 @@
 import {LINK} from '../data';
 import TableTextBox from '../ColumnCells/TableTextBox';
-import CURRENT_TARGET from '../../reducers/currentTarget';
 import React from 'react';
 import TableLink from '../ColumnCells/TableLink';
+import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
 
 export const groupColumns = [
 	{
@@ -11,26 +11,33 @@ export const groupColumns = [
 		Cell: function Component(cell) {
 			return <TableLink cell={cell} />;
 		},
+		disableFilters: true,
 	},
 	{
 		Header: '그룹 유형',
 		accessor: 'clientGroupType',
+		disableFilters: true,
 	},
 	{
 		Header: '사용자 수',
 		accessor: 'numberOfUsers',
+		disableFilters: true,
 	},
 	{
 		Header: '권한',
 		accessor: 'roles',
+		disableFilters: true,
 	},
 	{
 		Header: '상위 그룹',
 		accessor: 'parentId',
+		disableFilters: true,
 	},
 	{
 		Header: '생성 일시',
 		accessor: 'creationDate',
+		filter: 'dateBetween',
+		Filter: CalenderOption,
 	},
 ];
 

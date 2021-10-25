@@ -4,7 +4,7 @@ import PageSizing from './Options/PageSizing';
 import Pagination from './Options/Pagination';
 import styled from 'styled-components';
 import FilterColumnsContextMenu from '../ContextMenu/FilterColumnsContextMenu';
-import AddSearchOptionsContextMenu from '../ContextMenu/AddSearchOptionsContextMenu';
+import SearchOptionsContextMenu from '../ContextMenu/SearchOptionsContextMenu';
 
 const _Container = styled.div`
 	display: flex;
@@ -36,6 +36,8 @@ const TableOptionsBar = ({
 	isNumberOfRowsAdjustable = false,
 	isColumnFilterable = false,
 	allColumns,
+	filters,
+	setAllFilters,
 }) => {
 	const [
 		isSearchFilterContextMenuOpened,
@@ -63,13 +65,17 @@ const TableOptionsBar = ({
 						<button onClick={onClickOpenSearchFilterContextMenu}>
 							{'✅'}
 						</button>
-						<AddSearchOptionsContextMenu
-							isOpened={isSearchFilterContextMenuOpened}
-							setIsOpened={setIsSearchFilterContextMenuOpened}
-							allOptions={searchFilters}
-							selectedOptions={selectedSearchFilters}
-							setSelectedOptions={setSelectedSearchFilters}
-						/>
+						{isSearchFilterContextMenuOpened && (
+							<SearchOptionsContextMenu
+								isOpened={isSearchFilterContextMenuOpened}
+								setIsOpened={setIsSearchFilterContextMenuOpened}
+								allOptions={searchFilters}
+								selectedOptions={selectedSearchFilters}
+								setSelectedOptions={setSelectedSearchFilters}
+								filters={filters}
+								setAllFilters={setAllFilters}
+							/>
+						)}
 					</div>
 				)}
 			</_OptionContainer>
@@ -129,6 +135,8 @@ TableOptionsBar.propTypes = {
 	pageSize: PropTypes.number.isRequired,
 	setPageSize: PropTypes.func.isRequired,
 	allColumns: PropTypes.array.isRequired,
+	filters: PropTypes.array.isRequired,
+	setAllFilters: PropTypes.func.isRequired,
 };
 
 export default TableOptionsBar;

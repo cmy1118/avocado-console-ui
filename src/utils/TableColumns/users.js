@@ -1,10 +1,10 @@
 import React from 'react';
 import TableTextBox from '../ColumnCells/TableTextBox';
 import TableLink from '../ColumnCells/TableLink';
-import SearchSelectionOption from '../../components/Table/Options/Search/SearchSelectionOption';
-import SearchTextBoxOption from '../../components/Table/Options/Search/SearchTextBoxOption';
+import SelectionOption from '../../components/Table/Options/Search/SelectionOption';
+import TextBoxOption from '../../components/Table/Options/Search/TextBoxOption';
 import {statusConverter} from '../tableDataConverter';
-import SearchCalenderOption from '../../components/Table/Options/Search/SearchCalenderOption';
+import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
 
 export const usersColumns = [
 	{
@@ -29,7 +29,7 @@ export const usersColumns = [
 		accessor: 'status',
 		Header: '계정 상태',
 		filter: 'equals',
-		Filter: SearchSelectionOption,
+		Filter: SelectionOption,
 		Cell: function Component(v) {
 			return <div>{statusConverter(v.value)}</div>;
 		},
@@ -38,19 +38,19 @@ export const usersColumns = [
 		accessor: 'authType',
 		Header: '인증유형',
 		filter: 'equals',
-		Filter: SearchSelectionOption,
+		Filter: SelectionOption,
 	},
 	{
 		accessor: 'MFA',
 		Header: 'MFA',
 		filter: 'equals',
-		Filter: SearchSelectionOption,
+		Filter: SelectionOption,
 	},
 	{
 		accessor: 'passwordExpiryTime',
 		Header: '비밀번호 수명',
 		filter: 'equals',
-		Filter: SearchTextBoxOption,
+		Filter: TextBoxOption,
 		Cell: function Component(v) {
 			return <div>{v.value}일전</div>;
 		},
@@ -63,13 +63,14 @@ export const usersColumns = [
 	{
 		accessor: 'lastConsoleLogin',
 		Header: '마지막 콘솔 로그인',
-		disableFilters: true,
+		filter: 'dateBetween',
+		Filter: CalenderOption,
 	},
 	{
 		accessor: 'creationDate',
 		Header: '생성 일시',
 		filter: 'dateBetween',
-		Filter: SearchCalenderOption,
+		Filter: CalenderOption,
 	},
 ];
 
@@ -80,7 +81,6 @@ export const addTagsToUserOnAddPageColumns = [
 		Cell: function Component(cell) {
 			return <TableTextBox cell={cell} />;
 		},
-		// id: LINK,
 	},
 	{
 		Header: '값(태그)',

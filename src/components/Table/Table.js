@@ -54,7 +54,6 @@ const Table = ({
 }) => {
 	const filterTypes = React.useMemo(
 		() => ({
-			// fuzzyText: dateBetweenFilterFn,
 			dateBetween: dateBetweenFilterFn,
 			text: (rows, id, filterValue) => {
 				return rows.filter((row) => {
@@ -98,7 +97,7 @@ const Table = ({
 		previousPage,
 		setPageSize,
 		setAllFilters,
-		state: {pageIndex, pageSize, selectedRowIds},
+		state: {pageIndex, pageSize, selectedRowIds, filters},
 	} = useTable(
 		{
 			data,
@@ -210,6 +209,16 @@ const Table = ({
 		e.preventDefault();
 	}, []);
 
+	const onClickCloseFilter = useCallback(
+		(v) => () => {
+			setSelectedSearchFilters(
+				selectedSearchFilters.filter((val) => val !== v),
+			);
+			setAllFilters(filters.filter((val) => val.id !== v));
+		},
+		[setAllFilters, selectedSearchFilters, setSelectedSearchFilters],
+	);
+
 	const onClickResetFilters = useCallback(() => {
 		setAllFilters([]);
 	}, [setAllFilters]);
@@ -241,16 +250,28 @@ const Table = ({
 				isNumberOfRowsAdjustable={isNumberOfRowsAdjustable}
 				isColumnFilterable={isColumnFilterable}
 				allColumns={allColumns}
+				filters={filters}
+				setAllFilters={setAllFilters}
 			/>
 
 			{headerGroups.map((headerGroup, i) => (
 				<div key={i} {...headerGroup.getHeaderGroupProps()}>
 					{headerGroup.headers.map((column, i) => (
-						<div key={i}>
+						<span key={i}>
 							{column.canFilter &&
-								// selectedSearchFilters.includes(column.id) &&
-								column.render('Filter')}
-						</div>
+								selectedSearchFilters.includes(column.id) && (
+									<span>
+										{column.render('Filter')}
+										<button
+											onClick={onClickCloseFilter(
+												column.id,
+											)}
+										>
+											X
+										</button>
+									</span>
+								)}
+						</span>
 					))}
 				</div>
 			))}

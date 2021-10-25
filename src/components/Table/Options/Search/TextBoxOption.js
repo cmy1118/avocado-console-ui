@@ -6,7 +6,7 @@ const placeholders = {
 	passwordExpiryTime: '비밀번호 수명',
 };
 
-const SearchTextBoxOption = ({column: {filterValue, setFilter, id}}) => {
+const TextBoxOption = ({column: {filterValue, setFilter, id}}) => {
 	const onChangeOption = useCallback(
 		(e) => {
 			if (e.target.value === '') setFilter(undefined);
@@ -16,7 +16,7 @@ const SearchTextBoxOption = ({column: {filterValue, setFilter, id}}) => {
 	);
 
 	return (
-		<div>
+		<span>
 			<input
 				type='number'
 				placeholder={placeholders[id]}
@@ -24,10 +24,10 @@ const SearchTextBoxOption = ({column: {filterValue, setFilter, id}}) => {
 				onChange={onChangeOption}
 			/>
 			일전
-		</div>
+		</span>
 	);
 };
 
-SearchTextBoxOption.propTypes = {column: PropTypes.object.isRequired};
+TextBoxOption.propTypes = {column: PropTypes.object.isRequired};
 
-export default SearchTextBoxOption;
+export default TextBoxOption;

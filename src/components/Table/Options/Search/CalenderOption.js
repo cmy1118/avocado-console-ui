@@ -5,7 +5,7 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import {DateRangePicker} from 'react-dates';
 
-const SearchCalenderOption = ({column: {filterValue = [], setFilter, id}}) => {
+const CalenderOption = ({column: {filterValue = [], setFilter, id}}) => {
 	const [focusedInput, setFocusedInput] = useState(null);
 
 	const onClickDateChange = useCallback(({startDate, endDate}) => {
@@ -17,21 +17,19 @@ const SearchCalenderOption = ({column: {filterValue = [], setFilter, id}}) => {
 	}, []);
 
 	return (
-		<div>
-			<DateRangePicker
-				startDate={filterValue[0]}
-				startDateId='start-date'
-				endDate={filterValue[1]}
-				endDateId='end-date'
-				onDatesChange={onClickDateChange}
-				focusedInput={focusedInput}
-				onFocusChange={onFocusChange}
-				isOutsideRange={() => false}
-			/>
-		</div>
+		<DateRangePicker
+			startDate={filterValue[0]}
+			startDateId='start-date'
+			endDate={filterValue[1]}
+			endDateId='end-date'
+			onDatesChange={onClickDateChange}
+			focusedInput={focusedInput}
+			onFocusChange={onFocusChange}
+			isOutsideRange={() => false}
+		/>
 	);
 };
 
-SearchCalenderOption.propTypes = {column: PropTypes.object.isRequired};
+CalenderOption.propTypes = {column: PropTypes.object.isRequired};
 
-export default SearchCalenderOption;
+export default CalenderOption;

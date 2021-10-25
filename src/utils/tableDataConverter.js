@@ -7,12 +7,11 @@ export const statusConverter = (status) => {
 		case 2:
 			return '대기';
 		case 3:
-			return '삭제';
 		case 4:
-			return '미승인';
+			return '삭제';
 
 		default:
-			return;
+			return '미승인';
 	}
 };
 

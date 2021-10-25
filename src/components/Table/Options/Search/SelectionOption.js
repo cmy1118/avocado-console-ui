@@ -9,7 +9,7 @@ const placeholders = {
 	MFA: 'MFA',
 };
 
-const SearchSelectionOption = ({column: {filterValue, setFilter, id}}) => {
+const SelectionOption = ({column: {filterValue, setFilter, id}}) => {
 	const onChangeOption = useCallback(
 		(e) => {
 			setFilter(e.target.value);
@@ -36,6 +36,6 @@ const SearchSelectionOption = ({column: {filterValue, setFilter, id}}) => {
 	);
 };
 
-SearchSelectionOption.propTypes = {column: PropTypes.object.isRequired};
+SelectionOption.propTypes = {column: PropTypes.object.isRequired};
 
-export default SearchSelectionOption;
+export default SelectionOption;

@@ -6,8 +6,8 @@ export const tableSearchSelectOptions = {
 		{value: 0, label: '정상'},
 		{value: 1, label: '잠김'},
 		{value: 2, label: '대기'},
-		{value: 3, label: '삭제'},
-		{value: 4, label: '미승인'},
+		{value: 3 | 4, label: '삭제'},
+		{value: 5, label: '미승인'},
 	],
 	authType: [
 		{value: 'ID/PWD', label: 'ID/PWD'},

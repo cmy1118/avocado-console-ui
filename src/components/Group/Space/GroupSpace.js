@@ -50,6 +50,7 @@ const GroupSpace = () => {
 				tableKey={tableKeys.groups}
 				columns={getColumnsAsKey[tableKeys.groups]}
 				data={data}
+				isSearchFilterable
 				isPageable
 				isNumberOfRowsAdjustable
 				isColumnFilterable
