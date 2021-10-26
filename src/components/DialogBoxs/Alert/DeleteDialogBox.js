@@ -12,7 +12,6 @@ import {
 	DialogBoxHeader,
 } from '../../../styles/components/dialogBox';
 import {
-	DefaultButton,
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';

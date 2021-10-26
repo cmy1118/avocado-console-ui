@@ -39,6 +39,7 @@ const TableOptionsBar = ({
 	allColumns,
 	filters,
 	setAllFilters,
+	getToggleHideAllColumnsProps,
 }) => {
 	const [
 		isSearchFilterContextMenuOpened,
@@ -107,6 +108,9 @@ const TableOptionsBar = ({
 							isOpened={isColumnFilterContextMenuOpened}
 							setIsOpened={setIsColumnFilterContextMenuOpened}
 							allColumns={allColumns}
+							getToggleHideAllColumnsProps={
+								getToggleHideAllColumnsProps
+							}
 						/>
 					</div>
 				)}
@@ -139,6 +143,7 @@ TableOptionsBar.propTypes = {
 	allColumns: PropTypes.array.isRequired,
 	filters: PropTypes.array.isRequired,
 	setAllFilters: PropTypes.func.isRequired,
+	getToggleHideAllColumnsProps: PropTypes.func.isRequired,
 };
 
 export default TableOptionsBar;

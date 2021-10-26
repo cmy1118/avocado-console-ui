@@ -98,6 +98,7 @@ const Table = ({
 		previousPage,
 		setPageSize,
 		setAllFilters,
+		getToggleHideAllColumnsProps,
 		state: {pageIndex, pageSize, selectedRowIds, filters},
 	} = useTable(
 		{
@@ -161,7 +162,6 @@ const Table = ({
 		[data, dndKey, selectedRowIds, tableKey],
 	);
 
-
 	const onDrop = useCallback(
 		(e) => {
 			e.preventDefault();
@@ -170,26 +170,25 @@ const Table = ({
 			if (setData) {
 				control // data를 control하는 쪽이면? 추가 아니면 삭제
 					? setData([
-						...data.map((v) => v.id),
-						...e.dataTransfer.getData('ids').split(','),
-					])
+							...data.map((v) => v.id),
+							...e.dataTransfer.getData('ids').split(','),
+					  ])
 					: setData(
-						e.dataTransfer
-							.getData('prevIds')
-							.split(',')
-							.filter(
-								(v) =>
-									!e.dataTransfer
-										.getData('ids')
-										.split(',')
-										.includes(v),
-							),
-					);
+							e.dataTransfer
+								.getData('prevIds')
+								.split(',')
+								.filter(
+									(v) =>
+										!e.dataTransfer
+											.getData('ids')
+											.split(',')
+											.includes(v),
+								),
+					  );
 			}
 		},
 		[dndKey, setData, control, data],
 	);
-
 
 	const onDragOver = useCallback((e) => {
 		e.preventDefault();
@@ -238,6 +237,7 @@ const Table = ({
 				allColumns={allColumns}
 				filters={filters}
 				setAllFilters={setAllFilters}
+				getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
 			/>
 
 			{headerGroups.map((headerGroup, i) => (
@@ -268,11 +268,7 @@ const Table = ({
 				</NormalBorderButton>
 			)}
 
-			<table
-				{...getTableProps()}
-				onDrop={onDrop}
-				onDragOver={onDragOver}
-			>
+			<table {...getTableProps()} onDrop={onDrop} onDragOver={onDragOver}>
 				<thead>
 					{headerGroups.map((headerGroup, i) => (
 						<tr key={i} {...headerGroup.getHeaderGroupProps()}>

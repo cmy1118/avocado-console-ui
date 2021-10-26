@@ -9,18 +9,23 @@ import {
 
 const Container = styled.div`
 	z-index: 0;
-	margin: 0px;
+	display: block !important;
+	height: 15px;
+	width: 15px;
+	margin: 2.5px;
 	opacity: ${(props) => (props.opacity === 'true' ? 0.24 : 1)};
 `;
 
 const InputContainer = styled.div`
+	height: 15px;
 	svg {
 		fill: ${(props) =>
 			(props.type === 'indeterminate' && props.disabled
 				? '#757575'
 				: '#178082') ||
 			(props.type === 'check' && '#178082') ||
-			(props.type === 'checkout' && '#757575')}
+			(props.type === 'checkout' && '#757575')};
+	}
 `;
 
 const CheckBoxContainer = ({
@@ -29,7 +34,6 @@ const CheckBoxContainer = ({
 	indeterminate = false, // 체크박스 하위 항목중 일부 체크 시
 	disabled = false,
 }) => {
-	console.log(children.props.checked);
 	return (
 		<Container
 			opacity={disabled.toString()}
