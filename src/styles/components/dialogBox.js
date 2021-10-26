@@ -9,13 +9,30 @@ export const DialogBox = styled(Modal)`
 	right: auto;
 	bottom: auto;
 	transform: translate(-50%, -50%);
+	box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.22);
+	border-radius: 4px;
+	border: 1px solid #e3e5e5;
+	font-size: 14px;
+	background: #ffffff;
 `;
 
 export const DialogBoxHeader = styled.div`
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
+	height: 41px;
+	padding: 0px 10px 0px 16px;
+	border-bottom: 1px solid #e3e5e5;
+	font-weight: 500;
 `;
-export const DialogBoxFooter = styled.div``;
+export const DialogBoxFooter = styled.div`
+	display: flex;
+	ailgn-items: center;
+	justify-content: flex-end;
+	height: 60px;
+	padding: 13px 16px;
+	border-top: 1px solid #e3e5e5;
+`;
 
 export const AlertDialogBox = styled(DialogBox)`
 	z-index: 15;

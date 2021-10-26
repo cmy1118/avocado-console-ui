@@ -9,6 +9,7 @@ import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {formKeys} from '../../../utils/data';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
 import Form from '../../RecycleComponents/Form';
+import {NormalBorderButton} from '../../../styles/components/buttons';
 
 const UserInfoTab = ({userId}) => {
 	const [isIdentificationOpened, setIsIdentificationOpened] = useState(false);
@@ -50,12 +51,12 @@ const UserInfoTab = ({userId}) => {
 					label={'사용자 비밀번호 : '}
 					defaultValue={'**********'}
 				>
-					<button
+					<NormalBorderButton
 						type={'button'}
 						onClick={onClickOpenIdentificationDialogBox}
 					>
 						비밀번호 변경
-					</button>
+					</NormalBorderButton>
 				</FormTextBox>
 				<FormTextBox
 					name={'email'}

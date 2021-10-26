@@ -2,13 +2,17 @@
 import styled from 'styled-components';
 
 export const DefaultButton = styled.button`
-	height: fit-content;
-	width: fit-content;
-	padding: 7px 16px;
+	display: flex;
+	align-items: center;
+	height: 34px;
+	width: ${(props) => props?.width || 'fit-content'};
+	padding: 7px 12px 6px;
 	font-size: 14px;
-	border: none;
 	border-radius: 4px;
-	margin: 0px 8px;
+	border: none;
+	margin: 0px 5px;
+	font-weight: 500;
+	letter-spacing: 0.14px;
 `;
 
 export const NormalButton = styled(DefaultButton)`
@@ -24,7 +28,7 @@ export const NormalButton = styled(DefaultButton)`
 
 export const WarningButton = styled(DefaultButton)`
 	color: #ffffff';
-		background: #d45959;
+	background: #d45959;
 	&:hover {
 		background:#de6565;
 	}
@@ -85,8 +89,8 @@ export const WarningBorderButton = styled(TransparentButton)`
 `;
 
 export const TransparentBorderButton = styled(DefaultButton)`
-	background: transparent;
 	color: #556367;
+	background: transparent;
 	&:hover {
 		background: #f8f9fa;
 	}

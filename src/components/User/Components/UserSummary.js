@@ -12,6 +12,7 @@ import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType'
 import styled from 'styled-components';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
+import {TransparentButton} from '../../../styles/components/buttons';
 
 const _Title = styled.div`
 	display: flex;
@@ -53,7 +54,7 @@ const UserSummary = ({userId}) => {
 		<>
 			<_Title>
 				<div>요약 [ {user?.id} ]</div>
-				<button>삭제</button>
+				<TransparentButton>삭제</TransparentButton>
 			</_Title>
 
 			<ul>

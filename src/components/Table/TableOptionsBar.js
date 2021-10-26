@@ -1,11 +1,13 @@
-import PropTypes from 'prop-types';
 import React, {useCallback, useState} from 'react';
-import PageSizing from './Options/PageSizing';
-import Pagination from './Options/Pagination';
 import styled from 'styled-components';
-import FilterColumnsContextMenu from '../ContextMenu/FilterColumnsContextMenu';
+
 import SearchOptionsContextMenu from '../ContextMenu/SearchOptionsContextMenu';
 import {NormalBorderButton} from '../../styles/components/buttons';
+import {filterListIcon} from '../../icons/icons';
+import PageSizing from './Options/PageSizing';
+import * as PropTypes from 'prop-types';
+import Pagination from './Options/Pagination';
+import FilterColumnsContextMenu from '../ContextMenu/FilterColumnsContextMenu';
 
 const _Container = styled.div`
 	display: flex;
@@ -14,6 +16,14 @@ const _Container = styled.div`
 
 const _OptionContainer = styled.div`
 	display: flex;
+`;
+
+const _FilterButton = styled(NormalBorderButton)`
+	padding: 4.5px 16px 5.5px 12px;
+`;
+
+const _FilterText = styled.span`
+	padding-left: 8px;
 `;
 
 const TableOptionsBar = ({
@@ -62,11 +72,12 @@ const TableOptionsBar = ({
 				{/*{isSearchable <Search/>}*/}
 				{isSearchFilterable && (
 					<div>
-						<NormalBorderButton
+						<_FilterButton
 							onClick={onClickOpenSearchFilterContextMenu}
 						>
-							필터 추가
-						</NormalBorderButton>
+							{filterListIcon}
+							<_FilterText>필터 추가</_FilterText>
+						</_FilterButton>
 						{isSearchFilterContextMenuOpened && (
 							<SearchOptionsContextMenu
 								isOpened={isSearchFilterContextMenuOpened}

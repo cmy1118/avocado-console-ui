@@ -1,4 +1,5 @@
 import React, {useCallback} from 'react';
+
 import {
 	DialogBox,
 	DialogBoxFooter,
@@ -8,16 +9,18 @@ import {IconButton} from '../../../styles/components/icons';
 import PropTypes from 'prop-types';
 import useInput from '../../../hooks/useInput';
 import {closeIcon} from '../../../icons/icons';
-import {useDispatch} from 'react-redux';
 import Form from '../../RecycleComponents/Form';
 import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
+import styled from 'styled-components';
+
+const _DialogBox = styled(DialogBox)`
+	width: 404px;
+`;
 
 const ChangePasswordDialogBox = ({isOpened, setIsOpened}) => {
-	const dispatch = useDispatch();
-
 	const [name, onChangeName] = useInput('');
 	const [description, onChangeDescription] = useInput('');
 
@@ -31,14 +34,14 @@ const ChangePasswordDialogBox = ({isOpened, setIsOpened}) => {
 	}, [description, name, setIsOpened]);
 
 	return (
-		<DialogBox
+		<_DialogBox
 			isOpen={isOpened}
 			onRequestClose={onClickCloseDialogBox}
 			ariaHideApp={false}
 			shouldCloseOnOverlayClick={false}
 		>
 			<DialogBoxHeader>
-				<div>Identification Dialog Box</div>
+				<div>비밀번호 변경</div>
 				<IconButton onClick={onClickCloseDialogBox}>
 					{closeIcon}
 				</IconButton>
@@ -71,7 +74,7 @@ const ChangePasswordDialogBox = ({isOpened, setIsOpened}) => {
 				</TransparentButton>
 				<NormalButton onClick={onSubmitForm}>Save</NormalButton>
 			</DialogBoxFooter>
-		</DialogBox>
+		</_DialogBox>
 	);
 };
 

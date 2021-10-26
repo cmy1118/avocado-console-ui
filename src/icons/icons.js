@@ -18,3 +18,7 @@ export const notificationIcon = (
 );
 
 export const closeIcon = <span className='material-icons'>close</span>;
+
+export const filterListIcon = (
+	<span className='material-icons'>filter_list</span>
+);
