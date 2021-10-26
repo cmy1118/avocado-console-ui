@@ -66,6 +66,7 @@ const UsersIncludedInGroup = () => {
 					isSearchable
 					dndKey={DndKey}
 					setSelect={setSelect}
+					api={'users'}
 				/>
 				<DropButton
 					leftTableKey={leftTableKey}
@@ -93,6 +94,7 @@ const UsersIncludedInGroup = () => {
 						dndKey={DndKey}
 						setData={setRightDataIds}
 						setSelect={setSelect}
+						api={'users'}
 					/>
 				</div>
 			</_Tables>

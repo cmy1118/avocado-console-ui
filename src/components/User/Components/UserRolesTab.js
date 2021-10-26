@@ -100,6 +100,7 @@ const UserRolesTab = ({userId}) => {
 				isSearchable
 				dndKey={'role'}
 				setSelect={setSelect}
+				api={'roles'}
 			/>
 			<div>
 				이 사용자의 다른권한 : {dataRight.length}{' '}
@@ -120,6 +121,7 @@ const UserRolesTab = ({userId}) => {
 				isSearchable
 				dndKey={'role'}
 				setSelect={setSelect}
+				api={'roles'}
 			/>
 		</>
 	);

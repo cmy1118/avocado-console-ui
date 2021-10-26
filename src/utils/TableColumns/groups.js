@@ -13,7 +13,7 @@ export const groupColumns = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'clientGroupType',
+		accessor: 'type',
 	},
 	{
 		Header: '사용자 수',

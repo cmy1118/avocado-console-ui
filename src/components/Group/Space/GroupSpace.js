@@ -21,7 +21,7 @@ const GroupSpace = () => {
 	const data = useMemo(() => {
 		return groups.map((v) => ({
 			...v,
-			clientGroupType: groupTypes.find(
+			type: groupTypes.find(
 				(val) => val.id === v.clientGroupTypeId,
 			).name,
 			numberOfUsers: v.members.length,

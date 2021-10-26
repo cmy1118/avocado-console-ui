@@ -98,7 +98,7 @@ export const groupsIncludedInUserOnAddPageColumns = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'clientGroupTypeId',
+		accessor: 'type',
 	},
 	{
 		Header: '사용자 수',
@@ -120,7 +120,7 @@ export const groupsExcludedFromUserOnAddPageColumns = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'clientGroupTypeId', //has to be changed
+		accessor: 'type', //has to be changed
 	},
 ];
 
@@ -162,7 +162,7 @@ export const userGroupsSummaryColumns = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'clientGroupType',
+		accessor: 'type',
 	},
 	{
 		Header: '권한 수',
@@ -326,7 +326,7 @@ export const groupsIncludedInUserOnDescPageColumns = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'clientGroupTypeId',
+		accessor: 'type',
 	},
 	{
 		Header: '권한 수',
@@ -353,7 +353,7 @@ export const groupsExcludedFromUserOnDescPageColumns = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'clientGroupTypeId',
+		accessor: 'type',
 	},
 	{
 		Header: '권한 수',

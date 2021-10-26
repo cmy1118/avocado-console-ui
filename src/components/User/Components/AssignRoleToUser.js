@@ -67,6 +67,7 @@ const AssignRoleToUser = ({setAllData}) => {
 					isSearchable
 					dndKey={'role'}
 					setSelect={setSelect}
+					api={'roles'}
 				/>
 
 				<DropButton
@@ -92,6 +93,8 @@ const AssignRoleToUser = ({setAllData}) => {
 						dndKey={'role'}
 						setData={setRightDataIds}
 						setSelect={setSelect}
+						control
+						api={'roles'}
 					/>
 				</div>
 			</_Tables>

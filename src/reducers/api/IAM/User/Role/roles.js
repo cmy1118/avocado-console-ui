@@ -12,7 +12,7 @@ const slice = createSlice({
 				name: 'manager-role',
 				description:
 					'사용자 레벨의 최고 관리자인 Manager에게 부여된 역할 (기본 제공)',
-				companyId: null,
+				companyId: 'Netand',
 				users: ['user1'],
 				groups: ['group1', 'group2'],
 				policies: ['policy1', 'policy2', 'policy3'],
@@ -22,7 +22,7 @@ const slice = createSlice({
 				id: 'role2',
 				name: 'admin-role',
 				description: 'Admin 사용자에게 부여 하는 역할',
-				companyId: null,
+				companyId: 'Netand',
 				users: ['user1', 'user2'],
 				groups: ['group1'],
 				policies: ['policy1', 'policy2'],

@@ -25,6 +25,7 @@ import {stringify} from 'qs';
 const Table = ({
 	tableKey,
 	data,
+	api,
 	columns,
 	isSearchable = false,
 	isSearchFilterable = false,
@@ -46,24 +47,17 @@ const Table = ({
 		return v.id;
 	}, []);
 
-	const onDropCheckTableKey = useCallback((tableKey) => {
-		switch (tableKey) {
-			case 0:
-				return '?';
-			case 1:
-				return '?';
-			default:
-				return;
-		}
-	}, []);
-
+	/***************************************************************************/
+	/* DndTable_update : 유형별 조건에 맞는 경고 알림추가
+	/*
+	/***************************************************************************/
 	const onDropCheckMaxNumber = useCallback(
 		(e, data, tableKey) => {
-			const key = isDropDataMaxNumber(tableKey);
+			const max = 10
 			const preDataLength = data.length;
 			const dropDataLength = e.dataTransfer.getData('ids').split(',')
 				.length;
-			if (preDataLength + dropDataLength > 10) {
+			if (preDataLength + dropDataLength > max) {
 				const key = isDropDataMaxNumber(tableKey);
 				dispatch(DIALOG_BOX.action.openAlert({key: key}));
 				return false;
@@ -75,9 +69,37 @@ const Table = ({
 	);
 
 	const onDropCheckTypeLimited = useCallback((e, data, tableKey) => {
-		const key = isDropTypeLimited(tableKey);
-		dispatch(DIALOG_BOX.action.openAlert({key: key}));
-	}, []);
+		const GROUP ='groups'
+		const ROLES ='roles'
+		const FILTER_TYPE = "Private";
+
+		const preDataType = data.map(v =>{
+			return v.type;
+		});
+		const dropDataType = e.dataTransfer.getData('selectedType').split(',');
+		//  API : groups 일때 - 그룹 유형 검사 : 그룹유형별 1개의 그룹만 추가
+		if(api) {
+			if(api === GROUP) {
+				const TypeLimited = dropDataType.filter(v => preDataType.includes(v)).length
+				if (TypeLimited > 1) {
+					const key = isDropTypeLimited(tableKey);
+					dispatch(DIALOG_BOX.action.openAlert({key: key}));
+				}
+			}else if(api === ROLES){
+				// API : roles 일때 - 역할 유형 검사 : Private 유형은 한사용자에게만
+				if (dropDataType.includes(FILTER_TYPE) && preDataType.includes(FILTER_TYPE)) {
+					const key = isDropTypeLimited(tableKey);
+					dispatch(DIALOG_BOX.action.openAlert({key: key}));
+					return false;
+				} else {
+					return true;
+				}
+			}else{
+				return true;
+			}
+		}
+	}, [dispatch]);
+	/***************************************************************************/
 
 	const {
 		getTableProps,
@@ -137,21 +159,18 @@ const Table = ({
 	const onDragStart = useCallback(
 		(row) => (e) => {
 			const firstTarget = e.target.firstChild.childNodes[0];
-			e.dataTransfer.setData('go', selectedFlatRows);
-			const flatRows = selectedFlatRows;
+			// const flatRows = selectedFlatRows;
 			const selected = Object.keys(selectedRowIds);
 			if (firstTarget.type === 'checkbox' && !firstTarget.checked) {
 				firstTarget.click();
 				selected.push(row.id);
-				flatRows.push(row);
+				// flatRows.push(row);
 			}
-			e.dataTransfer.setData(
-				'objects',
-				JSON.stringify(flatRows.toString()),
-			);
-
 			e.dataTransfer.setData('ids', selected.toString());
-			e.dataTransfer.setData('flatRows', flatRows.toString());
+			e.dataTransfer.setData(
+				'prevIds',
+				data.map((v) => v.id),
+			);
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
 		},
@@ -161,17 +180,11 @@ const Table = ({
 	const onDrop = useCallback(
 		(e) => {
 			e.preventDefault();
-
-			const flatRows = e.dataTransfer.getData('flatRows').split(',');
-			console.log('flatRows - drop:');
-
 			if (e.dataTransfer.getData('dndKey') !== dndKey) return;
 			if (setData) {
-				//유형별 1개 추가 가능
 				control // data를 control하는 쪽이면? 추가 아니면 삭제
-					? // onDropCheckMaxNumber(e,tableKey) &&
-
-					  //     onDropCheckTypeLimited(tableKey, data) &&
+					? onDropCheckMaxNumber(e,data,tableKey) &&
+					      onDropCheckTypeLimited(e,data,tableKey) &&
 					  setData([
 							...data.map((v) => v.id),
 							...e.dataTransfer.getData('ids').split(','),
@@ -322,6 +335,7 @@ Table.propTypes = {
 	setData: PropTypes.func,
 	setSelect: PropTypes.func,
 	control: PropTypes.bool,
+	api: PropTypes.string,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 

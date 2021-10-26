@@ -27,6 +27,7 @@ const UserGroupsTab = ({userId}) => {
 			.filter((v) => rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
+				type:v.clientGroupTypeId,
 				numberOfRoles: v.roles.length,
 			}));
 	}, [groups, rightDataIds]);
@@ -36,6 +37,7 @@ const UserGroupsTab = ({userId}) => {
 			.filter((v) => !rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
+				type:v.clientGroupTypeId,
 				numberOfRoles: v.roles.length,
 			}));
 	}, [groups, rightDataIds]);
@@ -93,6 +95,7 @@ const UserGroupsTab = ({userId}) => {
 				isSearchable
 				dndKey={'groups'}
 				setSelect={setSelect}
+				api={'groups'}
 			/>
 			<div>
 				이 사용자의 다른그룹 : {dataRight.length}{' '}
@@ -111,6 +114,7 @@ const UserGroupsTab = ({userId}) => {
 				isSearchable
 				dndKey={'groups'}
 				setSelect={setSelect}
+				api={'groups'}
 			/>
 		</>
 	);

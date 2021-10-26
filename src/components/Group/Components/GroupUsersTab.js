@@ -98,6 +98,7 @@ const GroupUsersTab = ({groupId}) => {
 				isSearchable
 				dndKey={'role'}
 				setSelect={setSelect}
+				api={'users'}
 			/>
 			<div>
 				이 그룹의 다 른권한 : {dataRight.length}
@@ -116,6 +117,7 @@ const GroupUsersTab = ({groupId}) => {
 				isSearchable
 				dndKey={'role'}
 				setSelect={setSelect}
+				api={'users'}
 			/>
 		</>
 	);

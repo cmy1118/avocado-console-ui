@@ -1,8 +1,5 @@
-import DIALOG_BOX from '../reducers/dialogBoxs';
-import {useDispatch} from 'react-redux';
 import {keys} from '../Constants/Table/keys';
 import {alertMessages} from '../components/DialogBoxs/Alert/ConfirmDialogBox';
-// eslint-disable-next-line react-hooks/rules-of-hooks
 
 export const isDropDataMaxNumber = (tableKey) => {
 	switch (tableKey) {
