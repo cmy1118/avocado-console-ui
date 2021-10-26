@@ -21,6 +21,11 @@ import {
 	maxNumberOfData,
 } from '../../utils/dropTableDataCheck';
 import {stringify} from 'qs';
+import {
+	checkArrayhasDuplicates,
+	checkArrayIsUniqueHasDuplicates,
+	checkArraysIsUniqueHasDuplicates
+} from "../../utils/dataFitering";
 
 const Table = ({
 	tableKey,
@@ -58,21 +63,19 @@ const Table = ({
 			const dropDataLength = e.dataTransfer.getData('ids').split(',')
 				.length;
 			if (preDataLength + dropDataLength > max) {
-				const key = isDropDataMaxNumber(tableKey);
-				dispatch(DIALOG_BOX.action.openAlert({key: key}));
+				dispatch(DIALOG_BOX.action.openAlert({key: isDropDataMaxNumber(tableKey)}));
 				return false;
 			} else {
 				return true;
 			}
 		},
-		[dispatch],
+		[data,tableKey,dispatch],
 	);
 
 	const onDropCheckTypeLimited = useCallback((e, data, tableKey) => {
 		const GROUP ='groups'
 		const ROLES ='roles'
 		const FILTER_TYPE = "Private";
-
 		const preDataType = data.map(v =>{
 			return v.type;
 		});
@@ -81,15 +84,15 @@ const Table = ({
 		if(api) {
 			if(api === GROUP) {
 				const TypeLimited = dropDataType.filter(v => preDataType.includes(v)).length
-				if (TypeLimited > 1) {
-					const key = isDropTypeLimited(tableKey);
-					dispatch(DIALOG_BOX.action.openAlert({key: key}));
+				if (TypeLimited > 1 || checkArrayhasDuplicates(dropDataType)) {
+					dispatch(DIALOG_BOX.action.openAlert({key: isDropTypeLimited(tableKey)}));
+					return false;
 				}
+				return true
 			}else if(api === ROLES){
 				// API : roles 일때 - 역할 유형 검사 : Private 유형은 한사용자에게만
-				if (dropDataType.includes(FILTER_TYPE) && preDataType.includes(FILTER_TYPE)) {
-					const key = isDropTypeLimited(tableKey);
-					dispatch(DIALOG_BOX.action.openAlert({key: key}));
+				if (checkArrayIsUniqueHasDuplicates(dropDataType,FILTER_TYPE) || checkArraysIsUniqueHasDuplicates(preDataType,dropDataType,FILTER_TYPE) ) {
+					dispatch(DIALOG_BOX.action.openAlert({key: isDropTypeLimited(tableKey)}));
 					return false;
 				} else {
 					return true;
@@ -98,7 +101,7 @@ const Table = ({
 				return true;
 			}
 		}
-	}, [dispatch]);
+	}, [data,tableKey,dispatch]);
 	/***************************************************************************/
 
 	const {
@@ -159,13 +162,18 @@ const Table = ({
 	const onDragStart = useCallback(
 		(row) => (e) => {
 			const firstTarget = e.target.firstChild.childNodes[0];
-			// const flatRows = selectedFlatRows;
+			const flatRows = selectedFlatRows;
 			const selected = Object.keys(selectedRowIds);
 			if (firstTarget.type === 'checkbox' && !firstTarget.checked) {
 				firstTarget.click();
 				selected.push(row.id);
-				// flatRows.push(row);
+				flatRows.push(row);
 			}
+			if(dndKey){
+				const selectedType = flatRows.map(v=>v.values.type)
+				e.dataTransfer.setData('selectedType', selectedType.toString());
+			}
+
 			e.dataTransfer.setData('ids', selected.toString());
 			e.dataTransfer.setData(
 				'prevIds',
@@ -183,7 +191,8 @@ const Table = ({
 			if (e.dataTransfer.getData('dndKey') !== dndKey) return;
 			if (setData) {
 				control // data를 control하는 쪽이면? 추가 아니면 삭제
-					? onDropCheckMaxNumber(e,data,tableKey) &&
+					?
+					onDropCheckMaxNumber(e,data,tableKey) &&
 					      onDropCheckTypeLimited(e,data,tableKey) &&
 					  setData([
 							...data.map((v) => v.id),
