@@ -1,12 +1,6 @@
-import React, {
-	forwardRef,
-	useCallback,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from 'react';
+import React, {forwardRef, useCallback, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
+import CheckBoxContainer from '../../RecycleComponents/CheckBoxContainer';
 
 const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 	const defaultRef = useRef();
@@ -121,18 +115,23 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 		[checkboxes],
 	);
 
+	// console.log(rest);
+	// console.log(indeterminate);
+
 	useEffect(() => {
 		resolvedRef.current.indeterminate = indeterminate;
 	}, [resolvedRef, indeterminate]);
 
 	return (
-		<input
-			className={rest.tablekey}
-			type='checkbox'
-			onClick={handleClick}
-			ref={resolvedRef}
-			{...rest}
-		/>
+		<CheckBoxContainer indeterminate={indeterminate}>
+			<input
+				className={rest.tablekey}
+				type='checkbox'
+				onClick={handleClick}
+				ref={resolvedRef}
+				{...rest}
+			/>
+		</CheckBoxContainer>
 	);
 });
 
