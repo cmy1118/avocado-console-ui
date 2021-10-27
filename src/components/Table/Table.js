@@ -1,9 +1,9 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
 import {
-	usePagination,
 	useGlobalFilter,
+	usePagination,
 	useRowSelect,
 	useSortBy,
 	useTable,
@@ -13,19 +13,12 @@ import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
 import DIALOG_BOX from '../../reducers/dialogBoxs';
 import {useDispatch} from 'react-redux';
-import {
-	dropMaxNumberOfData,
-	droptypeLimited,
-	isDropDataMaxNumber,
-	isDropTypeLimited,
-	maxNumberOfData,
-} from '../../utils/dropTableDataCheck';
-import {stringify} from 'qs';
+import {CheckDropDataType} from '../../utils/dropTableDataCheck';
 import {
 	checkArrayhasDuplicates,
 	checkArrayIsUniqueHasDuplicates,
-	checkArraysIsUniqueHasDuplicates
-} from "../../utils/dataFitering";
+	checkArraysIsUniqueHasDuplicates,
+} from '../../utils/dataFitering';
 
 const Table = ({
 	tableKey,
@@ -58,50 +51,84 @@ const Table = ({
 	/***************************************************************************/
 	const onDropCheckMaxNumber = useCallback(
 		(e, data, tableKey) => {
-			const max = 10
+			const max = 10;
 			const preDataLength = data.length;
 			const dropDataLength = e.dataTransfer.getData('ids').split(',')
 				.length;
 			if (preDataLength + dropDataLength > max) {
-				dispatch(DIALOG_BOX.action.openAlert({key: isDropDataMaxNumber(tableKey)}));
+				console.log('최대 10개의 사용자만 추가 가능합니다.');
+				dispatch(
+					DIALOG_BOX.action.openAlert({
+						key: 'maxNumberOfUsers',
+					}),
+				);
 				return false;
 			} else {
 				return true;
 			}
 		},
-		[data,tableKey,dispatch],
+		[dispatch],
 	);
 
-	const onDropCheckTypeLimited = useCallback((e, data, tableKey) => {
-		const GROUP ='groups'
-		const ROLES ='roles'
-		const FILTER_TYPE = "Private";
-		const preDataType = data.map(v =>{
-			return v.type;
-		});
-		const dropDataType = e.dataTransfer.getData('selectedType').split(',');
-		//  API : groups 일때 - 그룹 유형 검사 : 그룹유형별 1개의 그룹만 추가
-		if(api) {
-			if(api === GROUP) {
-				const TypeLimited = dropDataType.filter(v => preDataType.includes(v)).length
-				if (TypeLimited > 1 || checkArrayhasDuplicates(dropDataType)) {
-					dispatch(DIALOG_BOX.action.openAlert({key: isDropTypeLimited(tableKey)}));
-					return false;
-				}
-				return true
-			}else if(api === ROLES){
-				// API : roles 일때 - 역할 유형 검사 : Private 유형은 한사용자에게만
-				if (checkArrayIsUniqueHasDuplicates(dropDataType,FILTER_TYPE) || checkArraysIsUniqueHasDuplicates(preDataType,dropDataType,FILTER_TYPE) ) {
-					dispatch(DIALOG_BOX.action.openAlert({key: isDropTypeLimited(tableKey)}));
-					return false;
+	const onDropCheckTypeLimited = useCallback(
+		(e, data, tableKey) => {
+			const GROUP = 'groups';
+			const ROLES = 'roles';
+			const UESRS = 'users';
+			const FILTER_TYPE = 'Private';
+			const preDataType = data.map((v) => {
+				return v.type;
+			});
+			const dropDataType = e.dataTransfer
+				.getData('selectedType')
+				.split(',');
+			//  API : groups 일때 - 그룹 유형 검사 : 그룹유형별 1개의 그룹만 추가
+			if (CheckDropDataType(tableKey)) {
+				if (CheckDropDataType(tableKey) === GROUP) {
+					const TypeLimited = dropDataType.filter((v) =>
+						preDataType.includes(v),
+					).length;
+					if (
+						TypeLimited > 1 ||
+						checkArrayhasDuplicates(dropDataType)
+					) {
+						dispatch(
+							DIALOG_BOX.action.openAlert({
+								key: 'singleCountGroupTypes',
+							}),
+						);
+						return false;
+					}
+					return true;
+				} else if (CheckDropDataType(tableKey) === ROLES) {
+					// API : roles 일때 - 역할 유형 검사 : Private 유형은 한사용자에게만
+					if (
+						checkArrayIsUniqueHasDuplicates(
+							dropDataType,
+							FILTER_TYPE,
+						) ||
+						checkArraysIsUniqueHasDuplicates(
+							preDataType,
+							dropDataType,
+							FILTER_TYPE,
+						)
+					) {
+						dispatch(
+							DIALOG_BOX.action.openAlert({
+								key: 'singleCountRolesTypes',
+							}),
+						);
+						return false;
+					} else {
+						return true;
+					}
 				} else {
 					return true;
 				}
-			}else{
-				return true;
 			}
-		}
-	}, [data,tableKey,dispatch]);
+		},
+		[dispatch],
+	);
 	/***************************************************************************/
 
 	const {
@@ -169,8 +196,8 @@ const Table = ({
 				selected.push(row.id);
 				flatRows.push(row);
 			}
-			if(dndKey){
-				const selectedType = flatRows.map(v=>v.values.type)
+			if (dndKey) {
+				const selectedType = flatRows.map((v) => v.values.type);
 				e.dataTransfer.setData('selectedType', selectedType.toString());
 			}
 
@@ -182,7 +209,7 @@ const Table = ({
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
 		},
-		[dndKey, selectedFlatRows, selectedRowIds, tableKey],
+		[data, dndKey, selectedFlatRows, selectedRowIds, tableKey],
 	);
 
 	const onDrop = useCallback(
@@ -191,9 +218,8 @@ const Table = ({
 			if (e.dataTransfer.getData('dndKey') !== dndKey) return;
 			if (setData) {
 				control // data를 control하는 쪽이면? 추가 아니면 삭제
-					?
-					onDropCheckMaxNumber(e,data,tableKey) &&
-					      onDropCheckTypeLimited(e,data,tableKey) &&
+					? onDropCheckMaxNumber(e, data, tableKey) &&
+					  onDropCheckTypeLimited(e, data, tableKey) &&
 					  setData([
 							...data.map((v) => v.id),
 							...e.dataTransfer.getData('ids').split(','),
@@ -212,7 +238,15 @@ const Table = ({
 					  );
 			}
 		},
-		[dndKey, setData, control, data],
+		[
+			dndKey,
+			setData,
+			control,
+			onDropCheckMaxNumber,
+			data,
+			tableKey,
+			onDropCheckTypeLimited,
+		],
 	);
 
 	const onDragOver = (e) => {

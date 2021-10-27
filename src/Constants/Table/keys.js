@@ -1,4 +1,4 @@
-export const keys = Object.freeze({
+export const tablekeys = Object.freeze({
 	users: {
 		basic: 'USER', // 기본
 		add: {

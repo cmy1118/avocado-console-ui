@@ -1,34 +1,68 @@
-import {keys} from '../Constants/Table/keys';
+import {tablekeys} from '../Constants/Table/keys';
 import {alertMessages} from '../components/DialogBoxs/Alert/ConfirmDialogBox';
+
+//drop table data 의 type 확인을 위한 객체
+export const tableDropDataType = [
+	{
+		type: 'users',
+		tablekeys: [
+			'GROUP_ADD_USERS_INCLUDE',
+			'GROUP_SUMMARY_TABS_USERS_INCLUDE',
+		],
+	},
+	{
+		type: 'groups',
+		tablekeys: [
+			'USER_ADD_GROUPS_INCLUDE',
+			'USER_SUMMARY_TABS_GROUPS_INCLUDE',
+		],
+	},
+	{
+		type: 'roles',
+		tablekeys: [
+			'USER_ADD_ROLES_INCLUDE',
+			'USER_SUMMARY_TABS_ROLES_INCLUDE',
+			'GROUP_ADD_ROLES_INCLUDE',
+			'GROUP_SUMMARY_TABS_ROLES_INCLUDE',
+		],
+	},
+];
+export const CheckDropDataType = (tableKey) => {
+	let type;
+	tableDropDataType.map((v) => {
+		v.tablekeys.includes(tableKey) ? (type = v.type) : true;
+	});
+	return type;
+};
 
 export const isDropDataMaxNumber = (tableKey) => {
 	switch (tableKey) {
 		//사용자 상세
-		case keys.users.summary.tabs.groups.exclude:
+		case tablekeys.users.summary.tabs.groups.exclude:
 			return alertMessages.maxNumberOfGroups;
 
-		case keys.users.summary.tabs.roles.exclude:
+		case tablekeys.users.summary.tabs.roles.exclude:
 			return alertMessages.maxNumberOfRoles;
 
 		//사용자 생성
-		case keys.users.add.groups.exclude:
+		case tablekeys.users.add.groups.exclude:
 			return alertMessages.maxNumberOfGroups;
 
-		case keys.users.add.roles.exclude:
+		case tablekeys.users.add.roles.exclude:
 			return alertMessages.maxNumberOfRoles;
 
 		//그룹 상세
-		case keys.groups.summary.tabs.users.exclude:
+		case tablekeys.groups.summary.tabs.users.exclude:
 			return alertMessages.maxNumberOfUsers;
 
-		case keys.groups.summary.tabs.roles.exclude:
+		case tablekeys.groups.summary.tabs.roles.exclude:
 			return alertMessages.maxNumberOfRoles;
 
 		//그룹 생성
-		case keys.groups.add.users.exclude:
+		case tablekeys.groups.add.users.exclude:
 			return alertMessages.maxNumberOfUsers;
 
-		case keys.groups.add.roles.exclude:
+		case tablekeys.groups.add.roles.exclude:
 			return alertMessages.maxNumberOfRoles;
 
 		default:
@@ -40,25 +74,25 @@ export const isDropTypeLimited = (tableKey) => {
 	//roles , groups
 	switch (tableKey) {
 		//사용자 상세
-		case keys.users.summary.tabs.groups.exclude:
+		case tablekeys.users.summary.tabs.groups.exclude:
 			return alertMessages.singleCountGroupTypes;
 
-		case keys.users.summary.tabs.roles.exclude:
+		case tablekeys.users.summary.tabs.roles.exclude:
 			return alertMessages.singleCountRolesTypes;
 
 		//사용자 생성
-		case keys.users.add.groups.exclude:
+		case tablekeys.users.add.groups.exclude:
 			return alertMessages.singleCountGroupTypes;
 
-		case keys.users.add.roles.exclude:
+		case tablekeys.users.add.roles.exclude:
 			return alertMessages.singleCountRolesTypes;
 
 		//그룹 상세
-		case keys.groups.summary.tabs.roles.exclude:
+		case tablekeys.groups.summary.tabs.roles.exclude:
 			return alertMessages.singleCountRolesTypes;
 
 		//그룹 생성
-		case keys.groups.add.roles.exclude:
+		case tablekeys.groups.add.roles.exclude:
 			return alertMessages.singleCountRolesTypes;
 		default:
 			return true;
