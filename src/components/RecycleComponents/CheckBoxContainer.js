@@ -29,7 +29,6 @@ const CheckBoxContainer = ({
 	indeterminate = false, // 체크박스 하위 항목중 일부 체크 시
 	disabled = false,
 }) => {
-	console.log(children.props.checked);
 	return (
 		<Container
 			opacity={disabled.toString()}

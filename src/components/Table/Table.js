@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect,useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
 import {
@@ -103,7 +103,7 @@ const Table = ({
 			const dropDataLength = e.dataTransfer.getData('ids').split(',')
 				.length;
 			if (preDataLength + dropDataLength > max) {
-				console.log('최대 10개의 사용자만 추가 가능합니다.');
+				alert('최대 10개의 사용자만 추가 가능합니다.', tableKey);
 				dispatch(
 					DIALOG_BOX.action.openAlert({
 						key: 'maxNumberOfUsers',
@@ -132,6 +132,7 @@ const Table = ({
 			//  API : groups 일때 - 그룹 유형 검사 : 그룹유형별 1개의 그룹만 추가
 			if (CheckDropDataType(tableKey)) {
 				if (CheckDropDataType(tableKey) === GROUP) {
+					alert('GROUP');
 					const TypeLimited = dropDataType.filter((v) =>
 						preDataType.includes(v),
 					).length;
@@ -139,6 +140,7 @@ const Table = ({
 						TypeLimited > 1 ||
 						checkArrayhasDuplicates(dropDataType)
 					) {
+						alert('그룹유형별 1개의 그룹만 추가');
 						dispatch(
 							DIALOG_BOX.action.openAlert({
 								key: 'singleCountGroupTypes',
@@ -160,6 +162,7 @@ const Table = ({
 							FILTER_TYPE,
 						)
 					) {
+						alert('Private 유형은 한사용자에게만');
 						dispatch(
 							DIALOG_BOX.action.openAlert({
 								key: 'singleCountRolesTypes',
@@ -238,7 +241,8 @@ const Table = ({
 
 	const onDragStart = useCallback(
 		(row) => (e) => {
-			const firstTarget = e.target.firstChild.childNodes[0];
+			const firstTarget = e.target.firstChild.childNodes[0].childNodes[0];
+			console.log('firstTarget:', firstTarget);
 			const flatRows = selectedFlatRows;
 			const selected = Object.keys(selectedRowIds);
 			if (firstTarget.type === 'checkbox' && !firstTarget.checked) {
@@ -249,6 +253,7 @@ const Table = ({
 			if (dndKey) {
 				const selectedType = flatRows.map((v) => v.values.type);
 				e.dataTransfer.setData('selectedType', selectedType.toString());
+				console.log('selectedType', selectedType);
 			}
 			e.dataTransfer.setData('ids', selected.toString());
 			e.dataTransfer.setData(
@@ -260,7 +265,6 @@ const Table = ({
 		},
 		[data, dndKey, selectedFlatRows, selectedRowIds, tableKey],
 	);
-
 
 	const onDrop = useCallback(
 		(e) => {
@@ -275,15 +279,15 @@ const Table = ({
 							...e.dataTransfer.getData('ids').split(','),
 					  ])
 					: setData(
-						e.dataTransfer
-							.getData('prevIds')
-							.split(',')
-							.filter(
-								(v) =>
-									!e.dataTransfer
-										.getData('ids')
-										.split(',')
-										.includes(v),
+							e.dataTransfer
+								.getData('prevIds')
+								.split(',')
+								.filter(
+									(v) =>
+										!e.dataTransfer
+											.getData('ids')
+											.split(',')
+											.includes(v),
 								),
 					  );
 			}
@@ -298,7 +302,6 @@ const Table = ({
 			onDropCheckTypeLimited,
 		],
 	);
-
 
 	const onDragOver = useCallback((e) => {
 		e.preventDefault();
@@ -328,6 +331,7 @@ const Table = ({
 	);
 
 	useEffect(() => {
+		console.log(selectedRowIds);
 		setSelect && setSelect(Object.keys(selectedRowIds));
 		selectedRowIds && selectedDropBtton(selectedRowIds);
 	}, [selectedRowIds, setSelect, selectedDropBtton, selectedFlatRows]);
@@ -387,11 +391,7 @@ const Table = ({
 				</NormalBorderButton>
 			)}
 
-			<table
-				{...getTableProps()}
-				onDrop={onDrop}
-				onDragOver={onDragOver}
-			>
+			<table {...getTableProps()} onDrop={onDrop} onDragOver={onDragOver}>
 				<thead>
 					{headerGroups.map((headerGroup, i) => (
 						<tr key={i} {...headerGroup.getHeaderGroupProps()}>

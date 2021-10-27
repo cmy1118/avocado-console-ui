@@ -4,6 +4,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import styled from 'styled-components';
 import DropButton from '../../Table/DropButton';
+import {tableKeys} from '../../../Constants/Table/keys';
+import {tableColumns} from '../../../Constants/Table/columns';
 
 const _Tables = styled.div`
 	display: flex;
