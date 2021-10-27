@@ -123,7 +123,7 @@ export const USER_ADD_GROUPS_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'clientGroupTypeId',
+		accessor: 'type',
 	},
 	{
 		Header: '사용자 수',
@@ -144,8 +144,8 @@ export const USER_ADD_GROUPS_INCLUDE_COLUMN = [
 		accessor: 'name',
 	},
 	{
-		Header: '그룹유형',
-		accessor: 'clientGroupTypeId', //has to be changed
+		Header: '그룹 유형',
+		accessor: 'type', //has to be changed
 	},
 ];
 
@@ -187,7 +187,7 @@ export const USER_SUMMARY_GROUP_COLUMN = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'clientGroupType',
+		accessor: 'type',
 	},
 	{
 		Header: '권한 수',
@@ -346,7 +346,7 @@ export const USER_SUMMARY_TABS_GROUPS_INCLUDE_COLUMN = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'clientGroupTypeId',
+		accessor: 'type',
 	},
 	{
 		Header: '권한 수',
@@ -369,7 +369,7 @@ export const USER_SUMMARY_TABS_GROUPS_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'clientGroupTypeId',
+		accessor: 'type',
 	},
 	{
 		Header: '권한 수',

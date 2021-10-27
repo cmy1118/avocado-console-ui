@@ -15,7 +15,7 @@ export const GROUP_COLUMN = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'clientGroupType',
+		accessor: 'type',
 		disableFilters: true,
 	},
 	{

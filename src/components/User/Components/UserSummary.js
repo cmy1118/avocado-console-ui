@@ -37,6 +37,7 @@ const UserSummary = ({userId}) => {
 				clientGroupType: groupTypes.find(
 					(val) => val.id === v.clientGroupTypeId,
 				).name,
+				type:v.clientGroupTypeId,
 				numberOfRoles: v.roles.length,
 				parentGroup: parentGroupConverter(v.parentId),
 			}));

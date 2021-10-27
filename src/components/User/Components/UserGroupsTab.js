@@ -24,6 +24,7 @@ const UserGroupsTab = ({userId}) => {
 			.filter((v) => rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
+				type:v.clientGroupTypeId,
 				numberOfRoles: v.roles.length,
 			}));
 	}, [groups, rightDataIds]);
@@ -33,6 +34,7 @@ const UserGroupsTab = ({userId}) => {
 			.filter((v) => !rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
+				type:v.clientGroupTypeId,
 				numberOfRoles: v.roles.length,
 			}));
 	}, [groups, rightDataIds]);

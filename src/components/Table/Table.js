@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect,useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
 import {
@@ -13,6 +13,14 @@ import {
 
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
+import DIALOG_BOX from '../../reducers/dialogBoxs';
+import {useDispatch} from 'react-redux';
+import {CheckDropDataType} from '../../utils/dropTableDataCheck';
+import {
+	checkArrayhasDuplicates,
+	checkArrayIsUniqueHasDuplicates,
+	checkArraysIsUniqueHasDuplicates,
+} from '../../utils/dataFitering';
 import {NormalBorderButton} from '../../styles/components/buttons';
 
 function dateBetweenFilterFn(rows, id, filterValues) {
@@ -54,6 +62,7 @@ const Table = ({
 	control = false,
 	setSelect,
 }) => {
+	const dispatch = useDispatch();
 	const filterTypes = React.useMemo(
 		() => ({
 			dateBetween: dateBetweenFilterFn,
@@ -83,6 +92,92 @@ const Table = ({
 		return v.id;
 	}, []);
 
+	/***************************************************************************/
+	/* DndTable_update : 유형별 조건에 맞는 경고 알림추가
+	/*
+	/***************************************************************************/
+	const onDropCheckMaxNumber = useCallback(
+		(e, data, tableKey) => {
+			const max = 10;
+			const preDataLength = data.length;
+			const dropDataLength = e.dataTransfer.getData('ids').split(',')
+				.length;
+			if (preDataLength + dropDataLength > max) {
+				console.log('최대 10개의 사용자만 추가 가능합니다.');
+				dispatch(
+					DIALOG_BOX.action.openAlert({
+						key: 'maxNumberOfUsers',
+					}),
+				);
+				return false;
+			} else {
+				return true;
+			}
+		},
+		[dispatch],
+	);
+
+	const onDropCheckTypeLimited = useCallback(
+		(e, data, tableKey) => {
+			const GROUP = 'groups';
+			const ROLES = 'roles';
+			const UESRS = 'users';
+			const FILTER_TYPE = 'Private';
+			const preDataType = data.map((v) => {
+				return v.type;
+			});
+			const dropDataType = e.dataTransfer
+				.getData('selectedType')
+				.split(',');
+			//  API : groups 일때 - 그룹 유형 검사 : 그룹유형별 1개의 그룹만 추가
+			if (CheckDropDataType(tableKey)) {
+				if (CheckDropDataType(tableKey) === GROUP) {
+					const TypeLimited = dropDataType.filter((v) =>
+						preDataType.includes(v),
+					).length;
+					if (
+						TypeLimited > 1 ||
+						checkArrayhasDuplicates(dropDataType)
+					) {
+						dispatch(
+							DIALOG_BOX.action.openAlert({
+								key: 'singleCountGroupTypes',
+							}),
+						);
+						return false;
+					}
+					return true;
+				} else if (CheckDropDataType(tableKey) === ROLES) {
+					// API : roles 일때 - 역할 유형 검사 : Private 유형은 한사용자에게만
+					if (
+						checkArrayIsUniqueHasDuplicates(
+							dropDataType,
+							FILTER_TYPE,
+						) ||
+						checkArraysIsUniqueHasDuplicates(
+							preDataType,
+							dropDataType,
+							FILTER_TYPE,
+						)
+					) {
+						dispatch(
+							DIALOG_BOX.action.openAlert({
+								key: 'singleCountRolesTypes',
+							}),
+						);
+						return false;
+					} else {
+						return true;
+					}
+				} else {
+					return true;
+				}
+			}
+		},
+		[dispatch],
+	);
+	/***************************************************************************/
+
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -98,6 +193,8 @@ const Table = ({
 		previousPage,
 		setPageSize,
 		setAllFilters,
+		setGlobalFilter,
+		selectedFlatRows,
 		state: {pageIndex, pageSize, selectedRowIds, filters},
 	} = useTable(
 		{
@@ -141,24 +238,27 @@ const Table = ({
 
 	const onDragStart = useCallback(
 		(row) => (e) => {
-			console.log('onDragStart ::: ', tableKey);
 			const firstTarget = e.target.firstChild.childNodes[0];
-			console.log(firstTarget);
+			const flatRows = selectedFlatRows;
 			const selected = Object.keys(selectedRowIds);
 			if (firstTarget.type === 'checkbox' && !firstTarget.checked) {
 				firstTarget.click();
 				selected.push(row.id);
+				flatRows.push(row);
+			}
+			if (dndKey) {
+				const selectedType = flatRows.map((v) => v.values.type);
+				e.dataTransfer.setData('selectedType', selectedType.toString());
 			}
 			e.dataTransfer.setData('ids', selected.toString());
 			e.dataTransfer.setData(
 				'prevIds',
 				data.map((v) => v.id),
 			);
-			console.log('set-data:', selected);
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
 		},
-		[data, dndKey, selectedRowIds, tableKey],
+		[data, dndKey, selectedFlatRows, selectedRowIds, tableKey],
 	);
 
 
@@ -166,13 +266,14 @@ const Table = ({
 		(e) => {
 			e.preventDefault();
 			if (e.dataTransfer.getData('dndKey') !== dndKey) return;
-
 			if (setData) {
 				control // data를 control하는 쪽이면? 추가 아니면 삭제
-					? setData([
-						...data.map((v) => v.id),
-						...e.dataTransfer.getData('ids').split(','),
-					])
+					? onDropCheckMaxNumber(e, data, tableKey) &&
+					  onDropCheckTypeLimited(e, data, tableKey) &&
+					  setData([
+							...data.map((v) => v.id),
+							...e.dataTransfer.getData('ids').split(','),
+					  ])
 					: setData(
 						e.dataTransfer
 							.getData('prevIds')
@@ -183,11 +284,19 @@ const Table = ({
 										.getData('ids')
 										.split(',')
 										.includes(v),
-							),
-					);
+								),
+					  );
 			}
 		},
-		[dndKey, setData, control, data],
+		[
+			dndKey,
+			setData,
+			control,
+			onDropCheckMaxNumber,
+			data,
+			tableKey,
+			onDropCheckTypeLimited,
+		],
 	);
 
 
@@ -202,16 +311,26 @@ const Table = ({
 			);
 			setAllFilters(filters.filter((val) => val.id !== v));
 		},
-		[setAllFilters, selectedSearchFilters, setSelectedSearchFilters],
+		[selectedSearchFilters, setAllFilters, filters],
 	);
 
 	const onClickResetFilters = useCallback(() => {
 		setAllFilters([]);
 	}, [setAllFilters]);
 
-	useMountedLayoutEffect(() => {
-		isSelectable && setSelect && setSelect(Object.keys(selectedRowIds));
-	}, [isSelectable, selectedRowIds, setSelect]);
+	const selectedDropBtton = useCallback(
+		(selectedRowIds) => {
+			const data = {};
+			data[tableKey] = selectedRowIds;
+			setSelect && setSelect(data);
+		},
+		[setSelect, tableKey],
+	);
+
+	useEffect(() => {
+		setSelect && setSelect(Object.keys(selectedRowIds));
+		selectedRowIds && selectedDropBtton(selectedRowIds);
+	}, [selectedRowIds, setSelect, selectedDropBtton, selectedFlatRows]);
 
 	return (
 		<div>

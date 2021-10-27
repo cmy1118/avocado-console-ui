@@ -75,6 +75,7 @@ const AssignRoleToGroup = () => {
 					isSearchable
 					setData={setRightDataIds}
 					setSelect={setSelectedExcludedRoles}
+					api={'roles'}
 				/>
 
 				<div>
@@ -97,6 +98,7 @@ const AssignRoleToGroup = () => {
 						setData={setRightDataIds}
 						control
 						setSelect={setSelectedIncludedRoles}
+						api={'roles'}
 					/>
 				</div>
 			</_Tables>

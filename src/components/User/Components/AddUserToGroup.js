@@ -21,11 +21,13 @@ const AddUserToGroup = () => {
 	const dataLeft = useMemo(() => {
 		const dropDataTypeId = groups
 			.filter((v) => rightDataIds.includes(v.id))
-			.map((v) => v.clientGroupTypeId);
+			.map((v) => v.clientGroupTypeId,
+				);
 		return groups
 			.filter((v) => !dropDataTypeId.includes(v.clientGroupTypeId))
 			.map((v) => ({
 				...v,
+				type:v.clientGroupTypeId,
 				numberOfUsers: v.members.length,
 			}));
 	}, [groups, rightDataIds]);
@@ -35,6 +37,7 @@ const AddUserToGroup = () => {
 			.filter((v) => rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
+				type:v.clientGroupTypeId,
 			}));
 	}, [groups, rightDataIds]);
 
@@ -65,6 +68,7 @@ const AddUserToGroup = () => {
 					dndKey={tableKeys.users.add.groups.dnd}
 					setData={setRightDataIds}
 					setSelect={setSelect}
+					api={'groups'}
 				/>
 				<DropButton
 					leftTableKey={tableKeys.users.add.groups.exclude}
@@ -91,6 +95,7 @@ const AddUserToGroup = () => {
 						setData={setRightDataIds}
 						setSelect={setSelect}
 						control
+						api={'groups'}
 					/>
 				</div>
 			</_Tables>

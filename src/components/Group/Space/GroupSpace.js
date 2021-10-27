@@ -31,7 +31,7 @@ const GroupSpace = () => {
 		return groups.map((v) => ({
 			...v,
 			roles: rolesConverter(v.roles),
-			clientGroupType: groupTypes.find(
+			type: groupTypes.find(
 				(val) => val.id === v.clientGroupTypeId,
 			).name,
 			parentId: parentGroupConverter(v.parentId),
