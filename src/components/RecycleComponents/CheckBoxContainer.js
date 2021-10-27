@@ -7,24 +7,28 @@ import {
 	indeterminateIcon,
 } from '../../icons/icons';
 
-const Container = styled.div`
+const _Container = styled.div`
 	z-index: 0;
-	display: block !important;
-	height: 15px;
-	width: 15px;
-	margin: 2.5px;
+	display: flex !important;
+	align-items: center;
+	margin: 0px;
+	width: 100%;
+	cursor: pointer;
 	opacity: ${(props) => (props.opacity === 'true' ? 0.24 : 1)};
 `;
 
 const InputContainer = styled.div`
-	height: 15px;
+	line-height: 17px !important;
 	svg {
 		fill: ${(props) =>
-			(props.type === 'indeterminate' && props.disabled
-				? '#757575'
-				: '#178082') ||
+			(props.type === 'indeterminate' && props.disabled && '#757575') ||
+			(props.type === 'indeterminate' && !props.disabled && '#178082') ||
 			(props.type === 'check' && '#178082') ||
 			(props.type === 'checkout' && '#757575')};
+
+		width: 15px !important;
+		height: 15px !important;
+		margin: 2.5px !important;
 	}
 `;
 
@@ -35,34 +39,36 @@ const CheckBoxContainer = ({
 	disabled = false,
 }) => {
 	return (
-		<Container
-			opacity={disabled.toString()}
-			className='pretty p-svg p-curve p-plain p-toggle p-thick'
-		>
-			{React.Children.map(children, (child) => {
-				return child;
-			})}
-			{indeterminate ? (
-				<InputContainer
-					type={'indeterminate'}
-					disabled={children.props.disabled}
-					className='state'
-				>
-					{indeterminateIcon}
-					<label>{title}</label>
-				</InputContainer>
-			) : children.props.checked ? (
-				<InputContainer type={'check'} className='state'>
-					{checkIcon}
-					<label>{title}</label>
-				</InputContainer>
-			) : (
-				<InputContainer type={'checkout'} className='state'>
-					{checkOutlineIcon}
-					<label>{title}</label>
-				</InputContainer>
-			)}
-		</Container>
+		<>
+			<_Container
+				opacity={disabled.toString()}
+				className='pretty p-svg p-curve p-plain p-toggle p-thick'
+			>
+				{React.Children.map(children, (child) => {
+					return child;
+				})}
+				{indeterminate ? (
+					<InputContainer
+						type={'indeterminate'}
+						disabled={children.props.disabled}
+						className='state'
+					>
+						{indeterminateIcon}
+						<label>{title}</label>
+					</InputContainer>
+				) : children.props.checked ? (
+					<InputContainer type={'check'} className='state'>
+						{checkIcon}
+						<label>{title}</label>
+					</InputContainer>
+				) : (
+					<InputContainer type={'checkout'} className='state'>
+						{checkOutlineIcon}
+						<label>{title}</label>
+					</InputContainer>
+				)}
+			</_Container>
+		</>
 	);
 };
 

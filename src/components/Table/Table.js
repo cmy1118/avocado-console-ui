@@ -99,6 +99,7 @@ const Table = ({
 		setPageSize,
 		setAllFilters,
 		getToggleHideAllColumnsProps,
+		setHiddenColumns,
 		state: {pageIndex, pageSize, selectedRowIds, filters},
 	} = useTable(
 		{
@@ -134,6 +135,7 @@ const Table = ({
 								tablekey={tableKey}
 							/>
 						),
+						disableChangeVisible: true,
 					},
 					...columns,
 				]);
@@ -143,7 +145,7 @@ const Table = ({
 	const onDragStart = useCallback(
 		(row) => (e) => {
 			console.log('onDragStart ::: ', tableKey);
-			const firstTarget = e.target.firstChild.childNodes[0];
+			const firstTarget = e.target.firstChild.childNodes[0].childNodes[0];
 			console.log(firstTarget);
 			const selected = Object.keys(selectedRowIds);
 			if (firstTarget.type === 'checkbox' && !firstTarget.checked) {
@@ -237,6 +239,7 @@ const Table = ({
 				allColumns={allColumns}
 				filters={filters}
 				setAllFilters={setAllFilters}
+				setHiddenColumns={setHiddenColumns}
 				getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
 			/>
 

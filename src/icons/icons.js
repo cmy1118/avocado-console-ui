@@ -22,7 +22,7 @@ export const closeIcon = <span className='material-icons'>close</span>;
 // checkbox
 export const indeterminateIcon = (
 	<svg
-		// className='pretty svg svg-icon'
+		className='pretty svg svg-icon'
 		xmlns='http://www.w3.org/2000/svg'
 		height='20px'
 		viewBox='3 3 18 18'
@@ -35,7 +35,7 @@ export const indeterminateIcon = (
 
 export const checkOutlineIcon = (
 	<svg
-		// className='pretty svg svg-icon'
+		className='pretty svg svg-icon'
 		xmlns='http://www.w3.org/2000/svg'
 		height='20px'
 		viewBox='3 3 18 18'
@@ -49,7 +49,7 @@ export const checkOutlineIcon = (
 
 export const checkIcon = (
 	<svg
-		// className='pretty svg svg-icon'
+		className='pretty svg svg-icon'
 		xmlns='http://www.w3.org/2000/svg'
 		height='20px'
 		viewBox='3 3 18 18'
