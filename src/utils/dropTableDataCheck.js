@@ -35,6 +35,10 @@ export const CheckDropDataType = (tableKey) => {
 	return type;
 };
 
+
+
+
+
 export const isDropDataMaxNumber = (tableKey) => {
 	switch (tableKey) {
 		//사용자 상세

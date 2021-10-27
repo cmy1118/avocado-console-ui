@@ -22,6 +22,7 @@ import {
 	checkArraysIsUniqueHasDuplicates,
 } from '../../utils/dataFitering';
 import {NormalBorderButton} from '../../styles/components/buttons';
+import {checkDropTypeAlertMessage} from "../DialogBoxs/Alert/ConfirmDialogBox";
 
 function dateBetweenFilterFn(rows, id, filterValues) {
 	let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;
@@ -98,15 +99,15 @@ const Table = ({
 	/***************************************************************************/
 	const onDropCheckMaxNumber = useCallback(
 		(e, data, tableKey) => {
-			const max = 10;
+			const max = 4;
 			const preDataLength = data.length;
 			const dropDataLength = e.dataTransfer.getData('ids').split(',')
 				.length;
 			if (preDataLength + dropDataLength > max) {
-				alert('최대 10개의 사용자만 추가 가능합니다.', tableKey);
+				alert('최대 10개의  추가 가능합니다.', tableKey);
 				dispatch(
 					DIALOG_BOX.action.openAlert({
-						key: 'maxNumberOfUsers',
+						key: checkDropTypeAlertMessage(tableKey),
 					}),
 				);
 				return false;

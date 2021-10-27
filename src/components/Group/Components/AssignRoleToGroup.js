@@ -63,8 +63,11 @@ const AssignRoleToGroup = () => {
 			<_Tables>
 				<Table
 					data={dataLeft}
-					tableKey={tableKeys.groups.add.roles.include}
-					columns={tableColumns[tableKeys.groups.add.roles.include]}
+					tableKey={tableKeys.groups.add.roles.exclude}
+					columns={
+						tableColumns[tableKeys.groups.add.roles.exclude]
+					}
+
 					isPageable
 					isNumberOfRowsAdjustable
 					isColumnFilterable
@@ -87,10 +90,8 @@ const AssignRoleToGroup = () => {
 					<div>추가 Roles: {rightDataIds.length}건</div>
 					<Table
 						data={dataRight}
-						tableKey={tableKeys.groups.add.roles.exclude}
-						columns={
-							tableColumns[tableKeys.groups.add.roles.exclude]
-						}
+						tableKey={tableKeys.groups.add.roles.include}
+						columns={tableColumns[tableKeys.groups.add.roles.include]}
 						isSortable
 						isSelectable
 						isDnDPossible

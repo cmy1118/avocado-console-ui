@@ -14,6 +14,7 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
+import {CheckDropDataType} from "../../../utils/dropTableDataCheck";
 
 //type: 'alert' or 'confirm'
 export const alertMessages = {
@@ -43,8 +44,27 @@ export const alertMessages = {
 		type: 'alert',
 		message: '최대 10개의 태그만 등록 가능합니다.',
 	},
+	//default 값
+	maxNumberOfDatas: {
+		type: 'alert',
+		message: '최대 10개의 데이터만 등록 가능합니다.',
+	},
 };
+export const checkDropTypeAlertMessage= (tableKey)=> {
+	switch (CheckDropDataType(tableKey)) {
+		case 'users':
+			return 'maxNumberOfUsers'
+		case 'groups':
+			return 'maxNumberOfGroups'
+		case 'roles':
+			return 'maxNumberOfRoles'
+		case 'tags':
+			return 'maxNumberOfTags'
+		default:
+			return 'maxNumberOfDatas'
+	}
 
+}
 const ConfirmDialogBox = () => {
 	const dispatch = useDispatch();
 	const {alert} = useSelector(DIALOG_BOX.selector);
