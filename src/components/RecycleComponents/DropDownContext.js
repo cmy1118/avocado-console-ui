@@ -2,10 +2,6 @@ import React, {useCallback, useRef} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {useRootClose} from 'react-overlays';
-import {
-	NormalBorderButton,
-	TransparentBorderButton,
-} from '../../styles/components/buttons';
 
 const _Container = styled.div`
 	z-index: 99;
@@ -38,32 +34,9 @@ const _CheckboxContainer = styled.div`
 	cursor: pointer;
 `;
 
-const _Header = styled.div`
-	height: 41px;
-	display: flex;
-	align-items: center;
-	padding: 0px 16px;
-	font-size: 14px;
-	font-weight: 500;
-	font-stretch: normal;
-	font-style: normal;
-	line-height: normal;
-	letter-spacing: 0.14px;
-	color: #212121;
-	border-bottom: 1px solid #e3e5e5;
-`;
-
 const _Body = styled.div`
 	padding: 8px 0px;
 	width: 100%;
-`;
-const _Footer = styled.div`
-	height: 60px;
-	padding: 0px 8px;
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	border-top: 1px solid #e3e5e5;
 `;
 
 const DropDownContext = ({
@@ -73,9 +46,6 @@ const DropDownContext = ({
 	value,
 	setValue,
 	width = '90px',
-	// title,
-	// okEvent,
-	// cancelEvent,
 }) => {
 	const ref = useRef();
 
@@ -101,11 +71,6 @@ const DropDownContext = ({
 
 	return isOpened ? (
 		<_Container ref={ref} alignEnd>
-			{/*{title && (*/}
-			{/*	<_Header>*/}
-			{/*		<span>{title}</span>*/}
-			{/*	</_Header>*/}
-			{/*)}*/}
 			<_Body>
 				{options.map((item, key) => (
 					<_CheckboxContainer
@@ -121,16 +86,6 @@ const DropDownContext = ({
 					</_CheckboxContainer>
 				))}
 			</_Body>
-			{/*{title && (*/}
-			{/*	<_Footer>*/}
-			{/*		<TransparentBorderButton onClick={cancelEvent}>*/}
-			{/*			취소*/}
-			{/*		</TransparentBorderButton>*/}
-			{/*		<NormalBorderButton onClick={okEvent}>*/}
-			{/*			확인*/}
-			{/*		</NormalBorderButton>*/}
-			{/*	</_Footer>*/}
-			{/*)}*/}
 		</_Container>
 	) : (
 		<></>
@@ -143,8 +98,5 @@ DropDownContext.propTypes = {
 	value: PropTypes.any.isRequired,
 	options: PropTypes.array.isRequired,
 	width: PropTypes.string,
-	// title: PropTypes.string,
-	// okEvent: PropTypes.func,
-	// cancelEvent: PropTypes.func,
 };
 export default DropDownContext;

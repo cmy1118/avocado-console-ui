@@ -1,22 +1,8 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import {useRootClose} from 'react-overlays';
 import CheckBoxContainer from '../RecycleComponents/CheckBoxContainer';
-import {
-	NormalBorderButton,
-	TransparentBorderButton,
-} from '../../styles/components/buttons';
-
-const _Container = styled.div`
-	z-index: 99;
-	position: absolute;
-	width: 230px;
-	border-radius: 4px;
-	box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.22);
-	border: solid 1px #e3e5e5;
-	background: white;
-`;
+import DropdownBtnContainer from '../RecycleComponents/DropdownBtnContainer';
 
 const _CheckboxContainer = styled.div`
 	height: 32px;
@@ -31,34 +17,7 @@ const _CheckboxContainer = styled.div`
 `;
 
 const _SelectAllContainer = styled(_CheckboxContainer)`
-	margin-top: 8px;
 	border-bottom: 1px solid #e3e5e5;
-`;
-
-const _Header = styled.div`
-	height: 41px;
-	display: flex;
-	align-items: center;
-	padding: 0px 16px;
-	font-family: NotoSansCJKKR;
-	font-size: 14px;
-	font-weight: 500;
-	font-stretch: normal;
-	font-style: normal;
-	line-height: normal;
-	letter-spacing: 0.14px;
-	color: #212121;
-	border-bottom: 1px solid #e3e5e5;
-`;
-const _Body = styled.div`
-	width: 100%;
-`;
-const _Footer = styled.div`
-	height: 60px;
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	border-top: 1px solid #e3e5e5;
 `;
 
 const FilterColumnsContextMenu = ({
@@ -67,8 +26,6 @@ const FilterColumnsContextMenu = ({
 	allColumns,
 	setHiddenColumns,
 }) => {
-	const ref = useRef();
-
 	const filteredList = useMemo(() => {
 		return allColumns.filter((v) => !v.disableChangeVisible);
 	}, [allColumns]);
@@ -77,17 +34,17 @@ const FilterColumnsContextMenu = ({
 		filteredList.filter((v) => v.isVisible).map((v) => v.id),
 	);
 
-	const onClickCloseContextMenu = useCallback(() => {
+	const onClickCancelBtn = useCallback(() => {
 		setCheck(filteredList.filter((v) => v.isVisible).map((v) => v.id));
 		setIsOpened(false);
 	}, [filteredList, setIsOpened]);
 
-	const onClickSaveCheckedList = useCallback(() => {
+	const onClickOkBtn = useCallback(() => {
 		setHiddenColumns(
 			filteredList.filter((v) => !check.includes(v.id)).map((v) => v.id),
 		);
 		setIsOpened(false);
-	}, [check, filteredList, setHiddenColumns]);
+	}, [check, filteredList, setHiddenColumns, setIsOpened]);
 
 	const onClickSetCheck = useCallback(
 		(columns) => (e) => {
@@ -105,16 +62,14 @@ const FilterColumnsContextMenu = ({
 		[check],
 	);
 
-	useRootClose(ref, onClickCloseContextMenu, {
-		disabled: !isOpened,
-	});
-
 	return isOpened ? (
-		<_Container ref={ref} alignEnd>
-			<_Header>
-				<span>표시되는 열</span>
-			</_Header>
-			<_Body>
+		<DropdownBtnContainer
+			title={'표시되는 열'}
+			isOpened={isOpened}
+			onClickOkBtn={onClickOkBtn}
+			onClickCancelBtn={onClickCancelBtn}
+		>
+			<>
 				<_SelectAllContainer onClick={onClickSetCheck(filteredList)}>
 					<CheckBoxContainer
 						title={'모두 선택'}
@@ -144,16 +99,8 @@ const FilterColumnsContextMenu = ({
 						</CheckBoxContainer>
 					</_CheckboxContainer>
 				))}
-			</_Body>
-			<_Footer>
-				<TransparentBorderButton onClick={onClickCloseContextMenu}>
-					취소
-				</TransparentBorderButton>
-				<NormalBorderButton onClick={onClickSaveCheckedList}>
-					확인
-				</NormalBorderButton>
-			</_Footer>
-		</_Container>
+			</>
+		</DropdownBtnContainer>
 	) : (
 		<></>
 	);

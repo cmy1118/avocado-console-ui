@@ -9,10 +9,16 @@ import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {formKeys} from '../../../utils/data';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
 import Form from '../../RecycleComponents/Form';
+import ModalFormContainer from '../../RecycleComponents/ModalFormContainer';
+import {NormalButton} from '../../../styles/components/buttons';
 
 const UserInfoTab = ({userId}) => {
 	const [isIdentificationOpened, setIsIdentificationOpened] = useState(false);
 	const [isChangePasswordOpened, setIsChangePasswordOpened] = useState(false);
+	const [email, setEmail] = useState('');
+	const [authNumber, setAuthNumber] = useState(null);
+	const [count, setCount] = useState(0);
+	const [authCheck, setAuthCheck] = useState(false);
 	const {users} = useSelector(IAM_USER.selector);
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
@@ -25,6 +31,20 @@ const UserInfoTab = ({userId}) => {
 
 	const onClickOpenIdentificationDialogBox = useCallback(() => {
 		setIsIdentificationOpened(true);
+	}, []);
+
+	const SendAuthNumber = useCallback((data) => {
+		console.log('api 인증번호 확인 ::', data);
+		console.log('인증완료 처리 후..');
+		setIsIdentificationOpened(false);
+		setIsChangePasswordOpened(true);
+	}, []);
+
+	const ConfirmAuthNumber = useCallback((data) => {
+		console.log('api 인증번호 확인 ::', data);
+		console.log('인증완료 처리 후..');
+		setIsIdentificationOpened(false);
+		setIsChangePasswordOpened(true);
 	}, []);
 
 	return (
@@ -73,6 +93,34 @@ const UserInfoTab = ({userId}) => {
 					defaultValue={user.mobile}
 				/>
 			</Form>
+
+			<ModalFormContainer
+				formKey={'changePassword'}
+				isOpened={isIdentificationOpened}
+				setIsOpened={setIsIdentificationOpened}
+				title={'본인 확인'}
+			>
+				<Form id={'sendAuthNumber'} onSubmit={SendAuthNumber}>
+					<label htmlFor={'name'}>수신 정보</label>
+					<FormTextBox
+						name={'email'}
+						placeholder={'E-mail 주소'}
+						setValue={setEmail}
+						autoFocus
+					/>
+					<NormalButton form={'sendAuthNumber'}>
+						인증번호 전송
+					</NormalButton>
+				</Form>
+				<Form id={'authNumber'} onSubmit={ConfirmAuthNumber}>
+					<FormTextBox
+						name={'authNumber'}
+						placeholder={'인증번호 입력'}
+						setValue={setAuthNumber}
+					/>
+					<NormalButton form={'authNumber'}>인증하기</NormalButton>
+				</Form>
+			</ModalFormContainer>
 
 			<IdentificationDialogBox
 				isOpened={isIdentificationOpened}
