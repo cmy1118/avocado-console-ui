@@ -1,20 +1,17 @@
-import React, {useCallback, useMemo, useRef} from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {useRootClose} from 'react-overlays';
 import CheckBoxContainer from '../RecycleComponents/CheckBoxContainer';
 import {
-	DefaultButton,
 	NormalBorderButton,
 	TransparentBorderButton,
-	TransparentButton,
 } from '../../styles/components/buttons';
 
 const _Container = styled.div`
 	z-index: 99;
 	position: absolute;
 	width: 230px;
-	// height: 440px;
 	border-radius: 4px;
 	box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.22);
 	border: solid 1px #e3e5e5;
@@ -72,34 +69,39 @@ const FilterColumnsContextMenu = ({
 }) => {
 	const ref = useRef();
 
+	const filteredList = useMemo(() => {
+		return allColumns.filter((v) => !v.disableChangeVisible);
+	}, [allColumns]);
+
+	const [check, setCheck] = useState(
+		filteredList.filter((v) => v.isVisible).map((v) => v.id),
+	);
+
 	const onClickCloseContextMenu = useCallback(() => {
 		setIsOpened(false);
 	}, [setIsOpened]);
 
-	const onClickHandleCheck = useCallback(
+	const onClickSaveCheckedList = useCallback(() => {
+		setHiddenColumns(
+			filteredList.filter((v) => !check.includes(v.id)).map((v) => v.id),
+		);
+	}, [check, filteredList, setHiddenColumns]);
+
+	const onClickSetCheck = useCallback(
 		(columns) => (e) => {
 			e.stopPropagation();
 			if (Array.isArray(columns)) {
-				if (columns.find((v) => !v.isVisible)) {
-					setHiddenColumns([]);
-				} else {
-					setHiddenColumns(columns.map((v) => v.id));
-				}
+				if (columns.length === check.length) setCheck([]);
+				else setCheck(columns.map((v) => v.id));
 			} else {
-				if (e.target.type !== 'checkbox') {
-					const checkInput = e.target.firstChild?.childNodes[0];
-					if (checkInput.type === 'checkbox') {
-						checkInput.click();
-					}
-				}
+				console.log(columns);
+				if (check.includes(columns.id))
+					setCheck(check.filter((v) => v !== columns.id));
+				else setCheck([...check, columns.id]);
 			}
 		},
-		[setHiddenColumns],
+		[check],
 	);
-
-	const filteredList = useMemo(() => {
-		return allColumns.filter((v) => !v.disableChangeVisible);
-	}, [allColumns]);
 
 	useRootClose(ref, onClickCloseContextMenu, {
 		disabled: !isOpened,
@@ -111,35 +113,31 @@ const FilterColumnsContextMenu = ({
 				<span>표시되는 열</span>
 			</_Header>
 			<_Body>
-				<_SelectAllContainer onClick={onClickHandleCheck(filteredList)}>
+				<_SelectAllContainer onClick={onClickSetCheck(filteredList)}>
 					<CheckBoxContainer
 						title={'모두 선택'}
 						indeterminate={
-							filteredList.length !==
-								filteredList.filter((v) => v.isVisible)
-									.length &&
-							0 < filteredList.filter((v) => v.isVisible).length
+							check.length !== 0 &&
+							check.length < filteredList.length
 						}
 					>
 						<input
 							type='checkbox'
-							checked={
-								filteredList.length ===
-								filteredList.filter((v) => v.isVisible).length
-							}
+							checked={check.length === filteredList.length}
 							readOnly
 						/>
 					</CheckBoxContainer>
 				</_SelectAllContainer>
 				{filteredList.map((column) => (
 					<_CheckboxContainer
-						onClick={onClickHandleCheck(column)}
+						onClick={onClickSetCheck(column)}
 						key={column.id}
 					>
 						<CheckBoxContainer title={column.Header}>
 							<input
 								type='checkbox'
-								{...column.getToggleHiddenProps()}
+								checked={check.includes(column.id)}
+								readOnly
 							/>
 						</CheckBoxContainer>
 					</_CheckboxContainer>
@@ -149,7 +147,7 @@ const FilterColumnsContextMenu = ({
 				<TransparentBorderButton onClick={onClickCloseContextMenu}>
 					취소
 				</TransparentBorderButton>
-				<NormalBorderButton onClick={onClickCloseContextMenu}>
+				<NormalBorderButton onClick={onClickSaveCheckedList}>
 					확인
 				</NormalBorderButton>
 			</_Footer>
