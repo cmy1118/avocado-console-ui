@@ -146,17 +146,11 @@ const DropButton = ({
 
 	//데이터 회수
 	const onClickRightDropButton = useCallback(() => {
-		let selectId;
 		const UESRS = 'users';
 		//TODO: users 의 uid 데이터 처리 수정
-		if (CheckDropDataType(leftTableKey) === UESRS) {
-			selectId =
-				select[RightTableKey] &&
-				select[RightTableKey].map((v) => v.uid);
-		} else {
-			selectId =
-				select[RightTableKey] && select[RightTableKey].map((v) => v.id);
-		}
+		const selectId =
+			select[RightTableKey] && select[RightTableKey].map((v) => v.id);
+
 		rightDataIds &&
 			selectId &&
 			setRightDataIds(rightDataIds.filter((v) => !selectId.includes(v)));

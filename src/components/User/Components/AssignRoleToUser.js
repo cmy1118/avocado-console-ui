@@ -71,6 +71,8 @@ const AssignRoleToUser = () => {
 					leftTableKey={tableKeys.users.add.roles.exclude}
 					RightTableKey={tableKeys.users.add.roles.include}
 					select={select}
+					dataLeft={dataLeft}
+					dataRight={dataRight}
 					rightDataIds={rightDataIds}
 					setRightDataIds={setRightDataIds}
 				/>
