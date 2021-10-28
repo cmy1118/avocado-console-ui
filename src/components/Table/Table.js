@@ -104,7 +104,6 @@ const Table = ({
 			const dropDataLength = e.dataTransfer.getData('ids').split(',')
 				.length;
 			if (preDataLength + dropDataLength > max) {
-				alert('최대 10개의  추가 가능합니다.', tableKey);
 				dispatch(
 					DIALOG_BOX.action.openAlert({
 						key: checkDropTypeAlertMessage(tableKey),
@@ -133,7 +132,6 @@ const Table = ({
 			//  API : groups 일때 - 그룹 유형 검사 : 그룹유형별 1개의 그룹만 추가
 			if (CheckDropDataType(tableKey)) {
 				if (CheckDropDataType(tableKey) === GROUP) {
-					alert('GROUP');
 					const TypeLimited = dropDataType.filter((v) =>
 						preDataType.includes(v),
 					).length;
@@ -141,7 +139,6 @@ const Table = ({
 						TypeLimited > 1 ||
 						checkArrayhasDuplicates(dropDataType)
 					) {
-						alert('그룹유형별 1개의 그룹만 추가');
 						dispatch(
 							DIALOG_BOX.action.openAlert({
 								key: 'singleCountGroupTypes',
@@ -163,7 +160,6 @@ const Table = ({
 							FILTER_TYPE,
 						)
 					) {
-						alert('Private 유형은 한사용자에게만');
 						dispatch(
 							DIALOG_BOX.action.openAlert({
 								key: 'singleCountRolesTypes',
@@ -323,18 +319,20 @@ const Table = ({
 	}, [setAllFilters]);
 
 	const selectedDropBtton = useCallback(
-		(selectedRowIds) => {
+		(selectedFlatRows) => {
 			const data = {};
-			data[tableKey] = selectedRowIds;
+			const selectedType = selectedFlatRows.map((v) =>v.original);
+			data[tableKey] = selectedType;
 			setSelect && setSelect(data);
 		},
 		[setSelect, tableKey],
 	);
 
 	useEffect(() => {
-		console.log(selectedRowIds);
-		setSelect && setSelect(Object.keys(selectedRowIds));
-		selectedRowIds && selectedDropBtton(selectedRowIds);
+		// setSelect && setSelect(Object.keys(selectedRowIds));
+		// setSelect && selectedRowIds && selectedDropBtton(selectedRowIds);
+
+		setSelect && selectedFlatRows && selectedDropBtton(selectedFlatRows);
 	}, [selectedRowIds, setSelect, selectedDropBtton, selectedFlatRows]);
 
 	return (

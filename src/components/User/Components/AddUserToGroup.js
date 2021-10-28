@@ -17,7 +17,6 @@ const AddUserToGroup = () => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
 	const [select, setSelect] = useState([]);
-
 	const dataLeft = useMemo(() => {
 		const dropDataTypeId = groups
 			.filter((v) => rightDataIds.includes(v.id))
@@ -74,6 +73,8 @@ const AddUserToGroup = () => {
 					leftTableKey={tableKeys.users.add.groups.exclude}
 					RightTableKey={tableKeys.users.add.groups.include}
 					select={select}
+					dataLeft={dataLeft}
+					dataRight={dataRight}
 					rightDataIds={rightDataIds}
 					setRightDataIds={setRightDataIds}
 				/>

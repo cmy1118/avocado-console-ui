@@ -47,7 +47,7 @@ export const alertMessages = {
 	//default 값
 	maxNumberOfDatas: {
 		type: 'alert',
-		message: '최대 10개의 데이터만 등록 가능합니다.',
+		message: '최대 10개의 데이터만 추가 가능합니다.',
 	},
 };
 export const checkDropTypeAlertMessage= (tableKey)=> {
