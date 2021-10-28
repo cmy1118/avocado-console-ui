@@ -7,7 +7,9 @@ export const tableDropDataType = [
 		type: 'users',
 		tablekeys: [
 			'GROUP_ADD_USERS_INCLUDE',
+			'GROUP_ADD_USERS_EXCLUDE',
 			'GROUP_SUMMARY_TABS_USERS_INCLUDE',
+			'GROUP_SUMMARY_TABS_USERS_EXCLUDE',
 		],
 	},
 	{
@@ -34,10 +36,6 @@ export const CheckDropDataType = (tableKey) => {
 	});
 	return type;
 };
-
-
-
-
 
 export const isDropDataMaxNumber = (tableKey) => {
 	switch (tableKey) {

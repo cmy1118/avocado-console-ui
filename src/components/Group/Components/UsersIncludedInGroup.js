@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
 
 const _Tables = styled.div`
 	display: flex;
@@ -46,6 +47,15 @@ const UsersIncludedInGroup = () => {
 			}));
 	}, [users, rightDataIds]);
 
+	useEffect(() => {
+		dispatch(
+			CURRENT_TARGET.action.addReadOnlyData({
+				title: tableKeys.groups.add.roles.include,
+				data: dataRight,
+			}),
+		);
+	}, [dataRight, dispatch]);
+
 	return (
 		<>
 			<div>그룹에 사용자에 추가 </div>
@@ -69,6 +79,8 @@ const UsersIncludedInGroup = () => {
 					leftTableKey={tableKeys.groups.add.users.exclude}
 					RightTableKey={tableKeys.groups.add.users.include}
 					select={select}
+					dataLeft={dataLeft}
+					dataRight={dataRight}
 					rightDataIds={rightDataIds}
 					setRightDataIds={setRightDataIds}
 				/>

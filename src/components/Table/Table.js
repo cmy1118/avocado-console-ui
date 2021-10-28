@@ -4,7 +4,6 @@ import requiredIf from 'react-required-if';
 import {
 	useFilters,
 	useGlobalFilter,
-	useMountedLayoutEffect,
 	usePagination,
 	useRowSelect,
 	useSortBy,
@@ -22,7 +21,7 @@ import {
 	checkArraysIsUniqueHasDuplicates,
 } from '../../utils/dataFitering';
 import {NormalBorderButton} from '../../styles/components/buttons';
-import {checkDropTypeAlertMessage} from "../DialogBoxs/Alert/ConfirmDialogBox";
+import {checkDropTypeAlertMessage} from '../DialogBoxs/Alert/ConfirmDialogBox';
 
 function dateBetweenFilterFn(rows, id, filterValues) {
 	let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;
@@ -99,7 +98,7 @@ const Table = ({
 	/***************************************************************************/
 	const onDropCheckMaxNumber = useCallback(
 		(e, data, tableKey) => {
-			const max = 4;
+			const max = 10;
 			const preDataLength = data.length;
 			const dropDataLength = e.dataTransfer.getData('ids').split(',')
 				.length;
@@ -193,7 +192,6 @@ const Table = ({
 		previousPage,
 		setPageSize,
 		setAllFilters,
-		setGlobalFilter,
 		selectedFlatRows,
 		state: {pageIndex, pageSize, selectedRowIds, filters},
 	} = useTable(
@@ -239,7 +237,6 @@ const Table = ({
 	const onDragStart = useCallback(
 		(row) => (e) => {
 			const firstTarget = e.target.firstChild.childNodes[0].childNodes[0];
-			console.log('firstTarget:', firstTarget);
 			const flatRows = selectedFlatRows;
 			const selected = Object.keys(selectedRowIds);
 			if (firstTarget.type === 'checkbox' && !firstTarget.checked) {
@@ -250,7 +247,6 @@ const Table = ({
 			if (dndKey) {
 				const selectedType = flatRows.map((v) => v.values.type);
 				e.dataTransfer.setData('selectedType', selectedType.toString());
-				console.log('selectedType', selectedType);
 			}
 			e.dataTransfer.setData('ids', selected.toString());
 			e.dataTransfer.setData(
@@ -321,7 +317,7 @@ const Table = ({
 	const selectedDropBtton = useCallback(
 		(selectedFlatRows) => {
 			const data = {};
-			const selectedType = selectedFlatRows.map((v) =>v.original);
+			const selectedType = selectedFlatRows.map((v) => v.original);
 			data[tableKey] = selectedType;
 			setSelect && setSelect(data);
 		},
@@ -329,9 +325,6 @@ const Table = ({
 	);
 
 	useEffect(() => {
-		// setSelect && setSelect(Object.keys(selectedRowIds));
-		// setSelect && selectedRowIds && selectedDropBtton(selectedRowIds);
-
 		setSelect && selectedFlatRows && selectedDropBtton(selectedFlatRows);
 	}, [selectedRowIds, setSelect, selectedDropBtton, selectedFlatRows]);
 
