@@ -8,7 +8,6 @@ import {
 } from '../../styles/components/buttons';
 
 const _Container = styled.div`
-	padding: 8px 0px;
 	z-index: 99;
 	position: absolute;
 	min-width: 90px;
@@ -55,10 +54,12 @@ const _Header = styled.div`
 `;
 
 const _Body = styled.div`
+	padding: 8px 0px;
 	width: 100%;
 `;
 const _Footer = styled.div`
 	height: 60px;
+	padding: 0px 8px;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
@@ -68,11 +69,13 @@ const _Footer = styled.div`
 const DropDownContext = ({
 	isOpened,
 	setIsOpened,
-	title,
 	options,
 	value,
 	setValue,
 	width = '90px',
+	// title,
+	// okEvent,
+	// cancelEvent,
 }) => {
 	const ref = useRef();
 
@@ -84,13 +87,25 @@ const DropDownContext = ({
 		disabled: !isOpened,
 	});
 
+	const onClickValue = useCallback(
+		(item) => () => {
+			if (parseInt(item.value)) {
+				setValue(parseInt(item.value));
+			} else {
+				setValue(item.value);
+			}
+			onClickCloseContextMenu();
+		},
+		[onClickCloseContextMenu, setValue],
+	);
+
 	return isOpened ? (
 		<_Container ref={ref} alignEnd>
-			{title && (
-				<_Header>
-					<span>{title}</span>
-				</_Header>
-			)}
+			{/*{title && (*/}
+			{/*	<_Header>*/}
+			{/*		<span>{title}</span>*/}
+			{/*	</_Header>*/}
+			{/*)}*/}
 			<_Body>
 				{options.map((item, key) => (
 					<_CheckboxContainer
@@ -101,27 +116,21 @@ const DropDownContext = ({
 							width={width}
 							readOnly
 							value={item.label}
-							onClick={() => {
-								if (parseInt(item.value)) {
-									setValue(parseInt(item.value));
-								} else {
-									setValue(item.value);
-								}
-							}}
+							onClick={onClickValue(item)}
 						/>
 					</_CheckboxContainer>
 				))}
 			</_Body>
-			{title && (
-				<_Footer>
-					<TransparentBorderButton onClick={onClickCloseContextMenu}>
-						취소
-					</TransparentBorderButton>
-					<NormalBorderButton onClick={onClickCloseContextMenu}>
-						확인
-					</NormalBorderButton>
-				</_Footer>
-			)}
+			{/*{title && (*/}
+			{/*	<_Footer>*/}
+			{/*		<TransparentBorderButton onClick={cancelEvent}>*/}
+			{/*			취소*/}
+			{/*		</TransparentBorderButton>*/}
+			{/*		<NormalBorderButton onClick={okEvent}>*/}
+			{/*			확인*/}
+			{/*		</NormalBorderButton>*/}
+			{/*	</_Footer>*/}
+			{/*)}*/}
 		</_Container>
 	) : (
 		<></>
@@ -131,9 +140,11 @@ DropDownContext.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 	setValue: PropTypes.func.isRequired,
-	title: PropTypes.string,
-	value: PropTypes.any,
+	value: PropTypes.any.isRequired,
 	options: PropTypes.array.isRequired,
 	width: PropTypes.string,
+	// title: PropTypes.string,
+	// okEvent: PropTypes.func,
+	// cancelEvent: PropTypes.func,
 };
 export default DropDownContext;

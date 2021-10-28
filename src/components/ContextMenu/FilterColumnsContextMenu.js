@@ -78,13 +78,15 @@ const FilterColumnsContextMenu = ({
 	);
 
 	const onClickCloseContextMenu = useCallback(() => {
+		setCheck(filteredList.filter((v) => v.isVisible).map((v) => v.id));
 		setIsOpened(false);
-	}, [setIsOpened]);
+	}, [filteredList, setIsOpened]);
 
 	const onClickSaveCheckedList = useCallback(() => {
 		setHiddenColumns(
 			filteredList.filter((v) => !check.includes(v.id)).map((v) => v.id),
 		);
+		setIsOpened(false);
 	}, [check, filteredList, setHiddenColumns]);
 
 	const onClickSetCheck = useCallback(
