@@ -5,8 +5,20 @@ export const Icon = styled.div`
 	border: none;
 	line-height: 0px;
 	padding: 0px;
-	margin-right: ${(props) => props?.margin_right || '16px'};
-	margin: ${(props) => props?.margin};
+
+	margin: ${(props) =>
+		props?.margin
+			? props.margin
+			: props?.size
+			? props.size === 'sm'
+				? ' 0px 6px'
+				: props.size === 'xs'
+				? '0px 5px'
+				: props.size === 'micro'
+				? '0px  4px'
+				: props.size
+			: '0px 8px'};
+
 	font-size: ${(props) =>
 		props?.size
 			? props.size === 'sm'
