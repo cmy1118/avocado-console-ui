@@ -8,9 +8,9 @@ import {
 } from '../../styles/components/buttons';
 
 const _Container = styled.div`
+	padding: 8px 0px;
 	z-index: 99;
 	position: absolute;
-	// width: 230px;
 	min-width: 90px;
 	border-radius: 4px;
 	box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.22);
@@ -19,6 +19,7 @@ const _Container = styled.div`
 `;
 
 const _Input = styled.input`
+	width: ${(props) => props.width};
 	height: 32px;
 	cursor: pointer;
 	outline: none;
@@ -38,17 +39,11 @@ const _CheckboxContainer = styled.div`
 	cursor: pointer;
 `;
 
-const _SelectAllContainer = styled(_CheckboxContainer)`
-	margin-top: 8px;
-	border-bottom: 1px solid #e3e5e5;
-`;
-
 const _Header = styled.div`
 	height: 41px;
 	display: flex;
 	align-items: center;
 	padding: 0px 16px;
-	font-family: NotoSansCJKKR;
 	font-size: 14px;
 	font-weight: 500;
 	font-stretch: normal;
@@ -58,6 +53,7 @@ const _Header = styled.div`
 	color: #212121;
 	border-bottom: 1px solid #e3e5e5;
 `;
+
 const _Body = styled.div`
 	width: 100%;
 `;
@@ -76,6 +72,7 @@ const DropDownContext = ({
 	options,
 	value,
 	setValue,
+	width = '90px',
 }) => {
 	const ref = useRef();
 
@@ -98,6 +95,7 @@ const DropDownContext = ({
 				{options.map((item, key) => (
 					<_CheckboxContainer key={key} current={item === value}>
 						<_Input
+							width={width}
 							readOnly
 							value={item}
 							onClick={(e) => {
@@ -111,14 +109,16 @@ const DropDownContext = ({
 					</_CheckboxContainer>
 				))}
 			</_Body>
-			<_Footer>
-				{/*<TransparentBorderButton onClick={onClickCloseContextMenu}>*/}
-				{/*	취소*/}
-				{/*</TransparentBorderButton>*/}
-				{/*<NormalBorderButton onClick={onClickCloseContextMenu}>*/}
-				{/*	확인*/}
-				{/*</NormalBorderButton>*/}
-			</_Footer>
+			{title && (
+				<_Footer>
+					<TransparentBorderButton onClick={onClickCloseContextMenu}>
+						취소
+					</TransparentBorderButton>
+					<NormalBorderButton onClick={onClickCloseContextMenu}>
+						확인
+					</NormalBorderButton>
+				</_Footer>
+			)}
 		</_Container>
 	) : (
 		<></>
@@ -131,5 +131,6 @@ DropDownContext.propTypes = {
 	title: PropTypes.string,
 	value: PropTypes.any,
 	options: PropTypes.array.isRequired,
+	width: PropTypes.string,
 };
 export default DropDownContext;
