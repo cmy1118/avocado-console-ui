@@ -93,16 +93,19 @@ const DropDownContext = ({
 			)}
 			<_Body>
 				{options.map((item, key) => (
-					<_CheckboxContainer key={key} current={item === value}>
+					<_CheckboxContainer
+						key={key}
+						current={item.value === value}
+					>
 						<_Input
 							width={width}
 							readOnly
-							value={item}
-							onClick={(e) => {
-								if (parseInt(e.target.value)) {
-									setValue(parseInt(e.target.value));
+							value={item.label}
+							onClick={() => {
+								if (parseInt(item.value)) {
+									setValue(parseInt(item.value));
 								} else {
-									setValue(e.target.value);
+									setValue(item.value);
 								}
 							}}
 						/>

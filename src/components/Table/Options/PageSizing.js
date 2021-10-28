@@ -12,7 +12,11 @@ const PageSizing = ({pageSize, setPageSize}) => {
 				setIsOpened={setIsOpened}
 				setValue={setPageSize}
 				value={pageSize}
-				options={[20, 50, 100, 200]}
+				options={[
+					{label: '20 행', value: 20},
+					{label: '50 행', value: 50},
+					{label: '100 행', value: 100},
+				]}
 			/>
 		</div>
 	);
