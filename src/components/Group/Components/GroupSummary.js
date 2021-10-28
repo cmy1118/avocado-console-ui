@@ -11,6 +11,8 @@ import FormTextBox from '../../RecycleComponents/FormTextBox';
 import Form from '../../RecycleComponents/Form';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
+import {Label} from '../../../styles/components/text';
+import * as yup from 'yup';
 
 const _Title = styled.div`
 	display: flex;
@@ -47,21 +49,33 @@ const GroupSummary = ({groupId}) => {
 		setIsOpened(false);
 	}, []);
 
+	const schema = {
+		name: yup
+			.string()
+			.min(10, '최소 길이는 10자 입니다.')
+			.max(40, '최대 길이는 100자 입니다.'),
+	};
+
 	return (
 		<>
 			<ModalFormContainer
-				formKey={'changeGroupName'}
 				isOpened={isOpened}
 				setIsOpened={setIsOpened}
-				title={'그룹명 편집'}
+				title={'그룹명 변경'}
+				onClickOkBtn={onSubmitChangeGroupName}
 			>
-				<Form id={'changeGroupName'} onSubmit={onSubmitChangeGroupName}>
-					<label htmlFor={'name'}>사용자 그룹명</label>
+				<Form
+					schema={schema}
+					id={'changeGroupName'}
+					onSubmit={onSubmitChangeGroupName}
+				>
 					<FormTextBox
 						name={'name'}
 						autoFocus
 						placeholder={'그룹명을 입력하세요.'}
 						defaultValue={group?.name}
+						inputWidth={'372px'}
+						label={'사용자 그룹명'}
 					/>
 				</Form>
 			</ModalFormContainer>

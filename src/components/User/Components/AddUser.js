@@ -83,28 +83,38 @@ const AddUser = ({setIsOpened}) => {
 			>
 				<FormTextBox
 					name={'id'}
+					label={'사용자 ID : '}
 					defaultValue={'AvocadoGood'}
 					placeholder={'id'}
+					direction={'row'}
 				/>
 				<FormTextBox
 					name={'name'}
+					label={'사용자 이름 : '}
 					defaultValue={'아보카도'}
 					placeholder={'name'}
+					direction={'row'}
 				/>
 				<FormTextBox
 					name={'email'}
+					label={'이메일 주소 : '}
 					defaultValue={'avocado@netand.co.kr'}
 					placeholder={'email'}
+					direction={'row'}
 				/>
 				<FormTextBox
 					name={'telephone'}
+					label={'전화번호 : '}
 					defaultValue={'02-1234-1234'}
 					placeholder={'telephone'}
+					direction={'row'}
 				/>
 				<FormTextBox
 					name={'mobile'}
+					label={'핸드폰 번호 : '}
 					defaultValue={'010-1234-1234'}
 					placeholder={'mobile'}
+					direction={'row'}
 				/>
 			</Form>
 		</>

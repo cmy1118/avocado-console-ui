@@ -9,6 +9,8 @@ export const DefaultButton = styled.button`
 	border: none;
 	border-radius: 4px;
 	margin: 0px 8px;
+	cursor: pointer;
+	height: 34px;
 `;
 
 export const NormalButton = styled(DefaultButton)`
