@@ -6,6 +6,9 @@ import styled from 'styled-components';
 import FilterColumnsContextMenu from '../ContextMenu/FilterColumnsContextMenu';
 import SearchOptionsContextMenu from '../ContextMenu/SearchOptionsContextMenu';
 import {NormalBorderButton} from '../../styles/components/buttons';
+import Search from './Options/Search';
+import {GreenSpan} from '../../styles/components/text';
+import {PositionRelativeDiv} from '../../styles/components/div';
 
 const _Container = styled.div`
 	display: flex;
@@ -14,6 +17,8 @@ const _Container = styled.div`
 
 const _OptionContainer = styled.div`
 	display: flex;
+	padding: 14px 16px;
+	align-items: center;
 `;
 
 const TableOptionsBar = ({
@@ -61,25 +66,31 @@ const TableOptionsBar = ({
 	return (
 		<_Container>
 			<_OptionContainer>
-				{/*{isSearchable <Search/>}*/}
+				{isSearchable && <Search tableKey={tableKey} />}
 				{isSearchFilterable && (
 					<div>
 						<NormalBorderButton
 							onClick={onClickOpenSearchFilterContextMenu}
 						>
-							필터 추가
+							<GreenSpan>필터 추가</GreenSpan>
 						</NormalBorderButton>
-						{isSearchFilterContextMenuOpened && (
-							<SearchOptionsContextMenu
-								isOpened={isSearchFilterContextMenuOpened}
-								setIsOpened={setIsSearchFilterContextMenuOpened}
-								allOptions={searchFilters}
-								selectedOptions={selectedSearchFilters}
-								setSelectedOptions={setSelectedSearchFilters}
-								filters={filters}
-								setAllFilters={setAllFilters}
-							/>
-						)}
+						<PositionRelativeDiv>
+							{isSearchFilterContextMenuOpened && (
+								<SearchOptionsContextMenu
+									isOpened={isSearchFilterContextMenuOpened}
+									setIsOpened={
+										setIsSearchFilterContextMenuOpened
+									}
+									allOptions={searchFilters}
+									selectedOptions={selectedSearchFilters}
+									setSelectedOptions={
+										setSelectedSearchFilters
+									}
+									filters={filters}
+									setAllFilters={setAllFilters}
+								/>
+							)}
+						</PositionRelativeDiv>
 					</div>
 				)}
 			</_OptionContainer>
@@ -105,15 +116,17 @@ const TableOptionsBar = ({
 						<button onClick={onClickOpenSelectColumnsContextMenu}>
 							{'✅'}
 						</button>
-						<FilterColumnsContextMenu
-							isOpened={isColumnFilterContextMenuOpened}
-							setIsOpened={setIsColumnFilterContextMenuOpened}
-							allColumns={allColumns}
-							getToggleHideAllColumnsProps={
-								getToggleHideAllColumnsProps
-							}
-							setHiddenColumns={setHiddenColumns}
-						/>
+						<PositionRelativeDiv>
+							<FilterColumnsContextMenu
+								isOpened={isColumnFilterContextMenuOpened}
+								setIsOpened={setIsColumnFilterContextMenuOpened}
+								allColumns={allColumns}
+								getToggleHideAllColumnsProps={
+									getToggleHideAllColumnsProps
+								}
+								setHiddenColumns={setHiddenColumns}
+							/>
+						</PositionRelativeDiv>
 					</div>
 				)}
 			</_OptionContainer>

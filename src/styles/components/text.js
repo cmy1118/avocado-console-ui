@@ -21,4 +21,9 @@ export const Span = styled.span`
 	line-height: normal;
 	letter-spacing: 0.14px;
 	color: #212121;
+	white-space: nowrap;
+`;
+
+export const GreenSpan = styled(Span)`
+	color: #178082;
 `;

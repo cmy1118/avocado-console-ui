@@ -1,20 +1,26 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import PropTypes from 'prop-types';
+import SearchInput from '../../RecycleComponents/SearchInput';
 
-function Search({onSubmit}) {
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		onSubmit(event.target.elements.filter.value);
+function Search({tableKey}) {
+	const [value, setValue] = useState('');
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		console.log('api');
+		console.log({tableKey, value});
 	};
+
+	const onChangeSetValue = useCallback((e) => {
+		setValue(e.target.value);
+	}, []);
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<input name='filter' />
-			<button>Search</button>
+			<SearchInput value={value} onChange={onChangeSetValue} />
 		</form>
 	);
 }
 Search.propTypes = {
-	onSubmit: PropTypes.func,
+	tableKey: PropTypes.string,
 };
 export default Search;

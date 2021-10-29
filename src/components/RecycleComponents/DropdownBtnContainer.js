@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {
@@ -10,6 +10,9 @@ import {useRootClose} from 'react-overlays';
 const _Container = styled.div`
 	z-index: 99;
 	position: absolute;
+	top: 10px;
+	right: ${(props) => (props.direction === 'right' ? 'initial' : '0px')};
+	left: ${(props) => (props.direction === 'left' ? 'initial' : '0px')};
 	width: 230px;
 	border-radius: 4px;
 	box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.22);
@@ -50,15 +53,29 @@ const DropdownBtnContainer = ({
 	onClickOkBtn,
 	onClickCancelBtn,
 	children,
+	direction,
 }) => {
 	const ref = useRef();
+
+	const [curDirection, setCurDirection] = useState(direction || 'right');
 
 	useRootClose(ref, onClickCancelBtn, {
 		disabled: !isOpened,
 	});
 
+	// useEffect(() => {
+	// 	console.log(window.innerWidth - 230);
+	// 	console.log(ref);
+	// 	if (window.innerWidth - 230 > ref.current?.offsetLeft) {
+	// 		console.log('no over');
+	// 	} else {
+	// 		console.log('over');
+	// 		setCurDirection('left');
+	// 	}
+	// }, []);
+
 	return (
-		<_Container ref={ref} alignEnd>
+		<_Container ref={ref} alignEnd direction={curDirection}>
 			<_Header>
 				<span>{title}</span>
 			</_Header>
@@ -84,5 +101,6 @@ DropdownBtnContainer.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	onClickOkBtn: PropTypes.func.isRequired,
 	onClickCancelBtn: PropTypes.func.isRequired,
+	direction: PropTypes.oneOf(['left', 'right']),
 };
 export default DropdownBtnContainer;

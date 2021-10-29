@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {useWatch} from 'react-hook-form';
 import {Label} from '../../styles/components/text';
 import {ErrorMessage} from '@hookform/error-message';
+import {Input} from '../../styles/components/input';
 
 const Container = styled.div`
 	display: flex;
@@ -16,28 +17,8 @@ const Container = styled.div`
 	margin-bottom: 12px;
 `;
 
-const _Input = styled.input`
-	padding: 6px 10px;
-	height: 20px;
-	font-family: NotoSansCJKKR;
-	font-size: 14px;
-	font-weight: normal;
-	font-stretch: normal;
-	font-style: normal;
-	line-height: 1.43;
-	letter-spacing: 0.25px;
-	text-align: left;
-	font-color: #757575;
-
-	border-radius: 4px;
-	border: solid 1px #e3e5e5;
-	background-color: #fff;
-
+const _Input = styled(Input)`
 	width: ${(props) => props.inputWidth || '300px'};
-	outline: none;
-	&:focus {
-		border-color: #4ca6a8;
-	}
 `;
 
 const FormTextBox = ({

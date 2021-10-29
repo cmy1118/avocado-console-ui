@@ -4,6 +4,7 @@ import {burgerMenuIcon} from '../icons/icons';
 import {HoverButton} from '../styles/components/icons';
 import MenuButtons from './Header/MenuButtons';
 import useInput from '../hooks/useInput';
+import SearchInput from './RecycleComponents/SearchInput';
 
 const _Container = styled.div`
 	display: flex;
@@ -30,8 +31,7 @@ const Header = () => {
 				</HoverButton>
 				Avocado Console Management
 			</_Title>
-			<input
-				type={'search'}
+			<SearchInput
 				value={searchInput}
 				onChange={onChangeSearchInput}
 				placeholder='Search...'

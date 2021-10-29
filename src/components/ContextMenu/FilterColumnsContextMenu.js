@@ -68,6 +68,7 @@ const FilterColumnsContextMenu = ({
 			isOpened={isOpened}
 			onClickOkBtn={onClickOkBtn}
 			onClickCancelBtn={onClickCancelBtn}
+			direction={'left'}
 		>
 			<>
 				<_SelectAllContainer onClick={onClickSetCheck(filteredList)}>
