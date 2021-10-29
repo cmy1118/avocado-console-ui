@@ -74,5 +74,10 @@ export const IconButton = styled(Icon)`
 
 export const HoverButton = styled(Icon)`
 	cursor: pointer;
-	z-index: 1;
+	&:hover {
+		color: ${(props) => props?.hover_color || '#556367'};
+		svg {
+			fill: ${(props) => props?.hover_color || '#556367'};
+		}
+	}
 `;
