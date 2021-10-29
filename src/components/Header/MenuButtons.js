@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {HoverButton} from '../../styles/components/icons';
+import {HoverIconButton} from '../../styles/components/icons';
 import {notificationIcon, settingIcon} from '../../icons/icons';
 import styled from 'styled-components';
 
@@ -14,11 +14,11 @@ const MenuButtons = () => {
 
 	return (
 		<_Container>
-			<HoverButton>U</HoverButton>
+			<HoverIconButton>U</HoverIconButton>
 			<div>jealos</div>
-			<HoverButton>{notificationIcon}</HoverButton>
-			<HoverButton>{settingIcon}</HoverButton>
-			<HoverButton onClick={onClickCloseAside}>Q</HoverButton>
+			<HoverIconButton>{notificationIcon}</HoverIconButton>
+			<HoverIconButton>{settingIcon}</HoverIconButton>
+			<HoverIconButton onClick={onClickCloseAside}>Q</HoverIconButton>
 		</_Container>
 	);
 };

@@ -72,7 +72,7 @@ export const IconButton = styled(Icon)`
 	cursor: pointer;
 `;
 
-export const HoverButton = styled(Icon)`
+export const HoverIconButton = styled(Icon)`
 	cursor: pointer;
 	&:hover {
 		color: ${(props) => props?.hover_color || '#556367'};

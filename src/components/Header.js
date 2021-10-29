@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import styled from 'styled-components';
 import {burgerMenuIcon} from '../icons/icons';
-import {HoverButton} from '../styles/components/icons';
+import {HoverIconButton} from '../styles/components/icons';
 import MenuButtons from './Header/MenuButtons';
 import useInput from '../hooks/useInput';
 
@@ -25,9 +25,9 @@ const Header = () => {
 	return (
 		<_Container>
 			<_Title>
-				<HoverButton margin_right={'6px'} onClick={onClickCloseNav}>
+				<HoverIconButton margin_right={'6px'} onClick={onClickCloseNav}>
 					{burgerMenuIcon}
-				</HoverButton>
+				</HoverIconButton>
 				Avocado Console Management
 			</_Title>
 			<input
