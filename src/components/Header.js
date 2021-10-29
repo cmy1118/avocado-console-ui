@@ -34,7 +34,8 @@ const Header = () => {
 			<SearchInput
 				value={searchInput}
 				onChange={onChangeSearchInput}
-				placeholder='Search...'
+				placeholder='제품 및 리소스 검색'
+				back={'gray'}
 			/>
 			<MenuButtons />
 		</_Container>

@@ -39,6 +39,10 @@ const SubContainer = styled.div`
 		props.back === 'gray' ? '#f0f3f6' : '#fff'};
 `;
 
+const _Icon = styled(Icon)`
+	color: #959ea1;
+`;
+
 const SearchInput = ({value, onChange, placeholder, width, back}) => {
 	const onFocusContainer = useCallback((e) => {
 		e.target.parentElement.classList.add('focus');
@@ -50,9 +54,9 @@ const SearchInput = ({value, onChange, placeholder, width, back}) => {
 	return (
 		<Container>
 			<SubContainer back={back}>
-				<Icon size={'sm'} margin_right={'0px'}>
+				<_Icon size={'sm'} margin_right={'0px'}>
 					{searchIcon}
-				</Icon>
+				</_Icon>
 				<_Input
 					onFocus={onFocusContainer}
 					onBlur={onBlurContainer}
