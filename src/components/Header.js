@@ -1,34 +1,33 @@
 import React, {useCallback} from 'react';
 import styled from 'styled-components';
-import {burgerMenuIcon} from '../icons/icons';
+import {avocadoLogo, burgerMenuIcon} from '../icons/icons';
 import {HoverIconButton} from '../styles/components/icons';
 import MenuButtons from './Header/MenuButtons';
 import useInput from '../hooks/useInput';
 
 const _Container = styled.div`
+	box-sizing: border-box;
 	display: flex;
 	justify-content: space-between;
 	height: 54px;
+	border-bottom: 1px #e3e5e5 solid;
+	padding: 16px 16px;
+	align-items: center;
 `;
 
 const _Title = styled.div`
 	display: flex;
 `;
 
+const _Logo = styled.div``;
+
 const Header = () => {
 	const [searchInput, onChangeSearchInput] = useInput('');
-
-	const onClickCloseNav = useCallback(() => {
-		document.querySelector('.iam-nav-bar').classList.toggle('close');
-	}, []);
 
 	return (
 		<_Container>
 			<_Title>
-				<HoverIconButton margin_right={'6px'} onClick={onClickCloseNav}>
-					{burgerMenuIcon}
-				</HoverIconButton>
-				Avocado Console Management
+				<_Logo>{avocadoLogo}</_Logo>
 			</_Title>
 			<input
 				type={'search'}
