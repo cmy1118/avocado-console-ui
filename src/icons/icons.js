@@ -11,6 +11,10 @@ export const arrowDownIcon = (
 	<span className='material-icons'>arrow_drop_down</span>
 );
 
+export const arrowUpIcon = (
+	<span className='material-icons'>arrow_drop_up</span>
+);
+
 export const settingIcon = <span className='material-icons'>settings</span>;
 
 export const notificationIcon = (

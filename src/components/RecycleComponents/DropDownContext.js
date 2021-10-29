@@ -1,4 +1,4 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {useRootClose} from 'react-overlays';
@@ -6,20 +6,39 @@ import {useRootClose} from 'react-overlays';
 const _Container = styled.div`
 	z-index: 99;
 	position: absolute;
+	width: ${(props) => props.width};
 	min-width: 90px;
 	border-radius: 4px;
 	box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.22);
-	border: solid 1px #e3e5e5;
 	background: white;
 `;
 
-const _Input = styled.input`
+const _Option = styled.option`
 	width: ${(props) => props.width};
+	font-size: 14px;
+	display: flex;
+	align-items: center;
 	height: 32px;
 	cursor: pointer;
 	outline: none;
 	border: none;
 	background: transparent;
+	padding: 5px 10px;
+	box-sizing: border-box;
+`;
+
+const _Input = styled.input`
+	width: ${(props) => props.width};
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	height: 32px;
+	cursor: pointer;
+	outline: none;
+	border: none;
+	background: transparent;
+	padding: 5px 10px;
+	box-sizing: border-box;
 `;
 
 const _CheckboxContainer = styled.div`
@@ -40,6 +59,8 @@ const _Body = styled.div`
 `;
 
 const DropDownContext = ({
+	name,
+	register,
 	isOpened,
 	setIsOpened,
 	options,
@@ -59,43 +80,66 @@ const DropDownContext = ({
 
 	const onClickValue = useCallback(
 		(item) => () => {
-			if (parseInt(item.value)) {
-				setValue(parseInt(item.value));
-			} else {
-				setValue(item.value);
-			}
+			setValue(item);
 			onClickCloseContextMenu();
 		},
 		[onClickCloseContextMenu, setValue],
 	);
+	useEffect(() => {
+		if (register) {
+			console.log({...register(name)});
+		}
+	}, [name, register]);
 
 	return isOpened ? (
-		<_Container ref={ref} alignEnd>
-			<_Body>
-				{options.map((item, key) => (
-					<_CheckboxContainer
-						key={key}
-						current={item.value === value}
-					>
-						<_Input
-							width={width}
-							readOnly
-							value={item.label}
-							onClick={onClickValue(item)}
-						/>
-					</_CheckboxContainer>
-				))}
-			</_Body>
+		<_Container ref={ref} alignEnd width={width}>
+			{register ? (
+				<_Body>
+					{options.map((item, key) => (
+						<_CheckboxContainer
+							key={key}
+							current={item.value === value}
+						>
+							<_Option
+								width={width}
+								value={item.value}
+								onClick={onClickValue(item)}
+								{...register(name)}
+							>
+								{item.label}
+							</_Option>
+						</_CheckboxContainer>
+					))}
+				</_Body>
+			) : (
+				<_Body>
+					{options.map((item, key) => (
+						<_CheckboxContainer
+							key={key}
+							current={item.value === value}
+						>
+							<_Input
+								width={width}
+								value={item.label}
+								onClick={onClickValue(item)}
+								readOnly
+							/>
+						</_CheckboxContainer>
+					))}
+				</_Body>
+			)}
 		</_Container>
 	) : (
 		<></>
 	);
 };
 DropDownContext.propTypes = {
+	name: PropTypes.string,
+	register: PropTypes.func,
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 	setValue: PropTypes.func.isRequired,
-	value: PropTypes.any.isRequired,
+	value: PropTypes.any,
 	options: PropTypes.array.isRequired,
 	width: PropTypes.string,
 };

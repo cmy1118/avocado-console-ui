@@ -12,9 +12,6 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
-	console.log(groupTypes);
-	console.log(readOnlyData['group']);
-
 	const submitUserInfo = useCallback(() => {
 		console.log(readOnlyData);
 		console.log('api 작업..');

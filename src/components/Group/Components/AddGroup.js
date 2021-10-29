@@ -15,6 +15,7 @@ import {
 	TransparentButton,
 } from '../../../styles/components/buttons';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
+import ComboBox from '../../RecycleComponents/ComboBox';
 
 const AddGroup = ({setIsOpened}) => {
 	const history = useHistory();
@@ -26,7 +27,17 @@ const AddGroup = ({setIsOpened}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
-	const [groupTypesId, setGroupTypesId] = useState('');
+	const [groupTypesId, setGroupTypesId] = useState({
+		value: null,
+		label: '그룹 유형 선택',
+	});
+	const [groupId, setGroupId] = useState({
+		value: null,
+		label: '상위 그룹 선택',
+	});
+
+	const [groupTypeIsOpened, setGroupTypeIsOpened] = useState(false);
+	const [groupIdIsOpened, setGroupIdIsOpened] = useState(false);
 
 	/***********************************************************************/
 	const onClickManageGroupType = useCallback(() => {
@@ -46,7 +57,6 @@ const AddGroup = ({setIsOpened}) => {
 					data: data,
 				}),
 			);
-			console.log(data);
 			setIsOpened(true);
 		},
 		[dispatch, setIsOpened],
@@ -84,24 +94,37 @@ const AddGroup = ({setIsOpened}) => {
 				onSubmit={onSubmitAddGroup}
 				schema={schema}
 			>
-				{/*예시로 생성한 SelectBox 입니다.*/}
-				<FormComboBox
-					placeholder='그룹 유형 선택'
+				<ComboBox
+					label={'그룹 유형 선택'}
 					name={'groupType'}
-					options={groupTypes.map((v) => {
-						return {value: v.id, name: v.name};
-					})}
+					isOpened={groupTypeIsOpened}
+					setIsOpened={setGroupTypeIsOpened}
+					title={groupTypesId.label}
+					value={groupTypesId.value}
 					setValue={setGroupTypesId}
+					options={groupTypes.map((v) => {
+						return {value: v.id, label: v.name};
+					})}
+					width={'120px'}
 				/>
-				{groupTypesId === 'groupType1' ? (
-					<FormComboBox
-						placeholder={'상위 그룹 선택'}
+				{groupTypesId.value === 'groupType1' ? (
+					<ComboBox
+						label={'상위 그룹 선택'}
 						name={'groupId'}
+						isOpened={groupIdIsOpened}
+						setIsOpened={setGroupIdIsOpened}
+						title={groupId.label}
+						value={groupId.value}
+						setValue={setGroupId}
 						options={groups
-							.filter((x) => x.clientGroupTypeId === groupTypesId)
+							.filter(
+								(x) =>
+									x.clientGroupTypeId === groupTypesId.value,
+							)
 							.map((v) => {
-								return {value: v.id, name: v.name};
+								return {value: v.id, label: v.name};
 							})}
+						width={'120px'}
 					/>
 				) : (
 					<></>
