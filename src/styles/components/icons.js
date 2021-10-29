@@ -7,9 +7,8 @@ export const Icon = styled.div`
 	padding: 0px;
 
 	margin: ${(props) =>
-		props?.margin
-			? props.margin
-			: props?.size
+		props?.margin ||
+		(props?.size
 			? props.size === 'sm'
 				? ' 0px 6px'
 				: props.size === 'xs'
@@ -17,7 +16,7 @@ export const Icon = styled.div`
 				: props.size === 'micro'
 				? '0px  4px'
 				: props.size
-			: '0px 8px'};
+			: '0px 8px')};
 
 	color: ${(props) =>
 		props?.color ||
