@@ -19,6 +19,18 @@ export const Icon = styled.div`
 				: props.size
 			: '0px 8px'};
 
+	color: ${(props) =>
+		props?.color ||
+		(props?.itype === 'confirm'
+			? '#178082'
+			: props?.itype === 'warning'
+			? '#d45959'
+			: props?.itype === 'font'
+			? '#212121'
+			: props?.itype === 'selected'
+			? '#178082'
+			: '#959ea1')};
+
 	font-size: ${(props) =>
 		props?.size
 			? props.size === 'sm'
@@ -45,6 +57,18 @@ export const Icon = styled.div`
 	}
 
 	svg {
+		fill: ${(props) =>
+			props?.color ||
+			(props?.itype === 'confirm'
+				? '#178082'
+				: props?.itype === 'warning'
+				? '#d45959'
+				: props?.itype === 'font'
+				? '#212121'
+				: props?.itype === 'selected'
+				? '#178082'
+				: '#959ea1')};
+
 		width: ${(props) =>
 			props?.size
 				? props.size === 'sm'
