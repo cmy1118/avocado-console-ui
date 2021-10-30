@@ -7,12 +7,11 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 import styled from 'styled-components';
 import ModalFormContainer from '../../RecycleComponents/ModalFormContainer';
-import FormTextBox from '../../RecycleComponents/FormTextBox';
-import Form from '../../RecycleComponents/Form';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {Label} from '../../../styles/components/text';
 import * as yup from 'yup';
+import NewForm from '../../RecycleComponents/New/newForm';
+import NewInput from '../../RecycleComponents/New/NewInput';
 
 const _Title = styled.div`
 	display: flex;
@@ -62,22 +61,19 @@ const GroupSummary = ({groupId}) => {
 				isOpened={isOpened}
 				setIsOpened={setIsOpened}
 				title={'그룹명 변경'}
-				onClickOkBtn={onSubmitChangeGroupName}
+				submitKey={'changeGroupName'}
 			>
-				<Form
-					schema={schema}
-					id={'changeGroupName'}
+				<NewForm
+					submitKey={'changeGroupName'}
+					initialValues={{name: group?.name}}
 					onSubmit={onSubmitChangeGroupName}
 				>
-					<FormTextBox
-						name={'name'}
-						autoFocus
-						placeholder={'그룹명을 입력하세요.'}
-						defaultValue={group?.name}
-						inputWidth={'372px'}
+					<NewInput
 						label={'사용자 그룹명'}
+						name={'name'}
+						placeholder={'그룹명을 입력하세요'}
 					/>
-				</Form>
+				</NewForm>
 			</ModalFormContainer>
 			<_Title>
 				<div>요약 [ {group?.name} ]</div>

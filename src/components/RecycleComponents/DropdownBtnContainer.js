@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {
@@ -62,17 +62,6 @@ const DropdownBtnContainer = ({
 	useRootClose(ref, onClickCancelBtn, {
 		disabled: !isOpened,
 	});
-
-	// useEffect(() => {
-	// 	console.log(window.innerWidth - 230);
-	// 	console.log(ref);
-	// 	if (window.innerWidth - 230 > ref.current?.offsetLeft) {
-	// 		console.log('no over');
-	// 	} else {
-	// 		console.log('over');
-	// 		setCurDirection('left');
-	// 	}
-	// }, []);
 
 	return (
 		<_Container ref={ref} alignEnd direction={curDirection}>

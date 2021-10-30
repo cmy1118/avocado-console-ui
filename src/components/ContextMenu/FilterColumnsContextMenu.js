@@ -1,24 +1,7 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import CheckBoxContainer from '../RecycleComponents/CheckBoxContainer';
 import DropdownBtnContainer from '../RecycleComponents/DropdownBtnContainer';
-
-const _CheckboxContainer = styled.div`
-	height: 32px;
-	width: 100%;
-	display: flex;
-	align-items: center;
-	padding: 0px 10px;
-	&:hover {
-		background-color: rgba(0, 0, 0, 0.04);
-	}
-	cursor: pointer;
-`;
-
-const _SelectAllContainer = styled(_CheckboxContainer)`
-	border-bottom: 1px solid #e3e5e5;
-`;
+import NewCheckBox from '../RecycleComponents/New/NewCheckBox';
 
 const FilterColumnsContextMenu = ({
 	isOpened,
@@ -70,37 +53,27 @@ const FilterColumnsContextMenu = ({
 			onClickCancelBtn={onClickCancelBtn}
 			direction={'left'}
 		>
-			<>
-				<_SelectAllContainer onClick={onClickSetCheck(filteredList)}>
-					<CheckBoxContainer
-						title={'모두 선택'}
-						indeterminate={
-							check.length !== 0 &&
-							check.length < filteredList.length
-						}
-					>
-						<input
-							type='checkbox'
-							checked={check.length === filteredList.length}
-							readOnly
-						/>
-					</CheckBoxContainer>
-				</_SelectAllContainer>
-				{filteredList.map((column) => (
-					<_CheckboxContainer
-						onClick={onClickSetCheck(column)}
-						key={column.id}
-					>
-						<CheckBoxContainer title={column.Header}>
-							<input
-								type='checkbox'
-								checked={check.includes(column.id)}
-								readOnly
-							/>
-						</CheckBoxContainer>
-					</_CheckboxContainer>
-				))}
-			</>
+			<NewCheckBox
+				onClick={onClickSetCheck(filteredList)}
+				title={'모두 선택'}
+				indeterminate={
+					check.length !== 0 && check.length < filteredList.length
+				}
+				checked={check.length === filteredList.length}
+				readOnly
+			/>
+			<div
+				style={{width: '100%', height: '1px', background: '#e3e5e5'}}
+			/>
+			{filteredList.map((column) => (
+				<NewCheckBox
+					onClick={onClickSetCheck(column)}
+					key={column.id}
+					title={column.Header}
+					checked={check.includes(column.id)}
+					readOnly
+				/>
+			))}
 		</DropdownBtnContainer>
 	) : (
 		<></>

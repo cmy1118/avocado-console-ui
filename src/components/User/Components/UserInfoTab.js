@@ -5,19 +5,14 @@ import PropTypes from 'prop-types';
 import {TabContentsTitle} from '../../../styles/components/tab';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {formKeys} from '../../../utils/data';
-import FormTextBox from '../../RecycleComponents/FormTextBox';
-import Form from '../../RecycleComponents/Form';
 import ModalFormContainer from '../../RecycleComponents/ModalFormContainer';
 import {
 	NormalBorderButton,
 	NormalButton,
 } from '../../../styles/components/buttons';
-import {Label} from '../../../styles/components/text';
-import styled from 'styled-components';
-
-const _FormContainer = styled.div`
-	display: flex;
-`;
+import NewInput from '../../RecycleComponents/New/NewInput';
+import NewForm from '../../RecycleComponents/New/newForm';
+import {RowDiv} from '../../../styles/components/div';
 
 const UserInfoTab = ({userId}) => {
 	const [isIdentificationOpened, setIsIdentificationOpened] = useState(false);
@@ -63,121 +58,102 @@ const UserInfoTab = ({userId}) => {
 				<NormalButton form={formKeys.userInfoForm}>저장</NormalButton>
 			</TabContentsTitle>
 
-			<Form id={formKeys.userInfoForm} onSubmit={onClickSaveChangedInfo}>
-				<FormTextBox
-					name={'id'}
-					label={'사용자 ID : '}
-					defaultValue={user.id}
-					direction={'row'}
-					lock
-				/>
-				<FormTextBox
-					name={'name'}
-					label={'사용자 이름 : '}
-					defaultValue={user.name}
-					direction={'row'}
-					lock
-				/>
-				<FormTextBox
-					name={'password'}
-					label={'사용자 비밀번호 : '}
-					defaultValue={'**********'}
-					direction={'row'}
-					lock
-				>
+			<NewForm
+				submitKey={formKeys.userInfoForm}
+				initialValues={{
+					id: user.id,
+					name: user.name,
+					password: '*********',
+					email: user.email,
+					telephone: user.telephone,
+					mobile: user.mobile,
+				}}
+				onSubmit={(data) => console.log(data)}
+			>
+				<NewInput label={'사용자 ID'} name={'id'} />
+				<NewInput label={'사용자 이름'} name={'name'} />
+				<RowDiv>
+					<NewInput label={'사용자 비밀번호'} name={'password'} />
 					<NormalBorderButton
 						type={'button'}
 						onClick={onClickOpenIdentificationDialogBox}
 					>
 						비밀번호 변경
 					</NormalBorderButton>
-				</FormTextBox>
-				<FormTextBox
-					name={'email'}
-					label={'이메일 주소 : '}
-					defaultValue={user.email}
-					direction={'row'}
-					lock
-				/>
-				<FormTextBox
-					name={'telephone'}
-					label={'전화번호 : '}
-					defaultValue={user.telephone}
-					direction={'row'}
-					lock
-				/>
-				<FormTextBox
-					name={'mobile'}
-					label={'모바일 번호 : '}
-					defaultValue={user.mobile}
-					direction={'row'}
-					lock
-				/>
-			</Form>
+				</RowDiv>
+				<NewInput label={'이메일 주소'} name={'email'} />
+				<NewInput label={'전화번호'} name={'telephone'} />
+				<NewInput label={'모바일 번호'} name={'mobile'} />
+			</NewForm>
 
 			<ModalFormContainer
 				isOpened={isIdentificationOpened}
 				setIsOpened={setIsIdentificationOpened}
-				onClickOkBtn={onClickOkBtn}
+				submitKey={'sendAuthNumber'}
 				title={'본인 확인'}
 			>
-				<_FormContainer>
-					<Form id={'sendAuthNumber'} onSubmit={SendAuthNumber}>
-						<Label>{'본인 확인'}</Label>
-						<FormTextBox
+				<NewForm
+					submitKey={'sendAuthNumber'}
+					initialValues={{email: ''}}
+					onSubmit={SendAuthNumber}
+				>
+					<RowDiv>
+						<NewInput
+							label={'본인 확인'}
 							name={'email'}
 							placeholder={'E-mail 주소'}
-							autoFocus
-							direction={'row'}
-						>
-							<NormalButton form={'sendAuthNumber'}>
-								인증번호 전송
-							</NormalButton>
-						</FormTextBox>
-					</Form>
-				</_FormContainer>
-				<_FormContainer>
-					<Form id={'authNumber'} onSubmit={ConfirmAuthNumber}>
-						<FormTextBox
-							name={'authNumber'}
+						/>
+						<NormalButton form={'sendAuthNumber'}>
+							인증번호 전송
+						</NormalButton>
+					</RowDiv>
+				</NewForm>
+
+				<NewForm
+					submitKey={'authNumber'}
+					initialValues={{number: ''}}
+					onSubmit={ConfirmAuthNumber}
+				>
+					<RowDiv>
+						<NewInput
+							label={'본인 확인'}
+							name={'number'}
 							placeholder={'인증번호 입력'}
-							direction={'row'}
-						>
-							<NormalButton form={'authNumber'}>
-								인증하기
-							</NormalButton>
-						</FormTextBox>
-					</Form>
-				</_FormContainer>
+						/>
+						<NormalButton form={'authNumber'}>
+							인증하기
+						</NormalButton>
+					</RowDiv>
+				</NewForm>
 			</ModalFormContainer>
 
 			<ModalFormContainer
 				isOpened={isChangePasswordOpened}
 				setIsOpened={setIsChangePasswordOpened}
 				title={'비밀번호 변경'}
-				id={'changePassword'}
+				submitKey={'changePassword'}
 			>
-				<Form id={'changePassword'} onSubmit={onClickSaveChangedInfo}>
-					<FormTextBox
-						name={'currentPassword'}
-						placeholder={'현재 비밀번호를 입력하십시오.'}
-						inputWidth={'372px'}
+				<NewForm
+					submitKey={'changePassword'}
+					initialValues={{old: '', new: '', confirm: ''}}
+					onSubmit={onClickSaveChangedInfo}
+				>
+					<NewInput
 						label={'현재 비밀번호'}
-						autoFocus
+						name={'old'}
+						placeholder={'현재 비밀번호를 입력하십시오.'}
 					/>
-					<FormTextBox
-						name={'newPassword'}
-						placeholder={'새로운 비밀번호를 입력하십시오'}
-						inputWidth={'372px'}
+					<NewInput
 						label={'새로운 비밀번호'}
-					/>
-					<FormTextBox
-						name={'confirmPassword'}
+						name={'new'}
 						placeholder={'새로운 비밀번호를 입력하십시오'}
-						inputWidth={'372px'}
-						label={'비밀번호 확인'}
 					/>
-				</Form>
+					<NewInput
+						label={'비밀번호 확인'}
+						name={'confirm'}
+						placeholder={'새로운 비밀번호를 입력하십시오'}
+					/>
+				</NewForm>
 			</ModalFormContainer>
 		</div>
 	);

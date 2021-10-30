@@ -1,43 +1,25 @@
 import React, {useCallback, useState} from 'react';
 import {SubTitle} from '../../../styles/components/style';
 import {useHistory} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
-import FormComboBox from '../../RecycleComponents/FormComboBox';
-import Form from '../../RecycleComponents/Form';
-import FormTextBox from '../../RecycleComponents/FormTextBox';
-import * as yup from 'yup';
-import {formKeys} from '../../../utils/data';
 import PropTypes from 'prop-types';
 import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
-import CURRENT_TARGET from '../../../reducers/currentTarget';
-import ComboBox from '../../RecycleComponents/ComboBox';
+import NewComboBox from '../../RecycleComponents/New/NewComboBox';
+import NewInput from '../../RecycleComponents/New/NewInput';
+import NewForm from '../../RecycleComponents/New/newForm';
+import {RowDiv} from '../../../styles/components/div';
 
-const AddGroup = ({setIsOpened}) => {
+const AddGroup = () => {
 	const history = useHistory();
-	const dispatch = useDispatch();
-	/***********************************************************************
-	 * roberto: userGroup_update
-	 *
-	 ***********************************************************************/
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
-	const [groupTypesId, setGroupTypesId] = useState({
-		value: null,
-		label: '그룹 유형 선택',
-	});
-	const [groupId, setGroupId] = useState({
-		value: null,
-		label: '상위 그룹 선택',
-	});
-
-	const [groupTypeIsOpened, setGroupTypeIsOpened] = useState(false);
-	const [groupIdIsOpened, setGroupIdIsOpened] = useState(false);
+	const [groupTypesId, setGroupTypesId] = useState('');
 
 	/***********************************************************************/
 	const onClickManageGroupType = useCallback(() => {
@@ -48,28 +30,10 @@ const AddGroup = ({setIsOpened}) => {
 		history.push('/groups');
 	}, [history]);
 
-	const onSubmitAddGroup = useCallback(
-		(data) => {
-			console.log(data);
-			dispatch(
-				CURRENT_TARGET.action.addReadOnlyData({
-					title: 'group',
-					data: data,
-				}),
-			);
-			setIsOpened(true);
-		},
-		[dispatch, setIsOpened],
-	);
-
-	const schema = {
-		groupType: yup.string().required(),
-		groupId:
-			groupTypesId === 'groupType1'
-				? yup.string().required()
-				: yup.string(),
-		name: yup.string().max(120).required(),
-	};
+	const onSubmitAddGroup = useCallback((data) => {
+		console.log(data);
+		setGroupTypesId(data.type);
+	}, []);
 
 	return (
 		<>
@@ -80,7 +44,7 @@ const AddGroup = ({setIsOpened}) => {
 					<NormalButton onClick={onClickManageGroupType}>
 						그룹 유형 관리
 					</NormalButton>
-					<NormalButton form={formKeys.addGroupForm} type={'submit'}>
+					<NormalButton form={'AddGroupKey'} type={'submit'}>
 						그룹 생성
 					</NormalButton>
 					<TransparentButton onClick={onClickCancelAddGroup}>
@@ -88,49 +52,34 @@ const AddGroup = ({setIsOpened}) => {
 					</TransparentButton>
 				</div>
 			</SubTitle>
-
-			<Form
-				id={formKeys.addGroupForm}
+			<NewForm
+				submitKey={'AddGroupKey'}
+				initialValues={{
+					type: '그룹 유형 선택',
+					id: '',
+					name: '',
+				}}
 				onSubmit={onSubmitAddGroup}
-				schema={schema}
 			>
-				<ComboBox
-					label={'그룹 유형 선택'}
-					name={'groupType'}
-					isOpened={groupTypeIsOpened}
-					setIsOpened={setGroupTypeIsOpened}
-					title={groupTypesId.label}
-					value={groupTypesId.value}
-					setValue={setGroupTypesId}
-					options={groupTypes.map((v) => {
-						return {value: v.id, label: v.name};
-					})}
-					width={'120px'}
-				/>
-				{groupTypesId.value === 'groupType1' ? (
-					<ComboBox
-						label={'상위 그룹 선택'}
-						name={'groupId'}
-						isOpened={groupIdIsOpened}
-						setIsOpened={setGroupIdIsOpened}
-						title={groupId.label}
-						value={groupId.value}
-						setValue={setGroupId}
-						options={groups
-							.filter(
-								(x) =>
-									x.clientGroupTypeId === groupTypesId.value,
-							)
-							.map((v) => {
-								return {value: v.id, label: v.name};
-							})}
-						width={'120px'}
+				<RowDiv>
+					<NewComboBox
+						label='그룹 유형 선택'
+						name='type'
+						options={groupTypes.map((v) => {
+							return {value: v.id, label: v.name};
+						})}
+						submitKey={'AddGroupKey'}
 					/>
-				) : (
-					<></>
-				)}
-				<FormTextBox name={'name'} placeholder={'group name'} />
-			</Form>
+					{groupTypesId === 'groupType1' && (
+						<NewInput label={'상위 그룹 선택'} name={'id'} />
+					)}
+				</RowDiv>
+				<NewInput
+					label={'그룹 명'}
+					name={'name'}
+					placeholder={'그룹명을 입력하세요'}
+				/>
+			</NewForm>
 		</>
 	);
 };

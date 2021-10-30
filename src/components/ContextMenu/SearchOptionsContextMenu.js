@@ -1,21 +1,8 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import {useRootClose} from 'react-overlays';
-import CheckBoxContainer from '../RecycleComponents/CheckBoxContainer';
 import DropdownBtnContainer from '../RecycleComponents/DropdownBtnContainer';
-
-const _CheckboxContainer = styled.div`
-	height: 32px;
-	width: 100%;
-	display: flex;
-	align-items: center;
-	padding: 0px 10px;
-	&:hover {
-		background-color: rgba(0, 0, 0, 0.04);
-	}
-	cursor: pointer;
-`;
+import NewCheckBox from '../RecycleComponents/New/NewCheckBox';
 
 const SearchOptionsContextMenu = ({
 	isOpened,
@@ -68,24 +55,15 @@ const SearchOptionsContextMenu = ({
 			onClickOkBtn={onClickApplyFilters}
 			onClickCancelBtn={onClickCloseContextMenu}
 		>
-			<>
-				{allOptions.map((column) => (
-					<_CheckboxContainer
-						key={column.accessor}
-						onClick={onClickSetCheck(column.accessor)}
-					>
-						<CheckBoxContainer title={column.Header}>
-							<input
-								type='checkbox'
-								checked={tempSelectedOptions.includes(
-									column.accessor,
-								)}
-								readOnly
-							/>
-						</CheckBoxContainer>
-					</_CheckboxContainer>
-				))}
-			</>
+			{allOptions.map((column) => (
+				<NewCheckBox
+					key={column.accessor}
+					onClick={onClickSetCheck(column.accessor)}
+					title={column.Header}
+					checked={tempSelectedOptions.includes(column.accessor)}
+					readOnly
+				/>
+			))}
 		</DropdownBtnContainer>
 	);
 };

@@ -46,8 +46,7 @@ const ModalFormContainer = ({
 	setIsOpened,
 	title,
 	children,
-	onClickOkBtn,
-	id,
+	submitKey,
 }) => {
 	const onClickCloseDialogBox = useCallback(() => {
 		setIsOpened(false);
@@ -78,13 +77,9 @@ const ModalFormContainer = ({
 
 			<_Footer>
 				<_CancelBtn onClick={onClickCloseDialogBox}>취소</_CancelBtn>
-				{id ? (
-					<_OkBtn form={id} type={'submit'}>
-						저장
-					</_OkBtn>
-				) : (
-					<_OkBtn onClick={onClickOkBtn}>저장</_OkBtn>
-				)}
+				<_OkBtn form={submitKey} type={'submit'}>
+					저장
+				</_OkBtn>
 			</_Footer>
 		</_DialogBox>
 	);
@@ -94,8 +89,7 @@ ModalFormContainer.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 	title: PropTypes.string.isRequired,
-	onClickOkBtn: PropTypes.func,
-	id: PropTypes.string,
+	submitKey: PropTypes.string,
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 		.isRequired,
 };

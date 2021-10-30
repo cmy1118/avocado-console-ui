@@ -1,9 +1,7 @@
 import React, {useCallback} from 'react';
 import {useHistory} from 'react-router-dom';
 import {SubTitle} from '../../../styles/components/style';
-import Form from '../../RecycleComponents/Form';
 import * as yup from 'yup';
-import FormTextBox from '../../RecycleComponents/FormTextBox';
 import {formKeys} from '../../../utils/data';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
@@ -12,6 +10,8 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
+import NewForm from '../../RecycleComponents/New/newForm';
+import NewInput from '../../RecycleComponents/New/NewInput';
 
 const AddUser = ({setIsOpened}) => {
 	const history = useHistory();
@@ -76,47 +76,40 @@ const AddUser = ({setIsOpened}) => {
 					</TransparentButton>
 				</div>
 			</SubTitle>
-			<Form
-				id={formKeys.addUserForm}
-				schema={schema}
+
+			<NewForm
+				submitKey={formKeys.addUserForm}
+				initialValues={{
+					id: '',
+					name: '',
+					email: '',
+					telephone: '',
+					mobile: '',
+				}}
 				onSubmit={onSubmitUserData}
 			>
-				<FormTextBox
-					name={'id'}
-					label={'사용자 ID : '}
-					defaultValue={'AvocadoGood'}
-					placeholder={'id'}
-					direction={'row'}
-				/>
-				<FormTextBox
+				<NewInput label={'사용자 ID'} name={'id'} placeholder={'id'} />
+				<NewInput
+					label={'사용자 이름'}
 					name={'name'}
-					label={'사용자 이름 : '}
-					defaultValue={'아보카도'}
 					placeholder={'name'}
-					direction={'row'}
 				/>
-				<FormTextBox
+				<NewInput
+					label={'이메일 주소'}
 					name={'email'}
-					label={'이메일 주소 : '}
-					defaultValue={'avocado@netand.co.kr'}
 					placeholder={'email'}
-					direction={'row'}
 				/>
-				<FormTextBox
+				<NewInput
+					label={'전화 번호'}
 					name={'telephone'}
-					label={'전화번호 : '}
-					defaultValue={'02-1234-1234'}
 					placeholder={'telephone'}
-					direction={'row'}
 				/>
-				<FormTextBox
+				<NewInput
+					label={'핸드폰 번호'}
 					name={'mobile'}
-					label={'핸드폰 번호 : '}
-					defaultValue={'010-1234-1234'}
 					placeholder={'mobile'}
-					direction={'row'}
 				/>
-			</Form>
+			</NewForm>
 		</>
 	);
 };

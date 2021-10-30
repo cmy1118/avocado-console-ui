@@ -7,7 +7,6 @@ import {
 	SubTitle,
 } from '../../../styles/components/style';
 import {Link, useHistory} from 'react-router-dom';
-import AddGroupTypeDialogBox from '../../DialogBoxs/Form/AddGroupTypeDialogBox';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 import Table from '../../Table/Table';
@@ -20,7 +19,6 @@ import {
 
 const GroupTypeSpace = () => {
 	const history = useHistory();
-	const [isAddGroupTypeOpened, setIsAddGroupTypeOpened] = useState(false);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [select, setSelect] = useState([]);
@@ -100,10 +98,6 @@ const GroupTypeSpace = () => {
 				isSelectable
 				setData={setData}
 				setSelect={setSelect}
-			/>
-			<AddGroupTypeDialogBox
-				isOpened={isAddGroupTypeOpened}
-				setIsOpened={setIsAddGroupTypeOpened}
 			/>
 		</IamContainer>
 	);
