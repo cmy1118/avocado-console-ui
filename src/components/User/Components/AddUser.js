@@ -76,7 +76,6 @@ const AddUser = ({setIsOpened}) => {
 					</TransparentButton>
 				</div>
 			</SubTitle>
-
 			<NewForm
 				submitKey={formKeys.addUserForm}
 				initialValues={{
@@ -88,26 +87,35 @@ const AddUser = ({setIsOpened}) => {
 				}}
 				onSubmit={onSubmitUserData}
 			>
-				<NewInput label={'사용자 ID'} name={'id'} placeholder={'id'} />
+				<NewInput
+					label={'사용자 ID'}
+					name={'id'}
+					placeholder={'id'}
+					direction={'row'}
+				/>
 				<NewInput
 					label={'사용자 이름'}
 					name={'name'}
 					placeholder={'name'}
+					direction={'row'}
 				/>
 				<NewInput
 					label={'이메일 주소'}
 					name={'email'}
 					placeholder={'email'}
+					direction={'row'}
 				/>
 				<NewInput
 					label={'전화 번호'}
 					name={'telephone'}
 					placeholder={'telephone'}
+					direction={'row'}
 				/>
 				<NewInput
 					label={'핸드폰 번호'}
 					name={'mobile'}
 					placeholder={'mobile'}
+					direction={'row'}
 				/>
 			</NewForm>
 		</>

@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div``;
+const Container = styled.div`
+	display: flex;
+	align-items: ${(props) =>
+		props.direction === 'col' ? 'initial' : 'center'};
+	flex-direction: ${(props) =>
+		props.direction === 'col' ? 'column' : 'row'};
+`;
 
 const Input = styled.input`
 	width: ${(props) => props.width || '394px'};
@@ -25,8 +31,9 @@ const Input = styled.input`
 
 const NewInput = ({label, ...props}) => {
 	const [field, meta] = useField(props);
+
 	return (
-		<Container>
+		<Container direction={props.direction || 'col'}>
 			<label>{label}</label>
 			<Input {...field} {...props} />
 			{meta.touched && meta.error ? (
@@ -38,6 +45,7 @@ const NewInput = ({label, ...props}) => {
 
 NewInput.propTypes = {
 	label: PropTypes.string,
+	direction: PropTypes.oneOf(['row', 'col']),
 };
 
 export default NewInput;

@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {
@@ -53,18 +53,16 @@ const DropdownBtnContainer = ({
 	onClickOkBtn,
 	onClickCancelBtn,
 	children,
-	direction,
+	direction = 'right',
 }) => {
 	const ref = useRef();
-
-	const [curDirection, setCurDirection] = useState(direction || 'right');
 
 	useRootClose(ref, onClickCancelBtn, {
 		disabled: !isOpened,
 	});
 
 	return (
-		<_Container ref={ref} alignEnd direction={curDirection}>
+		<_Container ref={ref} alignEnd direction={direction}>
 			<_Header>
 				<span>{title}</span>
 			</_Header>
@@ -86,7 +84,7 @@ const DropdownBtnContainer = ({
 };
 DropdownBtnContainer.propTypes = {
 	title: PropTypes.string.isRequired,
-	children: PropTypes.object.isRequired,
+	children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	isOpened: PropTypes.bool.isRequired,
 	onClickOkBtn: PropTypes.func.isRequired,
 	onClickCancelBtn: PropTypes.func.isRequired,
