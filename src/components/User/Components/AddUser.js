@@ -12,6 +12,7 @@ import {
 } from '../../../styles/components/buttons';
 import NewForm from '../../RecycleComponents/New/NewForm';
 import NewInput from '../../RecycleComponents/New/NewInput';
+import {RowDiv} from '../../../styles/components/div';
 
 const AddUser = ({setIsOpened}) => {
 	const history = useHistory();
@@ -89,27 +90,41 @@ const AddUser = ({setIsOpened}) => {
 				onSubmit={onSubmitUserData}
 				innerRef={formRef}
 			>
-				<NewInput name={'id'} placeholder={'id'} direction={'row'} />
-				<NewInput
-					name={'name'}
-					placeholder={'name'}
-					direction={'row'}
-				/>
-				<NewInput
-					name={'email'}
-					placeholder={'email'}
-					direction={'row'}
-				/>
-				<NewInput
-					name={'telephone'}
-					placeholder={'telephone'}
-					direction={'row'}
-				/>
-				<NewInput
-					name={'mobile'}
-					placeholder={'mobile'}
-					direction={'row'}
-				/>
+				<RowDiv margin={'0px 0px 12px 0px'}>
+					<NewInput
+						name={'id'}
+						placeholder={'사용자 계정 ID'}
+						direction={'row'}
+					/>
+				</RowDiv>
+				<RowDiv margin={'0px 0px 12px 0px'}>
+					<NewInput
+						name={'name'}
+						placeholder={'사용자 명'}
+						direction={'row'}
+					/>
+				</RowDiv>
+				<RowDiv margin={'0px 0px 12px 0px'}>
+					<NewInput
+						name={'email'}
+						placeholder={'이메일 주소'}
+						direction={'row'}
+					/>
+				</RowDiv>
+				<RowDiv margin={'0px 0px 12px 0px'}>
+					<NewInput
+						name={'telephone'}
+						placeholder={'전화번호'}
+						direction={'row'}
+					/>
+				</RowDiv>
+				<RowDiv margin={'0px 0px 12px 0px'}>
+					<NewInput
+						name={'mobile'}
+						placeholder={'모바일 전화번호'}
+						direction={'row'}
+					/>
+				</RowDiv>
 			</NewForm>
 		</>
 	);

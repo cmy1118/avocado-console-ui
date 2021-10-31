@@ -12,6 +12,7 @@ import {tableColumns} from '../../../Constants/Table/columns';
 import * as yup from 'yup';
 import NewForm from '../../RecycleComponents/New/NewForm';
 import NewInput from '../../RecycleComponents/New/NewInput';
+import {Label} from '../../../styles/components/text';
 
 const _Title = styled.div`
 	display: flex;
@@ -65,6 +66,7 @@ const GroupSummary = ({groupId}) => {
 					onSubmit={(data) => console.log(data)}
 					innerRef={formRef}
 				>
+					<Label htmlFor={'name'}>사용자 그룹명</Label>
 					<NewInput
 						name={'name'}
 						placeholder={'그룹명을 입력하세요'}

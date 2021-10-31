@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const Label = styled.label`
+	display: flex;
+	align-items: center;
 	font-size: 14px;
 	font-weight: normal;
 	font-stretch: normal;
@@ -10,7 +12,7 @@ export const Label = styled.label`
 	text-align: left;
 	color: #212121;
 	margin-bottom: 2px;
-	width: ${(props) => props.labelWidth || '110px'};
+	width: ${(props) => props.width || '120px'};
 `;
 
 export const Span = styled.span`

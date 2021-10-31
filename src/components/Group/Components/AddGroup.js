@@ -12,7 +12,8 @@ import {
 import NewComboBox from '../../RecycleComponents/New/NewComboBox';
 import NewInput from '../../RecycleComponents/New/NewInput';
 import NewForm from '../../RecycleComponents/New/NewForm';
-import {RowDiv} from '../../../styles/components/div';
+import {ColDiv, RowDiv} from '../../../styles/components/div';
+import {Label} from '../../../styles/components/text';
 
 const AddGroup = () => {
 	const history = useHistory();
@@ -62,15 +63,29 @@ const AddGroup = () => {
 				innerRef={formRef}
 			>
 				<RowDiv>
-					<NewComboBox
-						name='type'
-						options={groupTypes.map((v) => {
-							return {value: v.id, label: v.name};
-						})}
-					/>
-					{values.type === 'groupType1' && <NewInput name={'id'} />}
+					<ColDiv>
+						<Label htmlFor='type'>그룹 유형 선택</Label>
+						<NewComboBox
+							name='type'
+							options={groupTypes.map((v) => {
+								return {value: v.id, label: v.name};
+							})}
+						/>
+					</ColDiv>
+					{values.type === 'groupType1' && (
+						<ColDiv>
+							<Label htmlFor={'id'}>상위 그룹 선택</Label>
+							<NewInput name={'id'} />
+						</ColDiv>
+					)}
 				</RowDiv>
-				<NewInput name={'name'} placeholder={'그룹명을 입력하세요'} />
+				<ColDiv>
+					<Label htmlFor={'name'}>그룹 명</Label>
+					<NewInput
+						name={'name'}
+						placeholder={'그룹명을 입력하세요'}
+					/>
+				</ColDiv>
 			</NewForm>
 		</>
 	);
