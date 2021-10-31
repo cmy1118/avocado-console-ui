@@ -29,12 +29,11 @@ const Input = styled.input`
 	}
 `;
 
-const NewInput = ({label, ...props}) => {
+const NewInput = ({...props}) => {
 	const [field, meta] = useField(props);
 
 	return (
 		<Container direction={props.direction || 'col'}>
-			<label>{label}</label>
 			<Input {...field} {...props} />
 			{meta.touched && meta.error ? (
 				<div className='error'>{meta.error}</div>
@@ -44,7 +43,7 @@ const NewInput = ({label, ...props}) => {
 };
 
 NewInput.propTypes = {
-	label: PropTypes.string,
+	name: PropTypes.string.isRequired,
 	direction: PropTypes.oneOf(['row', 'col']),
 };
 

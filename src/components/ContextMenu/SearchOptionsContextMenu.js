@@ -59,7 +59,7 @@ const SearchOptionsContextMenu = ({
 				<NewCheckBox
 					key={column.accessor}
 					onClick={onClickSetCheck(column.accessor)}
-					title={column.Header}
+					label={column.Header}
 					checked={tempSelectedOptions.includes(column.accessor)}
 					readOnly
 				/>

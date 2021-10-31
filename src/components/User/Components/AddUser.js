@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
 import {SubTitle} from '../../../styles/components/style';
 import * as yup from 'yup';
@@ -15,6 +15,7 @@ import NewInput from '../../RecycleComponents/New/NewInput';
 
 const AddUser = ({setIsOpened}) => {
 	const history = useHistory();
+	const formRef = useRef(null);
 
 	const dispatch = useDispatch();
 	// 이부분은 만들어서 넣어주면 됩니다.
@@ -66,9 +67,10 @@ const AddUser = ({setIsOpened}) => {
 		<>
 			<SubTitle>
 				<div>사용자 기본 정보</div>
-
 				<div>
-					<NormalButton form={formKeys.addUserForm} type={'submit'}>
+					<NormalButton
+						onClick={() => formRef.current.handleSubmit()}
+					>
 						사용자 생성
 					</NormalButton>
 					<TransparentButton onClick={onClickCancelAddUser}>
@@ -77,7 +79,6 @@ const AddUser = ({setIsOpened}) => {
 				</div>
 			</SubTitle>
 			<NewForm
-				submitKey={formKeys.addUserForm}
 				initialValues={{
 					id: '',
 					name: '',
@@ -86,33 +87,25 @@ const AddUser = ({setIsOpened}) => {
 					mobile: '',
 				}}
 				onSubmit={onSubmitUserData}
+				innerRef={formRef}
 			>
+				<NewInput name={'id'} placeholder={'id'} direction={'row'} />
 				<NewInput
-					label={'사용자 ID'}
-					name={'id'}
-					placeholder={'id'}
-					direction={'row'}
-				/>
-				<NewInput
-					label={'사용자 이름'}
 					name={'name'}
 					placeholder={'name'}
 					direction={'row'}
 				/>
 				<NewInput
-					label={'이메일 주소'}
 					name={'email'}
 					placeholder={'email'}
 					direction={'row'}
 				/>
 				<NewInput
-					label={'전화 번호'}
 					name={'telephone'}
 					placeholder={'telephone'}
 					direction={'row'}
 				/>
 				<NewInput
-					label={'핸드폰 번호'}
 					name={'mobile'}
 					placeholder={'mobile'}
 					direction={'row'}

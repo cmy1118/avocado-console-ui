@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {SubTitle} from '../../../styles/components/style';
 import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
@@ -18,8 +18,13 @@ const AddGroup = () => {
 	const history = useHistory();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
+	const formRef = useRef(null);
 
-	const [groupTypesId, setGroupTypesId] = useState('');
+	const [values, setValues] = useState({
+		type: '그룹 유형 선택',
+		id: '',
+		name: '',
+	});
 
 	/***********************************************************************/
 	const onClickManageGroupType = useCallback(() => {
@@ -30,11 +35,6 @@ const AddGroup = () => {
 		history.push('/groups');
 	}, [history]);
 
-	const onSubmitAddGroup = useCallback((data) => {
-		console.log(data);
-		setGroupTypesId(data.type);
-	}, []);
-
 	return (
 		<>
 			<SubTitle>
@@ -44,7 +44,10 @@ const AddGroup = () => {
 					<NormalButton onClick={onClickManageGroupType}>
 						그룹 유형 관리
 					</NormalButton>
-					<NormalButton form={'AddGroupKey'} type={'submit'}>
+					<NormalButton
+						type={'button'}
+						onClick={() => formRef.current.handleSubmit()}
+					>
 						그룹 생성
 					</NormalButton>
 					<TransparentButton onClick={onClickCancelAddGroup}>
@@ -53,32 +56,21 @@ const AddGroup = () => {
 				</div>
 			</SubTitle>
 			<NewForm
-				submitKey={'AddGroupKey'}
-				initialValues={{
-					type: '그룹 유형 선택',
-					id: '',
-					name: '',
-				}}
-				onSubmit={onSubmitAddGroup}
+				initialValues={values}
+				setValues={setValues}
+				onSubmit={(data) => console.log(data)}
+				innerRef={formRef}
 			>
 				<RowDiv>
 					<NewComboBox
-						label='그룹 유형 선택'
 						name='type'
 						options={groupTypes.map((v) => {
 							return {value: v.id, label: v.name};
 						})}
-						submitKey={'AddGroupKey'}
 					/>
-					{groupTypesId === 'groupType1' && (
-						<NewInput label={'상위 그룹 선택'} name={'id'} />
-					)}
+					{values.type === 'groupType1' && <NewInput name={'id'} />}
 				</RowDiv>
-				<NewInput
-					label={'그룹 명'}
-					name={'name'}
-					placeholder={'그룹명을 입력하세요'}
-				/>
+				<NewInput name={'name'} placeholder={'그룹명을 입력하세요'} />
 			</NewForm>
 		</>
 	);

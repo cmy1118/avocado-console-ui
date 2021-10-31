@@ -14,6 +14,8 @@ import {
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
 import {NormalBorderButton} from '../../styles/components/buttons';
+import NewForm from '../RecycleComponents/New/newForm';
+import NewCheckBox from '../RecycleComponents/New/NewCheckBox';
 
 function dateBetweenFilterFn(rows, id, filterValues) {
 	let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;

@@ -41,7 +41,6 @@ const InputContainer = styled.div`
 			(props.type === 'indeterminate' && !props.disabled && '#178082') ||
 			(props.type === 'check' && '#178082') ||
 			(props.type === 'checkout' && '#757575')};
-
 		width: 15px !important;
 		height: 15px !important;
 		margin: 2.5px !important;
@@ -49,7 +48,7 @@ const InputContainer = styled.div`
 `;
 
 const NewCheckBox = ({
-	title = '',
+	label = '',
 	indeterminate = false, // 체크박스 하위 항목중 일부 체크 시
 	disabled = false,
 	checked = false,
@@ -69,17 +68,17 @@ const NewCheckBox = ({
 						className='state'
 					>
 						{indeterminateIcon}
-						<label>{title}</label>
+						<label>{label}</label>
 					</InputContainer>
 				) : checked ? (
 					<InputContainer type={'check'} className='state'>
 						{checkIcon}
-						<label>{title}</label>
+						<label>{label}</label>
 					</InputContainer>
 				) : (
 					<InputContainer type={'checkout'} className='state'>
 						{checkOutlineIcon}
-						<label>{title}</label>
+						<label>{label}</label>
 					</InputContainer>
 				)}
 			</_Container>
@@ -89,7 +88,7 @@ const NewCheckBox = ({
 
 NewCheckBox.propTypes = {
 	// options
-	title: PropTypes.string,
+	label: PropTypes.string,
 	indeterminate: PropTypes.bool,
 	checked: PropTypes.bool,
 	disabled: PropTypes.bool,

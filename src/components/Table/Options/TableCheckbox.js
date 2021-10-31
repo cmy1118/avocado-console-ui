@@ -119,7 +119,7 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 			indeterminate={indeterminate}
 			onClick={handleClick}
 			{...rest}
-			title={''}
+			label={''}
 		/>
 	);
 });

@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -15,9 +15,12 @@ import NewForm from '../../RecycleComponents/New/newForm';
 import {RowDiv} from '../../../styles/components/div';
 
 const UserInfoTab = ({userId}) => {
+	const [values, setValues] = useState({email: '', number: ''});
+	const confirmAuthRef = useRef(null);
+	const changePasswordRef = useRef(null);
+
 	const [isIdentificationOpened, setIsIdentificationOpened] = useState(false);
 	const [isChangePasswordOpened, setIsChangePasswordOpened] = useState(false);
-	const [auth, setAuth] = useState(false);
 	const {users} = useSelector(IAM_USER.selector);
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
@@ -33,23 +36,10 @@ const UserInfoTab = ({userId}) => {
 		setIsIdentificationOpened(true);
 	}, []);
 
-	const SendAuthNumber = useCallback((data) => {
-		console.log('e-mail 주소 : ', data);
-	}, []);
-
-	const ConfirmAuthNumber = useCallback((data) => {
-		console.log('api 인증번호 : ', data);
-		setAuth(true); // 인증 통과.
-	}, []);
-
 	const onClickOkBtn = useCallback(() => {
-		if (auth) {
-			setIsIdentificationOpened(false);
-			setIsChangePasswordOpened(true);
-		} else {
-			alert('인증 실패');
-		}
-	}, [auth]);
+		setIsChangePasswordOpened(true);
+		setIsIdentificationOpened(false);
+	}, []);
 
 	return (
 		<div>
@@ -59,7 +49,6 @@ const UserInfoTab = ({userId}) => {
 			</TabContentsTitle>
 
 			<NewForm
-				submitKey={formKeys.userInfoForm}
 				initialValues={{
 					id: user.id,
 					name: user.name,
@@ -70,10 +59,10 @@ const UserInfoTab = ({userId}) => {
 				}}
 				onSubmit={(data) => console.log(data)}
 			>
-				<NewInput label={'사용자 ID'} name={'id'} />
-				<NewInput label={'사용자 이름'} name={'name'} />
+				<NewInput name={'id'} />
+				<NewInput name={'name'} />
 				<RowDiv>
-					<NewInput label={'사용자 비밀번호'} name={'password'} />
+					<NewInput name={'password'} />
 					<NormalBorderButton
 						type={'button'}
 						onClick={onClickOpenIdentificationDialogBox}
@@ -81,46 +70,41 @@ const UserInfoTab = ({userId}) => {
 						비밀번호 변경
 					</NormalBorderButton>
 				</RowDiv>
-				<NewInput label={'이메일 주소'} name={'email'} />
-				<NewInput label={'전화번호'} name={'telephone'} />
-				<NewInput label={'모바일 번호'} name={'mobile'} />
+				<NewInput name={'email'} />
+				<NewInput name={'telephone'} />
+				<NewInput name={'mobile'} />
 			</NewForm>
 
 			<ModalFormContainer
 				isOpened={isIdentificationOpened}
 				setIsOpened={setIsIdentificationOpened}
-				submitKey={'sendAuthNumber'}
 				title={'본인 확인'}
+				innerRef={confirmAuthRef}
 			>
 				<NewForm
-					submitKey={'sendAuthNumber'}
-					initialValues={{email: ''}}
-					onSubmit={SendAuthNumber}
+					initialValues={values}
+					setValues={setValues}
+					onSubmit={onClickOkBtn}
+					innerRef={confirmAuthRef}
 				>
 					<RowDiv>
-						<NewInput
-							label={'본인 확인'}
-							name={'email'}
-							placeholder={'E-mail 주소'}
-						/>
-						<NormalButton form={'sendAuthNumber'}>
+						<NewInput name={'email'} placeholder={'E-mail 주소'} />
+						<NormalButton
+							type={'button'}
+							onClick={() => console.log(values.email)}
+						>
 							인증번호 전송
 						</NormalButton>
 					</RowDiv>
-				</NewForm>
-
-				<NewForm
-					submitKey={'authNumber'}
-					initialValues={{number: ''}}
-					onSubmit={ConfirmAuthNumber}
-				>
 					<RowDiv>
 						<NewInput
-							label={'본인 확인'}
 							name={'number'}
 							placeholder={'인증번호 입력'}
 						/>
-						<NormalButton form={'authNumber'}>
+						<NormalButton
+							type={'button'}
+							onClick={() => console.log(values.number)}
+						>
 							인증하기
 						</NormalButton>
 					</RowDiv>
@@ -131,25 +115,22 @@ const UserInfoTab = ({userId}) => {
 				isOpened={isChangePasswordOpened}
 				setIsOpened={setIsChangePasswordOpened}
 				title={'비밀번호 변경'}
-				submitKey={'changePassword'}
+				innerRef={changePasswordRef}
 			>
 				<NewForm
-					submitKey={'changePassword'}
 					initialValues={{old: '', new: '', confirm: ''}}
 					onSubmit={onClickSaveChangedInfo}
+					innerRef={changePasswordRef}
 				>
 					<NewInput
-						label={'현재 비밀번호'}
 						name={'old'}
 						placeholder={'현재 비밀번호를 입력하십시오.'}
 					/>
 					<NewInput
-						label={'새로운 비밀번호'}
 						name={'new'}
 						placeholder={'새로운 비밀번호를 입력하십시오'}
 					/>
 					<NewInput
-						label={'비밀번호 확인'}
 						name={'confirm'}
 						placeholder={'새로운 비밀번호를 입력하십시오'}
 					/>

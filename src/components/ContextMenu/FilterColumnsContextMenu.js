@@ -55,7 +55,7 @@ const FilterColumnsContextMenu = ({
 		>
 			<NewCheckBox
 				onClick={onClickSetCheck(filteredList)}
-				title={'모두 선택'}
+				label={'모두 선택'}
 				indeterminate={
 					check.length !== 0 && check.length < filteredList.length
 				}
@@ -69,7 +69,7 @@ const FilterColumnsContextMenu = ({
 				<NewCheckBox
 					onClick={onClickSetCheck(column)}
 					key={column.id}
-					title={column.Header}
+					label={column.Header}
 					checked={check.includes(column.id)}
 					readOnly
 				/>

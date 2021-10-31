@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import Table from '../../Table/Table';
 import {useSelector} from 'react-redux';
@@ -19,6 +19,8 @@ const _Title = styled.div`
 `;
 
 const GroupSummary = ({groupId}) => {
+	const formRef = useRef(null);
+
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
@@ -43,11 +45,6 @@ const GroupSummary = ({groupId}) => {
 		}));
 	}, [group]);
 
-	const onSubmitChangeGroupName = useCallback((data) => {
-		alert(JSON.stringify({...data}));
-		setIsOpened(false);
-	}, []);
-
 	const schema = {
 		name: yup
 			.string()
@@ -61,15 +58,14 @@ const GroupSummary = ({groupId}) => {
 				isOpened={isOpened}
 				setIsOpened={setIsOpened}
 				title={'그룹명 변경'}
-				submitKey={'changeGroupName'}
+				innerRef={formRef}
 			>
 				<NewForm
-					submitKey={'changeGroupName'}
 					initialValues={{name: group?.name}}
-					onSubmit={onSubmitChangeGroupName}
+					onSubmit={(data) => console.log(data)}
+					innerRef={formRef}
 				>
 					<NewInput
-						label={'사용자 그룹명'}
 						name={'name'}
 						placeholder={'그룹명을 입력하세요'}
 					/>

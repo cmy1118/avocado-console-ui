@@ -61,11 +61,7 @@ const OptionContainer = styled.div`
 	background-color: #fff;
 `;
 
-const HiddenButton = styled.button`
-	display: none;
-`;
-
-const NewComboBox = ({label, ...props}) => {
+const NewComboBox = ({...props}) => {
 	const ref = useRef();
 	const {setFieldValue} = useFormikContext();
 	const [field, meta] = useField(props);
@@ -79,9 +75,8 @@ const NewComboBox = ({label, ...props}) => {
 					? e.target.value
 					: parseInt(e.target.value),
 			);
-			if (props.submitKey) {
-				document.getElementById(`${props.submitKey}-btn`).click();
-			}
+			// option 클릭시 바로 submit 하고싶은 경우 innerRef를 넣어준다
+			if (props.innerRef) props.innerRef.current.handleSubmit();
 			setIsOpened(false);
 		},
 		[props, setFieldValue],
@@ -93,7 +88,6 @@ const NewComboBox = ({label, ...props}) => {
 
 	return (
 		<Container>
-			{label && <label htmlFor={props.name}>{label}</label>}
 			<Header
 				width={props.width}
 				onClick={() => setIsOpened(!isOpened)}
@@ -118,8 +112,9 @@ const NewComboBox = ({label, ...props}) => {
 							<Option
 								onClick={onClickOption}
 								key={i}
-								value={v.value}
 								current={v.value === field.value}
+								{...field}
+								value={v.value}
 							>
 								{v.label}
 							</Option>
@@ -127,16 +122,14 @@ const NewComboBox = ({label, ...props}) => {
 					})}
 				</OptionContainer>
 			)}
-			<HiddenButton id={`${props.submitKey}-btn`} type={'submit'} />
 		</Container>
 	);
 };
 
 NewComboBox.propTypes = {
-	label: PropTypes.string,
 	name: PropTypes.string,
 	options: PropTypes.array,
-	submitKey: PropTypes.string,
 	width: PropTypes.string,
+	innerRef: PropTypes.object,
 };
 export default NewComboBox;

@@ -1,17 +1,19 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
 import NewForm from '../../RecycleComponents/New/newForm';
 import NewComboBox from '../../RecycleComponents/New/NewComboBox';
 
 const PageSizing = ({pageSize, setPageSize}) => {
-	return pageSize ? (
+	const formRef = useRef(null);
+
+	return (
 		<NewForm
-			submitKey={'PageSizingKey'}
 			initialValues={{page: `${pageSize} 행`}}
 			onSubmit={(data) => {
 				console.log(data);
-				setPageSize(parseInt(data.page));
+				setPageSize(data.page);
 			}}
+			innerRef={formRef}
 		>
 			<NewComboBox
 				width={'90px'}
@@ -21,11 +23,9 @@ const PageSizing = ({pageSize, setPageSize}) => {
 					{value: 50, label: '50 행'},
 					{value: 100, label: '100 행'},
 				]}
-				submitKey={'PageSizingKey'}
+				innerRef={formRef}
 			/>
 		</NewForm>
-	) : (
-		<></>
 	);
 };
 
