@@ -10,7 +10,7 @@ import ModalFormContainer from '../../RecycleComponents/ModalFormContainer';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import * as yup from 'yup';
-import NewForm from '../../RecycleComponents/New/newForm';
+import NewForm from '../../RecycleComponents/New/NewForm';
 import NewInput from '../../RecycleComponents/New/NewInput';
 
 const _Title = styled.div`

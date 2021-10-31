@@ -11,7 +11,7 @@ import {
 	NormalButton,
 } from '../../../styles/components/buttons';
 import NewInput from '../../RecycleComponents/New/NewInput';
-import NewForm from '../../RecycleComponents/New/newForm';
+import NewForm from '../../RecycleComponents/New/NewForm';
 import {RowDiv} from '../../../styles/components/div';
 
 const UserInfoTab = ({userId}) => {

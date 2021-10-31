@@ -62,9 +62,9 @@ const FilterColumnsContextMenu = ({
 				checked={check.length === filteredList.length}
 				readOnly
 			/>
-			<div
-				style={{width: '100%', height: '1px', background: '#e3e5e5'}}
-			/>
+			{/*<div*/}
+			{/*	style={{width: '100%', height: '1px', background: '#e3e5e5'}}*/}
+			{/*/>*/}
 			{filteredList.map((column) => (
 				<NewCheckBox
 					onClick={onClickSetCheck(column)}

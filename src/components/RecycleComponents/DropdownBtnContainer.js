@@ -20,6 +20,17 @@ const _Container = styled.div`
 	background: white;
 `;
 
+const _CheckboxContainer = styled.div`
+	height: 32px;
+	display: flex;
+	align-items: center;
+	padding: 0px 10px;
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.04);
+	}
+	cursor: pointer;
+`;
+
 const _Header = styled.div`
 	height: 41px;
 	display: flex;
@@ -68,7 +79,7 @@ const DropdownBtnContainer = ({
 			</_Header>
 			<_Body>
 				{React.Children.map(children, (child) => {
-					return child;
+					return <_CheckboxContainer>{child}</_CheckboxContainer>;
 				})}
 			</_Body>
 			<_Footer>

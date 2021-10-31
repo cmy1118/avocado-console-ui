@@ -17,7 +17,7 @@ const _Container = styled.div`
 
 const _OptionContainer = styled.div`
 	display: flex;
-	padding: 14px 16px;
+	// padding: 14px 16px;
 	align-items: center;
 `;
 

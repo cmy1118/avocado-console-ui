@@ -7,17 +7,6 @@ import {
 	indeterminateIcon,
 } from '../../../icons/icons';
 
-const _CheckboxContainer = styled.div`
-	height: 32px;
-	display: flex;
-	align-items: center;
-	padding: 0px 10px;
-	&:hover {
-		background-color: rgba(0, 0, 0, 0.04);
-	}
-	cursor: pointer;
-`;
-
 const _Container = styled.div`
 	z-index: 0;
 	display: flex !important;
@@ -55,34 +44,32 @@ const NewCheckBox = ({
 	...props
 }) => {
 	return (
-		<_CheckboxContainer>
-			<_Container
-				opacity={disabled.toString()}
-				className='pretty p-svg p-curve p-plain p-toggle p-thick'
-			>
-				<input type='checkbox' checked={checked} {...props} />
-				{indeterminate ? (
-					<InputContainer
-						type={'indeterminate'}
-						disabled={disabled}
-						className='state'
-					>
-						{indeterminateIcon}
-						<label>{label}</label>
-					</InputContainer>
-				) : checked ? (
-					<InputContainer type={'check'} className='state'>
-						{checkIcon}
-						<label>{label}</label>
-					</InputContainer>
-				) : (
-					<InputContainer type={'checkout'} className='state'>
-						{checkOutlineIcon}
-						<label>{label}</label>
-					</InputContainer>
-				)}
-			</_Container>
-		</_CheckboxContainer>
+		<_Container
+			opacity={disabled.toString()}
+			className='pretty p-svg p-curve p-plain p-toggle p-thick'
+		>
+			<input type='checkbox' checked={checked} {...props} />
+			{indeterminate ? (
+				<InputContainer
+					type={'indeterminate'}
+					disabled={disabled}
+					className='state'
+				>
+					{indeterminateIcon}
+					<label>{label}</label>
+				</InputContainer>
+			) : checked ? (
+				<InputContainer type={'check'} className='state'>
+					{checkIcon}
+					<label>{label}</label>
+				</InputContainer>
+			) : (
+				<InputContainer type={'checkout'} className='state'>
+					{checkOutlineIcon}
+					<label>{label}</label>
+				</InputContainer>
+			)}
+		</_Container>
 	);
 };
 

@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
-import NewForm from '../../RecycleComponents/New/newForm';
+import NewForm from '../../RecycleComponents/New/NewForm';
 import NewComboBox from '../../RecycleComponents/New/NewComboBox';
 
 const PageSizing = ({pageSize, setPageSize}) => {
@@ -16,6 +16,9 @@ const PageSizing = ({pageSize, setPageSize}) => {
 			innerRef={formRef}
 		>
 			<NewComboBox
+				type={'drop'}
+				header={`${pageSize} 행`}
+				// header={arrowRightIcon}
 				width={'90px'}
 				name='page'
 				options={[

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import {useRootClose} from 'react-overlays';
 
 const Container = styled.div`
-	margin-bottom: 14px;
+	// margin-bottom: 14px;
 	cursor: pointer;
 	.focus {
 		border-color: #4ca6a8;
@@ -17,16 +17,21 @@ const Container = styled.div`
 const Header = styled.div`
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	width: ${(props) => props.width || '192px'};
-	margin-right: 10px;
+	justify-content: center;
+	white-space: nowrap;
+	width: 100%;
 	font-size: 14px;
 	height: 32px;
+	padding: 6px 10px;
+	box-sizing: border-box;
+`;
+
+const IconHeader = styled(Header)`
+	justify-content: space-between;
+	width: ${(props) => props.width || '192px'};
 	border-radius: 4px;
 	border: solid 1px #e3e5e5;
 	background: white;
-	padding: 6px 10px;
-	box-sizing: border-box;
 `;
 
 const Option = styled.option`
@@ -61,7 +66,7 @@ const OptionContainer = styled.div`
 	background-color: #fff;
 `;
 
-const NewComboBox = ({...props}) => {
+const NewComboBox = ({type = 'normal', ...props}) => {
 	const ref = useRef();
 	const {setFieldValue} = useFormikContext();
 	const [field, meta] = useField(props);
@@ -88,23 +93,32 @@ const NewComboBox = ({...props}) => {
 
 	return (
 		<Container>
-			<Header
-				width={props.width}
-				onClick={() => setIsOpened(!isOpened)}
-				className={isOpened && ' focus'}
-			>
-				<HeaderOption {...field}>
-					{props.options.find((v) => v.value === field.value)
-						? props.options.find((v) => v.value === field.value)
-								.label
-						: field.value}
-				</HeaderOption>
-				{isOpened ? (
-					<Icon margin={'0px'}>{arrowUpIcon}</Icon>
-				) : (
-					<Icon margin={'0px'}>{arrowDownIcon}</Icon>
-				)}
-			</Header>
+			{type === 'drop' ? (
+				<Header
+					onClick={() => setIsOpened(!isOpened)}
+					className={isOpened && ' focus'}
+				>
+					{props.header}
+				</Header>
+			) : (
+				<IconHeader
+					width={props.width}
+					onClick={() => setIsOpened(!isOpened)}
+					className={isOpened && ' focus'}
+				>
+					<HeaderOption {...field}>
+						{props.options.find((v) => v.value === field.value)
+							? props.options.find((v) => v.value === field.value)
+									.label
+							: field.value}
+					</HeaderOption>
+					{isOpened ? (
+						<Icon margin={'0px'}>{arrowUpIcon}</Icon>
+					) : (
+						<Icon margin={'0px'}>{arrowDownIcon}</Icon>
+					)}
+				</IconHeader>
+			)}
 			{isOpened && (
 				<OptionContainer ref={ref} width={props.width}>
 					{props.options.map((v, i) => {
@@ -112,7 +126,10 @@ const NewComboBox = ({...props}) => {
 							<Option
 								onClick={onClickOption}
 								key={i}
-								current={v.value === field.value}
+								current={
+									v.value === field.value ||
+									v.label === field.value
+								}
 								{...field}
 								value={v.value}
 							>
@@ -128,6 +145,8 @@ const NewComboBox = ({...props}) => {
 
 NewComboBox.propTypes = {
 	name: PropTypes.string,
+	header: PropTypes.any,
+	type: PropTypes.oneOf(['drop', 'normal']),
 	options: PropTypes.array,
 	width: PropTypes.string,
 	innerRef: PropTypes.object,

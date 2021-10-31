@@ -10,7 +10,7 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
-import NewForm from '../../RecycleComponents/New/newForm';
+import NewForm from '../../RecycleComponents/New/NewForm';
 import NewInput from '../../RecycleComponents/New/NewInput';
 
 const AddUser = ({setIsOpened}) => {
