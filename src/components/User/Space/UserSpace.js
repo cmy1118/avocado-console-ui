@@ -1,10 +1,10 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {Link, useHistory} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+	AppBarContents, AppBarNavi,
 	IamContainer,
 	PathContainer,
-	SubTitle,
 } from '../../../styles/components/style';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
@@ -21,6 +21,9 @@ import {
 	TransparentButton,
 } from '../../../styles/components/buttons';
 import {tableKeys} from '../../../Constants/Table/keys';
+import {errorIcon} from "../../../icons/icons";
+import {HoverIconButton} from "../../../styles/components/icons";
+import {NaviLink} from "../../../styles/components/link";
 
 const UserSpace = () => {
 	const dispatch = useDispatch();
@@ -61,15 +64,18 @@ const UserSpace = () => {
 
 	return (
 		<IamContainer>
+			<AppBarNavi>
 			<PathContainer>
-				<Link to='/'>IAM</Link>
-				<div>{' > '}</div>
-				<Link to='/users'>사용자</Link>
+				<NaviLink to='/'>
+					IAM </NaviLink>
+				<div style={{ padding: '0px 5px' }}>{' > '}</div>
+				<NaviLink to='/users'>사용자 </NaviLink>
 			</PathContainer>
-
-			<SubTitle>
-				<div>사용자: {users.length}</div>
-				<div>
+				<HoverIconButton>{errorIcon}</HoverIconButton>
+			</AppBarNavi>
+			<AppBarContents>
+				<div>사용자 :{users.length}</div>
+				<div style={{ display: 'flex' }}>
 					<NormalButton onClick={onClickLinkToAddUserPage}>
 						사용자 생성
 					</NormalButton>
@@ -77,7 +83,7 @@ const UserSpace = () => {
 						삭제
 					</TransparentButton>
 				</div>
-			</SubTitle>
+			</AppBarContents>
 			<Table
 				tableKey={tableKeys.users.basic}
 				columns={tableColumns[tableKeys.users.basic]}

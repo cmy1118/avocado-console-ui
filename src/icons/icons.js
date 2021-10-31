@@ -25,6 +25,11 @@ export const filterListIcon = (
 
 export const helpIcon = <span className='material-icons'>help</span>;
 export const userIcon = <span className='material-icons'>person</span>;
+	export const errorIcon =(<span className="material-icons">
+error
+</span>);
+
+
 
 //main Logo
 export const avocadoLogo = (
