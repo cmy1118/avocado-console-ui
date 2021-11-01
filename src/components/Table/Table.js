@@ -22,6 +22,9 @@ import {
 } from '../../utils/dataFitering';
 import {NormalBorderButton} from '../../styles/components/buttons';
 import {checkDropTypeAlertMessage} from '../DialogBoxs/Alert/ConfirmDialogBox';
+import {cancelIcon} from '../../icons/icons';
+import {IconButton} from '../../styles/components/icons';
+import {RowDiv} from '../../styles/components/div';
 
 function dateBetweenFilterFn(rows, id, filterValues) {
 	let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;
@@ -366,16 +369,17 @@ const Table = ({
 						<span key={i}>
 							{column.canFilter &&
 								selectedSearchFilters.includes(column.id) && (
-									<span>
+									<RowDiv>
 										{column.render('Filter')}
-										<button
+										<IconButton
+											size={'sm'}
 											onClick={onClickCloseFilter(
 												column.id,
 											)}
 										>
-											X
-										</button>
-									</span>
+											{cancelIcon}
+										</IconButton>
+									</RowDiv>
 								)}
 						</span>
 					))}

@@ -1,23 +1,33 @@
-import React, {useCallback, useState} from 'react';
+import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
-import SearchInput from '../../RecycleComponents/SearchInput';
+import Form from '../../RecycleComponents/New/Form';
+import TextBox from '../../RecycleComponents/New/TextBox';
+import {searchIcon} from '../../../icons/icons';
+import {Icon} from '../../../styles/components/icons';
 
 function Search({tableKey}) {
-	const [value, setValue] = useState('');
-	const handleSubmit = (e) => {
-		e.preventDefault();
+	const ref = useRef(null);
+	const handleSubmit = (data) => {
 		console.log('api');
-		console.log({tableKey, value});
+		console.log('tableKey', tableKey);
+		console.log('data', data);
 	};
 
-	const onChangeSetValue = useCallback((e) => {
-		setValue(e.target.value);
-	}, []);
-
 	return (
-		<form onSubmit={handleSubmit}>
-			<SearchInput value={value} onChange={onChangeSetValue} />
-		</form>
+		<Form
+			onSubmit={handleSubmit}
+			innerRef={ref}
+			initialValues={{search: ''}}
+		>
+			<TextBox
+				front={
+					<Icon size={'sm'} margin_right={'0px'}>
+						{searchIcon}
+					</Icon>
+				}
+				name={'search'}
+			/>
+		</Form>
 	);
 }
 Search.propTypes = {

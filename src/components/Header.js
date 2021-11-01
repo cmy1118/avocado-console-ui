@@ -1,10 +1,10 @@
-import React, {useCallback} from 'react';
+import React, {useRef} from 'react';
 import styled from 'styled-components';
-import {avocadoLogo, burgerMenuIcon} from '../icons/icons';
-import {HoverIconButton} from '../styles/components/icons';
+import {avocadoLogo, searchIcon} from '../icons/icons';
+import {Icon} from '../styles/components/icons';
 import MenuButtons from './Header/MenuButtons';
-import useInput from '../hooks/useInput';
-import SearchInput from './RecycleComponents/SearchInput';
+import TextBox from './RecycleComponents/New/TextBox';
+import Form from './RecycleComponents/New/Form';
 
 const _Container = styled.div`
 	box-sizing: border-box;
@@ -23,19 +23,29 @@ const _Title = styled.div`
 const _Logo = styled.div``;
 
 const Header = () => {
-	const [searchInput, onChangeSearchInput] = useInput('');
+	const ref = useRef(null);
 
 	return (
 		<_Container>
 			<_Title>
 				<_Logo>{avocadoLogo}</_Logo>
 			</_Title>
-			<SearchInput
-				value={searchInput}
-				onChange={onChangeSearchInput}
-				placeholder='제품 및 리소스 검색'
-				back={'gray'}
-			/>
+			<Form
+				onSubmit={(data) => console.log(data)}
+				innerRef={ref}
+				initialValues={{search: ''}}
+			>
+				<TextBox
+					placeholder={'제품 및 리소스 검색'}
+					background={'#f0f3f6'}
+					front={
+						<Icon size={'sm'} margin_right={'0px'}>
+							{searchIcon}
+						</Icon>
+					}
+					name={'search'}
+				/>
+			</Form>
 			<MenuButtons />
 		</_Container>
 	);

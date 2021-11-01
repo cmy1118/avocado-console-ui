@@ -1,7 +1,10 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useRef} from 'react';
 import PropTypes from 'prop-types';
 
 import {tableSearchSelectOptions} from '../../../../utils/data';
+import Form from '../../../RecycleComponents/New/Form';
+import ComboBox from '../../../RecycleComponents/New/ComboBox';
+import {Label} from '../../../../styles/components/text';
 
 const placeholders = {
 	status: '계정상태',
@@ -10,29 +13,31 @@ const placeholders = {
 };
 
 const SelectionOption = ({column: {filterValue, setFilter, id}}) => {
-	const onChangeOption = useCallback(
-		(e) => {
-			setFilter(e.target.value);
-		},
-		[setFilter],
-	);
+	const ref = useRef(null);
+	// const onChangeOption = useCallback(
+	// 	(e) => {
+	// 		setFilter(e.target.value);
+	// 	},
+	// 	[setFilter],
+	// );
 
 	return (
-		<select
-			required
-			value={filterValue}
-			onChange={onChangeOption}
-			defaultValue='defaultValue'
+		<Form
+			initialValues={{[id]: ''}}
+			onSubmit={(data) => console.log(data)}
+			innerRef={ref}
 		>
-			<option value='defaultValue' disabled hidden>
-				{placeholders[id]}
-			</option>
-			{tableSearchSelectOptions[id].map((v, i) => (
-				<option key={i} value={v.value}>
-					{v.label}
-				</option>
-			))}
-		</select>
+			<Label>{placeholders[id]}</Label>
+			<ComboBox
+				name={id}
+				header={placeholders[id]}
+				options={tableSearchSelectOptions[id].map((v) => ({
+					value: v.value,
+					label: v.label,
+				}))}
+				innerRef={ref}
+			/>
+		</Form>
 	);
 };
 
