@@ -3,8 +3,13 @@ import TableTextBox from '../../components/Table/ColumnCells/TableTextBox';
 import TableLink from '../../components/Table/ColumnCells/TableLink';
 import SelectionOption from '../../components/Table/Options/Search/SelectionOption';
 import TextBoxOption from '../../components/Table/Options/Search/TextBoxOption';
-import {statusConverter} from '../tableDataConverter';
+import {
+	authTypeConverter,
+	mfaConverter,
+	statusConverter,
+} from '../tableDataConverter';
 import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
+import {authType} from '../data';
 
 export const USER_COLUMN = [
 	{
@@ -40,12 +45,18 @@ export const USER_COLUMN = [
 		accessor: 'authType',
 		Header: '인증유형',
 		filter: 'equals',
+		Cell: function Component(v) {
+			return <div>{authTypeConverter(v.value)}</div>;
+		},
 		Filter: SelectionOption,
 	},
 	{
 		accessor: 'MFA',
 		Header: 'MFA',
 		filter: 'equals',
+		Cell: function Component(v) {
+			return <div>{mfaConverter(v.value)}</div>;
+		},
 		Filter: SelectionOption,
 	},
 	{
