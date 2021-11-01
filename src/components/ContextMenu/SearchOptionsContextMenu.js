@@ -1,18 +1,8 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import {useRootClose} from 'react-overlays';
-import {
-	NormalBorderButton,
-	TransparentBorderButton,
-} from '../../styles/components/buttons';
-
-const _Container = styled.div`
-	z-index: 99;
-	position: absolute;
-	width: 460px;
-	background: lightblue;
-`;
+import DropdownBtnContainer from '../RecycleComponents/DropdownBtnContainer';
+import CheckBox from '../RecycleComponents/New/CheckBox';
 
 const SearchOptionsContextMenu = ({
 	isOpened,
@@ -23,25 +13,26 @@ const SearchOptionsContextMenu = ({
 	filters,
 	setAllFilters,
 }) => {
-	const ref = useRef();
 	const [tempSelectedOptions, setTempSelectedOptions] = useState(
 		selectedOptions,
+	);
+
+	const onClickSetCheck = useCallback(
+		(columns) => (e) => {
+			e.stopPropagation();
+			console.log(columns);
+			if (tempSelectedOptions.includes(columns))
+				setTempSelectedOptions(
+					tempSelectedOptions.filter((v) => v !== columns),
+				);
+			else setTempSelectedOptions([...tempSelectedOptions, columns]);
+		},
+		[tempSelectedOptions],
 	);
 
 	const onClickCloseContextMenu = useCallback(() => {
 		setIsOpened(false);
 	}, [setIsOpened]);
-
-	const onChangeSelectFilterOption = useCallback(
-		(v) => () => {
-			if (tempSelectedOptions.includes(v))
-				setTempSelectedOptions(
-					tempSelectedOptions.filter((val) => val !== v),
-				);
-			else setTempSelectedOptions([...tempSelectedOptions, v]);
-		},
-		[setTempSelectedOptions, tempSelectedOptions],
-	);
 
 	const onClickApplyFilters = useCallback(() => {
 		setSelectedOptions(tempSelectedOptions);
@@ -49,43 +40,31 @@ const SearchOptionsContextMenu = ({
 			filters.filter((v) => tempSelectedOptions.includes(v.id)),
 		);
 		onClickCloseContextMenu();
-	}, [setSelectedOptions, tempSelectedOptions, onClickCloseContextMenu]);
-
-	useRootClose(ref, onClickCloseContextMenu, {
-		disabled: !isOpened,
-	});
+	}, [
+		setSelectedOptions,
+		tempSelectedOptions,
+		setAllFilters,
+		filters,
+		onClickCloseContextMenu,
+	]);
 
 	return (
-		<_Container ref={ref} alignEnd>
-			<div> 조회 필터 추가</div>
-			<div>
-				{allOptions.map((column) => (
-					<div key={column.accessor}>
-						<label>
-							<input
-								type='checkbox'
-								checked={tempSelectedOptions.includes(
-									column.accessor,
-								)}
-								onChange={onChangeSelectFilterOption(
-									column.accessor,
-								)}
-							/>{' '}
-							{column.Header}
-						</label>
-					</div>
-				))}
-				<br />
-			</div>
-			<div>
-				<TransparentBorderButton onClick={onClickCloseContextMenu}>
-					취소
-				</TransparentBorderButton>
-				<NormalBorderButton onClick={onClickApplyFilters}>
-					확인
-				</NormalBorderButton>
-			</div>
-		</_Container>
+		<DropdownBtnContainer
+			title={'조회 필터 추가'}
+			isOpened={isOpened}
+			onClickOkBtn={onClickApplyFilters}
+			onClickCancelBtn={onClickCloseContextMenu}
+		>
+			{allOptions.map((column) => (
+				<CheckBox
+					key={column.accessor}
+					onClick={onClickSetCheck(column.accessor)}
+					label={column.Header}
+					checked={tempSelectedOptions.includes(column.accessor)}
+					readOnly
+				/>
+			))}
+		</DropdownBtnContainer>
 	);
 };
 SearchOptionsContextMenu.propTypes = {

@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import Table from '../../Table/Table';
 import {useSelector} from 'react-redux';
@@ -7,8 +7,6 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 import styled from 'styled-components';
 import ModalFormContainer from '../../RecycleComponents/ModalFormContainer';
-import FormTextBox from '../../RecycleComponents/FormTextBox';
-import Form from '../../RecycleComponents/Form';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {AppBarButtons, AppBarContents} from '../../../styles/components/style';
@@ -16,13 +14,14 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
-
-const _Title = styled.div`
-	display: flex;
-	justify-content: space-between;
-`;
+import * as yup from 'yup';
+import Form from '../../RecycleComponents/New/Form';
+import TextBox from '../../RecycleComponents/New/TextBox';
+import {Label} from '../../../styles/components/text';
 
 const GroupSummary = ({groupId}) => {
+	const formRef = useRef(null);
+
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
@@ -47,26 +46,31 @@ const GroupSummary = ({groupId}) => {
 		}));
 	}, [group]);
 
-	const onSubmitChangeGroupName = useCallback((data) => {
-		alert(JSON.stringify({...data}));
-		setIsOpened(false);
-	}, []);
+	const validation = {
+		name: yup
+			.string()
+			.min(10, '최소 길이는 10자 입니다.')
+			.max(40, '최대 길이는 100자 입니다.'),
+	};
 
 	return (
 		<>
 			<ModalFormContainer
-				formKey={'changeGroupName'}
 				isOpened={isOpened}
 				setIsOpened={setIsOpened}
-				title={'그룹명 편집'}
+				title={'그룹명 변경'}
+				innerRef={formRef}
 			>
-				<Form id={'changeGroupName'} onSubmit={onSubmitChangeGroupName}>
-					<label htmlFor={'name'}>사용자 그룹명</label>
-					<FormTextBox
+				<Form
+					initialValues={{name: group?.name}}
+					onSubmit={(data) => console.log(data)}
+					innerRef={formRef}
+					validation={validation}
+				>
+					<Label htmlFor={'name'}>사용자 그룹명</Label>
+					<TextBox
 						name={'name'}
-						autoFocus
-						placeholder={'그룹명을 입력하세요.'}
-						defaultValue={group?.name}
+						placeholder={'그룹명을 입력하세요'}
 					/>
 				</Form>
 			</ModalFormContainer>

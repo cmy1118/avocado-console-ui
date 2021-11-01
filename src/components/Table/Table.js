@@ -193,6 +193,8 @@ const Table = ({
 		setPageSize,
 		setAllFilters,
 		selectedFlatRows,
+		getToggleHideAllColumnsProps,
+		setHiddenColumns,
 		state: {pageIndex, pageSize, selectedRowIds, filters},
 	} = useTable(
 		{
@@ -228,6 +230,7 @@ const Table = ({
 								tablekey={tableKey}
 							/>
 						),
+						disableChangeVisible: true,
 					},
 					...columns,
 				]);
@@ -238,6 +241,7 @@ const Table = ({
 		(row) => (e) => {
 			const firstTarget = e.target.firstChild.childNodes[0].childNodes[0];
 			const flatRows = selectedFlatRows;
+			console.log('onDragStart ::: ', tableKey);
 			const selected = Object.keys(selectedRowIds);
 			if (firstTarget.type === 'checkbox' && !firstTarget.checked) {
 				firstTarget.click();
@@ -314,19 +318,18 @@ const Table = ({
 		setAllFilters([]);
 	}, [setAllFilters]);
 
-	const selectedDropBtton = useCallback(
+	const selectedDropButton = useCallback(
 		(selectedFlatRows) => {
 			const data = {};
-			const selectedType = selectedFlatRows.map((v) => v.original);
-			data[tableKey] = selectedType;
+			data[tableKey] = selectedFlatRows.map((v) => v.original);
 			setSelect && setSelect(data);
 		},
 		[setSelect, tableKey],
 	);
 
 	useEffect(() => {
-		setSelect && selectedFlatRows && selectedDropBtton(selectedFlatRows);
-	}, [selectedRowIds, setSelect, selectedDropBtton, selectedFlatRows]);
+		setSelect && selectedFlatRows && selectedDropButton(selectedFlatRows);
+	}, [selectedRowIds, setSelect, selectedDropButton, selectedFlatRows]);
 
 	return (
 		<div>
@@ -353,6 +356,8 @@ const Table = ({
 				allColumns={allColumns}
 				filters={filters}
 				setAllFilters={setAllFilters}
+				setHiddenColumns={setHiddenColumns}
+				getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
 			/>
 
 			{headerGroups.map((headerGroup, i) => (

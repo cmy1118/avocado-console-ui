@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 export const DefaultButton = styled.button`
 	display: flex;
+	justify-content: center;
 	align-items: center;
 	height: 34px;
 	width: ${(props) => props?.width || 'fit-content'};
@@ -13,6 +14,7 @@ export const DefaultButton = styled.button`
 	margin: 0px 5px;
 	font-weight: 500;
 	letter-spacing: 0.14px;
+	cursor: pointer;
 `;
 
 export const NormalButton = styled(DefaultButton)`

@@ -1,10 +1,7 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
 import {AppBarButtons, AppBarContents} from '../../../styles/components/style';
-import Form from '../../RecycleComponents/Form';
 import * as yup from 'yup';
-import FormTextBox from '../../RecycleComponents/FormTextBox';
-import {formKeys} from '../../../utils/data';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -12,16 +9,20 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
+import Form from '../../RecycleComponents/New/Form';
+import TextBox from '../../RecycleComponents/New/TextBox';
+import {RowDiv} from '../../../styles/components/div';
 
 const AddUser = ({setIsOpened}) => {
 	const history = useHistory();
+	const formRef = useRef(null);
 
 	const dispatch = useDispatch();
 	// 이부분은 만들어서 넣어주면 됩니다.
 	const telephoneRegex = /^\d{2,3}-\d{3,4}-\d{4}$/;
 	const mobileRegex = /^[0-9]{3}[-]+[0-9]{4}[-]+[0-9]{4}$/;
 
-	const schema = {
+	const validation = {
 		id: yup
 			.string()
 			.min(10, '최소 길이는 10자 입니다.')
@@ -67,7 +68,9 @@ const AddUser = ({setIsOpened}) => {
 			<AppBarContents>
 				<div>사용자 기본 정보</div>
 				<AppBarButtons>
-					<NormalButton form={formKeys.addUserForm} type={'submit'}>
+					<NormalButton
+						onClick={() => formRef.current.handleSubmit()}
+					>
 						사용자 생성
 					</NormalButton>
 					<TransparentButton onClick={onClickCancelAddUser}>
@@ -76,35 +79,52 @@ const AddUser = ({setIsOpened}) => {
 				</AppBarButtons>
 			</AppBarContents>
 			<Form
-				id={formKeys.addUserForm}
-				schema={schema}
+				initialValues={{
+					id: '',
+					name: '',
+					email: '',
+					telephone: '',
+					mobile: '',
+				}}
 				onSubmit={onSubmitUserData}
+				innerRef={formRef}
+				validation={validation}
 			>
-				<FormTextBox
-					name={'id'}
-					defaultValue={'AvocadoGood'}
-					placeholder={'id'}
-				/>
-				<FormTextBox
-					name={'name'}
-					defaultValue={'아보카도'}
-					placeholder={'name'}
-				/>
-				<FormTextBox
-					name={'email'}
-					defaultValue={'avocado@netand.co.kr'}
-					placeholder={'email'}
-				/>
-				<FormTextBox
-					name={'telephone'}
-					defaultValue={'02-1234-1234'}
-					placeholder={'telephone'}
-				/>
-				<FormTextBox
-					name={'mobile'}
-					defaultValue={'010-1234-1234'}
-					placeholder={'mobile'}
-				/>
+				<RowDiv margin={'0px 0px 12px 0px'}>
+					<TextBox
+						name={'id'}
+						placeholder={'사용자 계정 ID'}
+						direction={'row'}
+					/>
+				</RowDiv>
+				<RowDiv margin={'0px 0px 12px 0px'}>
+					<TextBox
+						name={'name'}
+						placeholder={'사용자 명'}
+						direction={'row'}
+					/>
+				</RowDiv>
+				<RowDiv margin={'0px 0px 12px 0px'}>
+					<TextBox
+						name={'email'}
+						placeholder={'이메일 주소'}
+						direction={'row'}
+					/>
+				</RowDiv>
+				<RowDiv margin={'0px 0px 12px 0px'}>
+					<TextBox
+						name={'telephone'}
+						placeholder={'전화번호'}
+						direction={'row'}
+					/>
+				</RowDiv>
+				<RowDiv margin={'0px 0px 12px 0px'}>
+					<TextBox
+						name={'mobile'}
+						placeholder={'모바일 전화번호'}
+						direction={'row'}
+					/>
+				</RowDiv>
 			</Form>
 		</>
 	);

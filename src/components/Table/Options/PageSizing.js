@@ -1,23 +1,32 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
-import {selectedPageSize} from '../../../utils/data';
+import Form from '../../RecycleComponents/New/Form';
+import ComboBox from '../../RecycleComponents/New/ComboBox';
 
 const PageSizing = ({pageSize, setPageSize}) => {
+	const formRef = useRef(null);
+
 	return (
-		<div>
-			<select
-				value={pageSize}
-				onChange={(e) => {
-					setPageSize(Number(e.target.value));
-				}}
-			>
-				{selectedPageSize.map((pageSize) => (
-					<option key={pageSize} value={pageSize}>
-						Show {pageSize}
-					</option>
-				))}
-			</select>
-		</div>
+		<Form
+			initialValues={{page: `${pageSize} 행`}}
+			onSubmit={(data) => {
+				console.log(data);
+				setPageSize(data.page);
+			}}
+			innerRef={formRef}
+		>
+			<ComboBox
+				type={'drop'}
+				width={'90px'}
+				name='page'
+				options={[
+					{value: 20, label: '20 행'},
+					{value: 50, label: '50 행'},
+					{value: 100, label: '100 행'},
+				]}
+				innerRef={formRef}
+			/>
+		</Form>
 	);
 };
 

@@ -14,11 +14,13 @@ export const USER_COLUMN = [
 			return <TableLink cell={cell} />;
 		},
 		disableFilters: true,
+		disableChangeVisible: true,
 	},
 	{
 		accessor: 'name',
 		Header: '이름',
 		disableFilters: true,
+		disableChangeVisible: true,
 	},
 	{
 		accessor: 'groups',

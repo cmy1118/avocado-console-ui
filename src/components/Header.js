@@ -4,6 +4,7 @@ import {avocadoLogo, burgerMenuIcon} from '../icons/icons';
 import {HoverIconButton} from '../styles/components/icons';
 import MenuButtons from './Header/MenuButtons';
 import useInput from '../hooks/useInput';
+import SearchInput from './RecycleComponents/SearchInput';
 
 const _Container = styled.div`
 	box-sizing: border-box;
@@ -29,11 +30,11 @@ const Header = () => {
 			<_Title>
 				<_Logo>{avocadoLogo}</_Logo>
 			</_Title>
-			<input
-				type={'search'}
+			<SearchInput
 				value={searchInput}
 				onChange={onChangeSearchInput}
-				placeholder='Search...'
+				placeholder='제품 및 리소스 검색'
+				back={'gray'}
 			/>
 			<MenuButtons />
 		</_Container>
