@@ -25,11 +25,24 @@ export const filterListIcon = (
 
 export const helpIcon = <span className='material-icons'>help</span>;
 export const userIcon = <span className='material-icons'>person</span>;
-	export const errorIcon =(<span className="material-icons">
-error
-</span>);
+export const errorIcon = <span className='material-icons'>error</span>;
+//Nav
 
+export const moreVertIcon = <span className='material-icons'>more_vert</span>;
+export const folderIcon = <span className='material-icons'>folder</span>;
 
+export const fileIcon = (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		height='24px'
+		viewBox='0 0 24 24'
+		width='24px'
+		fill='none'
+		className={'filelist-content'}
+	>
+		<path d='M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z' />
+	</svg>
+);
 
 //main Logo
 export const avocadoLogo = (
