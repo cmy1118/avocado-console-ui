@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {useHistory} from 'react-router-dom';
-import {SubTitle} from '../../../styles/components/style';
+import {AppBarButtons, AppBarContents} from '../../../styles/components/style';
 import Form from '../../RecycleComponents/Form';
 import * as yup from 'yup';
 import FormTextBox from '../../RecycleComponents/FormTextBox';
@@ -64,18 +64,17 @@ const AddUser = ({setIsOpened}) => {
 
 	return (
 		<>
-			<SubTitle>
+			<AppBarContents>
 				<div>사용자 기본 정보</div>
-
-				<div>
+				<AppBarButtons>
 					<NormalButton form={formKeys.addUserForm} type={'submit'}>
 						사용자 생성
 					</NormalButton>
 					<TransparentButton onClick={onClickCancelAddUser}>
 						취소
 					</TransparentButton>
-				</div>
-			</SubTitle>
+				</AppBarButtons>
+			</AppBarContents>
 			<Form
 				id={formKeys.addUserForm}
 				schema={schema}

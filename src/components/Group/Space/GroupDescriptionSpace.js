@@ -5,15 +5,15 @@ import styled from 'styled-components';
 import {useSelector} from 'react-redux';
 import qs from 'qs';
 
-import {IamContainer, PathContainer} from '../../../styles/components/style';
+import {
+	AppBarNavi,
+	IamContainer,
+	PathContainer,
+} from '../../../styles/components/style';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {Tab, TabItem} from '../../../styles/components/tab';
 import GroupRolesTab from '../Components/GroupRolesTab';
 import GroupSummary from '../Components/GroupSummary';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
 
 const _Title = styled.div`
 	display: flex;
@@ -21,6 +21,10 @@ const _Title = styled.div`
 `;
 import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
 import GroupUsersTab from '../Components/GroupUsersTab';
+import {onClickCloseAside} from '../../Aside/Aside';
+import {errorIcon} from '../../../icons/icons';
+import {HoverIconButton} from '../../../styles/components/icons';
+import {NaviLink} from '../../../styles/components/link';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
@@ -51,15 +55,18 @@ const GroupDescriptionSpace = ({groupId}) => {
 
 	return (
 		<IamContainer>
-			<div>
+			<AppBarNavi>
 				<PathContainer>
-					<Link to='/'>IAM</Link>
-					<div>{' > '}</div>
-					<Link to='/groups'>사용자 그룹</Link>
-					<div>{' > '}</div>
-					<Link to={`/groups/${groupId}`}>{groupId}</Link>
+					<NaviLink to='/'>IAM</NaviLink>
+					<div style={{padding: '0px 5px'}}>{' > '}</div>
+					<NaviLink to='/groups'>사용자 그룹</NaviLink>
+					<div style={{padding: '0px 5px'}}>{' > '}</div>
+					<NaviLink to={`/groups/${groupId}`}>{groupId}</NaviLink>
 				</PathContainer>
-			</div>
+				<HoverIconButton onClick={onClickCloseAside}>
+					{errorIcon}
+				</HoverIconButton>
+			</AppBarNavi>
 
 			<GroupSummary groupId={groupId} />
 

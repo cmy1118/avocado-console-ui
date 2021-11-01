@@ -2,9 +2,11 @@ import React, {useCallback, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import {
+	AppBarButtons,
+	AppBarContents,
+	AppBarNavi,
 	IamContainer,
 	PathContainer,
-	SubTitle,
 } from '../../../styles/components/style';
 import {Link, useHistory} from 'react-router-dom';
 import AddGroupTypeDialogBox from '../../DialogBoxs/Form/AddGroupTypeDialogBox';
@@ -17,6 +19,10 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
+import {HoverIconButton} from '../../../styles/components/icons';
+import {onClickCloseAside} from '../../Aside/Aside';
+import {errorIcon} from '../../../icons/icons';
+import {NaviLink} from '../../../styles/components/link';
 
 const GroupTypeSpace = () => {
 	const history = useHistory();
@@ -64,17 +70,22 @@ const GroupTypeSpace = () => {
 
 	return (
 		<IamContainer>
-			<PathContainer>
-				<Link to='/'>IAM</Link>
-				<div>{' > '}</div>
-				<Link to='/groups'>사용자 그룹</Link>
-				<div>{' > '}</div>
-				<Link to='/groups/types'>그룹 유형 관리</Link>
-			</PathContainer>
+			<AppBarNavi>
+				<PathContainer>
+					<NaviLink to='/'>IAM</NaviLink>
+					<div style={{padding: '0px 5px'}}>{' > '}</div>
+					<NaviLink to='/groups'>사용자 그룹</NaviLink>
+					<div style={{padding: '0px 5px'}}>{' > '}</div>
+					<NaviLink to='/groups/types'>그룹 유형 관리</NaviLink>
+				</PathContainer>
+				<HoverIconButton onClick={onClickCloseAside}>
+					{errorIcon}
+				</HoverIconButton>
+			</AppBarNavi>
 
-			<SubTitle>
+			<AppBarContents>
 				<div>그룹 유형 관리</div>
-				<div>
+				<AppBarButtons>
 					<NormalButton onClick={onClickOpenAddGroupTypeDialogBox}>
 						그룹유형 추가 생성
 					</NormalButton>
@@ -87,8 +98,8 @@ const GroupTypeSpace = () => {
 					<TransparentButton onClick={onClickAddGroups}>
 						취소
 					</TransparentButton>
-				</div>
-			</SubTitle>
+				</AppBarButtons>
+			</AppBarContents>
 
 			<Table
 				tableKey={tableKeys.groups.type}

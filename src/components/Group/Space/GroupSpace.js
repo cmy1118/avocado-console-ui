@@ -2,9 +2,11 @@ import React, {useCallback, useMemo, useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 
 import {
+	AppBarButtons,
+	AppBarContents,
+	AppBarNavi,
 	IamContainer,
 	PathContainer,
-	SubTitle,
 } from '../../../styles/components/style';
 import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
@@ -20,6 +22,10 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
+import {NaviLink} from '../../../styles/components/link';
+import {HoverIconButton} from '../../../styles/components/icons';
+import {onClickCloseAside} from '../../Aside/Aside';
+import {errorIcon} from '../../../icons/icons';
 
 const GroupSpace = () => {
 	const [select, setSelect] = useState([]);
@@ -31,9 +37,7 @@ const GroupSpace = () => {
 		return groups.map((v) => ({
 			...v,
 			roles: rolesConverter(v.roles),
-			type: groupTypes.find(
-				(val) => val.id === v.clientGroupTypeId,
-			).name,
+			type: groupTypes.find((val) => val.id === v.clientGroupTypeId).name,
 			parentId: parentGroupConverter(v.parentId),
 			numberOfUsers: v.members.length,
 		}));
@@ -50,22 +54,28 @@ const GroupSpace = () => {
 
 	return (
 		<IamContainer>
-			<PathContainer>
-				<Link to='/'>IAM</Link>
-				<div>{' > '}</div>
-				<Link to='/groups'>사용자 그룹</Link>
-			</PathContainer>
-			<SubTitle>
+			<AppBarNavi>
+				<PathContainer>
+					<NaviLink to='/'>IAM</NaviLink>
+					<div style={{padding: '0px 5px'}}>{' > '}</div>
+					<NaviLink to='/groups'>사용자 그룹</NaviLink>
+				</PathContainer>
+				<HoverIconButton onClick={onClickCloseAside}>
+					{errorIcon}
+				</HoverIconButton>
+			</AppBarNavi>
+
+			<AppBarContents>
 				<div>사용자 그룹: {groups.length} </div>
-				<div>
+				<AppBarButtons>
 					<NormalButton onClick={onCLickLinkToAddGroup}>
 						그룹 생성
 					</NormalButton>
 					<TransparentButton onClick={onClickDeleteGroup}>
 						삭제
 					</TransparentButton>
-				</div>
-			</SubTitle>
+				</AppBarButtons>
+			</AppBarContents>
 			<Table
 				tableKey={tableKeys.groups.basic}
 				columns={tableColumns[tableKeys.groups.basic]}

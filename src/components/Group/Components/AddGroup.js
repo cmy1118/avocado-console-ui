@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {SubTitle} from '../../../styles/components/style';
+import {AppBarButtons, AppBarContents} from '../../../styles/components/style';
 import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
@@ -64,10 +64,9 @@ const AddGroup = ({setIsOpened}) => {
 
 	return (
 		<>
-			<SubTitle>
+			<AppBarContents>
 				<div>사용자 그룹 이름 지정</div>
-
-				<div>
+				<AppBarButtons>
 					<NormalButton onClick={onClickManageGroupType}>
 						그룹 유형 관리
 					</NormalButton>
@@ -77,8 +76,8 @@ const AddGroup = ({setIsOpened}) => {
 					<TransparentButton onClick={onClickCancelAddGroup}>
 						취소
 					</TransparentButton>
-				</div>
-			</SubTitle>
+				</AppBarButtons>
+			</AppBarContents>
 
 			<Form
 				id={formKeys.addGroupForm}

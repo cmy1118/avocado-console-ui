@@ -11,6 +11,11 @@ import FormTextBox from '../../RecycleComponents/FormTextBox';
 import Form from '../../RecycleComponents/Form';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
+import {AppBarButtons, AppBarContents} from '../../../styles/components/style';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const _Title = styled.div`
 	display: flex;
@@ -65,15 +70,15 @@ const GroupSummary = ({groupId}) => {
 					/>
 				</Form>
 			</ModalFormContainer>
-			<_Title>
+			<AppBarContents>
 				<div>요약 [ {group?.name} ]</div>
-				<div>
-					<button onClick={() => setIsOpened(true)}>
+				<AppBarButtons>
+					<NormalButton onClick={() => setIsOpened(true)}>
 						그룹명 편집
-					</button>
-					<button>삭제</button>
-				</div>
-			</_Title>
+					</NormalButton>
+					<TransparentButton>삭제</TransparentButton>
+				</AppBarButtons>
+			</AppBarContents>
 			<ul>
 				<li>그룹명 : {group?.name}</li>
 				<li>

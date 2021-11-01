@@ -1,11 +1,14 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import PropTypes from 'prop-types';
-import {Link, useHistory, useLocation} from 'react-router-dom';
-import styled from 'styled-components';
+import {useHistory, useLocation} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import qs from 'qs';
 
-import {IamContainer, PathContainer} from '../../../styles/components/style';
+import {
+	AppBarNavi,
+	IamContainer,
+	PathContainer,
+} from '../../../styles/components/style';
 import {Tab, TabItem} from '../../../styles/components/tab';
 import UserInfoTab from '../Components/UserInfoTab';
 import UserGroupsTab from '../Components/UserGroupsTab';
@@ -13,6 +16,10 @@ import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import UserOnDescPageTags from '../Components/UserOnDescPageTags';
 import UserSummary from '../Components/UserSummary';
 import UserRolesTab from '../Components/UserRolesTab';
+import {NaviLink} from '../../../styles/components/link';
+import {HoverIconButton} from '../../../styles/components/icons';
+import {onClickCloseAside} from '../../Aside/Aside';
+import {errorIcon} from '../../../icons/icons';
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
@@ -43,15 +50,18 @@ const UserDescriptionSpace = ({userId}) => {
 
 	return (
 		<IamContainer>
-			<div>
+			<AppBarNavi>
 				<PathContainer>
-					<Link to='/'>IAM</Link>
-					<div>{' > '}</div>
-					<Link to='/users'>사용자</Link>
-					<div>{' > '}</div>
-					<Link to={`/users/${userId}`}>{user?.id}</Link>
+					<NaviLink to='/'>IAM</NaviLink>
+					<div style={{padding: '0px 5px'}}>{' > '}</div>
+					<NaviLink to='/users'>사용자</NaviLink>
+					<div style={{padding: '0px 5px'}}>{' > '}</div>
+					<NaviLink to={`/users/${userId}`}>{user?.id}</NaviLink>
 				</PathContainer>
-			</div>
+				<HoverIconButton onClick={onClickCloseAside}>
+					{errorIcon}
+				</HoverIconButton>
+			</AppBarNavi>
 
 			<UserSummary userId={userId} />
 

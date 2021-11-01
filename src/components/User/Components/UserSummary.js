@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {TransparentButton} from '../../../styles/components/buttons';
+import {AppBarButtons, AppBarContents} from '../../../styles/components/style';
 
 const _Title = styled.div`
 	display: flex;
@@ -37,7 +38,7 @@ const UserSummary = ({userId}) => {
 				clientGroupType: groupTypes.find(
 					(val) => val.id === v.clientGroupTypeId,
 				).name,
-				type:v.clientGroupTypeId,
+				type: v.clientGroupTypeId,
 				numberOfRoles: v.roles.length,
 				parentGroup: parentGroupConverter(v.parentId),
 			}));
@@ -53,10 +54,12 @@ const UserSummary = ({userId}) => {
 
 	return (
 		<>
-			<_Title>
+			<AppBarContents>
 				<div>요약 [ {user?.id} ]</div>
-				<TransparentButton>삭제</TransparentButton>
-			</_Title>
+				<AppBarButtons>
+					<TransparentButton>삭제</TransparentButton>
+				</AppBarButtons>
+			</AppBarContents>
 
 			<ul>
 				<li>사용자 : {user?.name}</li>
