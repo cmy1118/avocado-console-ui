@@ -3,24 +3,25 @@ import styled from 'styled-components';
 
 import SearchOptionsContextMenu from '../ContextMenu/SearchOptionsContextMenu';
 import {NormalBorderButton} from '../../styles/components/buttons';
-import {filterListIcon} from '../../icons/icons';
+import {autoRenewIcon, filterListIcon, ListIcon} from '../../icons/icons';
 import PageSizing from './Options/PageSizing';
 import * as PropTypes from 'prop-types';
 import Pagination from './Options/Pagination';
 import FilterColumnsContextMenu from '../ContextMenu/FilterColumnsContextMenu';
 import Search from './Options/Search';
-import {GreenSpan} from '../../styles/components/text';
 import {PositionRelativeDiv} from '../../styles/components/div';
+import {IconButton} from '../../styles/components/icons';
 
 const _Container = styled.div`
 	display: flex;
 	justify-content: space-between;
+	margin: 14px 16px;
 `;
 
 const _OptionContainer = styled.div`
 	display: flex;
-	// padding: 14px 16px;
 	align-items: center;
+	white-space: nowrap;
 `;
 
 const _FilterButton = styled(NormalBorderButton)`
@@ -29,6 +30,7 @@ const _FilterButton = styled(NormalBorderButton)`
 
 const _FilterText = styled.span`
 	padding-left: 8px;
+	white-space: nowrap;
 `;
 
 const TableOptionsBar = ({
@@ -106,27 +108,38 @@ const TableOptionsBar = ({
 				)}
 			</_OptionContainer>
 			<_OptionContainer>
-				{/*{isRefreshable <Refresher/>}*/}
+				{/*isRefreshable*/}
 				{isPageable && (
-					<Pagination
-						gotoPage={gotoPage}
-						canPreviousPage={canPreviousPage}
-						previousPage={previousPage}
-						nextPage={nextPage}
-						canNextPage={canNextPage}
-						pageCount={pageIndex}
-						pageOptions={pageOptions}
-						pageIndex={pageIndex}
-					/>
+					<>
+						<IconButton
+							size={'sm'}
+							onClick={() => console.log('데이터 새로 불러오기')}
+						>
+							{autoRenewIcon}
+						</IconButton>
+						<Pagination
+							gotoPage={gotoPage}
+							canPreviousPage={canPreviousPage}
+							previousPage={previousPage}
+							nextPage={nextPage}
+							canNextPage={canNextPage}
+							pageCount={pageIndex}
+							pageOptions={pageOptions}
+							pageIndex={pageIndex}
+						/>
+					</>
 				)}
 				{isNumberOfRowsAdjustable && (
 					<PageSizing pageSize={pageSize} setPageSize={setPageSize} />
 				)}
 				{isColumnFilterable && (
 					<div>
-						<button onClick={onClickOpenSelectColumnsContextMenu}>
-							{'✅'}
-						</button>
+						<IconButton
+							onClick={onClickOpenSelectColumnsContextMenu}
+							size={'sm'}
+						>
+							{ListIcon}
+						</IconButton>
 						<PositionRelativeDiv>
 							<FilterColumnsContextMenu
 								isOpened={isColumnFilterContextMenuOpened}

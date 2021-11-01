@@ -23,7 +23,6 @@ const Header = styled.div`
 	width: 100%;
 	font-size: 14px;
 	height: 32px;
-	padding: 6px 10px;
 	box-sizing: border-box;
 `;
 
@@ -32,6 +31,7 @@ const IconHeader = styled(Header)`
 	width: ${(props) => props.width || '192px'};
 	border-radius: 4px;
 	border: solid 1px #e3e5e5;
+	padding: 6px 10px;
 	background: white;
 `;
 
