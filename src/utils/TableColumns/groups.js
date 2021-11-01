@@ -1,6 +1,6 @@
-import TableTextBox from '../ColumnCells/TableTextBox';
+import TableTextBox from '../../components/Table/ColumnCells/TableTextBox';
 import React from 'react';
-import TableLink from '../ColumnCells/TableLink';
+import TableLink from '../../components/Table/ColumnCells/TableLink';
 import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
 import {statusConverter} from '../tableDataConverter';
 
