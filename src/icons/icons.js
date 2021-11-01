@@ -30,6 +30,9 @@ export const errorIcon = <span className='material-icons'>error</span>;
 
 export const moreVertIcon = <span className='material-icons'>more_vert</span>;
 export const folderIcon = <span className='material-icons'>folder</span>;
+export const dashboardIcon =<span className="material-icons">
+dashboard
+</span>
 
 export const fileIcon = (
 	<svg

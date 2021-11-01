@@ -4,6 +4,7 @@ import {avocadoLogo, burgerMenuIcon} from '../icons/icons';
 import {HoverIconButton} from '../styles/components/icons';
 import MenuButtons from './Header/MenuButtons';
 import useInput from '../hooks/useInput';
+import {NaviLink} from "../styles/components/link";
 
 const _Container = styled.div`
 	box-sizing: border-box;
@@ -27,7 +28,9 @@ const Header = () => {
 	return (
 		<_Container>
 			<_Title>
+				<NaviLink to='/'>
 				<_Logo>{avocadoLogo}</_Logo>
+			</NaviLink>
 			</_Title>
 			<input
 				type={'search'}

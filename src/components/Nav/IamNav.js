@@ -2,18 +2,20 @@ import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
 
 import {NavContainer, NavItemList} from '../../styles/components/style';
-import {Link, NavLink} from 'react-router-dom';
+import {Link, NavLink, useLocation} from 'react-router-dom';
 import {HoverIconButton, Icon, IconButton} from '../../styles/components/icons';
 import {
 	arrowDownIcon,
 	arrowRightIcon,
-	burgerMenuIcon,
+	burgerMenuIcon, dashboardIcon,
 	fileIcon,
 	folderIcon,
 	moreVertIcon,
 } from '../../icons/icons';
 import PropTypes from 'prop-types';
 import {NaviLink} from '../../styles/components/link';
+import * as queryString from "querystring";
+import qs from "qs";
 
 const _Header = styled.div`
 	display: flex;
@@ -23,6 +25,12 @@ const _Header = styled.div`
 	padding: 18px 16px 19px;
 `;
 const _NavItem = styled.div`
+
+	align-items: center;
+	cursor: pointer;
+	justify-content: space-between;
+	height: 34px;
+	padding: 0px 16px 0px 8px;
 	display: flex;
 `;
 const _OpenNavButton = styled.div`
@@ -64,7 +72,7 @@ export const ResourceItemTitle = styled.div`
 export const ResourceItem = styled.div`
 	display: flex;
 	align-items: center;
-	// justify-content: space-between;
+	 justify-content: space-between;
 	height: 34px;
 	border-left: 2px solid;
 	padding: 0px 16px 0px 8px;
@@ -74,10 +82,13 @@ export const ResourceItem = styled.div`
 `;
 
 export const _NavContents = styled.div`
-	padding: 17px 18px;
+
 `;
 
 const IamNav = ({isOpened, setIsOpened}) => {
+	const location = useLocation();
+	const pathname = qs.parse(location).pathname;
+	// const { keyword } = queryString.parse(search);
 	const [isFolderUnfolded, setIsFolderUnfolded] = useState(false);
 	const [isUnfolded, setIsUnfolded] = useState(false);
 	const onClickCloseNav = useCallback(() => {
@@ -116,18 +127,18 @@ const IamNav = ({isOpened, setIsOpened}) => {
 				<_NavItem
 				// selected={selectedLink === data.id ? 1 : 0}
 				>
-					<IconButton margin_right={'12px'} size={'sm'}>
-						{folderIcon}
-					</IconButton>
+					<Icon margin_right={'12px'} size={'sm'}>
+						{dashboardIcon}
+					</Icon>
 					<ResourceItemTitle>
 						<NaviLink to='/'>대시보드</NaviLink>
 					</ResourceItemTitle>
 				</_NavItem>
 
 				<_NavItem>
-					<IconButton margin_right={'12px'} size={'sm'}>
+					<Icon margin_right={'12px'} size={'sm'}>
 						{folderIcon}
-					</IconButton>
+					</Icon>
 					<ResourceItemTitle>
 						<NaviLink to='/users'>접근 관리</NaviLink>
 					</ResourceItemTitle>
@@ -142,32 +153,53 @@ const IamNav = ({isOpened, setIsOpened}) => {
 
 				{isUnfolded && (
 					<NavItemList>
-						<ResourceItem left={(1 * 11 + 8).toString() + 'px'}>
+						<ResourceItem left={(1 * 11 + 8).toString() + 'px'}
+									  selected={pathname.includes('users') ? 1 : 0}
+						>
 							<Icon size={'sm'} margin_right={'12px'}>
 								{fileIcon}
 							</Icon>
+							<ResourceItemTitle>
+
 							<NaviLink to='/users'>사용자</NaviLink>
+								</ResourceItemTitle>
+
 						</ResourceItem>
 
-						<ResourceItem left={(1 * 11 + 8).toString() + 'px'}>
+						<ResourceItem left={(1 * 11 + 8).toString() + 'px'}
+									  selected={pathname.includes('groups') ? 1 : 0}
+						>
 							<Icon size={'sm'} margin_right={'12px'}>
 								{fileIcon}
 							</Icon>
+							<ResourceItemTitle>
 							<NaviLink to='/groups'>사용자 그룹</NaviLink>
+								</ResourceItemTitle>
+
+
 						</ResourceItem>
 
-						<ResourceItem left={(1 * 11 + 8).toString() + 'px'}>
+						<ResourceItem left={(1 * 11 + 8).toString() + 'px'}
+									  selected={pathname.includes('roles') ? 1 : 0}>
 							<Icon size={'sm'} margin_right={'12px'}>
 								{fileIcon}
 							</Icon>
+							<ResourceItemTitle>
 							<NaviLink to='/roles'>역할</NaviLink>
+								</ResourceItemTitle>
+
 						</ResourceItem>
 
-						<ResourceItem left={(1 * 11 + 8).toString() + 'px'}>
+						<ResourceItem left={(1 * 11 + 8).toString() + 'px'}
+									  selected={pathname.includes('policies') ? 1 : 0}>
 							<Icon size={'sm'} margin_right={'12px'}>
 								{fileIcon}
 							</Icon>
-							<NaviLink to='/policies'>정책</NaviLink>
+							<ResourceItemTitle>
+							<NaviLink to='/policies'>정책
+
+						</NaviLink>
+							</ResourceItemTitle>
 						</ResourceItem>
 					</NavItemList>
 				)}
