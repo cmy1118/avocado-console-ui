@@ -20,13 +20,14 @@ const Input = styled(Field)`
 	font-size: 14px;
 	height: 32px;
 	border-radius: 4px;
-	border: solid 1px #e3e5e5;
+	border: solid 1px;
+	border-color: ${(props) => (props.error ? '#d45959' : '#e3e5e5')};
 	background: white;
 	padding: 6px 10px;
 	box-sizing: border-box;
 	outline: none;
 	&:focus {
-		border-color: #4ca6a8;
+		border-color: ${(props) => (props.error ? '#d45959' : '#4ca6a8')};
 	}
 `;
 
@@ -36,7 +37,11 @@ const TextBox = ({...props}) => {
 
 	return (
 		<Container direction={props.direction || 'col'}>
-			<Input {...field} {...props} />
+			<Input
+				{...field}
+				{...props}
+				error={touched[field.name] && errors[field.name]}
+			/>
 			{touched[field.name] && errors[field.name] ? (
 				<ErrorMessage name={field.name}>
 					{(msg) => <ErrorSpan>{msg}</ErrorSpan>}
