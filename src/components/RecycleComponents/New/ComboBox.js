@@ -1,10 +1,11 @@
 import React, {useCallback, useRef, useState} from 'react';
-import {useField, useFormikContext} from 'formik';
+import {ErrorMessage, useField, useFormikContext} from 'formik';
 import {Icon} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {useRootClose} from 'react-overlays';
+import {ErrorSpan} from '../../../styles/components/text';
 
 const Container = styled.div`
 	// margin-bottom: 14px;
@@ -66,9 +67,9 @@ const OptionContainer = styled.div`
 	background-color: #fff;
 `;
 
-const NewComboBox = ({type = 'normal', ...props}) => {
+const ComboBox = ({type = 'normal', ...props}) => {
 	const ref = useRef();
-	const {setFieldValue} = useFormikContext();
+	const {setFieldValue, errors, touched} = useFormikContext();
 	const [field, meta] = useField(props);
 	const [isOpened, setIsOpened] = useState(false);
 
@@ -98,7 +99,10 @@ const NewComboBox = ({type = 'normal', ...props}) => {
 					onClick={() => setIsOpened(!isOpened)}
 					className={isOpened && ' focus'}
 				>
-					{props.header}
+					{props.header ||
+						props.options.find((v) => v.value === field.value)
+							?.label ||
+						field.value}
 				</Header>
 			) : (
 				<IconHeader
@@ -110,7 +114,7 @@ const NewComboBox = ({type = 'normal', ...props}) => {
 						{props.options.find((v) => v.value === field.value)
 							? props.options.find((v) => v.value === field.value)
 									.label
-							: field.value}
+							: props.placeholder}
 					</HeaderOption>
 					{isOpened ? (
 						<Icon margin={'0px'}>{arrowUpIcon}</Icon>
@@ -119,6 +123,11 @@ const NewComboBox = ({type = 'normal', ...props}) => {
 					)}
 				</IconHeader>
 			)}
+			{touched[field.name] && errors[field.name] ? (
+				<ErrorMessage name={field.name}>
+					{(msg) => <ErrorSpan>{msg}</ErrorSpan>}
+				</ErrorMessage>
+			) : null}
 			{isOpened && (
 				<OptionContainer ref={ref} width={props.width}>
 					{props.options.map((v, i) => {
@@ -143,12 +152,13 @@ const NewComboBox = ({type = 'normal', ...props}) => {
 	);
 };
 
-NewComboBox.propTypes = {
+ComboBox.propTypes = {
 	name: PropTypes.string,
+	placeholder: PropTypes.string,
 	header: PropTypes.any,
 	type: PropTypes.oneOf(['drop', 'normal']),
 	options: PropTypes.array,
 	width: PropTypes.string,
 	innerRef: PropTypes.object,
 };
-export default NewComboBox;
+export default ComboBox;

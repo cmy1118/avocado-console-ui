@@ -1,7 +1,7 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import DropdownBtnContainer from '../RecycleComponents/DropdownBtnContainer';
-import NewCheckBox from '../RecycleComponents/New/NewCheckBox';
+import CheckBox from '../RecycleComponents/New/CheckBox';
 
 const FilterColumnsContextMenu = ({
 	isOpened,
@@ -53,7 +53,7 @@ const FilterColumnsContextMenu = ({
 			onClickCancelBtn={onClickCancelBtn}
 			direction={'left'}
 		>
-			<NewCheckBox
+			<CheckBox
 				onClick={onClickSetCheck(filteredList)}
 				label={'모두 선택'}
 				indeterminate={
@@ -66,7 +66,7 @@ const FilterColumnsContextMenu = ({
 			{/*	style={{width: '100%', height: '1px', background: '#e3e5e5'}}*/}
 			{/*/>*/}
 			{filteredList.map((column) => (
-				<NewCheckBox
+				<CheckBox
 					onClick={onClickSetCheck(column)}
 					key={column.id}
 					label={column.Header}

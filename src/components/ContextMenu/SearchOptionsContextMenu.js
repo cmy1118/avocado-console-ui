@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import DropdownBtnContainer from '../RecycleComponents/DropdownBtnContainer';
-import NewCheckBox from '../RecycleComponents/New/NewCheckBox';
+import CheckBox from '../RecycleComponents/New/CheckBox';
 
 const SearchOptionsContextMenu = ({
 	isOpened,
@@ -56,7 +56,7 @@ const SearchOptionsContextMenu = ({
 			onClickCancelBtn={onClickCloseContextMenu}
 		>
 			{allOptions.map((column) => (
-				<NewCheckBox
+				<CheckBox
 					key={column.accessor}
 					onClick={onClickSetCheck(column.accessor)}
 					label={column.Header}

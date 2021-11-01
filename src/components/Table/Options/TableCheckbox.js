@@ -1,6 +1,6 @@
 import React, {forwardRef, useCallback} from 'react';
 import PropTypes from 'prop-types';
-import NewCheckBox from '../../RecycleComponents/New/NewCheckBox';
+import CheckBox from '../../RecycleComponents/New/CheckBox';
 
 const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 	const checkboxes = document.querySelectorAll(
@@ -114,7 +114,7 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 	);
 
 	return (
-		<NewCheckBox
+		<CheckBox
 			className={rest.tablekey}
 			indeterminate={indeterminate}
 			onClick={handleClick}

@@ -5680,6 +5680,13 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
+formik-error-focus@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/formik-error-focus/-/formik-error-focus-1.1.0.tgz#993dd002e0d5e68b6f4fe630b36466f30480cc51"
+  integrity sha512-hxiiTJGQVwPQYlsA+kzBXFc10aEUF4TYuj8BgfVvptkzFhnNdg9F0H2zAGHRo+31qAdWPyKnvUNDVIThugt+1Q==
+  dependencies:
+    scroll-to-element "^2.0.3"
+
 formik@^2.2.9:
   version "2.2.9"
   resolved "https://registry.yarnpkg.com/formik/-/formik-2.2.9.tgz#8594ba9c5e2e5cf1f42c5704128e119fc46232d0"
@@ -9757,7 +9764,7 @@ queue-microtask@^1.2.2:
   resolved "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.2.tgz"
   integrity sha512-dB15eXv3p2jDlbOiNLyMabYg1/sXvppd8DP2J3EOCQ0AkuSXCW2tP7mnVouVLJKgUMY6yP0kcQDVpLCN13h4Xg==
 
-raf@^3.4.1:
+raf@^3.4.0, raf@^3.4.1:
   version "3.4.1"
   resolved "https://registry.npmjs.org/raf/-/raf-3.4.1.tgz"
   integrity sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==
@@ -10726,6 +10733,13 @@ schema-utils@^3.0.0:
     "@types/json-schema" "^7.0.6"
     ajv "^6.12.5"
     ajv-keywords "^3.5.2"
+
+scroll-to-element@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/scroll-to-element/-/scroll-to-element-2.0.3.tgz#99b404fc6a09fe73f3c062cd5b8a14efb6404e4d"
+  integrity sha512-5herPcm9jMfQgRwu94lH5mei+2YhipR4RQ2nAvnBxJb2tG+P7O0ctOKAaAZBXbBejnn+MImh3wrAUA5EcLnjEQ==
+  dependencies:
+    raf "^3.4.0"
 
 select-hose@^2.0.0:
   version "2.0.0"

@@ -26,6 +26,18 @@ export const Span = styled.span`
 	white-space: nowrap;
 `;
 
+export const ErrorSpan = styled.span`
+	font-size: 12px;
+	font-weight: normal;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.75;
+	letter-spacing: 0.1px;
+	text-align: left;
+	// color: #757575;
+	color: #f34722;
+`;
+
 export const GreenSpan = styled(Span)`
 	color: #178082;
 `;

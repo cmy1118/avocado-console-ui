@@ -10,8 +10,8 @@ import ModalFormContainer from '../../RecycleComponents/ModalFormContainer';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import * as yup from 'yup';
-import NewForm from '../../RecycleComponents/New/NewForm';
-import NewInput from '../../RecycleComponents/New/NewInput';
+import Form from '../../RecycleComponents/New/Form';
+import TextBox from '../../RecycleComponents/New/TextBox';
 import {Label} from '../../../styles/components/text';
 
 const _Title = styled.div`
@@ -61,17 +61,17 @@ const GroupSummary = ({groupId}) => {
 				title={'그룹명 변경'}
 				innerRef={formRef}
 			>
-				<NewForm
+				<Form
 					initialValues={{name: group?.name}}
 					onSubmit={(data) => console.log(data)}
 					innerRef={formRef}
 				>
 					<Label htmlFor={'name'}>사용자 그룹명</Label>
-					<NewInput
+					<TextBox
 						name={'name'}
 						placeholder={'그룹명을 입력하세요'}
 					/>
-				</NewForm>
+				</Form>
 			</ModalFormContainer>
 			<_Title>
 				<div>요약 [ {group?.name} ]</div>

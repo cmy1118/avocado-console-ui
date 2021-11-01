@@ -1,10 +1,19 @@
 import React from 'react';
-import {Form, Formik} from 'formik';
+import * as formik from 'formik';
 import PropTypes from 'prop-types';
+import * as Yup from 'yup';
+import FormikErrorFocus from 'formik-error-focus';
 
-const NewForm = ({initialValues, onSubmit, setValues, innerRef, children}) => {
+const Form = ({
+	initialValues,
+	onSubmit,
+	setValues,
+	innerRef,
+	validation,
+	children,
+}) => {
 	return (
-		<Formik
+		<formik.Formik
 			initialValues={initialValues} // 초기값
 			onSubmit={(values, {setSubmitting}) => {
 				onSubmit(values); // values submit 처리
@@ -14,24 +23,34 @@ const NewForm = ({initialValues, onSubmit, setValues, innerRef, children}) => {
 				setValues && setValues(values); // 외부에서 데이터 변화 감지해야 하는 경우
 			}}
 			innerRef={innerRef} // submit control 할 때
+			validationSchema={Yup.object(validation)}
 		>
 			{() => (
-				<Form>
+				<formik.Form>
 					{React.Children.map(children, (child) => {
 						return child;
 					})}
-				</Form>
+					<FormikErrorFocus
+						// See scroll-to-element for configuration options: https://www.npmjs.com/package/scroll-to-element
+						offset={0}
+						align={'middle'}
+						focusDelay={200}
+						ease={'linear'}
+						duration={500}
+					/>
+				</formik.Form>
 			)}
-		</Formik>
+		</formik.Formik>
 	);
 };
 
-NewForm.propTypes = {
+Form.propTypes = {
 	initialValues: PropTypes.object.isRequired,
 	onSubmit: PropTypes.func.isRequired,
-	innerRef: PropTypes.object,
+	innerRef: PropTypes.object.isRequired,
 	setValues: PropTypes.func,
+	validation: PropTypes.object,
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
-export default NewForm;
+export default Form;

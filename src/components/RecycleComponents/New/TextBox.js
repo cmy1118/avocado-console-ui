@@ -1,7 +1,8 @@
-import {useField} from 'formik';
+import {useField, Field, useFormikContext, ErrorMessage} from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import {ErrorSpan} from '../../../styles/components/text';
 
 const Container = styled.div`
 	display: flex;
@@ -11,7 +12,7 @@ const Container = styled.div`
 		props.direction === 'col' ? 'column' : 'row'};
 `;
 
-const Input = styled.input`
+const Input = styled(Field)`
 	width: ${(props) => props.width || '394px'};
 	margin-right: 10px;
 	display: flex;
@@ -29,22 +30,25 @@ const Input = styled.input`
 	}
 `;
 
-const NewInput = ({...props}) => {
+const TextBox = ({...props}) => {
 	const [field, meta] = useField(props);
+	const {errors, touched} = useFormikContext();
 
 	return (
 		<Container direction={props.direction || 'col'}>
 			<Input {...field} {...props} />
-			{meta.touched && meta.error ? (
-				<div className='error'>{meta.error}</div>
+			{touched[field.name] && errors[field.name] ? (
+				<ErrorMessage name={field.name}>
+					{(msg) => <ErrorSpan>{msg}</ErrorSpan>}
+				</ErrorMessage>
 			) : null}
 		</Container>
 	);
 };
 
-NewInput.propTypes = {
+TextBox.propTypes = {
 	name: PropTypes.string.isRequired,
 	direction: PropTypes.oneOf(['row', 'col']),
 };
 
-export default NewInput;
+export default TextBox;

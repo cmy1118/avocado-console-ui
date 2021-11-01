@@ -9,11 +9,12 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
-import NewComboBox from '../../RecycleComponents/New/NewComboBox';
-import NewInput from '../../RecycleComponents/New/NewInput';
-import NewForm from '../../RecycleComponents/New/NewForm';
+import ComboBox from '../../RecycleComponents/New/ComboBox';
+import TextBox from '../../RecycleComponents/New/TextBox';
+import Form from '../../RecycleComponents/New/Form';
 import {ColDiv, RowDiv} from '../../../styles/components/div';
 import {Label} from '../../../styles/components/text';
+import * as yup from 'yup';
 
 const AddGroup = () => {
 	const history = useHistory();
@@ -22,12 +23,16 @@ const AddGroup = () => {
 	const formRef = useRef(null);
 
 	const [values, setValues] = useState({
-		type: '그룹 유형 선택',
+		type: '',
 		id: '',
 		name: '',
 	});
 
-	/***********************************************************************/
+	const validation = {
+		type: yup.string().required('타입은 필수값입니다.'),
+		name: yup.string().required('이름은 필수값입니다.'),
+	};
+
 	const onClickManageGroupType = useCallback(() => {
 		history.push('/groups/types');
 	}, [history]);
@@ -56,17 +61,19 @@ const AddGroup = () => {
 					</TransparentButton>
 				</div>
 			</SubTitle>
-			<NewForm
+			<Form
 				initialValues={values}
 				setValues={setValues}
 				onSubmit={(data) => console.log(data)}
 				innerRef={formRef}
+				validation={validation}
 			>
 				<RowDiv>
 					<ColDiv>
 						<Label htmlFor='type'>그룹 유형 선택</Label>
-						<NewComboBox
+						<ComboBox
 							name='type'
+							placeholder={'그룹 유형 선택'}
 							options={groupTypes.map((v) => {
 								return {value: v.id, label: v.name};
 							})}
@@ -75,18 +82,18 @@ const AddGroup = () => {
 					{values.type === 'groupType1' && (
 						<ColDiv>
 							<Label htmlFor={'id'}>상위 그룹 선택</Label>
-							<NewInput name={'id'} />
+							<TextBox name={'id'} />
 						</ColDiv>
 					)}
 				</RowDiv>
 				<ColDiv>
 					<Label htmlFor={'name'}>그룹 명</Label>
-					<NewInput
+					<TextBox
 						name={'name'}
 						placeholder={'그룹명을 입력하세요'}
 					/>
 				</ColDiv>
-			</NewForm>
+			</Form>
 		</>
 	);
 };

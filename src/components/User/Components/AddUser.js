@@ -2,7 +2,6 @@ import React, {useCallback, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
 import {SubTitle} from '../../../styles/components/style';
 import * as yup from 'yup';
-import {formKeys} from '../../../utils/data';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -10,8 +9,8 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
-import NewForm from '../../RecycleComponents/New/NewForm';
-import NewInput from '../../RecycleComponents/New/NewInput';
+import Form from '../../RecycleComponents/New/Form';
+import TextBox from '../../RecycleComponents/New/TextBox';
 import {RowDiv} from '../../../styles/components/div';
 
 const AddUser = ({setIsOpened}) => {
@@ -23,7 +22,7 @@ const AddUser = ({setIsOpened}) => {
 	const telephoneRegex = /^\d{2,3}-\d{3,4}-\d{4}$/;
 	const mobileRegex = /^[0-9]{3}[-]+[0-9]{4}[-]+[0-9]{4}$/;
 
-	const schema = {
+	const validation = {
 		id: yup
 			.string()
 			.min(10, '최소 길이는 10자 입니다.')
@@ -79,7 +78,7 @@ const AddUser = ({setIsOpened}) => {
 					</TransparentButton>
 				</div>
 			</SubTitle>
-			<NewForm
+			<Form
 				initialValues={{
 					id: '',
 					name: '',
@@ -89,43 +88,44 @@ const AddUser = ({setIsOpened}) => {
 				}}
 				onSubmit={onSubmitUserData}
 				innerRef={formRef}
+				validation={validation}
 			>
 				<RowDiv margin={'0px 0px 12px 0px'}>
-					<NewInput
+					<TextBox
 						name={'id'}
 						placeholder={'사용자 계정 ID'}
 						direction={'row'}
 					/>
 				</RowDiv>
 				<RowDiv margin={'0px 0px 12px 0px'}>
-					<NewInput
+					<TextBox
 						name={'name'}
 						placeholder={'사용자 명'}
 						direction={'row'}
 					/>
 				</RowDiv>
 				<RowDiv margin={'0px 0px 12px 0px'}>
-					<NewInput
+					<TextBox
 						name={'email'}
 						placeholder={'이메일 주소'}
 						direction={'row'}
 					/>
 				</RowDiv>
 				<RowDiv margin={'0px 0px 12px 0px'}>
-					<NewInput
+					<TextBox
 						name={'telephone'}
 						placeholder={'전화번호'}
 						direction={'row'}
 					/>
 				</RowDiv>
 				<RowDiv margin={'0px 0px 12px 0px'}>
-					<NewInput
+					<TextBox
 						name={'mobile'}
 						placeholder={'모바일 전화번호'}
 						direction={'row'}
 					/>
 				</RowDiv>
-			</NewForm>
+			</Form>
 		</>
 	);
 };

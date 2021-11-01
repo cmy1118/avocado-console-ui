@@ -36,7 +36,7 @@ const InputContainer = styled.div`
 	}
 `;
 
-const NewCheckBox = ({
+const CheckBox = ({
 	label = '',
 	indeterminate = false, // 체크박스 하위 항목중 일부 체크 시
 	disabled = false,
@@ -73,7 +73,7 @@ const NewCheckBox = ({
 	);
 };
 
-NewCheckBox.propTypes = {
+CheckBox.propTypes = {
 	// options
 	label: PropTypes.string,
 	indeterminate: PropTypes.bool,
@@ -81,4 +81,4 @@ NewCheckBox.propTypes = {
 	disabled: PropTypes.bool,
 };
 
-export default NewCheckBox;
+export default CheckBox;
