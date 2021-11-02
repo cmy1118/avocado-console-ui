@@ -12,7 +12,7 @@ import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {
 	groupsConverter,
-	passwordExpiryTimeConverter,
+	passwordExpiredConverter,
 	tagsConverter,
 } from '../../../utils/tableDataConverter';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
@@ -45,9 +45,7 @@ const UserSpace = () => {
 					(val) => groups.find((val2) => val2.id === val).name,
 				),
 			),
-			passwordExpiryTime: passwordExpiryTimeConverter(
-				v.passwordExpiryTime,
-			),
+			passwordExpired: passwordExpiredConverter(v.passwordExpired),
 			tags: tagsConverter(v.tags),
 		}));
 	}, [users, groups]);

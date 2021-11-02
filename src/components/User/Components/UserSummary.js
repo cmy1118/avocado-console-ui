@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import {
 	parentGroupConverter,
+	expiredConverter,
 	statusConverter,
 } from '../../../utils/tableDataConverter';
 import Table from '../../Table/Table';
@@ -14,6 +15,11 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {TransparentButton} from '../../../styles/components/buttons';
 import {AppBarButtons, AppBarContents} from '../../../styles/components/style';
+import {
+	dummyDates,
+	dummyPolicyOnUser,
+	dummyUsers,
+} from '../../../utils/dummyData';
 
 const _Title = styled.div`
 	display: flex;
@@ -33,19 +39,26 @@ const UserSummary = ({userId}) => {
 	const groupData = useMemo(() => {
 		return groups
 			.filter((v) => user.groups.includes(v.id))
-			.map((v) => ({
+			.map((v, i) => ({
 				...v,
 				clientGroupType: groupTypes.find(
 					(val) => val.id === v.clientGroupTypeId,
 				).name,
-				type: v.clientGroupTypeId,
+				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
+					?.name,
 				numberOfRoles: v.roles.length,
-				parentGroup: parentGroupConverter(v.parentId),
+				parentGroup: parentGroupConverter(
+					groups.find((val) => val.id === v.parentId)?.name,
+				),
+				grantDate: dummyDates[i],
+				grantUser: dummyUsers[i],
 			}));
-	}, [groups]);
+	}, [groups, groupTypes]);
+
+	const roleData = useMemo(() => dummyPolicyOnUser, []);
 
 	const tagData = useMemo(() => {
-		return user.tags.map((v) => ({
+		return user.tags.map((v, i) => ({
 			...v,
 			id: v.name,
 			numberOfPermissions: v.permissions.length,
@@ -66,8 +79,13 @@ const UserSummary = ({userId}) => {
 				<li>사용자 계정 상태 : {statusConverter(user?.status)}</li>
 				<li>마지막 콘솔 로그인 : {user?.lastConsoleLogin}</li>
 				<li>생성 일시 : {user?.creationDate}</li>
-				<li>계정 사용기간 : ??</li>
-				<li>비밀번호 사용기간 :??</li>
+				<li>
+					계정 사용기간 : {expiredConverter(user?.accountExpired)}
+				</li>
+				<li>
+					비밀번호 사용기간 :{' '}
+					{expiredConverter(user?.passwordExpired)}
+				</li>
 			</ul>
 
 			<div>그룹: {groupData.length}</div>
@@ -75,6 +93,13 @@ const UserSummary = ({userId}) => {
 				data={groupData}
 				tableKey={tableKeys.users.summary.group}
 				columns={tableColumns[tableKeys.users.summary.group]}
+			/>
+
+			<div>권한: {roleData.length}</div>
+			<Table
+				data={roleData}
+				tableKey={tableKeys.users.summary.permission}
+				columns={tableColumns[tableKeys.users.summary.permission]}
 			/>
 
 			<div>태그: {tagData.length}</div>

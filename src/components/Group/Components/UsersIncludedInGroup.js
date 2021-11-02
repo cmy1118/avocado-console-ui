@@ -31,6 +31,7 @@ const UsersIncludedInGroup = () => {
 			.filter((v) => !dropDataName.includes(v.name))
 			.map((v) => ({
 				...v,
+				numberOfGroups: v.groups.length,
 			}));
 	}, [users, rightDataIds]);
 

@@ -1,11 +1,11 @@
 import React, {useMemo, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
+
 import Table from '../../Table/Table';
 import {useSelector} from 'react-redux';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
-import styled from 'styled-components';
 import ModalFormContainer from '../../RecycleComponents/ModalFormContainer';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
@@ -18,6 +18,11 @@ import * as yup from 'yup';
 import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import {Label} from '../../../styles/components/text';
+import {
+	dummyDates,
+	dummyPolicyOnGroup,
+	dummyUsers,
+} from '../../../utils/dummyData';
 
 const GroupSummary = ({groupId}) => {
 	const formRef = useRef(null);
@@ -35,14 +40,21 @@ const GroupSummary = ({groupId}) => {
 	const userData = useMemo(() => {
 		return users
 			.filter((v) => group.members.includes(v.uid))
-			.map((v) => ({...v, groupsLength: v.groups.length}));
+			.map((v, i) => ({
+				...v,
+				groupsLength: v.groups.length,
+				grantUser: dummyUsers[i],
+			}));
 	}, [users, group]);
 
+	const roleData = useMemo(() => dummyPolicyOnGroup, []);
+
 	const tagData = useMemo(() => {
-		return group.tags.map((v) => ({
+		return group.tags.map((v, i) => ({
 			...v,
 			id: v.name,
 			numberOfPermissions: v.permissions.length,
+			creationDate: dummyDates[i],
 		}));
 	}, [group]);
 
@@ -101,6 +113,14 @@ const GroupSummary = ({groupId}) => {
 				tableKey={tableKeys.groups.summary.user}
 				columns={tableColumns[tableKeys.groups.summary.user]}
 			/>
+
+			<div>권한: {roleData.length}</div>
+			<Table
+				data={roleData}
+				tableKey={tableKeys.groups.summary.permission}
+				columns={tableColumns[tableKeys.groups.summary.permission]}
+			/>
+
 			<div>태그: {tagData.length}</div>
 			<Table
 				data={tagData}

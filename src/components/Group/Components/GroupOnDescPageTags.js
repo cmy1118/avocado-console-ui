@@ -65,9 +65,9 @@ const GroupOnDescPageTags = ({groupId}) => {
 				<button onClick={onClickDeleteRow}>태그 삭제</button>
 			</div>
 			<Table
-				tableKey={tableKeys.groups.summary.tag}
+				tableKey={tableKeys.groups.summary.tabs.tags.basic}
 				data={data}
-				columns={tableColumns[tableKeys.groups.summary.tag]}
+				columns={tableColumns[tableKeys.groups.summary.tabs.tags.basic]}
 				isSelectable
 				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
 				setSelect={setSelect}

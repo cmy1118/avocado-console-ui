@@ -38,8 +38,11 @@ const GroupSpace = () => {
 			...v,
 			roles: rolesConverter(v.roles),
 			type: groupTypes.find((val) => val.id === v.clientGroupTypeId).name,
-			parentId: parentGroupConverter(v.parentId),
+
 			numberOfUsers: v.members.length,
+			parentGroup: parentGroupConverter(
+				groups.find((val) => val.id === v.parentId)?.name,
+			),
 		}));
 	}, [groups, groupTypes]);
 

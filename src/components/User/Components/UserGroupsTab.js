@@ -6,11 +6,14 @@ import Table from '../../Table/Table';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
+import {parentGroupConverter} from '../../../utils/tableDataConverter';
+import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 
 const UserGroupsTab = ({userId}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [select, setSelect] = useState([]);
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
@@ -24,8 +27,12 @@ const UserGroupsTab = ({userId}) => {
 			.filter((v) => rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
-				type:v.clientGroupTypeId,
+				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
+					?.name,
 				numberOfRoles: v.roles.length,
+				parentGroup: parentGroupConverter(
+					groups.find((val) => val.id === v.parentId)?.name,
+				),
 			}));
 	}, [groups, rightDataIds]);
 
@@ -34,10 +41,14 @@ const UserGroupsTab = ({userId}) => {
 			.filter((v) => !rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
-				type:v.clientGroupTypeId,
+				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
+					?.name,
 				numberOfRoles: v.roles.length,
+				parentGroup: parentGroupConverter(
+					groups.find((val) => val.id === v.parentId)?.name,
+				),
 			}));
-	}, [groups, rightDataIds]);
+	}, [groups, groupTypes, rightDataIds]);
 	//삭제
 	const onClickDeleteRolesFromUser = useCallback(() => {
 		dispatch(

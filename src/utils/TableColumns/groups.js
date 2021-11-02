@@ -30,7 +30,7 @@ export const GROUP_COLUMN = [
 	},
 	{
 		Header: '상위 그룹',
-		accessor: 'parentId',
+		accessor: 'parentGroup',
 		disableFilters: true,
 	},
 	{
@@ -152,6 +152,9 @@ export const GROUP_SUMMARY_USER_COLUMN = [
 	{
 		Header: '부여 사용자',
 		accessor: 'grantUser',
+		Cell: function Component(v) {
+			return <div>{v.value.name + '(' + v.value.id + ')'}</div>;
+		},
 	},
 ];
 
@@ -163,6 +166,20 @@ export const GROUP_SUMMARY_PERMISSION_COLUMN = [
 	{
 		Header: '권한 상세',
 		accessor: 'description',
+		Cell: function Component(v) {
+			return (
+				<div>
+					{v.value.split('\n').map((v, i) => {
+						return (
+							<div key={i}>
+								{v}
+								<br />
+							</div>
+						);
+					})}
+				</div>
+			);
+		},
 	},
 	{
 		Header: '정책 명',
@@ -178,11 +195,14 @@ export const GROUP_SUMMARY_PERMISSION_COLUMN = [
 	},
 	{
 		Header: '부여 일시',
-		accessor: 'grantData',
+		accessor: 'grantDate',
 	},
 	{
 		Header: '부여 사용자',
 		accessor: 'grantUser',
+		Cell: function Component(v) {
+			return <div>{v.value.name + '(' + v.value.id + ')'}</div>;
+		},
 	},
 ];
 
@@ -241,12 +261,12 @@ export const GROUP_ADD_USERS_EXCLUDE_COLUMN = [
 		accessor: 'id',
 	},
 	{
-		Header: '사용자 명',
+		Header: '사용자 이름',
 		accessor: 'name',
 	},
 	{
 		Header: '그룹 수',
-		accessor: 'groupsLength',
+		accessor: 'numberOfGroups',
 	},
 	{
 		Header: '마지막 콘솔 로그인 ',
@@ -265,7 +285,7 @@ export const GROUP_ADD_USERS_INCLUDE_COLUMN = [
 		accessor: '_id',
 	},
 	{
-		Header: '사용자 명',
+		Header: '사용자 이름',
 		accessor: 'name', //has to be changed
 	},
 ];
@@ -317,7 +337,7 @@ export const GROUP_SUMMARY_TABS_USERS_INCLUDE_COLUMN = [
 	},
 	{
 		Header: '그룹 수',
-		accessor: 'groupsLength',
+		accessor: 'numberOfGroups',
 	},
 	{
 		Header: '마지막 콘솔 로그인',
@@ -339,7 +359,7 @@ export const GROUP_SUMMARY_TABS_USERS_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '그룹 수',
-		accessor: 'groupsLength',
+		accessor: 'numberOfGroups',
 	},
 	{
 		Header: '마지막 콘솔 로그인',

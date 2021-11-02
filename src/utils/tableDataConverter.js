@@ -48,9 +48,14 @@ export const mfaConverter = (authType) => {
 	}
 };
 
-export const passwordExpiryTimeConverter = (data) => {
-	let diffDate = new Date(data) - new Date();
+export const passwordExpiredConverter = (date) => {
+	let diffDate = new Date(date) - new Date();
 	return Math.ceil(diffDate / (1000 * 60 * 60 * 24));
+};
+
+export const expiredConverter = (date) => {
+	let diffDate = new Date(date) - new Date();
+	return date + '(' + Math.ceil(diffDate / (1000 * 60 * 60 * 24)) + '일전)';
 };
 
 export const groupsConverter = (data) => {
@@ -75,7 +80,7 @@ export const roleTypeConverter = (companyId) => {
 	return 'Public';
 };
 
-export const parentGroupConverter = (parentId) => {
-	if (parentId) return parentId;
+export const parentGroupConverter = (parent) => {
+	if (parent) return parent;
 	return '없음';
 };

@@ -9,7 +9,6 @@ import {
 	statusConverter,
 } from '../tableDataConverter';
 import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
-import {authType} from '../data';
 
 export const USER_COLUMN = [
 	{
@@ -60,7 +59,7 @@ export const USER_COLUMN = [
 		Filter: SelectionOption,
 	},
 	{
-		accessor: 'passwordExpiryTime',
+		accessor: 'passwordExpired',
 		Header: '비밀번호 수명',
 		filter: 'equals',
 		Filter: TextBoxOption,
@@ -166,7 +165,6 @@ export const USER_ADD_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
-		// id: LINK,
 	},
 	{
 		Header: '역할 유형',
@@ -216,11 +214,14 @@ export const USER_SUMMARY_GROUP_COLUMN = [
 	},
 	{
 		Header: '부여 일시',
-		accessor: 'grantData',
+		accessor: 'grantDate',
 	},
 	{
 		Header: '부여 사용자',
 		accessor: 'grantUser',
+		Cell: function Component(v) {
+			return <div>{v.value.name + '(' + v.value.id + ')'}</div>;
+		},
 	},
 ];
 
@@ -255,6 +256,20 @@ export const USER_SUMMARY_PERMISSION_COLUMNS = [
 	{
 		Header: '권한 상세',
 		accessor: 'description',
+		Cell: function Component(v) {
+			return (
+				<div>
+					{v.value.split('\n').map((v, i) => {
+						return (
+							<div key={i}>
+								{v}
+								<br />
+							</div>
+						);
+					})}
+				</div>
+			);
+		},
 	},
 	{
 		Header: '정책 명',
@@ -270,11 +285,14 @@ export const USER_SUMMARY_PERMISSION_COLUMNS = [
 	},
 	{
 		Header: '부여 일시',
-		accessor: 'grantData',
+		accessor: 'grantDate',
 	},
 	{
 		Header: '부여 사용자',
 		accessor: 'grantUser',
+		Cell: function Component(v) {
+			return <div>{v.value.name + '(' + v.value.id + ')'}</div>;
+		},
 	},
 ];
 
@@ -367,7 +385,7 @@ export const USER_SUMMARY_TABS_GROUPS_INCLUDE_COLUMN = [
 	},
 	{
 		Header: '상위 그룹',
-		accessor: 'numberOfPermissions',
+		accessor: 'parentGroup',
 	},
 	{
 		Header: '생성 일시',
@@ -390,7 +408,7 @@ export const USER_SUMMARY_TABS_GROUPS_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '상위 그룹',
-		accessor: 'numberOfPermissions',
+		accessor: 'parentGroup',
 	},
 	{
 		Header: '생성 일시',
