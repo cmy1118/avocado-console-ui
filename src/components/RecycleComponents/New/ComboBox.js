@@ -8,7 +8,7 @@ import {useRootClose} from 'react-overlays';
 import {ErrorSpan} from '../../../styles/components/text';
 
 const Container = styled.div`
-	// margin-bottom: 14px;
+	background: #fff;
 	cursor: pointer;
 	.focus {
 		border-color: #4ca6a8;
@@ -23,7 +23,6 @@ const Header = styled.div`
 	width: 100%;
 	font-size: 14px;
 	height: 32px;
-	padding: 6px 10px;
 	box-sizing: border-box;
 `;
 
@@ -32,6 +31,7 @@ const IconHeader = styled(Header)`
 	width: ${(props) => props.width || '192px'};
 	border-radius: 4px;
 	border: solid 1px #e3e5e5;
+	padding: 6px 10px;
 	background: white;
 `;
 
@@ -60,6 +60,7 @@ const HeaderOption = styled(Option)`
 `;
 
 const OptionContainer = styled.div`
+	z-index: 99;
 	position: absolute;
 	width: ${(props) => props.width || '192px'};
 	border-radius: 4px;
@@ -114,7 +115,7 @@ const ComboBox = ({type = 'normal', ...props}) => {
 						{props.options.find((v) => v.value === field.value)
 							? props.options.find((v) => v.value === field.value)
 									.label
-							: props.placeholder}
+							: props.header}
 					</HeaderOption>
 					{isOpened ? (
 						<Icon margin={'0px'}>{arrowUpIcon}</Icon>
@@ -154,7 +155,6 @@ const ComboBox = ({type = 'normal', ...props}) => {
 
 ComboBox.propTypes = {
 	name: PropTypes.string,
-	placeholder: PropTypes.string,
 	header: PropTypes.any,
 	type: PropTypes.oneOf(['drop', 'normal']),
 	options: PropTypes.array,

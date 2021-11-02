@@ -20,10 +20,13 @@ export const Span = styled.span`
 	font-weight: 500;
 	font-stretch: normal;
 	font-style: normal;
-	line-height: normal;
+	line-height: ${(props) => props.lineHeight || 'normal'};
 	letter-spacing: 0.14px;
 	color: #212121;
 	white-space: nowrap;
+	padding: ${(props) => props.padding || '0px'};
+	margin: ${(props) => props.margin || '0px'};
+	color: ${(props) => props.color || 'initial'};
 `;
 
 export const ErrorSpan = styled.span`

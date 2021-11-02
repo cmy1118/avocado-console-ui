@@ -22,6 +22,10 @@ import {
 } from '../../utils/dataFitering';
 import {NormalBorderButton} from '../../styles/components/buttons';
 import {checkDropTypeAlertMessage} from '../DialogBoxs/Alert/ConfirmDialogBox';
+import {cancelIcon} from '../../icons/icons';
+import {IconButton} from '../../styles/components/icons';
+import {ColDiv, RowDiv} from '../../styles/components/div';
+import {Label} from '../../styles/components/text';
 
 function dateBetweenFilterFn(rows, id, filterValues) {
 	let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;
@@ -43,6 +47,13 @@ function dateBetweenFilterFn(rows, id, filterValues) {
 		return rows;
 	}
 }
+
+const placeholders = {
+	status: '계정상태',
+	authType: '인증유형',
+	MFA: 'MFA',
+	passwordExpiryTime: '비밀번호 수명',
+};
 
 const Table = ({
 	tableKey,
@@ -315,6 +326,7 @@ const Table = ({
 	);
 
 	const onClickResetFilters = useCallback(() => {
+		setSelectedSearchFilters([]);
 		setAllFilters([]);
 	}, [setAllFilters]);
 
@@ -361,32 +373,43 @@ const Table = ({
 			/>
 
 			{headerGroups.map((headerGroup, i) => (
-				<div key={i} {...headerGroup.getHeaderGroupProps()}>
-					{headerGroup.headers.map((column, i) => (
-						<span key={i}>
-							{column.canFilter &&
+				<RowDiv
+					justifyContent={'space-between'}
+					key={i}
+					{...headerGroup.getHeaderGroupProps()}
+					margin={'14px 16px'}
+				>
+					<RowDiv>
+						{headerGroup.headers.map(
+							(column, i) =>
+								column.canFilter &&
 								selectedSearchFilters.includes(column.id) && (
-									<span>
-										{column.render('Filter')}
-										<button
-											onClick={onClickCloseFilter(
-												column.id,
-											)}
-										>
-											X
-										</button>
-									</span>
-								)}
-						</span>
-					))}
-				</div>
+									<ColDiv key={i}>
+										<Label>{placeholders[column.id]}</Label>
+										<RowDiv alignItems={'center'}>
+											{column.render('Filter')}
+											<IconButton
+												size={'sm'}
+												onClick={onClickCloseFilter(
+													column.id,
+												)}
+											>
+												{cancelIcon}
+											</IconButton>
+										</RowDiv>
+									</ColDiv>
+								),
+						)}
+					</RowDiv>
+					{selectedSearchFilters.length !== 0 && (
+						<RowDiv alignItems={'flex-end'}>
+							<NormalBorderButton onClick={onClickResetFilters}>
+								모두 삭제
+							</NormalBorderButton>
+						</RowDiv>
+					)}
+				</RowDiv>
 			))}
-
-			{selectedSearchFilters.length !== 0 && (
-				<NormalBorderButton onClick={onClickResetFilters}>
-					모두 삭제
-				</NormalBorderButton>
-			)}
 
 			<table {...getTableProps()} onDrop={onDrop} onDragOver={onDragOver}>
 				<thead>

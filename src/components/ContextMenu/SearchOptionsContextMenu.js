@@ -4,6 +4,17 @@ import PropTypes from 'prop-types';
 import DropdownBtnContainer from '../RecycleComponents/DropdownBtnContainer';
 import CheckBox from '../RecycleComponents/New/CheckBox';
 
+const _CheckboxContainer = styled.div`
+	height: 32px;
+	display: flex;
+	align-items: center;
+	padding: 0px 10px;
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.04);
+	}
+	cursor: pointer;
+`;
+
 const SearchOptionsContextMenu = ({
 	isOpened,
 	setIsOpened,
@@ -56,13 +67,16 @@ const SearchOptionsContextMenu = ({
 			onClickCancelBtn={onClickCloseContextMenu}
 		>
 			{allOptions.map((column) => (
-				<CheckBox
+				<_CheckboxContainer
 					key={column.accessor}
 					onClick={onClickSetCheck(column.accessor)}
-					label={column.Header}
-					checked={tempSelectedOptions.includes(column.accessor)}
-					readOnly
-				/>
+				>
+					<CheckBox
+						label={column.Header}
+						checked={tempSelectedOptions.includes(column.accessor)}
+						readOnly
+					/>
+				</_CheckboxContainer>
 			))}
 		</DropdownBtnContainer>
 	);

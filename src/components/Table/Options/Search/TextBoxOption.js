@@ -1,30 +1,26 @@
-import React, {useCallback} from 'react';
+import React, {useRef} from 'react';
 
 import PropTypes from 'prop-types';
+import Form from '../../../RecycleComponents/New/Form';
+import TextBox from '../../../RecycleComponents/New/TextBox';
+import {Span} from '../../../../styles/components/text';
 
-const placeholders = {
-	passwordExpiryTime: '비밀번호 수명',
-};
-
-const TextBoxOption = ({column: {filterValue, setFilter, id}}) => {
-	const onChangeOption = useCallback(
-		(e) => {
-			if (e.target.value === '') setFilter(undefined);
-			else setFilter(e.target.value);
-		},
-		[setFilter],
-	);
+const TextBoxOption = ({column: {id}}) => {
+	const ref = useRef(null);
 
 	return (
-		<span>
-			<input
-				type='number'
-				placeholder={placeholders[id]}
-				value={filterValue || ''}
-				onChange={onChangeOption}
+		<Form
+			initialValues={{[id]: 0}}
+			onSubmit={(data) => console.log(data)}
+			innerRef={ref}
+		>
+			<TextBox
+				width={'170px'}
+				name={id}
+				type={'number'}
+				back={<Span>일전</Span>}
 			/>
-			일전
-		</span>
+		</Form>
 	);
 };
 

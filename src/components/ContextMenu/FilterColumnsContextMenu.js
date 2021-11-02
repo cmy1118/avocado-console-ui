@@ -2,6 +2,18 @@ import React, {useCallback, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import DropdownBtnContainer from '../RecycleComponents/DropdownBtnContainer';
 import CheckBox from '../RecycleComponents/New/CheckBox';
+import styled from 'styled-components';
+
+const _CheckboxContainer = styled.div`
+	height: 32px;
+	display: flex;
+	align-items: center;
+	padding: 0px 10px;
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.04);
+	}
+	cursor: pointer;
+`;
 
 const FilterColumnsContextMenu = ({
 	isOpened,
@@ -53,26 +65,31 @@ const FilterColumnsContextMenu = ({
 			onClickCancelBtn={onClickCancelBtn}
 			direction={'left'}
 		>
-			<CheckBox
-				onClick={onClickSetCheck(filteredList)}
-				label={'모두 선택'}
-				indeterminate={
-					check.length !== 0 && check.length < filteredList.length
-				}
-				checked={check.length === filteredList.length}
-				readOnly
-			/>
-			{/*<div*/}
-			{/*	style={{width: '100%', height: '1px', background: '#e3e5e5'}}*/}
-			{/*/>*/}
-			{filteredList.map((column) => (
+			<_CheckboxContainer>
 				<CheckBox
-					onClick={onClickSetCheck(column)}
-					key={column.id}
-					label={column.Header}
-					checked={check.includes(column.id)}
+					onClick={onClickSetCheck(filteredList)}
+					label={'모두 선택'}
+					indeterminate={
+						check.length !== 0 && check.length < filteredList.length
+					}
+					checked={check.length === filteredList.length}
 					readOnly
 				/>
+			</_CheckboxContainer>
+			<div
+				style={{width: '100%', height: '1px', background: '#e3e5e5'}}
+			/>
+			{filteredList.map((column) => (
+				<_CheckboxContainer
+					onClick={onClickSetCheck(column)}
+					key={column.id}
+				>
+					<CheckBox
+						label={column.Header}
+						checked={check.includes(column.id)}
+						readOnly
+					/>
+				</_CheckboxContainer>
 			))}
 		</DropdownBtnContainer>
 	) : (

@@ -27,13 +27,12 @@ export const filterListIcon = (
 	<span className='material-icons'>filter_list</span>
 );
 
+export const ListIcon = <span className='material-icons'>list</span>;
+
 export const helpIcon = <span className='material-icons'>help</span>;
 export const userIcon = <span className='material-icons'>person</span>;
-	export const errorIcon =(<span className="material-icons">
-error
-</span>);
-
-
+export const errorIcon = <span className='material-icons'>error</span>;
+export const cancelIcon = <span className='material-icons'>cancel</span>;
 
 //main Logo
 export const avocadoLogo = (
@@ -112,3 +111,5 @@ export const checkIcon = (
 );
 
 export const searchIcon = <span className='material-icons'>search</span>;
+
+export const autoRenewIcon = <span className='material-icons'>autorenew</span>;

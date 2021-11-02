@@ -73,7 +73,7 @@ const AddGroup = () => {
 						<Label htmlFor='type'>그룹 유형 선택</Label>
 						<ComboBox
 							name='type'
-							placeholder={'그룹 유형 선택'}
+							header={'그룹 유형 선택'}
 							options={groupTypes.map((v) => {
 								return {value: v.id, label: v.name};
 							})}

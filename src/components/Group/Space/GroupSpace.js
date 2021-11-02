@@ -87,6 +87,7 @@ const GroupSpace = () => {
 				isSortable
 				isSelectable
 				setSelect={setSelect}
+				isSearchable
 			/>
 		</IamContainer>
 	);
