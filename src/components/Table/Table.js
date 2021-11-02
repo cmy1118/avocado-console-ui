@@ -27,47 +27,35 @@ import {HoverIconButton, Icon} from '../../styles/components/icons';
 import {ColDiv, RowDiv} from '../../styles/components/div';
 import {Label} from '../../styles/components/text';
 import styled from 'styled-components';
-
-const _Table = styled.table`
-	width: 100%;
-	border-top: 1px solid #e3e5e5;
-	border-bottom: 1px solid #e3e5e5;
-	box-sizing: border-box;
-	font-size: 13px;
-	thead {
-		tr {
-			background: #f8f9fa;
-			border-bottom: 1px solid #e3e5e5;
-			height: 40px;
-			th {
-				min-width: 40px;
-				padding: 0px;
-				height: 40px;
-				text-align: left;
-				border: none;
-			}
-		}
-	}
-	tbody {
-		.selected {
-			background: rgba(228, 243, 244, 0.7);
-		}
-		tr {
-			height: 40px;
-			border-bottom: 1px solid #e3e5e5;
-			td {
-				min-width: 40px;
-				padding: 0px;
-				height: 40px;
-				border: none;
-			}
-		}
-	}
-`;
+import {FixedSizeList} from 'react-window';
 
 const Container = styled.div`
-	margin: 16px;
-	display: block;
+	.table {
+    display: flex;
+    flex-direction:column;
+    border-spacing: 0;
+    border: 1px solid black;
+  
+
+    .tr {
+      :last-child {
+        .td {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    .th,
+    .td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+
+      :last-child {
+        border-right: 1px solid black;
+      }
+    }
 `;
 
 const FiltersContainer = styled(RowDiv)`
@@ -253,6 +241,7 @@ const Table = ({
 		selectedFlatRows,
 		getToggleHideAllColumnsProps,
 		setHiddenColumns,
+		rows,
 		state: {pageIndex, pageSize, selectedRowIds, filters},
 	} = useTable(
 		{
@@ -386,7 +375,43 @@ const Table = ({
 		[setSelect, tableKey],
 	);
 
-	console.log(selectedSearchFilters);
+	const RenderRow = useCallback(
+		({index, style}) => {
+			const row = rows[index];
+			prepareRow(row);
+			return (
+				<div
+					className={
+						Object.keys(selectedRowIds).includes(
+							row.original.uid
+								? row.original.uid
+								: row.original.id,
+						)
+							? 'tr selected'
+							: 'tr'
+					}
+					draggable={isDnDPossible ? 'true' : 'false'}
+					id={row.original.uid ? row.original.uid : row.original.id}
+					key={row.original.uid ? row.original.uid : row.original.id}
+					{...row.getRowProps()}
+					onDragStart={onDragStart(row)}
+				>
+					{row.cells.map((cell, i) => {
+						return (
+							<div
+								className={'td'}
+								key={i}
+								{...cell.getCellProps}
+							>
+								{cell.render('Cell', {setData})}
+							</div>
+						);
+					})}
+				</div>
+			);
+		},
+		[isDnDPossible, onDragStart, prepareRow, rows, selectedRowIds, setData],
+	);
 
 	useEffect(() => {
 		setSelect && selectedFlatRows && selectedDropButton(selectedFlatRows);
@@ -470,80 +495,50 @@ const Table = ({
 					</FiltersContainer>
 				))}
 
-			<_Table
+			<div
+				className={'table'}
 				{...getTableProps()}
 				onDrop={onDrop}
 				onDragOver={onDragOver}
 			>
-				<thead>
-					{headerGroups.map((headerGroup, i) => (
-						<tr key={i} {...headerGroup.getHeaderGroupProps()}>
-							{headerGroup.headers.map((column, i) => (
-								<th key={i}>
-									<RowDiv
-										alignItems={'center'}
-										{...column.getHeaderProps(
-											column.getSortByToggleProps(),
-										)}
-									>
-										{column.render('Header')}
-										{isSortable &&
-											!(i === 0 && isSelectable) && (
-												<Icon margin={'0px'}>
-													{column.isSortedDesc ===
-														'ture' ||
-													column.isSortedDesc ===
-														undefined
-														? arrowDownIcon
-														: arrowUpIcon}
-												</Icon>
-											)}
-									</RowDiv>
-								</th>
-							))}
-						</tr>
-					))}
-				</thead>
-				<tbody {...getTableBodyProps()}>
-					{page.map((row) => {
-						prepareRow(row);
-						return (
-							<tr
-								className={
-									Object.keys(selectedRowIds).includes(
-										row.original.uid
-											? row.original.uid
-											: row.original.id,
-									)
-										? 'selected'
-										: ''
-								}
-								draggable={isDnDPossible ? 'true' : 'false'}
-								id={
-									row.original.uid
-										? row.original.uid
-										: row.original.id
-								}
-								key={
-									row.original.uid
-										? row.original.uid
-										: row.original.id
-								}
-								{...row.getRowProps()}
-								onDragStart={onDragStart(row)}
+				{headerGroups.map((headerGroup, i) => (
+					<div
+						className={'tr'}
+						key={i}
+						{...headerGroup.getHeaderGroupProps()}
+					>
+						{headerGroup.headers.map((column, i) => (
+							<RowDiv
+								className={'th'}
+								key={i}
+								alignItems={'center'}
+								{...column.getHeaderProps(
+									column.getSortByToggleProps(),
+								)}
 							>
-								{row.cells.map((cell, i) => {
-									return (
-										<td key={i} {...cell.getCellProps}>
-											{cell.render('Cell', {setData})}
-										</td>
-									);
-								})}
-							</tr>
-						);
-					})}
-				</tbody>
-			</_Table>
+								{column.render('Header')}
+								{isSortable && !(i === 0 && isSelectable) && (
+									<Icon margin={'0px'}>
+										{column.isSortedDesc === 'ture' ||
+										column.isSortedDesc === undefined
+											? arrowDownIcon
+											: arrowUpIcon}
+									</Icon>
+								)}
+							</RowDiv>
+						))}
+					</div>
+				))}
+				<div {...getTableBodyProps()}>
+					<FixedSizeList
+						height={500}
+						itemCount={rows.length}
+						itemSize={40}
+					>
+						{RenderRow}
+					</FixedSizeList>
+				</div>
+			</div>
 		</Container>
 	);
 };
