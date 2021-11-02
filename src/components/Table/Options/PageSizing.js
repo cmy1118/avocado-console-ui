@@ -27,7 +27,7 @@ const PageSizing = ({pageSize, setPageSize}) => {
 			}}
 			innerRef={formRef}
 		>
-			<RowDiv padding={'6px 0px'}>
+			<RowDiv>
 				<ComboBox
 					header={
 						<RowDiv>

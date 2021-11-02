@@ -15,7 +15,7 @@ import {IconButton} from '../../styles/components/icons';
 const _Container = styled.div`
 	display: flex;
 	justify-content: space-between;
-	// margin: 14px 16px;
+	padding-bottom: 15px;
 `;
 
 const _OptionContainer = styled.div`

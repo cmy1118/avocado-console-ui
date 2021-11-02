@@ -23,7 +23,7 @@ import {
 import {NormalBorderButton} from '../../styles/components/buttons';
 import {checkDropTypeAlertMessage} from '../DialogBoxs/Alert/ConfirmDialogBox';
 import {arrowDownIcon, arrowUpIcon, cancelIcon} from '../../icons/icons';
-import {Icon, IconButton} from '../../styles/components/icons';
+import {HoverIconButton, Icon} from '../../styles/components/icons';
 import {ColDiv, RowDiv} from '../../styles/components/div';
 import {Label} from '../../styles/components/text';
 import styled from 'styled-components';
@@ -68,6 +68,10 @@ const _Table = styled.table`
 const Container = styled.div`
 	margin: 16px;
 	display: block;
+`;
+
+const FiltersContainer = styled(RowDiv)`
+	border-top: 1px solid #e3e5e5;
 `;
 
 function dateBetweenFilterFn(rows, id, filterValues) {
@@ -382,6 +386,8 @@ const Table = ({
 		[setSelect, tableKey],
 	);
 
+	console.log(selectedSearchFilters);
+
 	useEffect(() => {
 		setSelect && selectedFlatRows && selectedDropButton(selectedFlatRows);
 	}, [selectedRowIds, setSelect, selectedDropButton, selectedFlatRows]);
@@ -415,44 +421,54 @@ const Table = ({
 				getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
 			/>
 
-			{headerGroups.map((headerGroup, i) => (
-				<RowDiv
-					justifyContent={'space-between'}
-					key={i}
-					{...headerGroup.getHeaderGroupProps()}
-					margin={'14px 0px'}
-				>
-					<RowDiv>
-						{headerGroup.headers.map(
-							(column, i) =>
-								column.canFilter &&
-								selectedSearchFilters.includes(column.id) && (
-									<ColDiv key={i}>
-										<Label>{placeholders[column.id]}</Label>
-										<RowDiv alignItems={'center'}>
-											{column.render('Filter')}
-											<IconButton
-												size={'sm'}
-												onClick={onClickCloseFilter(
-													column.id,
-												)}
-											>
-												{cancelIcon}
-											</IconButton>
-										</RowDiv>
-									</ColDiv>
-								),
-						)}
-					</RowDiv>
-					{selectedSearchFilters.length !== 0 && (
-						<RowDiv alignItems={'flex-end'}>
-							<NormalBorderButton onClick={onClickResetFilters}>
-								모두 삭제
-							</NormalBorderButton>
+			{selectedSearchFilters[0] &&
+				headerGroups.map((headerGroup, i) => (
+					<FiltersContainer
+						justifyContent={'space-between'}
+						key={i}
+						height={'84px'}
+						{...headerGroup.getHeaderGroupProps()}
+					>
+						<RowDiv alignItems={'center'} margin={'11px 0px 16px'}>
+							{headerGroup.headers.map(
+								(column, i) =>
+									column.canFilter &&
+									selectedSearchFilters.includes(
+										column.id,
+									) && (
+										<ColDiv key={i}>
+											<Label>
+												{placeholders[column.id]}
+											</Label>
+											<RowDiv alignItems={'center'}>
+												{column.render('Filter')}
+												<HoverIconButton
+													size={'sm'}
+													onClick={onClickCloseFilter(
+														column.id,
+													)}
+												>
+													{cancelIcon}
+												</HoverIconButton>
+											</RowDiv>
+										</ColDiv>
+									),
+							)}
 						</RowDiv>
-					)}
-				</RowDiv>
-			))}
+						{selectedSearchFilters.length !== 0 && (
+							<RowDiv
+								alignItems={'flex-end'}
+								margin={'11px 0px 16px'}
+							>
+								<NormalBorderButton
+									onClick={onClickResetFilters}
+								>
+									모두 삭제
+								</NormalBorderButton>
+							</RowDiv>
+						)}
+					</FiltersContainer>
+				))}
 
 			<_Table
 				{...getTableProps()}

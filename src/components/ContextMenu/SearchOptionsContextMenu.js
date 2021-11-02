@@ -31,7 +31,6 @@ const SearchOptionsContextMenu = ({
 	const onClickSetCheck = useCallback(
 		(columns) => (e) => {
 			e.stopPropagation();
-			console.log(columns);
 			if (tempSelectedOptions.includes(columns))
 				setTempSelectedOptions(
 					tempSelectedOptions.filter((v) => v !== columns),

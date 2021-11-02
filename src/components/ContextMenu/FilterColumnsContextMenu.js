@@ -48,7 +48,6 @@ const FilterColumnsContextMenu = ({
 				if (columns.length === check.length) setCheck([]);
 				else setCheck(columns.map((v) => v.id));
 			} else {
-				console.log(columns);
 				if (check.includes(columns.id))
 					setCheck(check.filter((v) => v !== columns.id));
 				else setCheck([...check, columns.id]);
