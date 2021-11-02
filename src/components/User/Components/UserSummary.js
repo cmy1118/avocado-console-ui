@@ -26,10 +26,10 @@ const _Title = styled.div`
 	justify-content: space-between;
 `;
 const _UserSummaryContainer = styled.div`
-	height: 100%;
-	overflow: scroll;
+	height: 500px;
+	overflow-y: scroll;
 `;
-const UserSummary = ({userId}) => {
+const UserSummary = ({userId,isOpened,setIsOpened}) => {
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
@@ -90,6 +90,7 @@ const UserSummary = ({userId}) => {
 					{expiredConverter(user?.passwordExpired)}
 				</li>
 			</ul>
+
 			<_UserSummaryContainer>
 				<div>그룹: {groupData.length}</div>
 				<Table
@@ -118,5 +119,7 @@ const UserSummary = ({userId}) => {
 
 UserSummary.propTypes = {
 	userId: PropTypes.string.isRequired,
+	isOpened: PropTypes.string.isRequired,
+	setIsOpened: PropTypes.func.isRequired,
 };
 export default UserSummary;

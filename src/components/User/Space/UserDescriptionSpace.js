@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useHistory, useLocation} from 'react-router-dom';
 import {useSelector} from 'react-redux';
@@ -26,6 +26,8 @@ const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
 	const {search} = useLocation();
 	const {users} = useSelector(IAM_USER.selector);
+	const [isSumarryOpend, setIsSumarryOpend] = useState(true);
+
 
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
@@ -60,9 +62,13 @@ const UserDescriptionSpace = ({userId}) => {
 				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 			{/*:TODO tab click 시 use summary 닫음 처리  */}
-			<UserSummary userId={userId} />
+			<UserSummary userId={userId}
+						 isOpened={isSumarryOpend}
+						 setIsOpened={setIsSumarryOpend}
+			/>
 			<div>
-				<TabBar userId={userId} Tabs={TabBarInfo} />
+				<TabBar userId={userId} Tabs={TabBarInfo}
+				className={isSumarryOpend?'taBar' : 'taBar fix'}/>
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 					'user' && <UserInfoTab userId={userId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===

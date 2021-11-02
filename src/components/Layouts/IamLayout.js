@@ -6,7 +6,7 @@ import IamNav from '../Nav/IamNav';
 import Header from '../Header';
 
 const _Container = styled.div`
-	overflow: scroll;
+	overflow-y: scroll;
 	flex: 1;
 	height: 100%;
 	width: 100%;
