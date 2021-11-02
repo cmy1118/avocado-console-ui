@@ -7,12 +7,13 @@ import {ErrorSpan} from '../../../styles/components/text';
 const Container = styled.div`
 	.focus {
 		border-color: ${(props) => (props.error ? '#d45959' : '#4ca6a8')};
+		background-color: #fff;
 	}
 `;
 
 const Input = styled(Field)`
 	display: flex;
-	flex: 1;
+	width: 100%;
 	align-items: center;
 	font-size: 14px;
 	height: 32px;
