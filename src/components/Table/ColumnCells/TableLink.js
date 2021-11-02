@@ -3,6 +3,12 @@ import {Link, useLocation} from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import qs from 'qs';
+import styled from 'styled-components';
+
+const _Link = styled(Link)`
+	color: #0a6f71;
+	text-decoration: none;
+`;
 
 const TableLink = ({cell}) => {
 	const location = useLocation();
@@ -16,7 +22,7 @@ const TableLink = ({cell}) => {
 	const data = cell.row.original;
 	const paramId = data.uid ? data.uid : data.id;
 
-	return <Link to={`${pathname}/${paramId}`}>{value}</Link>;
+	return <_Link to={`${pathname}/${paramId}`}>{value}</_Link>;
 };
 TableLink.propTypes = {
 	cell: PropTypes.object.isRequired,

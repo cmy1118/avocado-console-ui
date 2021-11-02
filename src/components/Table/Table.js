@@ -30,32 +30,50 @@ import styled from 'styled-components';
 import {FixedSizeList} from 'react-window';
 
 const Container = styled.div`
+	margin: 0px 16px;
 	.table {
-    display: flex;
-    flex-direction:column;
-    border-spacing: 0;
-    border: 1px solid black;
-  
+		display: flex;
+		flex-direction: column;
+		border-spacing: 0;
+		font-size: 13px;
+		font-weight: normal;
+		font-stretch: normal;
+		font-style: normal;
+		line-height: normal;
+		letter-spacing: 0.13px;
+		text-align: left;
+		color: #212121;
+		.head {
+			background: #f8f9fa;
+			border-top: 1px solid #e3e5e5;
+			border-bottom: 1px solid #e3e5e5;
+		}
+		.body {
+			border-bottom: 1px solid #e3e5e5;
+		}
+		.selected {
+			background: rgba(228, 243, 244, 0.7);
+		}
 
-    .tr {
-      :last-child {
-        .td {
-          border-bottom: 0;
-        }
-      }
-    }
+		.tr {
+			display: flex;
+			height: 40px;
+			:last-child {
+				.td {
+					border-bottom: 0;
+				}
+			}
+		}
 
-    .th,
-    .td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      :last-child {
-        border-right: 1px solid black;
-      }
-    }
+		.th,
+		.td {
+			white-space: nowrap;
+			box-sizing: border-box;
+			text-align: left;
+			margin: 0;
+			padding: 0.5rem;
+		}
+	}
 `;
 
 const FiltersContainer = styled(RowDiv)`
@@ -277,6 +295,7 @@ const Table = ({
 								tablekey={tableKey}
 							/>
 						),
+						width: 40,
 						disableChangeVisible: true,
 					},
 					...columns,
@@ -376,7 +395,7 @@ const Table = ({
 	);
 
 	const RenderRow = useCallback(
-		({index, style}) => {
+		({index}) => {
 			const row = rows[index];
 			prepareRow(row);
 			return (
@@ -387,24 +406,25 @@ const Table = ({
 								? row.original.uid
 								: row.original.id,
 						)
-							? 'tr selected'
-							: 'tr'
+							? 'tr body selected'
+							: 'tr body'
 					}
 					draggable={isDnDPossible ? 'true' : 'false'}
 					id={row.original.uid ? row.original.uid : row.original.id}
 					key={row.original.uid ? row.original.uid : row.original.id}
-					{...row.getRowProps()}
 					onDragStart={onDragStart(row)}
 				>
 					{row.cells.map((cell, i) => {
 						return (
-							<div
+							<RowDiv
+								alignItems={'center'}
 								className={'td'}
+								width={`${cell.column.width}px`}
 								key={i}
 								{...cell.getCellProps}
 							>
 								{cell.render('Cell', {setData})}
-							</div>
+							</RowDiv>
 						);
 					})}
 				</div>
@@ -503,37 +523,45 @@ const Table = ({
 			>
 				{headerGroups.map((headerGroup, i) => (
 					<div
-						className={'tr'}
+						className={'tr head'}
 						key={i}
 						{...headerGroup.getHeaderGroupProps()}
 					>
-						{headerGroup.headers.map((column, i) => (
-							<RowDiv
-								className={'th'}
-								key={i}
-								alignItems={'center'}
-								{...column.getHeaderProps(
-									column.getSortByToggleProps(),
-								)}
-							>
-								{column.render('Header')}
-								{isSortable && !(i === 0 && isSelectable) && (
-									<Icon margin={'0px'}>
-										{column.isSortedDesc === 'ture' ||
-										column.isSortedDesc === undefined
-											? arrowDownIcon
-											: arrowUpIcon}
-									</Icon>
-								)}
-							</RowDiv>
-						))}
+						{headerGroup.headers.map((column, i) => {
+							// console.log(column);
+							return (
+								<RowDiv
+									className={'th'}
+									width={`${column.width}px`}
+									key={i}
+									alignItems={'center'}
+									{...column.getHeaderProps(
+										column.getSortByToggleProps(),
+									)}
+								>
+									{column.render('Header')}
+									{isSortable &&
+										!(i === 0 && isSelectable) && (
+											<Icon margin={'0px'}>
+												{column.isSortedDesc ===
+													'ture' ||
+												column.isSortedDesc ===
+													undefined
+													? arrowDownIcon
+													: arrowUpIcon}
+											</Icon>
+										)}
+								</RowDiv>
+							);
+						})}
 					</div>
 				))}
 				<div {...getTableBodyProps()}>
 					<FixedSizeList
-						height={500}
+						height={300}
 						itemCount={rows.length}
 						itemSize={40}
+						// width={totalColumnsWidth + scrollBarSize}
 					>
 						{RenderRow}
 					</FixedSizeList>
