@@ -28,11 +28,13 @@ export const userIcon = <span className='material-icons'>person</span>;
 export const errorIcon = <span className='material-icons'>error</span>;
 //Nav
 
-export const moreVertIcon = <span className='material-icons'>more_vert</span>;
+export const moreVertIcon = (
+	<span style={{fontSize: '16px'}} className='material-icons'>
+		more_vert
+	</span>
+);
 export const folderIcon = <span className='material-icons'>folder</span>;
-export const dashboardIcon =<span className="material-icons">
-dashboard
-</span>
+export const dashboardIcon = <span className='material-icons'>dashboard</span>;
 
 export const fileIcon = (
 	<svg

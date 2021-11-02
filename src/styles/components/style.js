@@ -12,10 +12,12 @@ export const NavContainer = styled.div`
 
 	display: flex;
 	flex-direction: column;
+	transform: translateX(1px);
+	// transition: transform 0.5s ease-in-out;
 	width: 255px;
 	height: 100%;
 	min-width: 255px;
-	transition: margin 0.5s ease-in-out;
+	background: #ffffff;
 
 	// &.close {
 	// 	display: none;

@@ -63,9 +63,9 @@ const GroupDescriptionSpace = ({groupId}) => {
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to={`/groups/${groupId}`}>{groupId}</NaviLink>
 				</PathContainer>
-				<HoverIconButton onClick={onClickCloseAside}>
-					{errorIcon}
-				</HoverIconButton>
+				{/*<HoverIconButton onClick={onClickCloseAside}>*/}
+				{/*	{errorIcon}*/}
+				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
 			<GroupSummary groupId={groupId} />

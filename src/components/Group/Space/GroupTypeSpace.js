@@ -78,9 +78,9 @@ const GroupTypeSpace = () => {
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to='/groups/types'>그룹 유형 관리</NaviLink>
 				</PathContainer>
-				<HoverIconButton onClick={onClickCloseAside}>
-					{errorIcon}
-				</HoverIconButton>
+				{/*<HoverIconButton onClick={onClickCloseAside}>*/}
+				{/*	{errorIcon}*/}
+				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
 			<AppBarContents>

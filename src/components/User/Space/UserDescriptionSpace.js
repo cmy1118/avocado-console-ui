@@ -58,9 +58,9 @@ const UserDescriptionSpace = ({userId}) => {
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to={`/users/${userId}`}>{user?.id}</NaviLink>
 				</PathContainer>
-				<HoverIconButton onClick={onClickCloseAside}>
-					{errorIcon}
-				</HoverIconButton>
+				{/*<HoverIconButton onClick={onClickCloseAside}>*/}
+				{/*	{errorIcon}*/}
+				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
 			<UserSummary userId={userId} />

@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import IamNav from '../Nav/IamNav';
 import Header from '../Header';
-import Aside from '../Aside/Aside';
 
 const _Container = styled.div`
-	overflow: hidden;
+	overflow: scroll;
 	flex: 1;
 	height: 100%;
 	width: 100%;
@@ -15,30 +14,35 @@ const _Container = styled.div`
 
 	.mainContainer {
 		margin-left: 255px;
-		transition: margin 0.5s ease-in-out;
+		// transition: all 0.5s ease-in-out;
 	}
 	.mainContainer.close {
-		margin: 0;
+		margin-left: 0;
+		// transition: 0.5s ease-in-out;
 	}
 
 	.nav {
 		position: absolute;
 		left: 0px;
 		display: inline-block;
-		transition: transform 0.5s ease-in-out;
-		z-index: 1;
+		transition: all 0.5s ease-in-out;
+		height: ;
 	}
 	.nav.close {
-		background: #f8f9fa;
+		position: absolute;
+		left: 17px;
 		transform: translateX(-255px);
-		z-index: 5;
+		transition: all 0.5s ease-in-out;
 	}
 `;
 
 const _Space = styled.div`
+	height: 100%;
 	display: flex;
 	transition: transform 0.5s ease-in-out;
 `;
+
+const _MainSpace = styled.div``;
 
 const IamLayout = ({children}) => {
 	const [isNavOpened, setIsNavOpened] = useState(true);
@@ -50,8 +54,14 @@ const IamLayout = ({children}) => {
 					isNavOpened ? 'mainContainer' : 'mainContainer close'
 				}
 			>
-				<IamNav isOpened={isNavOpened} setIsOpened={setIsNavOpened} />
-				{children}
+				<IamNav
+					leftSize={2}
+					isOpened={isNavOpened}
+					setIsOpened={setIsNavOpened}
+				/>
+				<_MainSpace style={{paddingLeft: '17px'}}>
+					{children}
+				</_MainSpace>
 				{/*<Aside />*/}
 			</_Space>
 		</_Container>
