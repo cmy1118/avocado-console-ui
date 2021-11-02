@@ -11,8 +11,8 @@ const _Container = styled.div`
 	z-index: 0;
 	display: flex !important;
 	align-items: center;
-	margin: 0px;
-	width: 100%;
+	margin: auto;
+	width: ${(props) => (props.label === '' ? '15px' : '100%')};
 	cursor: pointer;
 	opacity: ${(props) => (props.opacity === 'true' ? 0.24 : 1)};
 `;
@@ -46,6 +46,7 @@ const CheckBox = ({
 	return (
 		<_Container
 			opacity={disabled.toString()}
+			label={label}
 			className='pretty p-svg p-curve p-plain p-toggle p-thick'
 		>
 			<input type='checkbox' checked={checked} {...props} />

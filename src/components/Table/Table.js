@@ -9,6 +9,7 @@ import {
 	useSortBy,
 	useTable,
 } from 'react-table';
+import styled from 'styled-components';
 
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
@@ -22,10 +23,10 @@ import {
 } from '../../utils/dataFitering';
 import {NormalBorderButton} from '../../styles/components/buttons';
 import {checkDropTypeAlertMessage} from '../DialogBoxs/Alert/ConfirmDialogBox';
-import {cancelIcon} from '../../icons/icons';
-import {IconButton} from '../../styles/components/icons';
+import {arrowDownIcon, arrowUpIcon, cancelIcon} from '../../icons/icons';
+import {HoverIconButton, IconButton} from '../../styles/components/icons';
 import {ColDiv, RowDiv} from '../../styles/components/div';
-import {Label} from '../../styles/components/text';
+import {Label, Span} from '../../styles/components/text';
 
 function dateBetweenFilterFn(rows, id, filterValues) {
 	let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;
@@ -54,6 +55,10 @@ const placeholders = {
 	MFA: 'MFA',
 	passwordExpiryTime: '비밀번호 수명',
 };
+
+const _Table = styled.table`
+	width: 100%;
+`;
 
 const Table = ({
 	tableKey,
@@ -388,14 +393,14 @@ const Table = ({
 										<Label>{placeholders[column.id]}</Label>
 										<RowDiv alignItems={'center'}>
 											{column.render('Filter')}
-											<IconButton
+											<HoverIconButton
 												size={'sm'}
 												onClick={onClickCloseFilter(
 													column.id,
 												)}
 											>
 												{cancelIcon}
-											</IconButton>
+											</HoverIconButton>
 										</RowDiv>
 									</ColDiv>
 								),
@@ -411,28 +416,35 @@ const Table = ({
 				</RowDiv>
 			))}
 
-			<table {...getTableProps()} onDrop={onDrop} onDragOver={onDragOver}>
+			<_Table
+				{...getTableProps()}
+				onDrop={onDrop}
+				onDragOver={onDragOver}
+			>
 				<thead>
 					{headerGroups.map((headerGroup, i) => (
 						<tr key={i} {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map((column, i) => (
 								<th key={i}>
-									{column.render('Header')}
-									{isSortable &&
-										!(i === 0 && isSelectable) && (
-											<span
-												{...column.getHeaderProps(
-													column.getSortByToggleProps(),
-												)}
-											>
+									{isSortable && !(i === 0 && isSelectable) && (
+										<RowDiv
+											alignItems={'center'}
+											justifyContent={'center'}
+											{...column.getHeaderProps(
+												column.getSortByToggleProps(),
+											)}
+										>
+											{column.render('Header')}
+											<IconButton margin={'0px'}>
 												{column.isSortedDesc ===
 													'ture' ||
 												column.isSortedDesc ===
 													undefined
-													? ' 🔽'
-													: ' 🔼'}
-											</span>
-										)}
+													? arrowDownIcon
+													: arrowUpIcon}
+											</IconButton>
+										</RowDiv>
+									)}
 								</th>
 							))}
 						</tr>
@@ -468,7 +480,7 @@ const Table = ({
 						);
 					})}
 				</tbody>
-			</table>
+			</_Table>
 		</div>
 	);
 };
