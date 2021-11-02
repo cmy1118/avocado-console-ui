@@ -20,6 +20,7 @@ import {NaviLink} from '../../../styles/components/link';
 import {HoverIconButton} from '../../../styles/components/icons';
 import {onClickCloseAside} from '../../Aside/Aside';
 import {errorIcon} from '../../../icons/icons';
+import TabBar from '../../Tab/TabBar';
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
@@ -31,16 +32,6 @@ const UserDescriptionSpace = ({userId}) => {
 		userId,
 	]);
 
-	const onClickChangeTab = useCallback(
-		(v) => () => {
-			history.push({
-				pathname: `/users/${userId}`,
-				search: `tabs=${v}`,
-			});
-		},
-		[history, userId],
-	);
-
 	// if userId does not exist, direct to 404 page
 	useEffect(() => {
 		if (userId && !user) {
@@ -48,6 +39,12 @@ const UserDescriptionSpace = ({userId}) => {
 		}
 	}, [userId, user, history]);
 
+	const TabBarInfo = [
+		{name: '정보', href: 'user'},
+		{name: '그룹', href: 'group'},
+		{name: '권한', href: 'role'},
+		{name: '태그', href: 'tag'},
+	];
 	return (
 		<IamContainer>
 			<AppBarNavi>
@@ -64,15 +61,8 @@ const UserDescriptionSpace = ({userId}) => {
 			</AppBarNavi>
 
 			<UserSummary userId={userId} />
-
 			<div>
-				<Tab>
-					<TabItem onClick={onClickChangeTab('user')}>정보</TabItem>
-					<TabItem onClick={onClickChangeTab('group')}>그룹</TabItem>
-					<TabItem onClick={onClickChangeTab('role')}>권한</TabItem>
-					<TabItem onClick={onClickChangeTab('tag')}>태그</TabItem>
-				</Tab>
-
+				<TabBar userId={userId} Tabs={TabBarInfo} />
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 					'user' && <UserInfoTab userId={userId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
