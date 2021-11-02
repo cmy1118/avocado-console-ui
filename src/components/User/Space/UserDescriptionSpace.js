@@ -59,7 +59,7 @@ const UserDescriptionSpace = ({userId}) => {
 				{/*	{errorIcon}*/}
 				{/*</HoverIconButton>*/}
 			</AppBarNavi>
-
+			{/*:TODO tab click 시 use summary 닫음 처리  */}
 			<UserSummary userId={userId} />
 			<div>
 				<TabBar userId={userId} Tabs={TabBarInfo} />

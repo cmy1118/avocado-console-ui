@@ -6,6 +6,14 @@ import {Tab, TabItem} from '../../styles/components/tab';
 import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'qs';
 const _TabContainer = styled.div`
+	display: block;
+	position: fixed;
+	bottom: 0;
+	// width: 100%;
+	z-index: 75;
+	background: #ffffff;
+`;
+const _TabSpace = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -62,22 +70,24 @@ const TabBar = ({Tabs, userId}) => {
 
 	return (
 		<_TabContainer>
-			{Tabs.map((v) => {
-				return (
-					// eslint-disable-next-line react/jsx-key
-					<_Tabs>
-						<_TabItem
-							selected={
-								qs.parse(search, {ignoreQueryPrefix: true})
-									.tabs === v.href
-							}
-							onClick={onClickChangeTab(v.href)}
-						>
-							{v.name}
-						</_TabItem>
-					</_Tabs>
-				);
-			})}
+			<_TabSpace>
+				{Tabs.map((v) => {
+					return (
+						// eslint-disable-next-line react/jsx-key
+						<_Tabs>
+							<_TabItem
+								selected={
+									qs.parse(search, {ignoreQueryPrefix: true})
+										.tabs === v.href
+								}
+								onClick={onClickChangeTab(v.href)}
+							>
+								{v.name}
+							</_TabItem>
+						</_Tabs>
+					);
+				})}
+			</_TabSpace>
 		</_TabContainer>
 	);
 };

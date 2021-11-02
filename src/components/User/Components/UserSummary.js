@@ -25,7 +25,10 @@ const _Title = styled.div`
 	display: flex;
 	justify-content: space-between;
 `;
-
+const _UserSummaryContainer = styled.div`
+	height: 100%;
+	overflow: scroll;
+`;
 const UserSummary = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -87,27 +90,28 @@ const UserSummary = ({userId}) => {
 					{expiredConverter(user?.passwordExpired)}
 				</li>
 			</ul>
+			<_UserSummaryContainer>
+				<div>그룹: {groupData.length}</div>
+				<Table
+					data={groupData}
+					tableKey={tableKeys.users.summary.group}
+					columns={tableColumns[tableKeys.users.summary.group]}
+				/>
 
-			<div>그룹: {groupData.length}</div>
-			<Table
-				data={groupData}
-				tableKey={tableKeys.users.summary.group}
-				columns={tableColumns[tableKeys.users.summary.group]}
-			/>
+				<div>권한: {roleData.length}</div>
+				<Table
+					data={roleData}
+					tableKey={tableKeys.users.summary.permission}
+					columns={tableColumns[tableKeys.users.summary.permission]}
+				/>
 
-			<div>권한: {roleData.length}</div>
-			<Table
-				data={roleData}
-				tableKey={tableKeys.users.summary.permission}
-				columns={tableColumns[tableKeys.users.summary.permission]}
-			/>
-
-			<div>태그: {tagData.length}</div>
-			<Table
-				data={tagData}
-				tableKey={tableKeys.users.summary.tag}
-				columns={tableColumns[tableKeys.users.summary.tag]}
-			/>
+				<div>태그: {tagData.length}</div>
+				<Table
+					data={tagData}
+					tableKey={tableKeys.users.summary.tag}
+					columns={tableColumns[tableKeys.users.summary.tag]}
+				/>
+			</_UserSummaryContainer>
 		</>
 	);
 };
