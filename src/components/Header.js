@@ -5,6 +5,7 @@ import {Icon} from '../styles/components/icons';
 import MenuButtons from './Header/MenuButtons';
 import TextBox from './RecycleComponents/New/TextBox';
 import Form from './RecycleComponents/New/Form';
+import {NaviLink} from "../styles/components/link";
 
 const _Container = styled.div`
 	box-sizing: border-box;
@@ -28,7 +29,9 @@ const Header = () => {
 	return (
 		<_Container>
 			<_Title>
+				<NaviLink to='/'>
 				<_Logo>{avocadoLogo}</_Logo>
+			</NaviLink>
 			</_Title>
 			<Form
 				onSubmit={(data) => console.log(data)}

@@ -5,7 +5,6 @@ export const Icon = styled.div`
 	border: none;
 	line-height: 0px;
 	padding: 0px;
-
 	margin: ${(props) =>
 		props?.margin ||
 		(props?.size

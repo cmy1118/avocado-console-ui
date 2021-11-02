@@ -63,9 +63,9 @@ const GroupSpace = () => {
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to='/groups'>사용자 그룹</NaviLink>
 				</PathContainer>
-				<HoverIconButton onClick={onClickCloseAside}>
-					{errorIcon}
-				</HoverIconButton>
+				{/*<HoverIconButton onClick={onClickCloseAside}>*/}
+				{/*	{errorIcon}*/}
+				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
 			<AppBarContents>

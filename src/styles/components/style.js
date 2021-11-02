@@ -7,15 +7,22 @@ export const IamContainer = styled.div`
 `;
 
 export const NavContainer = styled.div`
+	border-right: 1px solid;
+	border-color: #e3e5e5;
+
 	display: flex;
 	flex-direction: column;
+	transform: translateX(1px);
+	// transition: transform 0.5s ease-in-out;
 	width: 255px;
-	transition: margin 0.5s ease-in-out;
+	height: 100%;
+	min-width: 255px;
+	background: #ffffff;
 
-	&.close {
-		display: none;
-		transform: translateX(-255px);
-	}
+	// &.close {
+	// 	display: none;
+	// 	transform: translateX(-255px);
+	// }
 `;
 
 export const NavItemList = styled.div`

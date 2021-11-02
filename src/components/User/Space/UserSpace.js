@@ -71,9 +71,9 @@ const UserSpace = () => {
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to='/users'>사용자 </NaviLink>
 				</PathContainer>
-				<HoverIconButton onClick={onClickCloseAside}>
-					{errorIcon}
-				</HoverIconButton>
+				{/*<HoverIconButton onClick={onClickCloseAside}>*/}
+				{/*	{errorIcon}*/}
+				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
 			<AppBarContents>
