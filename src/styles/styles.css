@@ -12,6 +12,10 @@ body {
 	line-height: normal;
 }
 
+#root {
+	height: 100vh;
+}
+
 table {
 	border-collapse: collapse;
 }

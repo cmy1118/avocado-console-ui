@@ -3,14 +3,10 @@ import Table from '../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import DropButton from '../../Table/DropButton';
-import styled from 'styled-components';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-
-const _Tables = styled.div`
-	display: flex;
-`;
+import {_Tables, RowDiv} from '../../../styles/components/div';
 
 const AddUserToGroup = () => {
 	const dispatch = useDispatch();
@@ -67,15 +63,17 @@ const AddUserToGroup = () => {
 					setData={setRightDataIds}
 					setSelect={setSelect}
 				/>
-				<DropButton
-					leftTableKey={tableKeys.users.add.groups.exclude}
-					RightTableKey={tableKeys.users.add.groups.include}
-					select={select}
-					dataLeft={dataLeft}
-					dataRight={dataRight}
-					rightDataIds={rightDataIds}
-					setRightDataIds={setRightDataIds}
-				/>
+				<RowDiv alignItems={'center'}>
+					<DropButton
+						leftTableKey={tableKeys.users.add.groups.exclude}
+						RightTableKey={tableKeys.users.add.groups.include}
+						select={select}
+						dataLeft={dataLeft}
+						dataRight={dataRight}
+						rightDataIds={rightDataIds}
+						setRightDataIds={setRightDataIds}
+					/>
+				</RowDiv>
 				<div>
 					<div>추가 그룹: {rightDataIds.length}건</div>
 					<Table
@@ -84,9 +82,9 @@ const AddUserToGroup = () => {
 							tableColumns[tableKeys.users.add.groups.include]
 						}
 						data={dataRight}
-						isPageable
-						isNumberOfRowsAdjustable
-						isColumnFilterable
+						// isPageable
+						// isNumberOfRowsAdjustable
+						// isColumnFilterable
 						isSortable
 						isSelectable
 						isDnDPossible

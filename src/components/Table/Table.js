@@ -9,7 +9,6 @@ import {
 	useSortBy,
 	useTable,
 } from 'react-table';
-import styled from 'styled-components';
 
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
@@ -24,9 +23,52 @@ import {
 import {NormalBorderButton} from '../../styles/components/buttons';
 import {checkDropTypeAlertMessage} from '../DialogBoxs/Alert/ConfirmDialogBox';
 import {arrowDownIcon, arrowUpIcon, cancelIcon} from '../../icons/icons';
-import {HoverIconButton, IconButton} from '../../styles/components/icons';
+import {Icon, IconButton} from '../../styles/components/icons';
 import {ColDiv, RowDiv} from '../../styles/components/div';
-import {Label, Span} from '../../styles/components/text';
+import {Label} from '../../styles/components/text';
+import styled from 'styled-components';
+
+const _Table = styled.table`
+	width: 100%;
+	border-top: 1px solid #e3e5e5;
+	border-bottom: 1px solid #e3e5e5;
+	box-sizing: border-box;
+	font-size: 13px;
+	thead {
+		tr {
+			background: #f8f9fa;
+			border-bottom: 1px solid #e3e5e5;
+			height: 40px;
+			th {
+				min-width: 40px;
+				padding: 0px;
+				height: 40px;
+				text-align: left;
+				border: none;
+			}
+		}
+	}
+	tbody {
+		.selected {
+			background: rgba(228, 243, 244, 0.7);
+		}
+		tr {
+			height: 40px;
+			border-bottom: 1px solid #e3e5e5;
+			td {
+				min-width: 40px;
+				padding: 0px;
+				height: 40px;
+				border: none;
+			}
+		}
+	}
+`;
+
+const Container = styled.div`
+	margin: 16px;
+	display: block;
+`;
 
 function dateBetweenFilterFn(rows, id, filterValues) {
 	let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;
@@ -55,10 +97,6 @@ const placeholders = {
 	MFA: 'MFA',
 	passwordExpiryTime: '비밀번호 수명',
 };
-
-const _Table = styled.table`
-	width: 100%;
-`;
 
 const Table = ({
 	tableKey,
@@ -349,7 +387,7 @@ const Table = ({
 	}, [selectedRowIds, setSelect, selectedDropButton, selectedFlatRows]);
 
 	return (
-		<div>
+		<Container>
 			<TableOptionsBar
 				tableKey={tableKey}
 				gotoPage={gotoPage}
@@ -382,7 +420,7 @@ const Table = ({
 					justifyContent={'space-between'}
 					key={i}
 					{...headerGroup.getHeaderGroupProps()}
-					margin={'14px 16px'}
+					margin={'14px 0px'}
 				>
 					<RowDiv>
 						{headerGroup.headers.map(
@@ -393,14 +431,14 @@ const Table = ({
 										<Label>{placeholders[column.id]}</Label>
 										<RowDiv alignItems={'center'}>
 											{column.render('Filter')}
-											<HoverIconButton
+											<IconButton
 												size={'sm'}
 												onClick={onClickCloseFilter(
 													column.id,
 												)}
 											>
 												{cancelIcon}
-											</HoverIconButton>
+											</IconButton>
 										</RowDiv>
 									</ColDiv>
 								),
@@ -426,25 +464,25 @@ const Table = ({
 						<tr key={i} {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map((column, i) => (
 								<th key={i}>
-									{isSortable && !(i === 0 && isSelectable) && (
-										<RowDiv
-											alignItems={'center'}
-											justifyContent={'center'}
-											{...column.getHeaderProps(
-												column.getSortByToggleProps(),
+									<RowDiv
+										alignItems={'center'}
+										{...column.getHeaderProps(
+											column.getSortByToggleProps(),
+										)}
+									>
+										{column.render('Header')}
+										{isSortable &&
+											!(i === 0 && isSelectable) && (
+												<Icon margin={'0px'}>
+													{column.isSortedDesc ===
+														'ture' ||
+													column.isSortedDesc ===
+														undefined
+														? arrowDownIcon
+														: arrowUpIcon}
+												</Icon>
 											)}
-										>
-											{column.render('Header')}
-											<IconButton margin={'0px'}>
-												{column.isSortedDesc ===
-													'ture' ||
-												column.isSortedDesc ===
-													undefined
-													? arrowDownIcon
-													: arrowUpIcon}
-											</IconButton>
-										</RowDiv>
-									)}
+									</RowDiv>
 								</th>
 							))}
 						</tr>
@@ -455,6 +493,15 @@ const Table = ({
 						prepareRow(row);
 						return (
 							<tr
+								className={
+									Object.keys(selectedRowIds).includes(
+										row.original.uid
+											? row.original.uid
+											: row.original.id,
+									)
+										? 'selected'
+										: ''
+								}
 								draggable={isDnDPossible ? 'true' : 'false'}
 								id={
 									row.original.uid
@@ -481,7 +528,7 @@ const Table = ({
 					})}
 				</tbody>
 			</_Table>
-		</div>
+		</Container>
 	);
 };
 

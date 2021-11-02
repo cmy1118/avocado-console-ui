@@ -3,15 +3,11 @@ import Table from '../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
-import styled from 'styled-components';
 import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-
-const _Tables = styled.div`
-	display: flex;
-`;
+import {_Tables} from '../../../styles/components/div';
 
 const AssignRoleToUser = () => {
 	const dispatch = useDispatch();

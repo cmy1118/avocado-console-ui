@@ -1,17 +1,13 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Table from '../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {roleTypeConverter} from '../../../utils/tableDataConverter';
-import styled from 'styled-components';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import DropButton from '../../Table/DropButton';
-
-const _Tables = styled.div`
-	display: flex;
-`;
+import {_Tables} from '../../../styles/components/div';
 
 const AssignRoleToGroup = () => {
 	const dispatch = useDispatch();
