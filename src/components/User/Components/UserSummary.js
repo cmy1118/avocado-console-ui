@@ -13,19 +13,16 @@ import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType'
 import styled from 'styled-components';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {TransparentButton} from '../../../styles/components/buttons';
-import {AppBarButtons, AppBarContents} from '../../../styles/components/style';
 import {
 	dummyDates,
 	dummyPolicyOnUser,
 	dummyUsers,
 } from '../../../utils/dummyData';
 
-const _Title = styled.div`
-	display: flex;
-	justify-content: space-between;
+const _UserSummaryContainer = styled.div`
+	height: 500px;
+	overflow-y: scroll;
 `;
-
 const UserSummary = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -67,12 +64,20 @@ const UserSummary = ({userId}) => {
 
 	return (
 		<>
-			<AppBarContents>
-				<div>요약 [ {user?.id} ]</div>
-				<AppBarButtons>
-					<TransparentButton>삭제</TransparentButton>
-				</AppBarButtons>
-			</AppBarContents>
+			{/*<AppBarContents>*/}
+			{/*	<div style={{display: 'flex'}}>*/}
+			{/*		<IconButton*/}
+			{/*			size={'sm'}*/}
+			{/*			margin={'0px 0px 0px 12px'}*/}
+			{/*		>*/}
+			{/*			{isOpened ? arrowDownIcon : arrowUpIcon}*/}
+			{/*		</IconButton>*/}
+			{/*		요약 [ {user?.id} ]*/}
+			{/*	</div>*/}
+			{/*	<AppBarButtons>*/}
+			{/*		<TransparentButton>삭제</TransparentButton>*/}
+			{/*	</AppBarButtons>*/}
+			{/*</AppBarContents>*/}
 
 			<ul>
 				<li>사용자 : {user?.name}</li>
@@ -88,31 +93,35 @@ const UserSummary = ({userId}) => {
 				</li>
 			</ul>
 
-			<div>그룹: {groupData.length}</div>
-			<Table
-				data={groupData}
-				tableKey={tableKeys.users.summary.group}
-				columns={tableColumns[tableKeys.users.summary.group]}
-			/>
+			<_UserSummaryContainer>
+				<div>그룹: {groupData.length}</div>
+				<Table
+					data={groupData}
+					tableKey={tableKeys.users.summary.group}
+					columns={tableColumns[tableKeys.users.summary.group]}
+				/>
 
-			<div>권한: {roleData.length}</div>
-			<Table
-				data={roleData}
-				tableKey={tableKeys.users.summary.permission}
-				columns={tableColumns[tableKeys.users.summary.permission]}
-			/>
+				<div>권한: {roleData.length}</div>
+				<Table
+					data={roleData}
+					tableKey={tableKeys.users.summary.permission}
+					columns={tableColumns[tableKeys.users.summary.permission]}
+				/>
 
-			<div>태그: {tagData.length}</div>
-			<Table
-				data={tagData}
-				tableKey={tableKeys.users.summary.tag}
-				columns={tableColumns[tableKeys.users.summary.tag]}
-			/>
+				<div>태그: {tagData.length}</div>
+				<Table
+					data={tagData}
+					tableKey={tableKeys.users.summary.tag}
+					columns={tableColumns[tableKeys.users.summary.tag]}
+				/>
+			</_UserSummaryContainer>
 		</>
 	);
 };
 
 UserSummary.propTypes = {
 	userId: PropTypes.string.isRequired,
+	isOpened: PropTypes.string.isRequired,
+	setIsOpened: PropTypes.func.isRequired,
 };
 export default UserSummary;

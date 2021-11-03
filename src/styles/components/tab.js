@@ -3,6 +3,9 @@ import styled from 'styled-components';
 export const Tab = styled.ul`
 	width: 100%;
 `;
+export const Tabs = styled.ul`
+	width: 100%;
+`;
 
 export const TabItem = styled.li`
 	display: inline-block;
