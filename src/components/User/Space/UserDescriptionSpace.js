@@ -9,10 +9,8 @@ import {
 	AppBarContents,
 	AppBarNavi,
 	DetailContainer,
-	IamContainer,
 	PathContainer,
 } from '../../../styles/components/style';
-import {Tab, TabItem} from '../../../styles/components/tab';
 import UserInfoTab from '../Components/UserInfoTab';
 import UserGroupsTab from '../Components/UserGroupsTab';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
@@ -20,9 +18,8 @@ import UserOnDescPageTags from '../Components/UserOnDescPageTags';
 import UserSummary from '../Components/UserSummary';
 import UserRolesTab from '../Components/UserRolesTab';
 import {NaviLink} from '../../../styles/components/link';
-import {HoverIconButton, IconButton} from '../../../styles/components/icons';
-import {onClickCloseAside} from '../../Aside/Aside';
-import {arrowDownIcon, arrowUpIcon, errorIcon} from '../../../icons/icons';
+import {IconButton} from '../../../styles/components/icons';
+import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import TabBar from '../../Tab/TabBar';
 import {TransparentButton} from '../../../styles/components/buttons';
 
@@ -30,7 +27,7 @@ const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
 	const {search} = useLocation();
 	const {users} = useSelector(IAM_USER.selector);
-	const [isSumarryOpend, setIsSumarryOpend] = useState(true);
+	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 
 	const TabBarInfo = [
 		{name: '정보', href: 'user'},
@@ -44,8 +41,8 @@ const UserDescriptionSpace = ({userId}) => {
 		userId,
 	]);
 	const onClickFoldSummary = useCallback(() => {
-		setIsSumarryOpend(!isSumarryOpend);
-	}, [isSumarryOpend]);
+		setIsSummaryOpened(!isSummaryOpened);
+	}, [isSummaryOpened]);
 	// if userId does not exist, direct to 404 page
 	useEffect(() => {
 		if (userId && !user) {
@@ -74,7 +71,7 @@ const UserDescriptionSpace = ({userId}) => {
 						margin={'0px'}
 						onClick={onClickFoldSummary}
 					>
-						{isSumarryOpend ? arrowDownIcon : arrowUpIcon}
+						{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
 					</IconButton>
 					요약 [ {user?.id} ]
 				</div>
@@ -82,29 +79,27 @@ const UserDescriptionSpace = ({userId}) => {
 					<TransparentButton>삭제</TransparentButton>
 				</AppBarButtons>
 			</AppBarContents>
-
-			{/*:TODO tab click 시 use summary 닫음 처리  */}
-			{isSumarryOpend ? (
+			{isSummaryOpened ? (
 				<UserSummary
 					userId={userId}
-					isOpened={isSumarryOpend}
-					setIsOpened={setIsSumarryOpend}
+					isOpened={isSummaryOpened}
+					setIsOpened={setIsSummaryOpened}
 				/>
 			) : (
 				''
 			)}
 
 			<div>
-				<div className={isSumarryOpend ? 'tabBar fix' : 'tabBar'}>
+				<div className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}>
 					<TabBar
 						Tabs={TabBarInfo}
 						param={'users'}
 						Id={userId}
-						isOpened={isSumarryOpend}
-						setIsOpened={setIsSumarryOpend}
+						isOpened={isSummaryOpened}
+						setIsOpened={setIsSummaryOpened}
 					/>
 				</div>
-				{!isSumarryOpend && (
+				{!isSummaryOpened && (
 					<div style={{padding: '10px 16px'}}>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'user' && <UserInfoTab userId={userId} />}

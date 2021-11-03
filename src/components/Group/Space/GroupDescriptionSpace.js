@@ -38,7 +38,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
 	const {search} = useLocation();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const [isSumarryOpend, setIsSumarryOpend] = useState(true);
+	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isOpend, setIsOpend] = useState(true);
 
 	const TabBarInfo = [
@@ -62,8 +62,8 @@ const GroupDescriptionSpace = ({groupId}) => {
 	// 	[groupId, history],
 	// );
 	const onClickFoldSummary = useCallback(() => {
-		setIsSumarryOpend(!isSumarryOpend);
-	}, [isSumarryOpend]);
+		setIsSummaryOpened(!isSummaryOpened);
+	}, [isSummaryOpened]);
 	// if groupId does not exist, direct to 404 page
 	useEffect(() => {
 		if (groupId && !group) {
@@ -93,38 +93,38 @@ const GroupDescriptionSpace = ({groupId}) => {
 						margin={'0px'}
 						onClick={onClickFoldSummary}
 					>
-						{isSumarryOpend ? arrowDownIcon : arrowUpIcon}
+						{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
 					</IconButton>
-					<div>요약 [ {group?.name} ]</div>
-					<AppBarButtons>
-						<NormalButton onClick={() => setIsOpend(true)}>
-							그룹명 편집
-						</NormalButton>
-						<TransparentButton>삭제</TransparentButton>
-					</AppBarButtons>
+					요약 [ {group?.name} ]
 				</div>
+				<AppBarButtons>
+					<NormalButton onClick={() => setIsOpend(true)}>
+						그룹명 편집
+					</NormalButton>
+					<TransparentButton>삭제</TransparentButton>
+				</AppBarButtons>
 			</AppBarContents>
-			{isSumarryOpend ? (
+			{isSummaryOpened ? (
 				<GroupSummary
 					groupId={groupId}
-					isOpened={isSumarryOpend}
-					setIsOpened={setIsSumarryOpend}
+					isOpened={isSummaryOpened}
+					setIsOpened={setIsSummaryOpened}
 				/>
 			) : (
 				''
 			)}
 
 			<div>
-				<div className={isSumarryOpend ? 'tabBar fix' : 'tabBar'}>
+				<div className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}>
 					<TabBar
 						Tabs={TabBarInfo}
-						Id={groupId}
 						param={'groups'}
-						isOpened={isSumarryOpend}
-						setIsOpened={setIsSumarryOpend}
+						Id={groupId}
+						isOpened={isSummaryOpened}
+						setIsOpened={setIsSummaryOpened}
 					/>
 				</div>
-				{!isSumarryOpend && (
+				{!isSummaryOpened && (
 					<div style={{padding: '10px 16px'}}>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'user' && <GroupUsersTab groupId={groupId} />}

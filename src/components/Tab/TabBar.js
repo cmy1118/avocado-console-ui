@@ -29,7 +29,8 @@ const _Tabs = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	height: 100%;
-	width: 60px;
+	width: fit-content;
+	// width: 60px;
 `;
 
 const _TabItem = styled.div`
