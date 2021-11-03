@@ -6,7 +6,7 @@ import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {_Tables, RowDiv} from '../../../styles/components/div';
+import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
 
 const AddUserToGroup = () => {
 	const dispatch = useDispatch();
@@ -75,7 +75,9 @@ const AddUserToGroup = () => {
 					/>
 				</RowDiv>
 				<div>
-					<div>추가 그룹: {rightDataIds.length}건</div>
+					<TableHeader>
+						추가 그룹: {rightDataIds.length}건
+					</TableHeader>
 					<Table
 						tableKey={tableKeys.users.add.groups.include}
 						columns={

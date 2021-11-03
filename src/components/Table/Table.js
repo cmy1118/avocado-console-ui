@@ -31,10 +31,13 @@ import {FixedSizeList} from 'react-window';
 
 const Container = styled.div`
 	margin: 0px 16px;
+	flex: 1;
 	.table {
 		display: flex;
 		flex-direction: column;
 		border-spacing: 0;
+		border-top: 1px solid #e3e5e5;
+		border-bottom: 1px solid #e3e5e5;
 		font-size: 13px;
 		font-weight: normal;
 		font-stretch: normal;
@@ -45,14 +48,26 @@ const Container = styled.div`
 		color: #212121;
 		.head {
 			background: #f8f9fa;
-			border-top: 1px solid #e3e5e5;
 			border-bottom: 1px solid #e3e5e5;
 		}
 		.body {
 			border-bottom: 1px solid #e3e5e5;
+			// :last-child {
+			// 	border: none;
+			// }
 		}
 		.selected {
 			background: rgba(228, 243, 244, 0.7);
+		}
+
+		.dragging {
+			width: 320px;
+			height: 54px;
+			// margin: 54px 161px 12px 61px;
+			// padding: 15px 192px 15px 12px;
+			// border-radius: 4px;
+			// border: solid 1px #4ca6a8;
+			// background-color: rgba(255, 255, 255, 0.8);
 		}
 
 		.tr {
@@ -303,20 +318,30 @@ const Table = ({
 		},
 	);
 
+	const onDragEnd = useCallback((e) => {
+		e.target.classList.remove('dragging');
+	}, []);
+
 	const onDragStart = useCallback(
 		(row) => (e) => {
+			e.target.classList.add('dragging');
 			const firstTarget = e.target.firstChild.childNodes[0].childNodes[0];
 			const flatRows = selectedFlatRows;
+
+			console.log(e);
+
 			console.log('onDragStart ::: ', tableKey);
 			const selected = Object.keys(selectedRowIds);
 			if (firstTarget.type === 'checkbox' && !firstTarget.checked) {
-				firstTarget.click();
 				selected.push(row.id);
 				flatRows.push(row);
+				firstTarget.click();
+				// firstTarget.checked = true;
 			}
 			if (dndKey) {
 				const selectedType = flatRows.map((v) => v.values.type);
 				e.dataTransfer.setData('selectedType', selectedType.toString());
+				console.log('dndKey');
 			}
 			e.dataTransfer.setData('ids', selected.toString());
 			e.dataTransfer.setData(
@@ -326,6 +351,7 @@ const Table = ({
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
 		},
+
 		[data, dndKey, selectedFlatRows, selectedRowIds, tableKey],
 	);
 
@@ -395,11 +421,14 @@ const Table = ({
 	);
 
 	const RenderRow = useCallback(
-		({index}) => {
+		({index, style}) => {
 			const row = rows[index];
 			prepareRow(row);
 			return (
 				<div
+					style={style}
+					onDragStart={onDragStart(row)}
+					onDragEnd={onDragEnd}
 					className={
 						Object.keys(selectedRowIds).includes(
 							row.original.uid
@@ -412,7 +441,6 @@ const Table = ({
 					draggable={isDnDPossible ? 'true' : 'false'}
 					id={row.original.uid ? row.original.uid : row.original.id}
 					key={row.original.uid ? row.original.uid : row.original.id}
-					onDragStart={onDragStart(row)}
 				>
 					{row.cells.map((cell, i) => {
 						return (
@@ -559,7 +587,9 @@ const Table = ({
 				<div {...getTableBodyProps()}>
 					<FixedSizeList
 						height={300}
-						itemCount={rows.length}
+						itemCount={
+							rows.length > pageSize ? pageSize : rows.length
+						}
 						itemSize={40}
 						// width={totalColumnsWidth + scrollBarSize}
 					>

@@ -6,7 +6,7 @@ import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {_Tables} from '../../../styles/components/div';
+import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
 
 const UsersIncludedInGroup = () => {
 	const dispatch = useDispatch();
@@ -71,26 +71,27 @@ const UsersIncludedInGroup = () => {
 					setSelect={setSelect}
 					setData={setRightDataIds}
 				/>
-				<DropButton
-					leftTableKey={tableKeys.groups.add.users.exclude}
-					RightTableKey={tableKeys.groups.add.users.include}
-					select={select}
-					dataLeft={dataLeft}
-					dataRight={dataRight}
-					rightDataIds={rightDataIds}
-					setRightDataIds={setRightDataIds}
-				/>
+				<RowDiv alignItems={'center'}>
+					<DropButton
+						leftTableKey={tableKeys.groups.add.users.exclude}
+						RightTableKey={tableKeys.groups.add.users.include}
+						select={select}
+						dataLeft={dataLeft}
+						dataRight={dataRight}
+						rightDataIds={rightDataIds}
+						setRightDataIds={setRightDataIds}
+					/>
+				</RowDiv>
 				<div>
-					<div>추가 사용자: {rightDataIds.length}건</div>
+					<TableHeader>
+						추가 사용자: {rightDataIds.length}건
+					</TableHeader>
 					<Table
 						data={dataRight}
 						tableKey={tableKeys.groups.add.users.include}
 						columns={
 							tableColumns[tableKeys.groups.add.users.include]
 						}
-						isPageable
-						isNumberOfRowsAdjustable
-						isColumnFilterable
 						isSortable
 						isSelectable
 						isDnDPossible

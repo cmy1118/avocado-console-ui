@@ -7,7 +7,7 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import DropButton from '../../Table/DropButton';
-import {_Tables} from '../../../styles/components/div';
+import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
 
 const AssignRoleToGroup = () => {
 	const dispatch = useDispatch();
@@ -71,19 +71,21 @@ const AssignRoleToGroup = () => {
 					setData={setRightDataIds}
 					setSelect={setSelect}
 				/>
-
-				<DropButton
-					leftTableKey={tableKeys.groups.add.roles.exclude}
-					RightTableKey={tableKeys.groups.add.roles.include}
-					select={select}
-					dataLeft={dataLeft}
-					dataRight={dataRight}
-					rightDataIds={rightDataIds}
-					setRightDataIds={setRightDataIds}
-				/>
-
+				<RowDiv alignItems={'center'}>
+					<DropButton
+						leftTableKey={tableKeys.groups.add.roles.exclude}
+						RightTableKey={tableKeys.groups.add.roles.include}
+						select={select}
+						dataLeft={dataLeft}
+						dataRight={dataRight}
+						rightDataIds={rightDataIds}
+						setRightDataIds={setRightDataIds}
+					/>
+				</RowDiv>
 				<div>
-					<div>추가 Roles: {rightDataIds.length}건</div>
+					<TableHeader>
+						추가 Roles: {rightDataIds.length}건
+					</TableHeader>
 					<Table
 						data={dataRight}
 						tableKey={tableKeys.groups.add.roles.include}

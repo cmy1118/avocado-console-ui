@@ -21,3 +21,10 @@ export const ColDiv = styled(RowDiv)`
 export const _Tables = styled(RowDiv)`
 	width: 100%;
 `;
+
+export const TableHeader = styled.div`
+	height: 34px;
+	display: flex;
+	margin: 0px 16px;
+	align-items: center;
+`;
