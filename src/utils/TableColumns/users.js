@@ -9,6 +9,7 @@ import {
 	statusConverter,
 } from '../tableDataConverter';
 import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
+import {ColDiv} from '../../styles/components/div';
 
 export const USER_COLUMN = [
 	{
@@ -263,9 +264,10 @@ export const USER_SUMMARY_PERMISSION_COLUMNS = [
 	{
 		Header: '권한 상세',
 		accessor: 'description',
+		width: 200,
 		Cell: function Component(v) {
 			return (
-				<div>
+				<ColDiv>
 					{v.value.split('\n').map((v, i) => {
 						return (
 							<div key={i}>
@@ -274,7 +276,7 @@ export const USER_SUMMARY_PERMISSION_COLUMNS = [
 							</div>
 						);
 					})}
-				</div>
+				</ColDiv>
 			);
 		},
 	},

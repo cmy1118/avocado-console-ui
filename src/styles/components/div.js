@@ -28,3 +28,76 @@ export const TableHeader = styled.div`
 	margin: 0px 16px;
 	align-items: center;
 `;
+
+export const TableContainer = styled.div`
+	margin: 0px 16px;
+	flex: 1;
+	.table {
+		display: flex;
+		flex-direction: column;
+		border-spacing: 0;
+		border-top: 1px solid #e3e5e5;
+		border-bottom: 1px solid #e3e5e5;
+		font-size: 13px;
+		font-weight: normal;
+		font-stretch: normal;
+		font-style: normal;
+		line-height: normal;
+		letter-spacing: 0.13px;
+		text-align: left;
+		color: #212121;
+		.head {
+			background: #f8f9fa;
+			border-bottom: 1px solid #e3e5e5;
+			display: flex;
+			justify-content: space-between;
+		}
+		.body {
+			border-bottom: 1px solid #e3e5e5;
+			display: flex;
+			justify-content: space-between;
+			:last-child {
+				border: none;
+			}
+		}
+		.odd {
+			background: #f8f9fa;
+		}
+		.selected {
+			background: rgba(228, 243, 244, 0.7);
+		}
+
+		.tr {
+			display: flex;
+			height: 40px;
+			:last-child {
+				.td {
+					border-bottom: 0;
+				}
+			}
+		}
+
+		.th,
+		.td {
+			white-space: nowrap;
+			box-sizing: border-box;
+			text-align: left;
+			margin-left: 9px;
+			padding: 0.5rem;
+		}
+	}
+`;
+
+export const HoverTableContainer = styled(TableContainer)`
+	.body {
+		border-bottom: 1px solid #e3e5e5;
+		display: flex;
+		justify-content: space-between;
+		:last-child {
+			border: none;
+		}
+		&:hover {
+			background: #f8f9fa;
+		}
+	}
+`;

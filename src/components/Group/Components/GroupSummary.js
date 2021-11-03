@@ -23,6 +23,7 @@ import {
 	dummyPolicyOnGroup,
 	dummyUsers,
 } from '../../../utils/dummyData';
+import ReadOnlyTable from '../../Table/ReadOnlyTable';
 
 const GroupSummary = ({groupId}) => {
 	const formRef = useRef(null);
@@ -108,21 +109,21 @@ const GroupSummary = ({groupId}) => {
 			</ul>
 
 			<div>사용자: {userData.length}</div>
-			<Table
+			<ReadOnlyTable
 				data={userData}
 				tableKey={tableKeys.groups.summary.user}
 				columns={tableColumns[tableKeys.groups.summary.user]}
 			/>
 
 			<div>권한: {roleData.length}</div>
-			<Table
+			<ReadOnlyTable
 				data={roleData}
 				tableKey={tableKeys.groups.summary.permission}
 				columns={tableColumns[tableKeys.groups.summary.permission]}
 			/>
 
 			<div>태그: {tagData.length}</div>
-			<Table
+			<ReadOnlyTable
 				data={tagData}
 				tableKey={tableKeys.groups.summary.tag}
 				columns={tableColumns[tableKeys.groups.summary.tag]}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -32,8 +32,17 @@ const Pagination = ({
 	canNextPage,
 	pageCount,
 	pageOptions,
-	pageIndex,
+	pageSize,
 }) => {
+	useEffect(() => {
+		console.log('api 요청');
+		console.log(
+			`elements=${pageSize * pageCount + 1}-${
+				pageSize * (pageCount + 1)
+			}`,
+		);
+	}, [pageCount, pageSize]);
+
 	return (
 		<Container className='pagination'>
 			<Button onClick={() => previousPage()} disabled={!canPreviousPage}>
@@ -43,32 +52,16 @@ const Pagination = ({
 				return (
 					<Button
 						onClick={() => gotoPage(v)}
-						current={v === pageIndex}
+						current={v === pageCount}
 						key={v}
 					>
 						{v + 1}
 					</Button>
 				);
 			})}
-			{/*<button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>*/}
-			{/*	{'<<'}*/}
-			{/*</button>{' '}*/}
-
 			<Button onClick={() => nextPage()} disabled={!canNextPage}>
 				{'>'}
 			</Button>
-			{/*<button*/}
-			{/*	onClick={() => gotoPage(pageCount - 1)}*/}
-			{/*	disabled={!canNextPage}*/}
-			{/*>*/}
-			{/*	{'>>'}*/}
-			{/*</button>{' '}*/}
-			{/*<span>*/}
-			{/*	Page{' '}*/}
-			{/*	<strong>*/}
-			{/*		{pageIndex + 1} of {pageOptions.length}*/}
-			{/*	</strong>{' '}*/}
-			{/*</span>*/}
 		</Container>
 	);
 };
@@ -80,8 +73,8 @@ Pagination.propTypes = {
 	nextPage: PropTypes.func.isRequired,
 	canNextPage: PropTypes.bool.isRequired,
 	pageCount: PropTypes.number.isRequired,
+	pageSize: PropTypes.number.isRequired,
 	pageOptions: PropTypes.array.isRequired,
-	pageIndex: PropTypes.number.isRequired,
 };
 
 export default Pagination;

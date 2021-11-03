@@ -6,6 +6,7 @@ import {tableColumns} from '../../../Constants/Table/columns';
 import {useSelector} from 'react-redux';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
+import {Label} from '../../../styles/components/text';
 
 const ReadOnly = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
@@ -22,6 +23,7 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 			setIsOpened={setIsOpened}
 			handleSubmit={submitUserInfo}
 		>
+			<Label>사용자 기본정보</Label>
 			<ul>
 				<li>사용자 계정 : {readOnlyData['user'].id}</li>
 				<li>사용자 이름 : {readOnlyData['user'].name}</li>

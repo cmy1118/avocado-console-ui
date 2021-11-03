@@ -20,6 +20,7 @@ import {
 	dummyPolicyOnUser,
 	dummyUsers,
 } from '../../../utils/dummyData';
+import ReadOnlyTable from '../../Table/ReadOnlyTable';
 
 const _Title = styled.div`
 	display: flex;
@@ -89,21 +90,21 @@ const UserSummary = ({userId}) => {
 			</ul>
 
 			<div>그룹: {groupData.length}</div>
-			<Table
+			<ReadOnlyTable
 				data={groupData}
 				tableKey={tableKeys.users.summary.group}
 				columns={tableColumns[tableKeys.users.summary.group]}
 			/>
 
 			<div>권한: {roleData.length}</div>
-			<Table
+			<ReadOnlyTable
 				data={roleData}
 				tableKey={tableKeys.users.summary.permission}
 				columns={tableColumns[tableKeys.users.summary.permission]}
 			/>
 
 			<div>태그: {tagData.length}</div>
-			<Table
+			<ReadOnlyTable
 				data={tagData}
 				tableKey={tableKeys.users.summary.tag}
 				columns={tableColumns[tableKeys.users.summary.tag]}

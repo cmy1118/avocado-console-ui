@@ -17,9 +17,6 @@ import UserOnDescPageTags from '../Components/UserOnDescPageTags';
 import UserSummary from '../Components/UserSummary';
 import UserRolesTab from '../Components/UserRolesTab';
 import {NaviLink} from '../../../styles/components/link';
-import {HoverIconButton} from '../../../styles/components/icons';
-import {onClickCloseAside} from '../../Aside/Aside';
-import {errorIcon} from '../../../icons/icons';
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();

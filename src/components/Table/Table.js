@@ -24,72 +24,10 @@ import {NormalBorderButton} from '../../styles/components/buttons';
 import {checkDropTypeAlertMessage} from '../DialogBoxs/Alert/ConfirmDialogBox';
 import {arrowDownIcon, arrowUpIcon, cancelIcon} from '../../icons/icons';
 import {HoverIconButton, Icon} from '../../styles/components/icons';
-import {ColDiv, RowDiv} from '../../styles/components/div';
+import {ColDiv, RowDiv, HoverTableContainer} from '../../styles/components/div';
 import {Label} from '../../styles/components/text';
 import styled from 'styled-components';
 import {FixedSizeList} from 'react-window';
-
-const Container = styled.div`
-	margin: 0px 16px;
-	flex: 1;
-	.table {
-		display: flex;
-		flex-direction: column;
-		border-spacing: 0;
-		border-top: 1px solid #e3e5e5;
-		border-bottom: 1px solid #e3e5e5;
-		font-size: 13px;
-		font-weight: normal;
-		font-stretch: normal;
-		font-style: normal;
-		line-height: normal;
-		letter-spacing: 0.13px;
-		text-align: left;
-		color: #212121;
-		.head {
-			background: #f8f9fa;
-			border-bottom: 1px solid #e3e5e5;
-		}
-		.body {
-			border-bottom: 1px solid #e3e5e5;
-			// :last-child {
-			// 	border: none;
-			// }
-		}
-		.selected {
-			background: rgba(228, 243, 244, 0.7);
-		}
-
-		.dragging {
-			width: 320px;
-			height: 54px;
-			// margin: 54px 161px 12px 61px;
-			// padding: 15px 192px 15px 12px;
-			// border-radius: 4px;
-			// border: solid 1px #4ca6a8;
-			// background-color: rgba(255, 255, 255, 0.8);
-		}
-
-		.tr {
-			display: flex;
-			height: 40px;
-			:last-child {
-				.td {
-					border-bottom: 0;
-				}
-			}
-		}
-
-		.th,
-		.td {
-			white-space: nowrap;
-			box-sizing: border-box;
-			text-align: left;
-			margin: 0;
-			padding: 0.5rem;
-		}
-	}
-`;
 
 const FiltersContainer = styled(RowDiv)`
 	border-top: 1px solid #e3e5e5;
@@ -466,7 +404,7 @@ const Table = ({
 	}, [selectedRowIds, setSelect, selectedDropButton, selectedFlatRows]);
 
 	return (
-		<Container>
+		<HoverTableContainer>
 			<TableOptionsBar
 				tableKey={tableKey}
 				gotoPage={gotoPage}
@@ -584,20 +522,21 @@ const Table = ({
 						})}
 					</div>
 				))}
-				<div {...getTableBodyProps()}>
-					<FixedSizeList
-						height={300}
-						itemCount={
-							rows.length > pageSize ? pageSize : rows.length
-						}
-						itemSize={40}
-						// width={totalColumnsWidth + scrollBarSize}
-					>
-						{RenderRow}
-					</FixedSizeList>
-				</div>
+				<FixedSizeList
+					{...getTableBodyProps()}
+					height={
+						// rows.length > pageSize
+						// 	? pageSize * 40
+						// 	: rows.length * 40
+						300
+					}
+					itemCount={rows.length > pageSize ? pageSize : rows.length}
+					itemSize={40}
+				>
+					{RenderRow}
+				</FixedSizeList>
 			</div>
-		</Container>
+		</HoverTableContainer>
 	);
 };
 
