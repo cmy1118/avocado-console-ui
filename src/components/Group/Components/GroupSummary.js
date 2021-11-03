@@ -86,15 +86,15 @@ const GroupSummary = ({groupId}) => {
 					/>
 				</Form>
 			</ModalFormContainer>
-			<AppBarContents>
-				<div>요약 [ {group?.name} ]</div>
-				<AppBarButtons>
-					<NormalButton onClick={() => setIsOpened(true)}>
-						그룹명 편집
-					</NormalButton>
-					<TransparentButton>삭제</TransparentButton>
-				</AppBarButtons>
-			</AppBarContents>
+			{/*<AppBarContents>*/}
+			{/*	<div>요약 [ {group?.name} ]</div>*/}
+			{/*	<AppBarButtons>*/}
+			{/*		<NormalButton onClick={() => setIsOpened(true)}>*/}
+			{/*			그룹명 편집*/}
+			{/*		</NormalButton>*/}
+			{/*		<TransparentButton>삭제</TransparentButton>*/}
+			{/*	</AppBarButtons>*/}
+			{/*</AppBarContents>*/}
 			<ul>
 				<li>그룹명 : {group?.name}</li>
 				<li>

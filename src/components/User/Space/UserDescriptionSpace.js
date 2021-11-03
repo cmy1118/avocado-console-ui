@@ -32,6 +32,13 @@ const UserDescriptionSpace = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
 	const [isSumarryOpend, setIsSumarryOpend] = useState(true);
 
+	const TabBarInfo = [
+		{name: '정보', href: 'user'},
+		{name: '그룹', href: 'group'},
+		{name: '권한', href: 'role'},
+		{name: '태그', href: 'tag'},
+	];
+
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
 		userId,
@@ -45,13 +52,6 @@ const UserDescriptionSpace = ({userId}) => {
 			history.push('/404');
 		}
 	}, [userId, user, history]);
-
-	const TabBarInfo = [
-		{name: '정보', href: 'user'},
-		{name: '그룹', href: 'group'},
-		{name: '권한', href: 'role'},
-		{name: '태그', href: 'tag'},
-	];
 	return (
 		<DetailContainer>
 			<AppBarNavi>
@@ -66,11 +66,12 @@ const UserDescriptionSpace = ({userId}) => {
 				{/*	{errorIcon}*/}
 				{/*</HoverIconButton>*/}
 			</AppBarNavi>
+
 			<AppBarContents>
 				<div style={{display: 'flex'}}>
 					<IconButton
 						size={'sm'}
-						margin={'0px 0px 0px 12px'}
+						margin={'0px'}
 						onClick={onClickFoldSummary}
 					>
 						{isSumarryOpend ? arrowDownIcon : arrowUpIcon}
@@ -96,20 +97,24 @@ const UserDescriptionSpace = ({userId}) => {
 			<div>
 				<div className={isSumarryOpend ? 'tabBar fix' : 'tabBar'}>
 					<TabBar
-						userId={userId}
 						Tabs={TabBarInfo}
+						param={'users'}
+						Id={userId}
 						isOpened={isSumarryOpend}
 						setIsOpened={setIsSumarryOpend}
 					/>
 				</div>
-				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-					'user' && <UserInfoTab userId={userId} />}
-				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-					'group' && <UserGroupsTab userId={userId} />}
-				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-					'role' && <UserRolesTab userId={userId} />}
-				{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'tag' && (
-					<UserOnDescPageTags userId={userId} />
+				{!isSumarryOpend && (
+					<div style={{padding: '10px 16px'}}>
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'user' && <UserInfoTab userId={userId} />}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'group' && <UserGroupsTab userId={userId} />}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'role' && <UserRolesTab userId={userId} />}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'tag' && <UserOnDescPageTags userId={userId} />}
+					</div>
 				)}
 			</div>
 		</DetailContainer>

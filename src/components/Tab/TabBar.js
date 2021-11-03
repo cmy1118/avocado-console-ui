@@ -7,6 +7,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'qs';
 const _TabContainer = styled.div`
 	display: block;
+	width: 100%;
 	// position: fixed;
 	// bottom: 0;
 	// width: 100%;
@@ -14,21 +15,21 @@ const _TabContainer = styled.div`
 	background: #ffffff;
 `;
 const _TabSpace = styled.div`
+	width: 100%;
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-start;
 	align-items: center;
 	height: 50px;
-	box-shadow: 0 -4px 9px 0 rgba(0, 0, 0, 0.05);
-	border-bottom: 1px solid #e3e5e5;
 	background: #fff;
 `;
 const _Tabs = styled.div`
+	box-shadow: 0 -4px 9px 0 rgba(0, 0, 0, 0.05);
 	display: flex;
 	flex-warp: nowrap;
 	align-items: center;
 	justify-content: space-between;
 	height: 100%;
-	width: 127px;
+	width: 60px;
 `;
 
 const _TabItem = styled.div`
@@ -37,14 +38,21 @@ const _TabItem = styled.div`
 	justify-content: center;
 	align-items: center;
 	height: 100%;
+	font-size: 14px;
 	font-weight: bold;
+	font-style: normal;
+	line-height: 1.43;
+	letter-spacing: 0.25px;
+	text-align: center;
+	color: #178082;
 	color: ${(props) => (props.selected ? '#178082' : '#212121')};
 	margin: 0px 16px;
-	border-bottom: 2px solid;
+	border-bottom: ${(props) => (props.isfold ? '4px solid' : '2px solid')};
+	// border-bottom: 5px solid;
 	border-color: ${(props) => (props.selected ? '#178082' : '#ffffff')};
 	width: 100%;
 `;
-const TabBar = ({Tabs, userId, isOpened, setIsOpened}) => {
+const TabBar = ({Tabs, param, Id, isOpened, setIsOpened}) => {
 	const history = useHistory();
 	const {search} = useLocation();
 
@@ -52,13 +60,12 @@ const TabBar = ({Tabs, userId, isOpened, setIsOpened}) => {
 		(v) => () => {
 			setIsOpened(false);
 			history.push({
-				pathname: `/users/${userId}`,
+				pathname: `/${param}/${Id}`,
 				search: `tabs=${v}`,
 			});
 		},
-		[history, setIsOpened, userId],
+		[history, setIsOpened, Id],
 	);
-	console.log('isOpened:', isOpened);
 	return (
 		<_TabContainer>
 			<_TabSpace>
@@ -67,6 +74,7 @@ const TabBar = ({Tabs, userId, isOpened, setIsOpened}) => {
 						// eslint-disable-next-line react/jsx-key
 						<_Tabs>
 							<_TabItem
+								isfold={isOpened}
 								selected={
 									qs.parse(search, {ignoreQueryPrefix: true})
 										.tabs === v.href
@@ -84,7 +92,8 @@ const TabBar = ({Tabs, userId, isOpened, setIsOpened}) => {
 };
 TabBar.propTypes = {
 	Tabs: PropTypes.array.isRequired,
-	userId: PropTypes.string.isRequired,
+	Id: PropTypes.string.isRequired,
+	param: PropTypes.string.isRequired,
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 };

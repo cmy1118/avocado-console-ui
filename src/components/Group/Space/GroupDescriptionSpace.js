@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Link, useHistory, useLocation} from 'react-router-dom';
 import styled from 'styled-components';
@@ -6,7 +6,10 @@ import {useSelector} from 'react-redux';
 import qs from 'qs';
 
 import {
+	AppBarButtons,
+	AppBarContents,
 	AppBarNavi,
+	DetailContainer,
 	IamContainer,
 	PathContainer,
 } from '../../../styles/components/style';
@@ -22,30 +25,45 @@ const _Title = styled.div`
 import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
 import GroupUsersTab from '../Components/GroupUsersTab';
 import {onClickCloseAside} from '../../Aside/Aside';
-import {errorIcon} from '../../../icons/icons';
-import {HoverIconButton} from '../../../styles/components/icons';
+import {arrowDownIcon, arrowUpIcon, errorIcon} from '../../../icons/icons';
+import {HoverIconButton, IconButton} from '../../../styles/components/icons';
 import {NaviLink} from '../../../styles/components/link';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
+import TabBar from '../../Tab/TabBar';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
 	const {search} = useLocation();
-
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const [isSumarryOpend, setIsSumarryOpend] = useState(true);
+	const [isOpend, setIsOpend] = useState(true);
+
+	const TabBarInfo = [
+		{name: '사용자', href: 'user'},
+		{name: '권한', href: 'role'},
+		{name: '태그', href: 'tag'},
+	];
 
 	const group = useMemo(() => groups.find((v) => v.id === groupId), [
 		groups,
 		groupId,
 	]);
 
-	const onClickChangeTab = useCallback(
-		(v) => () => {
-			history.push({
-				pathname: `/groups/${groupId}`,
-				search: `tabs=${v}`,
-			});
-		},
-		[groupId, history],
-	);
+	// const onClickChangeTab = useCallback(
+	// 	(v) => () => {
+	// 		history.push({
+	// 			pathname: `/groups/${groupId}`,
+	// 			search: `tabs=${v}`,
+	// 		});
+	// 	},
+	// 	[groupId, history],
+	// );
+	const onClickFoldSummary = useCallback(() => {
+		setIsSumarryOpend(!isSumarryOpend);
+	}, [isSumarryOpend]);
 	// if groupId does not exist, direct to 404 page
 	useEffect(() => {
 		if (groupId && !group) {
@@ -54,7 +72,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 	}, [groupId, group, history]);
 
 	return (
-		<IamContainer>
+		<DetailContainer>
 			<AppBarNavi>
 				<PathContainer>
 					<NaviLink to='/'>IAM</NaviLink>
@@ -68,24 +86,56 @@ const GroupDescriptionSpace = ({groupId}) => {
 				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
-			<GroupSummary groupId={groupId} />
+			<AppBarContents>
+				<div style={{display: 'flex'}}>
+					<IconButton
+						size={'sm'}
+						margin={'0px'}
+						onClick={onClickFoldSummary}
+					>
+						{isSumarryOpend ? arrowDownIcon : arrowUpIcon}
+					</IconButton>
+					<div>요약 [ {group?.name} ]</div>
+					<AppBarButtons>
+						<NormalButton onClick={() => setIsOpend(true)}>
+							그룹명 편집
+						</NormalButton>
+						<TransparentButton>삭제</TransparentButton>
+					</AppBarButtons>
+				</div>
+			</AppBarContents>
+			{isSumarryOpend ? (
+				<GroupSummary
+					groupId={groupId}
+					isOpened={isSumarryOpend}
+					setIsOpened={setIsSumarryOpend}
+				/>
+			) : (
+				''
+			)}
 
 			<div>
-				<Tab>
-					<TabItem onClick={onClickChangeTab('user')}>사용자</TabItem>
-					<TabItem onClick={onClickChangeTab('role')}>권한</TabItem>
-					<TabItem onClick={onClickChangeTab('tag')}>태그</TabItem>
-				</Tab>
-
-				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-					'user' && <GroupUsersTab groupId={groupId} />}
-				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-					'role' && <GroupRolesTab groupId={groupId} />}
-				{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'tag' && (
-					<GroupOnDescPageTags groupId={groupId} />
+				<div className={isSumarryOpend ? 'tabBar fix' : 'tabBar'}>
+					<TabBar
+						Tabs={TabBarInfo}
+						Id={groupId}
+						param={'groups'}
+						isOpened={isSumarryOpend}
+						setIsOpened={setIsSumarryOpend}
+					/>
+				</div>
+				{!isSumarryOpend && (
+					<div style={{padding: '10px 16px'}}>
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'user' && <GroupUsersTab groupId={groupId} />}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'role' && <GroupRolesTab groupId={groupId} />}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'tag' && <GroupOnDescPageTags groupId={groupId} />}
+					</div>
 				)}
 			</div>
-		</IamContainer>
+		</DetailContainer>
 	);
 };
 

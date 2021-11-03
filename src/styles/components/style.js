@@ -12,10 +12,13 @@ export const DetailContainer = styled.div`
 	flex-direction: column;
 
 	.tabBar {
-		position: relative;
+		margin-bottom: 20px;
+		position: inherit;
 		z-index: 1;
 	}
 	.tabBar.fix {
+		margin-left: 2px;
+		margin-bottom: 0;
 		position: fixed;
 		bottom: 0;
 		z-index: 75;
@@ -66,6 +69,10 @@ export const MainContainer = styled.div`
 `;
 
 export const AppBarContents = styled.div`
+	margin-bottom: 10px;
+	border-bottom: 3px #e3e5e5 dotted;
+	align-items: center;
+
 	box-sizing: border-box;
 	font-size: 16px;
 	font-weight: 500;
@@ -74,6 +81,7 @@ export const AppBarContents = styled.div`
 	text-align: left;
 	color: #212121;
 	display: flex;
+
 	justify-content: space-between;
 	height: 54px;
 	padding: 10px 16px;

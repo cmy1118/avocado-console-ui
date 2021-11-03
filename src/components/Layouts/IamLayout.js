@@ -59,9 +59,7 @@ const IamLayout = ({children}) => {
 					isOpened={isNavOpened}
 					setIsOpened={setIsNavOpened}
 				/>
-				<_MainSpace style={{paddingLeft: '17px'}}>
-					{children}
-				</_MainSpace>
+				<_MainSpace style={{width: '100%'}}>{children}</_MainSpace>
 				{/*<Aside />*/}
 			</_Space>
 		</_Container>
