@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {closeIcon} from '../../../icons/icons';
+import {alertIcon, closeIcon} from '../../../icons/icons';
 
 import DIALOG_BOX from '../../../reducers/dialogBoxs';
 import {
@@ -15,6 +15,8 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
+import {Icon, IconButton} from '../../../styles/components/icons';
+import {alertMessages} from './ConfirmDialogBox';
 
 const DeleteDialogBox = () => {
 	const dispatch = useDispatch();
@@ -40,20 +42,35 @@ const DeleteDialogBox = () => {
 		>
 			<DialogBoxHeader>
 				<div>Warning Alert</div>
-				<button onClick={onClickCloseDialogBox}>{closeIcon}</button>
+				<IconButton
+					size={'sm'}
+					color={'#212121'}
+					onClick={onClickCloseDialogBox}
+				>
+					{closeIcon}
+				</IconButton>
 			</DialogBoxHeader>
 
 			<AlertDialogBoxContent>
+				<Icon>{alertIcon}</Icon>
 				<AlertDialogBoxText>
 					{alertMessages[alert.key]}
+					{/*ConfirmDialogBox.js 에는 아래처럼 작성되어 있습니다.*/}
+					{/*{alertMessages[alert.key]?.message}*/}
 				</AlertDialogBoxText>
 			</AlertDialogBoxContent>
 
 			<DialogBoxFooter>
-				<TransparentButton onClick={onClickCloseDialogBox}>
+				<TransparentButton
+					width={'120px'}
+					onClick={onClickCloseDialogBox}
+				>
 					Cancel
 				</TransparentButton>
-				<NormalButton onClick={handleOnClickDeleteEvents}>
+				<NormalButton
+					width={'120px'}
+					onClick={handleOnClickDeleteEvents}
+				>
 					Delete
 				</NormalButton>
 			</DialogBoxFooter>

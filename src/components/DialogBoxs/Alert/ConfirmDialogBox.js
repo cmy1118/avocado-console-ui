@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {closeIcon} from '../../../icons/icons';
+import {closeIcon, confirmIcon} from '../../../icons/icons';
 import DIALOG_BOX from '../../../reducers/dialogBoxs';
 import {
 	AlertDialogBox,
@@ -14,7 +14,8 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
-import {CheckDropDataType} from "../../../utils/dropTableDataCheck";
+import {CheckDropDataType} from '../../../utils/dropTableDataCheck';
+import {Icon, IconButton} from '../../../styles/components/icons';
 
 //type: 'alert' or 'confirm'
 export const alertMessages = {
@@ -50,21 +51,20 @@ export const alertMessages = {
 		message: '최대 10개의 데이터만 추가 가능합니다.',
 	},
 };
-export const checkDropTypeAlertMessage= (tableKey)=> {
+export const checkDropTypeAlertMessage = (tableKey) => {
 	switch (CheckDropDataType(tableKey)) {
 		case 'users':
-			return 'maxNumberOfUsers'
+			return 'maxNumberOfUsers';
 		case 'groups':
-			return 'maxNumberOfGroups'
+			return 'maxNumberOfGroups';
 		case 'roles':
-			return 'maxNumberOfRoles'
+			return 'maxNumberOfRoles';
 		case 'tags':
-			return 'maxNumberOfTags'
+			return 'maxNumberOfTags';
 		default:
-			return 'maxNumberOfDatas'
+			return 'maxNumberOfDatas';
 	}
-
-}
+};
 const ConfirmDialogBox = () => {
 	const dispatch = useDispatch();
 	const {alert} = useSelector(DIALOG_BOX.selector);
@@ -88,20 +88,32 @@ const ConfirmDialogBox = () => {
 				{alertMessages[alert.key]?.type === 'confirm' && (
 					<div>Confirm</div>
 				)}
-				<button onClick={onClickCloseDialogBox}>{closeIcon}</button>
+				<IconButton
+					size={'sm'}
+					color={'#212121'}
+					onClick={onClickCloseDialogBox}
+				>
+					{closeIcon}
+				</IconButton>
 			</DialogBoxHeader>
 
 			<AlertDialogBoxContent>
+				<Icon>{confirmIcon}</Icon>
 				<AlertDialogBoxText>
 					{alertMessages[alert.key]?.message}
 				</AlertDialogBoxText>
 			</AlertDialogBoxContent>
 
 			<DialogBoxFooter>
-				<TransparentButton onClick={onClickCloseDialogBox}>
+				<TransparentButton
+					width={'120px'}
+					onClick={onClickCloseDialogBox}
+				>
 					Cancel
 				</TransparentButton>
-				<NormalButton onClick={onClickCloseDialogBox}>Ok</NormalButton>
+				<NormalButton width={'120px'} onClick={onClickCloseDialogBox}>
+					Ok
+				</NormalButton>
 			</DialogBoxFooter>
 		</AlertDialogBox>
 	);

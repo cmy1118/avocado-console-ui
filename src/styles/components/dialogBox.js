@@ -21,16 +21,17 @@ export const DialogBoxHeader = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	height: 41px;
-	padding: 0px 10px 0px 16px;
+	padding: 0px 8px 0px 16px;
 	border-bottom: 1px solid #e3e5e5;
 	font-weight: 500;
 `;
 export const DialogBoxFooter = styled.div`
 	display: flex;
-	ailgn-items: center;
+	align-items: center;
 	justify-content: flex-end;
 	height: 60px;
 	padding: 13px 16px;
+	box-sizing: border-box;
 	border-top: 1px solid #e3e5e5;
 `;
 
@@ -41,7 +42,11 @@ export const AlertDialogBox = styled(DialogBox)`
 export const AlertDialogBoxContent = styled.div`
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: center;
+	// width: 288px;
+	height: 71px;
 `;
 
-export const AlertDialogBoxText = styled.div``;
+export const AlertDialogBoxText = styled.div`
+	margin-right: 8px;
+`;

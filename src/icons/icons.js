@@ -63,6 +63,24 @@ export const fileIcon = (
 	</svg>
 );
 
+export const confirmIcon = (
+	<svg width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+		<path
+			d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z'
+			fill='#178082'
+		/>
+	</svg>
+);
+
+export const alertIcon = (
+	<svg width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+		<path
+			d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 11c-.55 0-1-.45-1-1V8c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1zm1 4h-2v-2h2v2z'
+			fill='#D55959'
+		/>
+	</svg>
+);
+
 //main Logo
 export const avocadoLogo = (
 	<svg
