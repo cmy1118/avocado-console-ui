@@ -6,6 +6,22 @@ export const IamContainer = styled.div`
 	flex-direction: column;
 `;
 
+export const DetailContainer = styled.div`
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+
+	.tabBar {
+		position: relative;
+		z-index: 1;
+	}
+	.tabBar.fix {
+		position: fixed;
+		bottom: 0;
+		z-index: 75;
+	}
+`;
+
 export const NavContainer = styled.div`
 	border-right: 1px solid;
 	border-color: #e3e5e5;

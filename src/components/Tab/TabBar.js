@@ -7,10 +7,10 @@ import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'qs';
 const _TabContainer = styled.div`
 	display: block;
-	position: fixed;
-	bottom: 0;
+	// position: fixed;
+	// bottom: 0;
 	// width: 100%;
-	z-index: 75;
+	// z-index: 75;
 	background: #ffffff;
 `;
 const _TabSpace = styled.div`
@@ -18,9 +18,9 @@ const _TabSpace = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	height: 50px;
-	#e3e5e5
-	border-bottom: 1px solid
-		#e3e5e5;
+	box-shadow: 0 -4px 9px 0 rgba(0, 0, 0, 0.05);
+	border-bottom: 1px solid #e3e5e5;
+	background: #fff;
 `;
 const _Tabs = styled.div`
 	display: flex;
@@ -44,30 +44,21 @@ const _TabItem = styled.div`
 	border-color: ${(props) => (props.selected ? '#178082' : '#ffffff')};
 	width: 100%;
 `;
-const TabBar = ({Tabs, userId}) => {
+const TabBar = ({Tabs, userId, isOpened, setIsOpened}) => {
 	const history = useHistory();
 	const {search} = useLocation();
-	const pathname = qs.parse(location).pathname;
-	const _NavTabContianer = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	height: 50px;
-	#e3e5e5
-	border-bottom: 1px solid
-		#e3e5e5;
-`;
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
+			setIsOpened(false);
 			history.push({
 				pathname: `/users/${userId}`,
 				search: `tabs=${v}`,
 			});
 		},
-		[history, userId],
+		[history, setIsOpened, userId],
 	);
-
+	console.log('isOpened:', isOpened);
 	return (
 		<_TabContainer>
 			<_TabSpace>
@@ -92,7 +83,9 @@ const TabBar = ({Tabs, userId}) => {
 	);
 };
 TabBar.propTypes = {
-	Tabs: PropTypes.string.isRequired,
+	Tabs: PropTypes.array.isRequired,
 	userId: PropTypes.string.isRequired,
+	isOpened: PropTypes.bool.isRequired,
+	setIsOpened: PropTypes.func.isRequired,
 };
 export default TabBar;

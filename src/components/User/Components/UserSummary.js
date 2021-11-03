@@ -13,23 +13,17 @@ import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType'
 import styled from 'styled-components';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {TransparentButton} from '../../../styles/components/buttons';
-import {AppBarButtons, AppBarContents} from '../../../styles/components/style';
 import {
 	dummyDates,
 	dummyPolicyOnUser,
 	dummyUsers,
 } from '../../../utils/dummyData';
 
-const _Title = styled.div`
-	display: flex;
-	justify-content: space-between;
-`;
 const _UserSummaryContainer = styled.div`
 	height: 500px;
 	overflow-y: scroll;
 `;
-const UserSummary = ({userId,isOpened,setIsOpened}) => {
+const UserSummary = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
@@ -70,12 +64,20 @@ const UserSummary = ({userId,isOpened,setIsOpened}) => {
 
 	return (
 		<>
-			<AppBarContents>
-				<div>요약 [ {user?.id} ]</div>
-				<AppBarButtons>
-					<TransparentButton>삭제</TransparentButton>
-				</AppBarButtons>
-			</AppBarContents>
+			{/*<AppBarContents>*/}
+			{/*	<div style={{display: 'flex'}}>*/}
+			{/*		<IconButton*/}
+			{/*			size={'sm'}*/}
+			{/*			margin={'0px 0px 0px 12px'}*/}
+			{/*		>*/}
+			{/*			{isOpened ? arrowDownIcon : arrowUpIcon}*/}
+			{/*		</IconButton>*/}
+			{/*		요약 [ {user?.id} ]*/}
+			{/*	</div>*/}
+			{/*	<AppBarButtons>*/}
+			{/*		<TransparentButton>삭제</TransparentButton>*/}
+			{/*	</AppBarButtons>*/}
+			{/*</AppBarContents>*/}
 
 			<ul>
 				<li>사용자 : {user?.name}</li>

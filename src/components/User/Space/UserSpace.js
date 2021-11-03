@@ -57,10 +57,7 @@ const UserSpace = () => {
 	/******************************************/
 	/* roberto : Table_update
     /******************************************/
-	const onClickDeleteUsers = useCallback(() => {
-		console.log(select);
-		console.log('여기서 api 요청');
-	}, [select]);
+	const onClickDeleteUsers = useCallback(() => {}, [select]);
 	/******************************************/
 
 	return (

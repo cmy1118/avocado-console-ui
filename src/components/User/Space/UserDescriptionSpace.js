@@ -5,7 +5,10 @@ import {useSelector} from 'react-redux';
 import qs from 'qs';
 
 import {
+	AppBarButtons,
+	AppBarContents,
 	AppBarNavi,
+	DetailContainer,
 	IamContainer,
 	PathContainer,
 } from '../../../styles/components/style';
@@ -17,10 +20,11 @@ import UserOnDescPageTags from '../Components/UserOnDescPageTags';
 import UserSummary from '../Components/UserSummary';
 import UserRolesTab from '../Components/UserRolesTab';
 import {NaviLink} from '../../../styles/components/link';
-import {HoverIconButton} from '../../../styles/components/icons';
+import {HoverIconButton, IconButton} from '../../../styles/components/icons';
 import {onClickCloseAside} from '../../Aside/Aside';
-import {errorIcon} from '../../../icons/icons';
+import {arrowDownIcon, arrowUpIcon, errorIcon} from '../../../icons/icons';
 import TabBar from '../../Tab/TabBar';
+import {TransparentButton} from '../../../styles/components/buttons';
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
@@ -28,12 +32,13 @@ const UserDescriptionSpace = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
 	const [isSumarryOpend, setIsSumarryOpend] = useState(true);
 
-
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
 		userId,
 	]);
-
+	const onClickFoldSummary = useCallback(() => {
+		setIsSumarryOpend(!isSumarryOpend);
+	}, [isSumarryOpend]);
 	// if userId does not exist, direct to 404 page
 	useEffect(() => {
 		if (userId && !user) {
@@ -48,7 +53,7 @@ const UserDescriptionSpace = ({userId}) => {
 		{name: '태그', href: 'tag'},
 	];
 	return (
-		<IamContainer>
+		<DetailContainer>
 			<AppBarNavi>
 				<PathContainer>
 					<NaviLink to='/'>IAM</NaviLink>
@@ -61,14 +66,42 @@ const UserDescriptionSpace = ({userId}) => {
 				{/*	{errorIcon}*/}
 				{/*</HoverIconButton>*/}
 			</AppBarNavi>
+			<AppBarContents>
+				<div style={{display: 'flex'}}>
+					<IconButton
+						size={'sm'}
+						margin={'0px 0px 0px 12px'}
+						onClick={onClickFoldSummary}
+					>
+						{isSumarryOpend ? arrowDownIcon : arrowUpIcon}
+					</IconButton>
+					요약 [ {user?.id} ]
+				</div>
+				<AppBarButtons>
+					<TransparentButton>삭제</TransparentButton>
+				</AppBarButtons>
+			</AppBarContents>
+
 			{/*:TODO tab click 시 use summary 닫음 처리  */}
-			<UserSummary userId={userId}
-						 isOpened={isSumarryOpend}
-						 setIsOpened={setIsSumarryOpend}
-			/>
+			{isSumarryOpend ? (
+				<UserSummary
+					userId={userId}
+					isOpened={isSumarryOpend}
+					setIsOpened={setIsSumarryOpend}
+				/>
+			) : (
+				''
+			)}
+
 			<div>
-				<TabBar userId={userId} Tabs={TabBarInfo}
-				className={isSumarryOpend?'taBar' : 'taBar fix'}/>
+				<div className={isSumarryOpend ? 'tabBar fix' : 'tabBar'}>
+					<TabBar
+						userId={userId}
+						Tabs={TabBarInfo}
+						isOpened={isSumarryOpend}
+						setIsOpened={setIsSumarryOpend}
+					/>
+				</div>
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 					'user' && <UserInfoTab userId={userId} />}
 				{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
@@ -79,7 +112,7 @@ const UserDescriptionSpace = ({userId}) => {
 					<UserOnDescPageTags userId={userId} />
 				)}
 			</div>
-		</IamContainer>
+		</DetailContainer>
 	);
 };
 
