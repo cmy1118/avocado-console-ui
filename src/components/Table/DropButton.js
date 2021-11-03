@@ -9,6 +9,27 @@ import {
 	checkArrayIsUniqueHasDuplicates,
 	checkArraysIsUniqueHasDuplicates,
 } from '../../utils/dataFitering';
+import {ColDiv} from '../../styles/components/div';
+import {IconButton} from '../../styles/components/icons';
+import {arrowLeft, arrowRight} from '../../icons/icons';
+import styled from 'styled-components';
+
+const BorderHoverIconButton = styled(IconButton)`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	box-sizing: border-box;
+	padding: 2px;
+	margin: 6px;
+	border-radius: 4px;
+	border: solid 1px #c2c2c2;
+	&:hover {
+		color: #fff;
+		background: #178082;
+	}
+`;
 
 const DropButton = ({
 	select,
@@ -157,10 +178,15 @@ const DropButton = ({
 	}, [RightTableKey, leftTableKey, rightDataIds, select, setRightDataIds]);
 
 	return (
-		<div>
-			<button onClick={onClickLeftDropButton}>-&gt;</button>
-			<button onClick={onClickRightDropButton}>&lt;-</button>
-		</div>
+		<ColDiv>
+			<BorderHoverIconButton size={'sm'} onClick={onClickLeftDropButton}>
+				{arrowRight}
+			</BorderHoverIconButton>
+
+			<BorderHoverIconButton size={'sm'} onClick={onClickRightDropButton}>
+				{arrowLeft}
+			</BorderHoverIconButton>
+		</ColDiv>
 	);
 };
 

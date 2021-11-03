@@ -15,6 +15,14 @@ export const arrowUpIcon = (
 	<span className='material-icons'>arrow_drop_up</span>
 );
 
+export const arrowRight = (
+	<span className='material-icons'>keyboard_arrow_right</span>
+);
+
+export const arrowLeft = (
+	<span className='material-icons'>keyboard_arrow_left</span>
+);
+
 export const settingIcon = <span className='material-icons'>settings</span>;
 
 export const notificationIcon = (

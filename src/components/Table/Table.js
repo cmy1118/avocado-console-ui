@@ -22,10 +22,78 @@ import {
 } from '../../utils/dataFitering';
 import {NormalBorderButton} from '../../styles/components/buttons';
 import {checkDropTypeAlertMessage} from '../DialogBoxs/Alert/ConfirmDialogBox';
-import {cancelIcon} from '../../icons/icons';
-import {IconButton} from '../../styles/components/icons';
+import {arrowDownIcon, arrowUpIcon, cancelIcon} from '../../icons/icons';
+import {HoverIconButton, Icon} from '../../styles/components/icons';
 import {ColDiv, RowDiv} from '../../styles/components/div';
 import {Label} from '../../styles/components/text';
+import styled from 'styled-components';
+import {FixedSizeList} from 'react-window';
+
+const Container = styled.div`
+	margin: 0px 16px;
+	flex: 1;
+	.table {
+		display: flex;
+		flex-direction: column;
+		border-spacing: 0;
+		border-top: 1px solid #e3e5e5;
+		border-bottom: 1px solid #e3e5e5;
+		font-size: 13px;
+		font-weight: normal;
+		font-stretch: normal;
+		font-style: normal;
+		line-height: normal;
+		letter-spacing: 0.13px;
+		text-align: left;
+		color: #212121;
+		.head {
+			background: #f8f9fa;
+			border-bottom: 1px solid #e3e5e5;
+		}
+		.body {
+			border-bottom: 1px solid #e3e5e5;
+			// :last-child {
+			// 	border: none;
+			// }
+		}
+		.selected {
+			background: rgba(228, 243, 244, 0.7);
+		}
+
+		.dragging {
+			width: 320px;
+			height: 54px;
+			// margin: 54px 161px 12px 61px;
+			// padding: 15px 192px 15px 12px;
+			// border-radius: 4px;
+			// border: solid 1px #4ca6a8;
+			// background-color: rgba(255, 255, 255, 0.8);
+		}
+
+		.tr {
+			display: flex;
+			height: 40px;
+			:last-child {
+				.td {
+					border-bottom: 0;
+				}
+			}
+		}
+
+		.th,
+		.td {
+			white-space: nowrap;
+			box-sizing: border-box;
+			text-align: left;
+			margin: 0;
+			padding: 0.5rem;
+		}
+	}
+`;
+
+const FiltersContainer = styled(RowDiv)`
+	border-top: 1px solid #e3e5e5;
+`;
 
 function dateBetweenFilterFn(rows, id, filterValues) {
 	let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;
@@ -206,6 +274,7 @@ const Table = ({
 		selectedFlatRows,
 		getToggleHideAllColumnsProps,
 		setHiddenColumns,
+		rows,
 		state: {pageIndex, pageSize, selectedRowIds, filters},
 	} = useTable(
 		{
@@ -241,6 +310,7 @@ const Table = ({
 								tablekey={tableKey}
 							/>
 						),
+						width: 40,
 						disableChangeVisible: true,
 					},
 					...columns,
@@ -248,20 +318,30 @@ const Table = ({
 		},
 	);
 
+	const onDragEnd = useCallback((e) => {
+		e.target.classList.remove('dragging');
+	}, []);
+
 	const onDragStart = useCallback(
 		(row) => (e) => {
+			e.target.classList.add('dragging');
 			const firstTarget = e.target.firstChild.childNodes[0].childNodes[0];
 			const flatRows = selectedFlatRows;
+
+			console.log(e);
+
 			console.log('onDragStart ::: ', tableKey);
 			const selected = Object.keys(selectedRowIds);
 			if (firstTarget.type === 'checkbox' && !firstTarget.checked) {
-				firstTarget.click();
 				selected.push(row.id);
 				flatRows.push(row);
+				firstTarget.click();
+				// firstTarget.checked = true;
 			}
 			if (dndKey) {
 				const selectedType = flatRows.map((v) => v.values.type);
 				e.dataTransfer.setData('selectedType', selectedType.toString());
+				console.log('dndKey');
 			}
 			e.dataTransfer.setData('ids', selected.toString());
 			e.dataTransfer.setData(
@@ -271,6 +351,7 @@ const Table = ({
 			e.dataTransfer.setData('tableKey', tableKey);
 			e.dataTransfer.setData('dndKey', dndKey);
 		},
+
 		[data, dndKey, selectedFlatRows, selectedRowIds, tableKey],
 	);
 
@@ -339,12 +420,53 @@ const Table = ({
 		[setSelect, tableKey],
 	);
 
+	const RenderRow = useCallback(
+		({index, style}) => {
+			const row = rows[index];
+			prepareRow(row);
+			return (
+				<div
+					style={style}
+					onDragStart={onDragStart(row)}
+					onDragEnd={onDragEnd}
+					className={
+						Object.keys(selectedRowIds).includes(
+							row.original.uid
+								? row.original.uid
+								: row.original.id,
+						)
+							? 'tr body selected'
+							: 'tr body'
+					}
+					draggable={isDnDPossible ? 'true' : 'false'}
+					id={row.original.uid ? row.original.uid : row.original.id}
+					key={row.original.uid ? row.original.uid : row.original.id}
+				>
+					{row.cells.map((cell, i) => {
+						return (
+							<RowDiv
+								alignItems={'center'}
+								className={'td'}
+								width={`${cell.column.width}px`}
+								key={i}
+								{...cell.getCellProps}
+							>
+								{cell.render('Cell', {setData})}
+							</RowDiv>
+						);
+					})}
+				</div>
+			);
+		},
+		[isDnDPossible, onDragStart, prepareRow, rows, selectedRowIds, setData],
+	);
+
 	useEffect(() => {
 		setSelect && selectedFlatRows && selectedDropButton(selectedFlatRows);
 	}, [selectedRowIds, setSelect, selectedDropButton, selectedFlatRows]);
 
 	return (
-		<div>
+		<Container>
 			<TableOptionsBar
 				tableKey={tableKey}
 				gotoPage={gotoPage}
@@ -372,104 +494,110 @@ const Table = ({
 				getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
 			/>
 
-			{headerGroups.map((headerGroup, i) => (
-				<RowDiv
-					justifyContent={'space-between'}
-					key={i}
-					{...headerGroup.getHeaderGroupProps()}
-					margin={'14px 16px'}
-				>
-					<RowDiv>
-						{headerGroup.headers.map(
-							(column, i) =>
-								column.canFilter &&
-								selectedSearchFilters.includes(column.id) && (
-									<ColDiv key={i}>
-										<Label>{placeholders[column.id]}</Label>
-										<RowDiv alignItems={'center'}>
-											{column.render('Filter')}
-											<IconButton
-												size={'sm'}
-												onClick={onClickCloseFilter(
-													column.id,
-												)}
-											>
-												{cancelIcon}
-											</IconButton>
-										</RowDiv>
-									</ColDiv>
-								),
-						)}
-					</RowDiv>
-					{selectedSearchFilters.length !== 0 && (
-						<RowDiv alignItems={'flex-end'}>
-							<NormalBorderButton onClick={onClickResetFilters}>
-								모두 삭제
-							</NormalBorderButton>
+			{selectedSearchFilters[0] &&
+				headerGroups.map((headerGroup, i) => (
+					<FiltersContainer
+						justifyContent={'space-between'}
+						key={i}
+						height={'84px'}
+						{...headerGroup.getHeaderGroupProps()}
+					>
+						<RowDiv alignItems={'center'} margin={'11px 0px 16px'}>
+							{headerGroup.headers.map(
+								(column, i) =>
+									column.canFilter &&
+									selectedSearchFilters.includes(
+										column.id,
+									) && (
+										<ColDiv key={i}>
+											<Label>
+												{placeholders[column.id]}
+											</Label>
+											<RowDiv alignItems={'center'}>
+												{column.render('Filter')}
+												<HoverIconButton
+													size={'sm'}
+													onClick={onClickCloseFilter(
+														column.id,
+													)}
+												>
+													{cancelIcon}
+												</HoverIconButton>
+											</RowDiv>
+										</ColDiv>
+									),
+							)}
 						</RowDiv>
-					)}
-				</RowDiv>
-			))}
+						{selectedSearchFilters.length !== 0 && (
+							<RowDiv
+								alignItems={'flex-end'}
+								margin={'11px 0px 16px'}
+							>
+								<NormalBorderButton
+									onClick={onClickResetFilters}
+								>
+									모두 삭제
+								</NormalBorderButton>
+							</RowDiv>
+						)}
+					</FiltersContainer>
+				))}
 
-			<table {...getTableProps()} onDrop={onDrop} onDragOver={onDragOver}>
-				<thead>
-					{headerGroups.map((headerGroup, i) => (
-						<tr key={i} {...headerGroup.getHeaderGroupProps()}>
-							{headerGroup.headers.map((column, i) => (
-								<th key={i}>
+			<div
+				className={'table'}
+				{...getTableProps()}
+				onDrop={onDrop}
+				onDragOver={onDragOver}
+			>
+				{headerGroups.map((headerGroup, i) => (
+					<div
+						className={'tr head'}
+						key={i}
+						{...headerGroup.getHeaderGroupProps()}
+					>
+						{headerGroup.headers.map((column, i) => {
+							// console.log(column);
+							return (
+								<RowDiv
+									className={'th'}
+									width={`${column.width}px`}
+									key={i}
+									alignItems={'center'}
+									{...column.getHeaderProps(
+										column.getSortByToggleProps(),
+									)}
+								>
 									{column.render('Header')}
 									{isSortable &&
 										!(i === 0 && isSelectable) && (
-											<span
-												{...column.getHeaderProps(
-													column.getSortByToggleProps(),
-												)}
-											>
+											<Icon margin={'0px'}>
 												{column.isSortedDesc ===
 													'ture' ||
 												column.isSortedDesc ===
 													undefined
-													? ' 🔽'
-													: ' 🔼'}
-											</span>
+													? arrowDownIcon
+													: arrowUpIcon}
+											</Icon>
 										)}
-								</th>
-							))}
-						</tr>
-					))}
-				</thead>
-				<tbody {...getTableBodyProps()}>
-					{page.map((row) => {
-						prepareRow(row);
-						return (
-							<tr
-								draggable={isDnDPossible ? 'true' : 'false'}
-								id={
-									row.original.uid
-										? row.original.uid
-										: row.original.id
-								}
-								key={
-									row.original.uid
-										? row.original.uid
-										: row.original.id
-								}
-								{...row.getRowProps()}
-								onDragStart={onDragStart(row)}
-							>
-								{row.cells.map((cell, i) => {
-									return (
-										<td key={i} {...cell.getCellProps}>
-											{cell.render('Cell', {setData})}
-										</td>
-									);
-								})}
-							</tr>
-						);
-					})}
-				</tbody>
-			</table>
-		</div>
+								</RowDiv>
+							);
+						})}
+					</div>
+				))}
+				<div {...getTableBodyProps()}>
+					<FixedSizeList
+						height={300}
+						itemCount={
+							rows.length > pageSize ? pageSize : rows.length
+						}
+						itemSize={40}
+						// width={totalColumnsWidth + scrollBarSize}
+					>
+						{RenderRow}
+					</FixedSizeList>
+				</div>
+			</div>
+		</Container>
 	);
 };
 

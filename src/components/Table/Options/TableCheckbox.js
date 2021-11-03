@@ -1,6 +1,7 @@
 import React, {forwardRef, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import CheckBox from '../../RecycleComponents/New/CheckBox';
+import {RowDiv} from '../../../styles/components/div';
 
 const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 	const checkboxes = document.querySelectorAll(

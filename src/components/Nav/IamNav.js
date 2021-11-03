@@ -283,7 +283,7 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 IamNav.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
-	leftSize: PropTypes.string.isRequired,
+	leftSize: PropTypes.number.isRequired,
 };
 
 export default IamNav;

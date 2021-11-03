@@ -13,23 +13,26 @@ import CalenderOption from '../../components/Table/Options/Search/CalenderOption
 export const USER_COLUMN = [
 	{
 		accessor: 'id',
-		Header: '사용자계정',
+		Header: '사용자 계정',
 		Cell: function Component(cell) {
 			return <TableLink cell={cell} />;
 		},
 		disableFilters: true,
 		disableChangeVisible: true,
+		width: 100,
 	},
 	{
 		accessor: 'name',
 		Header: '이름',
 		disableFilters: true,
 		disableChangeVisible: true,
+		width: 80,
 	},
 	{
 		accessor: 'groups',
 		Header: '그룹',
 		disableFilters: true,
+		width: 100,
 	},
 	{
 		accessor: 'status',
@@ -39,6 +42,7 @@ export const USER_COLUMN = [
 		Cell: function Component(v) {
 			return <div>{statusConverter(v.value)}</div>;
 		},
+		width: 100,
 	},
 	{
 		accessor: 'authType',
@@ -48,6 +52,7 @@ export const USER_COLUMN = [
 			return <div>{authTypeConverter(v.value)}</div>;
 		},
 		Filter: SelectionOption,
+		width: 100,
 	},
 	{
 		accessor: 'MFA',
@@ -57,6 +62,7 @@ export const USER_COLUMN = [
 			return <div>{mfaConverter(v.value)}</div>;
 		},
 		Filter: SelectionOption,
+		width: 100,
 	},
 	{
 		accessor: 'passwordExpired',
@@ -71,6 +77,7 @@ export const USER_COLUMN = [
 		accessor: 'tags',
 		Header: '태그',
 		disableFilters: true,
+		width: 100,
 	},
 	{
 		accessor: 'lastConsoleLogin',
