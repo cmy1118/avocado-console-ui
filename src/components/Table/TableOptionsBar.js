@@ -125,7 +125,7 @@ const TableOptionsBar = ({
 							canNextPage={canNextPage}
 							pageCount={pageIndex}
 							pageOptions={pageOptions}
-							pageIndex={pageIndex}
+							pageSize={pageSize}
 						/>
 					</>
 				)}

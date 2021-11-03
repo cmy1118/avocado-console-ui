@@ -9,6 +9,7 @@ import {
 	statusConverter,
 } from '../tableDataConverter';
 import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
+import {ColDiv, RowDiv} from '../../styles/components/div';
 
 export const USER_COLUMN = [
 	{
@@ -65,7 +66,7 @@ export const USER_COLUMN = [
 		width: 100,
 	},
 	{
-		accessor: 'passwordExpired',
+		accessor: 'passwordExpiryTime',
 		Header: '비밀번호 수명',
 		filter: 'equals',
 		Filter: TextBoxOption,
@@ -263,18 +264,19 @@ export const USER_SUMMARY_PERMISSION_COLUMNS = [
 	{
 		Header: '권한 상세',
 		accessor: 'description',
+		width: 200,
 		Cell: function Component(v) {
 			return (
-				<div>
+				<ColDiv>
 					{v.value.split('\n').map((v, i) => {
 						return (
-							<div key={i}>
+							<RowDiv margin={'2px 0px'} key={i}>
 								{v}
 								<br />
-							</div>
+							</RowDiv>
 						);
 					})}
-				</div>
+				</ColDiv>
 			);
 		},
 	},

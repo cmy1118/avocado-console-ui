@@ -166,6 +166,7 @@ export const GROUP_SUMMARY_PERMISSION_COLUMN = [
 	{
 		Header: '권한 상세',
 		accessor: 'description',
+		width: 200,
 		Cell: function Component(v) {
 			return (
 				<div>

@@ -1,10 +1,9 @@
 import React, {useCallback} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import TableOptionsBar from '../Table/TableOptionsBar';
-import {Tab, TabItem} from '../../styles/components/tab';
 import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'qs';
+
 const _TabContainer = styled.div`
 	display: block;
 	width: 100%;
@@ -69,10 +68,9 @@ const TabBar = ({Tabs, param, Id, isOpened, setIsOpened}) => {
 	return (
 		<_TabContainer>
 			<_TabSpace>
-				{Tabs.map((v) => {
+				{Tabs.map((v, i) => {
 					return (
-						// eslint-disable-next-line react/jsx-key
-						<_Tabs>
+						<_Tabs key={i}>
 							<_TabItem
 								isfold={isOpened}
 								selected={

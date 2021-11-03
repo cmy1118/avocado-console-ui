@@ -10,9 +10,6 @@ import AssignRoleToUser from '../Components/AssignRoleToUser';
 import AddUserToGroup from '../Components/AddUserToGroup';
 import AddUser from '../Components/AddUser';
 import ReadOnly from '../Components/ReadOnly';
-import {HoverIconButton} from '../../../styles/components/icons';
-import {onClickCloseAside} from '../../Aside/Aside';
-import {errorIcon} from '../../../icons/icons';
 import {NaviLink} from '../../../styles/components/link';
 
 const AddUserSpace = () => {

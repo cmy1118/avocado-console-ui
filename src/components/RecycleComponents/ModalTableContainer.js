@@ -8,12 +8,15 @@ import {IconButton} from '../../styles/components/icons';
 import {closeIcon} from '../../icons/icons';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import {NormalButton, TransparentButton} from '../../styles/components/buttons';
 
 const _DialogBox = styled(DialogBox)`
 	padding: 30px;
 	width: 70%;
 	border: 1px solid;
 	background: white;
+	height: 80vh;
+	overflow: scroll;
 `;
 
 const ModalTableContainer = ({
@@ -46,12 +49,15 @@ const ModalTableContainer = ({
 			})}
 
 			<DialogBoxFooter>
-				<button type={'button'} onClick={onClickCloseDialogBox}>
-					Cancel
-				</button>
-				<button onClick={handleSubmit} type={'submit'}>
+				<NormalButton onClick={handleSubmit} type={'submit'}>
 					Save
-				</button>
+				</NormalButton>
+				<TransparentButton
+					type={'button'}
+					onClick={onClickCloseDialogBox}
+				>
+					Cancel
+				</TransparentButton>
 			</DialogBoxFooter>
 		</_DialogBox>
 	);

@@ -38,7 +38,6 @@ const AddUser = ({setIsOpened}) => {
 			.required('이메일은 필수 입력 값입니다.'),
 		telephone: yup
 			.string()
-			.required()
 			.matches(telephoneRegex, '형식에 맞지 않습니다.'),
 		mobile: yup
 			.string()
@@ -80,11 +79,11 @@ const AddUser = ({setIsOpened}) => {
 			</AppBarContents>
 			<Form
 				initialValues={{
-					id: '',
-					name: '',
-					email: '',
+					id: 'helloWorld',
+					name: '안녕',
+					email: 'helloWorld@netand.co.kr',
 					telephone: '',
-					mobile: '',
+					mobile: '010-1234-1410',
 				}}
 				onSubmit={onSubmitUserData}
 				innerRef={formRef}

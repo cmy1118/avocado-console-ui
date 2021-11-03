@@ -18,6 +18,7 @@ import {
 	dummyPolicyOnUser,
 	dummyUsers,
 } from '../../../utils/dummyData';
+import ReadOnlyTable from '../../Table/ReadOnlyTable';
 
 const _UserSummaryContainer = styled.div`
 	height: 500px;
@@ -50,7 +51,7 @@ const UserSummary = ({userId}) => {
 				grantDate: dummyDates[i],
 				grantUser: dummyUsers[i],
 			}));
-	}, [groups, groupTypes]);
+	}, [groups, user, groupTypes]);
 
 	const roleData = useMemo(() => dummyPolicyOnUser, []);
 
@@ -78,7 +79,6 @@ const UserSummary = ({userId}) => {
 			{/*		<TransparentButton>삭제</TransparentButton>*/}
 			{/*	</AppBarButtons>*/}
 			{/*</AppBarContents>*/}
-
 			<ul>
 				<li>사용자 : {user?.name}</li>
 				<li>사용자 계정 상태 : {statusConverter(user?.status)}</li>
@@ -92,24 +92,23 @@ const UserSummary = ({userId}) => {
 					{expiredConverter(user?.passwordExpired)}
 				</li>
 			</ul>
-
 			<_UserSummaryContainer>
 				<div>그룹: {groupData.length}</div>
-				<Table
+				<ReadOnlyTable
 					data={groupData}
 					tableKey={tableKeys.users.summary.group}
 					columns={tableColumns[tableKeys.users.summary.group]}
 				/>
 
 				<div>권한: {roleData.length}</div>
-				<Table
+				<ReadOnlyTable
 					data={roleData}
 					tableKey={tableKeys.users.summary.permission}
 					columns={tableColumns[tableKeys.users.summary.permission]}
 				/>
 
 				<div>태그: {tagData.length}</div>
-				<Table
+				<ReadOnlyTable
 					data={tagData}
 					tableKey={tableKeys.users.summary.tag}
 					columns={tableColumns[tableKeys.users.summary.tag]}
@@ -121,7 +120,7 @@ const UserSummary = ({userId}) => {
 
 UserSummary.propTypes = {
 	userId: PropTypes.string.isRequired,
-	isOpened: PropTypes.string.isRequired,
+	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 };
 export default UserSummary;
