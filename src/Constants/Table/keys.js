@@ -32,7 +32,10 @@ export const tableKeys = Object.freeze({
 				},
 				tags: {
 					basic: 'USER_SUMMARY_TABS_TAG',
-					permissions: {},
+					permissions: {
+						include: 'USER_SUMMARY_TABS_TAG_INCLUDE',
+						exclude: 'USER_SUMMARY_TABS_TAG_EXCLUDE',
+					},
 				},
 			},
 		},

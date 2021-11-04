@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {
 	AppBarButtons,
 	AppBarContents,
@@ -9,7 +9,6 @@ import {
 	PathContainer,
 } from '../../../styles/components/style';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
-import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {
 	groupsConverter,
 	passwordExpiredConverter,
@@ -29,13 +28,11 @@ import {NaviLink} from '../../../styles/components/link';
 import {onClickCloseAside} from '../../Aside/Aside';
 
 const UserSpace = () => {
-	const dispatch = useDispatch();
 	const history = useHistory();
 
 	const [select, setSelect] = useState([]);
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const {currentTarget} = useSelector(CURRENT_TARGET.selector);
 
 	const data = useMemo(() => {
 		return users.map((v) => ({

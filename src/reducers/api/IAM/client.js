@@ -1,6 +1,6 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {baseUrl} from '../../../../../api/constants';
+import {baseUrl} from '../../../api/constants';
 
 const NAME = 'IAM_CLIENT';
 

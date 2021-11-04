@@ -1,4 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {useHistory} from 'react-router-dom';
+import {useSelector} from 'react-redux';
+import USER from '../../reducers/api/Auth/user';
+
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -46,6 +50,17 @@ const _MainSpace = styled.div``;
 
 const IamLayout = ({children}) => {
 	const [isNavOpened, setIsNavOpened] = useState(true);
+
+	const history = useHistory();
+
+	const {user, companyId} = useSelector(USER.selector);
+
+	useEffect(() => {
+		if (!user) {
+			history.push('/login/' + companyId);
+		}
+	}, [user, companyId]);
+
 	return (
 		<_Container>
 			<Header />

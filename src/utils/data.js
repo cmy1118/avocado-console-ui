@@ -1,5 +1,3 @@
-import {useMemo} from 'react';
-
 export const status = {
 	NORMAL: 0,
 	LOCKED: 1,
@@ -41,6 +39,10 @@ export const tableSearchSelectOptions = {
 		{value: mfa.MOBILE, label: 'Mobile(OTP)'},
 		{value: mfa.FINGER_PRINT, label: 'Finger Print'},
 		{value: mfa.FACE_ID, label: 'Face ID'},
+	],
+	roleType: [
+		{value: 'Public', label: 'Public'},
+		{value: 'Private', label: 'Private'},
 	],
 };
 

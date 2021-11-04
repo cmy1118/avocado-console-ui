@@ -148,8 +148,18 @@ const slice = createSlice({
 				path: '/group1',
 				creationDate: '2020.04.12 20:00:01',
 				tags: [
-					{name: 'level', value: 'Admin', permissions: []},
-					{name: 'type', value: 'white', permissions: [1, 2, 3]},
+					{
+						name: 'level',
+						value: 'Admin',
+						permissions: ['permission2'],
+						creationDate: '2021.03.02 15:50:14',
+					},
+					{
+						name: 'type',
+						value: 'White',
+						permissions: ['permission3', 'permission4'],
+						creationDate: '2021.03.02 15:55:32',
+					},
 				],
 			},
 			{
@@ -162,8 +172,18 @@ const slice = createSlice({
 				path: '/group2',
 				creationDate: '2019.02.13 15:55:32',
 				tags: [
-					{name: 'level', value: 'Admin', permissions: []},
-					{name: 'type', value: 'white', permissions: [1, 2, 3]},
+					{
+						name: 'level',
+						value: 'Admin',
+						permissions: ['permission2'],
+						creationDate: '2021.03.02 15:50:14',
+					},
+					{
+						name: 'type',
+						value: 'White',
+						permissions: ['permission3', 'permission4'],
+						creationDate: '2021.03.02 15:55:32',
+					},
 				],
 			},
 			{
@@ -176,8 +196,23 @@ const slice = createSlice({
 				path: '/group3',
 				creationDate: '2019.09.26 14:07:15',
 				tags: [
-					{name: 'level', value: 'Admin', permissions: []},
-					{name: 'type', value: 'white', permissions: [1, 2]},
+					{
+						name: 'level',
+						value: 'Admin',
+						permissions: ['permission2'],
+						creationDate: '2021.03.02 15:50:14',
+					},
+					{
+						name: 'type',
+						value: 'Black',
+						permissions: [
+							'permission1',
+							'permission3',
+							'permission5',
+						],
+
+						creationDate: '2020.12.23 17:59:14',
+					},
 				],
 			},
 			{
@@ -201,7 +236,12 @@ const slice = createSlice({
 				path: '/group5',
 				creationDate: '2020.07.15 14:17:59',
 				tags: [
-					{name: 'level', value: 'Admin', permissions: []},
+					{
+						name: 'level',
+						value: 'Admin',
+						permissions: ['permission2'],
+						creationDate: '2021.03.02 15:50:14',
+					},
 					{name: 'type', value: 'white', permissions: [1, 2, 3]},
 				],
 			},
@@ -214,7 +254,14 @@ const slice = createSlice({
 				parentId: null,
 				path: '/group6',
 				creationDate: '2020.09.24 18:13:12',
-				tags: [{name: 'level', value: 'Admin', permissions: []}],
+				tags: [
+					{
+						name: 'level',
+						value: 'Admin',
+						permissions: ['permission2'],
+						creationDate: '2021.03.02 15:50:14',
+					},
+				],
 			},
 			{
 				id: 'group7',
@@ -225,7 +272,14 @@ const slice = createSlice({
 				parentId: null,
 				path: '/group7',
 				creationDate: '2020.09.02 13:06:11',
-				tags: [],
+				tags: [
+					{
+						name: 'type',
+						value: 'White',
+						permissions: ['permission3', 'permission4'],
+						creationDate: '2021.03.02 15:55:32',
+					},
+				],
 			},
 			{
 				id: 'group8',
@@ -236,7 +290,19 @@ const slice = createSlice({
 				parentId: 'group7',
 				path: '/group7/group8',
 				creationDate: '2020.09.02 13:16:24',
-				tags: [],
+				tags: [
+					{
+						name: 'type',
+						value: 'Black',
+						permissions: [
+							'permission1',
+							'permission3',
+							'permission5',
+						],
+
+						creationDate: '2020.12.23 17:59:14',
+					},
+				],
 			},
 			{
 				id: 'group9',
@@ -247,7 +313,14 @@ const slice = createSlice({
 				parentId: 'group7',
 				path: '/group7/group9',
 				creationDate: '2021.01.11 09:25:06',
-				tags: [],
+				tags: [
+					{
+						name: 'type',
+						value: 'White',
+						permissions: ['permission3', 'permission4'],
+						creationDate: '2021.03.02 15:55:32',
+					},
+				],
 			},
 		],
 		byId: {
