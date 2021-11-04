@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {Link, useHistory} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 
 import {
 	AppBarButtons,
@@ -23,9 +23,6 @@ import {
 	TransparentButton,
 } from '../../../styles/components/buttons';
 import {NaviLink} from '../../../styles/components/link';
-import {HoverIconButton} from '../../../styles/components/icons';
-import {onClickCloseAside} from '../../Aside/Aside';
-import {errorIcon} from '../../../icons/icons';
 
 const GroupSpace = () => {
 	const [select, setSelect] = useState([]);

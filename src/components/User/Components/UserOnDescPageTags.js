@@ -69,9 +69,9 @@ const UserOnDescPageTags = ({userId}) => {
 				</TransparentButton>
 			</div>
 			<Table
-				tableKey={tableKeys.users.summary.tag}
+				tableKey={tableKeys.users.summary.tabs.tags.basic}
 				data={data}
-				columns={tableColumns[tableKeys.users.summary.tag]}
+				columns={tableColumns[tableKeys.users.summary.tabs.tags.basic]}
 				isSelectable
 				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
 				setSelect={setSelect}

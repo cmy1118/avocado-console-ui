@@ -49,10 +49,10 @@ export const USER_COLUMN = [
 		accessor: 'authType',
 		Header: '인증유형',
 		filter: 'equals',
+		Filter: SelectionOption,
 		Cell: function Component(v) {
 			return <div>{authTypeConverter(v.value)}</div>;
 		},
-		Filter: SelectionOption,
 		width: 100,
 	},
 	{
@@ -228,7 +228,7 @@ export const USER_SUMMARY_GROUP_COLUMN = [
 		Header: '부여 사용자',
 		accessor: 'grantUser',
 		Cell: function Component(v) {
-			return <div>{v.value.name + '(' + v.value.id + ')'}</div>;
+			return <div>{v.value?.name + '(' + v.value?.id + ')'}</div>;
 		},
 	},
 ];
@@ -300,7 +300,7 @@ export const USER_SUMMARY_PERMISSION_COLUMNS = [
 		Header: '부여 사용자',
 		accessor: 'grantUser',
 		Cell: function Component(v) {
-			return <div>{v.value.name + '(' + v.value.id + ')'}</div>;
+			return <div>{v.value?.name + '(' + v.value?.id + ')'}</div>;
 		},
 	},
 ];

@@ -1,7 +1,7 @@
 import React from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
-import {Main, User, Group, Role, Policy, NotFound} from './pages';
+import {Main, User, Group, Role, Policy, NotFound, Login} from './pages';
 import RouteWithLayout from './components/Layouts/RouteWithLayout';
 import IamLayout from './components/Layouts/IamLayout';
 import ConfirmDialogBox from './components/DialogBoxs/Alert/ConfirmDialogBox';
@@ -91,6 +91,7 @@ const App = () => {
 					component={Policy}
 					layout={IamLayout}
 				/>
+				<Route path='/login/:companyId' component={Login} />
 				<Route component={NotFound} />
 			</Switch>
 

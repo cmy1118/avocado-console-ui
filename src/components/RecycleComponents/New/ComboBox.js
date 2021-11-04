@@ -139,6 +139,7 @@ const ComboBox = ({type = 'normal', ...props}) => {
 								current={
 									v.value === field.value ||
 									v.label === field.value
+									// && type === 'normal'
 								}
 								{...field}
 								value={v.value}
