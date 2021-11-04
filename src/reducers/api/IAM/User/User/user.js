@@ -157,7 +157,7 @@ const slice = createSlice({
 					{
 						name: 'type',
 						value: 'White',
-						permissions: [1, 2, 3],
+						permissions: ['permission3', 'permission4'],
 						creationDate: '2021.05.30 14:02:21',
 					},
 				],
@@ -200,7 +200,12 @@ const slice = createSlice({
 					{
 						name: 'type',
 						value: 'Black',
-						permissions: [1],
+						permissions: [
+							'permission1',
+							'permission3',
+							'permission5',
+						],
+
 						creationDate: '2020.12.23 17:59:14',
 					},
 				],
@@ -243,13 +248,13 @@ const slice = createSlice({
 					{
 						name: 'level',
 						value: 'Admin',
-						permissions: [],
+						permissions: ['permission2'],
 						creationDate: '2021.03.02 15:50:14',
 					},
 					{
 						name: 'type',
 						value: 'White',
-						permissions: [1, 2, 3],
+						permissions: ['permission3', 'permission4'],
 						creationDate: '2021.03.02 15:55:32',
 					},
 				],
@@ -275,8 +280,8 @@ const slice = createSlice({
 					{
 						name: 'level',
 						value: 'Admin',
-						permissions: [],
-						creationDate: '2021.08.04 12:06:10',
+						permissions: ['permission2'],
+						creationDate: '2021.03.02 15:50:14',
 					},
 				],
 				lastConsoleLogin: '2021.08.04 13:10:49',

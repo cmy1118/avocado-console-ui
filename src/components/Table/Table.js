@@ -160,7 +160,6 @@ const Table = ({
 	);
 
 	const searchFilters = useMemo(() => {
-		console.log(columns);
 		return columns.filter((v) =>
 			Object.prototype.hasOwnProperty.call(v, 'filter'),
 		);
