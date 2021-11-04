@@ -13,7 +13,17 @@ import ReadOnly from '../Components/ReadOnly';
 import {NaviLink} from '../../../styles/components/link';
 
 const AddUserSpace = () => {
+	const TableFold={
+		AddUserToGroup : false,
+		AssignRoleToUser: false,
+		AddTagToUser : false,
+	}
 	const [isOpened, setIsOpened] = useState(false);
+	const [isTableFold, setIsTableFold] = useState({
+		AddUserToGroup : false,
+		AssignRoleToUser: false,
+		AddTagToUser : false,
+	});
 
 	return (
 		<IamContainer>
@@ -31,9 +41,9 @@ const AddUserSpace = () => {
 			</AppBarNavi>
 
 			<AddUser setIsOpened={setIsOpened} />
-			<AddUserToGroup />
-			<AssignRoleToUser />
-			<AddTagToUser />
+			<AddUserToGroup space={'AddUserToGroup'} isFold={isTableFold} setIsFold={setIsTableFold}/>
+			<AssignRoleToUser space={'AssignRoleToUser'} isFold={isTableFold} setIsFold={setIsTableFold}/>
+			<AddTagToUser space={'AddTagToUser'} isFold={isTableFold} setIsFold={setIsTableFold}/>
 			<ReadOnly isOpened={isOpened} setIsOpened={setIsOpened} />
 		</IamContainer>
 	);

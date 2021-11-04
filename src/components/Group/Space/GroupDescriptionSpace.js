@@ -25,7 +25,7 @@ const _Title = styled.div`
 import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
 import GroupUsersTab from '../Components/GroupUsersTab';
 import {onClickCloseAside} from '../../Aside/Aside';
-import {arrowDownIcon, arrowUpIcon, errorIcon} from '../../../icons/icons';
+import {arrowDownIcon, arrowRightIcon, arrowUpIcon, errorIcon} from '../../../icons/icons';
 import {HoverIconButton, IconButton} from '../../../styles/components/icons';
 import {NaviLink} from '../../../styles/components/link';
 import {
@@ -93,7 +93,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 						margin={'0px'}
 						onClick={onClickFoldSummary}
 					>
-						{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
+						{isSummaryOpened ? arrowDownIcon : arrowRightIcon}
 					</IconButton>
 					요약 [ {group?.name} ]
 				</div>

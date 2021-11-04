@@ -10,8 +10,11 @@ import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
 import {TableSpace} from "../../../styles/components/table";
 import TableOptionText from "../../Table/Options/TableOptionText";
+import TableFold from "../../Table/Options/TableFold";
+import PropTypes from "prop-types";
+import AddUserToGroup from "./AddUserToGroup";
 
-const AssignRoleToUser = () => {
+const AssignRoleToUser = ({space,isFold ,setIsFold }) => {
 	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
@@ -47,7 +50,10 @@ const AssignRoleToUser = () => {
 
 	return (
 		<>
-			<TableSpace>권한 추가</TableSpace>
+			{/*<TableSpace>권한 추가</TableSpace>*/}
+			<TableFold space={space} isFold={isFold} setIsFold={setIsFold}/>
+			{isFold[space] &&
+				<>
 			<TableOptionText data={'roles'}/>
 			<_Tables>
 				<Table
@@ -96,8 +102,14 @@ const AssignRoleToUser = () => {
 					/>
 				</div>
 			</_Tables>
+					</>}
 		</>
 	);
 };
+AssignRoleToUser.propTypes = {
+	isFold: PropTypes.object,
+	setIsFold: PropTypes.func,
+	space: PropTypes.string,
+}
 
 export default AssignRoleToUser;
