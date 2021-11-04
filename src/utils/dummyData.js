@@ -4,7 +4,10 @@ export const dummyDates = [
 	'2021.09.21 09:58:55',
 	'2021.07.08 17:51:20',
 	'2021.08.12 17:55:30',
-	'2021.08.21 16:40:10',
+	'2021.08.01 18:23:13',
+	'2021.05.07 16:45:32',
+	'2021.01.17 16:02:24',
+	'2021.08.29 12:50:55',
 ];
 
 export const dummyUsers = [
@@ -317,7 +320,7 @@ export const dummyPermission = [
 		description:
 			'사용자 레벨의 최고 관리자인 Manager에게 부여된 역할 (기본제공)',
 		numberOfRoles: 1,
-		creationData: '2019.01.12 14:24:28',
+		creationDate: '2019.01.12 14:24:28',
 	},
 	{
 		id: 'permission2',
@@ -326,7 +329,7 @@ export const dummyPermission = [
 		type: 'IAM 권한',
 		description: 'Admin 사용자에게 부여 하는 역할',
 		numberOfRoles: 2,
-		creationData: '2019.02.21 16:02:46',
+		creationDate: '2019.02.21 16:02:46',
 	},
 	{
 		id: 'permission3',
@@ -334,7 +337,7 @@ export const dummyPermission = [
 		type: 'IAM 권한',
 		description: '정책을 일반 User에게 부여 하는 역할',
 		numberOfRoles: 4,
-		creationData: '2019.06.24 15:46:02',
+		creationDate: '2019.06.24 15:46:02',
 	},
 	{
 		id: 'permission4',
@@ -342,7 +345,7 @@ export const dummyPermission = [
 		type: 'PAM 정책',
 		description: '일반 User의 역할을 부을 하는 역할',
 		numberOfRoles: 2,
-		creationData: '2019.04.30 21:23:43',
+		creationDate: '2019.04.30 21:23:43',
 	},
 	{
 		id: 'permission5',
@@ -350,6 +353,6 @@ export const dummyPermission = [
 		type: 'PAM 정책',
 		description: '일반 User에게 임시로 부여 하는 역할',
 		numberOfRoles: 10,
-		creationData: '2020.01.06 14:03:25',
+		creationDate: '2020.01.06 14:03:25',
 	},
 ];

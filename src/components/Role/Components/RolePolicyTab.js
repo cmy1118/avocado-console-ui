@@ -7,18 +7,14 @@ import {
 import Table from '../../Table/Table';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {useSelector} from 'react-redux';
-import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {dummyPermission} from '../../../utils/dummyData';
 
-const RoleInfoTab = ({roleId}) => {
-	const {roles} = useSelector(IAM_ROLES.selector);
-
+const RolePolicyTab = ({roleId}) => {
 	const [select, setSelect] = useState([]);
 	const [rightDataIds, setRightDataIds] = useState([]);
 
-	const dataLeft = useMemo(() => dummyPermission, []);
-	const dataRight = useMemo(() => dummyPermission, []);
+	const dataLeft = useMemo(() => dummyPermission.slice(0, 2), []);
+	const dataRight = useMemo(() => dummyPermission.slice(2), []);
 
 	return (
 		<>
@@ -28,18 +24,18 @@ const RoleInfoTab = ({roleId}) => {
 			</div>
 			<Table
 				data={dataLeft}
-				tableKey={tableKeys.users.summary.tabs.roles.include}
+				tableKey={tableKeys.roles.summary.tabs.permissions.include}
 				columns={
-					tableColumns[tableKeys.users.summary.tabs.roles.include]
+					tableColumns[
+						tableKeys.roles.summary.tabs.permissions.include
+					]
 				}
 				isPageable
 				isNumberOfRowsAdjustable
 				isColumnFilterable
 				isSortable
 				isSelectable
-				isDnDPossible
 				isSearchable
-				dndKey={tableKeys.users.summary.tabs.roles.dnd}
 				setSelect={setSelect}
 				setData={setRightDataIds}
 			/>
@@ -50,18 +46,18 @@ const RoleInfoTab = ({roleId}) => {
 			</div>
 			<Table
 				data={dataRight}
-				tableKey={tableKeys.users.summary.tabs.roles.exclude}
+				tableKey={tableKeys.roles.summary.tabs.permissions.exclude}
 				columns={
-					tableColumns[tableKeys.users.summary.tabs.roles.exclude]
+					tableColumns[
+						tableKeys.roles.summary.tabs.permissions.exclude
+					]
 				}
 				isPageable
 				isNumberOfRowsAdjustable
 				isColumnFilterable
 				isSortable
 				isSelectable
-				isDnDPossible
 				isSearchable
-				dndKey={tableKeys.users.summary.tabs.roles.dnd}
 				setSelect={setSelect}
 				setData={setRightDataIds}
 				control
@@ -70,8 +66,8 @@ const RoleInfoTab = ({roleId}) => {
 	);
 };
 
-RoleInfoTab.propTypes = {
+RolePolicyTab.propTypes = {
 	roleId: PropTypes.string.isRequired,
 };
 
-export default RoleInfoTab;
+export default RolePolicyTab;

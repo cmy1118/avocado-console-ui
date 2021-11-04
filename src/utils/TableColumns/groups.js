@@ -153,7 +153,7 @@ export const GROUP_SUMMARY_USER_COLUMN = [
 		Header: '부여 사용자',
 		accessor: 'grantUser',
 		Cell: function Component(v) {
-			return <div>{v.value.name + '(' + v.value.id + ')'}</div>;
+			return <div>{v.value?.name + '(' + v.value?.id + ')'}</div>;
 		},
 	},
 ];

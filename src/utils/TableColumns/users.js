@@ -227,7 +227,7 @@ export const USER_SUMMARY_GROUP_COLUMN = [
 		Header: '부여 사용자',
 		accessor: 'grantUser',
 		Cell: function Component(v) {
-			return <div>{v.value.name + '(' + v.value.id + ')'}</div>;
+			return <div>{v.value?.name + '(' + v.value?.id + ')'}</div>;
 		},
 	},
 ];
@@ -298,7 +298,7 @@ export const USER_SUMMARY_PERMISSION_COLUMNS = [
 		Header: '부여 사용자',
 		accessor: 'grantUser',
 		Cell: function Component(v) {
-			return <div>{v.value.name + '(' + v.value.id + ')'}</div>;
+			return <div>{v.value?.name + '(' + v.value?.id + ')'}</div>;
 		},
 	},
 ];

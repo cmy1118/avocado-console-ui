@@ -11,7 +11,7 @@ import {
 import {NaviLink} from '../../../styles/components/link';
 import RoleSummary from '../Components/RoleSummary';
 import TabBar from '../../Tab/TabBar';
-import RoleInfoTab from '../Components/RoleInfoTab';
+import RolePolicyTab from '../Components/RolePolicyTab';
 import RoleUserTab from '../Components/RoleUserTab';
 import RoleGroupTab from '../Components/RoleGroupTab';
 
@@ -52,7 +52,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 				{!isSumarryOpend && (
 					<div style={{padding: '10px 16px'}}>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'role' && <RoleInfoTab roleId={roleId} />}
+							'role' && <RolePolicyTab roleId={roleId} />}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'user' && <RoleUserTab roleId={roleId} />}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
