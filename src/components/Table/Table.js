@@ -11,7 +11,6 @@ import {
 } from 'react-table';
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
-import {useDispatch} from 'react-redux';
 import {NormalBorderButton} from '../../styles/components/buttons';
 import {arrowDownIcon, arrowUpIcon, cancelIcon} from '../../icons/icons';
 import {HoverIconButton, Icon} from '../../styles/components/icons';
@@ -68,7 +67,6 @@ const Table = ({
 	setSelect,
 	fullSize = false,
 }) => {
-	const dispatch = useDispatch();
 	const filterTypes = React.useMemo(
 		() => ({
 			dateBetween: dateBetweenFilterFn,
@@ -100,6 +98,26 @@ const Table = ({
 		if (v.uid) return v.uid;
 		return v.id;
 	}, []);
+
+	function getStyle({draggableStyle, isDragging, draggingOver}) {
+		// If you don't want any spacing between your items
+		// then you could just return this.
+		// I do a little bit of magic to have some nice visual space
+		// between the row items
+
+		// Being lazy: this is defined in our css file
+
+		// when dragging we want to use the draggable style for placement, otherwise use the virtual style
+		return {
+			...draggableStyle,
+			// height: isDragging ? draggableStyle.height : draggableStyle.height,
+			// left: isDragging ? 300 : draggableStyle.left,
+			// width: isDragging ? '100px' : `calc(${draggableStyle.width}px)`,
+			border: '1px solid',
+			background: draggingOver ? 'lightGreen' : 'lightGray',
+			// position: 'absolute',
+		};
+	}
 
 	/***************************************************************************/
 
@@ -344,12 +362,22 @@ const Table = ({
 				droppableId={tableKey}
 				mode={'Virtual'}
 				renderClone={(provided, snapshot, rubric) => {
+					console.log(snapshot);
+					// console.log(rubric);
 					return (
 						<div
 							{...provided.draggableProps}
 							{...provided.dragHandleProps}
 							ref={provided.innerRef}
-						/>
+							style={getStyle({
+								draggableStyle: provided.draggableProps.style,
+								isDragging: snapshot.isDragging,
+								draggingOver: snapshot.draggingOver,
+							})}
+							onMouseMove={(e) => console.log(e)}
+						>
+							{provided.placeholder}
+						</div>
 					);
 				}}
 			>
@@ -359,8 +387,6 @@ const Table = ({
 						{...getTableProps()}
 						ref={provided.innerRef}
 						{...provided.droppableProps}
-						// onDrop={onDrop}
-						// onDragOver={onDragOver}
 					>
 						{headerGroups.map((headerGroup, i) => (
 							<div
@@ -407,7 +433,6 @@ const Table = ({
 						>
 							{RenderRow}
 						</FixedSizeList>
-						{provided.placeholder}
 					</div>
 				)}
 			</Droppable>
