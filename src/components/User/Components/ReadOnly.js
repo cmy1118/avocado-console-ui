@@ -6,7 +6,9 @@ import {tableColumns} from '../../../Constants/Table/columns';
 import {useSelector} from 'react-redux';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
-import {Label} from '../../../styles/components/text';
+import {Label, LiText} from '../../../styles/components/text';
+import {AppBarContents} from '../../../styles/components/style';
+import {ReadOnlyTableSpace} from '../../../styles/components/table';
 
 const ReadOnly = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
@@ -23,33 +25,37 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 			setIsOpened={setIsOpened}
 			handleSubmit={submitUserInfo}
 		>
-			<Label>사용자 기본정보</Label>
+			<AppBarContents>사용자 기본정보</AppBarContents>
 			<ul>
-				<li>사용자 계정 : {readOnlyData['user'].id}</li>
-				<li>사용자 이름 : {readOnlyData['user'].name}</li>
-				<li>이메일 주소 : {readOnlyData['user'].email}</li>
-				<li>전화 번호 : {readOnlyData['user'].telephone}</li>
-				<li>모바일 전화 번호 : {readOnlyData['user'].mobile}</li>
+				<LiText>사용자 계정 : {readOnlyData['user'].id}</LiText>
+				<LiText>사용자 이름 : {readOnlyData['user'].name}</LiText>
+				<LiText>이메일 주소 : {readOnlyData['user'].email}</LiText>
+				<LiText>전화 번호 : {readOnlyData['user'].telephone}</LiText>
+				<LiText>
+					모바일 전화 번호 : {readOnlyData['user'].mobile}
+				</LiText>
 			</ul>
-			<div>
+			<AppBarContents>
 				그룹 :{' '}
 				{readOnlyData[tableKeys.users.add.groups.exclude]?.length}
-			</div>
+			</AppBarContents>
 			<Table
 				tableKey={tableKeys.users.add.groups.exclude}
 				data={readOnlyData[tableKeys.users.add.groups.exclude]}
 				columns={tableColumns[tableKeys.users.add.groups.exclude]}
 			/>
-			<div>
+			<AppBarContents>
 				권한 : {readOnlyData[tableKeys.users.add.roles.exclude].length}
-			</div>
+			</AppBarContents>
 			<Table
 				tableKey={tableKeys.users.add.roles.exclude}
 				data={readOnlyData[tableKeys.users.add.roles.exclude]}
 				columns={tableColumns[tableKeys.users.add.roles.exclude]}
 			/>
 
-			<div>태그 : {readOnlyData[tableKeys.users.add.tag].length}</div>
+			<AppBarContents>
+				태그 : {readOnlyData[tableKeys.users.add.tag].length}
+			</AppBarContents>
 			<Table
 				tableKey={tableKeys.users.add.tag}
 				data={readOnlyData[tableKeys.users.add.tag]}

@@ -16,7 +16,6 @@ import {
 	TransparentButton,
 } from '../../../styles/components/buttons';
 import {Icon, IconButton} from '../../../styles/components/icons';
-import {alertMessages} from './ConfirmDialogBox';
 
 const DeleteDialogBox = () => {
 	const dispatch = useDispatch();

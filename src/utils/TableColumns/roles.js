@@ -69,7 +69,6 @@ export const ROLE_SUMMARY_PERMISSION_COLUMN = [
 		Header: '정책 이름',
 		accessor: 'policyName',
 	},
-
 	{
 		accessor: 'creationDate',
 		Header: '생성 일시',

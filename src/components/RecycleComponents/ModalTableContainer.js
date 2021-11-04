@@ -11,24 +11,16 @@ import styled from 'styled-components';
 import {NormalButton, TransparentButton} from '../../styles/components/buttons';
 
 const _DialogBox = styled(DialogBox)`
-	position: relative;
 	width: 70%;
-	border: 1px solid;
-	background: white;
 	height: 80vh;
+	display: flex;
+	flex-direction: column;
+`;
+
+const _DialogBoxContent = styled.div`
+	flex: 1;
+	padding: 16px;
 	overflow: scroll;
-`;
-
-const _DialogBoxHeader = styled(DialogBoxHeader)`
-	position: sticky;
-	background: #fff;
-	top: 0;
-`;
-
-const _DialogBoxFooter = styled(DialogBoxFooter)`
-	position: sticky;
-	background: #fff;
-	bottom: 0;
 `;
 
 const ModalTableContainer = ({
@@ -49,18 +41,20 @@ const ModalTableContainer = ({
 			ariaHideApp={false}
 			shouldCloseOnOverlayClick={false}
 		>
-			<_DialogBoxHeader>
+			<DialogBoxHeader>
 				<div>{title}</div>
 				<IconButton onClick={onClickCloseDialogBox}>
 					{closeIcon}
 				</IconButton>
-			</_DialogBoxHeader>
+			</DialogBoxHeader>
 
-			{React.Children.map(children, (child) => {
-				return child;
-			})}
+			<_DialogBoxContent>
+				{React.Children.map(children, (child) => {
+					return child;
+				})}
+			</_DialogBoxContent>
 
-			<_DialogBoxFooter>
+			<DialogBoxFooter>
 				<NormalButton onClick={handleSubmit} type={'submit'}>
 					Save
 				</NormalButton>
@@ -70,7 +64,7 @@ const ModalTableContainer = ({
 				>
 					Cancel
 				</TransparentButton>
-			</_DialogBoxFooter>
+			</DialogBoxFooter>
 		</_DialogBox>
 	);
 };

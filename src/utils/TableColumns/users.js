@@ -171,20 +171,42 @@ export const USER_ADD_GROUPS_INCLUDE_COLUMN = [
 
 export const USER_ADD_ROLES_EXCLUDE_COLUMN = [
 	{
-		Header: '역할 이름',
+		Header: '권한',
 		accessor: 'name',
 	},
 	{
-		Header: '역할 유형',
-		accessor: 'type',
+		Header: '권한 상세',
+		accessor: 'description',
+		Cell: function Component(v) {
+			return (
+				<div>
+					{v.value.split('\n').map((v, i) => {
+						return (
+							<div key={i}>
+								{v}
+								<br />
+							</div>
+						);
+					})}
+				</div>
+			);
+		},
 	},
 	{
-		Header: '사용자 수',
-		accessor: 'numberOfUsers',
+		Header: '정책 이름',
+		accessor: 'policyName',
 	},
 	{
-		Header: '생성 일시',
-		accessor: 'creationDate',
+		Header: 'Role 이름',
+		accessor: 'roleName',
+	},
+	{
+		Header: '부여 대상',
+		accessor: 'authTarget',
+	},
+	{
+		Header: '부여 일시',
+		accessor: 'grantDate',
 	},
 ];
 
