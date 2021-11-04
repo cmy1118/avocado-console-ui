@@ -63,11 +63,11 @@ const GroupOnDescPageTags = ({groupId}) => {
 		<>
 			<TableSpace>
 				태그 추가
-				<NormalBorderButton>
+				<TableSpaceButtons>
 				<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
 				<NormalButton onClick={onClickSaveRow}>태그 저장</NormalButton>
-				<NormalBorderButton onClick={onClickDeleteRow}>태그 삭제</NormalBorderButton>
-				</NormalBorderButton>
+				<TransparentButton onClick={onClickDeleteRow}>태그 삭제</TransparentButton>
+				</TableSpaceButtons>
 			  </TableSpace>
 			<TableOptionText data={'tags'}/>
 			<Table
