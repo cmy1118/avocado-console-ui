@@ -11,12 +11,24 @@ import styled from 'styled-components';
 import {NormalButton, TransparentButton} from '../../styles/components/buttons';
 
 const _DialogBox = styled(DialogBox)`
-	padding: 30px;
+	position: relative;
 	width: 70%;
 	border: 1px solid;
 	background: white;
 	height: 80vh;
 	overflow: scroll;
+`;
+
+const _DialogBoxHeader = styled(DialogBoxHeader)`
+	position: sticky;
+	background: #fff;
+	top: 0;
+`;
+
+const _DialogBoxFooter = styled(DialogBoxFooter)`
+	position: sticky;
+	background: #fff;
+	bottom: 0;
 `;
 
 const ModalTableContainer = ({
@@ -37,18 +49,18 @@ const ModalTableContainer = ({
 			ariaHideApp={false}
 			shouldCloseOnOverlayClick={false}
 		>
-			<DialogBoxHeader>
+			<_DialogBoxHeader>
 				<div>{title}</div>
 				<IconButton onClick={onClickCloseDialogBox}>
 					{closeIcon}
 				</IconButton>
-			</DialogBoxHeader>
+			</_DialogBoxHeader>
 
 			{React.Children.map(children, (child) => {
 				return child;
 			})}
 
-			<DialogBoxFooter>
+			<_DialogBoxFooter>
 				<NormalButton onClick={handleSubmit} type={'submit'}>
 					Save
 				</NormalButton>
@@ -58,7 +70,7 @@ const ModalTableContainer = ({
 				>
 					Cancel
 				</TransparentButton>
-			</DialogBoxFooter>
+			</_DialogBoxFooter>
 		</_DialogBox>
 	);
 };

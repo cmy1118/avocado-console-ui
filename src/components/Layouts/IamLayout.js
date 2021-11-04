@@ -7,6 +7,8 @@ import Header from '../Header';
 
 const _Container = styled.div`
 	overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
 	flex: 1;
 	height: 100%;
 	width: 100%;
@@ -23,7 +25,7 @@ const _Container = styled.div`
 
 	.nav {
 		position: absolute;
-		left: 0px;
+		left: -255px;
 		display: inline-block;
 		transition: all 0.5s ease-in-out;
 		height: ;
@@ -40,6 +42,7 @@ const _Space = styled.div`
 	height: 100%;
 	display: flex;
 	transition: transform 0.5s ease-in-out;
+	position: relative;
 `;
 
 const _MainSpace = styled.div``;

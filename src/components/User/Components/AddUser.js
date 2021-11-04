@@ -11,7 +11,7 @@ import {
 } from '../../../styles/components/buttons';
 import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
-import {RowDiv} from '../../../styles/components/div';
+import {ColDiv, RowDiv} from '../../../styles/components/div';
 
 const AddUser = ({setIsOpened}) => {
 	const history = useHistory();
@@ -63,6 +63,7 @@ const AddUser = ({setIsOpened}) => {
 	);
 
 	return (
+		//ColDiv margin={'0px 16px'}
 		<>
 			<AppBarContents>
 				<div>사용자 기본 정보</div>

@@ -20,7 +20,7 @@ const PageSizing = ({pageSize, setPageSize}) => {
 
 	return (
 		<Form
-			initialValues={{page: `${pageSize} 행`}}
+			initialValues={{page: `${pageSize}행`}}
 			onSubmit={(data) => {
 				console.log(data);
 				setPageSize(data.page);
