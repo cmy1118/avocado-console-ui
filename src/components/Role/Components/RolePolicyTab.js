@@ -1,8 +1,8 @@
 import React, {useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
+	NormalBorderButton,
 	NormalButton,
-	TransparentButton,
 } from '../../../styles/components/buttons';
 import Table from '../../Table/Table';
 import {tableKeys} from '../../../Constants/Table/keys';
@@ -20,7 +20,7 @@ const RolePolicyTab = ({roleId}) => {
 		<>
 			<div>
 				이 역할의 정책: {dataLeft.length}{' '}
-				<TransparentButton>연결 해제</TransparentButton>
+				<NormalBorderButton>연결 해제</NormalBorderButton>
 			</div>
 			<Table
 				data={dataLeft}

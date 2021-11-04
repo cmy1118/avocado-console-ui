@@ -4,8 +4,8 @@ import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {dummyDates, dummyUsers} from '../../../utils/dummyData';
 import {
+	NormalBorderButton,
 	NormalButton,
-	TransparentButton,
 } from '../../../styles/components/buttons';
 import Table from '../../Table/Table';
 import {tableKeys} from '../../../Constants/Table/keys';
@@ -58,7 +58,7 @@ const RoleGroupTab = ({roleId}) => {
 		<>
 			<div>
 				이 역할의 그룹: {dataLeft.length}{' '}
-				<TransparentButton>연결 해제</TransparentButton>
+				<NormalBorderButton>연결 해제</NormalBorderButton>
 			</div>
 			<Table
 				data={dataLeft}
