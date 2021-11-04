@@ -8,20 +8,15 @@ import {
 	IamContainer,
 	PathContainer,
 } from '../../../styles/components/style';
-import {Link, useHistory} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 import Table from '../../Table/Table';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
-import {HoverIconButton} from '../../../styles/components/icons';
-import {onClickCloseAside} from '../../Aside/Aside';
-import {errorIcon} from '../../../icons/icons';
+import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
 import {NaviLink} from '../../../styles/components/link';
+import TableOptionText from "../../Table/Options/TableOptionText";
 
 const GroupTypeSpace = () => {
 	const history = useHistory();
@@ -98,7 +93,7 @@ const GroupTypeSpace = () => {
 					</TransparentButton>
 				</AppBarButtons>
 			</AppBarContents>
-
+			<TableOptionText data={'groupsType'}/>
 			<Table
 				tableKey={tableKeys.groups.type}
 				columns={tableColumns[tableKeys.groups.type]}

@@ -5,13 +5,11 @@ import * as yup from 'yup';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
+import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
 import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
-import {RowDiv} from '../../../styles/components/div';
+import {MainHeaderContents, RowDiv} from '../../../styles/components/div';
+import TableOptionText from "../../Table/Options/TableOptionText";
 
 const AddUser = ({setIsOpened}) => {
 	const history = useHistory();
@@ -78,7 +76,10 @@ const AddUser = ({setIsOpened}) => {
 					</TransparentButton>
 				</AppBarButtons>
 			</AppBarContents>
-			<Form
+			<MainHeaderContents>
+				<TableOptionText data={'usersInfo'}/>
+				<div style={{padding: '10px 10px 10px 20px'}}>
+				<Form
 				initialValues={{
 					id: '',
 					name: '',
@@ -126,6 +127,8 @@ const AddUser = ({setIsOpened}) => {
 					/>
 				</RowDiv>
 			</Form>
+				</div>
+			</MainHeaderContents>
 		</>
 	);
 };

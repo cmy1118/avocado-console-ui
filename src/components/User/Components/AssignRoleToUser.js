@@ -8,6 +8,8 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
+import {TableSpace} from "../../../styles/components/table";
+import TableOptionText from "../../Table/Options/TableOptionText";
 
 const AssignRoleToUser = () => {
 	const dispatch = useDispatch();
@@ -45,7 +47,8 @@ const AssignRoleToUser = () => {
 
 	return (
 		<>
-			<div>권한 추가</div>
+			<TableSpace>권한 추가</TableSpace>
+			<TableOptionText data={'roles'}/>
 			<_Tables>
 				<Table
 					data={dataLeft}

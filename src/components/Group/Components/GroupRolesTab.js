@@ -8,10 +8,9 @@ import Table from '../../Table/Table';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
+import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
+import {TableSpace} from "../../../styles/components/table";
+import TableOptionText from "../../Table/Options/TableOptionText";
 
 const GroupRolesTab = ({groupId}) => {
 	const dispatch = useDispatch();
@@ -88,12 +87,12 @@ const GroupRolesTab = ({groupId}) => {
 	}, [group.roles]);
 	return (
 		<>
-			<div>
+			<TableSpace>
 				이 그룹의 권한 : {dataLeft.length}
 				<TransparentButton onClick={onClickDeleteRolesFromGroup}>
 					삭제
 				</TransparentButton>
-			</div>
+			</TableSpace>
 			<Table
 				data={dataLeft}
 				tableKey={tableKeys.groups.summary.tabs.roles.include}
@@ -111,10 +110,12 @@ const GroupRolesTab = ({groupId}) => {
 				setSelect={setSelect}
 				setData={setRightDataIds}
 			/>
-			<div>
+			<TableSpace>
 				이 그룹의 다른권한 : {dataRight.length}
-				<button onClick={onClickAddRolesToGroup}>권한 추가</button>
-			</div>
+				<NormalButton onClick={onClickAddRolesToGroup}>권한 추가</NormalButton>
+			</TableSpace>
+			<TableOptionText data={'roles'}/>
+
 			<Table
 				data={dataRight}
 				tableKey={tableKeys.groups.summary.tabs.roles.exclude}

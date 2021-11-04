@@ -4,10 +4,9 @@ import {tableColumns} from '../../../Constants/Table/columns';
 import {tableKeys} from '../../../Constants/Table/keys';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
+import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
+import {TableSpace, TableSpaceButtons} from "../../../styles/components/table";
+import TableOptionText from "../../Table/Options/TableOptionText";
 
 const AddTagToGroup = () => {
 	const dispatch = useDispatch();
@@ -55,14 +54,15 @@ const AddTagToGroup = () => {
 
 	return (
 		<>
-			<div>태그 추가</div>
+			<TableSpace>태그 추가
+				<TableSpaceButtons>
+					<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
+					<TransparentButton onClick={onClickDeleteRow}>
+						태그 삭제
+					</TransparentButton>
+				</TableSpaceButtons></TableSpace>
+			<TableOptionText data={'tags'}/>
 
-			<div>
-				<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
-				<TransparentButton onClick={onClickDeleteRow}>
-					태그 삭제
-				</TransparentButton>
-			</div>
 			<Table
 				tableKey={tableKeys.groups.add.tag}
 				data={tagData}

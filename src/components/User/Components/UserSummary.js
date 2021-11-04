@@ -1,9 +1,5 @@
 import PropTypes from 'prop-types';
-import {
-	parentGroupConverter,
-	expiredConverter,
-	statusConverter,
-} from '../../../utils/tableDataConverter';
+import {expiredConverter, parentGroupConverter, statusConverter,} from '../../../utils/tableDataConverter';
 import Table from '../../Table/Table';
 import React, {useMemo} from 'react';
 import {useSelector} from 'react-redux';
@@ -13,11 +9,9 @@ import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType'
 import styled from 'styled-components';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {
-	dummyDates,
-	dummyPolicyOnUser,
-	dummyUsers,
-} from '../../../utils/dummyData';
+import {dummyDates, dummyPolicyOnUser, dummyUsers,} from '../../../utils/dummyData';
+import {ReadOnlyTableSpace} from "../../../styles/components/table";
+import {LiText} from "../../../styles/components/text";
 
 const _UserSummaryContainer = styled.div`
 	height: 500px;
@@ -80,35 +74,35 @@ const UserSummary = ({userId}) => {
 			{/*</AppBarContents>*/}
 
 			<ul>
-				<li>사용자 : {user?.name}</li>
-				<li>사용자 계정 상태 : {statusConverter(user?.status)}</li>
-				<li>마지막 콘솔 로그인 : {user?.lastConsoleLogin}</li>
-				<li>생성 일시 : {user?.creationDate}</li>
-				<li>
+				<LiText>사용자 : {user?.name}</LiText>
+				<LiText>사용자 계정 상태 : {statusConverter(user?.status)}</LiText>
+				<LiText>마지막 콘솔 로그인 : {user?.lastConsoleLogin}</LiText>
+				<LiText>생성 일시 : {user?.creationDate}</LiText>
+				<LiText>
 					계정 사용기간 : {expiredConverter(user?.accountExpired)}
-				</li>
-				<li>
+				</LiText>
+				<LiText>
 					비밀번호 사용기간 :{' '}
 					{expiredConverter(user?.passwordExpired)}
-				</li>
+				</LiText>
 			</ul>
 
 			<_UserSummaryContainer>
-				<div>그룹: {groupData.length}</div>
+				<ReadOnlyTableSpace>그룹: {groupData.length}</ReadOnlyTableSpace>
 				<Table
 					data={groupData}
 					tableKey={tableKeys.users.summary.group}
 					columns={tableColumns[tableKeys.users.summary.group]}
 				/>
 
-				<div>권한: {roleData.length}</div>
+				<ReadOnlyTableSpace>권한: {roleData.length}</ReadOnlyTableSpace>
 				<Table
 					data={roleData}
 					tableKey={tableKeys.users.summary.permission}
 					columns={tableColumns[tableKeys.users.summary.permission]}
 				/>
 
-				<div>태그: {tagData.length}</div>
+				<ReadOnlyTableSpace>태그: {tagData.length}</ReadOnlyTableSpace>
 				<Table
 					data={tagData}
 					tableKey={tableKeys.users.summary.tag}

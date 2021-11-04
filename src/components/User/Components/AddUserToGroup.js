@@ -7,6 +7,8 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
+import {TableSpace} from "../../../styles/components/table";
+import TableOptionText from "../../Table/Options/TableOptionText";
 
 const AddUserToGroup = () => {
 	const dispatch = useDispatch();
@@ -46,7 +48,8 @@ const AddUserToGroup = () => {
 
 	return (
 		<>
-			<div>그룹에 사용자에 추가</div>
+			<TableSpace>그룹에 사용자에 추가</TableSpace>
+			<TableOptionText data={'groups'}/>
 			<_Tables>
 				<Table
 					tableKey={tableKeys.users.add.groups.exclude}

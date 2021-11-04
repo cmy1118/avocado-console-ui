@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {tableKeys} from '../../../Constants/Table/keys';
+import {TableSpace, TableSpaceButtons} from "../../../styles/components/table";
+import {NormalButton, TransparentButton} from "../../../styles/components/buttons";
+import TableOptionText from "../../Table/Options/TableOptionText";
 
 const GroupOnDescPageTags = ({groupId}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -57,13 +60,15 @@ const GroupOnDescPageTags = ({groupId}) => {
 
 	return (
 		<>
-			<div>태그 추가</div>
-
-			<div>
-				<button onClick={onClickAddRow}>태그 추가</button>
-				<button onClick={onClickSaveRow}>태그 저장</button>
-				<button onClick={onClickDeleteRow}>태그 삭제</button>
-			</div>
+			<TableSpace>
+				태그 추가
+				<TableSpaceButtons>
+				<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
+				<NormalButton onClick={onClickSaveRow}>태그 저장</NormalButton>
+				<TransparentButton onClick={onClickDeleteRow}>태그 삭제</TransparentButton>
+				</TableSpaceButtons>
+			  </TableSpace>
+			<TableOptionText data={'tags'}/>
 			<Table
 				tableKey={tableKeys.groups.summary.tabs.tags.basic}
 				data={data}

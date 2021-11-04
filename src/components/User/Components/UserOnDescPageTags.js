@@ -5,10 +5,9 @@ import PropTypes from 'prop-types';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
+import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
+import {TableSpace, TableSpaceButtons} from "../../../styles/components/table";
+import TableOptionText from "../../Table/Options/TableOptionText";
 
 const UserOnDescPageTags = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
@@ -59,15 +58,17 @@ const UserOnDescPageTags = ({userId}) => {
 
 	return (
 		<>
-			<div>태그 추가</div>
+			<TableSpace>태그 추가
+				<TableSpaceButtons>
+					<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
+					<NormalButton onClick={onClickSaveRow}>태그 저장</NormalButton>
+					<TransparentButton onClick={onClickDeleteRow}>
+						태그 삭제
+					</TransparentButton>
+				</TableSpaceButtons>
+			</TableSpace>
+			<TableOptionText data={'tags'}/>
 
-			<div>
-				<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
-				<NormalButton onClick={onClickSaveRow}>태그 저장</NormalButton>
-				<TransparentButton onClick={onClickDeleteRow}>
-					태그 삭제
-				</TransparentButton>
-			</div>
 			<Table
 				tableKey={tableKeys.users.summary.tag}
 				data={data}
