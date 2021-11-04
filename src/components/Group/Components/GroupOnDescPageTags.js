@@ -5,10 +5,9 @@ import PropTypes from 'prop-types';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {tableKeys} from '../../../Constants/Table/keys';
-import {
-	NormalBorderButton,
-	NormalButton,
-} from '../../../styles/components/buttons';
+import {TableSpace, TableSpaceButtons} from "../../../styles/components/table";
+import {NormalButton, TransparentButton,NormalBorderButton,} from "../../../styles/components/buttons";
+import TableOptionText from "../../Table/Options/TableOptionText";
 import {dummyPermission} from '../../../utils/dummyData';
 
 const GroupOnDescPageTags = ({groupId}) => {
@@ -62,15 +61,15 @@ const GroupOnDescPageTags = ({groupId}) => {
 
 	return (
 		<>
-			<div>태그 추가</div>
-
-			<div>
+			<TableSpace>
+				태그 추가
+				<NormalBorderButton>
 				<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
 				<NormalButton onClick={onClickSaveRow}>태그 저장</NormalButton>
-				<NormalBorderButton onClick={onClickDeleteRow}>
-					태그 삭제
+				<NormalBorderButton onClick={onClickDeleteRow}>태그 삭제</NormalBorderButton>
 				</NormalBorderButton>
-			</div>
+			  </TableSpace>
+			<TableOptionText data={'tags'}/>
 			<Table
 				tableKey={tableKeys.groups.summary.tabs.tags.basic}
 				data={data}
@@ -79,83 +78,6 @@ const GroupOnDescPageTags = ({groupId}) => {
 				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
 				setSelect={setSelect}
 			/>
-
-			{select[tableKeys.groups.summary.tabs.tags.basic]?.length === 1 && (
-				<div>
-					<div>
-						<div>
-							태그 [
-							{
-								select[
-									tableKeys.groups.summary.tabs.tags.basic
-								][0].name
-							}
-							:
-							{
-								select[
-									tableKeys.groups.summary.tabs.tags.basic
-								][0].value
-							}
-							]의 정책:
-						</div>
-						<NormalBorderButton>연결 해제</NormalBorderButton>
-					</div>
-					<Table
-						tableKey={
-							tableKeys.users.summary.tabs.tags.permissions
-								.include
-						}
-						data={dummyPermission.filter((v) =>
-							select[
-								tableKeys.groups.summary.tabs.tags.basic
-							][0].permissions.includes(v.id),
-						)}
-						columns={
-							tableColumns[
-								tableKeys.users.summary.tabs.tags.permissions
-									.include
-							]
-						}
-					/>
-					<div>
-						<div>
-							태그 [
-							{
-								select[
-									tableKeys.groups.summary.tabs.tags.basic
-								][0].name
-							}
-							:
-							{
-								select[
-									tableKeys.groups.summary.tabs.tags.basic
-								][0].value
-							}
-							]의 다른 정책:
-						</div>
-						<NormalButton>정책 생성</NormalButton>
-						<NormalButton>정책 연결</NormalButton>
-					</div>
-					<Table
-						tableKey={
-							tableKeys.groups.summary.tabs.tags.permissions
-								.exclude
-						}
-						data={dummyPermission.filter(
-							(v) =>
-								!select[
-									tableKeys.groups.summary.tabs.tags.basic
-								][0].permissions.includes(v.id),
-						)}
-						columns={
-							tableColumns[
-								tableKeys.groups.summary.tabs.tags.permissions
-									.exclude
-							]
-						}
-					/>
-				</div>
-			)}
 		</>
 	);
 };

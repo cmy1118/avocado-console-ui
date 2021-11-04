@@ -79,8 +79,6 @@ const UserDescriptionSpace = ({userId}) => {
 					<TransparentButton>삭제</TransparentButton>
 				</AppBarButtons>
 			</AppBarContents>
-
-			{/*:TODO tab click 시 use summary 닫음 처리  */}
 			{isSummaryOpened ? (
 				<UserSummary
 					userId={userId}

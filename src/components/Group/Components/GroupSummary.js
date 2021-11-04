@@ -9,21 +9,12 @@ import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType'
 import ModalFormContainer from '../../RecycleComponents/ModalFormContainer';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {AppBarButtons, AppBarContents} from '../../../styles/components/style';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
 import * as yup from 'yup';
 import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
-import {Label} from '../../../styles/components/text';
-import {
-	dummyDates,
-	dummyPolicyOnGroup,
-	dummyUsers,
-} from '../../../utils/dummyData';
-import ReadOnlyTable from '../../Table/ReadOnlyTable';
+import {Label, LiText} from '../../../styles/components/text';
+import {dummyDates, dummyPolicyOnGroup, dummyUsers,} from '../../../utils/dummyData';
+import {ReadOnlyTableSpace} from "../../../styles/components/table";
 
 const GroupSummary = ({groupId}) => {
 	const formRef = useRef(null);
@@ -97,33 +88,33 @@ const GroupSummary = ({groupId}) => {
 			{/*	</AppBarButtons>*/}
 			{/*</AppBarContents>*/}
 			<ul>
-				<li>그룹명 : {group?.name}</li>
-				<li>
+				<LiText>그룹명 : {group?.name}</LiText>
+				<LiText>
 					그룹 유형 :{' '}
 					{
 						groupTypes.find((v) => v.id === group.clientGroupTypeId)
 							.name
 					}
-				</li>
-				<li>생성 일시 : {group?.creationDate}</li>
+				</LiText>
+				<LiText>생성 일시 : {group?.creationDate}</LiText>
 			</ul>
 
-			<div>사용자: {userData.length}</div>
-			<ReadOnlyTable
+			<ReadOnlyTableSpace>사용자: {userData.length}</ReadOnlyTableSpace>
+			<Table
 				data={userData}
 				tableKey={tableKeys.groups.summary.user}
 				columns={tableColumns[tableKeys.groups.summary.user]}
 			/>
 
-			<div>권한: {roleData.length}</div>
-			<ReadOnlyTable
+			<ReadOnlyTableSpace>권한: {roleData.length}</ReadOnlyTableSpace>
+			<Table
 				data={roleData}
 				tableKey={tableKeys.groups.summary.permission}
 				columns={tableColumns[tableKeys.groups.summary.permission]}
 			/>
 
-			<div>태그: {tagData.length}</div>
-			<ReadOnlyTable
+			<ReadOnlyTableSpace>태그: {tagData.length}</ReadOnlyTableSpace>
+			<Table
 				data={tagData}
 				tableKey={tableKeys.groups.summary.tag}
 				columns={tableColumns[tableKeys.groups.summary.tag]}

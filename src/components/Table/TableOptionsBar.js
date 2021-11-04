@@ -15,10 +15,10 @@ import {IconButton} from '../../styles/components/icons';
 const _Container = styled.div`
 	display: flex;
 	justify-content: space-between;
-	padding-bottom: 15px;
 `;
 
 const _OptionContainer = styled.div`
+    padding: 14px 0px;
 	display: flex;
 	align-items: center;
 	white-space: nowrap;

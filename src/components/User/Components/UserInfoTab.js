@@ -2,17 +2,14 @@ import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import PropTypes from 'prop-types';
-import {TabContentsTitle} from '../../../styles/components/tab';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import ModalFormContainer from '../../RecycleComponents/ModalFormContainer';
-import {
-	NormalBorderButton,
-	NormalButton,
-} from '../../../styles/components/buttons';
+import {NormalBorderButton, NormalButton,} from '../../../styles/components/buttons';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import Form from '../../RecycleComponents/New/Form';
 import {ColDiv, RowDiv} from '../../../styles/components/div';
 import {Label} from '../../../styles/components/text';
+import {TableSpace} from "../../../styles/components/table";
 
 const UserInfoTab = ({userId}) => {
 	const [values, setValues] = useState({email: '', number: ''});
@@ -44,13 +41,12 @@ const UserInfoTab = ({userId}) => {
 
 	return (
 		<div>
-			<TabContentsTitle>
-				<div>기본정보</div>
+				<TableSpace>기본정보
 				<NormalButton onClick={() => saveRef.current.handleSubmit()}>
 					저장
 				</NormalButton>
-			</TabContentsTitle>
-
+				</TableSpace>
+			<div style={{padding:'10px 10px 0px 30px'}}>
 			<Form
 				initialValues={{
 					id: user.id,
@@ -106,6 +102,7 @@ const UserInfoTab = ({userId}) => {
 					<TextBox name={'mobile'} />
 				</RowDiv>
 			</Form>
+			</div>
 
 			<ModalFormContainer
 				isOpened={isIdentificationOpened}

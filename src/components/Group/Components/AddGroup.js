@@ -5,10 +5,7 @@ import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 import PropTypes from 'prop-types';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
+import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
 import ComboBox from '../../RecycleComponents/New/ComboBox';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import Form from '../../RecycleComponents/New/Form';
@@ -60,6 +57,7 @@ const AddGroup = () => {
 					</TransparentButton>
 				</AppBarButtons>
 			</AppBarContents>
+			<div style={{padding: '20px 10px 50px 20px'}}>
 
 			<Form
 				initialValues={values}
@@ -68,8 +66,8 @@ const AddGroup = () => {
 				innerRef={formRef}
 				validation={validation}
 			>
-				<RowDiv>
-					<ColDiv>
+				<RowDiv style={{marginBottom: '16px'}}>
+					<ColDiv style={{marginRight: '10px'}}>
 						<Label htmlFor='type'>그룹 유형 선택</Label>
 						<ComboBox
 							name='type'
@@ -94,6 +92,7 @@ const AddGroup = () => {
 					/>
 				</ColDiv>
 			</Form>
+			</div>
 		</>
 	);
 };

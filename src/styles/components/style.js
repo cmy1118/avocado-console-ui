@@ -13,7 +13,7 @@ export const DetailContainer = styled.div`
 	flex-direction: column;
 
 	.tabBar {
-		margin-bottom: 20px;
+		// margin-bottom: 20px;
 		position: inherit;
 		z-index: 1;
 	}

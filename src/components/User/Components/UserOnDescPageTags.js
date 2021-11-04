@@ -5,11 +5,9 @@ import PropTypes from 'prop-types';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {
-	NormalBorderButton,
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
+import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
+import {TableSpace, TableSpaceButtons} from "../../../styles/components/table";
+import TableOptionText from "../../Table/Options/TableOptionText";
 import {dummyPermission} from '../../../utils/dummyData';
 
 const UserOnDescPageTags = ({userId}) => {
@@ -59,23 +57,23 @@ const UserOnDescPageTags = ({userId}) => {
 		}
 	}, [data, select]);
 
-	console.log(select);
-
 	return (
 		<>
-			<div>태그 추가</div>
+			<TableSpace>태그 추가
+				<TableSpaceButtons>
+					<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
+					<NormalButton onClick={onClickSaveRow}>태그 저장</NormalButton>
+					<TransparentButton onClick={onClickDeleteRow}>
+						태그 삭제
+					</TransparentButton>
+				</TableSpaceButtons>
+			</TableSpace>
+			<TableOptionText data={'tags'}/>
 
-			<div>
-				<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
-				<NormalButton onClick={onClickSaveRow}>태그 저장</NormalButton>
-				<NormalBorderButton onClick={onClickDeleteRow}>
-					태그 삭제
-				</NormalBorderButton>
-			</div>
 			<Table
-				tableKey={tableKeys.users.summary.tabs.tags.basic}
+				tableKey={tableKeys.users.summary.tag}
 				data={data}
-				columns={tableColumns[tableKeys.users.summary.tabs.tags.basic]}
+				columns={tableColumns[tableKeys.users.summary.tag]}
 				isSelectable
 				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
 				setSelect={setSelect}
