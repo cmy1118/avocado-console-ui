@@ -324,7 +324,6 @@ export const dummyPermission = [
 	},
 	{
 		id: 'permission2',
-
 		name: 'guest-permission',
 		type: 'IAM 권한',
 		description: 'Admin 사용자에게 부여 하는 역할',

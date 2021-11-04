@@ -6,9 +6,11 @@ import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {
+	NormalBorderButton,
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
+import {dummyPermission} from '../../../utils/dummyData';
 
 const UserOnDescPageTags = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
@@ -57,6 +59,8 @@ const UserOnDescPageTags = ({userId}) => {
 		}
 	}, [data, select]);
 
+	console.log(select);
+
 	return (
 		<>
 			<div>태그 추가</div>
@@ -64,9 +68,9 @@ const UserOnDescPageTags = ({userId}) => {
 			<div>
 				<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
 				<NormalButton onClick={onClickSaveRow}>태그 저장</NormalButton>
-				<TransparentButton onClick={onClickDeleteRow}>
+				<NormalBorderButton onClick={onClickDeleteRow}>
 					태그 삭제
-				</TransparentButton>
+				</NormalBorderButton>
 			</div>
 			<Table
 				tableKey={tableKeys.users.summary.tabs.tags.basic}
@@ -76,6 +80,76 @@ const UserOnDescPageTags = ({userId}) => {
 				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
 				setSelect={setSelect}
 			/>
+			{select[tableKeys.users.summary.tabs.tags.basic]?.length === 1 && (
+				<div>
+					<div>
+						<div>
+							태그 [
+							{
+								select[
+									tableKeys.users.summary.tabs.tags.basic
+								][0].name
+							}
+							:
+							{
+								select[
+									tableKeys.users.summary.tabs.tags.basic
+								][0].value
+							}
+							]의 정책:
+						</div>
+						<TransparentButton>연결 해제</TransparentButton>
+					</div>
+					<Table
+						tableKey={tableKeys.users.summary.tabs.tags.basic}
+						data={dummyPermission.filter((v) =>
+							select[
+								tableKeys.users.summary.tabs.tags.basic
+							][0].permissions.includes(v.id),
+						)}
+						columns={
+							tableColumns[
+								tableKeys.users.summary.tabs.tags.permissions
+									.include
+							]
+						}
+					/>
+					<div>
+						<div>
+							태그 [
+							{
+								select[
+									tableKeys.users.summary.tabs.tags.basic
+								][0].name
+							}
+							:
+							{
+								select[
+									tableKeys.users.summary.tabs.tags.basic
+								][0].value
+							}
+							]의 다른 정책:
+						</div>
+						<NormalButton>정책 생성</NormalButton>
+						<NormalButton>정책 연결</NormalButton>
+					</div>
+					<Table
+						tableKey={tableKeys.users.summary.tabs.tags.basic}
+						data={dummyPermission.filter(
+							(v) =>
+								!select[
+									tableKeys.users.summary.tabs.tags.basic
+								][0].permissions.includes(v.id),
+						)}
+						columns={
+							tableColumns[
+								tableKeys.users.summary.tabs.tags.permissions
+									.exclude
+							]
+						}
+					/>
+				</div>
+			)}
 		</>
 	);
 };

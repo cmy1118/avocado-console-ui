@@ -79,7 +79,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to='/groups'>사용자 그룹</NaviLink>
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to={`/groups/${groupId}`}>{groupId}</NaviLink>
+					<NaviLink to={`/groups/${groupId}`}>{group?.name}</NaviLink>
 				</PathContainer>
 				{/*<HoverIconButton onClick={onClickCloseAside}>*/}
 				{/*	{errorIcon}*/}

@@ -387,3 +387,49 @@ export const GROUP_SUMMARY_TABS_PERMISSION_COLUMN = [
 		accessor: 'grantData',
 	},
 ];
+
+export const GROUP_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
+	{
+		Header: '정책 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '유형',
+		accessor: 'type',
+	},
+	{
+		Header: '설명',
+		accessor: 'description',
+	},
+	{
+		Header: '권한 부여 수',
+		accessor: 'numberOfPermissions',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+
+export const GROUP_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
+	{
+		Header: '정책 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '유형',
+		accessor: 'type',
+	},
+	{
+		Header: '설명',
+		accessor: 'description',
+	},
+	{
+		Header: '권한 부여 수',
+		accessor: 'numberOfPermissions',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];

@@ -57,7 +57,7 @@ const UserDescriptionSpace = ({userId}) => {
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to='/users'>사용자</NaviLink>
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to={`/users/${userId}`}>{user?.id}</NaviLink>
+					<NaviLink to={`/users/${userId}`}>{user?.name}</NaviLink>
 				</PathContainer>
 				{/*<HoverIconButton onClick={onClickCloseAside}>*/}
 				{/*	{errorIcon}*/}
