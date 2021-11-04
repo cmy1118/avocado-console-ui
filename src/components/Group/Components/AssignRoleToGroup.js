@@ -20,7 +20,6 @@ const AssignRoleToGroup = () => {
 			.filter((v) => !rightDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
-				type: roleTypeConverter(v.companyId),
 				numberOfUsers: v.users.length,
 			}));
 	}, [roles, rightDataIds]);

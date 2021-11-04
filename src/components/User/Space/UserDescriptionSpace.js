@@ -9,10 +9,8 @@ import {
 	AppBarContents,
 	AppBarNavi,
 	DetailContainer,
-	IamContainer,
 	PathContainer,
 } from '../../../styles/components/style';
-import {Tab, TabItem} from '../../../styles/components/tab';
 import UserInfoTab from '../Components/UserInfoTab';
 import UserGroupsTab from '../Components/UserGroupsTab';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
@@ -20,9 +18,8 @@ import UserOnDescPageTags from '../Components/UserOnDescPageTags';
 import UserSummary from '../Components/UserSummary';
 import UserRolesTab from '../Components/UserRolesTab';
 import {NaviLink} from '../../../styles/components/link';
-import {HoverIconButton, IconButton} from '../../../styles/components/icons';
-import {onClickCloseAside} from '../../Aside/Aside';
-import {arrowDownIcon, arrowUpIcon, errorIcon} from '../../../icons/icons';
+import {IconButton} from '../../../styles/components/icons';
+import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import TabBar from '../../Tab/TabBar';
 import {TransparentButton} from '../../../styles/components/buttons';
 

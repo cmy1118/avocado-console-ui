@@ -70,7 +70,7 @@ export const dummyPolicyOnUser = [
 		policyName: '사용자 관리권한',
 		roleName: 'AdminRole',
 		authTarget: '사용자',
-		grantDate: '2021.09.03 15:35:55',
+		grantDate: '2021.12.01 19:23:02',
 		grantUser: {
 			uid: 'user3',
 			id: 'minmin2',
@@ -87,7 +87,7 @@ export const dummyPolicyOnUser = [
 		policyName: '사용자 그룹 관리 권한',
 		roleName: 'AdminRole',
 		authTarget: '그룹(Admin)',
-		grantDate: '2021.09.03 15:35:55',
+		grantDate: '2020.12.14 16:20:14',
 		grantUser: {
 			uid: 'user1',
 			id: 'kyoung634',
@@ -101,7 +101,7 @@ export const dummyPolicyOnUser = [
 		policyName: '역할 관리 권한',
 		roleName: 'AdminRole',
 		authTarget: '사용자',
-		grantDate: '2021.09.03 15:35:55',
+		grantDate: '2020.01.05 12:00:02',
 		grantUser: {
 			uid: 'user3',
 			id: 'minmin2',
@@ -226,5 +226,130 @@ export const dummyPolicyOnGroup = [
 			id: 'minmin2',
 			name: '박민수',
 		},
+	},
+];
+
+export const dummyPolicyOnRole = [
+	{
+		id: 'policy1',
+		name: '사용자',
+		description:
+			'사용자 : 생성/수정/삭제/조회\n' +
+			'태그 : 추가/수정/삭제/조회\n' +
+			'역할 : 설정/삭제/조회',
+		type: '사용자 관리권한',
+		policyName: 'AdminRole',
+		creationDate: '2021.09.03 15:35:55',
+		grantUser: {
+			uid: 'user3',
+			id: 'minmin2',
+			name: '박민수',
+		},
+	},
+	{
+		id: 'policy2',
+		name: '사용자 그룹',
+		description:
+			'사용자 그룹 : 생성/수정/삭제/조회\n' +
+			'태그 : 추가/수정/삭제/조회\n' +
+			'역할 : 설정/삭제/조회',
+		type: '사용자 그룹 관리 권한',
+		policyName: 'AdminUserGrp',
+		creationDate: '2021.09.03 15:35:55',
+		grantUser: {
+			uid: 'user3',
+			id: 'minmin2',
+			name: '박민수',
+		},
+	},
+	{
+		id: 'policy3',
+		name: '역할',
+		description: '역할 : 추가/수정/삭제/조회\n' + '권한 : 설정/삭제/조회',
+		type: '역할 관리 권한',
+		policyName: 'AdminRole',
+		creationDate: '2021.09.03 15:35:55',
+		grantUser: {
+			uid: 'user3',
+			id: 'minmin2',
+			name: '박민수',
+		},
+	},
+	{
+		id: 'policy4',
+		name: '비밀번호 사용기간',
+		description:
+			'사용기간 : 200일\n' +
+			'계정처리 방법 : 잠금\n' +
+			'해제 조건 : 본인확인인증',
+		type: '계정처리 정책',
+		policyName: 'AdminAccount',
+		creationDate: '2021.09.03 15:35:58',
+		grantUser: {
+			uid: 'user1',
+			id: 'kyoung634',
+			name: '김영우',
+		},
+	},
+	{
+		id: 'policy5',
+		name: '서비스 사용기간',
+		description:
+			'접근 유형 : Console/Webterm\n' +
+			'이용시간 : 09:00 ~ 18:00\n' +
+			'요일 : 월~금',
+		type: '사용자 접근',
+		policyName: 'DefaultAccess',
+		creationDate: '2021.09.03 15:35:58',
+		grantUser: {
+			uid: 'user3',
+			id: 'minmin2',
+			name: '박민수',
+		},
+	},
+];
+
+export const dummyPermission = [
+	{
+		id: 'permission1',
+		name: 'admin-permission',
+		type: 'PAM 정책',
+		description:
+			'사용자 레벨의 최고 관리자인 Manager에게 부여된 역할 (기본제공)',
+		numberOfRoles: 1,
+		creationData: '2019.01.12 14:24:28',
+	},
+	{
+		id: 'permission2',
+
+		name: 'guest-permission',
+		type: 'IAM 권한',
+		description: 'Admin 사용자에게 부여 하는 역할',
+		numberOfRoles: 2,
+		creationData: '2019.02.21 16:02:46',
+	},
+	{
+		id: 'permission3',
+		name: 'role-permission',
+		type: 'IAM 권한',
+		description: '정책을 일반 User에게 부여 하는 역할',
+		numberOfRoles: 4,
+		creationData: '2019.06.24 15:46:02',
+	},
+	{
+		id: 'permission4',
+		name: 'userRole-permission',
+		type: 'PAM 정책',
+		description: '일반 User의 역할을 부을 하는 역할',
+		numberOfRoles: 2,
+		creationData: '2019.04.30 21:23:43',
+	},
+	{
+		id: 'permission5',
+		name: 'tempPolicy-permission',
+		type: 'PAM 정책',
+		description: '일반 User에게 임시로 부여 하는 역할',
+		numberOfRoles: 10,
+		creationData: '2020.01.06 14:03:25',
 	},
 ];

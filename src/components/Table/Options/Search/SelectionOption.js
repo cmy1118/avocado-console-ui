@@ -10,6 +10,7 @@ const placeholders = {
 	authType: '인증유형',
 	MFA: 'MFA',
 	passwordExpiryTime: '비밀번호 수명',
+	roleType: '역할 유형',
 };
 
 const SelectionOption = ({column: {id}}) => {

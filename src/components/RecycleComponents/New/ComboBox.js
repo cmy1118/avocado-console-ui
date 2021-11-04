@@ -137,8 +137,9 @@ const ComboBox = ({type = 'normal', ...props}) => {
 								onClick={onClickOption}
 								key={i}
 								current={
-									v.value === field.value ||
-									v.label === field.value
+									(v.value === field.value ||
+										v.label === field.value) &&
+									type === 'normal'
 								}
 								{...field}
 								value={v.value}

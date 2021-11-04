@@ -48,10 +48,10 @@ export const USER_COLUMN = [
 		accessor: 'authType',
 		Header: '인증유형',
 		filter: 'equals',
+		Filter: SelectionOption,
 		Cell: function Component(v) {
 			return <div>{authTypeConverter(v.value)}</div>;
 		},
-		Filter: SelectionOption,
 		width: 100,
 	},
 	{

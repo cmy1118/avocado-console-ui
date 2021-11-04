@@ -8,10 +8,7 @@ import Table from '../../Table/Table';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
+import {TransparentButton} from '../../../styles/components/buttons';
 
 const GroupRolesTab = ({groupId}) => {
 	const dispatch = useDispatch();
