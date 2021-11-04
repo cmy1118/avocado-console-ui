@@ -26,6 +26,8 @@ const CalenderOption = ({column: {filterValue = [], setFilter, id}}) => {
 			focusedInput={focusedInput}
 			onFocusChange={onFocusChange}
 			isOutsideRange={() => false}
+			displayFormat='YYYY.MM.DD'
+			customArrowIcon={<div style={{padding: '9px'}}> to </div>}
 		/>
 	);
 };
