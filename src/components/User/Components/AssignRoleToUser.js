@@ -8,12 +8,13 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
+import DragContainer from '../../Table/DragContainer';
 
 const AssignRoleToUser = () => {
 	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
-	const [select, setSelect] = useState([]);
+	const [select, setSelect] = useState({});
 
 	const dataLeft = useMemo(() => {
 		return roles
@@ -44,7 +45,7 @@ const AssignRoleToUser = () => {
 	}, [dataRight, dispatch]);
 
 	return (
-		<>
+		<DragContainer selected={select}>
 			<div>권한 추가</div>
 			<_Tables>
 				<Table
@@ -93,7 +94,7 @@ const AssignRoleToUser = () => {
 					/>
 				</div>
 			</_Tables>
-		</>
+		</DragContainer>
 	);
 };
 

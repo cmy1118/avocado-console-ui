@@ -7,51 +7,48 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
+import DragContainer from '../../Table/DragContainer';
 
 const AddUserToGroup = () => {
 	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
-	const [select, setSelect] = useState([]);
-	const dataLeft = useMemo(() => {
-		const dropDataTypeId = groups
-			.filter((v) => rightDataIds.includes(v.id))
-			.map((v) => v.clientGroupTypeId);
-		return groups
-			.filter((v) => !dropDataTypeId.includes(v.clientGroupTypeId))
-			.map((v) => ({
-				...v,
-				type: v.clientGroupTypeId,
-				numberOfUsers: v.members.length,
-			}));
-	}, [groups, rightDataIds]);
-
-	const dataRight = useMemo(() => {
-		return groups
-			.filter((v) => rightDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: v.clientGroupTypeId,
-			}));
-	}, [groups, rightDataIds]);
+	const [select, setSelect] = useState({});
+	const [datas, setDatas] = useState({
+		[tableKeys.users.add.groups.exclude]:
+			groups
+				.filter(
+					(v) =>
+						!groups
+							.filter((v) => rightDataIds.includes(v.id))
+							.map((v) => v.clientGroupTypeId)
+							.includes(v.clientGroupTypeId),
+				)
+				.map((v) => ({
+					...v,
+					type: v.clientGroupTypeId,
+					numberOfUsers: v.members.length,
+				})) || [],
+		[tableKeys.users.add.groups.include]: [],
+	});
 
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
 				title: tableKeys.users.add.groups.exclude,
-				data: dataRight,
+				data: datas[tableKeys.users.add.groups.include],
 			}),
 		);
-	}, [dataRight, dispatch]);
+	}, [datas, dispatch]);
 
 	return (
-		<>
+		<DragContainer selected={select} data={datas} setData={setDatas}>
 			<div>그룹에 사용자에 추가</div>
 			<_Tables>
 				<Table
 					tableKey={tableKeys.users.add.groups.exclude}
 					columns={tableColumns[tableKeys.users.add.groups.exclude]}
-					data={dataLeft}
+					data={datas[tableKeys.users.add.groups.exclude]}
 					isPageable
 					isNumberOfRowsAdjustable
 					isColumnFilterable
@@ -68,8 +65,8 @@ const AddUserToGroup = () => {
 						leftTableKey={tableKeys.users.add.groups.exclude}
 						RightTableKey={tableKeys.users.add.groups.include}
 						select={select}
-						dataLeft={dataLeft}
-						dataRight={dataRight}
+						dataLeft={datas[tableKeys.users.add.groups.exclude]}
+						dataRight={datas[tableKeys.users.add.groups.include]}
 						rightDataIds={rightDataIds}
 						setRightDataIds={setRightDataIds}
 					/>
@@ -83,10 +80,7 @@ const AddUserToGroup = () => {
 						columns={
 							tableColumns[tableKeys.users.add.groups.include]
 						}
-						data={dataRight}
-						// isPageable
-						// isNumberOfRowsAdjustable
-						// isColumnFilterable
+						data={datas[tableKeys.users.add.groups.include]}
 						isSortable
 						isSelectable
 						isDnDPossible
@@ -97,7 +91,7 @@ const AddUserToGroup = () => {
 					/>
 				</div>
 			</_Tables>
-		</>
+		</DragContainer>
 	);
 };
 

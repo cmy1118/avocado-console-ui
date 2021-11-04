@@ -49,13 +49,13 @@ export const TableContainer = styled.div`
 		.head {
 			background: #f8f9fa;
 			border-bottom: 1px solid #e3e5e5;
-			display: flex;
-			justify-content: space-between;
+			// display: flex;
+			// justify-content: space-between;
 		}
 		.body {
 			border-bottom: 1px solid #e3e5e5;
-			display: flex;
-			justify-content: space-between;
+			// display: flex;
+			// justify-content: space-between;
 			// :last-child {
 			// 	border: none;
 			// }
@@ -98,8 +98,8 @@ export const HoverTableContainer = styled(TableContainer)`
 	}
 	.body {
 		border-bottom: 1px solid #e3e5e5;
-		display: flex;
-		justify-content: space-between;
+		// display: flex;
+		// justify-content: space-between;
 		&:hover {
 			background: #f8f9fa;
 		}

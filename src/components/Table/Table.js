@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import requiredIf from 'react-required-if';
+import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {
 	useFilters,
 	useGlobalFilter,
@@ -9,7 +10,6 @@ import {
 	useSortBy,
 	useTable,
 } from 'react-table';
-
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
 import DIALOG_BOX from '../../reducers/dialogBoxs';
@@ -248,6 +248,7 @@ const Table = ({
 								// eslint-disable-next-line react/prop-types,react/display-name
 								{...row.getToggleRowSelectedProps()}
 								tablekey={tableKey}
+								row={row}
 							/>
 						),
 						width: 40,
@@ -332,10 +333,6 @@ const Table = ({
 		],
 	);
 
-	const onDragOver = useCallback((e) => {
-		e.preventDefault();
-	}, []);
-
 	const onClickCloseFilter = useCallback(
 		(v) => () => {
 			setSelectedSearchFilters(
@@ -365,48 +362,59 @@ const Table = ({
 			const row = rows[index];
 			prepareRow(row);
 			return (
-				<div
-					style={style}
-					onDragStart={onDragStart(row)}
-					onDragEnd={onDragEnd}
-					className={
-						Object.keys(selectedRowIds).includes(
-							row.original.uid
-								? row.original.uid
-								: row.original.id,
-						)
-							? 'tr body selected'
-							: 'tr body'
+				<Draggable
+					draggableId={
+						row.original.uid ? row.original.uid : row.original.id
 					}
-					draggable={isDnDPossible ? 'true' : 'false'}
-					id={row.original.uid ? row.original.uid : row.original.id}
-					key={row.original.uid ? row.original.uid : row.original.id}
+					index={index}
 				>
-					{row.cells.map((cell, i) => {
-						return (
-							<RowDiv
-								alignItems={'center'}
-								className={'td'}
-								width={`${cell.column.width}px`}
-								key={i}
-								{...cell.getCellProps}
-							>
-								{cell.render('Cell', {setData})}
-							</RowDiv>
-						);
-					})}
-				</div>
+					{(provided) => (
+						<div
+							ref={provided.innerRef}
+							{...provided.dragHandleProps}
+							{...provided.draggableProps}
+							style={style}
+							className={
+								Object.keys(selectedRowIds).includes(
+									row.original.uid
+										? row.original.uid
+										: row.original.id,
+								)
+									? 'tr body selected'
+									: 'tr body'
+							}
+							id={
+								row.original.uid
+									? row.original.uid
+									: row.original.id
+							}
+							key={
+								row.original.uid
+									? row.original.uid
+									: row.original.id
+							}
+						>
+							{row.cells.map((cell, i) => {
+								return (
+									<RowDiv
+										alignItems={'center'}
+										className={'td'}
+										width={`${cell.column.width}px`}
+										key={i}
+										{...cell.getCellProps}
+									>
+										{cell.render('Cell', {
+											setData,
+										})}
+									</RowDiv>
+								);
+							})}
+						</div>
+					)}
+				</Draggable>
 			);
 		},
-		[
-			isDnDPossible,
-			onDragEnd,
-			onDragStart,
-			prepareRow,
-			rows,
-			selectedRowIds,
-			setData,
-		],
+		[prepareRow, rows, selectedRowIds, setData, tableKey],
 	);
 
 	useEffect(() => {
@@ -501,56 +509,77 @@ const Table = ({
 						)}
 					</FiltersContainer>
 				))}
-
-			<div
-				className={`${tableKey} table`}
-				{...getTableProps()}
-				onDrop={onDrop}
-				onDragOver={onDragOver}
+			<Droppable
+				droppableId={tableKey}
+				mode={'Virtual'}
+				renderClone={(provided, snapshot, rubric) => {
+					return (
+						<div
+							{...provided.draggableProps}
+							{...provided.dragHandleProps}
+							ref={provided.innerRef}
+						/>
+					);
+				}}
 			>
-				{headerGroups.map((headerGroup, i) => (
+				{(provided) => (
 					<div
-						className={'tr head'}
-						key={i}
-						{...headerGroup.getHeaderGroupProps()}
+						className={`${tableKey} table`}
+						{...getTableProps()}
+						ref={provided.innerRef}
+						{...provided.droppableProps}
+						// onDrop={onDrop}
+						// onDragOver={onDragOver}
 					>
-						{headerGroup.headers.map((column, i) => {
-							// console.log(column);
-							return (
-								<RowDiv
-									className={'th'}
-									width={`${column.width}px`}
-									key={i}
-									alignItems={'center'}
-									{...column.getHeaderProps(
-										column.getSortByToggleProps(),
-									)}
-								>
-									{column.render('Header')}
-									{isSortable &&
-										!(i === 0 && isSelectable) && (
-											<Icon margin={'0px'}>
-												{column.isSortedDesc ===
-													'ture' ||
-												column.isSortedDesc ===
-													undefined
-													? arrowDownIcon
-													: arrowUpIcon}
-											</Icon>
-										)}
-								</RowDiv>
-							);
-						})}
+						{headerGroups.map((headerGroup, i) => (
+							<div
+								className={'tr head'}
+								key={i}
+								{...headerGroup.getHeaderGroupProps()}
+							>
+								{headerGroup.headers.map((column, i) => {
+									// console.log(column);
+									return (
+										<RowDiv
+											className={'th'}
+											width={`${column.width}px`}
+											key={i}
+											alignItems={'center'}
+											{...column.getHeaderProps(
+												column.getSortByToggleProps(),
+											)}
+										>
+											{column.render('Header')}
+											{isSortable &&
+												!(i === 0 && isSelectable) && (
+													<Icon margin={'0px'}>
+														{column.isSortedDesc ===
+															'ture' ||
+														column.isSortedDesc ===
+															undefined
+															? arrowDownIcon
+															: arrowUpIcon}
+													</Icon>
+												)}
+										</RowDiv>
+									);
+								})}
+							</div>
+						))}
+						<FixedSizeList
+							height={fullSize ? tableHeight - headerHeight : 300}
+							itemCount={
+								rows.length > pageSize ? pageSize : rows.length
+							}
+							itemSize={40}
+							outerRef={provided.innerRef}
+						>
+							{RenderRow}
+						</FixedSizeList>
+						{provided.placeholder}
 					</div>
-				))}
-				<FixedSizeList
-					height={fullSize ? tableHeight - headerHeight : 300}
-					itemCount={rows.length > pageSize ? pageSize : rows.length}
-					itemSize={40}
-				>
-					{RenderRow}
-				</FixedSizeList>
-			</div>
+				)}
+			</Droppable>
 		</HoverTableContainer>
 	);
 };

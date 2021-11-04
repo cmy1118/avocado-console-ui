@@ -11,7 +11,7 @@ import {
 } from '../../../styles/components/buttons';
 import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
-import {ColDiv, RowDiv} from '../../../styles/components/div';
+import {RowDiv} from '../../../styles/components/div';
 
 const AddUser = ({setIsOpened}) => {
 	const history = useHistory();

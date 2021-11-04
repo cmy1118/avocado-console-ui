@@ -24,6 +24,7 @@
 		"prop-types": "^15.7.2",
 		"qs": "^6.10.1",
 		"react": "^17.0.1",
+		"react-beautiful-dnd": "^13.1.0",
 		"react-contexify": "^5.0.0",
 		"react-dates": "^21.8.0",
 		"react-dnd": "^14.0.4",
