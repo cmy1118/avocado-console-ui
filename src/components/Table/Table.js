@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import requiredIf from 'react-required-if';
-import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
+import {Draggable, Droppable} from 'react-beautiful-dnd';
 import {
 	useFilters,
 	useGlobalFilter,
@@ -12,19 +11,11 @@ import {
 } from 'react-table';
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
-import DIALOG_BOX from '../../reducers/dialogBoxs';
 import {useDispatch} from 'react-redux';
-import {CheckDropDataType} from '../../utils/dropTableDataCheck';
-import {
-	checkArrayhasDuplicates,
-	checkArrayIsUniqueHasDuplicates,
-	checkArraysIsUniqueHasDuplicates,
-} from '../../utils/dataFitering';
 import {NormalBorderButton} from '../../styles/components/buttons';
-import {checkDropTypeAlertMessage} from '../DialogBoxs/Alert/ConfirmDialogBox';
 import {arrowDownIcon, arrowUpIcon, cancelIcon} from '../../icons/icons';
 import {HoverIconButton, Icon} from '../../styles/components/icons';
-import {ColDiv, RowDiv, HoverTableContainer} from '../../styles/components/div';
+import {ColDiv, HoverTableContainer, RowDiv} from '../../styles/components/div';
 import {Label} from '../../styles/components/text';
 import styled from 'styled-components';
 import {FixedSizeList} from 'react-window';
@@ -73,10 +64,7 @@ const Table = ({
 	isColumnFilterable = false,
 	isSortable = false,
 	isSelectable = false,
-	isDnDPossible = false,
-	dndKey,
 	setData,
-	control = false,
 	setSelect,
 	fullSize = false,
 }) => {
@@ -113,89 +101,6 @@ const Table = ({
 		return v.id;
 	}, []);
 
-	/***************************************************************************/
-	/* DndTable_update : 유형별 조건에 맞는 경고 알림추가
-	/*
-	/***************************************************************************/
-	const onDropCheckMaxNumber = useCallback(
-		(e, data, tableKey) => {
-			const max = 10;
-			const preDataLength = data.length;
-			const dropDataLength = e.dataTransfer.getData('ids').split(',')
-				.length;
-			if (preDataLength + dropDataLength > max) {
-				dispatch(
-					DIALOG_BOX.action.openAlert({
-						key: checkDropTypeAlertMessage(tableKey),
-					}),
-				);
-				return false;
-			} else {
-				return true;
-			}
-		},
-		[dispatch],
-	);
-
-	const onDropCheckTypeLimited = useCallback(
-		(e, data, tableKey) => {
-			const GROUP = 'groups';
-			const ROLES = 'roles';
-			const UESRS = 'users';
-			const FILTER_TYPE = 'Private';
-			const preDataType = data.map((v) => {
-				return v.type;
-			});
-			const dropDataType = e.dataTransfer
-				.getData('selectedType')
-				.split(',');
-			//  API : groups 일때 - 그룹 유형 검사 : 그룹유형별 1개의 그룹만 추가
-			if (CheckDropDataType(tableKey)) {
-				if (CheckDropDataType(tableKey) === GROUP) {
-					const TypeLimited = dropDataType.filter((v) =>
-						preDataType.includes(v),
-					).length;
-					if (
-						TypeLimited > 1 ||
-						checkArrayhasDuplicates(dropDataType)
-					) {
-						dispatch(
-							DIALOG_BOX.action.openAlert({
-								key: 'singleCountGroupTypes',
-							}),
-						);
-						return false;
-					}
-					return true;
-				} else if (CheckDropDataType(tableKey) === ROLES) {
-					// API : roles 일때 - 역할 유형 검사 : Private 유형은 한사용자에게만
-					if (
-						checkArrayIsUniqueHasDuplicates(
-							dropDataType,
-							FILTER_TYPE,
-						) ||
-						checkArraysIsUniqueHasDuplicates(
-							preDataType,
-							dropDataType,
-							FILTER_TYPE,
-						)
-					) {
-						dispatch(
-							DIALOG_BOX.action.openAlert({
-								key: 'singleCountRolesTypes',
-							}),
-						);
-						return false;
-					} else {
-						return true;
-					}
-				} else {
-					return true;
-				}
-			}
-		},
-		[dispatch],
-	);
 	/***************************************************************************/
 
 	const {
@@ -257,80 +162,6 @@ const Table = ({
 					...columns,
 				]);
 		},
-	);
-
-	const onDragEnd = useCallback((e) => {
-		e.target.classList.remove('dragging');
-	}, []);
-
-	const onDragStart = useCallback(
-		(row) => (e) => {
-			e.target.classList.add('dragging');
-			const firstTarget = e.target.firstChild.childNodes[0].childNodes[0];
-			const flatRows = selectedFlatRows;
-
-			console.log(e);
-
-			console.log('onDragStart ::: ', tableKey);
-			const selected = Object.keys(selectedRowIds);
-			if (firstTarget.type === 'checkbox' && !firstTarget.checked) {
-				selected.push(row.id);
-				flatRows.push(row);
-				firstTarget.click();
-				// firstTarget.checked = true;
-			}
-			if (dndKey) {
-				const selectedType = flatRows.map((v) => v.values.type);
-				e.dataTransfer.setData('selectedType', selectedType.toString());
-				console.log('dndKey');
-			}
-			e.dataTransfer.setData('ids', selected.toString());
-			e.dataTransfer.setData(
-				'prevIds',
-				data.map((v) => v.id),
-			);
-			e.dataTransfer.setData('tableKey', tableKey);
-			e.dataTransfer.setData('dndKey', dndKey);
-		},
-
-		[data, dndKey, selectedFlatRows, selectedRowIds, tableKey],
-	);
-
-	const onDrop = useCallback(
-		(e) => {
-			e.preventDefault();
-			if (e.dataTransfer.getData('dndKey') !== dndKey) return;
-			if (setData) {
-				control // data를 control하는 쪽이면? 추가 아니면 삭제
-					? onDropCheckMaxNumber(e, data, tableKey) &&
-					  onDropCheckTypeLimited(e, data, tableKey) &&
-					  setData([
-							...data.map((v) => v.id),
-							...e.dataTransfer.getData('ids').split(','),
-					  ])
-					: setData(
-							e.dataTransfer
-								.getData('prevIds')
-								.split(',')
-								.filter(
-									(v) =>
-										!e.dataTransfer
-											.getData('ids')
-											.split(',')
-											.includes(v),
-								),
-					  );
-			}
-		},
-		[
-			dndKey,
-			setData,
-			control,
-			onDropCheckMaxNumber,
-			data,
-			tableKey,
-			onDropCheckTypeLimited,
-		],
 	);
 
 	const onClickCloseFilter = useCallback(
@@ -414,7 +245,7 @@ const Table = ({
 				</Draggable>
 			);
 		},
-		[prepareRow, rows, selectedRowIds, setData, tableKey],
+		[prepareRow, rows, selectedRowIds, setData],
 	);
 
 	useEffect(() => {
@@ -601,7 +432,7 @@ Table.propTypes = {
 	setSelect: PropTypes.func,
 	control: PropTypes.bool,
 	fullSize: PropTypes.bool,
-	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
+	// dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 
 export default Table;

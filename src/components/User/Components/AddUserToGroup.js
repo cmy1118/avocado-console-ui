@@ -12,15 +12,27 @@ import DragContainer from '../../Table/DragContainer';
 const AddUserToGroup = () => {
 	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const [rightDataIds, setRightDataIds] = useState([]);
 	const [select, setSelect] = useState({});
-	const [datas, setDatas] = useState({
-		[tableKeys.users.add.groups.exclude]:
+	const [includedDataIds, setIncludedDataIds] = useState([]);
+
+	const includedData = useMemo(
+		() =>
+			groups
+				.filter((v) => includedDataIds.includes(v.id))
+				.map((v) => ({
+					...v,
+					type: v.clientGroupTypeId,
+					numberOfUsers: v.members.length,
+				})),
+		[groups, includedDataIds],
+	);
+	const excludedData = useMemo(
+		() =>
 			groups
 				.filter(
 					(v) =>
 						!groups
-							.filter((v) => rightDataIds.includes(v.id))
+							.filter((v) => includedDataIds.includes(v.id))
 							.map((v) => v.clientGroupTypeId)
 							.includes(v.clientGroupTypeId),
 				)
@@ -29,26 +41,33 @@ const AddUserToGroup = () => {
 					type: v.clientGroupTypeId,
 					numberOfUsers: v.members.length,
 				})) || [],
-		[tableKeys.users.add.groups.include]: [],
-	});
+		[groups, includedDataIds],
+	);
 
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
 				title: tableKeys.users.add.groups.exclude,
-				data: datas[tableKeys.users.add.groups.include],
+				data: groups.filter((v) => includedDataIds.includes(v.id)),
 			}),
 		);
-	}, [datas, dispatch]);
+	}, [dispatch, groups, includedDataIds]);
 
 	return (
-		<DragContainer selected={select} data={datas} setData={setDatas}>
+		<DragContainer
+			selected={select}
+			data={includedDataIds}
+			setData={setIncludedDataIds}
+			includedKey={tableKeys.users.add.groups.include}
+			excludedData={excludedData}
+			includedData={includedData}
+		>
 			<div>그룹에 사용자에 추가</div>
 			<_Tables>
 				<Table
 					tableKey={tableKeys.users.add.groups.exclude}
 					columns={tableColumns[tableKeys.users.add.groups.exclude]}
-					data={datas[tableKeys.users.add.groups.exclude]}
+					data={excludedData}
 					isPageable
 					isNumberOfRowsAdjustable
 					isColumnFilterable
@@ -56,8 +75,6 @@ const AddUserToGroup = () => {
 					isSelectable
 					isDnDPossible
 					isSearchable
-					dndKey={tableKeys.users.add.groups.dnd}
-					setData={setRightDataIds}
 					setSelect={setSelect}
 				/>
 				<RowDiv alignItems={'center'}>
@@ -65,29 +82,26 @@ const AddUserToGroup = () => {
 						leftTableKey={tableKeys.users.add.groups.exclude}
 						RightTableKey={tableKeys.users.add.groups.include}
 						select={select}
-						dataLeft={datas[tableKeys.users.add.groups.exclude]}
-						dataRight={datas[tableKeys.users.add.groups.include]}
-						rightDataIds={rightDataIds}
-						setRightDataIds={setRightDataIds}
+						dataLeft={excludedData}
+						dataRight={includedData}
+						rightDataIds={includedDataIds}
+						setRightDataIds={setIncludedDataIds}
 					/>
 				</RowDiv>
 				<div>
 					<TableHeader>
-						추가 그룹: {rightDataIds.length}건
+						추가 그룹: {includedDataIds.length}건
 					</TableHeader>
 					<Table
 						tableKey={tableKeys.users.add.groups.include}
 						columns={
 							tableColumns[tableKeys.users.add.groups.include]
 						}
-						data={datas[tableKeys.users.add.groups.include]}
+						data={includedData}
 						isSortable
 						isSelectable
 						isDnDPossible
-						dndKey={tableKeys.users.add.groups.dnd}
-						setData={setRightDataIds}
 						setSelect={setSelect}
-						control
 					/>
 				</div>
 			</_Tables>
