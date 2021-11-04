@@ -34,8 +34,8 @@ const RoleGroupTab = ({roleId}) => {
 				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
 					.name,
 				numberOfPermissions: v.roles.length,
-				grantUser: dummyUsers[i],
 				grantDate: dummyDates[i],
+				grantUser: dummyUsers[i],
 			}));
 	}, [groups, role]);
 
@@ -53,9 +53,6 @@ const RoleGroupTab = ({roleId}) => {
 				})),
 		[groups, role],
 	);
-
-	console.log(dataLeft);
-	console.log(dataRight);
 
 	return (
 		<>

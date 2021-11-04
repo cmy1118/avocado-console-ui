@@ -165,13 +165,13 @@ export const ROLE_SUMMARY_GROUPS_INCLUDE_COLUMN = [
 	{accessor: 'numberOfPermissions', Header: '권한 수'},
 	{accessor: 'creationDate', Header: '생성 일시'},
 	{accessor: 'grantDate', Header: '부여 일시'},
-	// {
-	// 	accessor: 'grantUser',
-	// 	Header: '부여 사용자',
-	// 	Cell: function Component(v) {
-	// 		return <div>{v.value?.name + '(' + v.value?.id + ')'}</div>;
-	// 	},
-	// },
+	{
+		accessor: 'grantUser',
+		Header: '부여 사용자',
+		Cell: function Component(v) {
+			return <div>{v.value?.name + '(' + v.value?.id + ')'}</div>;
+		},
+	},
 ];
 
 export const ROLE_SUMMARY_GROUPS_EXCLUDE_COLUMN = [

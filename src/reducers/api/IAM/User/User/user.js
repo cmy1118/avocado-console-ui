@@ -1,4 +1,4 @@
-import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {baseUrl} from '../../../../../api/constants';
 import faker from 'faker';
