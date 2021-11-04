@@ -43,8 +43,7 @@ const PageSizing = ({pageSize, setPageSize}) => {
 					width={'90px'}
 					name='page'
 					options={[
-						{value: 2, label: '2행'},
-						{value: 3, label: '3행'},
+						{value: 10, label: '10행'},
 						{value: 20, label: '20행'},
 						{value: 50, label: '50행'},
 						{value: 100, label: '100행'},

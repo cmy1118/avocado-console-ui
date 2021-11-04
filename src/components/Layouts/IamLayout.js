@@ -45,7 +45,9 @@ const _Space = styled.div`
 	position: relative;
 `;
 
-const _MainSpace = styled.div``;
+const _MainSpace = styled.div`
+	height: 100%;
+`;
 
 const IamLayout = ({children}) => {
 	const [isNavOpened, setIsNavOpened] = useState(true);

@@ -78,6 +78,7 @@ const Table = ({
 	setData,
 	control = false,
 	setSelect,
+	fullSize = false,
 }) => {
 	const dispatch = useDispatch();
 	const filterTypes = React.useMemo(
@@ -96,6 +97,9 @@ const Table = ({
 		}),
 		[],
 	);
+
+	const [tableHeight, setTableHeight] = useState(0);
+	const [headerHeight, setHeaderHeight] = useState(0);
 
 	const searchFilters = useMemo(() => {
 		return columns.filter((v) =>
@@ -196,11 +200,9 @@ const Table = ({
 
 	const {
 		getTableProps,
-		getTableBodyProps,
 		headerGroups,
 		prepareRow,
 		allColumns,
-		page, // Instead of using 'rows', we'll use page,
 		canPreviousPage,
 		canNextPage,
 		pageOptions,
@@ -396,8 +398,27 @@ const Table = ({
 				</div>
 			);
 		},
-		[isDnDPossible, onDragStart, prepareRow, rows, selectedRowIds, setData],
+		[
+			isDnDPossible,
+			onDragEnd,
+			onDragStart,
+			prepareRow,
+			rows,
+			selectedRowIds,
+			setData,
+		],
 	);
+
+	useEffect(() => {
+		setTableHeight(
+			document.querySelector(`.${tableKey}[role = 'table']`)
+				?.offsetHeight,
+		);
+		setHeaderHeight(
+			document.querySelector(`.${tableKey}[role = 'table'] > .head`)
+				?.offsetHeight,
+		);
+	}, [tableKey]);
 
 	useEffect(() => {
 		setSelect && selectedFlatRows && selectedDropButton(selectedFlatRows);
@@ -482,7 +503,7 @@ const Table = ({
 				))}
 
 			<div
-				className={'table'}
+				className={`${tableKey} table`}
 				{...getTableProps()}
 				onDrop={onDrop}
 				onDragOver={onDragOver}
@@ -523,13 +544,7 @@ const Table = ({
 					</div>
 				))}
 				<FixedSizeList
-					{...getTableBodyProps()}
-					height={
-						// rows.length > pageSize
-						// 	? pageSize * 40
-						// 	: rows.length * 40
-						300
-					}
+					height={fullSize ? tableHeight - headerHeight : 300}
 					itemCount={rows.length > pageSize ? pageSize : rows.length}
 					itemSize={40}
 				>
@@ -556,6 +571,7 @@ Table.propTypes = {
 	setData: PropTypes.func,
 	setSelect: PropTypes.func,
 	control: PropTypes.bool,
+	fullSize: PropTypes.bool,
 	dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 

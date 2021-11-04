@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const IamContainer = styled.div`
 	flex: 1;
 	display: flex;
+	height: 100%;
 	flex-direction: column;
 `;
 

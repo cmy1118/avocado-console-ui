@@ -91,6 +91,7 @@ const GroupSpace = () => {
 				isSelectable
 				setSelect={setSelect}
 				isSearchable
+				fullSize
 			/>
 		</IamContainer>
 	);
