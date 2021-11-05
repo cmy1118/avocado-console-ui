@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import {Link, useHistory, useLocation} from 'react-router-dom';
-import styled from 'styled-components';
+import {useHistory, useLocation} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import qs from 'qs';
 
@@ -10,29 +9,22 @@ import {
 	AppBarContents,
 	AppBarNavi,
 	DetailContainer,
-	IamContainer,
 	PathContainer,
 } from '../../../styles/components/style';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
-import {Tab, TabItem} from '../../../styles/components/tab';
 import GroupRolesTab from '../Components/GroupRolesTab';
 import GroupSummary from '../Components/GroupSummary';
-
-const _Title = styled.div`
-	display: flex;
-	justify-content: space-between;
-`;
 import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
 import GroupUsersTab from '../Components/GroupUsersTab';
-import {onClickCloseAside} from '../../Aside/Aside';
-import {arrowDownIcon, arrowRightIcon, arrowUpIcon, errorIcon} from '../../../icons/icons';
-import {HoverIconButton, IconButton} from '../../../styles/components/icons';
+import {arrowDownIcon, arrowRightIcon} from '../../../icons/icons';
+import {IconButton} from '../../../styles/components/icons';
 import {NaviLink} from '../../../styles/components/link';
 import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
 import TabBar from '../../Tab/TabBar';
+import {FOLD_DATA} from '../../../utils/data';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
@@ -40,6 +32,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isOpend, setIsOpend] = useState(true);
+	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
 	const TabBarInfo = [
 		{name: '사용자', href: 'user'},
@@ -127,11 +120,32 @@ const GroupDescriptionSpace = ({groupId}) => {
 				{!isSummaryOpened && (
 					<div style={{padding: '10px 16px'}}>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'user' && <GroupUsersTab groupId={groupId} />}
+							'user' && (
+							<GroupUsersTab
+								groupId={groupId}
+								space={'GroupUsersTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'role' && <GroupRolesTab groupId={groupId} />}
+							'role' && (
+							<GroupRolesTab
+								groupId={groupId}
+								space={'GroupRolesTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'tag' && <GroupOnDescPageTags groupId={groupId} />}
+							'tag' && (
+							<GroupOnDescPageTags
+								groupId={groupId}
+								space={'GroupOnDescPageTags'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
 					</div>
 				)}
 			</div>

@@ -4,11 +4,19 @@ import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useDispatch, useSelector} from 'react-redux';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
-import {TableSpace, TableSpaceButtons} from "../../../styles/components/table";
-import TableOptionText from "../../Table/Options/TableOptionText";
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
+import {
+	TableFoldContainer,
+	TableSpaceButtons,
+} from '../../../styles/components/table';
+import TableOptionText from '../../Table/Options/TableOptionText';
+import PropTypes from 'prop-types';
+import TableFold from '../../Table/Options/TableFold';
 
-const AddTagToUser = () => {
+const AddTagToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {user} = useSelector(CURRENT_TARGET.selector);
 	const [data, setData] = useState(user.tags);
@@ -59,26 +67,42 @@ const AddTagToUser = () => {
 	}, [tagData, dispatch]);
 
 	return (
-		<>
-			<TableSpace>태그 추가
+		<TableFoldContainer>
+			<TableFold
+				title={'태그 추가'}
+				space={'AddTagToUser'}
+				isFold={isFold}
+				setIsFold={setIsFold}
+			>
 				<TableSpaceButtons>
-					<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
+					<NormalButton onClick={onClickAddRow}>
+						태그 추가
+					</NormalButton>
 					<TransparentButton onClick={onClickDeleteRow}>
 						태그 삭제
 					</TransparentButton>
 				</TableSpaceButtons>
-			</TableSpace>
-			<TableOptionText data={'roles'}/>
-			<Table
-				tableKey={tableKeys.users.add.tag}
-				data={tagData}
-				columns={tableColumns[tableKeys.users.add.tag]}
-				isSelectable
-				setData={setData}
-				setSelect={setSelect}
-			/>
-		</>
+			</TableFold>
+			{isFold[space] && (
+				<>
+					<TableOptionText data={'roles'} />
+					<Table
+						tableKey={tableKeys.users.add.tag}
+						data={tagData}
+						columns={tableColumns[tableKeys.users.add.tag]}
+						isSelectable
+						setData={setData}
+						setSelect={setSelect}
+					/>
+				</>
+			)}
+			;
+		</TableFoldContainer>
 	);
 };
-
+AddTagToUser.propTypes = {
+	isFold: PropTypes.object,
+	setIsFold: PropTypes.func,
+	space: PropTypes.string,
+};
 export default AddTagToUser;

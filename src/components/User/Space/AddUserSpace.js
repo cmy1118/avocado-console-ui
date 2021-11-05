@@ -11,19 +11,11 @@ import AddUserToGroup from '../Components/AddUserToGroup';
 import AddUser from '../Components/AddUser';
 import ReadOnly from '../Components/ReadOnly';
 import {NaviLink} from '../../../styles/components/link';
+import {FOLD_DATA} from '../../../utils/data';
 
 const AddUserSpace = () => {
-	const TableFold={
-		AddUserToGroup : false,
-		AssignRoleToUser: false,
-		AddTagToUser : false,
-	}
 	const [isOpened, setIsOpened] = useState(false);
-	const [isTableFold, setIsTableFold] = useState({
-		AddUserToGroup : false,
-		AssignRoleToUser: false,
-		AddTagToUser : false,
-	});
+	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
 	return (
 		<IamContainer>
@@ -41,9 +33,21 @@ const AddUserSpace = () => {
 			</AppBarNavi>
 
 			<AddUser setIsOpened={setIsOpened} />
-			<AddUserToGroup space={'AddUserToGroup'} isFold={isTableFold} setIsFold={setIsTableFold}/>
-			<AssignRoleToUser space={'AssignRoleToUser'} isFold={isTableFold} setIsFold={setIsTableFold}/>
-			<AddTagToUser space={'AddTagToUser'} isFold={isTableFold} setIsFold={setIsTableFold}/>
+			<AddUserToGroup
+				space={'AddUserToGroup'}
+				isFold={isTableFold}
+				setIsFold={setIsTableFold}
+			/>
+			<AssignRoleToUser
+				space={'AssignRoleToUser'}
+				isFold={isTableFold}
+				setIsFold={setIsTableFold}
+			/>
+			<AddTagToUser
+				space={'AddTagToUser'}
+				isFold={isTableFold}
+				setIsFold={setIsTableFold}
+			/>
 			<ReadOnly isOpened={isOpened} setIsOpened={setIsOpened} />
 		</IamContainer>
 	);

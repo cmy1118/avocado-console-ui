@@ -29,9 +29,8 @@ export const TableHeader = styled.div`
 	align-items: center;
 `;
 export const MainHeaderContents = styled.div`
-// padding: 10px 16px;
-
-`
+	// padding: 10px 16px;
+`;
 
 export const TableContainer = styled.div`
 	margin: 0px 16px;
@@ -57,7 +56,7 @@ export const TableContainer = styled.div`
 			justify-content: space-between;
 		}
 		.body {
-			border-bottom: 1px solid #e3e5e5;
+			// border-bottom: 1px solid #e3e5e5;
 			display: flex;
 			justify-content: space-between;
 			// :last-child {

@@ -9,13 +9,12 @@ import AssignRoleToGroup from '../Components/AssignRoleToGroup';
 import AddTagToGroup from '../Components/AddTagToGroup';
 import UsersIncludedInGroup from '../Components/UsersIncludedInGroup';
 import ReadOnly from '../Components/ReadOnly';
-import {HoverIconButton} from '../../../styles/components/icons';
-import {onClickCloseAside} from '../../Aside/Aside';
-import {errorIcon} from '../../../icons/icons';
 import {NaviLink} from '../../../styles/components/link';
+import {FOLD_DATA} from '../../../utils/data';
 
 const AddGroupSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
+	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
 	return (
 		<IamContainer>
@@ -32,9 +31,21 @@ const AddGroupSpace = () => {
 				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 			<AddGroup setIsOpened={setIsOpened} />
-			<UsersIncludedInGroup />
-			<AssignRoleToGroup />
-			<AddTagToGroup />
+			<UsersIncludedInGroup
+				space={'UsersIncludedInGroup'}
+				isFold={isTableFold}
+				setIsFold={setIsTableFold}
+			/>
+			<AssignRoleToGroup
+				space={'AssignRoleToGroup'}
+				isFold={isTableFold}
+				setIsFold={setIsTableFold}
+			/>
+			<AddTagToGroup
+				space={'AddTagToGroup'}
+				isFold={isTableFold}
+				setIsFold={setIsTableFold}
+			/>
 			<ReadOnly isOpened={isOpened} setIsOpened={setIsOpened} />
 		</IamContainer>
 	);

@@ -5,12 +5,14 @@ import PropTypes from 'prop-types';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {tableKeys} from '../../../Constants/Table/keys';
-import {TableSpace, TableSpaceButtons} from "../../../styles/components/table";
-import {NormalButton, TransparentButton,NormalBorderButton,} from "../../../styles/components/buttons";
-import TableOptionText from "../../Table/Options/TableOptionText";
-import {dummyPermission} from '../../../utils/dummyData';
+import {TableSpace, TableSpaceButtons} from '../../../styles/components/table';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
+import TableOptionText from '../../Table/Options/TableOptionText';
 
-const GroupOnDescPageTags = ({groupId}) => {
+const GroupOnDescPageTags = ({groupId, space, isFold, setIsFold}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const group = useMemo(() => groups.find((v) => v.id === groupId), [
 		groupId,
@@ -64,12 +66,18 @@ const GroupOnDescPageTags = ({groupId}) => {
 			<TableSpace>
 				태그 추가
 				<TableSpaceButtons>
-				<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
-				<NormalButton onClick={onClickSaveRow}>태그 저장</NormalButton>
-				<TransparentButton onClick={onClickDeleteRow}>태그 삭제</TransparentButton>
+					<NormalButton onClick={onClickAddRow}>
+						태그 추가
+					</NormalButton>
+					<NormalButton onClick={onClickSaveRow}>
+						태그 저장
+					</NormalButton>
+					<TransparentButton onClick={onClickDeleteRow}>
+						태그 삭제
+					</TransparentButton>
 				</TableSpaceButtons>
-			  </TableSpace>
-			<TableOptionText data={'tags'}/>
+			</TableSpace>
+			<TableOptionText data={'tags'} />
 			<Table
 				tableKey={tableKeys.groups.summary.tabs.tags.basic}
 				data={data}
@@ -84,6 +92,9 @@ const GroupOnDescPageTags = ({groupId}) => {
 
 GroupOnDescPageTags.propTypes = {
 	groupId: PropTypes.string,
+	isFold: PropTypes.object,
+	setIsFold: PropTypes.func,
+	space: PropTypes.string,
 };
 
 export default GroupOnDescPageTags;

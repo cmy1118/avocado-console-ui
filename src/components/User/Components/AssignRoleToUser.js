@@ -8,13 +8,12 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
-import {TableSpace} from "../../../styles/components/table";
-import TableOptionText from "../../Table/Options/TableOptionText";
-import TableFold from "../../Table/Options/TableFold";
-import PropTypes from "prop-types";
-import AddUserToGroup from "./AddUserToGroup";
+import {TableFoldContainer} from '../../../styles/components/table';
+import TableOptionText from '../../Table/Options/TableOptionText';
+import TableFold from '../../Table/Options/TableFold';
+import PropTypes from 'prop-types';
 
-const AssignRoleToUser = ({space,isFold ,setIsFold }) => {
+const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
@@ -49,67 +48,78 @@ const AssignRoleToUser = ({space,isFold ,setIsFold }) => {
 	}, [dataRight, dispatch]);
 
 	return (
-		<>
-			{/*<TableSpace>권한 추가</TableSpace>*/}
-			<TableFold space={space} isFold={isFold} setIsFold={setIsFold}/>
-			{isFold[space] &&
+		<TableFoldContainer>
+			<TableFold
+				title={'권한 추가'}
+				space={'AssignRoleToUser'}
+				isFold={isFold}
+				setIsFold={setIsFold}
+			/>
+			{isFold[space] && (
 				<>
-			<TableOptionText data={'roles'}/>
-			<_Tables>
-				<Table
-					data={dataLeft}
-					tableKey={tableKeys.users.add.roles.exclude}
-					columns={tableColumns[tableKeys.users.add.roles.exclude]}
-					isPageable
-					isNumberOfRowsAdjustable
-					isColumnFilterable
-					isSortable
-					isSelectable
-					isDnDPossible
-					isSearchable
-					dndKey={tableKeys.users.add.roles.dnd}
-					setSelect={setSelect}
-					setData={setRightDataIds}
-				/>
-				<RowDiv alignItems={'center'}>
-					<DropButton
-						leftTableKey={tableKeys.users.add.roles.exclude}
-						RightTableKey={tableKeys.users.add.roles.include}
-						select={select}
-						dataLeft={dataLeft}
-						dataRight={dataRight}
-						rightDataIds={rightDataIds}
-						setRightDataIds={setRightDataIds}
-					/>
-				</RowDiv>
-				<div>
-					<TableHeader>
-						추가 Roles: {rightDataIds.length}건
-					</TableHeader>
-					<Table
-						data={dataRight}
-						tableKey={tableKeys.users.add.roles.include}
-						columns={
-							tableColumns[tableKeys.users.add.roles.include]
-						}
-						isSortable
-						isSelectable
-						isDnDPossible
-						dndKey={tableKeys.users.add.roles.dnd}
-						setData={setRightDataIds}
-						setSelect={setSelect}
-						control
-					/>
-				</div>
-			</_Tables>
-					</>}
-		</>
+					<TableOptionText data={'roles'} />
+					<_Tables>
+						<Table
+							data={dataLeft}
+							tableKey={tableKeys.users.add.roles.exclude}
+							columns={
+								tableColumns[tableKeys.users.add.roles.exclude]
+							}
+							isPageable
+							isNumberOfRowsAdjustable
+							isColumnFilterable
+							isSortable
+							isSelectable
+							isDnDPossible
+							isSearchable
+							dndKey={tableKeys.users.add.roles.dnd}
+							setSelect={setSelect}
+							setData={setRightDataIds}
+						/>
+						<RowDiv alignItems={'center'}>
+							<DropButton
+								leftTableKey={tableKeys.users.add.roles.exclude}
+								RightTableKey={
+									tableKeys.users.add.roles.include
+								}
+								select={select}
+								dataLeft={dataLeft}
+								dataRight={dataRight}
+								rightDataIds={rightDataIds}
+								setRightDataIds={setRightDataIds}
+							/>
+						</RowDiv>
+						<div>
+							<TableHeader>
+								추가 Roles: {rightDataIds.length}건
+							</TableHeader>
+							<Table
+								data={dataRight}
+								tableKey={tableKeys.users.add.roles.include}
+								columns={
+									tableColumns[
+										tableKeys.users.add.roles.include
+									]
+								}
+								isSortable
+								isSelectable
+								isDnDPossible
+								dndKey={tableKeys.users.add.roles.dnd}
+								setData={setRightDataIds}
+								setSelect={setSelect}
+								control
+							/>
+						</div>
+					</_Tables>
+				</>
+			)}
+		</TableFoldContainer>
 	);
 };
 AssignRoleToUser.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
-}
+};
 
 export default AssignRoleToUser;

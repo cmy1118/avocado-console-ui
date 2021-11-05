@@ -22,13 +22,14 @@ import {IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import TabBar from '../../Tab/TabBar';
 import {TransparentButton} from '../../../styles/components/buttons';
+import {FOLD_DATA} from '../../../utils/data';
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
 	const {search} = useLocation();
 	const {users} = useSelector(IAM_USER.selector);
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
-
+	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 	const TabBarInfo = [
 		{name: '정보', href: 'user'},
 		{name: '그룹', href: 'group'},
@@ -104,11 +105,33 @@ const UserDescriptionSpace = ({userId}) => {
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'user' && <UserInfoTab userId={userId} />}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'group' && <UserGroupsTab userId={userId} />}
+							'group' && (
+							<UserGroupsTab
+								title
+								userId={userId}
+								space={'UserGroupsTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'role' && <UserRolesTab userId={userId} />}
+							'role' && (
+							<UserRolesTab
+								userId={userId}
+								space={'UserRolesTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'tag' && <UserOnDescPageTags userId={userId} />}
+							'tag' && (
+							<UserOnDescPageTags
+								userId={userId}
+								space={'UserOnDescPageTags'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
 					</div>
 				)}
 			</div>
