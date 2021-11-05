@@ -48,10 +48,10 @@ const AddUserToGroup = () => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
 				title: tableKeys.users.add.groups.exclude,
-				data: groups.filter((v) => includedDataIds.includes(v.id)),
+				data: includedData,
 			}),
 		);
-	}, [dispatch, groups, includedDataIds]);
+	}, [dispatch, includedData]);
 
 	return (
 		<DragContainer

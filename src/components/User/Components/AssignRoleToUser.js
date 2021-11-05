@@ -13,43 +13,50 @@ import DragContainer from '../../Table/DragContainer';
 const AssignRoleToUser = () => {
 	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
-	const [rightDataIds, setRightDataIds] = useState([]);
+	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [select, setSelect] = useState({});
 
-	const dataLeft = useMemo(() => {
+	const excludedData = useMemo(() => {
 		return roles
-			.filter((v) => !rightDataIds.includes(v.id))
+			.filter((v) => !includedDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
 				numberOfUsers: v.users.length,
 			}));
-	}, [roles, rightDataIds]);
+	}, [roles, includedDataIds]);
 
-	const dataRight = useMemo(() => {
+	const includedData = useMemo(() => {
 		return roles
-			.filter((v) => rightDataIds.includes(v.id))
+			.filter((v) => includedDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
 			}));
-	}, [roles, rightDataIds]);
+	}, [roles, includedDataIds]);
 
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
 				title: tableKeys.users.add.roles.exclude,
-				data: dataRight,
+				data: includedData,
 			}),
 		);
-	}, [dataRight, dispatch]);
+	}, [includedData, dispatch]);
 
 	return (
-		<DragContainer selected={select}>
+		<DragContainer
+			selected={select}
+			data={includedDataIds}
+			setData={setIncludedDataIds}
+			includedKey={tableKeys.users.add.roles.include}
+			excludedData={excludedData}
+			includedData={includedData}
+		>
 			<div>권한 추가</div>
 			<_Tables>
 				<Table
-					data={dataLeft}
+					data={excludedData}
 					tableKey={tableKeys.users.add.roles.exclude}
 					columns={tableColumns[tableKeys.users.add.roles.exclude]}
 					isPageable
@@ -61,25 +68,25 @@ const AssignRoleToUser = () => {
 					isSearchable
 					dndKey={tableKeys.users.add.roles.dnd}
 					setSelect={setSelect}
-					setData={setRightDataIds}
+					setData={setIncludedDataIds}
 				/>
 				<RowDiv alignItems={'center'}>
 					<DropButton
 						leftTableKey={tableKeys.users.add.roles.exclude}
 						RightTableKey={tableKeys.users.add.roles.include}
 						select={select}
-						dataLeft={dataLeft}
-						dataRight={dataRight}
-						rightDataIds={rightDataIds}
-						setRightDataIds={setRightDataIds}
+						dataLeft={excludedData}
+						dataRight={includedData}
+						rightDataIds={includedDataIds}
+						setRightDataIds={setIncludedDataIds}
 					/>
 				</RowDiv>
 				<div>
 					<TableHeader>
-						추가 Roles: {rightDataIds.length}건
+						추가 Roles: {includedDataIds.length}건
 					</TableHeader>
 					<Table
-						data={dataRight}
+						data={includedData}
 						tableKey={tableKeys.users.add.roles.include}
 						columns={
 							tableColumns[tableKeys.users.add.roles.include]
@@ -88,7 +95,7 @@ const AssignRoleToUser = () => {
 						isSelectable
 						isDnDPossible
 						dndKey={tableKeys.users.add.roles.dnd}
-						setData={setRightDataIds}
+						setData={setIncludedDataIds}
 						setSelect={setSelect}
 						control
 					/>

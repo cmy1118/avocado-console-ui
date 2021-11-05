@@ -175,6 +175,7 @@ const DragContainer = ({
 					setData([...data, ...selectedItems]);
 					//추가
 				} else {
+					console.log(data);
 					setData(data.filter((v) => !selectedItems.includes(v)));
 					// 제거
 				}

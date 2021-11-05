@@ -12,7 +12,12 @@ import {
 import TableOptionsBar from './TableOptionsBar';
 import TableCheckbox from './Options/TableCheckbox';
 import {NormalBorderButton} from '../../styles/components/buttons';
-import {arrowDownIcon, arrowUpIcon, cancelIcon} from '../../icons/icons';
+import {
+	arrowDownIcon,
+	arrowUpIcon,
+	cancelIcon,
+	dragIndicator,
+} from '../../icons/icons';
 import {HoverIconButton, Icon} from '../../styles/components/icons';
 import {ColDiv, HoverTableContainer, RowDiv} from '../../styles/components/div';
 import {Label} from '../../styles/components/text';
@@ -86,6 +91,7 @@ const Table = ({
 
 	const [tableHeight, setTableHeight] = useState(0);
 	const [headerHeight, setHeaderHeight] = useState(0);
+	const [position, setPosition] = useState({x: 0, y: 0});
 
 	const searchFilters = useMemo(() => {
 		return columns.filter((v) =>
@@ -99,25 +105,28 @@ const Table = ({
 		return v.id;
 	}, []);
 
-	function getStyle({draggableStyle, isDragging, draggingOver}) {
-		// If you don't want any spacing between your items
-		// then you could just return this.
-		// I do a little bit of magic to have some nice visual space
-		// between the row items
-
-		// Being lazy: this is defined in our css file
-
-		// when dragging we want to use the draggable style for placement, otherwise use the virtual style
+	const getStyle = ({
+		draggableStyle,
+		isDragging,
+		draggingOver,
+		isDropAnimating,
+	}) => {
 		return {
 			...draggableStyle,
 			// height: isDragging ? draggableStyle.height : draggableStyle.height,
 			// left: isDragging ? 300 : draggableStyle.left,
 			// width: isDragging ? '100px' : `calc(${draggableStyle.width}px)`,
 			border: '1px solid',
-			background: draggingOver ? 'lightGreen' : 'lightGray',
-			// position: 'absolute',
+			borderColor: draggingOver ? '#4ca6a8' : '#e3e5e5',
+			borderRadius: '4px',
+			backgroundColor: 'rgba(255, 255, 255, 0.8)',
+			margin: 'auto',
+			width: '320px',
+			height: '54px',
+			top: position.y,
+			left: position.x,
 		};
-	}
+	};
 
 	/***************************************************************************/
 
@@ -206,6 +215,12 @@ const Table = ({
 		[setSelect, tableKey],
 	);
 
+	const onMouseDownItem = useCallback((e) => {
+		const x = e.pageX - 160 + 'px';
+		const y = e.pageY - 27 + 'px';
+		setPosition({x, y});
+	}, []);
+
 	const RenderRow = useCallback(
 		({index, style}) => {
 			const row = rows[index];
@@ -223,6 +238,7 @@ const Table = ({
 							{...provided.dragHandleProps}
 							{...provided.draggableProps}
 							style={style}
+							onMouseDown={onMouseDownItem}
 							className={
 								Object.keys(selectedRowIds).includes(
 									row.original.uid
@@ -246,6 +262,7 @@ const Table = ({
 							{row.cells.map((cell, i) => {
 								return (
 									<RowDiv
+										onDrag={(e) => console.log(e)}
 										alignItems={'center'}
 										className={'td'}
 										width={`${cell.column.width}px`}
@@ -263,7 +280,7 @@ const Table = ({
 				</Draggable>
 			);
 		},
-		[prepareRow, rows, selectedRowIds, setData],
+		[onMouseDownItem, prepareRow, rows, selectedRowIds, setData],
 	);
 
 	useEffect(() => {
@@ -362,8 +379,6 @@ const Table = ({
 				droppableId={tableKey}
 				mode={'Virtual'}
 				renderClone={(provided, snapshot, rubric) => {
-					console.log(snapshot);
-					// console.log(rubric);
 					return (
 						<div
 							{...provided.draggableProps}
@@ -373,9 +388,15 @@ const Table = ({
 								draggableStyle: provided.draggableProps.style,
 								isDragging: snapshot.isDragging,
 								draggingOver: snapshot.draggingOver,
+								isDropAnimating: snapshot.isDropAnimating,
 							})}
-							onMouseMove={(e) => console.log(e)}
 						>
+							<RowDiv padding={'15px 12px'} alignItems={'center'}>
+								<Icon>{dragIndicator}</Icon>
+								<RowDiv width={'100%'}>
+									그룹 이동 {selectedFlatRows.length}건
+								</RowDiv>
+							</RowDiv>
 							{provided.placeholder}
 						</div>
 					);

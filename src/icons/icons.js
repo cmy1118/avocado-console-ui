@@ -81,6 +81,10 @@ export const alertIcon = (
 	</svg>
 );
 
+export const dragIndicator = (
+	<span className='material-icons'>drag_indicator</span>
+);
+
 //main Logo
 export const avocadoLogo = (
 	<svg
