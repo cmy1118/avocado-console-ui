@@ -69,6 +69,7 @@ const AssignRoleToUser = () => {
 					dndKey={tableKeys.users.add.roles.dnd}
 					setSelect={setSelect}
 					setData={setIncludedDataIds}
+					isDraggable={true}
 				/>
 				<RowDiv alignItems={'center'}>
 					<DropButton
@@ -97,7 +98,7 @@ const AssignRoleToUser = () => {
 						dndKey={tableKeys.users.add.roles.dnd}
 						setData={setIncludedDataIds}
 						setSelect={setSelect}
-						control
+						isDraggable={true}
 					/>
 				</div>
 			</_Tables>

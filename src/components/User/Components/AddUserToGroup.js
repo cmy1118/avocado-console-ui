@@ -76,6 +76,7 @@ const AddUserToGroup = () => {
 					isDnDPossible
 					isSearchable
 					setSelect={setSelect}
+					isDraggable={true}
 				/>
 				<RowDiv alignItems={'center'}>
 					<DropButton
@@ -102,6 +103,7 @@ const AddUserToGroup = () => {
 						isSelectable
 						isDnDPossible
 						setSelect={setSelect}
+						isDraggable={true}
 					/>
 				</div>
 			</_Tables>

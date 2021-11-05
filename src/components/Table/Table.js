@@ -28,6 +28,25 @@ const FiltersContainer = styled(RowDiv)`
 	border-top: 1px solid #e3e5e5;
 `;
 
+const Item = styled.div`
+	display: flex;
+	user-select: none;
+	height: 40px;
+	align-items: flex-start;
+	align-content: flex-start;
+	line-height: 1.5;
+	border-radius: 3px;
+	background: #fff;
+	border: 1px
+		${(props) => (props.isDragging ? 'dashed #4099ff' : 'solid #ddd')};
+`;
+
+const Clone = styled(Item)`
+	// + div {
+	// 	display: none !important;
+	// }
+`;
+
 function dateBetweenFilterFn(rows, id, filterValues) {
 	let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;
 	let ed = filterValues[1] ? new Date(filterValues[1]) : undefined;
@@ -71,6 +90,7 @@ const Table = ({
 	setData,
 	setSelect,
 	fullSize = false,
+	isDraggable = false,
 }) => {
 	const filterTypes = React.useMemo(
 		() => ({
@@ -105,19 +125,19 @@ const Table = ({
 		return v.id;
 	}, []);
 
-	const getStyle = ({
-		draggableStyle,
-		isDragging,
-		draggingOver,
-		isDropAnimating,
-	}) => {
-		return {
-			...draggableStyle,
-			// height: isDragging ? draggableStyle.height : draggableStyle.height,
-			// left: isDragging ? 300 : draggableStyle.left,
-			// width: isDragging ? '100px' : `calc(${draggableStyle.width}px)`,
+	const getItemStyle = (isDragging, draggableStyle, style) => ({
+		// 혹시 모를 나중의 스타일 적용을 대비해서 제거 ㄴㄴ
+		userSelect: 'none',
+		// background: isDragging ? 'lightgreen' : 'grey',
+		...style,
+		...draggableStyle,
+	});
+
+	const getStyle = ({provided, snapshot}) => {
+		const style = {
+			...provided.draggableProps.style,
 			border: '1px solid',
-			borderColor: draggingOver ? '#4ca6a8' : '#e3e5e5',
+			borderColor: snapshot.draggingOver ? '#4ca6a8' : '#e3e5e5',
 			borderRadius: '4px',
 			backgroundColor: 'rgba(255, 255, 255, 0.8)',
 			margin: 'auto',
@@ -126,6 +146,21 @@ const Table = ({
 			top: position.y,
 			left: position.x,
 		};
+
+		if (!snapshot.isDropAnimating) {
+			return {
+				...style,
+			};
+		} else {
+			const {moveTo, curve, duration} = snapshot.dropAnimation;
+			const translate = `translate(${moveTo.x}px, ${moveTo.y}px)`;
+			return {
+				...style,
+				transform: `${translate}`,
+				transition: `all ${curve} ${duration + 1}s`,
+				transitionDuration: `0.001s`,
+			};
+		}
 	};
 
 	/***************************************************************************/
@@ -230,57 +265,70 @@ const Table = ({
 					draggableId={
 						row.original.uid ? row.original.uid : row.original.id
 					}
+					isDragDisabled={!isDraggable}
 					index={index}
 				>
-					{(provided) => (
-						<div
-							ref={provided.innerRef}
-							{...provided.dragHandleProps}
-							{...provided.draggableProps}
-							style={style}
-							onMouseDown={onMouseDownItem}
-							className={
-								Object.keys(selectedRowIds).includes(
+					{(provided, snapshot) => {
+						return (
+							<div
+								ref={provided.innerRef}
+								{...provided.dragHandleProps}
+								{...provided.draggableProps}
+								style={getItemStyle(
+									style,
+									snapshot.isDragging,
+									provided.draggableProps.style,
+								)}
+								onMouseDown={onMouseDownItem}
+								className={
+									Object.keys(selectedRowIds).includes(
+										row.original.uid
+											? row.original.uid
+											: row.original.id,
+									)
+										? 'tr body selected'
+										: 'tr body'
+								}
+								id={
 									row.original.uid
 										? row.original.uid
-										: row.original.id,
-								)
-									? 'tr body selected'
-									: 'tr body'
-							}
-							id={
-								row.original.uid
-									? row.original.uid
-									: row.original.id
-							}
-							key={
-								row.original.uid
-									? row.original.uid
-									: row.original.id
-							}
-						>
-							{row.cells.map((cell, i) => {
-								return (
-									<RowDiv
-										onDrag={(e) => console.log(e)}
-										alignItems={'center'}
-										className={'td'}
-										width={`${cell.column.width}px`}
-										key={i}
-										{...cell.getCellProps}
-									>
-										{cell.render('Cell', {
-											setData,
-										})}
-									</RowDiv>
-								);
-							})}
-						</div>
-					)}
+										: row.original.id
+								}
+								key={
+									row.original.uid
+										? row.original.uid
+										: row.original.id
+								}
+							>
+								{row.cells.map((cell, i) => {
+									return (
+										<RowDiv
+											alignItems={'center'}
+											className={'td'}
+											width={`${cell.column.width}px`}
+											key={i}
+											{...cell.getCellProps}
+										>
+											{cell.render('Cell', {
+												setData,
+											})}
+										</RowDiv>
+									);
+								})}
+							</div>
+						);
+					}}
 				</Draggable>
 			);
 		},
-		[onMouseDownItem, prepareRow, rows, selectedRowIds, setData],
+		[
+			isDraggable,
+			onMouseDownItem,
+			prepareRow,
+			rows,
+			selectedRowIds,
+			setData,
+		],
 	);
 
 	useEffect(() => {
@@ -385,10 +433,8 @@ const Table = ({
 							{...provided.dragHandleProps}
 							ref={provided.innerRef}
 							style={getStyle({
-								draggableStyle: provided.draggableProps.style,
-								isDragging: snapshot.isDragging,
-								draggingOver: snapshot.draggingOver,
-								isDropAnimating: snapshot.isDropAnimating,
+								provided: provided,
+								snapshot: snapshot,
 							})}
 						>
 							<RowDiv padding={'15px 12px'} alignItems={'center'}>
@@ -478,6 +524,7 @@ Table.propTypes = {
 	setSelect: PropTypes.func,
 	control: PropTypes.bool,
 	fullSize: PropTypes.bool,
+	isDraggable: PropTypes.bool,
 	// dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 

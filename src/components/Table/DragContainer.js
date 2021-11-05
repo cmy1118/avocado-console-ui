@@ -102,38 +102,6 @@ const DragContainer = ({
 		[dispatch, excludedData, includedData],
 	);
 
-	// const onDrop = useCallback(
-	// 	(e) => {
-	// 		e.preventDefault();
-	// 		if (setData) {
-	// 				? onDropCheckMaxNumber(e, data, tableKey) &&
-	// 				onDropCheckTypeLimited(e, data, tableKey) &&
-	// 				setData([
-	// 					...data.map((v) => v.id),
-	// 					...e.dataTransfer.getData('ids').split(','),
-	// 				])
-	// 				: setData(
-	// 					e.dataTransfer
-	// 						.getData('prevIds')
-	// 						.split(',')
-	// 						.filter(
-	// 							(v) =>
-	// 								!e.dataTransfer
-	// 									.getData('ids')
-	// 									.split(',')
-	// 									.includes(v),
-	// 						),
-	// 				);
-	// 		}
-	// 	},
-	// 	[
-	// 		setData,
-	// 		onDropCheckMaxNumber,
-	// 		data,
-	// 		onDropCheckTypeLimited,
-	// 	],
-	// );
-
 	const onDragStart = useCallback(
 		(result) => {
 			console.log('selected!');
