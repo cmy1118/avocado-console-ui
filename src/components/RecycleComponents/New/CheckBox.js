@@ -11,8 +11,7 @@ const _Container = styled.div`
 	z-index: 0;
 	display: flex !important;
 	align-items: center;
-	margin: auto;
-	width: ${(props) => (props.label === '' ? '15px' : '100%')};
+	width: ${(props) => props.label === '' && '15px'};
 	cursor: pointer;
 	opacity: ${(props) => (props.opacity === 'true' ? 0.24 : 1)};
 `;
