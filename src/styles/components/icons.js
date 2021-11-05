@@ -31,7 +31,9 @@ export const Icon = styled.div`
 
 	font-size: ${(props) =>
 		props?.size
-			? props.size === 'sm'
+			? props.size === 'm'
+				? '24px'
+				: props.size === 'sm'
 				? '20px'
 				: props.size === 'xs'
 				? '18px'
@@ -69,7 +71,9 @@ export const Icon = styled.div`
 
 		width: ${(props) =>
 			props?.size
-				? props.size === 'sm'
+				? props.size === 'm'
+					? '24px'
+					: props.size === 'sm'
 					? '20px'
 					: props.size === 'xs'
 					? '18px'
@@ -79,7 +83,9 @@ export const Icon = styled.div`
 				: '24px'};
 		height: ${(props) =>
 			props?.size
-				? props.size === 'sm'
+				? props.size === 'm'
+					? '24px'
+					: props.size === 'sm'
 					? '20px'
 					: props.size === 'xs'
 					? '18px'

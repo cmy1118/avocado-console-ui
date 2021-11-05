@@ -6,7 +6,7 @@ import qs from 'qs';
 
 import {
 	AppBarButtons,
-	AppBarContents,
+	AppBarContentsHeader,
 	AppBarNavi,
 	DetailContainer,
 	PathContainer,
@@ -79,10 +79,11 @@ const GroupDescriptionSpace = ({groupId}) => {
 				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
-			<AppBarContents>
-				<div style={{display: 'flex'}}>
+			<AppBarContentsHeader>
+				<div style={{display: 'flex', alignItems: 'center'}}>
 					<IconButton
-						size={'sm'}
+						color={'font'}
+						size={'m'}
 						margin={'0px'}
 						onClick={onClickFoldSummary}
 					>
@@ -96,7 +97,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 					</NormalButton>
 					<TransparentButton>삭제</TransparentButton>
 				</AppBarButtons>
-			</AppBarContents>
+			</AppBarContentsHeader>
 			{isSummaryOpened ? (
 				<GroupSummary
 					groupId={groupId}

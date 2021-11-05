@@ -5,7 +5,6 @@ export const IamContainer = styled.div`
 	display: flex;
 	height: 100%;
 	flex-direction: column;
-
 `;
 
 export const DetailContainer = styled.div`
@@ -83,6 +82,10 @@ export const AppBarContents = styled.div`
 	justify-content: space-between;
 	height: 54px;
 	padding: 10px 16px;
+`;
+
+export const AppBarContentsHeader = styled(AppBarContents)`
+	border-bottom: 0px #fff dotted;
 `;
 
 export const SubTitle = styled.div`

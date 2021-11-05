@@ -1,15 +1,21 @@
 import React, {useCallback, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
-import {AppBarButtons, AppBarContents} from '../../../styles/components/style';
+import {
+	AppBarButtons,
+	AppBarContentsHeader,
+} from '../../../styles/components/style';
 import * as yup from 'yup';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
-import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import {MainHeaderContents, RowDiv} from '../../../styles/components/div';
-import TableOptionText from "../../Table/Options/TableOptionText";
+import TableOptionText from '../../Table/Options/TableOptionText';
 
 const AddUser = ({setIsOpened}) => {
 	const history = useHistory();
@@ -63,7 +69,7 @@ const AddUser = ({setIsOpened}) => {
 	return (
 		//ColDiv margin={'0px 16px'}
 		<>
-			<AppBarContents>
+			<AppBarContentsHeader>
 				<div>사용자 기본 정보</div>
 				<AppBarButtons>
 					<NormalButton
@@ -75,58 +81,58 @@ const AddUser = ({setIsOpened}) => {
 						취소
 					</TransparentButton>
 				</AppBarButtons>
-			</AppBarContents>
+			</AppBarContentsHeader>
 			<MainHeaderContents>
-				<TableOptionText data={'usersInfo'}/>
+				<TableOptionText data={'usersInfo'} />
 				<div style={{padding: '10px 10px 10px 20px'}}>
-				<Form
-				initialValues={{
-					id: 'helloWorld',
-					name: '안녕',
-					email: 'helloWorld@netand.co.kr',
-					telephone: '',
-					mobile: '010-1234-1410',
-				}}
-				onSubmit={onSubmitUserData}
-				innerRef={formRef}
-				validation={validation}
-			>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					<TextBox
-						name={'id'}
-						placeholder={'사용자 계정 ID'}
-						direction={'row'}
-					/>
-				</RowDiv>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					<TextBox
-						name={'name'}
-						placeholder={'사용자 명'}
-						direction={'row'}
-					/>
-				</RowDiv>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					<TextBox
-						name={'email'}
-						placeholder={'이메일 주소'}
-						direction={'row'}
-					/>
-				</RowDiv>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					<TextBox
-						name={'telephone'}
-						placeholder={'전화번호'}
-						direction={'row'}
-					/>
-				</RowDiv>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					<TextBox
-						name={'mobile'}
-						placeholder={'모바일 전화번호'}
-						direction={'row'}
-					/>
-				</RowDiv>
-			</Form>
+					<Form
+						initialValues={{
+							id: 'helloWorld',
+							name: '안녕',
+							email: 'helloWorld@netand.co.kr',
+							telephone: '',
+							mobile: '010-1234-1410',
+						}}
+						onSubmit={onSubmitUserData}
+						innerRef={formRef}
+						validation={validation}
+					>
+						<RowDiv margin={'0px 0px 12px 0px'}>
+							<TextBox
+								name={'id'}
+								placeholder={'사용자 계정 ID'}
+								direction={'row'}
+							/>
+						</RowDiv>
+						<RowDiv margin={'0px 0px 12px 0px'}>
+							<TextBox
+								name={'name'}
+								placeholder={'사용자 명'}
+								direction={'row'}
+							/>
+						</RowDiv>
+						<RowDiv margin={'0px 0px 12px 0px'}>
+							<TextBox
+								name={'email'}
+								placeholder={'이메일 주소'}
+								direction={'row'}
+							/>
+						</RowDiv>
+						<RowDiv margin={'0px 0px 12px 0px'}>
+							<TextBox
+								name={'telephone'}
+								placeholder={'전화번호'}
+								direction={'row'}
+							/>
+						</RowDiv>
+						<RowDiv margin={'0px 0px 12px 0px'}>
+							<TextBox
+								name={'mobile'}
+								placeholder={'모바일 전화번호'}
+								direction={'row'}
+							/>
+						</RowDiv>
+					</Form>
 				</div>
 			</MainHeaderContents>
 		</>
