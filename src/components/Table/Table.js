@@ -251,6 +251,17 @@ const Table = ({
 	);
 
 	const onMouseDownItem = useCallback((e) => {
+		let checkbox;
+		if (e.target.classList.contains('td')) {
+			checkbox =
+				e.target.parentNode.childNodes[0]?.childNodes[0]?.childNodes[0];
+			if (checkbox.type === 'checkbox' && !checkbox.checked)
+				checkbox.click();
+		} else if (e.target.classList.contains('tr')) {
+			checkbox = e.target.childNodes[0]?.childNodes[0]?.childNodes[0];
+			if (checkbox.type === 'checkbox' && !checkbox.checked)
+				checkbox.click();
+		}
 		const x = e.pageX - 160 + 'px';
 		const y = e.pageY - 27 + 'px';
 		setPosition({x, y});
