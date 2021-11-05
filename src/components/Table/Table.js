@@ -22,29 +22,9 @@ import {HoverIconButton, Icon} from '../../styles/components/icons';
 import {ColDiv, HoverTableContainer, RowDiv} from '../../styles/components/div';
 import {Label} from '../../styles/components/text';
 import styled from 'styled-components';
-import {FixedSizeList} from 'react-window';
 
 const FiltersContainer = styled(RowDiv)`
 	border-top: 1px solid #e3e5e5;
-`;
-
-const Item = styled.div`
-	display: flex;
-	user-select: none;
-	height: 40px;
-	align-items: flex-start;
-	align-content: flex-start;
-	line-height: 1.5;
-	border-radius: 3px;
-	background: #fff;
-	border: 1px
-		${(props) => (props.isDragging ? 'dashed #4099ff' : 'solid #ddd')};
-`;
-
-const Clone = styled(Item)`
-	// + div {
-	// 	display: none !important;
-	// }
 `;
 
 function dateBetweenFilterFn(rows, id, filterValues) {
@@ -89,7 +69,6 @@ const Table = ({
 	isSelectable = false,
 	setData,
 	setSelect,
-	fullSize = false,
 	isDraggable = false,
 }) => {
 	const filterTypes = React.useMemo(
@@ -109,8 +88,6 @@ const Table = ({
 		[],
 	);
 
-	const [tableHeight, setTableHeight] = useState(0);
-	const [headerHeight, setHeaderHeight] = useState(0);
 	const [position, setPosition] = useState({x: 0, y: 0});
 
 	const searchFilters = useMemo(() => {
@@ -169,6 +146,7 @@ const Table = ({
 		getTableProps,
 		headerGroups,
 		prepareRow,
+		page,
 		allColumns,
 		canPreviousPage,
 		canNextPage,
@@ -181,7 +159,6 @@ const Table = ({
 		selectedFlatRows,
 		getToggleHideAllColumnsProps,
 		setHiddenColumns,
-		rows,
 		state: {pageIndex, pageSize, selectedRowIds, filters},
 	} = useTable(
 		{
@@ -215,7 +192,6 @@ const Table = ({
 								// eslint-disable-next-line react/prop-types,react/display-name
 								{...row.getToggleRowSelectedProps()}
 								tablekey={tableKey}
-								row={row}
 							/>
 						),
 						width: 40,
@@ -266,92 +242,6 @@ const Table = ({
 		const y = e.pageY - 27 + 'px';
 		setPosition({x, y});
 	}, []);
-
-	const RenderRow = useCallback(
-		({index, style}) => {
-			const row = rows[index];
-			prepareRow(row);
-			return (
-				<Draggable
-					draggableId={
-						row.original.uid ? row.original.uid : row.original.id
-					}
-					isDragDisabled={!isDraggable}
-					index={index}
-				>
-					{(provided, snapshot) => {
-						return (
-							<div
-								ref={provided.innerRef}
-								{...provided.dragHandleProps}
-								{...provided.draggableProps}
-								style={getItemStyle(
-									style,
-									snapshot.isDragging,
-									provided.draggableProps.style,
-								)}
-								onMouseDown={onMouseDownItem}
-								className={
-									Object.keys(selectedRowIds).includes(
-										row.original.uid
-											? row.original.uid
-											: row.original.id,
-									)
-										? 'tr body selected'
-										: 'tr body'
-								}
-								id={
-									row.original.uid
-										? row.original.uid
-										: row.original.id
-								}
-								key={
-									row.original.uid
-										? row.original.uid
-										: row.original.id
-								}
-							>
-								{row.cells.map((cell, i) => {
-									return (
-										<RowDiv
-											alignItems={'center'}
-											className={'td'}
-											width={`${cell.column.width}px`}
-											key={i}
-											{...cell.getCellProps}
-										>
-											{cell.render('Cell', {
-												setData,
-											})}
-										</RowDiv>
-									);
-								})}
-							</div>
-						);
-					}}
-				</Draggable>
-			);
-		},
-		[
-			isDraggable,
-			onMouseDownItem,
-			prepareRow,
-			rows,
-			selectedRowIds,
-			setData,
-		],
-	);
-
-	useEffect(() => {
-		setTableHeight(
-			document.querySelector(`.${tableKey}[role = 'table']`)
-				?.offsetHeight,
-		);
-		setHeaderHeight(
-			document.querySelector(`.${tableKey}[role = 'table'] > .head`)
-				?.offsetHeight,
-		);
-	}, [tableKey]);
 
 	useEffect(() => {
 		setSelect && selectedFlatRows && selectedDropButton(selectedFlatRows);
@@ -501,16 +391,86 @@ const Table = ({
 								})}
 							</div>
 						))}
-						<FixedSizeList
-							height={fullSize ? tableHeight - headerHeight : 300}
-							itemCount={
-								rows.length > pageSize ? pageSize : rows.length
-							}
-							itemSize={40}
-							outerRef={provided.innerRef}
-						>
-							{RenderRow}
-						</FixedSizeList>
+						{page.map((row, index) => {
+							prepareRow(row);
+							return (
+								<Draggable
+									key={
+										row.original.uid
+											? row.original.uid
+											: row.original.id
+									}
+									draggableId={
+										row.original.uid
+											? row.original.uid
+											: row.original.id
+									}
+									isDragDisabled={!isDraggable}
+									index={index}
+								>
+									{(provided, snapshot) => {
+										return (
+											<div
+												ref={provided.innerRef}
+												{...provided.dragHandleProps}
+												{...provided.draggableProps}
+												style={getItemStyle(
+													snapshot.isDragging,
+													provided.draggableProps
+														.style,
+												)}
+												onMouseDown={onMouseDownItem}
+												onDragStart={(e) =>
+													console.log(e)
+												}
+												className={
+													Object.keys(
+														selectedRowIds,
+													).includes(
+														row.original.uid
+															? row.original.uid
+															: row.original.id,
+													)
+														? 'tr body selected'
+														: 'tr body'
+												}
+												id={
+													row.original.uid
+														? row.original.uid
+														: row.original.id
+												}
+												key={
+													row.original.uid
+														? row.original.uid
+														: row.original.id
+												}
+											>
+												{row.cells.map((cell, i) => {
+													return (
+														<RowDiv
+															alignItems={
+																'center'
+															}
+															className={'td'}
+															width={`${cell.column.width}px`}
+															key={i}
+															{...cell.getCellProps}
+														>
+															{cell.render(
+																'Cell',
+																{
+																	setData,
+																},
+															)}
+														</RowDiv>
+													);
+												})}
+											</div>
+										);
+									}}
+								</Draggable>
+							);
+						})}
 					</div>
 				)}
 			</Droppable>
@@ -536,7 +496,6 @@ Table.propTypes = {
 	control: PropTypes.bool,
 	fullSize: PropTypes.bool,
 	isDraggable: PropTypes.bool,
-	// dndKey: requiredIf(PropTypes.string, (props) => props.isDnDPossible),
 };
 
 export default Table;

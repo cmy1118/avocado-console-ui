@@ -16,6 +16,7 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 			if (e.shiftKey) {
 				// todo : 마지막 체크값이 존재하는지 검사
 				let isLastChecked = false;
+				console.log(checkboxes);
 				checkboxes.forEach((checkbox) => {
 					if (checkbox.lastChecked) isLastChecked = true;
 				});
@@ -99,8 +100,6 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 							});
 						}
 					}
-				} else {
-					//
 				}
 			}
 			// todo : 현재 타겟의 마지막 체크 true
@@ -115,7 +114,7 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 
 	return (
 		<CheckBox
-			className={`${rest.tablekey} ${rest.row && rest.row.id} `}
+			className={`${rest.tablekey}`}
 			indeterminate={indeterminate}
 			onClick={handleClick}
 			{...rest}

@@ -46,19 +46,17 @@ export const TableContainer = styled.div`
 		letter-spacing: 0.13px;
 		text-align: left;
 		color: #212121;
+		position: relative;
+		overflow: scroll;
 		.head {
 			background: #f8f9fa;
 			border-bottom: 1px solid #e3e5e5;
-			// display: flex;
-			// justify-content: space-between;
+			position: sticky;
+			z-index: 1;
+			top: 0;
 		}
 		.body {
 			border-bottom: 1px solid #e3e5e5;
-			// display: flex;
-			// justify-content: space-between;
-			// :last-child {
-			// 	border: none;
-			// }
 		}
 		.odd {
 			background: #f8f9fa;
@@ -79,6 +77,7 @@ export const TableContainer = styled.div`
 
 		.th,
 		.td {
+			min-height: 40px;
 			white-space: nowrap;
 			box-sizing: border-box;
 			text-align: left;
@@ -89,17 +88,15 @@ export const TableContainer = styled.div`
 `;
 
 export const HoverTableContainer = styled(TableContainer)`
+	height: 300px;
 	display: flex;
 	flex-direction: column;
 	.table {
 		flex: 1;
-		margin-bottom: 16px;
 		border-bottom: 1px solid #e3e5e5;
 	}
 	.body {
 		border-bottom: 1px solid #e3e5e5;
-		// display: flex;
-		// justify-content: space-between;
 		&:hover {
 			background: #f8f9fa;
 		}
