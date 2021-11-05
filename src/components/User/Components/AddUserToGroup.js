@@ -7,10 +7,12 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
-import {TableSpace} from "../../../styles/components/table";
-import TableOptionText from "../../Table/Options/TableOptionText";
+import {TableFoldContainer} from '../../../styles/components/table';
+import TableOptionText from '../../Table/Options/TableOptionText';
+import PropTypes from 'prop-types';
+import TableFold from '../../Table/Options/TableFold';
 
-const AddUserToGroup = () => {
+const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const [rightDataIds, setRightDataIds] = useState([]);
@@ -47,61 +49,84 @@ const AddUserToGroup = () => {
 	}, [dataRight, dispatch]);
 
 	return (
-		<>
-			<TableSpace>그룹에 사용자에 추가</TableSpace>
-			<TableOptionText data={'groups'}/>
-			<_Tables>
-				<Table
-					tableKey={tableKeys.users.add.groups.exclude}
-					columns={tableColumns[tableKeys.users.add.groups.exclude]}
-					data={dataLeft}
-					isPageable
-					isNumberOfRowsAdjustable
-					isColumnFilterable
-					isSortable
-					isSelectable
-					isDnDPossible
-					isSearchable
-					dndKey={tableKeys.users.add.groups.dnd}
-					setData={setRightDataIds}
-					setSelect={setSelect}
-				/>
-				<RowDiv alignItems={'center'}>
-					<DropButton
-						leftTableKey={tableKeys.users.add.groups.exclude}
-						RightTableKey={tableKeys.users.add.groups.include}
-						select={select}
-						dataLeft={dataLeft}
-						dataRight={dataRight}
-						rightDataIds={rightDataIds}
-						setRightDataIds={setRightDataIds}
-					/>
-				</RowDiv>
-				<div>
-					<TableHeader>
-						추가 그룹: {rightDataIds.length}건
-					</TableHeader>
-					<Table
-						tableKey={tableKeys.users.add.groups.include}
-						columns={
-							tableColumns[tableKeys.users.add.groups.include]
-						}
-						data={dataRight}
-						// isPageable
-						// isNumberOfRowsAdjustable
-						// isColumnFilterable
-						isSortable
-						isSelectable
-						isDnDPossible
-						dndKey={tableKeys.users.add.groups.dnd}
-						setData={setRightDataIds}
-						setSelect={setSelect}
-						control
-					/>
-				</div>
-			</_Tables>
-		</>
+		<TableFoldContainer>
+			<TableFold
+				title={'그룹에 사용자에 추가'}
+				space={space}
+				isFold={isFold}
+				setIsFold={setIsFold}
+			/>
+			{isFold[space] ? (
+				<>
+					<TableOptionText data={'groups'} />
+					<_Tables>
+						<Table
+							tableKey={tableKeys.users.add.groups.exclude}
+							columns={
+								tableColumns[tableKeys.users.add.groups.exclude]
+							}
+							data={dataLeft}
+							isPageable
+							isNumberOfRowsAdjustable
+							isColumnFilterable
+							isSortable
+							isSelectable
+							isDnDPossible
+							isSearchable
+							dndKey={tableKeys.users.add.groups.dnd}
+							setData={setRightDataIds}
+							setSelect={setSelect}
+						/>
+						<RowDiv alignItems={'center'}>
+							<DropButton
+								leftTableKey={
+									tableKeys.users.add.groups.exclude
+								}
+								RightTableKey={
+									tableKeys.users.add.groups.include
+								}
+								select={select}
+								dataLeft={dataLeft}
+								dataRight={dataRight}
+								rightDataIds={rightDataIds}
+								setRightDataIds={setRightDataIds}
+							/>
+						</RowDiv>
+						<div>
+							<TableHeader>
+								추가 그룹: {rightDataIds.length}건
+							</TableHeader>
+							<Table
+								tableKey={tableKeys.users.add.groups.include}
+								columns={
+									tableColumns[
+										tableKeys.users.add.groups.include
+									]
+								}
+								data={dataRight}
+								// isPageable
+								// isNumberOfRowsAdjustable
+								// isColumnFilterable
+								isSortable
+								isSelectable
+								isDnDPossible
+								dndKey={tableKeys.users.add.groups.dnd}
+								setData={setRightDataIds}
+								setSelect={setSelect}
+								control
+							/>
+						</div>
+					</_Tables>
+				</>
+			) : (
+				''
+			)}
+		</TableFoldContainer>
 	);
 };
-
+AddUserToGroup.propTypes = {
+	isFold: PropTypes.object,
+	setIsFold: PropTypes.func,
+	space: PropTypes.string,
+};
 export default AddUserToGroup;

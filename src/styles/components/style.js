@@ -5,6 +5,7 @@ export const IamContainer = styled.div`
 	display: flex;
 	height: 100%;
 	flex-direction: column;
+
 `;
 
 export const DetailContainer = styled.div`

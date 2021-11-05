@@ -24,7 +24,7 @@ import {NormalBorderButton} from '../../styles/components/buttons';
 import {checkDropTypeAlertMessage} from '../DialogBoxs/Alert/ConfirmDialogBox';
 import {arrowDownIcon, arrowUpIcon, cancelIcon} from '../../icons/icons';
 import {HoverIconButton, Icon} from '../../styles/components/icons';
-import {ColDiv, RowDiv, HoverTableContainer} from '../../styles/components/div';
+import {ColDiv, HoverTableContainer, RowDiv} from '../../styles/components/div';
 import {Label} from '../../styles/components/text';
 import styled from 'styled-components';
 import {FixedSizeList} from 'react-window';
@@ -544,7 +544,13 @@ const Table = ({
 					</div>
 				))}
 				<FixedSizeList
-					height={fullSize ? tableHeight - headerHeight : 300}
+					height={
+						fullSize
+							? tableHeight - headerHeight
+							: rows.length * 40 > 300
+							? 300
+							: rows.length * 40
+					}
 					itemCount={rows.length > pageSize ? pageSize : rows.length}
 					itemSize={40}
 				>

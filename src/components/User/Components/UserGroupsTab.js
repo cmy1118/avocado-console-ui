@@ -8,11 +8,15 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {parentGroupConverter} from '../../../utils/tableDataConverter';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
-import {TableSpace} from "../../../styles/components/table";
-import {NormalButton, TransparentButton} from "../../../styles/components/buttons";
-import TableOptionText from "../../Table/Options/TableOptionText";
+import {TableFoldContainer, TableSpace} from '../../../styles/components/table';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
+import TableOptionText from '../../Table/Options/TableOptionText';
+import TableFold from '../../Table/Options/TableFold';
 
-const UserGroupsTab = ({userId}) => {
+const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -22,7 +26,6 @@ const UserGroupsTab = ({userId}) => {
 		users,
 		userId,
 	]);
-
 	const [rightDataIds, setRightDataIds] = useState(user.groups);
 
 	const dataLeft = useMemo(() => {
@@ -99,7 +102,9 @@ const UserGroupsTab = ({userId}) => {
 		<>
 			<TableSpace>
 				이 사용자의 그룹: {dataLeft.length}{' '}
-				<TransparentButton onClick={onClickDeleteRolesFromUser}>삭제</TransparentButton>
+				<TransparentButton onClick={onClickDeleteRolesFromUser}>
+					삭제
+				</TransparentButton>
 			</TableSpace>
 			<Table
 				data={dataLeft}
@@ -118,35 +123,54 @@ const UserGroupsTab = ({userId}) => {
 				setSelect={setSelect}
 				setData={setRightDataIds}
 			/>
-			<TableSpace>
-				이 사용자의 다른그룹 : {dataRight.length}{' '}
-				<NormalButton onClick={onClickAddRolesToUser}>그룹 추가</NormalButton>
-			</TableSpace>
-			<TableOptionText data={'groups'}/>
-			<Table
-				data={dataRight}
-				tableKey={tableKeys.users.summary.tabs.groups.exclude}
-				columns={
-					tableColumns[tableKeys.users.summary.tabs.groups.exclude]
-				}
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSortable
-				isSelectable
-				isDnDPossible
-				isSearchable
-				dndKey={tableKeys.users.summary.tabs.groups.dnd}
-				setSelect={setSelect}
-				setData={setRightDataIds}
-				control
-			/>
+			<TableFoldContainer>
+				<TableFold
+					title={<>이 사용자의 다른그룹 : {dataRight.length}</>}
+					space={'UserGroupsTab'}
+					isFold={isFold}
+					setIsFold={setIsFold}
+				>
+					<NormalButton onClick={onClickAddRolesToUser}>
+						그룹 추가
+					</NormalButton>
+				</TableFold>
+				{isFold[space] && (
+					<>
+						<TableOptionText data={'groups'} />
+						<Table
+							data={dataRight}
+							tableKey={
+								tableKeys.users.summary.tabs.groups.exclude
+							}
+							columns={
+								tableColumns[
+									tableKeys.users.summary.tabs.groups.exclude
+								]
+							}
+							isPageable
+							isNumberOfRowsAdjustable
+							isColumnFilterable
+							isSortable
+							isSelectable
+							isDnDPossible
+							isSearchable
+							dndKey={tableKeys.users.summary.tabs.groups.dnd}
+							setSelect={setSelect}
+							setData={setRightDataIds}
+							control
+						/>
+					</>
+				)}
+			</TableFoldContainer>
 		</>
 	);
 };
 
 UserGroupsTab.propTypes = {
 	userId: PropTypes.string.isRequired,
+	isFold: PropTypes.object,
+	setIsFold: PropTypes.func,
+	space: PropTypes.string,
 };
 
 export default UserGroupsTab;

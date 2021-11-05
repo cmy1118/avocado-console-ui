@@ -8,11 +8,15 @@ import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import Table from '../../Table/Table';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
-import {TableSpace} from "../../../styles/components/table";
-import TableOptionText from "../../Table/Options/TableOptionText";
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
+import {TableFoldContainer, TableSpace} from '../../../styles/components/table';
+import TableOptionText from '../../Table/Options/TableOptionText';
+import TableFold from '../../Table/Options/TableFold';
 
-const UserRolesTab = ({userId}) => {
+const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {roles} = useSelector(IAM_ROLES.selector);
@@ -112,37 +116,54 @@ const UserRolesTab = ({userId}) => {
 				setSelect={setSelect}
 				setData={setRightDataIds}
 			/>
-			<TableSpace>
-				이 사용자의 다른권한 : {dataRight.length}{' '}
-				<NormalButton onClick={onClickAddRolesToUser}>
-					권한 추가
-				</NormalButton>
-			</TableSpace>
-			<TableOptionText data={'roles'}/>
-			<Table
-				data={dataRight}
-				tableKey={tableKeys.users.summary.tabs.roles.exclude}
-				columns={
-					tableColumns[tableKeys.users.summary.tabs.roles.exclude]
-				}
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSortable
-				isSelectable
-				isDnDPossible
-				isSearchable
-				dndKey={tableKeys.users.summary.tabs.roles.dnd}
-				setSelect={setSelect}
-				setData={setRightDataIds}
-				control
-			/>
+			<TableFoldContainer>
+				<TableFold
+					title={<>이 사용자의 다른권한 : {dataRight.length}</>}
+					space={'UserRolesTab'}
+					isFold={isFold}
+					setIsFold={setIsFold}
+				>
+					<NormalButton onClick={onClickAddRolesToUser}>
+						권한 추가
+					</NormalButton>
+				</TableFold>
+				{isFold[space] && (
+					<>
+						<TableOptionText data={'roles'} />
+						<Table
+							data={dataRight}
+							tableKey={
+								tableKeys.users.summary.tabs.roles.exclude
+							}
+							columns={
+								tableColumns[
+									tableKeys.users.summary.tabs.roles.exclude
+								]
+							}
+							isPageable
+							isNumberOfRowsAdjustable
+							isColumnFilterable
+							isSortable
+							isSelectable
+							isDnDPossible
+							isSearchable
+							dndKey={tableKeys.users.summary.tabs.roles.dnd}
+							setSelect={setSelect}
+							setData={setRightDataIds}
+							control
+						/>
+					</>
+				)}
+			</TableFoldContainer>
 		</>
 	);
 };
 
 UserRolesTab.propTypes = {
 	userId: PropTypes.string.isRequired,
+	isFold: PropTypes.object,
+	setIsFold: PropTypes.func,
+	space: PropTypes.string,
 };
 
 export default UserRolesTab;

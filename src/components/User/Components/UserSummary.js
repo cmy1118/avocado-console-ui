@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
-import {expiredConverter, parentGroupConverter, statusConverter,} from '../../../utils/tableDataConverter';
-import Table from '../../Table/Table';
+import {
+	expiredConverter,
+	parentGroupConverter,
+	statusConverter,
+} from '../../../utils/tableDataConverter';
 import React, {useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
@@ -9,9 +12,13 @@ import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType'
 import styled from 'styled-components';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {dummyDates, dummyPolicyOnUser, dummyUsers,} from '../../../utils/dummyData';
-import {ReadOnlyTableSpace} from "../../../styles/components/table";
-import {LiText} from "../../../styles/components/text";
+import {
+	dummyDates,
+	dummyPolicyOnUser,
+	dummyUsers,
+} from '../../../utils/dummyData';
+import {ReadOnlyTableSpace} from '../../../styles/components/table';
+import {LiText} from '../../../styles/components/text';
 import ReadOnlyTable from '../../Table/ReadOnlyTable';
 
 const _UserSummaryContainer = styled.div`
@@ -75,7 +82,9 @@ const UserSummary = ({userId}) => {
 			{/*</AppBarContents>*/}
 			<ul>
 				<LiText>사용자 : {user?.name}</LiText>
-				<LiText>사용자 계정 상태 : {statusConverter(user?.status)}</LiText>
+				<LiText>
+					사용자 계정 상태 : {statusConverter(user?.status)}
+				</LiText>
 				<LiText>마지막 콘솔 로그인 : {user?.lastConsoleLogin}</LiText>
 				<LiText>생성 일시 : {user?.creationDate}</LiText>
 				<LiText>
@@ -87,22 +96,24 @@ const UserSummary = ({userId}) => {
 				</LiText>
 			</ul>
 			<_UserSummaryContainer>
-				<ReadOnlyTableSpace>그룹: {groupData.length}</ReadOnlyTableSpace>
-				<Table
+				<ReadOnlyTableSpace>
+					그룹: {groupData.length}
+				</ReadOnlyTableSpace>
+				<ReadOnlyTable
 					data={groupData}
 					tableKey={tableKeys.users.summary.group}
 					columns={tableColumns[tableKeys.users.summary.group]}
 				/>
 
 				<ReadOnlyTableSpace>권한: {roleData.length}</ReadOnlyTableSpace>
-				<Table
+				<ReadOnlyTable
 					data={roleData}
 					tableKey={tableKeys.users.summary.permission}
 					columns={tableColumns[tableKeys.users.summary.permission]}
 				/>
 
 				<ReadOnlyTableSpace>태그: {tagData.length}</ReadOnlyTableSpace>
-				<Table
+				<ReadOnlyTable
 					data={tagData}
 					tableKey={tableKeys.users.summary.tag}
 					columns={tableColumns[tableKeys.users.summary.tag]}

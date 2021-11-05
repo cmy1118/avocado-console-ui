@@ -132,7 +132,6 @@ const ReadOnlyTable = ({tableKey, data, columns}) => {
 					}
 				}
 			});
-			console.log(height);
 			return height * 30;
 		},
 		[prepareRow, rows],
