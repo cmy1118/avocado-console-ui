@@ -15,7 +15,6 @@ import RolePolicyTab from '../Components/RolePolicyTab';
 import RoleUserTab from '../Components/RoleUserTab';
 import RoleGroupTab from '../Components/RoleGroupTab';
 import {useSelector} from 'react-redux';
-import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 
 const RoleDescriptionSpace = ({roleId}) => {
@@ -38,7 +37,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 		<IamContainer>
 			<AppBarNavi>
 				<PathContainer>
-					<NaviLink to='/'>IAM</NaviLink>
+					<NaviLink to='/iam'>IAM</NaviLink>
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to='/roles'>역할</NaviLink>
 					<div style={{padding: '0px 5px'}}>{' > '}</div>

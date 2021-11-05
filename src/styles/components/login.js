@@ -22,7 +22,7 @@ export const UserTitleSpan = styled.div`
 	font-size: 14px;
 	margin-bottom: 52px;
 	a {
-		color: #178082
+		color: #178082;
 		text-decoration: underline;
 	}
 `;

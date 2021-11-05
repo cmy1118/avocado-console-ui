@@ -2,10 +2,10 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 
-import appleButton from '../../images/apple_btn.png';
-import googleButton from '../../images/google_btn.png';
-import naverButton from '../../images/naver_btn.png';
-import kakaoButton from '../../images/kakao_btn.png';
+import appleButton from '../../images/auth/apple_btn.png';
+import googleButton from '../../images/auth/google_btn.png';
+import naverButton from '../../images/auth/naver_btn.png';
+import kakaoButton from '../../images/auth/kakao_btn.png';
 
 import {useHistory, useParams} from 'react-router-dom';
 import USER from '../../reducers/api/Auth/user';

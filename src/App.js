@@ -1,11 +1,12 @@
 import React from 'react';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
-import {Main, User, Group, Role, Policy, NotFound, Login} from './pages';
+import {Group, Iam, Login, Main, NotFound, Policy, Role, User} from './pages';
 import RouteWithLayout from './components/Layouts/RouteWithLayout';
 import IamLayout from './components/Layouts/IamLayout';
 import ConfirmDialogBox from './components/DialogBoxs/Alert/ConfirmDialogBox';
 import DeleteDialogBox from './components/DialogBoxs/Alert/DeleteDialogBox';
+import Layout from './components/Layouts/Layout';
 
 const App = () => {
 	return (
@@ -15,6 +16,13 @@ const App = () => {
 					path='/'
 					exact
 					component={Main}
+					layout={Layout}
+				/>
+
+				<RouteWithLayout
+					path='/iam'
+					exact
+					component={Iam}
 					layout={IamLayout}
 				/>
 

@@ -1,4 +1,5 @@
 export {default as Main} from './Main';
+export {default as Iam} from './Iam';
 export {default as User} from './User';
 export {default as Group} from './Group';
 export {default as Role} from './Role';

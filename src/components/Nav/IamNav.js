@@ -131,12 +131,12 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 			</NavHeader>
 
 			<_NavContents>
-				<NaviLink to='/'>
-					<_NavItem selected={pathname === '/' ? 1 : 0}>
+				<NaviLink to='/iam'>
+					<_NavItem selected={pathname === '/iam' ? 1 : 0}>
 						<Icon
 							margin={'0px'}
 							size={'sm'}
-							itype={pathname === '/' ? 'selected' : 0}
+							itype={pathname === '/iam' ? 'selected' : 0}
 						>
 							{dashboardIcon}
 						</Icon>

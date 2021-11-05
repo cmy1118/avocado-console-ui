@@ -54,7 +54,7 @@ const UserDescriptionSpace = ({userId}) => {
 		<DetailContainer>
 			<AppBarNavi>
 				<PathContainer>
-					<NaviLink to='/'>IAM</NaviLink>
+					<NaviLink to='/iam'>IAM</NaviLink>
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to='/users'>사용자</NaviLink>
 					<div style={{padding: '0px 5px'}}>{' > '}</div>

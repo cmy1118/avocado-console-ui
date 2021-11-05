@@ -10,6 +10,7 @@ import {
 } from '../../../styles/components/style';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {
+	expiredConverter,
 	groupsConverter,
 	passwordExpiredConverter,
 	tagsConverter,
@@ -39,7 +40,7 @@ const UserSpace = () => {
 					(val) => groups.find((val2) => val2.id === val).name,
 				),
 			),
-			passwordExpired: passwordExpiredConverter(v.passwordExpired),
+			passwordExpiryTime: passwordExpiredConverter(v.passwordExpired),
 			tags: tagsConverter(v.tags),
 		}));
 	}, [users, groups]);
@@ -58,7 +59,7 @@ const UserSpace = () => {
 		<IamContainer>
 			<AppBarNavi>
 				<PathContainer>
-					<NaviLink to='/'>IAM </NaviLink>
+					<NaviLink to='/iam'>IAM </NaviLink>
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to='/users'>사용자 </NaviLink>
 				</PathContainer>

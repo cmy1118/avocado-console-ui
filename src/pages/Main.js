@@ -1,18 +1,29 @@
-import React from 'react';
-
-import styled from 'styled-components';
-import background from '../images/dashboard@2x.png';
-
-const MainContainer = styled.div`
-	background-image: url(${background});
-	object-fit: contain;
-	height: 100%;
-	width: 100%;
-	background-size: cover;
-`;
+import React, {useCallback} from 'react';
+import {account} from '../utils/auth';
+import kt from '../images/backgound/workplace-2@2x.png';
+import samsung from '../images/backgound/workplce@2x.png';
+import {useSelector} from 'react-redux';
+import USER from '../reducers/api/Auth/user';
+import {useHistory} from 'react-router-dom';
 
 const Main = () => {
-	return <MainContainer></MainContainer>;
+	const history = useHistory();
+	const {companyId} = useSelector(USER.selector);
+
+	const onClickMove = useCallback(() => {
+		history.push('/iam');
+	}, [history]);
+
+	return (
+		<>
+			{companyId === account.KT.companyId && (
+				<img src={kt} onClick={onClickMove} />
+			)}
+			{companyId === account.SAMSUNG.companyId && (
+				<img src={samsung} onClick={onClickMove} />
+			)}
+		</>
+	);
 };
 
 export default Main;

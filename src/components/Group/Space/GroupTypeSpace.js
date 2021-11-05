@@ -68,7 +68,7 @@ const GroupTypeSpace = () => {
 		<IamContainer>
 			<AppBarNavi>
 				<PathContainer>
-					<NaviLink to='/'>IAM</NaviLink>
+					<NaviLink to='/iam'>IAM</NaviLink>
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to='/groups'>사용자 그룹</NaviLink>
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
@@ -96,6 +96,7 @@ const GroupTypeSpace = () => {
 					</TransparentButton>
 				</AppBarButtons>
 			</AppBarContentsHeader>
+
 			<TableOptionText data={'groupsType'} />
 			<Table
 				tableKey={tableKeys.groups.type}

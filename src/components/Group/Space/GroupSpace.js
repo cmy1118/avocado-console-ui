@@ -56,7 +56,7 @@ const GroupSpace = () => {
 		<IamContainer>
 			<AppBarNavi>
 				<PathContainer>
-					<NaviLink to='/'>IAM</NaviLink>
+					<NaviLink to='/iam'>IAM</NaviLink>
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to='/groups'>사용자 그룹</NaviLink>
 				</PathContainer>

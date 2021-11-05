@@ -49,6 +49,7 @@ export const mfaConverter = (authType) => {
 };
 
 export const passwordExpiredConverter = (date) => {
+	console.log(date);
 	let diffDate = new Date(date) - new Date();
 	return Math.ceil(diffDate / (1000 * 60 * 60 * 24));
 };

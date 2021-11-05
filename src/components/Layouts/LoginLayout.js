@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import background from '../../images/bg-img-1@2x.png';
+import background from '../../images/backgound/bg-img-1@2x.png';
 import {consoleManagement} from '../../icons/icons';
 
 const _Container = styled.div`

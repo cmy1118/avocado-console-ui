@@ -6,7 +6,7 @@ const AddRolicySpace = () => {
 	return (
 		<IamContainer>
 			<PathContainer>
-				<Link to='/'>IAM</Link>
+				<Link to='/iam'>IAM</Link>
 				<div>{' > '}</div>
 				<Link to='/policies'>정책</Link>
 				<div>{' > '}</div>
