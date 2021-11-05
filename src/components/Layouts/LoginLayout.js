@@ -20,6 +20,8 @@ const _Container = styled.div`
 
 const _HeaderContainer = styled.div`
 	width: 50%;
+	padding-left: 90px;
+	padding-bottom: 250px;
 `;
 
 const _Description = styled.div`
@@ -28,7 +30,7 @@ const _Description = styled.div`
 	width: 378px;
 	height: 48px;
 	line-height: 1.71;
-	margin: 28.4px 0 0;
+	// margin: 28.4px 0 0;
 	font-size: 14px;
 `;
 
@@ -41,20 +43,32 @@ const _Footer = styled.div`
 	left: 42px;
 `;
 
+const _LogoContainer = styled.div`
+	position: absolute;
+	// top: 427px;
+	// left: 287px;
+`;
+
 const _Logo = styled.div`
-	width: 299.1px;
-	height: 149.6px;
+	// width: 299.1px;
+	// height: 149.6px;
+	position: relative;
+	right: 20px;
+	// bottom: 20px;
 `;
 
 const LoginLayout = ({children}) => {
 	return (
 		<_Container>
 			<_HeaderContainer>
-				<_Logo>{consoleManagement}</_Logo>
-				<_Description>
-					Manage your servers from your browser with a professional
-					and feature-rich terminal and remote deskcop client.
-				</_Description>
+				<_LogoContainer>
+					<_Logo>{consoleManagement}</_Logo>
+					<_Description>
+						Manage your servers from your browser with a
+						professional and feature-rich terminal and remote
+						deskcop client.
+					</_Description>
+				</_LogoContainer>
 			</_HeaderContainer>
 			{children}
 			<_Footer>Copyright NETAMD Co.,Ltd. All rights reserved.</_Footer>
