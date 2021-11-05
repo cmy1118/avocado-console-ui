@@ -3,7 +3,28 @@ import PropTypes from 'prop-types';
 import {Draggable, Droppable} from 'react-beautiful-dnd';
 import {arrowDownIcon, arrowUpIcon, dragIndicator} from '../../icons/icons';
 import {Icon} from '../../styles/components/icons';
-import {HoverTableContainer, RowDiv} from '../../styles/components/div';
+import {RowDiv, TableContainer} from '../../styles/components/div';
+import styled from 'styled-components';
+
+const Tds = styled(RowDiv)`
+	overflow: hidden;
+	align-items: center;
+`;
+
+const HoverTableContainer = styled(TableContainer)`
+	display: flex;
+	flex-direction: column;
+	.table {
+		flex: 1;
+		border-bottom: 1px solid #e3e5e5;
+	}
+	.body {
+		border-bottom: 1px solid #e3e5e5;
+		&:hover {
+			background: #f8f9fa;
+		}
+	}
+`;
 
 const Table = ({
 	tableKey,
@@ -87,6 +108,17 @@ const Table = ({
 		setPosition({x, y});
 	}, []);
 
+	// useEffect(() => {
+	// setTableHeight(
+	// 	document.querySelector(`.${tableKey}[role = 'table']`)
+	// 		?.offsetHeight,
+	// );
+	// setHeaderHeight(
+	// 	document.querySelector(`.${tableKey}[role = 'table'] > .head`)
+	// 		?.offsetHeight,
+	// );
+	// }, [tableKey]);
+
 	useEffect(() => {
 		setSelect && selectedFlatRows && selectedDropButton(selectedFlatRows);
 	}, [selectedRowIds, setSelect, selectedDropButton, selectedFlatRows]);
@@ -133,7 +165,7 @@ const Table = ({
 							>
 								{headerGroup.headers.map((column, i) => {
 									return (
-										<RowDiv
+										<Tds
 											className={'th'}
 											width={`${column.width}px`}
 											key={i}
@@ -154,7 +186,7 @@ const Table = ({
 															: arrowUpIcon}
 													</Icon>
 												)}
-										</RowDiv>
+										</Tds>
 									);
 								})}
 							</div>
@@ -215,10 +247,7 @@ const Table = ({
 											>
 												{row.cells.map((cell, i) => {
 													return (
-														<RowDiv
-															alignItems={
-																'center'
-															}
+														<Tds
 															className={'td'}
 															width={`${cell.column.width}px`}
 															key={i}
@@ -230,7 +259,7 @@ const Table = ({
 																	setData,
 																},
 															)}
-														</RowDiv>
+														</Tds>
 													);
 												})}
 											</div>

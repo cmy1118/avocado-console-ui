@@ -6,8 +6,10 @@ import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
+import {RowDiv, TableHeader} from '../../../styles/components/div';
 import DragContainer from '../../Table/DragContainer';
+import TableContainer from '../../Table/TableContainer';
+import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const AddUserToGroup = () => {
 	const dispatch = useDispatch();
@@ -63,21 +65,15 @@ const AddUserToGroup = () => {
 			includedData={includedData}
 		>
 			<div>그룹에 사용자에 추가</div>
-			<_Tables>
-				<Table
+			<RowDiv>
+				<TableContainer
 					tableKey={tableKeys.users.add.groups.exclude}
 					columns={tableColumns[tableKeys.users.add.groups.exclude]}
 					data={excludedData}
-					isPageable
-					isNumberOfRowsAdjustable
-					isColumnFilterable
-					isSortable
-					isSelectable
-					isDnDPossible
-					isSearchable
-					setSelect={setSelect}
-					isDraggable={true}
-				/>
+				>
+					<TableOptionsBar />
+					<Table setSelect={setSelect} isDraggable />
+				</TableContainer>
 				<RowDiv alignItems={'center'}>
 					<DropButton
 						leftTableKey={tableKeys.users.add.groups.exclude}
@@ -93,20 +89,17 @@ const AddUserToGroup = () => {
 					<TableHeader>
 						추가 그룹: {includedDataIds.length}건
 					</TableHeader>
-					<Table
+					<TableContainer
 						tableKey={tableKeys.users.add.groups.include}
 						columns={
 							tableColumns[tableKeys.users.add.groups.include]
 						}
 						data={includedData}
-						isSortable
-						isSelectable
-						isDnDPossible
-						setSelect={setSelect}
-						isDraggable={true}
-					/>
+					>
+						<Table setSelect={setSelect} isDraggable />
+					</TableContainer>
 				</div>
-			</_Tables>
+			</RowDiv>
 		</DragContainer>
 	);
 };

@@ -7,8 +7,10 @@ import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
+import {RowDiv, TableHeader} from '../../../styles/components/div';
 import DragContainer from '../../Table/DragContainer';
+import TableContainer from '../../Table/TableContainer';
+import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const AssignRoleToUser = () => {
 	const dispatch = useDispatch();
@@ -54,23 +56,15 @@ const AssignRoleToUser = () => {
 			includedData={includedData}
 		>
 			<div>권한 추가</div>
-			<_Tables>
-				<Table
+			<RowDiv>
+				<TableContainer
 					data={excludedData}
 					tableKey={tableKeys.users.add.roles.exclude}
 					columns={tableColumns[tableKeys.users.add.roles.exclude]}
-					isPageable
-					isNumberOfRowsAdjustable
-					isColumnFilterable
-					isSortable
-					isSelectable
-					isDnDPossible
-					isSearchable
-					dndKey={tableKeys.users.add.roles.dnd}
-					setSelect={setSelect}
-					setData={setIncludedDataIds}
-					isDraggable={true}
-				/>
+				>
+					<TableOptionsBar />
+					<Table setSelect={setSelect} isDraggable />
+				</TableContainer>
 				<RowDiv alignItems={'center'}>
 					<DropButton
 						leftTableKey={tableKeys.users.add.roles.exclude}
@@ -86,22 +80,17 @@ const AssignRoleToUser = () => {
 					<TableHeader>
 						추가 Roles: {includedDataIds.length}건
 					</TableHeader>
-					<Table
+					<TableContainer
 						data={includedData}
 						tableKey={tableKeys.users.add.roles.include}
 						columns={
 							tableColumns[tableKeys.users.add.roles.include]
 						}
-						isSortable
-						isSelectable
-						isDnDPossible
-						dndKey={tableKeys.users.add.roles.dnd}
-						setData={setIncludedDataIds}
-						setSelect={setSelect}
-						isDraggable={true}
-					/>
+					>
+						<Table setSelect={setSelect} isDraggable />
+					</TableContainer>
 				</div>
-			</_Tables>
+			</RowDiv>
 		</DragContainer>
 	);
 };

@@ -7,6 +7,7 @@ import {useSelector} from 'react-redux';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
 import {Label} from '../../../styles/components/text';
+import TableContainer from '../../Table/TableContainer';
 
 const ReadOnly = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
@@ -35,26 +36,32 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 				그룹 :{' '}
 				{readOnlyData[tableKeys.users.add.groups.exclude]?.length}
 			</div>
-			<Table
+			<TableContainer
 				tableKey={tableKeys.users.add.groups.exclude}
 				data={readOnlyData[tableKeys.users.add.groups.exclude]}
 				columns={tableColumns[tableKeys.users.add.groups.exclude]}
-			/>
+			>
+				<Table />
+			</TableContainer>
 			<div>
 				권한 : {readOnlyData[tableKeys.users.add.roles.exclude].length}
 			</div>
-			<Table
+			<TableContainer
 				tableKey={tableKeys.users.add.roles.exclude}
 				data={readOnlyData[tableKeys.users.add.roles.exclude]}
 				columns={tableColumns[tableKeys.users.add.roles.exclude]}
-			/>
+			>
+				<Table />
+			</TableContainer>
 
 			<div>태그 : {readOnlyData[tableKeys.users.add.tag].length}</div>
-			<Table
+			<TableContainer
 				tableKey={tableKeys.users.add.tag}
 				data={readOnlyData[tableKeys.users.add.tag]}
 				columns={tableColumns[tableKeys.users.add.tag]}
-			/>
+			>
+				<Table />
+			</TableContainer>
 		</ModalTableContainer>
 	) : (
 		<div />

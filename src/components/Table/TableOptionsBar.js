@@ -41,6 +41,7 @@ const _FilterText = styled.span`
 
 const FiltersContainer = styled(RowDiv)`
 	border-top: 1px solid #e3e5e5;
+	box-sizing: border-box;
 `;
 
 const placeholders = {
@@ -110,7 +111,7 @@ const TableOptionsBar = ({
 
 	return (
 		<_Container>
-			<RowDiv justifyContent={'space-between'}>
+			<RowDiv padding={'14px 16px'} justifyContent={'space-between'}>
 				<_OptionContainer>
 					<Search tableKey={tableKey} />
 					<div>
@@ -184,9 +185,10 @@ const TableOptionsBar = ({
 						justifyContent={'space-between'}
 						key={i}
 						height={'84px'}
+						padding={'11px 16px 16px'}
 						{...headerGroup.getHeaderGroupProps()}
 					>
-						<RowDiv alignItems={'center'} margin={'11px 0px 16px'}>
+						<RowDiv alignItems={'center'}>
 							{headerGroup.headers.map(
 								(column, i) =>
 									column.canFilter &&
@@ -215,7 +217,7 @@ const TableOptionsBar = ({
 						{selectedSearchFilters.length !== 0 && (
 							<RowDiv
 								alignItems={'flex-end'}
-								margin={'11px 0px 16px'}
+								// margin={'11px 0px 16px'}
 							>
 								<NormalBorderButton
 									onClick={onClickResetFilters}

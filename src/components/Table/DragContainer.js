@@ -49,7 +49,6 @@ const DragContainer = ({
 			const ROLES = 'roles';
 			const UESRS = 'users';
 			const FILTER_TYPE = 'Private';
-			console.log(excludedData);
 			//  API : groups 일때 - 그룹 유형 검사 : 그룹유형별 1개의 그룹만 추가
 			if (CheckDropDataType(tableKey)) {
 				if (CheckDropDataType(tableKey) === GROUP) {

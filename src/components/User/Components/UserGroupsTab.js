@@ -8,23 +8,26 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {parentGroupConverter} from '../../../utils/tableDataConverter';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
+import TableContainer from '../../Table/TableContainer';
+import DragContainer from '../../Table/DragContainer';
+import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const UserGroupsTab = ({userId}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
-	const [select, setSelect] = useState([]);
+	const [select, setSelect] = useState({});
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
 		userId,
 	]);
 
-	const [rightDataIds, setRightDataIds] = useState(user.groups);
+	const [includedDataIds, setIncludedDataIds] = useState(user.groups);
 
-	const dataLeft = useMemo(() => {
+	const excludedData = useMemo(() => {
 		return groups
-			.filter((v) => rightDataIds.includes(v.id))
+			.filter((v) => includedDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
@@ -34,11 +37,11 @@ const UserGroupsTab = ({userId}) => {
 					groups.find((val) => val.id === v.parentId)?.name,
 				),
 			}));
-	}, [groups, rightDataIds]);
+	}, [groupTypes, groups, includedDataIds]);
 
-	const dataRight = useMemo(() => {
+	const includedData = useMemo(() => {
 		return groups
-			.filter((v) => !rightDataIds.includes(v.id))
+			.filter((v) => !includedDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
@@ -48,7 +51,7 @@ const UserGroupsTab = ({userId}) => {
 					groups.find((val) => val.id === v.parentId)?.name,
 				),
 			}));
-	}, [groups, groupTypes, rightDataIds]);
+	}, [groups, groupTypes, includedDataIds]);
 	//삭제
 	const onClickDeleteRolesFromUser = useCallback(() => {
 		dispatch(
@@ -89,55 +92,47 @@ const UserGroupsTab = ({userId}) => {
 	}, [dispatch, select, userId]);
 
 	useEffect(() => {
-		setRightDataIds(user.groups);
+		setIncludedDataIds(user.groups);
 	}, [user.groups]);
 
 	return (
-		<>
+		<DragContainer
+			selected={select}
+			data={includedDataIds}
+			setData={setIncludedDataIds}
+			includedKey={tableKeys.users.summary.tabs.groups.include}
+			excludedData={excludedData}
+			includedData={includedData}
+		>
 			<div>
-				이 사용자의 그룹: {dataLeft.length}{' '}
+				이 사용자의 그룹: {excludedData.length}{' '}
 				<button onClick={onClickDeleteRolesFromUser}>삭제</button>
 			</div>
-			<Table
-				data={dataLeft}
+			<TableContainer
+				data={excludedData}
 				tableKey={tableKeys.users.summary.tabs.groups.include}
 				columns={
 					tableColumns[tableKeys.users.summary.tabs.groups.include]
 				}
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSortable
-				isSelectable
-				isDnDPossible
-				isSearchable
-				dndKey={tableKeys.users.summary.tabs.groups.dnd}
-				setSelect={setSelect}
-				setData={setRightDataIds}
-			/>
+			>
+				<TableOptionsBar />
+				<Table setSelect={setSelect} isDraggable />
+			</TableContainer>
 			<div>
-				이 사용자의 다른그룹 : {dataRight.length}{' '}
+				이 사용자의 다른그룹 : {includedData.length}{' '}
 				<button onClick={onClickAddRolesToUser}>그룹 추가</button>
 			</div>
-			<Table
-				data={dataRight}
+			<TableContainer
+				data={includedData}
 				tableKey={tableKeys.users.summary.tabs.groups.exclude}
 				columns={
 					tableColumns[tableKeys.users.summary.tabs.groups.exclude]
 				}
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSortable
-				isSelectable
-				isDnDPossible
-				isSearchable
-				dndKey={tableKeys.users.summary.tabs.groups.dnd}
-				setSelect={setSelect}
-				setData={setRightDataIds}
-				control
-			/>
-		</>
+			>
+				<TableOptionsBar />
+				<Table setSelect={setSelect} isDraggable />
+			</TableContainer>
+		</DragContainer>
 	);
 };
 

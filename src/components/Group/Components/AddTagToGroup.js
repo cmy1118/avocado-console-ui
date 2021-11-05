@@ -8,11 +8,12 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
+import TableContainer from '../../Table/TableContainer';
 
 const AddTagToGroup = () => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
-	const [select, setSelect] = useState([]);
+	const [select, setSelect] = useState({});
 	const onClickAddRow = useCallback(() => {
 		console.log(data);
 		const lastValues = data.slice().pop();
@@ -63,14 +64,13 @@ const AddTagToGroup = () => {
 					태그 삭제
 				</TransparentButton>
 			</div>
-			<Table
+			<TableContainer
 				tableKey={tableKeys.groups.add.tag}
 				data={tagData}
 				columns={tableColumns[tableKeys.groups.add.tag]}
-				isSelectable
-				setData={setData}
-				setSelect={setSelect}
-			/>
+			>
+				<Table setSelect={setSelect} />
+			</TableContainer>
 		</>
 	);
 };

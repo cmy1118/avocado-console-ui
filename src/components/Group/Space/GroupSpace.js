@@ -23,9 +23,11 @@ import {
 	TransparentButton,
 } from '../../../styles/components/buttons';
 import {NaviLink} from '../../../styles/components/link';
+import TableContainer from '../../Table/TableContainer';
+import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const GroupSpace = () => {
-	const [select, setSelect] = useState([]);
+	const [select, setSelect] = useState({});
 	const history = useHistory();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
@@ -76,20 +78,14 @@ const GroupSpace = () => {
 					</TransparentButton>
 				</AppBarButtons>
 			</AppBarContents>
-			<Table
+			<TableContainer
 				tableKey={tableKeys.groups.basic}
 				columns={tableColumns[tableKeys.groups.basic]}
 				data={data}
-				isSearchFilterable
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSortable
-				isSelectable
-				setSelect={setSelect}
-				isSearchable
-				fullSize
-			/>
+			>
+				<TableOptionsBar />
+				<Table setSelect={setSelect} />
+			</TableContainer>
 		</IamContainer>
 	);
 };

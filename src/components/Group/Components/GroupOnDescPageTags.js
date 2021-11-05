@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {tableKeys} from '../../../Constants/Table/keys';
+import TableContainer from '../../Table/TableContainer';
 
 const GroupOnDescPageTags = ({groupId}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -23,8 +24,7 @@ const GroupOnDescPageTags = ({groupId}) => {
 		}) || [],
 	);
 
-	const [select, setSelect] = useState([]);
-
+	const [select, setSelect] = useState({});
 	const onClickAddRow = useCallback(() => {
 		const lastValues = data.slice().pop();
 		console.log(lastValues);
@@ -64,14 +64,13 @@ const GroupOnDescPageTags = ({groupId}) => {
 				<button onClick={onClickSaveRow}>태그 저장</button>
 				<button onClick={onClickDeleteRow}>태그 삭제</button>
 			</div>
-			<Table
+			<TableContainer
 				tableKey={tableKeys.groups.summary.tabs.tags.basic}
 				data={data}
 				columns={tableColumns[tableKeys.groups.summary.tabs.tags.basic]}
-				isSelectable
-				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
-				setSelect={setSelect}
-			/>
+			>
+				<Table setSelect={setSelect} />
+			</TableContainer>
 		</>
 	);
 };

@@ -6,22 +6,24 @@ import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
+import {RowDiv, TableHeader} from '../../../styles/components/div';
+import TableContainer from '../../Table/TableContainer';
+import DragContainer from '../../Table/DragContainer';
+import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const UsersIncludedInGroup = () => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
-	const [rightDataIds, setRightDataIds] = useState([]);
-	const [select, setSelect] = useState([]);
-
-	const dataLeft = useMemo(() => {
+	const [includedDataIds, setIncludedDataIds] = useState([]);
+	const [select, setSelect] = useState({});
+	const excludedData = useMemo(() => {
 		const dropDataName = users
 			.map(({uid: id, id: _id, ...rest}) => ({
 				id,
 				_id,
 				...rest,
 			}))
-			.filter((v) => rightDataIds.includes(v.id))
+			.filter((v) => includedDataIds.includes(v.id))
 			.map((v) => v.name);
 		return users
 			.filter((v) => !dropDataName.includes(v.name))
@@ -29,81 +31,76 @@ const UsersIncludedInGroup = () => {
 				...v,
 				numberOfGroups: v.groups.length,
 			}));
-	}, [users, rightDataIds]);
+	}, [users, includedDataIds]);
 
-	const dataRight = useMemo(() => {
+	const includedData = useMemo(() => {
 		return users
 			.map(({uid: id, id: _id, ...rest}) => ({
 				id,
 				_id,
 				...rest,
 			}))
-			.filter((v) => rightDataIds.includes(v.id))
+			.filter((v) => includedDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 			}));
-	}, [users, rightDataIds]);
+	}, [users, includedDataIds]);
 
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
 				title: tableKeys.groups.add.roles.include,
-				data: dataRight,
+				data: includedData,
 			}),
 		);
-	}, [dataRight, dispatch]);
+	}, [includedData, dispatch]);
 
 	return (
-		<>
+		<DragContainer
+			selected={select}
+			data={includedDataIds}
+			setData={setIncludedDataIds}
+			includedKey={tableKeys.groups.add.users.include}
+			excludedData={excludedData}
+			includedData={includedData}
+		>
 			<div>그룹에 사용자에 추가 </div>
-			<_Tables>
-				<Table
-					data={dataLeft}
+			<RowDiv>
+				<TableContainer
+					data={excludedData}
 					tableKey={tableKeys.groups.add.users.exclude}
 					columns={tableColumns[tableKeys.groups.add.users.exclude]}
-					isPageable
-					isNumberOfRowsAdjustable
-					isColumnFilterable
-					isSortable
-					isSelectable
-					isDnDPossible
-					isSearchable
-					dndKey={tableKeys.groups.add.users.dnd}
-					setSelect={setSelect}
-					setData={setRightDataIds}
-				/>
+				>
+					<TableOptionsBar />
+					<Table setSelect={setSelect} isDraggable />
+				</TableContainer>
 				<RowDiv alignItems={'center'}>
 					<DropButton
 						leftTableKey={tableKeys.groups.add.users.exclude}
 						RightTableKey={tableKeys.groups.add.users.include}
 						select={select}
-						dataLeft={dataLeft}
-						dataRight={dataRight}
-						rightDataIds={rightDataIds}
-						setRightDataIds={setRightDataIds}
+						dataLeft={excludedData}
+						dataRight={includedData}
+						rightDataIds={includedDataIds}
+						setRightDataIds={setIncludedDataIds}
 					/>
 				</RowDiv>
 				<div>
 					<TableHeader>
-						추가 사용자: {rightDataIds.length}건
+						추가 사용자: {includedDataIds.length}건
 					</TableHeader>
-					<Table
-						data={dataRight}
+					<TableContainer
+						data={includedData}
 						tableKey={tableKeys.groups.add.users.include}
 						columns={
 							tableColumns[tableKeys.groups.add.users.include]
 						}
-						isSortable
-						isSelectable
-						isDnDPossible
-						dndKey={tableKeys.groups.add.users.dnd}
-						setData={setRightDataIds}
-						setSelect={setSelect}
-						control
-					/>
+					>
+						<Table setSelect={setSelect} isDraggable />
+					</TableContainer>
 				</div>
-			</_Tables>
-		</>
+			</RowDiv>
+		</DragContainer>
 	);
 };
 

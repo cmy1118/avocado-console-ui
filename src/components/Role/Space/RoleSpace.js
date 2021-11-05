@@ -7,11 +7,11 @@ import Table from '../../Table/Table';
 import {useSelector} from 'react-redux';
 
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
+import TableContainer from '../../Table/TableContainer';
 
 const RoleSpace = () => {
 	const {roles} = useSelector(IAM_ROLES.selector);
-	const [select, setSelect] = useState([]);
-
+	const [select, setSelect] = useState({});
 	const data = useMemo(() => {
 		return roles.map((v) => ({
 			...v,
@@ -26,19 +26,13 @@ const RoleSpace = () => {
 				<div>{' > '}</div>
 				<Link to='/roles'>역할</Link>
 			</PathContainer>
-			<Table
+			<TableContainer
 				tableKey={tableKeys.roles.basic}
 				columns={tableColumns[tableKeys.roles.basic]}
 				data={data}
-				isSearchFilterable
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSortable
-				isSelectable
-				isSearchable
-				setSelect={setSelect}
-			/>
+			>
+				<Table setSelect={setSelect} />
+			</TableContainer>
 		</IamContainer>
 	);
 };

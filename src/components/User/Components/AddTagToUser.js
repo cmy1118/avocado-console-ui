@@ -9,6 +9,7 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
+import TableContainer from '../../Table/TableContainer';
 
 const AddTagToUser = () => {
 	const dispatch = useDispatch();
@@ -70,14 +71,13 @@ const AddTagToUser = () => {
 					태그 삭제
 				</TransparentButton>
 			</div>
-			<Table
+			<TableContainer
 				tableKey={tableKeys.users.add.tag}
 				data={tagData}
 				columns={tableColumns[tableKeys.users.add.tag]}
-				isSelectable
-				setData={setData}
-				setSelect={setSelect}
-			/>
+			>
+				<Table setSelect={setSelect} />
+			</TableContainer>
 		</>
 	);
 };

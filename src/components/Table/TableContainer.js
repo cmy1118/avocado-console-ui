@@ -9,6 +9,12 @@ import {
 	useTable,
 } from 'react-table';
 import TableCheckbox from './Options/TableCheckbox';
+import {ColDiv} from '../../styles/components/div';
+import styled from 'styled-components';
+
+const Container = styled(ColDiv)`
+	height: 100%;
+`;
 
 const TableContainer = ({data, columns, tableKey, children}) => {
 	const getRowId = useCallback((v) => {
@@ -113,40 +119,45 @@ const TableContainer = ({data, columns, tableKey, children}) => {
 		},
 	);
 
-	return React.Children.map(children, (child) => {
-		return React.cloneElement(child, {
-			data,
-			columns,
-			tableKey,
-			getTableProps,
-			headerGroups,
-			prepareRow,
-			page,
-			selectedFlatRows,
-			allColumns,
-			canPreviousPage,
-			canNextPage,
-			pageOptions,
-			gotoPage,
-			nextPage,
-			previousPage,
-			setPageSize,
-			setAllFilters,
-			getToggleHideAllColumnsProps,
-			setHiddenColumns,
-			pageIndex,
-			selectedRowIds,
-			pageSize,
-			filters,
-		});
-	});
+	return (
+		<Container>
+			{React.Children.map(children, (child) => {
+				return React.cloneElement(child, {
+					data,
+					columns,
+					tableKey,
+					getTableProps,
+					headerGroups,
+					prepareRow,
+					page,
+					selectedFlatRows,
+					allColumns,
+					canPreviousPage,
+					canNextPage,
+					pageOptions,
+					gotoPage,
+					nextPage,
+					previousPage,
+					setPageSize,
+					setAllFilters,
+					getToggleHideAllColumnsProps,
+					setHiddenColumns,
+					pageIndex,
+					selectedRowIds,
+					pageSize,
+					filters,
+				});
+			})}
+		</Container>
+	);
 };
 
 TableContainer.propTypes = {
 	tableKey: PropTypes.string.isRequired,
 	data: PropTypes.array.isRequired,
 	columns: PropTypes.array.isRequired,
-	children: PropTypes.array.isRequired,
+	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+		.isRequired,
 };
 
 export default TableContainer;

@@ -6,36 +6,38 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
+import TableContainer from '../../Table/TableContainer';
+import DragContainer from '../../Table/DragContainer';
+import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const GroupUsersTab = ({groupId}) => {
 	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {users} = useSelector(IAM_USER.selector);
-	const [select, setSelect] = useState([]);
-
+	const [select, setSelect] = useState({});
 	const group = useMemo(() => groups.find((v) => v.id === groupId), [
 		groups,
 		groupId,
 	]);
-	const [rightDataIds, setRightDataIds] = useState(group.members);
+	const [includedDataIds, setIncludedDataIds] = useState(group.members);
 
-	const dataLeft = useMemo(() => {
+	const excludedData = useMemo(() => {
 		return users
-			.filter((v) => rightDataIds.includes(v.uid))
+			.filter((v) => includedDataIds.includes(v.uid))
 			.map((v) => ({
 				...v,
 				numberOfGroups: v.groups.length,
 			}));
-	}, [users, rightDataIds]);
+	}, [users, includedDataIds]);
 
-	const dataRight = useMemo(() => {
+	const includedData = useMemo(() => {
 		return users
-			.filter((v) => !rightDataIds.includes(v.uid))
+			.filter((v) => !includedDataIds.includes(v.uid))
 			.map((v) => ({
 				...v,
 				numberOfGroups: v.groups.length,
 			}));
-	}, [users, rightDataIds]);
+	}, [users, includedDataIds]);
 
 	const onClickDeleteRolesFromGroup = useCallback(() => {
 		dispatch(
@@ -75,56 +77,48 @@ const GroupUsersTab = ({groupId}) => {
 		);
 	}, [dispatch, groupId, select]);
 	useEffect(() => {
-		setRightDataIds(group.members);
+		setIncludedDataIds(group.members);
 	}, [group.members]);
 	return (
-		<>
+		<DragContainer
+			selected={select}
+			data={includedDataIds}
+			setData={setIncludedDataIds}
+			includedKey={tableKeys.groups.summary.tabs.users.include}
+			excludedData={excludedData}
+			includedData={includedData}
+		>
 			<div>
-				이 그룹의 사용자 : {dataLeft.length}
+				이 그룹의 사용자 : {excludedData.length}
 				<button onClick={onClickDeleteRolesFromGroup}>
 					사용자 삭제
 				</button>
 			</div>
-			<Table
-				data={dataLeft}
+			<TableContainer
+				data={excludedData}
 				tableKey={tableKeys.groups.summary.tabs.users.include}
 				columns={
 					tableColumns[tableKeys.groups.summary.tabs.users.include]
 				}
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSortable
-				isSelectable
-				isDnDPossible
-				isSearchable
-				dndKey={tableKeys.groups.summary.tabs.users.dnd}
-				setSelect={setSelect}
-				setData={setRightDataIds}
-			/>
+			>
+				<TableOptionsBar />
+				<Table setSelect={setSelect} isDraggable />
+			</TableContainer>
 			<div>
-				이 그룹의 다른 사용자 : {dataRight.length}
+				이 그룹의 다른 사용자 : {includedData.length}
 				<button onClick={onClickAddRolesToGroup}>사용자 추가</button>
 			</div>
-			<Table
-				data={dataRight}
+			<TableContainer
+				data={includedData}
 				tableKey={tableKeys.groups.summary.tabs.users.exclude}
 				columns={
 					tableColumns[tableKeys.groups.summary.tabs.users.exclude]
 				}
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSortable
-				isSelectable
-				isDnDPossible
-				isSearchable
-				dndKey={tableKeys.groups.summary.tabs.users.dnd}
-				setSelect={setSelect}
-				setData={setRightDataIds}
-				control
-			/>
-		</>
+			>
+				<TableOptionsBar />
+				<Table setSelect={setSelect} isDraggable />
+			</TableContainer>
+		</DragContainer>
 	);
 };
 

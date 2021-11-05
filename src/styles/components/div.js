@@ -6,7 +6,7 @@ export const PositionRelativeDiv = styled.div`
 
 export const RowDiv = styled.div`
 	display: flex;
-	width: ${(props) => props.width || 'initial'};
+	width: ${(props) => props.width};
 	height: ${(props) => props.height || 'initial'};
 	margin: ${(props) => props.margin || '0px'};
 	padding: ${(props) => props.padding || '0px'};
@@ -16,10 +16,6 @@ export const RowDiv = styled.div`
 
 export const ColDiv = styled(RowDiv)`
 	flex-direction: column;
-`;
-
-export const _Tables = styled(RowDiv)`
-	width: 100%;
 `;
 
 export const TableHeader = styled.div`
@@ -77,28 +73,12 @@ export const TableContainer = styled.div`
 
 		.th,
 		.td {
-			min-height: 40px;
+			// min-height: 40px;
 			white-space: nowrap;
 			box-sizing: border-box;
 			text-align: left;
 			margin-left: 9px;
 			padding: 0.5rem;
-		}
-	}
-`;
-
-export const HoverTableContainer = styled(TableContainer)`
-	height: 300px;
-	display: flex;
-	flex-direction: column;
-	.table {
-		flex: 1;
-		border-bottom: 1px solid #e3e5e5;
-	}
-	.body {
-		border-bottom: 1px solid #e3e5e5;
-		&:hover {
-			background: #f8f9fa;
 		}
 	}
 `;

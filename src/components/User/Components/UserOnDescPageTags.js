@@ -9,6 +9,7 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
+import TableContainer from '../../Table/TableContainer';
 
 const UserOnDescPageTags = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
@@ -26,8 +27,7 @@ const UserOnDescPageTags = ({userId}) => {
 		}) || [],
 	);
 
-	const [select, setSelect] = useState([]);
-
+	const [select, setSelect] = useState({});
 	const onClickAddRow = useCallback(() => {
 		const lastValues = data.slice().pop();
 		if (lastValues.name === '' || lastValues.value === '') {
@@ -68,14 +68,13 @@ const UserOnDescPageTags = ({userId}) => {
 					태그 삭제
 				</TransparentButton>
 			</div>
-			<Table
+			<TableContainer
 				tableKey={tableKeys.users.summary.tabs.tags.basic}
 				data={data}
 				columns={tableColumns[tableKeys.users.summary.tabs.tags.basic]}
-				isSelectable
-				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
-				setSelect={setSelect}
-			/>
+			>
+				<Table setSelect={setSelect} />
+			</TableContainer>
 		</>
 	);
 };
