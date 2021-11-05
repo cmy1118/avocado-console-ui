@@ -241,7 +241,7 @@ export const dummyPolicyOnRole = [
 			'태그 : 추가/수정/삭제/조회\n' +
 			'역할 : 설정/삭제/조회',
 		type: '사용자 관리권한',
-		policyName: 'AdminRole',
+		policyName: 'AdminUser',
 		creationDate: '2021.09.03 15:35:55',
 		grantUser: {
 			uid: 'user3',
@@ -353,5 +353,62 @@ export const dummyPermission = [
 		description: '일반 User에게 임시로 부여 하는 역할',
 		numberOfRoles: 10,
 		creationDate: '2020.01.06 14:03:25',
+	},
+];
+
+export const dummyPolicyOnDialogBox = [
+	{
+		id: 'policy1',
+		name: '사용자',
+		description:
+			'사용자 : 생성/수정/삭제/조회\n' +
+			'태그 : 추가/수정/삭제/조회\n' +
+			'역할 : 설정/삭제/조회',
+		policyName: '사용자 관리권한',
+		roleName: 'AdminRole',
+		grantTarget: '사용자',
+	},
+	{
+		id: 'policy2',
+		name: '사용자 그룹',
+		description:
+			'사용자 그룹 : 생성/수정/삭제/조회\n' +
+			'태그 : 추가/수정/삭제/조회\n' +
+			'역할 : 설정/삭제/조회',
+		policyName: '사용자 그룹 관리 권한',
+		roleName: 'AdminUserGrp',
+		grantTarget: '그룹(Admin)',
+	},
+	{
+		id: 'policy3',
+		name: '역할',
+		description: '역할 : 추가/수정/삭제/조회\n' + '권한 : 설정/삭제/조회',
+		policyName: '역할 관리 권한',
+		roleName: 'AdminRole',
+		grantTarget: '사용자',
+	},
+	{
+		id: 'policy4',
+		name: '비밀번호 사용기간',
+		description:
+			'사용기간 : 200일\n' +
+			'계정처리 방법 : 잠금\n' +
+			'해제 조건 : 본인확인인증',
+		type: '계정처리 정책',
+		policyName: 'AdminAccount',
+		creationDate: '2021.09.03 15:35:58',
+		grantTarget: '태그(type)',
+	},
+	{
+		id: 'policy5',
+		name: '서비스 사용기간',
+		description:
+			'접근 유형 : Console/Webterm\n' +
+			'이용시간 : 09:00 ~ 18:00\n' +
+			'요일 : 월~금',
+		type: '사용자 접근',
+		policyName: 'DefaultAccess',
+		creationDate: '2021.09.03 15:35:58',
+		grantTarget: '태그(type)',
 	},
 ];

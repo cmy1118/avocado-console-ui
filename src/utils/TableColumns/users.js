@@ -171,6 +171,36 @@ export const USER_ADD_GROUPS_INCLUDE_COLUMN = [
 
 export const USER_ADD_ROLES_EXCLUDE_COLUMN = [
 	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'creationDate',
+	},
+];
+
+export const USER_ADD_ROLES_INCLUDE_COLUMN = [
+	{
+		Header: '역할 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '역할 유형',
+		accessor: 'type',
+	},
+];
+
+export const USER_ADD_PERMISSTIOMS_COLUMN = [
+	{
 		Header: '권한',
 		accessor: 'name',
 	},
@@ -192,6 +222,7 @@ export const USER_ADD_ROLES_EXCLUDE_COLUMN = [
 			);
 		},
 	},
+
 	{
 		Header: '정책 이름',
 		accessor: 'policyName',
@@ -201,26 +232,10 @@ export const USER_ADD_ROLES_EXCLUDE_COLUMN = [
 		accessor: 'roleName',
 	},
 	{
-		Header: '부여 대상',
-		accessor: 'authTarget',
-	},
-	{
-		Header: '부여 일시',
-		accessor: 'grantDate',
+		accessor: 'grantTarget',
+		Header: '부여 사용자',
 	},
 ];
-
-export const USER_ADD_ROLES_INCLUDE_COLUMN = [
-	{
-		Header: '역할 이름',
-		accessor: 'name',
-	},
-	{
-		Header: '역할 유형',
-		accessor: 'type',
-	},
-];
-
 export const USER_SUMMARY_GROUP_COLUMN = [
 	{
 		Header: '그룹 이름',

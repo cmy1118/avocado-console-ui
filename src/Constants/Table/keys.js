@@ -12,6 +12,7 @@ export const tableKeys = Object.freeze({
 				exclude: 'USER_ADD_ROLES_EXCLUDE',
 				dnd: 'USER_ADD_ROLES_DND',
 			},
+			permissions: 'USER_ADD_PERMISSTIOMS',
 			tag: 'USER_ADD_TAG',
 		},
 		summary: {

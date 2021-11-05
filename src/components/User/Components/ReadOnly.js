@@ -6,9 +6,9 @@ import {tableColumns} from '../../../Constants/Table/columns';
 import {useSelector} from 'react-redux';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
-import {Label, LiText} from '../../../styles/components/text';
+import {LiText} from '../../../styles/components/text';
 import {AppBarContents} from '../../../styles/components/style';
-import {ReadOnlyTableSpace} from '../../../styles/components/table';
+import {dummyPolicyOnDialogBox} from '../../../utils/dummyData';
 
 const ReadOnly = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
@@ -45,12 +45,12 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 				columns={tableColumns[tableKeys.users.add.groups.exclude]}
 			/>
 			<AppBarContents>
-				권한 : {readOnlyData[tableKeys.users.add.roles.exclude].length}
+				권한 : {dummyPolicyOnDialogBox.length}
 			</AppBarContents>
 			<Table
-				tableKey={tableKeys.users.add.roles.exclude}
-				data={readOnlyData[tableKeys.users.add.roles.exclude]}
-				columns={tableColumns[tableKeys.users.add.roles.exclude]}
+				tableKey={tableKeys.users.add.permissions}
+				data={dummyPolicyOnDialogBox}
+				columns={tableColumns[tableKeys.users.add.permissions]}
 			/>
 
 			<AppBarContents>
