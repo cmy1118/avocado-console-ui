@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import {
 	AppBarButtons,
-	AppBarContents,
+	AppBarContentsHeader,
 	AppBarNavi,
 	IamContainer,
 	PathContainer,
@@ -67,7 +67,7 @@ const UserSpace = () => {
 				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
-			<AppBarContents>
+			<AppBarContentsHeader>
 				<div>사용자 :{users.length}</div>
 				<AppBarButtons>
 					<NormalButton onClick={onClickLinkToAddUserPage}>
@@ -77,7 +77,7 @@ const UserSpace = () => {
 						삭제
 					</TransparentButton>
 				</AppBarButtons>
-			</AppBarContents>
+			</AppBarContentsHeader>
 
 			<Table
 				tableKey={tableKeys.users.basic}

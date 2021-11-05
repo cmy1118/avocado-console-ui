@@ -14,9 +14,10 @@ const TableFold = ({children, title, space, isFold, setIsFold}) => {
 		<div>
 			<TableSpace className={isFold[space] ? 'fold' : 'fold close'}>
 				<>
-					<div style={{display: 'flex'}}>
+					<div style={{display: 'flex', alignItems: 'center'}}>
 						<IconButton
-							size={'sm'}
+							color={'font'}
+							size={'m'}
 							margin={'0px'}
 							onClick={onClickFold}
 						>

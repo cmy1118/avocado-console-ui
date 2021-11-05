@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom';
 
 import {
 	AppBarButtons,
-	AppBarContents,
+	AppBarContentsHeader,
 	AppBarNavi,
 	IamContainer,
 	PathContainer,
@@ -65,7 +65,7 @@ const GroupSpace = () => {
 				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
-			<AppBarContents>
+			<AppBarContentsHeader>
 				<div>사용자 그룹: {groups.length} </div>
 				<AppBarButtons>
 					<NormalButton onClick={onCLickLinkToAddGroup}>
@@ -75,7 +75,7 @@ const GroupSpace = () => {
 						삭제
 					</TransparentButton>
 				</AppBarButtons>
-			</AppBarContents>
+			</AppBarContentsHeader>
 			<Table
 				tableKey={tableKeys.groups.basic}
 				columns={tableColumns[tableKeys.groups.basic]}

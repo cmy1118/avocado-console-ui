@@ -1,11 +1,17 @@
-import {AppBarButtons, AppBarContents} from '../../../styles/components/style';
+import {
+	AppBarButtons,
+	AppBarContentsHeader,
+} from '../../../styles/components/style';
 import React, {useCallback, useRef, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 import PropTypes from 'prop-types';
-import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 import ComboBox from '../../RecycleComponents/New/ComboBox';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import Form from '../../RecycleComponents/New/Form';
@@ -40,7 +46,7 @@ const AddGroup = () => {
 
 	return (
 		<>
-			<AppBarContents>
+			<AppBarContentsHeader>
 				<div>사용자 그룹 이름 지정</div>
 				<AppBarButtons>
 					<NormalButton onClick={onClickManageGroupType}>
@@ -56,42 +62,41 @@ const AddGroup = () => {
 						취소
 					</TransparentButton>
 				</AppBarButtons>
-			</AppBarContents>
+			</AppBarContentsHeader>
 			<div style={{padding: '20px 10px 50px 20px'}}>
-
-			<Form
-				initialValues={values}
-				setValues={setValues}
-				onSubmit={(data) => console.log(data)}
-				innerRef={formRef}
-				validation={validation}
-			>
-				<RowDiv style={{marginBottom: '16px'}}>
-					<ColDiv style={{marginRight: '10px'}}>
-						<Label htmlFor='type'>그룹 유형 선택</Label>
-						<ComboBox
-							name='type'
-							header={'그룹 유형 선택'}
-							options={groupTypes.map((v) => {
-								return {value: v.id, label: v.name};
-							})}
+				<Form
+					initialValues={values}
+					setValues={setValues}
+					onSubmit={(data) => console.log(data)}
+					innerRef={formRef}
+					validation={validation}
+				>
+					<RowDiv style={{marginBottom: '16px'}}>
+						<ColDiv style={{marginRight: '10px'}}>
+							<Label htmlFor='type'>그룹 유형 선택</Label>
+							<ComboBox
+								name='type'
+								header={'그룹 유형 선택'}
+								options={groupTypes.map((v) => {
+									return {value: v.id, label: v.name};
+								})}
+							/>
+						</ColDiv>
+						{values.type === 'groupType1' && (
+							<ColDiv>
+								<Label htmlFor={'id'}>상위 그룹 선택</Label>
+								<TextBox name={'id'} />
+							</ColDiv>
+						)}
+					</RowDiv>
+					<ColDiv>
+						<Label htmlFor={'name'}>그룹 명</Label>
+						<TextBox
+							name={'name'}
+							placeholder={'그룹명을 입력하세요'}
 						/>
 					</ColDiv>
-					{values.type === 'groupType1' && (
-						<ColDiv>
-							<Label htmlFor={'id'}>상위 그룹 선택</Label>
-							<TextBox name={'id'} />
-						</ColDiv>
-					)}
-				</RowDiv>
-				<ColDiv>
-					<Label htmlFor={'name'}>그룹 명</Label>
-					<TextBox
-						name={'name'}
-						placeholder={'그룹명을 입력하세요'}
-					/>
-				</ColDiv>
-			</Form>
+				</Form>
 			</div>
 		</>
 	);

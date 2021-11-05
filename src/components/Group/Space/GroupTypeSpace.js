@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 
 import {
 	AppBarButtons,
-	AppBarContents,
+	AppBarContentsHeader,
 	AppBarNavi,
 	IamContainer,
 	PathContainer,
@@ -14,9 +14,12 @@ import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType'
 import Table from '../../Table/Table';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 import {NaviLink} from '../../../styles/components/link';
-import TableOptionText from "../../Table/Options/TableOptionText";
+import TableOptionText from '../../Table/Options/TableOptionText';
 
 const GroupTypeSpace = () => {
 	const history = useHistory();
@@ -76,7 +79,7 @@ const GroupTypeSpace = () => {
 				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
-			<AppBarContents>
+			<AppBarContentsHeader>
 				<div>그룹 유형 관리</div>
 				<AppBarButtons>
 					<NormalButton onClick={onClickOpenAddGroupTypeDialogBox}>
@@ -92,8 +95,8 @@ const GroupTypeSpace = () => {
 						취소
 					</TransparentButton>
 				</AppBarButtons>
-			</AppBarContents>
-			<TableOptionText data={'groupsType'}/>
+			</AppBarContentsHeader>
+			<TableOptionText data={'groupsType'} />
 			<Table
 				tableKey={tableKeys.groups.type}
 				columns={tableColumns[tableKeys.groups.type]}
