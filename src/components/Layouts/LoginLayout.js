@@ -42,14 +42,8 @@ const _Footer = styled.div`
 `;
 
 const _Logo = styled.div`
-	svg {
-		width: 299.1px;
-		height: 149.6px;
-		g {
-			width: 299.1px;
-			height: 149.6px;
-		}
-	}
+	width: 299.1px;
+	height: 149.6px;
 `;
 
 const LoginLayout = ({children}) => {

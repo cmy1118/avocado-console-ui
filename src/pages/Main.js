@@ -1,13 +1,18 @@
 import React from 'react';
-import DashBoard from '../components/IAM/DashBoard';
-import {MainContainer} from '../styles/components/style';
+
+import styled from 'styled-components';
+import background from '../images/dashboard@2x.png';
+
+const MainContainer = styled.div`
+	background-image: url(${background});
+	object-fit: contain;
+	height: 100%;
+	width: 100%;
+	background-size: cover;
+`;
 
 const Main = () => {
-	return (
-		<MainContainer>
-			<DashBoard />
-		</MainContainer>
-	);
+	return <MainContainer></MainContainer>;
 };
 
 export default Main;

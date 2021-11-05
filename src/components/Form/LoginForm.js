@@ -7,7 +7,7 @@ import googleButton from '../../images/google_btn.png';
 import naverButton from '../../images/naver_btn.png';
 import kakaoButton from '../../images/kakao_btn.png';
 
-import {useHistory, useLocation, useParams} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 import USER from '../../reducers/api/Auth/user';
 
 import {
@@ -20,7 +20,6 @@ import Form from '../RecycleComponents/New/Form';
 import TextBox from '../RecycleComponents/New/TextBox';
 import {RowDiv} from '../../styles/components/div';
 import CheckBox from '../RecycleComponents/New/CheckBox';
-import {account} from '../../utils/auth';
 
 const _CheckBoxContainer = styled.div`
 	display: flex;
@@ -93,15 +92,6 @@ const LoginForm = () => {
 			history.push('/');
 		}
 	}, [history, user]);
-
-	useEffect(() => {
-		if (
-			companyId !== account.KT.companyId &&
-			companyId !== account.SAMSUNG.companyId
-		) {
-			history.push('/404');
-		}
-	}, [history, companyId]);
 
 	return (
 		<SignInContainer>

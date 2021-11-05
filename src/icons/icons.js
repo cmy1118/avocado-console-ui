@@ -81,7 +81,6 @@ export const alertIcon = (
 	</svg>
 );
 
-//main Logo
 export const consoleManagement = (
 	<svg
 		width='340'

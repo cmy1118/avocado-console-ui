@@ -65,10 +65,6 @@ export const AsideContainer = styled.div`
 	}
 `;
 
-export const MainContainer = styled.div`
-	flex: 1;
-`;
-
 export const AppBarContents = styled.div`
 	margin-bottom: 10px;
 	border-bottom: 3px #e3e5e5 dotted;

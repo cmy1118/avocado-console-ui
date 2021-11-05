@@ -9,25 +9,8 @@ import LoginLayout from '../components/Layouts/LoginLayout';
 import LoginForm from '../components/Form/LoginForm';
 
 const Login = ({match}) => {
-	// const dispatch = useDispatch();
 	const history = useHistory();
-
 	const {user} = useSelector(USER.selector);
-
-	// const formRef = useRef(null);
-	//
-	// const onClickLogin = useCallback(
-	// 	(v) => {
-	// 		dispatch(
-	// 			USER.asyncAction.loginAction({
-	// 				username: v.id,
-	// 				password: v.password,
-	// 				companyId: match.params.companyId,
-	// 			}),
-	// 		);
-	// 	},
-	// 	[dispatch, match],
-	// );
 
 	useEffect(() => {
 		if (user) {
@@ -46,26 +29,6 @@ const Login = ({match}) => {
 
 	return (
 		<LoginLayout>
-			{/*<Form*/}
-			{/*	initialValues={{*/}
-			{/*		id: '',*/}
-			{/*		password: '',*/}
-			{/*	}}*/}
-			{/*	onSubmit={onClickLogin}*/}
-			{/*	innerRef={formRef}*/}
-			{/*>*/}
-			{/*	<TextBox*/}
-			{/*		name={'id'}*/}
-			{/*		placeholder={'사용자 계정 ID'}*/}
-			{/*		direction={'row'}*/}
-			{/*	/>*/}
-			{/*	<TextBox*/}
-			{/*		name={'password'}*/}
-			{/*		placeholder={'사용자 비밀번호'}*/}
-			{/*		direction={'row'}*/}
-			{/*	/>*/}
-			{/*	<NormalButton type='submit'>Login</NormalButton>*/}
-			{/*</Form>*/}
 			<LoginForm />
 		</LoginLayout>
 	);
