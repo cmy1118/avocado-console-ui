@@ -6,47 +6,58 @@ import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
+import {RowDiv, TableHeader} from '../../../styles/components/div';
 import {TableFoldContainer} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
 import TableFold from '../../Table/Options/TableFold';
+import DragContainer from '../../Table/DragContainer';
+import TableContainer from '../../Table/TableContainer';
+import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const [rightDataIds, setRightDataIds] = useState([]);
-	const [select, setSelect] = useState([]);
-	const dataLeft = useMemo(() => {
-		const dropDataTypeId = groups
-			.filter((v) => rightDataIds.includes(v.id))
-			.map((v) => v.clientGroupTypeId);
-		return groups
-			.filter((v) => !dropDataTypeId.includes(v.clientGroupTypeId))
-			.map((v) => ({
-				...v,
-				type: v.clientGroupTypeId,
-				numberOfUsers: v.members.length,
-			}));
-	}, [groups, rightDataIds]);
+	const [select, setSelect] = useState({});
+	const [includedDataIds, setIncludedDataIds] = useState([]);
 
-	const dataRight = useMemo(() => {
-		return groups
-			.filter((v) => rightDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: v.clientGroupTypeId,
-			}));
-	}, [groups, rightDataIds]);
+	const includedData = useMemo(
+		() =>
+			groups
+				.filter((v) => includedDataIds.includes(v.id))
+				.map((v) => ({
+					...v,
+					type: v.clientGroupTypeId,
+					numberOfUsers: v.members.length,
+				})),
+		[groups, includedDataIds],
+	);
+	const excludedData = useMemo(
+		() =>
+			groups
+				.filter(
+					(v) =>
+						!groups
+							.filter((v) => includedDataIds.includes(v.id))
+							.map((v) => v.clientGroupTypeId)
+							.includes(v.clientGroupTypeId),
+				)
+				.map((v) => ({
+					...v,
+					type: v.clientGroupTypeId,
+					numberOfUsers: v.members.length,
+				})) || [],
+		[groups, includedDataIds],
+	);
 
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
 				title: tableKeys.users.add.groups.exclude,
-				data: dataRight,
+				data: includedData,
 			}),
 		);
-	}, [dataRight, dispatch]);
+	}, [dispatch, includedData]);
 
 	return (
 		<TableFoldContainer>
@@ -59,64 +70,62 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 			{isFold[space] ? (
 				<>
 					<TableOptionText data={'groups'} />
-					<_Tables>
-						<Table
-							tableKey={tableKeys.users.add.groups.exclude}
-							columns={
-								tableColumns[tableKeys.users.add.groups.exclude]
-							}
-							data={dataLeft}
-							isPageable
-							isNumberOfRowsAdjustable
-							isColumnFilterable
-							isSortable
-							isSelectable
-							isDnDPossible
-							isSearchable
-							dndKey={tableKeys.users.add.groups.dnd}
-							setData={setRightDataIds}
-							setSelect={setSelect}
-						/>
-						<RowDiv alignItems={'center'}>
-							<DropButton
-								leftTableKey={
-									tableKeys.users.add.groups.exclude
-								}
-								RightTableKey={
-									tableKeys.users.add.groups.include
-								}
-								select={select}
-								dataLeft={dataLeft}
-								dataRight={dataRight}
-								rightDataIds={rightDataIds}
-								setRightDataIds={setRightDataIds}
-							/>
-						</RowDiv>
-						<div>
-							<TableHeader>
-								추가 그룹: {rightDataIds.length}건
-							</TableHeader>
-							<Table
-								tableKey={tableKeys.users.add.groups.include}
+					<DragContainer
+						selected={select}
+						data={includedDataIds}
+						setData={setIncludedDataIds}
+						includedKey={tableKeys.users.add.groups.include}
+						excludedData={excludedData}
+						includedData={includedData}
+					>
+						<RowDiv>
+							<TableContainer
+								tableKey={tableKeys.users.add.groups.exclude}
 								columns={
 									tableColumns[
-										tableKeys.users.add.groups.include
+										tableKeys.users.add.groups.exclude
 									]
 								}
-								data={dataRight}
-								// isPageable
-								// isNumberOfRowsAdjustable
-								// isColumnFilterable
-								isSortable
-								isSelectable
-								isDnDPossible
-								dndKey={tableKeys.users.add.groups.dnd}
-								setData={setRightDataIds}
-								setSelect={setSelect}
-								control
-							/>
-						</div>
-					</_Tables>
+								data={excludedData}
+							>
+								<TableOptionsBar />
+								<Table setSelect={setSelect} isDraggable />
+							</TableContainer>
+							<RowDiv alignItems={'center'}>
+								<DropButton
+									leftTableKey={
+										tableKeys.users.add.groups.exclude
+									}
+									RightTableKey={
+										tableKeys.users.add.groups.include
+									}
+									select={select}
+									dataLeft={excludedData}
+									dataRight={includedData}
+									rightDataIds={includedDataIds}
+									setRightDataIds={setIncludedDataIds}
+								/>
+							</RowDiv>
+							<div>
+								<TableContainer
+									tableKey={
+										tableKeys.users.add.groups.include
+									}
+									columns={
+										tableColumns[
+											tableKeys.users.add.groups.include
+										]
+									}
+									data={includedData}
+								>
+									<TableHeader>
+										추가 그룹: {includedDataIds.length}건
+									</TableHeader>
+									<Table setSelect={setSelect} isDraggable />
+								</TableContainer>
+							</div>
+						</RowDiv>
+					</DragContainer>
 				</>
 			) : (
 				''

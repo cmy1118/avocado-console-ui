@@ -20,12 +20,13 @@ import {
 } from '../../../styles/components/buttons';
 import {NaviLink} from '../../../styles/components/link';
 import TableOptionText from '../../Table/Options/TableOptionText';
+import TableContainer from '../../Table/TableContainer';
 
 const GroupTypeSpace = () => {
 	const history = useHistory();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
-	const [select, setSelect] = useState([]);
+	const [select, setSelect] = useState({});
 	const [data, setData] = useState(
 		groupTypes.map((v) => ({
 			...v,
@@ -98,17 +99,13 @@ const GroupTypeSpace = () => {
 			</AppBarContentsHeader>
 
 			<TableOptionText data={'groupsType'} />
-			<Table
+			<TableContainer
 				tableKey={tableKeys.groups.type}
 				columns={tableColumns[tableKeys.groups.type]}
 				data={data}
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSelectable
-				setData={setData}
-				setSelect={setSelect}
-			/>
+			>
+				<Table setSelect={setSelect} />
+			</TableContainer>
 		</IamContainer>
 	);
 };

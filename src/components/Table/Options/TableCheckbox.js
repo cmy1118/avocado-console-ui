@@ -1,7 +1,6 @@
 import React, {forwardRef, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import CheckBox from '../../RecycleComponents/New/CheckBox';
-import {RowDiv} from '../../../styles/components/div';
 
 const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 	const checkboxes = document.querySelectorAll(
@@ -17,6 +16,7 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 			if (e.shiftKey) {
 				// todo : 마지막 체크값이 존재하는지 검사
 				let isLastChecked = false;
+				console.log(checkboxes);
 				checkboxes.forEach((checkbox) => {
 					if (checkbox.lastChecked) isLastChecked = true;
 				});
@@ -100,8 +100,6 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 							});
 						}
 					}
-				} else {
-					//
 				}
 			}
 			// todo : 현재 타겟의 마지막 체크 true
@@ -116,7 +114,7 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 
 	return (
 		<CheckBox
-			className={rest.tablekey}
+			className={`${rest.tablekey}`}
 			indeterminate={indeterminate}
 			onClick={handleClick}
 			{...rest}

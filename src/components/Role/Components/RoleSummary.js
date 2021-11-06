@@ -16,6 +16,7 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import PropTypes from 'prop-types';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
+import TableContainer from '../../Table/TableContainer';
 
 const RoleSummary = ({roleId}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -72,25 +73,31 @@ const RoleSummary = ({roleId}) => {
 			</ul>
 
 			<div>권한: {permissionData.length}</div>
-			<Table
+			<TableContainer
 				data={permissionData}
 				tableKey={tableKeys.roles.summary.permission}
 				columns={tableColumns[tableKeys.roles.summary.permission]}
-			/>
+			>
+				<Table />
+			</TableContainer>
 
 			<div>이 역할의 사용자: {userData.length}</div>
-			<Table
+			<TableContainer
 				data={userData}
 				tableKey={tableKeys.roles.summary.user}
 				columns={tableColumns[tableKeys.roles.summary.user]}
-			/>
+			>
+				<Table />
+			</TableContainer>
 
 			<div>이 역할의 사용자 그룹: {groupData.length}</div>
-			<Table
+			<TableContainer
 				data={groupData}
 				tableKey={tableKeys.roles.summary.group}
 				columns={tableColumns[tableKeys.roles.summary.group]}
-			/>
+			>
+				<Table />
+			</TableContainer>
 		</>
 	);
 };

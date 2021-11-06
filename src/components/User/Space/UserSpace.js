@@ -24,11 +24,13 @@ import {
 } from '../../../styles/components/buttons';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {NaviLink} from '../../../styles/components/link';
+import TableOptionsBar from '../../Table/TableOptionsBar';
+import TableContainer from '../../Table/TableContainer';
 
 const UserSpace = () => {
 	const history = useHistory();
 
-	const [select, setSelect] = useState([]);
+	const [select, setSelect] = useState({});
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 
@@ -80,20 +82,14 @@ const UserSpace = () => {
 				</AppBarButtons>
 			</AppBarContentsHeader>
 
-			<Table
+			<TableContainer
 				tableKey={tableKeys.users.basic}
 				columns={tableColumns[tableKeys.users.basic]}
 				data={data}
-				isSearchFilterable
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSortable
-				isSelectable
-				isSearchable
-				setSelect={setSelect}
-				fullSize
-			/>
+			>
+				<TableOptionsBar isSearchFilterable />
+				<Table setSelect={setSelect} />
+			</TableContainer>
 		</IamContainer>
 	);
 };

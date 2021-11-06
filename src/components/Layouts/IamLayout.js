@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import USER from '../../reducers/api/Auth/user';
@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import IamNav from '../Nav/IamNav';
 import Header from '../Header';
+import {DragDropContext} from 'react-beautiful-dnd';
 
 const _Container = styled.div`
 	overflow-y: scroll;
@@ -64,25 +65,27 @@ const IamLayout = ({children}) => {
 		if (!user) {
 			history.push('/login/' + companyId);
 		}
-	}, [user, companyId]);
+	}, [user, companyId, history]);
 
 	return (
-		<_Container>
-			<Header />
-			<_Space
-				className={
-					isNavOpened ? 'mainContainer' : 'mainContainer close'
-				}
-			>
-				<IamNav
-					leftSize={2}
-					isOpened={isNavOpened}
-					setIsOpened={setIsNavOpened}
-				/>
-				<_MainSpace style={{width: '100%'}}>{children}</_MainSpace>
-				{/*<Aside />*/}
-			</_Space>
-		</_Container>
+		<DragDropContext>
+			<_Container>
+				<Header />
+				<_Space
+					className={
+						isNavOpened ? 'mainContainer' : 'mainContainer close'
+					}
+				>
+					<IamNav
+						leftSize={2}
+						isOpened={isNavOpened}
+						setIsOpened={setIsNavOpened}
+					/>
+					<_MainSpace style={{width: '100%'}}>{children}</_MainSpace>
+					{/*<Aside />*/}
+				</_Space>
+			</_Container>
+		</DragDropContext>
 	);
 };
 

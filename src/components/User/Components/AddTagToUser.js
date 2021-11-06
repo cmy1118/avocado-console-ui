@@ -15,6 +15,7 @@ import {
 import TableOptionText from '../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
 import TableFold from '../../Table/Options/TableFold';
+import TableContainer from '../../Table/TableContainer';
 
 const AddTagToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -86,17 +87,16 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 			{isFold[space] && (
 				<>
 					<TableOptionText data={'roles'} />
-					<Table
+
+					<TableContainer
 						tableKey={tableKeys.users.add.tag}
 						data={tagData}
 						columns={tableColumns[tableKeys.users.add.tag]}
-						isSelectable
-						setData={setData}
-						setSelect={setSelect}
-					/>
+					>
+						<Table setSelect={setSelect} />
+					</TableContainer>
 				</>
 			)}
-			;
 		</TableFoldContainer>
 	);
 };

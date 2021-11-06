@@ -15,22 +15,26 @@ import {
 } from '../../../styles/components/buttons';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import TableFold from '../../Table/Options/TableFold';
+import TableContainer from '../../Table/TableContainer';
+import DragContainer from '../../Table/DragContainer';
+import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
-	const [select, setSelect] = useState([]);
+	const [select, setSelect] = useState({});
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
 		userId,
 	]);
-	const [rightDataIds, setRightDataIds] = useState(user.groups);
 
-	const dataLeft = useMemo(() => {
+	const [includedDataIds, setIncludedDataIds] = useState(user.groups);
+
+	const includedData = useMemo(() => {
 		return groups
-			.filter((v) => rightDataIds.includes(v.id))
+			.filter((v) => includedDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
@@ -40,11 +44,11 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 					groups.find((val) => val.id === v.parentId)?.name,
 				),
 			}));
-	}, [groups, rightDataIds]);
+	}, [groupTypes, groups, includedDataIds]);
 
-	const dataRight = useMemo(() => {
+	const excludedData = useMemo(() => {
 		return groups
-			.filter((v) => !rightDataIds.includes(v.id))
+			.filter((v) => !includedDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
@@ -54,7 +58,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 					groups.find((val) => val.id === v.parentId)?.name,
 				),
 			}));
-	}, [groups, groupTypes, rightDataIds]);
+	}, [groups, groupTypes, includedDataIds]);
 	//삭제
 	const onClickDeleteRolesFromUser = useCallback(() => {
 		dispatch(
@@ -95,73 +99,73 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 	}, [dispatch, select, userId]);
 
 	useEffect(() => {
-		setRightDataIds(user.groups);
+		setIncludedDataIds(user.groups);
 	}, [user.groups]);
 
 	return (
 		<>
 			<TableSpace>
-				이 사용자의 그룹: {dataLeft.length}{' '}
+				이 사용자의 그룹: {includedData.length}{' '}
 				<TransparentButton onClick={onClickDeleteRolesFromUser}>
 					삭제
 				</TransparentButton>
 			</TableSpace>
-			<Table
-				data={dataLeft}
-				tableKey={tableKeys.users.summary.tabs.groups.include}
-				columns={
-					tableColumns[tableKeys.users.summary.tabs.groups.include]
-				}
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSortable
-				isSelectable
-				isDnDPossible
-				isSearchable
-				dndKey={tableKeys.users.summary.tabs.groups.dnd}
-				setSelect={setSelect}
-				setData={setRightDataIds}
-			/>
-			<TableFoldContainer>
-				<TableFold
-					title={<>이 사용자의 다른그룹 : {dataRight.length}</>}
-					space={'UserGroupsTab'}
-					isFold={isFold}
-					setIsFold={setIsFold}
+			<DragContainer
+				selected={select}
+				data={includedDataIds}
+				setData={setIncludedDataIds}
+				includedKey={tableKeys.users.summary.tabs.groups.include}
+				excludedData={excludedData}
+				includedData={includedData}
+			>
+				<TableContainer
+					data={excludedData}
+					tableKey={tableKeys.users.summary.tabs.groups.include}
+					columns={
+						tableColumns[
+							tableKeys.users.summary.tabs.groups.include
+						]
+					}
 				>
-					<NormalButton onClick={onClickAddRolesToUser}>
-						그룹 추가
-					</NormalButton>
-				</TableFold>
-				{isFold[space] && (
-					<>
-						<TableOptionText data={'groups'} />
-						<Table
-							data={dataRight}
-							tableKey={
-								tableKeys.users.summary.tabs.groups.exclude
-							}
-							columns={
-								tableColumns[
+					<TableOptionsBar />
+					<Table setSelect={setSelect} isDraggable />
+				</TableContainer>
+				<TableFoldContainer>
+					<TableFold
+						title={
+							<>이 사용자의 다른그룹 : {excludedData.length}</>
+						}
+						space={'UserGroupsTab'}
+						isFold={isFold}
+						setIsFold={setIsFold}
+					>
+						<NormalButton onClick={onClickAddRolesToUser}>
+							그룹 추가
+						</NormalButton>
+					</TableFold>
+					{isFold[space] && (
+						<>
+							<TableOptionText data={'groups'} />
+
+							<TableContainer
+								data={includedData}
+								tableKey={
 									tableKeys.users.summary.tabs.groups.exclude
-								]
-							}
-							isPageable
-							isNumberOfRowsAdjustable
-							isColumnFilterable
-							isSortable
-							isSelectable
-							isDnDPossible
-							isSearchable
-							dndKey={tableKeys.users.summary.tabs.groups.dnd}
-							setSelect={setSelect}
-							setData={setRightDataIds}
-							control
-						/>
-					</>
-				)}
-			</TableFoldContainer>
+								}
+								columns={
+									tableColumns[
+										tableKeys.users.summary.tabs.groups
+											.exclude
+									]
+								}
+							>
+								<TableOptionsBar />
+								<Table setSelect={setSelect} isDraggable />
+							</TableContainer>
+						</>
+					)}
+				</TableFoldContainer>
+			</DragContainer>
 		</>
 	);
 };

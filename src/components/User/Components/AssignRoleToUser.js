@@ -7,45 +7,48 @@ import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
 import {TableFoldContainer} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import TableFold from '../../Table/Options/TableFold';
 import PropTypes from 'prop-types';
+import {RowDiv, TableHeader} from '../../../styles/components/div';
+import DragContainer from '../../Table/DragContainer';
+import TableContainer from '../../Table/TableContainer';
+import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
-	const [rightDataIds, setRightDataIds] = useState([]);
-	const [select, setSelect] = useState([]);
+	const [includedDataIds, setIncludedDataIds] = useState([]);
+	const [select, setSelect] = useState({});
 
-	const dataLeft = useMemo(() => {
+	const excludedData = useMemo(() => {
 		return roles
-			.filter((v) => !rightDataIds.includes(v.id))
+			.filter((v) => !includedDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
 				numberOfUsers: v.users.length,
 			}));
-	}, [roles, rightDataIds]);
+	}, [roles, includedDataIds]);
 
-	const dataRight = useMemo(() => {
+	const includedData = useMemo(() => {
 		return roles
-			.filter((v) => rightDataIds.includes(v.id))
+			.filter((v) => includedDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
 			}));
-	}, [roles, rightDataIds]);
+	}, [roles, includedDataIds]);
 
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
 				title: tableKeys.users.add.roles.exclude,
-				data: dataRight,
+				data: includedData,
 			}),
 		);
-	}, [dataRight, dispatch]);
+	}, [includedData, dispatch]);
 
 	return (
 		<TableFoldContainer>
@@ -58,59 +61,61 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 			{isFold[space] && (
 				<>
 					<TableOptionText data={'roles'} />
-					<_Tables>
-						<Table
-							data={dataLeft}
-							tableKey={tableKeys.users.add.roles.exclude}
-							columns={
-								tableColumns[tableKeys.users.add.roles.exclude]
-							}
-							isPageable
-							isNumberOfRowsAdjustable
-							isColumnFilterable
-							isSortable
-							isSelectable
-							isDnDPossible
-							isSearchable
-							dndKey={tableKeys.users.add.roles.dnd}
-							setSelect={setSelect}
-							setData={setRightDataIds}
-						/>
-						<RowDiv alignItems={'center'}>
-							<DropButton
-								leftTableKey={tableKeys.users.add.roles.exclude}
-								RightTableKey={
-									tableKeys.users.add.roles.include
-								}
-								select={select}
-								dataLeft={dataLeft}
-								dataRight={dataRight}
-								rightDataIds={rightDataIds}
-								setRightDataIds={setRightDataIds}
-							/>
-						</RowDiv>
-						<div>
-							<TableHeader>
-								추가 Roles: {rightDataIds.length}건
-							</TableHeader>
-							<Table
-								data={dataRight}
-								tableKey={tableKeys.users.add.roles.include}
+
+					<DragContainer
+						selected={select}
+						data={includedDataIds}
+						setData={setIncludedDataIds}
+						includedKey={tableKeys.users.add.roles.include}
+						excludedData={excludedData}
+						includedData={includedData}
+					>
+						<RowDiv>
+							<TableContainer
+								data={excludedData}
+								tableKey={tableKeys.users.add.roles.exclude}
 								columns={
 									tableColumns[
-										tableKeys.users.add.roles.include
+										tableKeys.users.add.roles.exclude
 									]
 								}
-								isSortable
-								isSelectable
-								isDnDPossible
-								dndKey={tableKeys.users.add.roles.dnd}
-								setData={setRightDataIds}
-								setSelect={setSelect}
-								control
-							/>
-						</div>
-					</_Tables>
+							>
+								<TableOptionsBar />
+								<Table setSelect={setSelect} isDraggable />
+							</TableContainer>
+							<RowDiv alignItems={'center'}>
+								<DropButton
+									leftTableKey={
+										tableKeys.users.add.roles.exclude
+									}
+									RightTableKey={
+										tableKeys.users.add.roles.include
+									}
+									select={select}
+									dataLeft={excludedData}
+									dataRight={includedData}
+									rightDataIds={includedDataIds}
+									setRightDataIds={setIncludedDataIds}
+								/>
+							</RowDiv>
+							<div>
+								<TableHeader>
+									추가 Roles: {includedDataIds.length}건
+								</TableHeader>
+								<TableContainer
+									data={includedData}
+									tableKey={tableKeys.users.add.roles.include}
+									columns={
+										tableColumns[
+											tableKeys.users.add.roles.include
+										]
+									}
+								>
+									<Table setSelect={setSelect} isDraggable />
+								</TableContainer>
+							</div>
+						</RowDiv>
+					</DragContainer>
 				</>
 			)}
 		</TableFoldContainer>

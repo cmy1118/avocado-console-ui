@@ -6,7 +6,7 @@ export const PositionRelativeDiv = styled.div`
 
 export const RowDiv = styled.div`
 	display: flex;
-	width: ${(props) => props.width || 'initial'};
+	width: ${(props) => props.width};
 	height: ${(props) => props.height || 'initial'};
 	margin: ${(props) => props.margin || '0px'};
 	padding: ${(props) => props.padding || '0px'};
@@ -18,14 +18,10 @@ export const ColDiv = styled(RowDiv)`
 	flex-direction: column;
 `;
 
-export const _Tables = styled(RowDiv)`
-	width: 100%;
-`;
-
 export const TableHeader = styled.div`
 	height: 34px;
 	display: flex;
-	margin: 0px 16px;
+	padding: 14px 16px;
 	align-items: center;
 `;
 export const MainHeaderContents = styled.div`
@@ -49,19 +45,18 @@ export const TableContainer = styled.div`
 		letter-spacing: 0.13px;
 		text-align: left;
 		color: #212121;
+		position: relative;
+		overflow: scroll;
 		.head {
 			background: #f8f9fa;
 			border-bottom: 1px solid #e3e5e5;
-			display: flex;
-			justify-content: space-between;
+			position: sticky;
+			z-index: 1;
+			top: 0;
 		}
 		.body {
-			// border-bottom: 1px solid #e3e5e5;
 			display: flex;
-			justify-content: space-between;
-			// :last-child {
-			// 	border: none;
-			// }
+			border-bottom: 1px solid #e3e5e5;
 		}
 		.odd {
 			background: #f8f9fa;
@@ -87,24 +82,6 @@ export const TableContainer = styled.div`
 			text-align: left;
 			margin-left: 9px;
 			padding: 0.5rem;
-		}
-	}
-`;
-
-export const HoverTableContainer = styled(TableContainer)`
-	display: flex;
-	flex-direction: column;
-	.table {
-		flex: 1;
-		margin-bottom: 16px;
-		border-bottom: 1px solid #e3e5e5;
-	}
-	.body {
-		border-bottom: 1px solid #e3e5e5;
-		display: flex;
-		justify-content: space-between;
-		&:hover {
-			background: #f8f9fa;
 		}
 	}
 `;

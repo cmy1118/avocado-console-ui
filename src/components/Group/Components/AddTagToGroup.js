@@ -15,11 +15,12 @@ import {
 import TableOptionText from '../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
 import TableFold from '../../Table/Options/TableFold';
+import TableContainer from '../../Table/TableContainer';
 
 const AddTagToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
-	const [select, setSelect] = useState([]);
+	const [select, setSelect] = useState({});
 	const onClickAddRow = useCallback(() => {
 		console.log(data);
 		const lastValues = data.slice().pop();
@@ -80,14 +81,13 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 			{isFold[space] && (
 				<>
 					<TableOptionText data={'tags'} />
-					<Table
+					<TableContainer
 						tableKey={tableKeys.groups.add.tag}
 						data={tagData}
 						columns={tableColumns[tableKeys.groups.add.tag]}
-						isSelectable
-						setData={setData}
-						setSelect={setSelect}
-					/>
+					>
+						<Table setSelect={setSelect} setData={setData} />
+					</TableContainer>
 				</>
 			)}
 		</TableFoldContainer>

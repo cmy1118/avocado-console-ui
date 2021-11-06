@@ -5,10 +5,14 @@ import PropTypes from 'prop-types';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
-import {TableSpace, TableSpaceButtons} from "../../../styles/components/table";
-import TableOptionText from "../../Table/Options/TableOptionText";
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
+import {TableSpace, TableSpaceButtons} from '../../../styles/components/table';
+import TableOptionText from '../../Table/Options/TableOptionText';
 import {dummyPermission} from '../../../utils/dummyData';
+import TableContainer from '../../Table/TableContainer';
 
 const UserOnDescPageTags = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
@@ -26,8 +30,7 @@ const UserOnDescPageTags = ({userId}) => {
 		}) || [],
 	);
 
-	const [select, setSelect] = useState([]);
-
+	const [select, setSelect] = useState({});
 	const onClickAddRow = useCallback(() => {
 		const lastValues = data.slice().pop();
 		if (lastValues.name === '' || lastValues.value === '') {
@@ -59,25 +62,30 @@ const UserOnDescPageTags = ({userId}) => {
 
 	return (
 		<>
-			<TableSpace>태그 추가
+			<TableSpace>
+				태그 추가
 				<TableSpaceButtons>
-					<NormalButton onClick={onClickAddRow}>태그 추가</NormalButton>
-					<NormalButton onClick={onClickSaveRow}>태그 저장</NormalButton>
+					<NormalButton onClick={onClickAddRow}>
+						태그 추가
+					</NormalButton>
+					<NormalButton onClick={onClickSaveRow}>
+						태그 저장
+					</NormalButton>
 					<TransparentButton onClick={onClickDeleteRow}>
 						태그 삭제
 					</TransparentButton>
 				</TableSpaceButtons>
 			</TableSpace>
-			<TableOptionText data={'tags'}/>
+			<TableOptionText data={'tags'} />
 
-			<Table
+			<TableContainer
 				tableKey={tableKeys.users.summary.tag}
 				data={data}
 				columns={tableColumns[tableKeys.users.summary.tag]}
-				isSelectable
-				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
-				setSelect={setSelect}
-			/>
+			>
+				<Table setSelect={setSelect} />
+			</TableContainer>
+
 			{select[tableKeys.users.summary.tabs.tags.basic]?.length === 1 && (
 				<div>
 					<div>
@@ -98,7 +106,8 @@ const UserOnDescPageTags = ({userId}) => {
 						</div>
 						<TransparentButton>연결 해제</TransparentButton>
 					</div>
-					<Table
+
+					<TableContainer
 						tableKey={tableKeys.users.summary.tabs.tags.basic}
 						data={dummyPermission.filter((v) =>
 							select[
@@ -111,7 +120,9 @@ const UserOnDescPageTags = ({userId}) => {
 									.include
 							]
 						}
-					/>
+					>
+						<Table />
+					</TableContainer>
 					<div>
 						<div>
 							태그 [
@@ -131,7 +142,7 @@ const UserOnDescPageTags = ({userId}) => {
 						<NormalButton>정책 생성</NormalButton>
 						<NormalButton>정책 연결</NormalButton>
 					</div>
-					<Table
+					<TableContainer
 						tableKey={tableKeys.users.summary.tabs.tags.basic}
 						data={dummyPermission.filter(
 							(v) =>
@@ -145,7 +156,9 @@ const UserOnDescPageTags = ({userId}) => {
 									.exclude
 							]
 						}
-					/>
+					>
+						<Table />
+					</TableContainer>
 				</div>
 			)}
 		</>

@@ -7,54 +7,55 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import DropButton from '../../Table/DropButton';
-import {_Tables, RowDiv, TableHeader} from '../../../styles/components/div';
+import {RowDiv, TableHeader} from '../../../styles/components/div';
 import {TableFoldContainer} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import AddTagToGroup from './AddTagToGroup';
 import TableFold from '../../Table/Options/TableFold';
+import DragContainer from '../../Table/DragContainer';
+import TableContainer from '../../Table/TableContainer';
+import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
-	const [rightDataIds, setRightDataIds] = useState([]);
-	const [select, setSelect] = useState([]);
-
-	const dataLeft = useMemo(() => {
+	const [includedDataIds, setIncludedDataIds] = useState([]);
+	const [select, setSelect] = useState({});
+	const excludedData = useMemo(() => {
 		return roles
-			.filter((v) => !rightDataIds.includes(v.id))
+			.filter((v) => !includedDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				numberOfUsers: v.users.length,
 			}));
-	}, [roles, rightDataIds]);
+	}, [roles, includedDataIds]);
 
-	const dataRight = useMemo(() => {
+	const includedData = useMemo(() => {
 		return roles
-			.filter((v) => rightDataIds.includes(v.id))
+			.filter((v) => includedDataIds.includes(v.id))
 			.map((v) => ({...v, type: roleTypeConverter(v.companyId)}));
-	}, [roles, rightDataIds]);
+	}, [roles, includedDataIds]);
 
 	// const onClickDeleteRolesFromGroup = useCallback(() => {
 	// 	alert('에러 있어서 막아놨습니다.');
-	// 	// setRightDataIds(
-	// 	// 	rightDataIds.filter((v) => !selectedIncludedRoles.includes(v)),
+	// 	// setIncludedDataIds(
+	// 	// 	includedDataIds.filter((v) => !selectedIncludedRoles.includes(v)),
 	// 	// );
 	// }, []);
 	//
 	// const onClickAddRolesToGroup = useCallback(() => {
 	// 	alert('에러 있어서 막아놨습니다.');
-	// 	// setRightDataIds([...rightDataIds, ...selectedExcludedRoles]);
+	// 	// setIncludedDataIds([...includedDataIds, ...selectedExcludedRoles]);
 	// }, []);
 
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
 				title: tableKeys.groups.add.roles.include,
-				data: dataRight,
+				data: includedData,
 			}),
 		);
-	}, [dataRight, dispatch]);
+	}, [includedData, dispatch]);
 
 	return (
 		<TableFoldContainer>
@@ -65,64 +66,49 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 				setIsFold={setIsFold}
 			/>
 			{isFold[space] && (
-				<>
+				<DragContainer
+					selected={select}
+					data={includedDataIds}
+					setData={setIncludedDataIds}
+					includedKey={tableKeys.groups.add.roles.include}
+					excludedData={excludedData}
+					includedData={includedData}
+				>
 					<TableOptionText data={'roles'} />
-					<_Tables>
-						<Table
-							data={dataLeft}
-							tableKey={tableKeys.groups.add.roles.exclude}
-							columns={
-								tableColumns[tableKeys.groups.add.roles.exclude]
-							}
-							isPageable
-							isNumberOfRowsAdjustable
-							isColumnFilterable
-							isSortable
-							isSelectable
-							isDnDPossible
-							dndKey={tableKeys.groups.add.roles.dnd}
-							isSearchable
-							setData={setRightDataIds}
-							setSelect={setSelect}
+					<TableContainer
+						data={excludedData}
+						tableKey={tableKeys.groups.add.roles.exclude}
+						columns={
+							tableColumns[tableKeys.groups.add.roles.exclude]
+						}
+					>
+						<TableOptionsBar />
+						<Table setSelect={setSelect} isDraggable />
+					</TableContainer>
+					<RowDiv alignItems={'center'}>
+						<DropButton
+							leftTableKey={tableKeys.groups.add.roles.exclude}
+							RightTableKey={tableKeys.groups.add.roles.include}
+							select={select}
+							dataRight={includedData}
+							rightDataIds={includedDataIds}
+							setRightDataIds={setIncludedDataIds}
 						/>
-						<RowDiv alignItems={'center'}>
-							<DropButton
-								leftTableKey={
-									tableKeys.groups.add.roles.exclude
-								}
-								RightTableKey={
-									tableKeys.groups.add.roles.include
-								}
-								select={select}
-								dataLeft={dataLeft}
-								dataRight={dataRight}
-								rightDataIds={rightDataIds}
-								setRightDataIds={setRightDataIds}
-							/>
-						</RowDiv>
-						<div>
-							<TableHeader>
-								추가 Roles: {rightDataIds.length}건
-							</TableHeader>
-							<Table
-								data={dataRight}
-								tableKey={tableKeys.groups.add.roles.include}
-								columns={
-									tableColumns[
-										tableKeys.groups.add.roles.include
-									]
-								}
-								isSortable
-								isSelectable
-								isDnDPossible
-								dndKey={tableKeys.groups.add.roles.dnd}
-								setData={setRightDataIds}
-								control
-								setSelect={setSelect}
-							/>
-						</div>
-					</_Tables>
-				</>
+					</RowDiv>
+
+					<TableContainer
+						data={includedData}
+						tableKey={tableKeys.groups.add.roles.include}
+						columns={
+							tableColumns[tableKeys.groups.add.roles.include]
+						}
+					>
+						<TableHeader>
+							추가 Roles: {includedDataIds.length}건
+						</TableHeader>
+						<Table setSelect={setSelect} isDraggable />
+					</TableContainer>
+				</DragContainer>
 			)}
 		</TableFoldContainer>
 	);

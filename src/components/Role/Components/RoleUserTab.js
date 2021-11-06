@@ -11,20 +11,23 @@ import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {dummyUsers} from '../../../utils/dummyData';
+import TableContainer from '../../Table/TableContainer';
+import DragContainer from '../../Table/DragContainer';
+import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const RoleUserTab = ({roleId}) => {
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const {users} = useSelector(IAM_USER.selector);
 
-	const [select, setSelect] = useState([]);
-	const [rightDataIds, setRightDataIds] = useState([]);
+	const [select, setSelect] = useState({});
+	const [includedDataIds, setIncludedDataIds] = useState([]);
 
 	const role = useMemo(() => roles.find((v) => v.id === roleId), [
 		roles,
 		roleId,
 	]);
 
-	const dataLeft = useMemo(() => {
+	const excludedData = useMemo(() => {
 		return users
 			.filter((v) => role.users.includes(v.uid))
 			.map((v, i) => ({
@@ -34,7 +37,7 @@ const RoleUserTab = ({roleId}) => {
 			}));
 	}, [users, role]);
 
-	const dataRight = useMemo(
+	const includedData = useMemo(
 		() =>
 			users
 				.filter((v) => !role.users.includes(v.uid))
@@ -43,48 +46,43 @@ const RoleUserTab = ({roleId}) => {
 	);
 
 	return (
-		<>
+		<DragContainer
+			selected={select}
+			data={includedDataIds}
+			setData={setIncludedDataIds}
+			includedKey={tableKeys.roles.summary.tabs.users.include}
+			excludedData={excludedData}
+			includedData={includedData}
+		>
 			<div>
-				이 역할의 사용자: {dataLeft.length}{' '}
+				이 역할의 사용자: {includedData.length}{' '}
 				<NormalBorderButton>연결 해제</NormalBorderButton>
 			</div>
-			<Table
-				data={dataLeft}
+			<TableContainer
+				data={includedData}
 				tableKey={tableKeys.roles.summary.tabs.users.include}
 				columns={
 					tableColumns[tableKeys.roles.summary.tabs.users.include]
 				}
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSortable
-				isSelectable
-				isSearchable
-				setSelect={setSelect}
-				setData={setRightDataIds}
-			/>
+			>
+				<TableOptionsBar />
+				<Table setSelect={setSelect} isDraggable />
+			</TableContainer>
 			<div>
-				이 역할의 다른 사용자 : {dataRight.length}{' '}
+				이 역할의 다른 사용자 : {excludedData.length}{' '}
 				<NormalButton>사용자 생성</NormalButton>
 				<NormalButton>사용자 연결</NormalButton>
 			</div>
-			<Table
-				data={dataRight}
+			<TableContainer
+				data={excludedData}
 				tableKey={tableKeys.roles.summary.tabs.users.exclude}
 				columns={
 					tableColumns[tableKeys.roles.summary.tabs.users.exclude]
 				}
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSortable
-				isSelectable
-				isSearchable
-				setSelect={setSelect}
-				setData={setRightDataIds}
-				control
-			/>
-		</>
+			>
+				<Table setSelect={setSelect} isDraggable />
+			</TableContainer>
+		</DragContainer>
 	);
 };
 

@@ -15,39 +15,41 @@ import {
 import {TableFoldContainer, TableSpace} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import TableFold from '../../Table/Options/TableFold';
+import TableContainer from '../../Table/TableContainer';
+import DragContainer from '../../Table/DragContainer';
+import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {roles} = useSelector(IAM_ROLES.selector);
-	const [select, setSelect] = useState([]);
-
+	const [select, setSelect] = useState({});
 	const user = useMemo(() => users.find((v) => v.uid === userId), [
 		users,
 		userId,
 	]);
 
-	const [rightDataIds, setRightDataIds] = useState(user.roles);
+	const [includedDataIds, setIncludedDataIds] = useState(user.roles);
 
-	const dataLeft = useMemo(() => {
+	const includedData = useMemo(() => {
 		return roles
-			.filter((v) => rightDataIds.includes(v.id))
+			.filter((v) => includedDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
 				numberOfUsers: v.users.length,
 			}));
-	}, [rightDataIds, roles]);
+	}, [includedDataIds, roles]);
 
-	const dataRight = useMemo(() => {
+	const excludedData = useMemo(() => {
 		return roles
-			.filter((v) => !rightDataIds.includes(v.id))
+			.filter((v) => !includedDataIds.includes(v.id))
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
 				numberOfUsers: v.users.length,
 			}));
-	}, [rightDataIds, roles]);
+	}, [includedDataIds, roles]);
 
 	const onClickDeleteRolesFromUser = useCallback(() => {
 		dispatch(
@@ -88,73 +90,71 @@ const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 	}, [dispatch, select, userId]);
 
 	useEffect(() => {
-		setRightDataIds(user.roles);
+		setIncludedDataIds(user.roles);
 	}, [user.roles]);
 
 	return (
 		<>
 			<TableSpace>
-				이 사용자의 권한: {dataLeft.length}{' '}
+				이 사용자의 권한: {includedData.length}{' '}
 				<TransparentButton onClick={onClickDeleteRolesFromUser}>
 					삭제
 				</TransparentButton>
 			</TableSpace>
-			<Table
-				data={dataLeft}
-				tableKey={tableKeys.users.summary.tabs.roles.include}
-				columns={
-					tableColumns[tableKeys.users.summary.tabs.roles.include]
-				}
-				isPageable
-				isNumberOfRowsAdjustable
-				isColumnFilterable
-				isSortable
-				isSelectable
-				isDnDPossible
-				isSearchable
-				dndKey={tableKeys.users.summary.tabs.roles.dnd}
-				setSelect={setSelect}
-				setData={setRightDataIds}
-			/>
-			<TableFoldContainer>
-				<TableFold
-					title={<>이 사용자의 다른권한 : {dataRight.length}</>}
-					space={'UserRolesTab'}
-					isFold={isFold}
-					setIsFold={setIsFold}
+			<DragContainer
+				selected={select}
+				data={includedDataIds}
+				setData={setIncludedDataIds}
+				includedKey={tableKeys.groups.add.roles.include}
+				excludedData={excludedData}
+				includedData={includedData}
+			>
+				<TableContainer
+					data={includedData}
+					tableKey={tableKeys.users.summary.tabs.roles.include}
+					columns={
+						tableColumns[tableKeys.users.summary.tabs.roles.include]
+					}
 				>
-					<NormalButton onClick={onClickAddRolesToUser}>
-						권한 추가
-					</NormalButton>
-				</TableFold>
-				{isFold[space] && (
-					<>
-						<TableOptionText data={'roles'} />
-						<Table
-							data={dataRight}
-							tableKey={
-								tableKeys.users.summary.tabs.roles.exclude
-							}
-							columns={
-								tableColumns[
+					<TableOptionsBar />
+					<Table setSelect={setSelect} isDraggable />
+				</TableContainer>
+				<TableFoldContainer>
+					<TableFold
+						title={
+							<>이 사용자의 다른권한 : {excludedData.length}</>
+						}
+						space={'UserRolesTab'}
+						isFold={isFold}
+						setIsFold={setIsFold}
+					>
+						<NormalButton onClick={onClickAddRolesToUser}>
+							권한 추가
+						</NormalButton>
+					</TableFold>
+					{isFold[space] && (
+						<>
+							<TableOptionText data={'roles'} />
+
+							<TableContainer
+								data={excludedData}
+								tableKey={
 									tableKeys.users.summary.tabs.roles.exclude
-								]
-							}
-							isPageable
-							isNumberOfRowsAdjustable
-							isColumnFilterable
-							isSortable
-							isSelectable
-							isDnDPossible
-							isSearchable
-							dndKey={tableKeys.users.summary.tabs.roles.dnd}
-							setSelect={setSelect}
-							setData={setRightDataIds}
-							control
-						/>
-					</>
-				)}
-			</TableFoldContainer>
+								}
+								columns={
+									tableColumns[
+										tableKeys.users.summary.tabs.roles
+											.exclude
+									]
+								}
+							>
+								<TableOptionsBar />
+								<Table setSelect={setSelect} isDraggable />
+							</TableContainer>
+						</>
+					)}
+				</TableFoldContainer>
+			</DragContainer>
 		</>
 	);
 };

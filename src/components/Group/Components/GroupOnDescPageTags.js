@@ -11,6 +11,7 @@ import {
 	TransparentButton,
 } from '../../../styles/components/buttons';
 import TableOptionText from '../../Table/Options/TableOptionText';
+import TableContainer from '../../Table/TableContainer';
 
 const GroupOnDescPageTags = ({groupId, space, isFold, setIsFold}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -29,8 +30,7 @@ const GroupOnDescPageTags = ({groupId, space, isFold, setIsFold}) => {
 		}) || [],
 	);
 
-	const [select, setSelect] = useState([]);
-
+	const [select, setSelect] = useState({});
 	const onClickAddRow = useCallback(() => {
 		const lastValues = data.slice().pop();
 		console.log(lastValues);
@@ -78,14 +78,13 @@ const GroupOnDescPageTags = ({groupId, space, isFold, setIsFold}) => {
 				</TableSpaceButtons>
 			</TableSpace>
 			<TableOptionText data={'tags'} />
-			<Table
+			<TableContainer
 				tableKey={tableKeys.groups.summary.tabs.tags.basic}
 				data={data}
 				columns={tableColumns[tableKeys.groups.summary.tabs.tags.basic]}
-				isSelectable
-				setData={setData} // data 내부의 값을 조작할 필요가 있는경우
-				setSelect={setSelect}
-			/>
+			>
+				<Table setSelect={setSelect} setData={setData} />
+			</TableContainer>
 		</>
 	);
 };

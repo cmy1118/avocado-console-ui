@@ -126,6 +126,11 @@ export const consoleManagement = (
 	</svg>
 );
 
+export const dragIndicator = (
+	<span className='material-icons'>drag_indicator</span>
+);
+
+//main Logo
 export const avocadoLogo = (
 	<svg
 		width='205'
