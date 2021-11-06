@@ -10,6 +10,11 @@ import {
 	checkArrayIsUniqueHasDuplicates,
 	checkArraysIsUniqueHasDuplicates,
 } from '../../utils/dataFitering';
+import styled from 'styled-components';
+
+const Container = styled(DragDropContext)`
+	height: 300px;
+`;
 
 const DragContainer = ({
 	selected,
@@ -160,9 +165,9 @@ const DragContainer = ({
 	);
 
 	return (
-		<DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+		<Container onDragStart={onDragStart} onDragEnd={onDragEnd}>
 			{children}
-		</DragDropContext>
+		</Container>
 	);
 };
 

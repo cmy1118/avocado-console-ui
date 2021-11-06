@@ -15,10 +15,14 @@ const HoverTableContainer = styled(TableContainer)`
 	display: flex;
 	flex-direction: column;
 	.table {
-		flex: 1;
+		height: 300px;
 		border-bottom: 1px solid #e3e5e5;
 	}
+	.head {
+		min-height: 40px;
+	}
 	.body {
+		min-height: 40px;
 		border-bottom: 1px solid #e3e5e5;
 		&:hover {
 			background: #f8f9fa;

@@ -69,6 +69,7 @@ const TableOptionsBar = ({
 	getToggleHideAllColumnsProps,
 	setHiddenColumns,
 	headerGroups,
+	isSearchFilterable = false,
 }) => {
 	const [selectedSearchFilters, setSelectedSearchFilters] = useState([]);
 
@@ -114,31 +115,35 @@ const TableOptionsBar = ({
 			<RowDiv padding={'14px 16px'} justifyContent={'space-between'}>
 				<_OptionContainer>
 					<Search tableKey={tableKey} />
-					<div>
-						<_FilterButton
-							onClick={onClickOpenSearchFilterContextMenu}
-						>
-							{filterListIcon}
-							<_FilterText>필터 추가</_FilterText>
-						</_FilterButton>
-						<PositionRelativeDiv>
-							{isSearchFilterContextMenuOpened && (
-								<SearchOptionsContextMenu
-									isOpened={isSearchFilterContextMenuOpened}
-									setIsOpened={
-										setIsSearchFilterContextMenuOpened
-									}
-									allOptions={searchFilters}
-									selectedOptions={selectedSearchFilters}
-									setSelectedOptions={
-										setSelectedSearchFilters
-									}
-									filters={filters}
-									setAllFilters={setAllFilters}
-								/>
-							)}
-						</PositionRelativeDiv>
-					</div>
+					{isSearchFilterable && (
+						<div>
+							<_FilterButton
+								onClick={onClickOpenSearchFilterContextMenu}
+							>
+								{filterListIcon}
+								<_FilterText>필터 추가</_FilterText>
+							</_FilterButton>
+							<PositionRelativeDiv>
+								{isSearchFilterContextMenuOpened && (
+									<SearchOptionsContextMenu
+										isOpened={
+											isSearchFilterContextMenuOpened
+										}
+										setIsOpened={
+											setIsSearchFilterContextMenuOpened
+										}
+										allOptions={searchFilters}
+										selectedOptions={selectedSearchFilters}
+										setSelectedOptions={
+											setSelectedSearchFilters
+										}
+										filters={filters}
+										setAllFilters={setAllFilters}
+									/>
+								)}
+							</PositionRelativeDiv>
+						</div>
+					)}
 				</_OptionContainer>
 				<_OptionContainer>
 					<IconButton

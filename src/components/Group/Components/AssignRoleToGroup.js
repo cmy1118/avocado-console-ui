@@ -54,50 +54,54 @@ const AssignRoleToGroup = () => {
 	}, [includedData, dispatch]);
 
 	return (
-		<DragContainer
-			selected={select}
-			data={includedDataIds}
-			setData={setIncludedDataIds}
-			includedKey={tableKeys.groups.add.roles.include}
-			excludedData={excludedData}
-			includedData={includedData}
-		>
+		<>
 			<div>권한 추가</div>
-			<RowDiv>
-				<TableContainer
-					data={excludedData}
-					tableKey={tableKeys.groups.add.roles.exclude}
-					columns={tableColumns[tableKeys.groups.add.roles.exclude]}
-				>
-					<TableOptionsBar />
-					<Table setSelect={setSelect} isDraggable />
-				</TableContainer>
-				<RowDiv alignItems={'center'}>
-					<DropButton
-						leftTableKey={tableKeys.groups.add.roles.exclude}
-						RightTableKey={tableKeys.groups.add.roles.include}
-						select={select}
-						dataRight={includedData}
-						rightDataIds={includedDataIds}
-						setRightDataIds={setIncludedDataIds}
-					/>
-				</RowDiv>
-				<div>
-					<TableHeader>
-						추가 Roles: {includedDataIds.length}건
-					</TableHeader>
+			<DragContainer
+				selected={select}
+				data={includedDataIds}
+				setData={setIncludedDataIds}
+				includedKey={tableKeys.groups.add.roles.include}
+				excludedData={excludedData}
+				includedData={includedData}
+			>
+				<RowDiv>
 					<TableContainer
-						data={includedData}
-						tableKey={tableKeys.groups.add.roles.include}
+						data={excludedData}
+						tableKey={tableKeys.groups.add.roles.exclude}
 						columns={
-							tableColumns[tableKeys.groups.add.roles.include]
+							tableColumns[tableKeys.groups.add.roles.exclude]
 						}
 					>
+						<TableOptionsBar />
 						<Table setSelect={setSelect} isDraggable />
 					</TableContainer>
-				</div>
-			</RowDiv>
-		</DragContainer>
+					<RowDiv alignItems={'center'}>
+						<DropButton
+							leftTableKey={tableKeys.groups.add.roles.exclude}
+							RightTableKey={tableKeys.groups.add.roles.include}
+							select={select}
+							dataRight={includedData}
+							rightDataIds={includedDataIds}
+							setRightDataIds={setIncludedDataIds}
+						/>
+					</RowDiv>
+					<div>
+						<TableContainer
+							data={includedData}
+							tableKey={tableKeys.groups.add.roles.include}
+							columns={
+								tableColumns[tableKeys.groups.add.roles.include]
+							}
+						>
+							<TableHeader>
+								추가 Roles: {includedDataIds.length}건
+							</TableHeader>
+							<Table setSelect={setSelect} isDraggable />
+						</TableContainer>
+					</div>
+				</RowDiv>
+			</DragContainer>
+		</>
 	);
 };
 

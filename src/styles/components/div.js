@@ -21,7 +21,8 @@ export const ColDiv = styled(RowDiv)`
 export const TableHeader = styled.div`
 	height: 34px;
 	display: flex;
-	margin: 0px 16px;
+	padding: 14px 16px;
+	margin-bottom: 15px;
 	align-items: center;
 `;
 

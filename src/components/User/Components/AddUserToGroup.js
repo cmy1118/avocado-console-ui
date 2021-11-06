@@ -56,51 +56,55 @@ const AddUserToGroup = () => {
 	}, [dispatch, includedData]);
 
 	return (
-		<DragContainer
-			selected={select}
-			data={includedDataIds}
-			setData={setIncludedDataIds}
-			includedKey={tableKeys.users.add.groups.include}
-			excludedData={excludedData}
-			includedData={includedData}
-		>
+		<>
 			<div>그룹에 사용자에 추가</div>
-			<RowDiv>
-				<TableContainer
-					tableKey={tableKeys.users.add.groups.exclude}
-					columns={tableColumns[tableKeys.users.add.groups.exclude]}
-					data={excludedData}
-				>
-					<TableOptionsBar />
-					<Table setSelect={setSelect} isDraggable />
-				</TableContainer>
-				<RowDiv alignItems={'center'}>
-					<DropButton
-						leftTableKey={tableKeys.users.add.groups.exclude}
-						RightTableKey={tableKeys.users.add.groups.include}
-						select={select}
-						dataLeft={excludedData}
-						dataRight={includedData}
-						rightDataIds={includedDataIds}
-						setRightDataIds={setIncludedDataIds}
-					/>
-				</RowDiv>
-				<div>
-					<TableHeader>
-						추가 그룹: {includedDataIds.length}건
-					</TableHeader>
+			<DragContainer
+				selected={select}
+				data={includedDataIds}
+				setData={setIncludedDataIds}
+				includedKey={tableKeys.users.add.groups.include}
+				excludedData={excludedData}
+				includedData={includedData}
+			>
+				<RowDiv>
 					<TableContainer
-						tableKey={tableKeys.users.add.groups.include}
+						tableKey={tableKeys.users.add.groups.exclude}
 						columns={
-							tableColumns[tableKeys.users.add.groups.include]
+							tableColumns[tableKeys.users.add.groups.exclude]
 						}
-						data={includedData}
+						data={excludedData}
 					>
+						<TableOptionsBar />
 						<Table setSelect={setSelect} isDraggable />
 					</TableContainer>
-				</div>
-			</RowDiv>
-		</DragContainer>
+					<RowDiv alignItems={'center'}>
+						<DropButton
+							leftTableKey={tableKeys.users.add.groups.exclude}
+							RightTableKey={tableKeys.users.add.groups.include}
+							select={select}
+							dataLeft={excludedData}
+							dataRight={includedData}
+							rightDataIds={includedDataIds}
+							setRightDataIds={setIncludedDataIds}
+						/>
+					</RowDiv>
+					<div>
+						<TableContainer
+							tableKey={tableKeys.users.add.groups.include}
+							columns={
+								tableColumns[tableKeys.users.add.groups.include]
+							}
+							data={includedData}
+						>
+							<TableHeader>
+								추가 그룹: {includedDataIds.length}건
+							</TableHeader>
+							<Table setSelect={setSelect} isDraggable />
+						</TableContainer>
+					</div>
+				</RowDiv>
+			</DragContainer>
+		</>
 	);
 };
 

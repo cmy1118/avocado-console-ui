@@ -86,7 +86,7 @@ const UserSpace = () => {
 				columns={tableColumns[tableKeys.users.basic]}
 				data={data}
 			>
-				<TableOptionsBar />
+				<TableOptionsBar isSearchFilterable />
 				<Table setSelect={setSelect} />
 			</TableContainer>
 		</IamContainer>
