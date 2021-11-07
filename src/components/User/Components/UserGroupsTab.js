@@ -146,7 +146,6 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 					{isFold[space] && (
 						<>
 							<TableOptionText data={'groups'} />
-
 							<TableContainer
 								data={includedData}
 								tableKey={

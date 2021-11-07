@@ -76,4 +76,10 @@ export const FOLD_DATA = {
 	GroupUsersTab: false,
 	GroupRolesTab: false,
 	GroupOnDescPageTags: false,
+
+	//ADD_ROLE_SPACE
+	RolePolicyTab: false,
+	RoleUserTab: false,
+	RoleGroupTab: false,
+
 };

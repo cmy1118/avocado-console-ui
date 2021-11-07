@@ -124,7 +124,7 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 				</TableFold>
 				{isFold[space] && (
 					<>
-						<TableOptionText data={'users'} />
+						<TableOptionText data={'usersGroups'} />
 
 						<TableContainer
 							data={excludedData}

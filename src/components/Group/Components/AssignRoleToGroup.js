@@ -61,11 +61,13 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 		<TableFoldContainer>
 			<TableFold
 				title={'권한 추가'}
-				space={'AddTagToGroup'}
+				space={'AssignRoleToGroup'}
 				isFold={isFold}
 				setIsFold={setIsFold}
 			/>
 			{isFold[space] && (
+				<>
+				<TableOptionText data={'roles'} />
 				<DragContainer
 					selected={select}
 					data={includedDataIds}
@@ -74,7 +76,7 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 					excludedData={excludedData}
 					includedData={includedData}
 				>
-					<TableOptionText data={'roles'} />
+					<RowDiv>
 					<TableContainer
 						data={excludedData}
 						tableKey={tableKeys.groups.add.roles.exclude}
@@ -95,20 +97,23 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 							setRightDataIds={setIncludedDataIds}
 						/>
 					</RowDiv>
-
-					<TableContainer
-						data={includedData}
-						tableKey={tableKeys.groups.add.roles.include}
-						columns={
-							tableColumns[tableKeys.groups.add.roles.include]
-						}
-					>
+					<div>
 						<TableHeader>
 							추가 Roles: {includedDataIds.length}건
 						</TableHeader>
+						<TableContainer
+							data={includedData}
+							tableKey={tableKeys.groups.add.roles.include}
+							columns={
+								tableColumns[tableKeys.groups.add.roles.include]
+							}
+						>
 						<Table setSelect={setSelect} isDraggable />
 					</TableContainer>
+					</div>
+					</RowDiv>
 				</DragContainer>
+				</>
 			)}
 		</TableFoldContainer>
 	);

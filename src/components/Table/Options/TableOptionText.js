@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const USERS = ['아래의 사용자를 선택하여 이그룹에 추가 할 수 있습니다.'];
+const USERS_GROUPS = ['아래의 사용자를 선택하여 이그룹에 추가 할 수 있습니다.'];
+const USERS_ROLES = ['아래의 사용자를 선택하여 이역할에 추가 할 수 있습니다.'];
 const USERS_INFO = [
 	'비밀번호는 생성 규칙에 따라 랜덤 생성이며 사용자 이메일로 발송 됩니다.',
 ];
@@ -18,6 +19,10 @@ const ROLES = [
 	'Private 유형은 한 사용자에게만 부여 가능합니다.',
 	'최대 10개까지만 부여 가능합니다.',
 ];
+const POLIICIES = [
+	'아래의 정책을 선택하여 이 역할과 연결 할 수 있습니다.',
+	'최대 10개 까지만 연결 가능합니다.',
+];
 const TAGS = [
 	'IAM 태그는 사용자에 추가할 수 있는 키-값 페어입니다.',
 	'태그는 이메일 주소와 같은 사용자 정보를 포함하거나 직책과 같은 내용일 수 있습니다.',
@@ -26,7 +31,8 @@ const TAGS = [
 ];
 
 const _TableOptionTextContainer = styled.div`
-	padding: 10px 16px 10px;
+	padding: 2px 16px 10px 35px;
+	// padding: 10px 16px 10px;
 	// height: 22px;
 	font-size: 14px;
 	font-weight: normal;
@@ -49,14 +55,17 @@ const _TableOptionTextContants = styled.div`
 	line-height: 1.6;
 	letter-spacing: 0.1px;
 	text-align: left;
-	color: #212121;
+	// color: #212121;
+	color:#959ea1 ;
 `;
 
 const TableOptionText = ({data}) => {
 	const optionText = (data) => {
 		switch (data) {
-			case 'users':
-				return USERS;
+			case 'usersGroups':
+				return USERS_GROUPS;
+			case 'usersRoles':
+				return USERS_ROLES;
 			case 'usersInfo':
 				return USERS_INFO;
 			case 'groups':
@@ -65,10 +74,10 @@ const TableOptionText = ({data}) => {
 				return GROUPS_TYPE;
 			case 'roles':
 				return ROLES;
+			case 'policies':
+				return POLIICIES;
 			case 'tags':
 				return TAGS;
-			case 'policies':
-				return '';
 			default:
 				return '';
 		}

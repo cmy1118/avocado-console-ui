@@ -120,20 +120,21 @@ const GroupDescriptionSpace = ({groupId}) => {
 				</div>
 				{!isSummaryOpened && (
 					<div style={{padding: '10px 16px'}}>
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'user' && (
-							<GroupUsersTab
-								groupId={groupId}
-								space={'GroupUsersTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
+
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'role' && (
 							<GroupRolesTab
 								groupId={groupId}
 								space={'GroupRolesTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'user' && (
+							<GroupUsersTab
+								groupId={groupId}
+								space={'GroupUsersTab'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
 							/>

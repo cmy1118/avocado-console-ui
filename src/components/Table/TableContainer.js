@@ -14,7 +14,8 @@ import styled from 'styled-components';
 
 const Container = styled(ColDiv)`
 	height: 100%;
-	overflow-y: scroll;
+	overflow-y: auto;
+	// overflow-y: scroll;
 `;
 
 const TableContainer = ({data, columns, tableKey, children}) => {

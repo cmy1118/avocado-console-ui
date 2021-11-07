@@ -46,7 +46,8 @@ export const TableContainer = styled.div`
 		text-align: left;
 		color: #212121;
 		position: relative;
-		overflow: scroll;
+				overflow-x: auto;
+		overflow-y: scroll;
 		.head {
 			background: #f8f9fa;
 			border-bottom: 1px solid #e3e5e5;

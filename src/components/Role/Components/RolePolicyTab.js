@@ -2,7 +2,7 @@ import React, {useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
 	NormalBorderButton,
-	NormalButton,
+	NormalButton, TransparentButton,
 } from '../../../styles/components/buttons';
 import Table from '../../Table/Table';
 import {tableKeys} from '../../../Constants/Table/keys';
@@ -11,8 +11,12 @@ import {dummyPermission} from '../../../utils/dummyData';
 import TableContainer from '../../Table/TableContainer';
 import DragContainer from '../../Table/DragContainer';
 import TableOptionsBar from '../../Table/TableOptionsBar';
+import {TableFoldContainer, TableSpace} from "../../../styles/components/table";
+import TableFold from "../../Table/Options/TableFold";
+import {AppBarButtons} from "../../../styles/components/style";
+import TableOptionText from "../../Table/Options/TableOptionText";
 
-const RolePolicyTab = ({roleId}) => {
+const RolePolicyTab = ({roleId,space, isFold, setIsFold}) => {
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
@@ -20,6 +24,11 @@ const RolePolicyTab = ({roleId}) => {
 	const includedData = useMemo(() => dummyPermission.slice(2), []);
 
 	return (
+		<>
+			<TableSpace>
+				이 역할의 정책: {excludedData.length}
+				<TransparentButton>연결 해제</TransparentButton>
+			</TableSpace>
 		<DragContainer
 			selected={select}
 			data={includedDataIds}
@@ -28,10 +37,6 @@ const RolePolicyTab = ({roleId}) => {
 			excludedData={excludedData}
 			includedData={includedData}
 		>
-			<div>
-				이 역할의 정책: {excludedData.length}
-				<NormalBorderButton>연결 해제</NormalBorderButton>
-			</div>
 			<TableContainer
 				data={excludedData}
 				tableKey={tableKeys.roles.summary.tabs.permissions.include}
@@ -44,12 +49,24 @@ const RolePolicyTab = ({roleId}) => {
 				<TableOptionsBar />
 				<Table setSelect={setSelect} isDraggable />
 			</TableContainer>
-			<div>
-				이 역할의 다른 정책 : {includedData.length}
+			<TableFoldContainer>
+			<TableFold
+				title={
+					<>이 역할의 다른 정책: {includedData.length}</>
+				}
+				space={'RolePolicyTab'}
+				isFold={isFold}
+				setIsFold={setIsFold}
+			>
+				<AppBarButtons>
 				<NormalButton>정책 생성</NormalButton>
 				<NormalButton>정책 연결</NormalButton>
-			</div>
-			<TableContainer
+					</AppBarButtons>
+			</TableFold>
+			{isFold[space] && (
+				<>
+				<TableOptionText data={'policies'} />
+				<TableContainer
 				data={includedData}
 				tableKey={tableKeys.roles.summary.tabs.permissions.exclude}
 				columns={
@@ -61,12 +78,19 @@ const RolePolicyTab = ({roleId}) => {
 				<TableOptionsBar />
 				<Table setSelect={setSelect} isDraggable />
 			</TableContainer>
+</>
+				)}
+				</TableFoldContainer>
 		</DragContainer>
+			</>
 	);
 };
 
 RolePolicyTab.propTypes = {
 	roleId: PropTypes.string.isRequired,
+	isFold: PropTypes.object,
+	setIsFold: PropTypes.func,
+	space: PropTypes.string,
 };
 
 export default RolePolicyTab;

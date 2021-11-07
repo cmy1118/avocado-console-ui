@@ -9,7 +9,6 @@ const TableFold = ({children, title, space, isFold, setIsFold}) => {
 	const onClickFold = useCallback(() => {
 		setIsFold({...isFold, [space]: !isFold[space]});
 	}, [isFold, setIsFold, space]);
-	console.log('space:', space);
 	return (
 		<div>
 			<TableSpace className={isFold[space] ? 'fold' : 'fold close'}>

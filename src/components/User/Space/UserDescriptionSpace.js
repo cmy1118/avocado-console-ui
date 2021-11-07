@@ -81,15 +81,14 @@ const UserDescriptionSpace = ({userId}) => {
 					<TransparentButton>삭제</TransparentButton>
 				</AppBarButtons>
 			</AppBarContentsHeader>
-			{isSummaryOpened ? (
+
+
+			{isSummaryOpened && (
 				<UserSummary
 					userId={userId}
 					isOpened={isSummaryOpened}
-					setIsOpened={setIsSummaryOpened}
-				/>
-			) : (
-				''
-			)}
+					setIsOpened={setIsSummaryOpened}/>)
+			}
 
 			<div>
 				<div className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}>

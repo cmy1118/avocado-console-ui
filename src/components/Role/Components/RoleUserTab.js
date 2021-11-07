@@ -14,8 +14,11 @@ import {dummyUsers} from '../../../utils/dummyData';
 import TableContainer from '../../Table/TableContainer';
 import DragContainer from '../../Table/DragContainer';
 import TableOptionsBar from '../../Table/TableOptionsBar';
+import {TableFoldContainer, TableSpace} from "../../../styles/components/table";
+import TableFold from "../../Table/Options/TableFold";
+import TableOptionText from "../../Table/Options/TableOptionText";
 
-const RoleUserTab = ({roleId}) => {
+const RoleUserTab = ({roleId,space, isFold, setIsFold}) => {
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const {users} = useSelector(IAM_USER.selector);
 
@@ -46,6 +49,11 @@ const RoleUserTab = ({roleId}) => {
 	);
 
 	return (
+		<>
+		<TableSpace>
+			이 역할의 사용자: {includedData.length}{' '}
+			<NormalBorderButton>연결 해제</NormalBorderButton>
+		</TableSpace>
 		<DragContainer
 			selected={select}
 			data={includedDataIds}
@@ -54,10 +62,6 @@ const RoleUserTab = ({roleId}) => {
 			excludedData={excludedData}
 			includedData={includedData}
 		>
-			<div>
-				이 역할의 사용자: {includedData.length}{' '}
-				<NormalBorderButton>연결 해제</NormalBorderButton>
-			</div>
 			<TableContainer
 				data={includedData}
 				tableKey={tableKeys.roles.summary.tabs.users.include}
@@ -68,26 +72,46 @@ const RoleUserTab = ({roleId}) => {
 				<TableOptionsBar />
 				<Table setSelect={setSelect} isDraggable />
 			</TableContainer>
-			<div>
-				이 역할의 다른 사용자 : {excludedData.length}{' '}
-				<NormalButton>사용자 생성</NormalButton>
-				<NormalButton>사용자 연결</NormalButton>
-			</div>
-			<TableContainer
+			<TableFoldContainer>
+			<TableFold
+				title={
+					<>	이 역할의 다른 사용자: {excludedData.length}</>
+				}
+				space={'RoleUserTab'}
+				isFold={isFold}
+				setIsFold={setIsFold}
+			>
+				<NormalButton >
+					그룹 추가
+				</NormalButton>
+			</TableFold>
+				{isFold[space] && (
+			<>
+				<TableOptionText data={'usersRoles'} />
+
+				<TableContainer
 				data={excludedData}
 				tableKey={tableKeys.roles.summary.tabs.users.exclude}
 				columns={
 					tableColumns[tableKeys.roles.summary.tabs.users.exclude]
 				}
 			>
+				<TableOptionsBar />
 				<Table setSelect={setSelect} isDraggable />
 			</TableContainer>
+			</>
+				)}
+		</TableFoldContainer>
 		</DragContainer>
+</>
 	);
 };
 
 RoleUserTab.propTypes = {
 	roleId: PropTypes.string.isRequired,
+	isFold: PropTypes.object,
+	setIsFold: PropTypes.func,
+	space: PropTypes.string,
 };
 
 export default RoleUserTab;
