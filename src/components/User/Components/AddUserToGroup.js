@@ -14,10 +14,14 @@ import TableFold from '../../Table/Options/TableFold';
 import DragContainer from '../../Table/DragContainer';
 import TableContainer from '../../Table/TableContainer';
 import TableOptionsBar from '../../Table/TableOptionsBar';
+import {rolesConverter} from '../../../utils/tableDataConverter';
+import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
+import {dummyDates} from '../../../utils/dummyData';
 
 const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
@@ -25,12 +29,14 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 		() =>
 			groups
 				.filter((v) => includedDataIds.includes(v.id))
-				.map((v) => ({
+				.map((v, i) => ({
 					...v,
-					type: v.clientGroupTypeId,
+					type: groupTypes.find(
+						(val) => val.id === v.clientGroupTypeId,
+					).name,
 					numberOfUsers: v.members.length,
 				})),
-		[groups, includedDataIds],
+		[groups, includedDataIds, groupTypes],
 	);
 	const excludedData = useMemo(
 		() =>
@@ -42,12 +48,15 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 							.map((v) => v.clientGroupTypeId)
 							.includes(v.clientGroupTypeId),
 				)
-				.map((v) => ({
+				.map((v, i) => ({
 					...v,
-					type: v.clientGroupTypeId,
+					type: groupTypes.find(
+						(val) => val.id === v.clientGroupTypeId,
+					).name,
+					roles: rolesConverter(v.roles),
 					numberOfUsers: v.members.length,
 				})) || [],
-		[groups, includedDataIds],
+		[groups, includedDataIds, groupTypes],
 	);
 
 	useEffect(() => {

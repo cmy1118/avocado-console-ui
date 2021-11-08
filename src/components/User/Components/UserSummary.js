@@ -63,21 +63,6 @@ const UserSummary = ({userId}) => {
 
 	return (
 		<>
-			{/*<AppBarContents>*/}
-			{/*	<div style={{display: 'flex'}}>*/}
-			{/*		<IconButton*/}
-			{/*			size={'sm'}*/}
-			{/*			margin={'0px 0px 0px 12px'}*/}
-			{/*		>*/}
-			{/*			{isOpened ? arrowDownIcon : arrowUpIcon}*/}
-			{/*		</IconButton>*/}
-			{/*		요약 [ {user?.id} ]*/}
-			{/*	</div>*/}
-			{/*	<AppBarButtons>*/}
-			{/*		<TransparentButton>삭제</TransparentButton>*/}
-			{/*	</AppBarButtons>*/}
-			{/*</AppBarContents>*/}
-
 			<_UserSummaryContainer>
 				<ReadOnlyTableSpace>
 					그룹: {groupData.length}

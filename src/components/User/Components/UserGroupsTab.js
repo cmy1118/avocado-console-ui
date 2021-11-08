@@ -18,6 +18,7 @@ import TableFold from '../../Table/Options/TableFold';
 import TableContainer from '../../Table/TableContainer';
 import DragContainer from '../../Table/DragContainer';
 import TableOptionsBar from '../../Table/TableOptionsBar';
+import {dummyDates} from '../../../utils/dummyData';
 
 const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 	const includedData = useMemo(() => {
 		return groups
 			.filter((v) => includedDataIds.includes(v.id))
-			.map((v) => ({
+			.map((v, i) => ({
 				...v,
 				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
 					?.name,
@@ -43,13 +44,14 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 				parentGroup: parentGroupConverter(
 					groups.find((val) => val.id === v.parentId)?.name,
 				),
+				grantDate: dummyDates[i],
 			}));
 	}, [groupTypes, groups, includedDataIds]);
 
 	const excludedData = useMemo(() => {
 		return groups
 			.filter((v) => !includedDataIds.includes(v.id))
-			.map((v) => ({
+			.map((v, i) => ({
 				...v,
 				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
 					?.name,
@@ -57,6 +59,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 				parentGroup: parentGroupConverter(
 					groups.find((val) => val.id === v.parentId)?.name,
 				),
+				grantDate: dummyDates[dummyDates.length - i - 1],
 			}));
 	}, [groups, groupTypes, includedDataIds]);
 	//삭제
@@ -119,7 +122,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 				includedData={includedData}
 			>
 				<TableContainer
-					data={excludedData}
+					data={includedData}
 					tableKey={tableKeys.users.summary.tabs.groups.include}
 					columns={
 						tableColumns[
@@ -147,7 +150,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 						<>
 							<TableOptionText data={'groups'} />
 							<TableContainer
-								data={includedData}
+								data={excludedData}
 								tableKey={
 									tableKeys.users.summary.tabs.groups.exclude
 								}

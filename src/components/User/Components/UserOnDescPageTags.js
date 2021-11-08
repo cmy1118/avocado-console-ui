@@ -60,6 +60,7 @@ const UserOnDescPageTags = ({userId}) => {
 		}
 	}, [data, select]);
 
+	console.log(select);
 	return (
 		<>
 			<TableSpace>
@@ -79,9 +80,9 @@ const UserOnDescPageTags = ({userId}) => {
 			<TableOptionText data={'tags'} />
 
 			<TableContainer
-				tableKey={tableKeys.users.summary.tag}
+				tableKey={tableKeys.users.summary.tabs.tags.basic}
 				data={data}
-				columns={tableColumns[tableKeys.users.summary.tag]}
+				columns={tableColumns[tableKeys.users.summary.tabs.tags.basic]}
 			>
 				<Table setSelect={setSelect} />
 			</TableContainer>

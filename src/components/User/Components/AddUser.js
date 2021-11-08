@@ -16,6 +16,15 @@ import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import {MainHeaderContents, RowDiv} from '../../../styles/components/div';
 import TableOptionText from '../../Table/Options/TableOptionText';
+import styled from 'styled-components';
+
+const InputDescriptionText = styled.span`
+	color: #757575;
+	margin: 0 10px;
+	font-size: 12px;
+	display: inline-flex;
+	align-items: center;
+`;
 
 const AddUser = ({setIsOpened}) => {
 	const history = useHistory();
@@ -103,6 +112,9 @@ const AddUser = ({setIsOpened}) => {
 								placeholder={'사용자 계정 ID'}
 								direction={'row'}
 							/>
+							<InputDescriptionText>
+								최대 40자, 영문 대소문자로 생성 가능합니다.
+							</InputDescriptionText>
 						</RowDiv>
 						<RowDiv margin={'0px 0px 12px 0px'}>
 							<TextBox
@@ -110,6 +122,9 @@ const AddUser = ({setIsOpened}) => {
 								placeholder={'사용자 명'}
 								direction={'row'}
 							/>
+							<InputDescriptionText>
+								최대 30자, 영문 포함 가능합니다.
+							</InputDescriptionText>
 						</RowDiv>
 						<RowDiv margin={'0px 0px 12px 0px'}>
 							<TextBox
@@ -117,6 +132,9 @@ const AddUser = ({setIsOpened}) => {
 								placeholder={'이메일 주소'}
 								direction={'row'}
 							/>
+							<InputDescriptionText>
+								최대 200자 가능합니다.
+							</InputDescriptionText>
 						</RowDiv>
 						<RowDiv margin={'0px 0px 12px 0px'}>
 							<TextBox
@@ -124,6 +142,9 @@ const AddUser = ({setIsOpened}) => {
 								placeholder={'전화번호'}
 								direction={'row'}
 							/>
+							<InputDescriptionText>
+								+82-(0)70-4469-4469과 같이 입력합니다.
+							</InputDescriptionText>
 						</RowDiv>
 						<RowDiv margin={'0px 0px 12px 0px'}>
 							<TextBox
@@ -131,6 +152,9 @@ const AddUser = ({setIsOpened}) => {
 								placeholder={'모바일 전화번호'}
 								direction={'row'}
 							/>
+							<InputDescriptionText>
+								+82-(0)70-4469-4469과 같이 입력합니다.
+							</InputDescriptionText>
 						</RowDiv>
 					</Form>
 				</div>

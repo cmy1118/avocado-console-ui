@@ -19,8 +19,7 @@ import {
 	dummyUsers,
 } from '../../../utils/dummyData';
 import {ReadOnlyTableSpace} from '../../../styles/components/table';
-import ReadOnlyTable from '../../Table/ReadOnlyTable';
-import TableContainer from '../../Table/TableContainer';
+import TableContainer from "../../Table/TableContainer";
 
 const GroupSummary = ({groupId}) => {
 	const formRef = useRef(null);
@@ -84,6 +83,7 @@ const GroupSummary = ({groupId}) => {
 					/>
 				</Form>
 			</ModalFormContainer>
+
 			<ul>
 				<LiText>그룹명 : {group?.name}</LiText>
 				<LiText>
