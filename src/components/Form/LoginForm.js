@@ -70,7 +70,9 @@ const LoginForm = () => {
 	const history = useHistory();
 	const {companyId} = useParams();
 	const {user} = useSelector(USER.selector);
-	const [rememberMe, setRememberMe] = useState(false);
+	const [rememberMe, setRememberMe] = useState(
+		localStorage.getItem('rememberMe'),
+	);
 
 	const formRef = useRef(null);
 
@@ -83,9 +85,23 @@ const LoginForm = () => {
 					companyId: companyId,
 				}),
 			);
+			console.log(rememberMe);
+			if (rememberMe) {
+				localStorage.setItem('rememberMe', true);
+				localStorage.setItem('id', v.id);
+				localStorage.setItem('password', v.password);
+			} else {
+				localStorage.setItem('rememberMe', false);
+				localStorage.removeItem('id');
+				localStorage.removeItem('password');
+			}
 		},
-		[dispatch, companyId],
+		[dispatch, companyId, rememberMe],
 	);
+
+	const onClickRememberPassword = useCallback(() => {
+		setRememberMe(!rememberMe);
+	}, [rememberMe]);
 
 	useEffect(() => {
 		if (user) {
@@ -101,8 +117,10 @@ const LoginForm = () => {
 			</UserTitleSpan>
 			<Form
 				initialValues={{
-					id: '',
-					password: '',
+					id: rememberMe ? localStorage.getItem('id') : '',
+					password: rememberMe
+						? localStorage.getItem('password')
+						: '',
 				}}
 				onSubmit={onSubmitLogin}
 				innerRef={formRef}
@@ -127,6 +145,7 @@ const LoginForm = () => {
 
 				<_CheckBoxContainer>
 					<CheckBox
+						onClick={onClickRememberPassword}
 						label={'비밀번호 기억하기'}
 						checked={rememberMe}
 					/>
