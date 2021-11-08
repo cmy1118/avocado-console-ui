@@ -178,7 +178,7 @@ DragContainer.propTypes = {
 	includedKey: PropTypes.string,
 	excludedData: PropTypes.array,
 	includedData: PropTypes.array,
-	children: PropTypes.array,
+	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
 export default DragContainer;

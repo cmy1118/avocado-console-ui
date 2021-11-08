@@ -6,7 +6,7 @@ import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {RowDiv, TableHeader} from '../../../styles/components/div';
+import {ColDiv, RowDiv, TableHeader} from '../../../styles/components/div';
 import {TableFoldContainer} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
@@ -106,7 +106,7 @@ const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
 									setRightDataIds={setIncludedDataIds}
 								/>
 							</RowDiv>
-							<div>
+							<ColDiv width={'100%'}>
 								<TableHeader>
 									추가 사용자: {includedDataIds.length}건
 								</TableHeader>
@@ -123,7 +123,7 @@ const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
 								>
 									<Table setSelect={setSelect} isDraggable />
 								</TableContainer>
-							</div>
+							</ColDiv>
 						</RowDiv>
 					</DragContainer>
 				</>

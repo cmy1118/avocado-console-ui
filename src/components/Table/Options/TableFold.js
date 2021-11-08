@@ -31,8 +31,8 @@ const TableFold = ({children, title, space, isFold, setIsFold}) => {
 	);
 };
 TableFold.propTypes = {
-	children: PropTypes.string,
-	title: PropTypes.string,
+	children: PropTypes.object,
+	title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
