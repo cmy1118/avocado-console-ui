@@ -58,7 +58,10 @@ const AddGroup = () => {
 					>
 						그룹 생성
 					</NormalButton>
-					<TransparentButton onClick={onClickCancelAddGroup}>
+					<TransparentButton
+						margin='0px 0px 0px 5px'
+						onClick={onClickCancelAddGroup}
+					>
 						취소
 					</TransparentButton>
 				</AppBarButtons>

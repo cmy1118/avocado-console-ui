@@ -10,7 +10,6 @@ import {
 } from '../../../styles/components/style';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {
-	expiredConverter,
 	groupsConverter,
 	passwordExpiredConverter,
 	tagsConverter,
@@ -69,7 +68,10 @@ const UserSpace = () => {
 					<NormalButton onClick={onClickLinkToAddUserPage}>
 						사용자 생성
 					</NormalButton>
-					<TransparentButton onClick={onClickDeleteUsers}>
+					<TransparentButton
+						margin={'0px 0px 0px 5px'}
+						onClick={onClickDeleteUsers}
+					>
 						삭제
 					</TransparentButton>
 				</AppBarButtons>

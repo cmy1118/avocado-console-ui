@@ -83,7 +83,9 @@ const GroupDescriptionSpace = ({groupId}) => {
 					<NormalButton onClick={() => setIsOpend(true)}>
 						그룹명 편집
 					</NormalButton>
-					<TransparentButton>삭제</TransparentButton>
+					<TransparentButton margin={'0px 0px 0px 5px'}>
+						삭제
+					</TransparentButton>
 				</AppBarButtons>
 			</AppBarContentsHeader>
 			{isSummaryOpened && (

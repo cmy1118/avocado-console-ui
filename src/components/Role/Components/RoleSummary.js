@@ -9,8 +9,6 @@ import {
 	dummyPolicyOnRole,
 	dummyUsers,
 } from '../../../utils/dummyData';
-import {AppBarButtons, AppBarContents} from '../../../styles/components/style';
-import {TransparentButton} from '../../../styles/components/buttons';
 import Table from '../../Table/Table';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
