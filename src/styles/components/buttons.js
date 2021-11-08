@@ -11,7 +11,7 @@ export const DefaultButton = styled.button`
 	font-size: 14px;
 	border-radius: 4px;
 	border: none;
-	margin: 0px 5px;
+	margin: ${(props) => props?.margin || '0px 5px'};
 	font-weight: 500;
 	letter-spacing: 0.14px;
 	cursor: pointer;

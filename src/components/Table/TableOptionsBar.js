@@ -32,6 +32,7 @@ const _OptionContainer = styled.div`
 `;
 
 const _FilterButton = styled(NormalBorderButton)`
+	margin: 0 10px;
 	padding: 4.5px 16px 5.5px 12px;
 `;
 
@@ -221,10 +222,7 @@ const TableOptionsBar = ({
 							)}
 						</RowDiv>
 						{selectedSearchFilters.length !== 0 && (
-							<RowDiv
-								alignItems={'flex-end'}
-								// margin={'11px 0px 16px'}
-							>
+							<RowDiv alignItems={'flex-end'}>
 								<NormalBorderButton
 									onClick={onClickResetFilters}
 								>

@@ -73,7 +73,10 @@ const GroupSpace = () => {
 					<NormalButton onClick={onCLickLinkToAddGroup}>
 						그룹 생성
 					</NormalButton>
-					<TransparentButton onClick={onClickDeleteGroup}>
+					<TransparentButton
+						margin={'0px 0px 0px 5px'}
+						onClick={onClickDeleteGroup}
+					>
 						삭제
 					</TransparentButton>
 				</AppBarButtons>

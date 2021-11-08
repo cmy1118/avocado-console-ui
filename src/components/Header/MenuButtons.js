@@ -1,11 +1,6 @@
 import React from 'react';
 import {HoverIconButton} from '../../styles/components/icons';
-import {
-	helpIcon,
-	notificationIcon,
-	settingIcon,
-	userIcon,
-} from '../../icons/icons';
+import {helpIcon, notificationIcon, settingIcon} from '../../icons/icons';
 import styled from 'styled-components';
 import {useSelector} from 'react-redux';
 import USER from '../../reducers/api/Auth/user';

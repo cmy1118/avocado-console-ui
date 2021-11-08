@@ -91,7 +91,9 @@ const UserDescriptionSpace = ({userId}) => {
 					<NormalButton onClick={onClickLinkToAddUserPage}>
 						사용자 생성
 					</NormalButton>
-					<TransparentButton>삭제</TransparentButton>
+					<TransparentButton margin={'0px 0px 0px 5px'}>
+						삭제
+					</TransparentButton>
 				</AppBarButtons>
 			</AppBarContentsHeader>
 
