@@ -17,9 +17,11 @@ import {
 	dummyPolicyOnGroup,
 	dummyUsers,
 } from '../../../utils/dummyData';
-import {ReadOnlyTableSpace} from '../../../styles/components/table';
 import TableContainer from '../../Table/TableContainer';
-import {SummaryPageSubHeader} from '../../../styles/components/style';
+import {
+	SummaryPageSubHeader,
+	SummaryTablesContainer,
+} from '../../../styles/components/style';
 
 const GroupSummary = ({groupId}) => {
 	const formRef = useRef(null);
@@ -62,26 +64,26 @@ const GroupSummary = ({groupId}) => {
 	};
 
 	return (
-		<>
-			<ModalFormContainer
-				isOpened={isOpened}
-				setIsOpened={setIsOpened}
-				title={'그룹명 변경'}
-				innerRef={formRef}
-			>
-				<Form
-					initialValues={{name: group?.name}}
-					onSubmit={(data) => console.log(data)}
-					innerRef={formRef}
-					validation={validation}
-				>
-					<Label htmlFor={'name'}>사용자 그룹명</Label>
-					<TextBox
-						name={'name'}
-						placeholder={'그룹명을 입력하세요'}
-					/>
-				</Form>
-			</ModalFormContainer>
+		<SummaryTablesContainer>
+			{/*<ModalFormContainer*/}
+			{/*	isOpened={isOpened}*/}
+			{/*	setIsOpened={setIsOpened}*/}
+			{/*	title={'그룹명 변경'}*/}
+			{/*	innerRef={formRef}*/}
+			{/*>*/}
+			{/*	<Form*/}
+			{/*		initialValues={{name: group?.name}}*/}
+			{/*		onSubmit={(data) => console.log(data)}*/}
+			{/*		innerRef={formRef}*/}
+			{/*		validation={validation}*/}
+			{/*	>*/}
+			{/*		<Label htmlFor={'name'}>사용자 그룹명</Label>*/}
+			{/*		<TextBox*/}
+			{/*			name={'name'}*/}
+			{/*			placeholder={'그룹명을 입력하세요'}*/}
+			{/*		/>*/}
+			{/*	</Form>*/}
+			{/*</ModalFormContainer>*/}
 
 			<SummaryPageSubHeader>
 				사용자 : {userData.length}
@@ -117,7 +119,7 @@ const GroupSummary = ({groupId}) => {
 			>
 				<Table />
 			</TableContainer>
-		</>
+		</SummaryTablesContainer>
 	);
 };
 

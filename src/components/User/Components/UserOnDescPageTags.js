@@ -9,10 +9,11 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
-import {TableSpace, TableSpaceButtons} from '../../../styles/components/table';
+import {TableSpace} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import {dummyPermission} from '../../../utils/dummyData';
 import TableContainer from '../../Table/TableContainer';
+import {AppBarButtons} from '../../../styles/components/style';
 
 const UserOnDescPageTags = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
@@ -65,17 +66,20 @@ const UserOnDescPageTags = ({userId}) => {
 		<>
 			<TableSpace>
 				태그 추가
-				<TableSpaceButtons>
+				<AppBarButtons>
 					<NormalButton onClick={onClickAddRow}>
 						태그 추가
 					</NormalButton>
 					<NormalButton onClick={onClickSaveRow}>
 						태그 저장
 					</NormalButton>
-					<TransparentButton onClick={onClickDeleteRow}>
+					<TransparentButton
+						margin='0xp 0px 0p 5px'
+						onClick={onClickDeleteRow}
+					>
 						태그 삭제
 					</TransparentButton>
-				</TableSpaceButtons>
+				</AppBarButtons>
 			</TableSpace>
 			<TableOptionText data={'tags'} />
 

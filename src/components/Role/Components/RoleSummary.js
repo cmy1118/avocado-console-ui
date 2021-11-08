@@ -16,7 +16,10 @@ import PropTypes from 'prop-types';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import TableContainer from '../../Table/TableContainer';
 
-import {SummaryPageSubHeader} from '../../../styles/components/style';
+import {
+	SummaryPageSubHeader,
+	SummaryTablesContainer,
+} from '../../../styles/components/style';
 
 const RoleSummary = ({roleId}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -57,7 +60,7 @@ const RoleSummary = ({roleId}) => {
 	}, [role, groups, groupTypes]);
 
 	return (
-		<>
+		<SummaryTablesContainer>
 			<SummaryPageSubHeader>
 				권한 : {permissionData.length}
 			</SummaryPageSubHeader>
@@ -91,7 +94,7 @@ const RoleSummary = ({roleId}) => {
 			>
 				<Table />
 			</TableContainer>
-		</>
+		</SummaryTablesContainer>
 	);
 };
 

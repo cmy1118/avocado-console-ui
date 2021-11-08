@@ -8,14 +8,12 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
-import {
-	TableFoldContainer,
-	TableSpaceButtons,
-} from '../../../styles/components/table';
+import {TableFoldContainer} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
 import TableFold from '../../Table/Options/TableFold';
 import TableContainer from '../../Table/TableContainer';
+import {AppBarButtons} from '../../../styles/components/style';
 
 const AddTagToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -69,14 +67,17 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 				isFold={isFold}
 				setIsFold={setIsFold}
 			>
-				<TableSpaceButtons>
+				<AppBarButtons>
 					<NormalButton onClick={onClickAddRow}>
 						태그 추가
 					</NormalButton>
-					<TransparentButton onClick={onClickDeleteRow}>
+					<TransparentButton
+						margin='0xp 0px 0p 5px'
+						onClick={onClickDeleteRow}
+					>
 						태그 삭제
 					</TransparentButton>
-				</TableSpaceButtons>
+				</AppBarButtons>
 			</TableFold>
 			{isFold[space] && (
 				<>

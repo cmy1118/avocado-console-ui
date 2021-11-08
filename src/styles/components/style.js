@@ -7,11 +7,7 @@ export const IamContainer = styled.div`
 	flex-direction: column;
 `;
 
-export const DescriptionPageContainer = styled.div`
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-
+export const DescriptionPageContainer = styled(IamContainer)`
 	.tabBar {
 		position: inherit;
 		z-index: 1;
@@ -59,7 +55,6 @@ export const AsideContainer = styled.div`
 		transform: translateX(255px);
 	}
 `;
-//APP BAR
 
 export const SubHeader = styled.div`
 	border: none;
@@ -96,10 +91,21 @@ export const SubTitle = styled.div`
 `;
 
 export const AppBarButtons = styled.div`
-	display: flaex;
-	// justify-content: space-between;
+	display: flex;
 `;
 
-export const DataSummaryList = styled.ul`
+export const SummaryList = styled.ul`
 	margin: 2px 17px 16px 0px;
+`;
+
+export const SummaryTablesContainer = styled.div`
+	flex: 1;
+	overflow-y: scroll;
+`;
+export const InputDescriptionText = styled.span`
+	color: #757575;
+	margin: 0 10px;
+	font-size: 12px;
+	display: inline-flex;
+	align-items: center;
 `;

@@ -8,7 +8,6 @@ import styled from 'styled-components';
 const _TableFoldTitle = styled.div`
 	display: flex;
 	align-items: center;
-	padding: 7px 0px;
 `;
 
 //children = button

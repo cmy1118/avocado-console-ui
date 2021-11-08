@@ -31,9 +31,7 @@ const TAGS = [
 ];
 
 const _TableOptionTextContainer = styled.div`
-	// padding: 2px 16px 10px 35px;
-	padding: 10px 16px 10px;
-	// height: 22px;
+	padding: 0px 17px 10px 17px;
 	font-size: 14px;
 	font-weight: normal;
 	font-stretch: normal;
@@ -47,7 +45,6 @@ const _TableOptionTextContants = styled.div`
 	padding: 2px 2px;
 	display: flex;
 	align-items: center;
-
 	font-size: 12px;
 	font-weight: normal;
 	font-stretch: normal;
@@ -55,7 +52,6 @@ const _TableOptionTextContants = styled.div`
 	line-height: 1.6;
 	letter-spacing: 0.1px;
 	text-align: left;
-	// color: #212121;
 	color: #959ea1;
 `;
 

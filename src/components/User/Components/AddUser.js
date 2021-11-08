@@ -1,6 +1,11 @@
 import React, {useCallback, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
-import {AppBarButtons, SubHeader} from '../../../styles/components/style';
+import {
+	AppBarButtons,
+	InputDescriptionText,
+	SubHeader,
+	SubHeaderText,
+} from '../../../styles/components/style';
 import * as yup from 'yup';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
@@ -11,17 +16,8 @@ import {
 } from '../../../styles/components/buttons';
 import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
-import {MainHeaderContents, RowDiv} from '../../../styles/components/div';
+import {AddPageContentsContainer, RowDiv} from '../../../styles/components/div';
 import TableOptionText from '../../Table/Options/TableOptionText';
-import styled from 'styled-components';
-
-const InputDescriptionText = styled.span`
-	color: #757575;
-	margin: 0 10px;
-	font-size: 12px;
-	display: inline-flex;
-	align-items: center;
-`;
 
 const AddUser = ({setIsOpened}) => {
 	const history = useHistory();
@@ -73,10 +69,9 @@ const AddUser = ({setIsOpened}) => {
 	);
 
 	return (
-		//ColDiv margin={'0px 16px'}
 		<>
 			<SubHeader>
-				<div>사용자 기본 정보</div>
+				<SubHeaderText>사용자 기본 정보</SubHeaderText>
 				<AppBarButtons>
 					<NormalButton
 						onClick={() => formRef.current.handleSubmit()}
@@ -91,74 +86,72 @@ const AddUser = ({setIsOpened}) => {
 					</TransparentButton>
 				</AppBarButtons>
 			</SubHeader>
-			<MainHeaderContents>
-				<TableOptionText data={'usersInfo'} />
-				<div style={{padding: '10px 10px 10px 20px'}}>
-					<Form
-						initialValues={{
-							id: '사용자 계정 ID',
-							name: '사용자 명',
-							email: '이메일 주소',
-							telephone: '전화번호',
-							mobile: '모바일 전화번호',
-						}}
-						onSubmit={onSubmitUserData}
-						innerRef={formRef}
-						validation={validation}
-					>
-						<RowDiv margin={'0px 0px 12px 0px'}>
-							<TextBox
-								name={'id'}
-								placeholder={'사용자 계정 ID'}
-								direction={'row'}
-							/>
-							<InputDescriptionText>
-								최대 40자, 영문 대소문자로 생성 가능합니다.
-							</InputDescriptionText>
-						</RowDiv>
-						<RowDiv margin={'0px 0px 12px 0px'}>
-							<TextBox
-								name={'name'}
-								placeholder={'사용자 명'}
-								direction={'row'}
-							/>
-							<InputDescriptionText>
-								최대 30자, 영문 포함 가능합니다.
-							</InputDescriptionText>
-						</RowDiv>
-						<RowDiv margin={'0px 0px 12px 0px'}>
-							<TextBox
-								name={'email'}
-								placeholder={'이메일 주소'}
-								direction={'row'}
-							/>
-							<InputDescriptionText>
-								최대 200자 가능합니다.
-							</InputDescriptionText>
-						</RowDiv>
-						<RowDiv margin={'0px 0px 12px 0px'}>
-							<TextBox
-								name={'telephone'}
-								placeholder={'전화번호'}
-								direction={'row'}
-							/>
-							<InputDescriptionText>
-								+82-(0)70-4469-4469과 같이 입력합니다.
-							</InputDescriptionText>
-						</RowDiv>
-						<RowDiv margin={'0px 0px 12px 0px'}>
-							<TextBox
-								name={'mobile'}
-								placeholder={'모바일 전화번호'}
-								direction={'row'}
-							/>
-							<InputDescriptionText>
-								+82-(0)70-4469-4469과 같이 입력합니다.
-							</InputDescriptionText>
-						</RowDiv>
-					</Form>
-				</div>
-			</MainHeaderContents>
+			<TableOptionText data={'usersInfo'} />
+			<AddPageContentsContainer>
+				<Form
+					initialValues={{
+						id: '사용자 계정 ID',
+						name: '사용자 명',
+						email: '이메일 주소',
+						telephone: '전화번호',
+						mobile: '모바일 전화번호',
+					}}
+					onSubmit={onSubmitUserData}
+					innerRef={formRef}
+					validation={validation}
+				>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						<TextBox
+							name={'id'}
+							placeholder={'사용자 계정 ID'}
+							direction={'row'}
+						/>
+						<InputDescriptionText>
+							최대 40자, 영문 대소문자로 생성 가능합니다.
+						</InputDescriptionText>
+					</RowDiv>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						<TextBox
+							name={'name'}
+							placeholder={'사용자 명'}
+							direction={'row'}
+						/>
+						<InputDescriptionText>
+							최대 30자, 영문 포함 가능합니다.
+						</InputDescriptionText>
+					</RowDiv>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						<TextBox
+							name={'email'}
+							placeholder={'이메일 주소'}
+							direction={'row'}
+						/>
+						<InputDescriptionText>
+							최대 200자 가능합니다.
+						</InputDescriptionText>
+					</RowDiv>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						<TextBox
+							name={'telephone'}
+							placeholder={'전화번호'}
+							direction={'row'}
+						/>
+						<InputDescriptionText>
+							+82-(0)70-4469-4469과 같이 입력합니다.
+						</InputDescriptionText>
+					</RowDiv>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						<TextBox
+							name={'mobile'}
+							placeholder={'모바일 전화번호'}
+							direction={'row'}
+						/>
+						<InputDescriptionText>
+							+82-(0)70-4469-4469과 같이 입력합니다.
+						</InputDescriptionText>
+					</RowDiv>
+				</Form>
+			</AddPageContentsContainer>
 		</>
 	);
 };

@@ -25,6 +25,6 @@ export const TableHeader = styled.div`
 	padding: 14px 16px;
 	align-items: center;
 `;
-export const MainHeaderContents = styled.div`
-	// padding: 10px 16px;
+export const AddPageContentsContainer = styled.div`
+	padding: 0px 16px 30px 16px;
 `;

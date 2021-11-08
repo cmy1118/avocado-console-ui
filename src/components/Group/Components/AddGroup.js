@@ -1,4 +1,9 @@
-import {AppBarButtons, SubHeader} from '../../../styles/components/style';
+import {
+	AppBarButtons,
+	InputDescriptionText,
+	SubHeader,
+	SubHeaderText,
+} from '../../../styles/components/style';
 import React, {useCallback, useRef, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
@@ -12,13 +17,16 @@ import {
 import ComboBox from '../../RecycleComponents/New/ComboBox';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import Form from '../../RecycleComponents/New/Form';
-import {ColDiv, RowDiv} from '../../../styles/components/div';
+import {
+	AddPageContentsContainer,
+	ColDiv,
+	RowDiv,
+} from '../../../styles/components/div';
 import {Label} from '../../../styles/components/text';
 import * as yup from 'yup';
 
 const AddGroup = () => {
 	const history = useHistory();
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const formRef = useRef(null);
 
@@ -44,7 +52,7 @@ const AddGroup = () => {
 	return (
 		<>
 			<SubHeader>
-				<div>사용자 그룹 이름 지정</div>
+				<SubHeaderText>사용자 그룹 이름 지정</SubHeaderText>
 				<AppBarButtons>
 					<NormalButton onClick={onClickManageGroupType}>
 						그룹 유형 관리
@@ -63,7 +71,7 @@ const AddGroup = () => {
 					</TransparentButton>
 				</AppBarButtons>
 			</SubHeader>
-			<div style={{padding: '20px 10px 50px 20px'}}>
+			<AddPageContentsContainer>
 				<Form
 					initialValues={values}
 					setValues={setValues}
@@ -91,13 +99,18 @@ const AddGroup = () => {
 					</RowDiv>
 					<ColDiv>
 						<Label htmlFor={'name'}>그룹 명</Label>
-						<TextBox
-							name={'name'}
-							placeholder={'그룹명을 입력하세요'}
-						/>
+						<RowDiv margin={'0px 0px 12px 0px'}>
+							<TextBox
+								name={'name'}
+								placeholder={'그룹명을 입력하세요'}
+							/>
+							<InputDescriptionText>
+								최대 120자, 영문 숫자 사용 가능합니다.
+							</InputDescriptionText>
+						</RowDiv>
 					</ColDiv>
 				</Form>
-			</div>
+			</AddPageContentsContainer>
 		</>
 	);
 };

@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 
 import {
 	AppBarButtons,
-	DataSummaryList,
+	SummaryList,
 	DescriptionPageContainer,
 	SubHeader,
 	SubHeaderText,
@@ -100,7 +100,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 				</AppBarButtons>
 			</SubHeader>
 
-			<DataSummaryList>
+			<SummaryList>
 				<LiText>그룹명 : {group?.name}</LiText>
 				<LiText>
 					그룹 유형 :{' '}
@@ -110,7 +110,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 					}
 				</LiText>
 				<LiText>생성 일시 : {group?.creationDate}</LiText>
-			</DataSummaryList>
+			</SummaryList>
 
 			{isSummaryOpened && (
 				<GroupSummary

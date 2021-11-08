@@ -9,7 +9,7 @@ import {
 	DescriptionPageContainer,
 	SubHeader,
 	SubHeaderText,
-	DataSummaryList,
+	SummaryList,
 } from '../../../styles/components/style';
 import UserInfoTab from '../Components/UserInfoTab';
 import UserGroupsTab from '../Components/UserGroupsTab';
@@ -98,7 +98,7 @@ const UserDescriptionSpace = ({userId}) => {
 				</AppBarButtons>
 			</SubHeader>
 
-			<DataSummaryList>
+			<SummaryList>
 				<LiText>
 					사용자 : {user?.name} ({user?.id})
 				</LiText>
@@ -114,7 +114,7 @@ const UserDescriptionSpace = ({userId}) => {
 					비밀번호 사용기간 :{' '}
 					{expiredConverter(user?.passwordExpired)}
 				</LiText>
-			</DataSummaryList>
+			</SummaryList>
 
 			{isSummaryOpened && (
 				<UserSummary

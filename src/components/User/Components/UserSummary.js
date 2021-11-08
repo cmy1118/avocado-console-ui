@@ -16,12 +16,10 @@ import {
 
 import TableContainer from '../../Table/TableContainer';
 import Table from '../../Table/Table';
-import {SummaryPageSubHeader} from '../../../styles/components/style';
-
-const _UserSummaryContainer = styled.div`
-	height: 500px;
-	overflow-y: scroll;
-`;
+import {
+	SummaryPageSubHeader,
+	SummaryTablesContainer,
+} from '../../../styles/components/style';
 
 const UserSummary = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
@@ -63,7 +61,7 @@ const UserSummary = ({userId}) => {
 	}, [user]);
 
 	return (
-		<_UserSummaryContainer>
+		<SummaryTablesContainer>
 			<SummaryPageSubHeader>
 				그룹 : {groupData.length}
 			</SummaryPageSubHeader>
@@ -97,7 +95,7 @@ const UserSummary = ({userId}) => {
 			>
 				<Table />
 			</TableContainer>
-		</_UserSummaryContainer>
+		</SummaryTablesContainer>
 	);
 };
 
