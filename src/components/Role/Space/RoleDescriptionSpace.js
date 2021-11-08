@@ -4,8 +4,10 @@ import qs from 'qs';
 import {useLocation} from 'react-router-dom';
 
 import {
-	AppBarButtons, AppBarContentsHeader,
-	AppBarNavi, DetailContainer,
+	AppBarButtons,
+	AppBarContentsHeader,
+	AppBarNavi,
+	DetailContainer,
 	IamContainer,
 	PathContainer,
 } from '../../../styles/components/style';
@@ -17,10 +19,10 @@ import RoleUserTab from '../Components/RoleUserTab';
 import RoleGroupTab from '../Components/RoleGroupTab';
 import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
-import {IconButton} from "../../../styles/components/icons";
-import {arrowDownIcon, arrowUpIcon} from "../../../icons/icons";
-import {TransparentButton} from "../../../styles/components/buttons";
-import {FOLD_DATA} from "../../../utils/data";
+import {IconButton} from '../../../styles/components/icons';
+import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
+import {TransparentButton} from '../../../styles/components/buttons';
+import {FOLD_DATA} from '../../../utils/data';
 
 const RoleDescriptionSpace = ({roleId}) => {
 	const {search} = useLocation();
@@ -32,7 +34,6 @@ const RoleDescriptionSpace = ({roleId}) => {
 
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
-
 
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
@@ -65,20 +66,20 @@ const RoleDescriptionSpace = ({roleId}) => {
 					>
 						{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
 					</IconButton>
-					요약 [ {role?.id} ]
+					요약 [ {role?.name} ]
 				</div>
 				<AppBarButtons>
 					<TransparentButton>삭제</TransparentButton>
 				</AppBarButtons>
 			</AppBarContentsHeader>
 
-
 			{isSummaryOpened && (
-			<RoleSummary roleId={roleId}
-						 isOpened={isSummaryOpened}
-						 setIsOpened={setIsSummaryOpened}/>)
-			}
-
+				<RoleSummary
+					roleId={roleId}
+					isOpened={isSummaryOpened}
+					setIsOpened={setIsSummaryOpened}
+				/>
+			)}
 
 			<div>
 				<div className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}>
@@ -93,20 +94,32 @@ const RoleDescriptionSpace = ({roleId}) => {
 				{!isSummaryOpened && (
 					<div style={{padding: '10px 16px'}}>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'role' && <RolePolicyTab roleId={roleId}
-						space={'RolePolicyTab'}
+							'role' && (
+							<RolePolicyTab
+								roleId={roleId}
+								space={'RolePolicyTab'}
 								isFold={isTableFold}
-								setIsFold={setIsTableFold}/>}
+								setIsFold={setIsTableFold}
+							/>
+						)}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'user' && <RoleUserTab roleId={roleId}
-						space={'RoleUserTab'}
+							'user' && (
+							<RoleUserTab
+								roleId={roleId}
+								space={'RoleUserTab'}
 								isFold={isTableFold}
-								setIsFold={setIsTableFold}/>}
+								setIsFold={setIsTableFold}
+							/>
+						)}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'group' && <RoleGroupTab roleId={roleId}
-						space={'RoleGroupTab'}
+							'group' && (
+							<RoleGroupTab
+								roleId={roleId}
+								space={'RoleGroupTab'}
 								isFold={isTableFold}
-								setIsFold={setIsTableFold}/>}
+								setIsFold={setIsTableFold}
+							/>
+						)}
 					</div>
 				)}
 			</div>
