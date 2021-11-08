@@ -17,7 +17,7 @@ import {tableColumns} from '../../../Constants/Table/columns';
 import PropTypes from 'prop-types';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import TableContainer from '../../Table/TableContainer';
-import {LiText} from "../../../styles/components/text";
+import {LiText} from '../../../styles/components/text';
 
 const RoleSummary = ({roleId}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -65,13 +65,6 @@ const RoleSummary = ({roleId}) => {
 			{/*		<TransparentButton>삭제</TransparentButton>*/}
 			{/*	</AppBarButtons>*/}
 			{/*</AppBarContents>*/}
-
-			<ul>
-				<LiText>역할 이름 : {role?.name}</LiText>
-				<LiText>역할 유형 : {role?.type}</LiText>
-				<LiText>역할 설명 : {role?.description}</LiText>
-				<LiText>생성 일시 : {role?.creationDate}</LiText>
-			</ul>
 
 			<div>권한: {permissionData.length}</div>
 			<TableContainer

@@ -10,6 +10,7 @@ import {
 	AppBarNavi,
 	DetailContainer,
 	PathContainer,
+	UserSummaryInfo,
 } from '../../../styles/components/style';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import GroupRolesTab from '../Components/GroupRolesTab';
@@ -25,11 +26,14 @@ import {
 } from '../../../styles/components/buttons';
 import TabBar from '../../Tab/TabBar';
 import {FOLD_DATA} from '../../../utils/data';
+import {LiText} from '../../../styles/components/text';
+import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
 	const {search} = useLocation();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isOpend, setIsOpend] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
@@ -98,6 +102,21 @@ const GroupDescriptionSpace = ({groupId}) => {
 					<TransparentButton>삭제</TransparentButton>
 				</AppBarButtons>
 			</AppBarContentsHeader>
+			<UserSummaryInfo>
+				<ul>
+					<LiText>그룹명 : {group?.name}</LiText>
+					<LiText>
+						그룹 유형 :{' '}
+						{
+							groupTypes.find(
+								(v) => v.id === group.clientGroupTypeId,
+							).name
+						}
+					</LiText>
+					<LiText>생성 일시 : {group?.creationDate}</LiText>
+				</ul>
+			</UserSummaryInfo>
+
 			{isSummaryOpened ? (
 				<GroupSummary
 					groupId={groupId}
@@ -120,7 +139,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 				</div>
 				{!isSummaryOpened && (
 					<div style={{padding: '10px 16px'}}>
-
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'role' && (
 							<GroupRolesTab
@@ -131,7 +149,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 							/>
 						)}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-						'user' && (
+							'user' && (
 							<GroupUsersTab
 								groupId={groupId}
 								space={'GroupUsersTab'}

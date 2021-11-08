@@ -13,15 +13,19 @@ import * as yup from 'yup';
 import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import {Label, LiText} from '../../../styles/components/text';
-import {dummyDates, dummyPolicyOnGroup, dummyUsers,} from '../../../utils/dummyData';
-import {ReadOnlyTableSpace} from "../../../styles/components/table";
+import {
+	dummyDates,
+	dummyPolicyOnGroup,
+	dummyUsers,
+} from '../../../utils/dummyData';
+import {ReadOnlyTableSpace} from '../../../styles/components/table';
+import ReadOnlyTable from '../../Table/ReadOnlyTable';
 
 const GroupSummary = ({groupId}) => {
 	const formRef = useRef(null);
 
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [isOpened, setIsOpened] = useState(false);
 
 	const group = useMemo(() => groups.find((v) => v.id === groupId), [
@@ -87,34 +91,23 @@ const GroupSummary = ({groupId}) => {
 			{/*		<TransparentButton>삭제</TransparentButton>*/}
 			{/*	</AppBarButtons>*/}
 			{/*</AppBarContents>*/}
-			<ul>
-				<LiText>그룹명 : {group?.name}</LiText>
-				<LiText>
-					그룹 유형 :{' '}
-					{
-						groupTypes.find((v) => v.id === group.clientGroupTypeId)
-							.name
-					}
-				</LiText>
-				<LiText>생성 일시 : {group?.creationDate}</LiText>
-			</ul>
 
 			<ReadOnlyTableSpace>사용자: {userData.length}</ReadOnlyTableSpace>
-			<Table
+			<ReadOnlyTable
 				data={userData}
 				tableKey={tableKeys.groups.summary.user}
 				columns={tableColumns[tableKeys.groups.summary.user]}
 			/>
 
 			<ReadOnlyTableSpace>권한: {roleData.length}</ReadOnlyTableSpace>
-			<Table
+			<ReadOnlyTable
 				data={roleData}
 				tableKey={tableKeys.groups.summary.permission}
 				columns={tableColumns[tableKeys.groups.summary.permission]}
 			/>
 
 			<ReadOnlyTableSpace>태그: {tagData.length}</ReadOnlyTableSpace>
-			<Table
+			<ReadOnlyTable
 				data={tagData}
 				tableKey={tableKeys.groups.summary.tag}
 				columns={tableColumns[tableKeys.groups.summary.tag]}
