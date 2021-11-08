@@ -14,7 +14,7 @@ import styled from 'styled-components';
 
 const Container = styled(ColDiv)`
 	// flex: 1;
-	height: 100%;
+	// height: 100%;
 	width: ${(props) => props.width};
 `;
 
