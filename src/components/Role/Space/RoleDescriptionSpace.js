@@ -10,6 +10,7 @@ import {
 	DetailContainer,
 	IamContainer,
 	PathContainer,
+	UserSummaryInfo,
 } from '../../../styles/components/style';
 import {NaviLink} from '../../../styles/components/link';
 import RoleSummary from '../Components/RoleSummary';
@@ -23,6 +24,7 @@ import {IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import {TransparentButton} from '../../../styles/components/buttons';
 import {FOLD_DATA} from '../../../utils/data';
+import {LiText} from '../../../styles/components/text';
 
 const RoleDescriptionSpace = ({roleId}) => {
 	const {search} = useLocation();
@@ -72,6 +74,14 @@ const RoleDescriptionSpace = ({roleId}) => {
 					<TransparentButton>삭제</TransparentButton>
 				</AppBarButtons>
 			</AppBarContentsHeader>
+			<UserSummaryInfo>
+				<ul>
+					<LiText>역할 이름 : {role?.name}</LiText>
+					<LiText>역할 유형 : {role?.type}</LiText>
+					<LiText>역할 설명 : {role?.description}</LiText>
+					<LiText>생성 일시 : {role?.creationDate}</LiText>
+				</ul>
+			</UserSummaryInfo>
 
 			{isSummaryOpened && (
 				<RoleSummary
