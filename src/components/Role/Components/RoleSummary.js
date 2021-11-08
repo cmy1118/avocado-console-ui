@@ -4,7 +4,11 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 import React, {useMemo} from 'react';
 import {parentGroupConverter} from '../../../utils/tableDataConverter';
-import {dummyDates, dummyPolicyOnRole, dummyUsers,} from '../../../utils/dummyData';
+import {
+	dummyDates,
+	dummyPolicyOnRole,
+	dummyUsers,
+} from '../../../utils/dummyData';
 import Table from '../../Table/Table';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';

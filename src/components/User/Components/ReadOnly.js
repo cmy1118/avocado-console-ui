@@ -16,16 +16,16 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
 
 	const submitUserInfo = useCallback(() => {
-		console.log(readOnlyData);
-		console.log('api 작업..');
-	}, [readOnlyData]);
+		// console.log(readOnlyData);
+		// console.log('api 작업..');
+	}, []);
 
 	const groupData = useMemo(
 		() =>
 			readOnlyData[tableKeys.users.add.groups.exclude]?.map((v) => ({
 				...v,
 				roles: rolesConverter(v.roles),
-			})) || [],
+			})),
 		[readOnlyData],
 	);
 

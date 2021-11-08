@@ -86,7 +86,10 @@ const AddUser = ({setIsOpened}) => {
 					>
 						사용자 생성
 					</NormalButton>
-					<TransparentButton onClick={onClickCancelAddUser}>
+					<TransparentButton
+						margin='0px 0px 0px 5px'
+						onClick={onClickCancelAddUser}
+					>
 						취소
 					</TransparentButton>
 				</AppBarButtons>
