@@ -7,7 +7,11 @@ import {useSelector} from 'react-redux';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
 import {LiText} from '../../../styles/components/text';
-import {SubHeader} from '../../../styles/components/style';
+import {
+	SubHeader,
+	SummaryList,
+	SummaryPageSubHeader,
+} from '../../../styles/components/style';
 import {dummyPolicyOnDialogBox} from '../../../utils/dummyData';
 import TableContainer from '../../Table/TableContainer';
 import {rolesConverter} from '../../../utils/tableDataConverter';
@@ -37,8 +41,7 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 			handleSubmit={submitUserInfo}
 		>
 			<SubHeader>사용자 기본정보</SubHeader>
-
-			<ul>
+			<SummaryList>
 				<LiText>사용자 계정 : {readOnlyData['user'].id}</LiText>
 				<LiText>사용자 이름 : {readOnlyData['user'].name}</LiText>
 				<LiText>이메일 주소 : {readOnlyData['user'].email}</LiText>
@@ -46,12 +49,12 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 				<LiText>
 					모바일 전화 번호 : {readOnlyData['user'].mobile}
 				</LiText>
-			</ul>
-			<SubHeader>
+			</SummaryList>
+
+			<SummaryPageSubHeader>
 				그룹 :{' '}
 				{readOnlyData[tableKeys.users.add.groups.exclude]?.length}
-			</SubHeader>
-
+			</SummaryPageSubHeader>
 			<TableContainer
 				tableKey={tableKeys.users.add.groups.exclude}
 				data={groupData}
@@ -59,8 +62,10 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 			>
 				<Table />
 			</TableContainer>
-			<SubHeader>권한 : {dummyPolicyOnDialogBox.length}</SubHeader>
 
+			<SummaryPageSubHeader>
+				권한 : {dummyPolicyOnDialogBox.length}
+			</SummaryPageSubHeader>
 			<TableContainer
 				tableKey={tableKeys.users.add.permissions}
 				data={dummyPolicyOnDialogBox}
@@ -69,9 +74,9 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 				<Table />
 			</TableContainer>
 
-			<SubHeader>
+			<SummaryPageSubHeader>
 				태그 : {readOnlyData[tableKeys.users.add.tag].length}
-			</SubHeader>
+			</SummaryPageSubHeader>
 			<TableContainer
 				tableKey={tableKeys.users.add.tag}
 				data={readOnlyData[tableKeys.users.add.tag]}
