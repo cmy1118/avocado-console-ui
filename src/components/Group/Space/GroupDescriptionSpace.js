@@ -45,15 +45,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 		groupId,
 	]);
 
-	// const onClickChangeTab = useCallback(
-	// 	(v) => () => {
-	// 		history.push({
-	// 			pathname: `/groups/${groupId}`,
-	// 			search: `tabs=${v}`,
-	// 		});
-	// 	},
-	// 	[groupId, history],
-	// );
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
 	}, [isSummaryOpened]);
@@ -74,9 +65,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to={`/groups/${groupId}`}>{group?.name}</NaviLink>
 				</PathContainer>
-				{/*<HoverIconButton onClick={onClickCloseAside}>*/}
-				{/*	{errorIcon}*/}
-				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
 			<AppBarContentsHeader>
@@ -98,14 +86,12 @@ const GroupDescriptionSpace = ({groupId}) => {
 					<TransparentButton>삭제</TransparentButton>
 				</AppBarButtons>
 			</AppBarContentsHeader>
-			{isSummaryOpened ? (
+			{isSummaryOpened && (
 				<GroupSummary
 					groupId={groupId}
 					isOpened={isSummaryOpened}
 					setIsOpened={setIsSummaryOpened}
 				/>
-			) : (
-				''
 			)}
 
 			<div>
@@ -120,7 +106,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 				</div>
 				{!isSummaryOpened && (
 					<div style={{padding: '10px 16px'}}>
-
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'role' && (
 							<GroupRolesTab
@@ -131,7 +116,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 							/>
 						)}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-						'user' && (
+							'user' && (
 							<GroupUsersTab
 								groupId={groupId}
 								space={'GroupUsersTab'}

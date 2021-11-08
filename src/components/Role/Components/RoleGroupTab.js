@@ -15,12 +15,13 @@ import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType'
 import DragContainer from '../../Table/DragContainer';
 import TableContainer from '../../Table/TableContainer';
 import TableOptionsBar from '../../Table/TableOptionsBar';
-import {TableFoldContainer, TableSpace} from "../../../styles/components/table";
-import TableFold from "../../Table/Options/TableFold";
-import {AppBarButtons} from "../../../styles/components/style";
-import TableOptionText from "../../Table/Options/TableOptionText";
+import {TableFoldContainer, TableSpace} from '../../../styles/components/table';
+import TableFold from '../../Table/Options/TableFold';
+import {AppBarButtons} from '../../../styles/components/style';
+import TableOptionText from '../../Table/Options/TableOptionText';
+import {parentGroupConverter} from '../../../utils/tableDataConverter';
 
-const RoleGroupTab = ({roleId,space, isFold, setIsFold}) => {
+const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
@@ -41,6 +42,9 @@ const RoleGroupTab = ({roleId,space, isFold, setIsFold}) => {
 				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
 					.name,
 				numberOfPermissions: v.roles.length,
+				parentGroup: parentGroupConverter(
+					groups.find((val) => val.id === v.parentId)?.name,
+				),
 				grantDate: dummyDates[i],
 				grantUser: dummyUsers[i],
 			}));
@@ -56,6 +60,9 @@ const RoleGroupTab = ({roleId,space, isFold, setIsFold}) => {
 						(val) => val.id === v.clientGroupTypeId,
 					).name,
 					numberOfPermissions: v.roles.length,
+					parentGroup: parentGroupConverter(
+						groups.find((val) => val.id === v.parentId)?.name,
+					),
 					grantDate: dummyDates[dummyDates.length - i - 1],
 				})),
 		[groupTypes, groups, role],
@@ -63,61 +70,65 @@ const RoleGroupTab = ({roleId,space, isFold, setIsFold}) => {
 
 	return (
 		<>
-		<TableSpace>
-			이 역할의 그룹: {includedData.length}{' '}
-			<NormalBorderButton>연결 해제</NormalBorderButton>
-		</TableSpace>
-		<DragContainer
-			selected={select}
-			data={includedDataIds}
-			setData={setIncludedDataIds}
-			includedKey={tableKeys.roles.summary.tabs.groups.include}
-			excludedData={excludedData}
-			includedData={includedData}
-		>
-
-			<TableContainer
-				data={includedData}
-				tableKey={tableKeys.roles.summary.tabs.groups.include}
-				columns={
-					tableColumns[tableKeys.roles.summary.tabs.groups.include]
-				}
+			<TableSpace>
+				이 역할의 그룹: {includedData.length}{' '}
+				<NormalBorderButton>연결 해제</NormalBorderButton>
+			</TableSpace>
+			<DragContainer
+				selected={select}
+				data={includedDataIds}
+				setData={setIncludedDataIds}
+				includedKey={tableKeys.roles.summary.tabs.groups.include}
+				excludedData={excludedData}
+				includedData={includedData}
 			>
-				<TableOptionsBar />
-				<Table setSelect={setSelect} isDraggable />
-			</TableContainer>
-			<TableFoldContainer>
-			<TableFold
-				title={
-					<>이 역할의 다른 그룹 : {excludedData.length}</>
-				}
-				space={'RoleGroupTab'}
-				isFold={isFold}
-				setIsFold={setIsFold}
-			>
-				<AppBarButtons>
-				<NormalButton>그룹 생성</NormalButton>
-				<NormalButton>그룹 연결</NormalButton>
-				</AppBarButtons>
-			</TableFold>
-				{isFold[space] && (
-					<>
-					<TableOptionText data={'groups'} />
-			<TableContainer
-				data={excludedData}
-				tableKey={tableKeys.roles.summary.tabs.groups.exclude}
-				columns={
-					tableColumns[tableKeys.roles.summary.tabs.groups.exclude]
-				}
-			>
-				<TableOptionsBar />
-				<Table setSelect={setSelect} isDraggable />
-			</TableContainer>
-					</>
-				)}
-			</TableFoldContainer>
-		</DragContainer>
-			</>
+				<TableContainer
+					data={includedData}
+					tableKey={tableKeys.roles.summary.tabs.groups.include}
+					columns={
+						tableColumns[
+							tableKeys.roles.summary.tabs.groups.include
+						]
+					}
+				>
+					<TableOptionsBar />
+					<Table setSelect={setSelect} isDraggable />
+				</TableContainer>
+				<TableFoldContainer>
+					<TableFold
+						title={<>이 역할의 다른 그룹 : {excludedData.length}</>}
+						space={'RoleGroupTab'}
+						isFold={isFold}
+						setIsFold={setIsFold}
+					>
+						<AppBarButtons>
+							<NormalButton>그룹 생성</NormalButton>
+							<NormalButton>그룹 연결</NormalButton>
+						</AppBarButtons>
+					</TableFold>
+					{isFold[space] && (
+						<>
+							<TableOptionText data={'groups'} />
+							<TableContainer
+								data={excludedData}
+								tableKey={
+									tableKeys.roles.summary.tabs.groups.exclude
+								}
+								columns={
+									tableColumns[
+										tableKeys.roles.summary.tabs.groups
+											.exclude
+									]
+								}
+							>
+								<TableOptionsBar />
+								<Table setSelect={setSelect} isDraggable />
+							</TableContainer>
+						</>
+					)}
+				</TableFoldContainer>
+			</DragContainer>
+		</>
 	);
 };
 

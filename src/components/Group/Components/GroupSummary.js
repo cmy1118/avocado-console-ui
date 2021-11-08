@@ -13,8 +13,13 @@ import * as yup from 'yup';
 import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import {Label, LiText} from '../../../styles/components/text';
-import {dummyDates, dummyPolicyOnGroup, dummyUsers,} from '../../../utils/dummyData';
-import {ReadOnlyTableSpace} from "../../../styles/components/table";
+import {
+	dummyDates,
+	dummyPolicyOnGroup,
+	dummyUsers,
+} from '../../../utils/dummyData';
+import {ReadOnlyTableSpace} from '../../../styles/components/table';
+import TableContainer from '../../Table/TableContainer';
 
 const GroupSummary = ({groupId}) => {
 	const formRef = useRef(null);
@@ -78,15 +83,7 @@ const GroupSummary = ({groupId}) => {
 					/>
 				</Form>
 			</ModalFormContainer>
-			{/*<AppBarContents>*/}
-			{/*	<div>요약 [ {group?.name} ]</div>*/}
-			{/*	<AppBarButtons>*/}
-			{/*		<NormalButton onClick={() => setIsOpened(true)}>*/}
-			{/*			그룹명 편집*/}
-			{/*		</NormalButton>*/}
-			{/*		<TransparentButton>삭제</TransparentButton>*/}
-			{/*	</AppBarButtons>*/}
-			{/*</AppBarContents>*/}
+
 			<ul>
 				<LiText>그룹명 : {group?.name}</LiText>
 				<LiText>
@@ -98,27 +95,30 @@ const GroupSummary = ({groupId}) => {
 				</LiText>
 				<LiText>생성 일시 : {group?.creationDate}</LiText>
 			</ul>
-
 			<ReadOnlyTableSpace>사용자: {userData.length}</ReadOnlyTableSpace>
-			<Table
+			<TableContainer
 				data={userData}
 				tableKey={tableKeys.groups.summary.user}
 				columns={tableColumns[tableKeys.groups.summary.user]}
-			/>
-
+			>
+				<Table />
+			</TableContainer>
 			<ReadOnlyTableSpace>권한: {roleData.length}</ReadOnlyTableSpace>
-			<Table
+			<TableContainer
 				data={roleData}
 				tableKey={tableKeys.groups.summary.permission}
 				columns={tableColumns[tableKeys.groups.summary.permission]}
-			/>
-
+			>
+				<Table />
+			</TableContainer>
 			<ReadOnlyTableSpace>태그: {tagData.length}</ReadOnlyTableSpace>
-			<Table
+			<TableContainer
 				data={tagData}
 				tableKey={tableKeys.groups.summary.tag}
 				columns={tableColumns[tableKeys.groups.summary.tag]}
-			/>
+			>
+				<Table />
+			</TableContainer>
 		</>
 	);
 };

@@ -80,6 +80,10 @@ export const GROUP_ADD_ROLES_EXCLUDE_COLUMN = [
 		accessor: 'type',
 	},
 	{
+		Header: '설명',
+		accessor: 'description',
+	},
+	{
 		Header: '사용자 수',
 		accessor: 'numberOfUsers',
 	},
@@ -198,6 +202,13 @@ export const GROUP_SUMMARY_PERMISSION_COLUMN = [
 		Header: '부여 일시',
 		accessor: 'grantDate',
 	},
+	{
+		Header: '부여 사용자',
+		accessor: 'grantUser',
+		Cell: function Component(v) {
+			return <div>{v.value?.name + '(' + v.value?.id + ')'}</div>;
+		},
+	},
 ];
 
 export const GROUP_SUMMARY_TAG_COLUMN = [
@@ -294,6 +305,10 @@ export const GROUP_SUMMARY_TABS_ROLES_INCLUDE_COLUMN = [
 		accessor: 'type',
 	},
 	{
+		Header: '설명',
+		accessor: 'description',
+	},
+	{
 		Header: '사용자 수',
 		accessor: 'numberOfUsers',
 	},
@@ -310,6 +325,10 @@ export const GROUP_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '역할 유형',
 		accessor: 'type',
+	},
+	{
+		Header: '설명',
+		accessor: 'description',
 	},
 	{
 		Header: '사용자 수',

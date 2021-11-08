@@ -26,9 +26,6 @@ const AddGroupSpace = () => {
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to='/groups/add'>사용자 그룹 생성</NaviLink>
 				</PathContainer>
-				{/*<HoverIconButton onClick={onClickCloseAside}>*/}
-				{/*	{errorIcon}*/}
-				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 			<AddGroup setIsOpened={setIsOpened} />
 			<UsersIncludedInGroup
