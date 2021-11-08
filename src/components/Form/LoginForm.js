@@ -121,6 +121,7 @@ const LoginForm = () => {
 						placeholder={'사용자 비밀번호'}
 						direction={'row'}
 						width={'360px'}
+						type={'password'}
 					/>
 				</RowDiv>
 
