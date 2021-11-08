@@ -56,7 +56,7 @@ export const passwordExpiredConverter = (date) => {
 
 export const expiredConverter = (date) => {
 	let diffDate = new Date(date) - new Date();
-	return date + '(' + Math.ceil(diffDate / (1000 * 60 * 60 * 24)) + '일전)';
+	return date + ' (' + Math.ceil(diffDate / (1000 * 60 * 60 * 24)) + '일전)';
 };
 
 export const groupsConverter = (data) => {

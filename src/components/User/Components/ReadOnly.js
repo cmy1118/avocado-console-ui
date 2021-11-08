@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import ModalTableContainer from '../../RecycleComponents/ModalTableContainer';
 import {tableKeys} from '../../../Constants/Table/keys';
 import Table from '../../Table/Table';
@@ -10,6 +10,7 @@ import {LiText} from '../../../styles/components/text';
 import {AppBarContents} from '../../../styles/components/style';
 import {dummyPolicyOnDialogBox} from '../../../utils/dummyData';
 import TableContainer from '../../Table/TableContainer';
+import {rolesConverter} from '../../../utils/tableDataConverter';
 
 const ReadOnly = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
@@ -18,6 +19,15 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 		console.log(readOnlyData);
 		console.log('api 작업..');
 	}, [readOnlyData]);
+
+	const groupData = useMemo(
+		() =>
+			readOnlyData[tableKeys.users.add.groups.exclude].map((v) => ({
+				...v,
+				roles: rolesConverter(v.roles),
+			})),
+		[],
+	);
 
 	return readOnlyData['user'] ? (
 		<ModalTableContainer
@@ -44,7 +54,7 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 
 			<TableContainer
 				tableKey={tableKeys.users.add.groups.exclude}
-				data={readOnlyData[tableKeys.users.add.groups.exclude]}
+				data={groupData}
 				columns={tableColumns[tableKeys.users.add.groups.exclude]}
 			>
 				<Table />
@@ -54,9 +64,9 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 			</AppBarContents>
 
 			<TableContainer
-				tableKey={tableKeys.users.add.roles.exclude}
-				data={readOnlyData[tableKeys.users.add.roles.exclude]}
-				columns={tableColumns[tableKeys.users.add.roles.exclude]}
+				tableKey={tableKeys.users.add.permissions}
+				data={dummyPolicyOnDialogBox}
+				columns={tableColumns[tableKeys.users.add.permissions]}
 			>
 				<Table />
 			</TableContainer>

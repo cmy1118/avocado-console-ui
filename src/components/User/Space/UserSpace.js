@@ -34,7 +34,7 @@ const UserSpace = () => {
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 
-	const data = useMemo(() => {
+	const userData = useMemo(() => {
 		return users.map((v) => ({
 			...v,
 			groups: groupsConverter(
@@ -51,11 +51,7 @@ const UserSpace = () => {
 		history.push('/users/add');
 	}, [history]);
 
-	/******************************************/
-	/* roberto : Table_update
-    /******************************************/
-	const onClickDeleteUsers = useCallback(() => {}, [select]);
-	/******************************************/
+	const onClickDeleteUsers = useCallback(() => {}, []);
 
 	return (
 		<IamContainer>
@@ -65,9 +61,6 @@ const UserSpace = () => {
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to='/users'>사용자 </NaviLink>
 				</PathContainer>
-				{/*<HoverIconButton onClick={onClickCloseAside}>*/}
-				{/*	{errorIcon}*/}
-				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
 			<AppBarContentsHeader>
@@ -85,7 +78,7 @@ const UserSpace = () => {
 			<TableContainer
 				tableKey={tableKeys.users.basic}
 				columns={tableColumns[tableKeys.users.basic]}
-				data={data}
+				data={userData}
 			>
 				<TableOptionsBar isSearchFilterable />
 				<Table setSelect={setSelect} />
