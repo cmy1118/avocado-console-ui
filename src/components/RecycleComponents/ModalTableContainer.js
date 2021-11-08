@@ -19,8 +19,8 @@ const _DialogBox = styled(DialogBox)`
 
 const _DialogBoxContent = styled.div`
 	flex: 1;
-	padding: 16px;
-	overflow: scroll;
+	// padding: 16px;
+	overflow-y: scroll;
 `;
 
 const ModalTableContainer = ({

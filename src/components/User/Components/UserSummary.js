@@ -1,9 +1,5 @@
 import PropTypes from 'prop-types';
-import {
-	expiredConverter,
-	parentGroupConverter,
-	statusConverter,
-} from '../../../utils/tableDataConverter';
+import {parentGroupConverter} from '../../../utils/tableDataConverter';
 import React, {useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
@@ -18,7 +14,6 @@ import {
 	dummyUsers,
 } from '../../../utils/dummyData';
 import {ReadOnlyTableSpace} from '../../../styles/components/table';
-import {LiText} from '../../../styles/components/text';
 import ReadOnlyTable from '../../Table/ReadOnlyTable';
 
 const _UserSummaryContainer = styled.div`
@@ -80,21 +75,7 @@ const UserSummary = ({userId}) => {
 			{/*		<TransparentButton>삭제</TransparentButton>*/}
 			{/*	</AppBarButtons>*/}
 			{/*</AppBarContents>*/}
-			<ul>
-				<LiText>사용자 : {user?.name}</LiText>
-				<LiText>
-					사용자 계정 상태 : {statusConverter(user?.status)}
-				</LiText>
-				<LiText>마지막 콘솔 로그인 : {user?.lastConsoleLogin}</LiText>
-				<LiText>생성 일시 : {user?.creationDate}</LiText>
-				<LiText>
-					계정 사용기간 : {expiredConverter(user?.accountExpired)}
-				</LiText>
-				<LiText>
-					비밀번호 사용기간 :{' '}
-					{expiredConverter(user?.passwordExpired)}
-				</LiText>
-			</ul>
+
 			<_UserSummaryContainer>
 				<ReadOnlyTableSpace>
 					그룹: {groupData.length}

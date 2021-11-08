@@ -3,6 +3,13 @@ import {TableSpace} from '../../../styles/components/table';
 import {IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowRightIcon} from '../../../icons/icons';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+const _TableFoldTitle = styled.div`
+	display: flex;
+	align-items: center;
+	padding: 7px 0px;
+`;
 
 //children = button
 const TableFold = ({children, title, space, isFold, setIsFold}) => {
@@ -13,7 +20,7 @@ const TableFold = ({children, title, space, isFold, setIsFold}) => {
 		<div>
 			<TableSpace className={isFold[space] ? 'fold' : 'fold close'}>
 				<>
-					<div style={{display: 'flex', alignItems: 'center'}}>
+					<_TableFoldTitle>
 						<IconButton
 							color={'font'}
 							size={'m'}
@@ -23,7 +30,7 @@ const TableFold = ({children, title, space, isFold, setIsFold}) => {
 							{isFold[space] ? arrowDownIcon : arrowRightIcon}
 						</IconButton>
 						{title}
-					</div>
+					</_TableFoldTitle>
 					{children ? children : ''}
 				</>
 			</TableSpace>

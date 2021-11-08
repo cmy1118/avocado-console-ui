@@ -64,9 +64,9 @@ export const AsideContainer = styled.div`
 		transform: translateX(255px);
 	}
 `;
-
+//APP BAR
 export const AppBarContents = styled.div`
-	margin-bottom: 10px;
+	// margin-bottom: 10px;
 	border-bottom: 3px #e3e5e5 dotted;
 	align-items: center;
 
@@ -107,4 +107,8 @@ export const AppBarNavi = styled.div`
 export const AppBarButtons = styled.div`
 	display: flaex;
 	// justify-content: space-between;
+`;
+//summary info
+export const UserSummaryInfo = styled.div`
+	margin-bottom: 40px;
 `;

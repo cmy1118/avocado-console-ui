@@ -10,6 +10,7 @@ import {
 	AppBarNavi,
 	DetailContainer,
 	PathContainer,
+	UserSummaryInfo,
 } from '../../../styles/components/style';
 import UserInfoTab from '../Components/UserInfoTab';
 import UserGroupsTab from '../Components/UserGroupsTab';
@@ -23,6 +24,11 @@ import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import TabBar from '../../Tab/TabBar';
 import {TransparentButton} from '../../../styles/components/buttons';
 import {FOLD_DATA} from '../../../utils/data';
+import {LiText} from '../../../styles/components/text';
+import {
+	expiredConverter,
+	statusConverter,
+} from '../../../utils/tableDataConverter';
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
@@ -81,14 +87,32 @@ const UserDescriptionSpace = ({userId}) => {
 					<TransparentButton>삭제</TransparentButton>
 				</AppBarButtons>
 			</AppBarContentsHeader>
-
-
+			<UserSummaryInfo>
+				<ul>
+					<LiText>사용자 : {user?.name}</LiText>
+					<LiText>
+						사용자 계정 상태 : {statusConverter(user?.status)}
+					</LiText>
+					<LiText>
+						마지막 콘솔 로그인 : {user?.lastConsoleLogin}
+					</LiText>
+					<LiText>생성 일시 : {user?.creationDate}</LiText>
+					<LiText>
+						계정 사용기간 : {expiredConverter(user?.accountExpired)}
+					</LiText>
+					<LiText>
+						비밀번호 사용기간 :{' '}
+						{expiredConverter(user?.passwordExpired)}
+					</LiText>
+				</ul>
+			</UserSummaryInfo>
 			{isSummaryOpened && (
 				<UserSummary
 					userId={userId}
 					isOpened={isSummaryOpened}
-					setIsOpened={setIsSummaryOpened}/>)
-			}
+					setIsOpened={setIsSummaryOpened}
+				/>
+			)}
 
 			<div>
 				<div className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}>
