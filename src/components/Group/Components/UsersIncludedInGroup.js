@@ -111,7 +111,7 @@ const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
 									setRightDataIds={setIncludedDataIds}
 								/>
 							</DnDDiv>
-							<ColDiv width={'100%'}>
+							<ColDiv width={'700px'}>
 								<TableHeader>
 									추가 사용자: {includedDataIds.length}건
 								</TableHeader>

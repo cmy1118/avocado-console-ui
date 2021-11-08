@@ -11,7 +11,7 @@ import {TableFoldContainer} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import TableFold from '../../Table/Options/TableFold';
 import PropTypes from 'prop-types';
-import {ColDiv, RowDiv, TableHeader} from '../../../styles/components/div';
+import {ColDiv, DnDDiv, RowDiv, TableHeader} from '../../../styles/components/div';
 import DragContainer from '../../Table/DragContainer';
 import TableContainer from '../../Table/TableContainer';
 import TableOptionsBar from '../../Table/TableOptionsBar';
@@ -83,7 +83,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 								<TableOptionsBar />
 								<Table setSelect={setSelect} isDraggable />
 							</TableContainer>
-							<RowDiv alignItems={'center'}>
+							<DnDDiv alignItems={'center'}>
 								<DropButton
 									leftTableKey={
 										tableKeys.users.add.roles.exclude
@@ -97,8 +97,8 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 									rightDataIds={includedDataIds}
 									setRightDataIds={setIncludedDataIds}
 								/>
-							</RowDiv>
-							<ColDiv width={'100%'}>
+							</DnDDiv>
+							<ColDiv width={'700px'}>
 								<TableHeader>
 									추가 Roles: {includedDataIds.length}건
 								</TableHeader>
