@@ -7,7 +7,7 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import DropButton from '../../Table/DropButton';
-import {ColDiv, RowDiv, TableHeader} from '../../../styles/components/div';
+import {ColDiv, DnDDiv, RowDiv, TableHeader} from '../../../styles/components/div';
 import {TableFoldContainer} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
@@ -89,7 +89,7 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 								<TableOptionsBar />
 								<Table setSelect={setSelect} isDraggable />
 							</TableContainer>
-							<RowDiv alignItems={'center'}>
+							<DnDDiv alignItems={'center'}>
 								<DropButton
 									leftTableKey={
 										tableKeys.groups.add.roles.exclude
@@ -102,8 +102,8 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 									rightDataIds={includedDataIds}
 									setRightDataIds={setIncludedDataIds}
 								/>
-							</RowDiv>
-							<ColDiv width={'100%'}>
+							</DnDDiv>
+							<ColDiv width={'700px'}>
 								<TableHeader>
 									추가 Roles: {includedDataIds.length}건
 								</TableHeader>
