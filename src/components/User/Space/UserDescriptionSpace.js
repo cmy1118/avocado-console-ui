@@ -22,7 +22,10 @@ import {NaviLink} from '../../../styles/components/link';
 import {IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import TabBar from '../../Tab/TabBar';
-import {TransparentButton} from '../../../styles/components/buttons';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 import {FOLD_DATA} from '../../../utils/data';
 import {LiText} from '../../../styles/components/text';
 import {
@@ -50,6 +53,9 @@ const UserDescriptionSpace = ({userId}) => {
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
 	}, [isSummaryOpened]);
+	const onClickLinkToAddUserPage = useCallback(() => {
+		history.push('/users/add');
+	}, [history]);
 	// if userId does not exist, direct to 404 page
 	useEffect(() => {
 		if (userId && !user) {
@@ -66,9 +72,6 @@ const UserDescriptionSpace = ({userId}) => {
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to={`/users/${userId}`}>{user?.name}</NaviLink>
 				</PathContainer>
-				{/*<HoverIconButton onClick={onClickCloseAside}>*/}
-				{/*	{errorIcon}*/}
-				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
 			<AppBarContentsHeader>
@@ -83,13 +86,20 @@ const UserDescriptionSpace = ({userId}) => {
 					</IconButton>
 					요약 [ {user?.id} ]
 				</div>
+
 				<AppBarButtons>
+					<NormalButton onClick={onClickLinkToAddUserPage}>
+						사용자 생성
+					</NormalButton>
 					<TransparentButton>삭제</TransparentButton>
 				</AppBarButtons>
 			</AppBarContentsHeader>
+
 			<UserSummaryInfo>
 				<ul>
-					<LiText>사용자 : {user?.name}</LiText>
+					<LiText>
+						사용자 : {user?.name} ({user?.id})
+					</LiText>
 					<LiText>
 						사용자 계정 상태 : {statusConverter(user?.status)}
 					</LiText>
@@ -106,6 +116,7 @@ const UserDescriptionSpace = ({userId}) => {
 					</LiText>
 				</ul>
 			</UserSummaryInfo>
+
 			{isSummaryOpened && (
 				<UserSummary
 					userId={userId}

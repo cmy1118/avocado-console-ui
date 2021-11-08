@@ -162,6 +162,7 @@ export const ROLE_SUMMARY_GROUPS_INCLUDE_COLUMN = [
 	{accessor: 'name', Header: '그룹 명'},
 	{accessor: 'type', Header: '그룹 유형'},
 	{accessor: 'numberOfPermissions', Header: '권한 수'},
+	{Header: '상위 그룹', accessor: 'parentGroup'},
 	{accessor: 'creationDate', Header: '생성 일시'},
 	{accessor: 'grantDate', Header: '부여 일시'},
 	{
@@ -177,6 +178,6 @@ export const ROLE_SUMMARY_GROUPS_EXCLUDE_COLUMN = [
 	{accessor: 'name', Header: '그룹 명'},
 	{accessor: 'type', Header: '그룹 유형'},
 	{accessor: 'numberOfPermissions', Header: '권한 수'},
+	{Header: '상위 그룹', accessor: 'parentGroup'},
 	{accessor: 'creationDate', Header: '생성 일시'},
-	{accessor: 'grantDate', Header: '부여 일시'},
 ];

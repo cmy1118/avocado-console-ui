@@ -86,7 +86,7 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 			</TableFold>
 			{isFold[space] && (
 				<>
-					<TableOptionText data={'roles'} />
+					<TableOptionText data={'tags'} />
 
 					<TableContainer
 						tableKey={tableKeys.users.add.tag}

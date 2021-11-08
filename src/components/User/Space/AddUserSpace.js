@@ -27,9 +27,6 @@ const AddUserSpace = () => {
 					<div style={{padding: '0px 5px'}}>{' > '}</div>
 					<NaviLink to='/users/add'>사용자 추가</NaviLink>
 				</PathContainer>
-				{/*<HoverIconButton onClick={onClickCloseAside}>*/}
-				{/*	{errorIcon}*/}
-				{/*</HoverIconButton>*/}
 			</AppBarNavi>
 
 			<AddUser setIsOpened={setIsOpened} />
