@@ -16,6 +16,7 @@ import TableContainer from '../../Table/TableContainer';
 import TableOptionsBar from '../../Table/TableOptionsBar';
 import {rolesConverter} from '../../../utils/tableDataConverter';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
+import {dummyDates} from '../../../utils/dummyData';
 
 const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 		() =>
 			groups
 				.filter((v) => includedDataIds.includes(v.id))
-				.map((v) => ({
+				.map((v, i) => ({
 					...v,
 					type: groupTypes.find(
 						(val) => val.id === v.clientGroupTypeId,
@@ -47,7 +48,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 							.map((v) => v.clientGroupTypeId)
 							.includes(v.clientGroupTypeId),
 				)
-				.map((v) => ({
+				.map((v, i) => ({
 					...v,
 					type: groupTypes.find(
 						(val) => val.id === v.clientGroupTypeId,
