@@ -99,11 +99,11 @@ const AddUser = ({setIsOpened}) => {
 				<div style={{padding: '10px 10px 10px 20px'}}>
 					<Form
 						initialValues={{
-							id: 'helloWorld',
-							name: '안녕',
-							email: 'helloWorld@netand.co.kr',
-							telephone: '',
-							mobile: '010-1234-1410',
+							id: '사용자 계정 ID',
+							name: '사용자 명',
+							email: '이메일 주소',
+							telephone: '전화번호',
+							mobile: '모바일 전화번호',
 						}}
 						onSubmit={onSubmitUserData}
 						innerRef={formRef}

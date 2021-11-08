@@ -29,8 +29,10 @@ const _Container = styled.div`
 	}
 
 	.nav {
-		position: absolute;
-		left: -255px;
+		overflow: auto;
+		position: fixed;
+		top: 54px;
+		left: 0px;
 		display: inline-block;
 		transition: all 0.5s ease-in-out;
 		height: ;

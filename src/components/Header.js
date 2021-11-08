@@ -5,9 +5,15 @@ import {Icon} from '../styles/components/icons';
 import MenuButtons from './Header/MenuButtons';
 import TextBox from './RecycleComponents/New/TextBox';
 import Form from './RecycleComponents/New/Form';
-import {NaviLink} from "../styles/components/link";
+import {NaviLink} from '../styles/components/link';
 
 const _Container = styled.div`
+	background: #fff;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 9;
+
 	box-sizing: border-box;
 	display: flex;
 	justify-content: space-between;
@@ -30,8 +36,8 @@ const Header = () => {
 		<_Container>
 			<_Title>
 				<NaviLink to='/'>
-				<_Logo>{avocadoLogo}</_Logo>
-			</NaviLink>
+					<_Logo>{avocadoLogo}</_Logo>
+				</NaviLink>
 			</_Title>
 			<Form
 				onSubmit={(data) => console.log(data)}
