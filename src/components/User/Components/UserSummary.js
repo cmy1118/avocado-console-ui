@@ -15,6 +15,8 @@ import {
 } from '../../../utils/dummyData';
 import {ReadOnlyTableSpace} from '../../../styles/components/table';
 import ReadOnlyTable from '../../Table/ReadOnlyTable';
+import TableContainer from '../../Table/TableContainer';
+import Table from '../../Table/Table';
 
 const _UserSummaryContainer = styled.div`
 	height: 500px;
@@ -80,25 +82,34 @@ const UserSummary = ({userId}) => {
 				<ReadOnlyTableSpace>
 					그룹: {groupData.length}
 				</ReadOnlyTableSpace>
-				<ReadOnlyTable
+				<TableContainer
+					mode={'readOnly'}
 					data={groupData}
 					tableKey={tableKeys.users.summary.group}
 					columns={tableColumns[tableKeys.users.summary.group]}
-				/>
+				>
+					<Table />
+				</TableContainer>
 
 				<ReadOnlyTableSpace>권한: {roleData.length}</ReadOnlyTableSpace>
-				<ReadOnlyTable
+				<TableContainer
+					mode={'readOnly'}
 					data={roleData}
 					tableKey={tableKeys.users.summary.permission}
 					columns={tableColumns[tableKeys.users.summary.permission]}
-				/>
+				>
+					<Table />
+				</TableContainer>
 
 				<ReadOnlyTableSpace>태그: {tagData.length}</ReadOnlyTableSpace>
-				<ReadOnlyTable
+				<TableContainer
+					mode={'readOnly'}
 					data={tagData}
 					tableKey={tableKeys.users.summary.tag}
 					columns={tableColumns[tableKeys.users.summary.tag]}
-				/>
+				>
+					<Table />
+				</TableContainer>
 			</_UserSummaryContainer>
 		</>
 	);

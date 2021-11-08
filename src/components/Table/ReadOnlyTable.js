@@ -8,7 +8,7 @@ import {
 	useSortBy,
 	useTable,
 } from 'react-table';
-import {RowDiv, TableContainer} from '../../styles/components/div';
+import {RowDiv} from '../../styles/components/div';
 import {VariableSizeList} from 'react-window';
 
 function dateBetweenFilterFn(rows, id, filterValues) {
@@ -138,7 +138,7 @@ const ReadOnlyTable = ({tableKey, data, columns}) => {
 	);
 
 	return (
-		<TableContainer>
+		<>
 			<div className={'table'} {...getTableProps()}>
 				{headerGroups.map((headerGroup, i) => (
 					<div
@@ -172,7 +172,7 @@ const ReadOnlyTable = ({tableKey, data, columns}) => {
 					{RenderRow}
 				</VariableSizeList>
 			</div>
-		</TableContainer>
+		</>
 	);
 };
 

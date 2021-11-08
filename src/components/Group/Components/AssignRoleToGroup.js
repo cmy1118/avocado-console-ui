@@ -7,7 +7,7 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import DropButton from '../../Table/DropButton';
-import {RowDiv, TableHeader} from '../../../styles/components/div';
+import {ColDiv, RowDiv, TableHeader} from '../../../styles/components/div';
 import {TableFoldContainer} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
@@ -67,52 +67,62 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 			/>
 			{isFold[space] && (
 				<>
-				<TableOptionText data={'roles'} />
-				<DragContainer
-					selected={select}
-					data={includedDataIds}
-					setData={setIncludedDataIds}
-					includedKey={tableKeys.groups.add.roles.include}
-					excludedData={excludedData}
-					includedData={includedData}
-				>
-					<RowDiv>
-					<TableContainer
-						data={excludedData}
-						tableKey={tableKeys.groups.add.roles.exclude}
-						columns={
-							tableColumns[tableKeys.groups.add.roles.exclude]
-						}
+					<TableOptionText data={'roles'} />
+					<DragContainer
+						selected={select}
+						data={includedDataIds}
+						setData={setIncludedDataIds}
+						includedKey={tableKeys.groups.add.roles.include}
+						excludedData={excludedData}
+						includedData={includedData}
 					>
-						<TableOptionsBar />
-						<Table setSelect={setSelect} isDraggable />
-					</TableContainer>
-					<RowDiv alignItems={'center'}>
-						<DropButton
-							leftTableKey={tableKeys.groups.add.roles.exclude}
-							RightTableKey={tableKeys.groups.add.roles.include}
-							select={select}
-							dataRight={includedData}
-							rightDataIds={includedDataIds}
-							setRightDataIds={setIncludedDataIds}
-						/>
-					</RowDiv>
-					<div>
-						<TableHeader>
-							추가 Roles: {includedDataIds.length}건
-						</TableHeader>
-						<TableContainer
-							data={includedData}
-							tableKey={tableKeys.groups.add.roles.include}
-							columns={
-								tableColumns[tableKeys.groups.add.roles.include]
-							}
-						>
-						<Table setSelect={setSelect} isDraggable />
-					</TableContainer>
-					</div>
-					</RowDiv>
-				</DragContainer>
+						<RowDiv>
+							<TableContainer
+								data={excludedData}
+								tableKey={tableKeys.groups.add.roles.exclude}
+								columns={
+									tableColumns[
+										tableKeys.groups.add.roles.exclude
+									]
+								}
+							>
+								<TableOptionsBar />
+								<Table setSelect={setSelect} isDraggable />
+							</TableContainer>
+							<RowDiv alignItems={'center'}>
+								<DropButton
+									leftTableKey={
+										tableKeys.groups.add.roles.exclude
+									}
+									RightTableKey={
+										tableKeys.groups.add.roles.include
+									}
+									select={select}
+									dataRight={includedData}
+									rightDataIds={includedDataIds}
+									setRightDataIds={setIncludedDataIds}
+								/>
+							</RowDiv>
+							<ColDiv width={'100%'}>
+								<TableHeader>
+									추가 Roles: {includedDataIds.length}건
+								</TableHeader>
+								<TableContainer
+									data={includedData}
+									tableKey={
+										tableKeys.groups.add.roles.include
+									}
+									columns={
+										tableColumns[
+											tableKeys.groups.add.roles.include
+										]
+									}
+								>
+									<Table setSelect={setSelect} isDraggable />
+								</TableContainer>
+							</ColDiv>
+						</RowDiv>
+					</DragContainer>
 				</>
 			)}
 		</TableFoldContainer>
