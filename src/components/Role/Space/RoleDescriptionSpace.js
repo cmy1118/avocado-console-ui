@@ -1,18 +1,12 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import qs from 'qs';
-import {useLocation} from 'react-router-dom';
-
+import {useHistory, useLocation} from 'react-router-dom';
 import {
-	AppBarButtons,
-	AppBarContentsHeader,
-	AppBarNavi,
-	DetailContainer,
-	IamContainer,
-	PathContainer,
-	UserSummaryInfo,
-} from '../../../styles/components/style';
-import {NaviLink} from '../../../styles/components/link';
+	CurrentPathContainer,
+	NextPath,
+	PathLink,
+} from '../../../styles/components/currentPath';
 import RoleSummary from '../Components/RoleSummary';
 import TabBar from '../../Tab/TabBar';
 import RolePolicyTab from '../Components/RolePolicyTab';
@@ -22,11 +16,22 @@ import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
-import {TransparentButton} from '../../../styles/components/buttons';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 import {FOLD_DATA} from '../../../utils/data';
 import {LiText} from '../../../styles/components/text';
+import {
+	AppBarButtons,
+	DataSummaryList,
+	DescriptionPageContainer,
+	SubHeader,
+	SubHeaderText,
+} from '../../../styles/components/style';
 
 const RoleDescriptionSpace = ({roleId}) => {
+	const history = useHistory();
 	const {search} = useLocation();
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const role = useMemo(() => roles.find((v) => v.id === roleId), [
@@ -46,20 +51,22 @@ const RoleDescriptionSpace = ({roleId}) => {
 		{name: '사용자 그룹', href: 'group'},
 	];
 
-	return (
-		<DetailContainer>
-			<AppBarNavi>
-				<PathContainer>
-					<NaviLink to='/iam'>IAM</NaviLink>
-					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to='/roles'>역할</NaviLink>
-					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to={`/roles/${roleId}`}>{role?.name}</NaviLink>
-				</PathContainer>
-			</AppBarNavi>
+	const onClickLinkToAddRolePage = useCallback(() => {
+		history.push('/roles/add');
+	}, []);
 
-			<AppBarContentsHeader>
-				<div style={{display: 'flex', alignItems: 'center'}}>
+	return (
+		<DescriptionPageContainer>
+			<CurrentPathContainer>
+				<PathLink to='/iam'>IAM</PathLink>
+				<NextPath>{' > '}</NextPath>
+				<PathLink to='/roles'>역할</PathLink>
+				<NextPath>{' > '}</NextPath>
+				<PathLink to={`/roles/${roleId}`}>{role?.name}</PathLink>
+			</CurrentPathContainer>
+
+			<SubHeader>
+				<SubHeaderText>
 					<IconButton
 						color={'font'}
 						size={'m'}
@@ -69,19 +76,26 @@ const RoleDescriptionSpace = ({roleId}) => {
 						{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
 					</IconButton>
 					요약 [ {role?.name} ]
-				</div>
+				</SubHeaderText>
 				<AppBarButtons>
-					<TransparentButton>삭제</TransparentButton>
+					<NormalButton onClick={onClickLinkToAddRolePage}>
+						역할 만들기
+					</NormalButton>
+					<TransparentButton margin={'0px 0px 0px 5px'}>
+						삭제
+					</TransparentButton>
 				</AppBarButtons>
-			</AppBarContentsHeader>
-			<UserSummaryInfo>
-				<ul>
-					<LiText>역할 이름 : {role?.name}</LiText>
-					<LiText>역할 유형 : {role?.type}</LiText>
-					<LiText>역할 설명 : {role?.description}</LiText>
-					<LiText>생성 일시 : {role?.creationDate}</LiText>
-				</ul>
-			</UserSummaryInfo>
+			</SubHeader>
+
+			<DataSummaryList>
+				<LiText>역할 이름 : {role?.name}</LiText>
+				<LiText>역할 유형 : {role?.type}</LiText>
+				<LiText>역할 설명 : {role?.description}</LiText>
+				<LiText>생성 일시 : {role?.creationDate}</LiText>
+				<LiText>마지막 작업 일시 : 2021.09.21. 16:05:18 </LiText>
+				<LiText>마지막 활동 : 사용자 접근정책 변경</LiText>
+				<LiText>마지막 활동 사용자 : 김영우 (kyoung634)</LiText>
+			</DataSummaryList>
 
 			{isSummaryOpened && (
 				<RoleSummary
@@ -133,7 +147,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 					</div>
 				)}
 			</div>
-		</DetailContainer>
+		</DescriptionPageContainer>
 	);
 };
 

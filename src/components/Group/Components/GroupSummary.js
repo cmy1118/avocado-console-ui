@@ -12,9 +12,14 @@ import * as yup from 'yup';
 import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import {Label} from '../../../styles/components/text';
-import {dummyDates, dummyPolicyOnGroup, dummyUsers,} from '../../../utils/dummyData';
+import {
+	dummyDates,
+	dummyPolicyOnGroup,
+	dummyUsers,
+} from '../../../utils/dummyData';
 import {ReadOnlyTableSpace} from '../../../styles/components/table';
-import TableContainer from "../../Table/TableContainer";
+import TableContainer from '../../Table/TableContainer';
+import {SummaryPageSubHeader} from '../../../styles/components/style';
 
 const GroupSummary = ({groupId}) => {
 	const formRef = useRef(null);
@@ -78,6 +83,9 @@ const GroupSummary = ({groupId}) => {
 				</Form>
 			</ModalFormContainer>
 
+			<SummaryPageSubHeader>
+				사용자 : {userData.length}
+			</SummaryPageSubHeader>
 
 			<TableContainer
 				mode={'readOnly'}
@@ -88,7 +96,9 @@ const GroupSummary = ({groupId}) => {
 				<Table />
 			</TableContainer>
 
-			<ReadOnlyTableSpace>권한: {roleData.length}</ReadOnlyTableSpace>
+			<SummaryPageSubHeader>
+				권한 : {roleData.length}
+			</SummaryPageSubHeader>
 			<TableContainer
 				mode={'readOnly'}
 				data={roleData}
@@ -98,7 +108,7 @@ const GroupSummary = ({groupId}) => {
 				<Table />
 			</TableContainer>
 
-			<ReadOnlyTableSpace>태그: {tagData.length}</ReadOnlyTableSpace>
+			<SummaryPageSubHeader>태그 : {tagData.length}</SummaryPageSubHeader>
 			<TableContainer
 				mode={'readOnly'}
 				data={tagData}

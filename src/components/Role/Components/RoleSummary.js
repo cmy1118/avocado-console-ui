@@ -16,6 +16,8 @@ import PropTypes from 'prop-types';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import TableContainer from '../../Table/TableContainer';
 
+import {SummaryPageSubHeader} from '../../../styles/components/style';
+
 const RoleSummary = ({roleId}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
@@ -56,7 +58,10 @@ const RoleSummary = ({roleId}) => {
 
 	return (
 		<>
-			<div>권한: {permissionData.length}</div>
+			<SummaryPageSubHeader>
+				권한 : {permissionData.length}
+			</SummaryPageSubHeader>
+
 			<TableContainer
 				data={permissionData}
 				tableKey={tableKeys.roles.summary.permission}
@@ -65,7 +70,9 @@ const RoleSummary = ({roleId}) => {
 				<Table />
 			</TableContainer>
 
-			<div>이 역할의 사용자: {userData.length}</div>
+			<SummaryPageSubHeader>
+				이 역할의 사용자 : {userData.length}
+			</SummaryPageSubHeader>
 			<TableContainer
 				data={userData}
 				tableKey={tableKeys.roles.summary.user}
@@ -74,7 +81,9 @@ const RoleSummary = ({roleId}) => {
 				<Table />
 			</TableContainer>
 
-			<div>이 역할의 사용자 그룹: {groupData.length}</div>
+			<SummaryPageSubHeader>
+				이 역할의 사용자 그룹 : {groupData.length}
+			</SummaryPageSubHeader>
 			<TableContainer
 				data={groupData}
 				tableKey={tableKeys.roles.summary.group}

@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
-import {
-	AppBarNavi,
-	IamContainer,
-	PathContainer,
-} from '../../../styles/components/style';
+import {IamContainer} from '../../../styles/components/style';
 
 import AddTagToUser from '../Components/AddTagToUser';
 import AssignRoleToUser from '../Components/AssignRoleToUser';
 import AddUserToGroup from '../Components/AddUserToGroup';
 import AddUser from '../Components/AddUser';
 import ReadOnly from '../Components/ReadOnly';
-import {NaviLink} from '../../../styles/components/link';
+import {
+	CurrentPathContainer,
+	NextPath,
+	PathLink,
+} from '../../../styles/components/currentPath';
 import {FOLD_DATA} from '../../../utils/data';
 
 const AddUserSpace = () => {
@@ -19,15 +19,13 @@ const AddUserSpace = () => {
 
 	return (
 		<IamContainer>
-			<AppBarNavi>
-				<PathContainer>
-					<NaviLink to='/iam'>IAM</NaviLink>
-					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to='/users'>사용자</NaviLink>
-					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to='/users/add'>사용자 추가</NaviLink>
-				</PathContainer>
-			</AppBarNavi>
+			<CurrentPathContainer>
+				<PathLink to='/iam'>IAM</PathLink>
+				<NextPath>{' > '}</NextPath>
+				<PathLink to='/users'>사용자</PathLink>
+				<NextPath>{' > '}</NextPath>
+				<PathLink to='/users/add'>사용자 추가</PathLink>
+			</CurrentPathContainer>
 
 			<AddUser setIsOpened={setIsOpened} />
 			<AddUserToGroup

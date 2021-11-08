@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
-import {
-	AppBarNavi,
-	IamContainer,
-	PathContainer,
-} from '../../../styles/components/style';
+import {IamContainer} from '../../../styles/components/style';
 import AddGroup from '../Components/AddGroup';
 import AssignRoleToGroup from '../Components/AssignRoleToGroup';
 import AddTagToGroup from '../Components/AddTagToGroup';
 import UsersIncludedInGroup from '../Components/UsersIncludedInGroup';
 import ReadOnly from '../Components/ReadOnly';
-import {NaviLink} from '../../../styles/components/link';
+import {
+	CurrentPathContainer,
+	PathLink,
+	NextPath,
+} from '../../../styles/components/currentPath';
 import {FOLD_DATA} from '../../../utils/data';
 
 const AddGroupSpace = () => {
@@ -18,15 +18,14 @@ const AddGroupSpace = () => {
 
 	return (
 		<IamContainer>
-			<AppBarNavi>
-				<PathContainer>
-					<NaviLink to='/iam'>IAM</NaviLink>
-					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to='/groups'>사용자 그룹</NaviLink>
-					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to='/groups/add'>사용자 그룹 생성</NaviLink>
-				</PathContainer>
-			</AppBarNavi>
+			<CurrentPathContainer>
+				<PathLink to='/iam'>IAM</PathLink>
+				<NextPath>{' > '}</NextPath>
+				<PathLink to='/groups'>사용자 그룹</PathLink>
+				<NextPath>{' > '}</NextPath>
+				<PathLink to='/groups/add'>사용자 그룹 생성</PathLink>
+			</CurrentPathContainer>
+
 			<AddGroup setIsOpened={setIsOpened} />
 			<UsersIncludedInGroup
 				space={'UsersIncludedInGroup'}

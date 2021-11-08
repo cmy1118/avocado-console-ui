@@ -1,7 +1,4 @@
-import {
-	AppBarButtons,
-	AppBarContentsHeader,
-} from '../../../styles/components/style';
+import {AppBarButtons, SubHeader} from '../../../styles/components/style';
 import React, {useCallback, useRef, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
@@ -46,7 +43,7 @@ const AddGroup = () => {
 
 	return (
 		<>
-			<AppBarContentsHeader>
+			<SubHeader>
 				<div>사용자 그룹 이름 지정</div>
 				<AppBarButtons>
 					<NormalButton onClick={onClickManageGroupType}>
@@ -65,7 +62,7 @@ const AddGroup = () => {
 						취소
 					</TransparentButton>
 				</AppBarButtons>
-			</AppBarContentsHeader>
+			</SubHeader>
 			<div style={{padding: '20px 10px 50px 20px'}}>
 				<Form
 					initialValues={values}

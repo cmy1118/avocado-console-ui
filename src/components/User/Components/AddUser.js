@@ -1,9 +1,6 @@
 import React, {useCallback, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
-import {
-	AppBarButtons,
-	AppBarContentsHeader,
-} from '../../../styles/components/style';
+import {AppBarButtons, SubHeader} from '../../../styles/components/style';
 import * as yup from 'yup';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
@@ -78,7 +75,7 @@ const AddUser = ({setIsOpened}) => {
 	return (
 		//ColDiv margin={'0px 16px'}
 		<>
-			<AppBarContentsHeader>
+			<SubHeader>
 				<div>사용자 기본 정보</div>
 				<AppBarButtons>
 					<NormalButton
@@ -93,7 +90,7 @@ const AddUser = ({setIsOpened}) => {
 						취소
 					</TransparentButton>
 				</AppBarButtons>
-			</AppBarContentsHeader>
+			</SubHeader>
 			<MainHeaderContents>
 				<TableOptionText data={'usersInfo'} />
 				<div style={{padding: '10px 10px 10px 20px'}}>

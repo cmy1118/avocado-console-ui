@@ -3,10 +3,8 @@ import {useHistory} from 'react-router-dom';
 
 import {
 	AppBarButtons,
-	AppBarContentsHeader,
-	AppBarNavi,
+	SubHeader,
 	IamContainer,
-	PathContainer,
 } from '../../../styles/components/style';
 import {useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
@@ -22,7 +20,11 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
-import {NaviLink} from '../../../styles/components/link';
+import {
+	CurrentPathContainer,
+	PathLink,
+	NextPath,
+} from '../../../styles/components/currentPath';
 import TableContainer from '../../Table/TableContainer';
 import TableOptionsBar from '../../Table/TableOptionsBar';
 
@@ -56,19 +58,14 @@ const GroupSpace = () => {
 
 	return (
 		<IamContainer>
-			<AppBarNavi>
-				<PathContainer>
-					<NaviLink to='/iam'>IAM</NaviLink>
-					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to='/groups'>사용자 그룹</NaviLink>
-				</PathContainer>
-				{/*<HoverIconButton onClick={onClickCloseAside}>*/}
-				{/*	{errorIcon}*/}
-				{/*</HoverIconButton>*/}
-			</AppBarNavi>
+			<CurrentPathContainer>
+				<PathLink to='/iam'>IAM</PathLink>
+				<NextPath>{' > '}</NextPath>
+				<PathLink to='/groups'>사용자 그룹</PathLink>
+			</CurrentPathContainer>
 
-			<AppBarContentsHeader>
-				<div>사용자 그룹: {groups.length} </div>
+			<SubHeader>
+				<div>사용자 그룹 : {groups.length} </div>
 				<AppBarButtons>
 					<NormalButton onClick={onCLickLinkToAddGroup}>
 						그룹 생성
@@ -80,7 +77,8 @@ const GroupSpace = () => {
 						삭제
 					</TransparentButton>
 				</AppBarButtons>
-			</AppBarContentsHeader>
+			</SubHeader>
+
 			<TableContainer
 				tableKey={tableKeys.groups.basic}
 				columns={tableColumns[tableKeys.groups.basic]}

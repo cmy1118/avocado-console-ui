@@ -46,13 +46,5 @@ export const GreenSpan = styled(Span)`
 `;
 
 export const LiText = styled.li`
-    padding : 4px 0;
-     font-size: 14px;
-      font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  letter-spacing: 0.1px;
-  text-align: left;
-  color: #212121;
-
-`
+	padding: 4px 0;
+`;
