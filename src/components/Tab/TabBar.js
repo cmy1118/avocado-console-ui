@@ -7,10 +7,7 @@ import qs from 'qs';
 const _TabContainer = styled.div`
 	display: block;
 	width: 100%;
-	// position: fixed;
-	// bottom: 0;
-	// width: 100%;
-	// z-index: 75;
+	box-shadow: 0 -4px 9px 0 rgba(0, 0, 0, 0.05);
 	background: #ffffff;
 `;
 const _TabSpace = styled.div`
@@ -22,14 +19,12 @@ const _TabSpace = styled.div`
 	background: #fff;
 `;
 const _Tabs = styled.div`
-	box-shadow: 0 -4px 9px 0 rgba(0, 0, 0, 0.05);
 	display: flex;
 	flex-warp: nowrap;
 	align-items: center;
 	justify-content: space-between;
 	height: 100%;
 	width: fit-content;
-	// width: 60px;
 `;
 
 const _TabItem = styled.div`
@@ -39,16 +34,12 @@ const _TabItem = styled.div`
 	align-items: center;
 	height: 100%;
 	font-size: 14px;
-	font-weight: bold;
-	font-style: normal;
 	line-height: 1.43;
 	letter-spacing: 0.25px;
 	text-align: center;
-	color: #178082;
 	color: ${(props) => (props.selected ? '#178082' : '#212121')};
 	margin: 0px 16px;
 	border-bottom: ${(props) => (props.isfold ? '4px solid' : '2px solid')};
-	// border-bottom: 5px solid;
 	border-color: ${(props) => (props.selected ? '#178082' : '#ffffff')};
 	width: 100%;
 `;

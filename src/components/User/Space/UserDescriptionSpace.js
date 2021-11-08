@@ -35,6 +35,7 @@ import {
 	expiredConverter,
 	statusConverter,
 } from '../../../utils/tableDataConverter';
+import {TabContainer} from '../../../styles/components/tab';
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
@@ -125,7 +126,9 @@ const UserDescriptionSpace = ({userId}) => {
 			)}
 
 			<div>
-				<div className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}>
+				<TabContainer
+					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}
+				>
 					<TabBar
 						Tabs={TabBarInfo}
 						param={'users'}
@@ -133,7 +136,7 @@ const UserDescriptionSpace = ({userId}) => {
 						isOpened={isSummaryOpened}
 						setIsOpened={setIsSummaryOpened}
 					/>
-				</div>
+				</TabContainer>
 				{!isSummaryOpened && (
 					<div style={{padding: '10px 16px'}}>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===

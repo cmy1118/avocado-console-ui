@@ -31,6 +31,7 @@ import GroupRolesTab from '../Components/GroupRolesTab';
 import GroupUsersTab from '../Components/GroupUsersTab';
 import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
 import PropTypes from 'prop-types';
+import {TabContainer} from '../../../styles/components/tab';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
@@ -121,7 +122,9 @@ const GroupDescriptionSpace = ({groupId}) => {
 			)}
 
 			<div>
-				<div className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}>
+				<TabContainer
+					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}
+				>
 					<TabBar
 						Tabs={TabBarInfo}
 						param={'groups'}
@@ -129,7 +132,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 						isOpened={isSummaryOpened}
 						setIsOpened={setIsSummaryOpened}
 					/>
-				</div>
+				</TabContainer>
 				{!isSummaryOpened && (
 					<div style={{padding: '10px 16px'}}>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===

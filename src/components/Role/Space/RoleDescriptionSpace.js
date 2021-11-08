@@ -29,6 +29,7 @@ import {
 	SubHeader,
 	SubHeaderText,
 } from '../../../styles/components/style';
+import {TabContainer} from '../../../styles/components/tab';
 
 const RoleDescriptionSpace = ({roleId}) => {
 	const history = useHistory();
@@ -45,6 +46,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
 	}, [isSummaryOpened]);
+
 	const TabBarInfo = [
 		{name: '권한', href: 'role'},
 		{name: '사용자', href: 'user'},
@@ -106,7 +108,9 @@ const RoleDescriptionSpace = ({roleId}) => {
 			)}
 
 			<div>
-				<div className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}>
+				<TabContainer
+					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}
+				>
 					<TabBar
 						Tabs={TabBarInfo}
 						param={'roles'}
@@ -114,7 +118,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 						isOpened={isSummaryOpened}
 						setIsOpened={setIsSummaryOpened}
 					/>
-				</div>
+				</TabContainer>
 				{!isSummaryOpened && (
 					<div style={{padding: '10px 16px'}}>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
