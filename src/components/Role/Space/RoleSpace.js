@@ -1,12 +1,9 @@
 import React, {useMemo, useState} from 'react';
 import {
 	AppBarButtons,
-	AppBarContentsHeader,
-	AppBarNavi,
+	SubHeader,
 	IamContainer,
-	PathContainer
 } from '../../../styles/components/style';
-import {Link} from 'react-router-dom';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import Table from '../../Table/Table';
@@ -14,8 +11,16 @@ import {useSelector} from 'react-redux';
 
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import TableContainer from '../../Table/TableContainer';
-import {NaviLink} from "../../../styles/components/link";
-import {NormalButton, TransparentButton} from "../../../styles/components/buttons";
+import {
+	CurrentPathContainer,
+	NextPath,
+	PathLink,
+} from '../../../styles/components/currentPath';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
+import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const RoleSpace = () => {
 	const {roles} = useSelector(IAM_ROLES.selector);
@@ -29,30 +34,28 @@ const RoleSpace = () => {
 	}, [roles]);
 	return (
 		<IamContainer>
-			<AppBarNavi>
-			<PathContainer>
-				<NaviLink to='/iam'>IAM</NaviLink>
-				<div style={{padding: '0px 5px'}}>{' > '}</div>
-				<NaviLink to='/roles'>역할</NaviLink>
-			</PathContainer>
-			</AppBarNavi>
+			<CurrentPathContainer>
+				<PathLink to='/iam'>IAM</PathLink>
+				<NextPath>{' > '}</NextPath>
+				<PathLink to='/roles'>역할</PathLink>
+			</CurrentPathContainer>
 
-			<AppBarContentsHeader>
+			<SubHeader>
 				<div>역할 : {roles.length}</div>
-				{/*<AppBarButtons>*/}
-				{/*	<NormalButton onClick={onClickLinkToAddUserPage}>*/}
-				{/*		역할 만들기*/}
-				{/*	</NormalButton>*/}
-				{/*	<TransparentButton onClick={onClickDeleteUsers}>*/}
-				{/*		삭제*/}
-				{/*	</TransparentButton>*/}
-				{/*</AppBarButtons>*/}
-			</AppBarContentsHeader>
+				<AppBarButtons>
+					<NormalButton>역할 만들기</NormalButton>
+					<TransparentButton margin={'0px 0px 0px 5px'}>
+						삭제
+					</TransparentButton>
+				</AppBarButtons>
+			</SubHeader>
+
 			<TableContainer
 				tableKey={tableKeys.roles.basic}
 				columns={tableColumns[tableKeys.roles.basic]}
 				data={data}
 			>
+				<TableOptionsBar isSearchFilterable />
 				<Table setSelect={setSelect} />
 			</TableContainer>
 		</IamContainer>

@@ -19,14 +19,14 @@ import {
 	dummyUsers,
 } from '../../../utils/dummyData';
 import {ReadOnlyTableSpace} from '../../../styles/components/table';
-import TableContainer from "../../Table/TableContainer";
+import TableContainer from '../../Table/TableContainer';
+import {SummaryPageSubHeader} from '../../../styles/components/style';
 
 const GroupSummary = ({groupId}) => {
 	const formRef = useRef(null);
 
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [isOpened, setIsOpened] = useState(false);
 
 	const group = useMemo(() => groups.find((v) => v.id === groupId), [
@@ -84,20 +84,9 @@ const GroupSummary = ({groupId}) => {
 				</Form>
 			</ModalFormContainer>
 
-			<ul>
-				<LiText>그룹명 : {group?.name}</LiText>
-				<LiText>
-					그룹 유형 :{' '}
-					{
-						groupTypes.find((v) => v.id === group.clientGroupTypeId)
-							.name
-					}
-				</LiText>
-				<LiText>생성 일시 : {group?.creationDate}</LiText>
-			</ul>
-
-			<ReadOnlyTableSpace>사용자: {userData.length}</ReadOnlyTableSpace>
-
+			<SummaryPageSubHeader>
+				사용자 : {userData.length}
+			</SummaryPageSubHeader>
 			<TableContainer
 				mode={'readOnly'}
 				data={userData}
@@ -107,7 +96,9 @@ const GroupSummary = ({groupId}) => {
 				<Table />
 			</TableContainer>
 
-			<ReadOnlyTableSpace>권한: {roleData.length}</ReadOnlyTableSpace>
+			<SummaryPageSubHeader>
+				권한 : {roleData.length}
+			</SummaryPageSubHeader>
 			<TableContainer
 				mode={'readOnly'}
 				data={roleData}
@@ -117,7 +108,7 @@ const GroupSummary = ({groupId}) => {
 				<Table />
 			</TableContainer>
 
-			<ReadOnlyTableSpace>태그: {tagData.length}</ReadOnlyTableSpace>
+			<SummaryPageSubHeader>태그 : {tagData.length}</SummaryPageSubHeader>
 			<TableContainer
 				mode={'readOnly'}
 				data={tagData}

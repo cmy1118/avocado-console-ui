@@ -7,7 +7,7 @@ import {useSelector} from 'react-redux';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
 import {LiText} from '../../../styles/components/text';
-import {AppBarContentsHeader} from '../../../styles/components/style';
+import {SubHeader} from '../../../styles/components/style';
 import {dummyPolicyOnDialogBox} from '../../../utils/dummyData';
 import TableContainer from '../../Table/TableContainer';
 import {rolesConverter} from '../../../utils/tableDataConverter';
@@ -36,7 +36,7 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 			setIsOpened={setIsOpened}
 			handleSubmit={submitUserInfo}
 		>
-			<AppBarContentsHeader>사용자 기본정보</AppBarContentsHeader>
+			<SubHeader>사용자 기본정보</SubHeader>
 
 			<ul>
 				<LiText>사용자 계정 : {readOnlyData['user'].id}</LiText>
@@ -47,10 +47,10 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 					모바일 전화 번호 : {readOnlyData['user'].mobile}
 				</LiText>
 			</ul>
-			<AppBarContentsHeader>
+			<SubHeader>
 				그룹 :{' '}
 				{readOnlyData[tableKeys.users.add.groups.exclude]?.length}
-			</AppBarContentsHeader>
+			</SubHeader>
 
 			<TableContainer
 				tableKey={tableKeys.users.add.groups.exclude}
@@ -59,9 +59,7 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 			>
 				<Table />
 			</TableContainer>
-			<AppBarContentsHeader>
-				권한 : {dummyPolicyOnDialogBox.length}
-			</AppBarContentsHeader>
+			<SubHeader>권한 : {dummyPolicyOnDialogBox.length}</SubHeader>
 
 			<TableContainer
 				tableKey={tableKeys.users.add.permissions}
@@ -71,9 +69,9 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 				<Table />
 			</TableContainer>
 
-			<AppBarContentsHeader>
+			<SubHeader>
 				태그 : {readOnlyData[tableKeys.users.add.tag].length}
-			</AppBarContentsHeader>
+			</SubHeader>
 			<TableContainer
 				tableKey={tableKeys.users.add.tag}
 				data={readOnlyData[tableKeys.users.add.tag]}

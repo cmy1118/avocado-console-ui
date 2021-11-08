@@ -14,7 +14,7 @@ import {
 	moreVertIcon,
 } from '../../icons/icons';
 import PropTypes from 'prop-types';
-import {NaviLink} from '../../styles/components/link';
+import {PathLink} from '../../styles/components/currentPath';
 import qs from 'qs';
 
 const _NavItem = styled.div`
@@ -131,7 +131,7 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 			</NavHeader>
 
 			<_NavContents>
-				<NaviLink to='/iam'>
+				<PathLink to='/iam'>
 					<_NavItem selected={pathname === '/iam' ? 1 : 0}>
 						<Icon
 							margin={'0px'}
@@ -146,8 +146,8 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 							대시보드
 						</ResourceItemTitle>
 					</_NavItem>
-				</NaviLink>
-				<NaviLink to='/users'>
+				</PathLink>
+				<PathLink to='/users'>
 					<_NavItem>
 						<Icon margin={'0px'} size={'sm'}>
 							{folderIcon}
@@ -165,10 +165,10 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 							{isUnfolded ? arrowDownIcon : arrowRightIcon}
 						</IconButton>
 					</_NavItem>
-				</NaviLink>
+				</PathLink>
 				{isUnfolded && (
 					<NavItemList>
-						<NaviLink to='/users'>
+						<PathLink to='/users'>
 							<ResourceItem
 								left={(leftSize * 11 + 8).toString() + 'px'}
 								selected={pathname.includes('users')}
@@ -190,8 +190,8 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 									사용자
 								</ResourceItemText>
 							</ResourceItem>
-						</NaviLink>
-						<NaviLink to='/groups'>
+						</PathLink>
+						<PathLink to='/groups'>
 							<ResourceItem
 								left={(leftSize * 11 + 8).toString() + 'px'}
 								selected={pathname.includes('groups') ? 1 : 0}
@@ -213,9 +213,9 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 									사용자 그룹
 								</ResourceItemText>
 							</ResourceItem>
-						</NaviLink>
+						</PathLink>
 
-						<NaviLink to='/roles'>
+						<PathLink to='/roles'>
 							<ResourceItem
 								left={(leftSize * 11 + 8).toString() + 'px'}
 								selected={pathname.includes('roles') ? 1 : 0}
@@ -237,8 +237,8 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 									역할
 								</ResourceItemText>
 							</ResourceItem>
-						</NaviLink>
-						<NaviLink to='/policies'>
+						</PathLink>
+						<PathLink to='/policies'>
 							<ResourceItem
 								left={(leftSize * 11 + 8).toString() + 'px'}
 								selected={pathname.includes('policies') ? 1 : 0}
@@ -260,7 +260,7 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 									정책
 								</ResourceItemText>
 							</ResourceItem>
-						</NaviLink>
+						</PathLink>
 					</NavItemList>
 				)}
 			</_NavContents>

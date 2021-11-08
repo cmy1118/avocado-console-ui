@@ -3,10 +3,8 @@ import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import {
 	AppBarButtons,
-	AppBarContentsHeader,
-	AppBarNavi,
+	SubHeader,
 	IamContainer,
-	PathContainer,
 } from '../../../styles/components/style';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {
@@ -22,7 +20,11 @@ import {
 	TransparentButton,
 } from '../../../styles/components/buttons';
 import {tableKeys} from '../../../Constants/Table/keys';
-import {NaviLink} from '../../../styles/components/link';
+import {
+	CurrentPathContainer,
+	PathLink,
+	NextPath,
+} from '../../../styles/components/currentPath';
 import TableOptionsBar from '../../Table/TableOptionsBar';
 import TableContainer from '../../Table/TableContainer';
 
@@ -54,16 +56,14 @@ const UserSpace = () => {
 
 	return (
 		<IamContainer>
-			<AppBarNavi>
-				<PathContainer>
-					<NaviLink to='/iam'>IAM </NaviLink>
-					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to='/users'>사용자 </NaviLink>
-				</PathContainer>
-			</AppBarNavi>
+			<CurrentPathContainer>
+				<PathLink to='/iam'>IAM </PathLink>
+				<NextPath>{' > '}</NextPath>
+				<PathLink to='/users'>사용자 </PathLink>
+			</CurrentPathContainer>
 
-			<AppBarContentsHeader>
-				<div>사용자 :{users.length}</div>
+			<SubHeader>
+				<div>사용자 : {users.length}</div>
 				<AppBarButtons>
 					<NormalButton onClick={onClickLinkToAddUserPage}>
 						사용자 생성
@@ -75,7 +75,7 @@ const UserSpace = () => {
 						삭제
 					</TransparentButton>
 				</AppBarButtons>
-			</AppBarContentsHeader>
+			</SubHeader>
 
 			<TableContainer
 				tableKey={tableKeys.users.basic}

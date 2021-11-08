@@ -7,13 +7,12 @@ export const IamContainer = styled.div`
 	flex-direction: column;
 `;
 
-export const DetailContainer = styled.div`
+export const DescriptionPageContainer = styled.div`
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 
 	.tabBar {
-		// margin-bottom: 20px;
 		position: inherit;
 		z-index: 1;
 	}
@@ -50,10 +49,6 @@ export const NavItemList = styled.div`
 	flex-direction: column;
 `;
 
-export const PathContainer = styled.div`
-	display: flex;
-`;
-
 export const AsideContainer = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -65,11 +60,10 @@ export const AsideContainer = styled.div`
 	}
 `;
 //APP BAR
-export const AppBarContents = styled.div`
-	// margin-bottom: 10px;
-	border-bottom: 3px #e3e5e5 dotted;
-	align-items: center;
 
+export const SubHeader = styled.div`
+	border: none;
+	align-items: center;
 	box-sizing: border-box;
 	font-size: 16px;
 	font-weight: 500;
@@ -78,14 +72,22 @@ export const AppBarContents = styled.div`
 	text-align: left;
 	color: #212121;
 	display: flex;
-
 	justify-content: space-between;
 	height: 54px;
 	padding: 10px 16px;
 `;
 
-export const AppBarContentsHeader = styled(AppBarContents)`
-	border-bottom: 0px #fff dotted;
+export const SummaryPageSubHeader = styled(SubHeader)`
+	padding: 30px 16px 13px 16px;
+`;
+
+export const DottedBorderSubHeader = styled(SubHeader)`
+	border-bottom: 2px #e3e5e5 dotted;
+`;
+
+export const SubHeaderText = styled.div`
+	display: flex;
+	align-items: center;
 `;
 
 export const SubTitle = styled.div`
@@ -93,22 +95,11 @@ export const SubTitle = styled.div`
 	justify-content: space-between;
 `;
 
-export const AppBarNavi = styled.div`
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 16px 15px 16px 15px;
-	height: 50px;
-	border-bottom: 1px solid;
-	border-color: #e3e5e5;
-	background: #fffff;
-`;
 export const AppBarButtons = styled.div`
 	display: flaex;
 	// justify-content: space-between;
 `;
-//summary info
-export const UserSummaryInfo = styled.div`
-	margin-bottom: 40px;
+
+export const DataSummaryList = styled.ul`
+	margin: 2px 17px 16px 0px;
 `;

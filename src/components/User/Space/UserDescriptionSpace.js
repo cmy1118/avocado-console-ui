@@ -6,11 +6,10 @@ import qs from 'qs';
 
 import {
 	AppBarButtons,
-	AppBarContentsHeader,
-	AppBarNavi,
-	DetailContainer,
-	PathContainer,
-	UserSummaryInfo,
+	DescriptionPageContainer,
+	SubHeader,
+	SubHeaderText,
+	DataSummaryList,
 } from '../../../styles/components/style';
 import UserInfoTab from '../Components/UserInfoTab';
 import UserGroupsTab from '../Components/UserGroupsTab';
@@ -18,7 +17,11 @@ import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import UserOnDescPageTags from '../Components/UserOnDescPageTags';
 import UserSummary from '../Components/UserSummary';
 import UserRolesTab from '../Components/UserRolesTab';
-import {NaviLink} from '../../../styles/components/link';
+import {
+	CurrentPathContainer,
+	NextPath,
+	PathLink,
+} from '../../../styles/components/currentPath';
 import {IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import TabBar from '../../Tab/TabBar';
@@ -63,19 +66,17 @@ const UserDescriptionSpace = ({userId}) => {
 		}
 	}, [userId, user, history]);
 	return (
-		<DetailContainer>
-			<AppBarNavi>
-				<PathContainer>
-					<NaviLink to='/iam'>IAM</NaviLink>
-					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to='/users'>사용자</NaviLink>
-					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to={`/users/${userId}`}>{user?.name}</NaviLink>
-				</PathContainer>
-			</AppBarNavi>
+		<DescriptionPageContainer>
+			<CurrentPathContainer>
+				<PathLink to='/iam'>IAM</PathLink>
+				<NextPath>{' > '}</NextPath>
+				<PathLink to='/users'>사용자</PathLink>
+				<NextPath>{' > '}</NextPath>
+				<PathLink to={`/users/${userId}`}>{user?.name}</PathLink>
+			</CurrentPathContainer>
 
-			<AppBarContentsHeader>
-				<div style={{display: 'flex', alignItems: 'center'}}>
+			<SubHeader>
+				<SubHeaderText>
 					<IconButton
 						color={'font'}
 						size={'m'}
@@ -85,7 +86,7 @@ const UserDescriptionSpace = ({userId}) => {
 						{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
 					</IconButton>
 					요약 [ {user?.id} ]
-				</div>
+				</SubHeaderText>
 
 				<AppBarButtons>
 					<NormalButton onClick={onClickLinkToAddUserPage}>
@@ -95,29 +96,25 @@ const UserDescriptionSpace = ({userId}) => {
 						삭제
 					</TransparentButton>
 				</AppBarButtons>
-			</AppBarContentsHeader>
+			</SubHeader>
 
-			<UserSummaryInfo>
-				<ul>
-					<LiText>
-						사용자 : {user?.name} ({user?.id})
-					</LiText>
-					<LiText>
-						사용자 계정 상태 : {statusConverter(user?.status)}
-					</LiText>
-					<LiText>
-						마지막 콘솔 로그인 : {user?.lastConsoleLogin}
-					</LiText>
-					<LiText>생성 일시 : {user?.creationDate}</LiText>
-					<LiText>
-						계정 사용기간 : {expiredConverter(user?.accountExpired)}
-					</LiText>
-					<LiText>
-						비밀번호 사용기간 :{' '}
-						{expiredConverter(user?.passwordExpired)}
-					</LiText>
-				</ul>
-			</UserSummaryInfo>
+			<DataSummaryList>
+				<LiText>
+					사용자 : {user?.name} ({user?.id})
+				</LiText>
+				<LiText>
+					사용자 계정 상태 : {statusConverter(user?.status)}
+				</LiText>
+				<LiText>마지막 콘솔 로그인 : {user?.lastConsoleLogin}</LiText>
+				<LiText>생성 일시 : {user?.creationDate}</LiText>
+				<LiText>
+					계정 사용기간 : {expiredConverter(user?.accountExpired)}
+				</LiText>
+				<LiText>
+					비밀번호 사용기간 :{' '}
+					{expiredConverter(user?.passwordExpired)}
+				</LiText>
+			</DataSummaryList>
 
 			{isSummaryOpened && (
 				<UserSummary
@@ -172,7 +169,7 @@ const UserDescriptionSpace = ({userId}) => {
 					</div>
 				)}
 			</div>
-		</DetailContainer>
+		</DescriptionPageContainer>
 	);
 };
 

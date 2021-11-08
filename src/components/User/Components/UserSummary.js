@@ -13,15 +13,16 @@ import {
 	dummyPolicyOnUser,
 	dummyUsers,
 } from '../../../utils/dummyData';
-import {ReadOnlyTableSpace} from '../../../styles/components/table';
-import ReadOnlyTable from '../../Table/ReadOnlyTable';
+
 import TableContainer from '../../Table/TableContainer';
 import Table from '../../Table/Table';
+import {SummaryPageSubHeader} from '../../../styles/components/style';
 
 const _UserSummaryContainer = styled.div`
 	height: 500px;
 	overflow-y: scroll;
 `;
+
 const UserSummary = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -62,41 +63,41 @@ const UserSummary = ({userId}) => {
 	}, [user]);
 
 	return (
-		<>
-			<_UserSummaryContainer>
-				<ReadOnlyTableSpace>
-					그룹: {groupData.length}
-				</ReadOnlyTableSpace>
-				<TableContainer
-					mode={'readOnly'}
-					data={groupData}
-					tableKey={tableKeys.users.summary.group}
-					columns={tableColumns[tableKeys.users.summary.group]}
-				>
-					<Table />
-				</TableContainer>
+		<_UserSummaryContainer>
+			<SummaryPageSubHeader>
+				그룹 : {groupData.length}
+			</SummaryPageSubHeader>
+			<TableContainer
+				mode={'readOnly'}
+				data={groupData}
+				tableKey={tableKeys.users.summary.group}
+				columns={tableColumns[tableKeys.users.summary.group]}
+			>
+				<Table />
+			</TableContainer>
 
-				<ReadOnlyTableSpace>권한: {roleData.length}</ReadOnlyTableSpace>
-				<TableContainer
-					mode={'readOnly'}
-					data={roleData}
-					tableKey={tableKeys.users.summary.permission}
-					columns={tableColumns[tableKeys.users.summary.permission]}
-				>
-					<Table />
-				</TableContainer>
+			<SummaryPageSubHeader>
+				권한 : {roleData.length}
+			</SummaryPageSubHeader>
+			<TableContainer
+				mode={'readOnly'}
+				data={roleData}
+				tableKey={tableKeys.users.summary.permission}
+				columns={tableColumns[tableKeys.users.summary.permission]}
+			>
+				<Table />
+			</TableContainer>
 
-				<ReadOnlyTableSpace>태그: {tagData.length}</ReadOnlyTableSpace>
-				<TableContainer
-					mode={'readOnly'}
-					data={tagData}
-					tableKey={tableKeys.users.summary.tag}
-					columns={tableColumns[tableKeys.users.summary.tag]}
-				>
-					<Table />
-				</TableContainer>
-			</_UserSummaryContainer>
-		</>
+			<SummaryPageSubHeader>태그 : {tagData.length}</SummaryPageSubHeader>
+			<TableContainer
+				mode={'readOnly'}
+				data={tagData}
+				tableKey={tableKeys.users.summary.tag}
+				columns={tableColumns[tableKeys.users.summary.tag]}
+			>
+				<Table />
+			</TableContainer>
+		</_UserSummaryContainer>
 	);
 };
 

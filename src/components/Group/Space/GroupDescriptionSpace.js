@@ -6,10 +6,10 @@ import qs from 'qs';
 
 import {
 	AppBarButtons,
-	AppBarContentsHeader,
-	AppBarNavi,
-	DetailContainer,
-	PathContainer,
+	DataSummaryList,
+	DescriptionPageContainer,
+	SubHeader,
+	SubHeaderText,
 } from '../../../styles/components/style';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import GroupRolesTab from '../Components/GroupRolesTab';
@@ -18,17 +18,25 @@ import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
 import GroupUsersTab from '../Components/GroupUsersTab';
 import {arrowDownIcon, arrowRightIcon} from '../../../icons/icons';
 import {IconButton} from '../../../styles/components/icons';
-import {NaviLink} from '../../../styles/components/link';
+import {
+	CurrentPathContainer,
+	NextPath,
+	PathLink,
+} from '../../../styles/components/currentPath';
 import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
 import TabBar from '../../Tab/TabBar';
 import {FOLD_DATA} from '../../../utils/data';
+import {LiText} from '../../../styles/components/text';
+
+import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
 	const {search} = useLocation();
+	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isOpend, setIsOpend] = useState(true);
@@ -48,6 +56,10 @@ const GroupDescriptionSpace = ({groupId}) => {
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
 	}, [isSummaryOpened]);
+
+	const onClickChangeGroupName = useCallback(() => {
+		setIsOpend(true);
+	}, [setIsOpend]);
 	// if groupId does not exist, direct to 404 page
 	useEffect(() => {
 		if (groupId && !group) {
@@ -56,19 +68,17 @@ const GroupDescriptionSpace = ({groupId}) => {
 	}, [groupId, group, history]);
 
 	return (
-		<DetailContainer>
-			<AppBarNavi>
-				<PathContainer>
-					<NaviLink to='/iam'>IAM</NaviLink>
-					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to='/groups'>사용자 그룹</NaviLink>
-					<div style={{padding: '0px 5px'}}>{' > '}</div>
-					<NaviLink to={`/groups/${groupId}`}>{group?.name}</NaviLink>
-				</PathContainer>
-			</AppBarNavi>
+		<DescriptionPageContainer>
+			<CurrentPathContainer>
+				<PathLink to='/iam'>IAM</PathLink>
+				<NextPath>{' > '}</NextPath>
+				<PathLink to='/groups'>사용자 그룹</PathLink>
+				<NextPath>{' > '}</NextPath>
+				<PathLink to={`/groups/${groupId}`}>{group?.name}</PathLink>
+			</CurrentPathContainer>
 
-			<AppBarContentsHeader>
-				<div style={{display: 'flex', alignItems: 'center'}}>
+			<SubHeader>
+				<SubHeaderText>
 					<IconButton
 						color={'font'}
 						size={'m'}
@@ -78,16 +88,29 @@ const GroupDescriptionSpace = ({groupId}) => {
 						{isSummaryOpened ? arrowDownIcon : arrowRightIcon}
 					</IconButton>
 					요약 [ {group?.name} ]
-				</div>
+				</SubHeaderText>
 				<AppBarButtons>
-					<NormalButton onClick={() => setIsOpend(true)}>
+					<NormalButton onClick={onClickChangeGroupName}>
 						그룹명 편집
 					</NormalButton>
 					<TransparentButton margin={'0px 0px 0px 5px'}>
 						삭제
 					</TransparentButton>
 				</AppBarButtons>
-			</AppBarContentsHeader>
+			</SubHeader>
+
+			<DataSummaryList>
+				<LiText>그룹명 : {group?.name}</LiText>
+				<LiText>
+					그룹 유형 :{' '}
+					{
+						groupTypes.find((v) => v.id === group.clientGroupTypeId)
+							.name
+					}
+				</LiText>
+				<LiText>생성 일시 : {group?.creationDate}</LiText>
+			</DataSummaryList>
+
 			{isSummaryOpened && (
 				<GroupSummary
 					groupId={groupId}
@@ -138,7 +161,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 					</div>
 				)}
 			</div>
-		</DetailContainer>
+		</DescriptionPageContainer>
 	);
 };
 
