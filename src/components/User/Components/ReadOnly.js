@@ -22,11 +22,11 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 
 	const groupData = useMemo(
 		() =>
-			readOnlyData[tableKeys.users.add.groups.exclude].map((v) => ({
+			readOnlyData[tableKeys.users.add.groups.exclude]?.map((v) => ({
 				...v,
 				roles: rolesConverter(v.roles),
-			})),
-		[],
+			})) || [],
+		[readOnlyData],
 	);
 
 	return readOnlyData['user'] ? (
