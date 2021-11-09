@@ -19,7 +19,6 @@ import TableOptionsBar from '../../Table/TableOptionsBar';
 
 const _TableSpace = styled(TableSpace)`
 	margin-top: 20px;
-	padding: 10px 16px 0px 16px;
 `;
 
 const UserOnDescPageTags = ({userId}) => {
