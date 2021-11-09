@@ -3,8 +3,8 @@ import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import {
 	AppBarButtons,
-	SubHeader,
 	IamContainer,
+	SubHeader,
 } from '../../../styles/components/style';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {
@@ -21,8 +21,8 @@ import {
 } from '../../../styles/components/buttons';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {
+	AppBarLink,
 	CurrentPathContainer,
-	PathLink,
 	NextPath,
 } from '../../../styles/components/currentPath';
 import TableOptionsBar from '../../Table/TableOptionsBar';
@@ -63,9 +63,9 @@ const UserSpace = () => {
 	return (
 		<_IamContainer>
 			<CurrentPathContainer>
-				<PathLink to='/iam'>IAM </PathLink>
+				<AppBarLink to='/iam'>IAM </AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to='/users'>사용자 </PathLink>
+				<AppBarLink to='/users'>사용자 </AppBarLink>
 			</CurrentPathContainer>
 
 			<SubHeader>

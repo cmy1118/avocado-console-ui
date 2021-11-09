@@ -147,25 +147,23 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 						</ResourceItemTitle>
 					</_NavItem>
 				</PathLink>
-				<PathLink to='/users'>
-					<_NavItem>
-						<Icon margin={'0px'} size={'sm'}>
-							{folderIcon}
-						</Icon>
-						<ResourceItemTitle
-							left={(leftSize * 2 + 10).toString() + 'px'}
-						>
-							접근 관리
-						</ResourceItemTitle>
-						<IconButton
-							size={'sm'}
-							margin={'0px 0px 0px 12px'}
-							onClick={onClickFoldFolder}
-						>
-							{isUnfolded ? arrowDownIcon : arrowRightIcon}
-						</IconButton>
-					</_NavItem>
-				</PathLink>
+				<_NavItem>
+					<Icon margin={'0px'} size={'sm'}>
+						{folderIcon}
+					</Icon>
+					<ResourceItemTitle
+						left={(leftSize * 2 + 10).toString() + 'px'}
+					>
+						접근 관리
+					</ResourceItemTitle>
+					<IconButton
+						size={'sm'}
+						margin={'0px 0px 0px 12px'}
+						onClick={onClickFoldFolder}
+					>
+						{isUnfolded ? arrowDownIcon : arrowRightIcon}
+					</IconButton>
+				</_NavItem>
 				{isUnfolded && (
 					<NavItemList>
 						<PathLink to='/users'>
