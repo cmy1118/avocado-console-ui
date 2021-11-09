@@ -5,10 +5,7 @@ import PropTypes from 'prop-types';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
+import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
 import {TableSpace} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import {dummyPermission} from '../../../utils/dummyData';
