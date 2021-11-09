@@ -84,7 +84,14 @@ const NormalTable = styled.div`
 	}
 `;
 
-const TableContainer = ({data, columns, tableKey, mode, width, children}) => {
+const TableContainer = ({
+	data,
+	columns,
+	tableKey,
+	mode = 'normal',
+	width,
+	children,
+}) => {
 	const getRowId = useCallback((v) => {
 		if (v.uid) return v.uid;
 		return v.id;
@@ -217,6 +224,7 @@ const TableContainer = ({data, columns, tableKey, mode, width, children}) => {
 							selectedRowIds,
 							pageSize,
 							filters,
+							mode,
 						})}
 					</NormalTable>
 				);
