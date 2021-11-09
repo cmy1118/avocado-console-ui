@@ -7,6 +7,7 @@ import qs from 'qs';
 import {
 	AppBarButtons,
 	DescriptionPageContainer,
+	IamContainer,
 	SubHeader,
 	SubHeaderText,
 	SummaryList,
@@ -36,6 +37,23 @@ import {
 	statusConverter,
 } from '../../../utils/tableDataConverter';
 import {TabContainer} from '../../../styles/components/tab';
+import styled from 'styled-components';
+
+const HeaderDiv = styled.div`
+	display: flex;
+	flex-direction: column;
+	position: sticky;
+	top: 54px;
+	background: #fff;
+	z-index: 75;
+`;
+
+const FlexDiv = styled.div`
+	display: flex;
+	flex-direction: ${(props) =>
+		props.isOpened ? 'column' : 'column-reverse'};
+	flex: 1;
+`;
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
@@ -72,78 +90,66 @@ const UserDescriptionSpace = ({userId}) => {
 	}, [userId, user, history]);
 
 	return (
-		<DescriptionPageContainer>
-			<CurrentPathContainer>
-				<PathLink to='/iam'>IAM</PathLink>
-				<NextPath>{' > '}</NextPath>
-				<PathLink to='/users'>사용자</PathLink>
-				<NextPath>{' > '}</NextPath>
-				<PathLink to={`/users/${userId}`}>{user?.name}</PathLink>
-			</CurrentPathContainer>
+		<IamContainer>
+			<HeaderDiv>
+				<CurrentPathContainer>
+					<PathLink to='/iam'>IAM</PathLink>
+					<NextPath>{' > '}</NextPath>
+					<PathLink to='/users'>사용자</PathLink>
+					<NextPath>{' > '}</NextPath>
+					<PathLink to={`/users/${userId}`}>{user?.name}</PathLink>
+				</CurrentPathContainer>
+				<SubHeader className={'subHeader'}>
+					<SubHeaderText>
+						<IconButton
+							color={'font'}
+							size={'m'}
+							margin={'0px'}
+							onClick={onClickFoldSummary}
+						>
+							{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
+						</IconButton>
+						요약 [ {user?.id} ]
+					</SubHeaderText>
 
-			<SubHeader>
-				<SubHeaderText>
-					<IconButton
-						color={'font'}
-						size={'m'}
-						margin={'0px'}
-						onClick={onClickFoldSummary}
-					>
-						{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
-					</IconButton>
-					요약 [ {user?.id} ]
-				</SubHeaderText>
-
-				<AppBarButtons>
-					<NormalButton onClick={onClickLinkToAddUserPage}>
-						사용자 생성
-					</NormalButton>
-					<TransparentButton margin={'0px 0px 0px 5px'}>
-						삭제
-					</TransparentButton>
-				</AppBarButtons>
-			</SubHeader>
-
-			<SummaryList>
-				<LiText>
-					사용자 : {user?.name} ({user?.id})
-				</LiText>
-				<LiText>
-					사용자 계정 상태 : {statusConverter(user?.status)}
-				</LiText>
-				<LiText>마지막 콘솔 로그인 : {user?.lastConsoleLogin}</LiText>
-				<LiText>생성 일시 : {user?.creationDate}</LiText>
-				<LiText>
-					계정 사용기간 : {expiredConverter(user?.accountExpired)}
-				</LiText>
-				<LiText>
-					비밀번호 사용기간 :{' '}
-					{expiredConverter(user?.passwordExpired)}
-				</LiText>
-			</SummaryList>
-
-			{isSummaryOpened && (
-				<UserSummary
-					userId={userId}
-					isOpened={isSummaryOpened}
-					setIsOpened={setIsSummaryOpened}
-				/>
-			)}
-
-			<div>
-				<TabContainer
-					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}
-				>
-					<TabBar
-						Tabs={TabBarInfo}
-						param={'users'}
-						Id={userId}
+					<AppBarButtons>
+						<NormalButton onClick={onClickLinkToAddUserPage}>
+							사용자 생성
+						</NormalButton>
+						<TransparentButton margin={'0px 0px 0px 5px'}>
+							삭제
+						</TransparentButton>
+					</AppBarButtons>
+				</SubHeader>
+				<SummaryList className={'summaryList'}>
+					<LiText>
+						사용자 : {user?.name} ({user?.id})
+					</LiText>
+					<LiText>
+						사용자 계정 상태 : {statusConverter(user?.status)}
+					</LiText>
+					<LiText>
+						마지막 콘솔 로그인 : {user?.lastConsoleLogin}
+					</LiText>
+					<LiText>생성 일시 : {user?.creationDate}</LiText>
+					<LiText>
+						계정 사용기간 : {expiredConverter(user?.accountExpired)}
+					</LiText>
+					<LiText>
+						비밀번호 사용기간 :{' '}
+						{expiredConverter(user?.passwordExpired)}
+					</LiText>
+				</SummaryList>
+			</HeaderDiv>
+			<FlexDiv isOpened={isSummaryOpened}>
+				{isSummaryOpened ? (
+					<UserSummary
+						userId={userId}
 						isOpened={isSummaryOpened}
 						setIsOpened={setIsSummaryOpened}
 					/>
-				</TabContainer>
-				{!isSummaryOpened && (
-					<div style={{padding: '10px 16px'}}>
+				) : (
+					<div>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'user' && <UserInfoTab userId={userId} />}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
@@ -176,8 +182,19 @@ const UserDescriptionSpace = ({userId}) => {
 						)}
 					</div>
 				)}
-			</div>
-		</DescriptionPageContainer>
+				<TabContainer
+					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}
+				>
+					<TabBar
+						Tabs={TabBarInfo}
+						param={'users'}
+						Id={userId}
+						isOpened={isSummaryOpened}
+						setIsOpened={setIsSummaryOpened}
+					/>
+				</TabContainer>
+			</FlexDiv>
+		</IamContainer>
 	);
 };
 

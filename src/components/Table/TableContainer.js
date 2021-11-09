@@ -13,7 +13,7 @@ import {ColDiv} from '../../styles/components/div';
 import styled from 'styled-components';
 
 const Container = styled(ColDiv)`
-	// flex: 1;
+	flex: 1;
 	// height: 100%;
 	width: ${(props) => props.width};
 `;
@@ -22,7 +22,7 @@ const NormalTable = styled.div`
 	margin: 0px 16px;
 	box-sizing: border-box;
 	display: flex;
-	// height: 100%;
+	height: 100%;
 
 	.table {
 		// flex: 1;
@@ -55,6 +55,9 @@ const NormalTable = styled.div`
 			background: #fff;
 			width: 100%;
 		}
+		.odd {
+			background: ${(props) => props.mode === 'readOnly' && '#f8f9fa'};
+		}
 
 		.selected {
 			background: rgba(228, 243, 244, 0.7);
@@ -67,6 +70,8 @@ const NormalTable = styled.div`
 
 		.th,
 		.td {
+			display: flex;
+			// width: 100%;
 			height: ${(props) => (props.mode === 'normal' ? '40px' : '')};
 			min-height: 40px;
 			white-space: nowrap;
@@ -156,29 +161,30 @@ const TableContainer = ({data, columns, tableKey, mode, width, children}) => {
 		usePagination,
 		useRowSelect,
 		(hooks) => {
-			hooks.visibleColumns.push((columns) => [
-				{
-					id: 'selection',
-					// eslint-disable-next-line react/prop-types,react/display-name
-					Header: ({getToggleAllPageRowsSelectedProps}) => (
-						<TableCheckbox
-							{...getToggleAllPageRowsSelectedProps()}
-							tablekey={tableKey}
-						/>
-					),
-					// eslint-disable-next-line react/prop-types,react/display-name
-					Cell: ({row}) => (
-						<TableCheckbox
-							// eslint-disable-next-line react/prop-types,react/display-name
-							{...row.getToggleRowSelectedProps()}
-							tablekey={tableKey}
-						/>
-					),
-					width: 40,
-					disableChangeVisible: true,
-				},
-				...columns,
-			]);
+			mode !== 'readOnly' &&
+				hooks.visibleColumns.push((columns) => [
+					{
+						id: 'selection',
+						// eslint-disable-next-line react/prop-types,react/display-name
+						Header: ({getToggleAllPageRowsSelectedProps}) => (
+							<TableCheckbox
+								{...getToggleAllPageRowsSelectedProps()}
+								tablekey={tableKey}
+							/>
+						),
+						// eslint-disable-next-line react/prop-types,react/display-name
+						Cell: ({row}) => (
+							<TableCheckbox
+								// eslint-disable-next-line react/prop-types,react/display-name
+								{...row.getToggleRowSelectedProps()}
+								tablekey={tableKey}
+							/>
+						),
+						width: 40,
+						disableChangeVisible: true,
+					},
+					...columns,
+				]);
 		},
 	);
 

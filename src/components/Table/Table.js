@@ -199,17 +199,17 @@ const Table = ({
 											)}
 											onMouseDown={onMouseDownItem}
 											onDragStart={(e) => console.log(e)}
-											className={
+											className={`tr body ${
 												Object.keys(
 													selectedRowIds,
 												).includes(
 													row.original.uid
 														? row.original.uid
 														: row.original.id,
-												)
-													? 'tr body selected'
-													: 'tr body'
-											}
+												) && 'selected'
+											} ${
+												index % 2 === 0 ? 'even' : 'odd'
+											}`}
 											id={
 												row.original.uid
 													? row.original.uid

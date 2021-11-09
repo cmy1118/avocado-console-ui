@@ -27,6 +27,11 @@ import {
 } from '../../../styles/components/currentPath';
 import TableOptionsBar from '../../Table/TableOptionsBar';
 import TableContainer from '../../Table/TableContainer';
+import styled from 'styled-components';
+
+const _IamContainer = styled(IamContainer)`
+	height: 0;
+`;
 
 const UserSpace = () => {
 	const history = useHistory();
@@ -56,7 +61,7 @@ const UserSpace = () => {
 	const onClickDeleteUsers = useCallback(() => {}, []);
 
 	return (
-		<IamContainer>
+		<_IamContainer>
 			<CurrentPathContainer>
 				<PathLink to='/iam'>IAM </PathLink>
 				<NextPath>{' > '}</NextPath>
@@ -86,7 +91,7 @@ const UserSpace = () => {
 				<TableOptionsBar isSearchFilterable />
 				<Table setSelect={setSelect} />
 			</TableContainer>
-		</IamContainer>
+		</_IamContainer>
 	);
 };
 UserSpace.propTypes = {};

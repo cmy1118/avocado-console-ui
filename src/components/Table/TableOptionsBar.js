@@ -21,6 +21,7 @@ import {Label} from '../../styles/components/text';
 const _Container = styled(ColDiv)`
 	display: flex;
 	justify-content: space-between;
+	width: 100%;
 `;
 
 const _OptionContainer = styled.div`
