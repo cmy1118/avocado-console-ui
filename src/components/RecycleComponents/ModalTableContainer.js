@@ -43,7 +43,7 @@ const ModalTableContainer = ({
 		>
 			<DialogBoxHeader>
 				<div>{title}</div>
-				<IconButton onClick={onClickCloseDialogBox}>
+				<IconButton color={'font'} onClick={onClickCloseDialogBox}>
 					{closeIcon}
 				</IconButton>
 			</DialogBoxHeader>
@@ -55,11 +55,18 @@ const ModalTableContainer = ({
 			</_DialogBoxContent>
 
 			<DialogBoxFooter>
-				<NormalButton onClick={handleSubmit} type={'submit'}>
+				<NormalButton
+					width={'120px'}
+					margin={'0px 8px 0px 0px'}
+					onClick={handleSubmit}
+					type={'submit'}
+				>
 					Save
 				</NormalButton>
 				<TransparentButton
 					type={'button'}
+					width={'120px'}
+					margin={'0px 0px 0px 8px'}
 					onClick={onClickCloseDialogBox}
 				>
 					Cancel
