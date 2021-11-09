@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {TableSpace} from '../../../styles/components/table';
-import {IconButton} from '../../../styles/components/icons';
+import {HoverIconButton, IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowRightIcon} from '../../../icons/icons';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -20,14 +20,14 @@ const TableFold = ({children, title, space, isFold, setIsFold}) => {
 			<TableSpace className={isFold[space] ? 'fold' : 'fold close'}>
 				<>
 					<_TableFoldTitle>
-						<IconButton
+						<HoverIconButton
 							color={'font'}
 							size={'m'}
 							margin={'0px'}
 							onClick={onClickFold}
 						>
 							{isFold[space] ? arrowDownIcon : arrowRightIcon}
-						</IconButton>
+						</HoverIconButton>
 						{title}
 					</_TableFoldTitle>
 					{children ? children : ''}
