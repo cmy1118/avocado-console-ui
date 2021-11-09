@@ -102,6 +102,16 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 					}
 				}
 			}
+
+			// todo : checkbox 기본 클릭은 나중에 작업하겠습니다..
+			// checkboxes.forEach((checkbox) => {
+			// 	checkbox.title !==
+			// 	'Toggle All Current Page Rows Selected' &&
+			// 	checkbox.checked &&
+			// 	checkbox.click();
+			// });
+			// e.target.click();
+
 			// todo : 현재 타겟의 마지막 체크 true
 			checkboxes.forEach((checkbox) => {
 				delete checkbox.lastChecked;
