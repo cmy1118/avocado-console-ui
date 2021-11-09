@@ -78,6 +78,7 @@ const RoleSummary = ({Id, param, setIsOpened}) => {
 			</SummaryPageSubHeader>
 
 			<TableContainer
+				mode={'readOnly'}
 				data={permissionData}
 				tableKey={tableKeys.roles.summary.permission}
 				columns={tableColumns[tableKeys.roles.summary.permission]}
@@ -89,6 +90,7 @@ const RoleSummary = ({Id, param, setIsOpened}) => {
 				이 역할의 사용자 : {userData.length}
 			</SummaryPageSubHeader>
 			<TableContainer
+				mode={'readOnly'}
 				data={userData}
 				tableKey={tableKeys.roles.summary.user}
 				columns={tableColumns[tableKeys.roles.summary.user]}
@@ -100,6 +102,7 @@ const RoleSummary = ({Id, param, setIsOpened}) => {
 				이 역할의 사용자 그룹 : {groupData.length}
 			</SummaryPageSubHeader>
 			<TableContainer
+				mode={'readOnly'}
 				data={groupData}
 				tableKey={tableKeys.roles.summary.group}
 				columns={tableColumns[tableKeys.roles.summary.group]}

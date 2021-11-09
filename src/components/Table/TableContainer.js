@@ -68,7 +68,7 @@ const NormalTable = styled.div`
 
 		.tr {
 			display: flex;
-			width: max-content;
+			width: 100%;
 			:last-child {
 				border: none;
 			}
