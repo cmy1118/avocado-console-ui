@@ -12,7 +12,7 @@ import {
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import GroupSummary from '../Components/GroupSummary';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
-import {IconButton} from '../../../styles/components/icons';
+import {HoverIconButton, IconButton} from '../../../styles/components/icons';
 import {
 	AppBarLink,
 	CurrentPathContainer,
@@ -102,14 +102,14 @@ const GroupDescriptionSpace = ({groupId}) => {
 
 				<SubHeader>
 					<SubHeaderText>
-						<IconButton
+						<HoverIconButton
 							color={'font'}
 							size={'m'}
 							margin={'0px'}
 							onClick={onClickFoldSummary}
 						>
 							{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
-						</IconButton>
+						</HoverIconButton>
 						요약 [ {group?.name} ]
 					</SubHeaderText>
 					<AppBarButtons>

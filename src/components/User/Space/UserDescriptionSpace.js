@@ -22,7 +22,7 @@ import {
 	CurrentPathContainer,
 	NextPath,
 } from '../../../styles/components/currentPath';
-import {IconButton} from '../../../styles/components/icons';
+import {HoverIconButton, IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import TabBar from '../../Tab/TabBar';
 import {
@@ -103,14 +103,14 @@ const UserDescriptionSpace = ({userId}) => {
 				</CurrentPathContainer>
 				<SubHeader className={'subHeader'}>
 					<SubHeaderText>
-						<IconButton
+						<HoverIconButton
 							color={'font'}
 							size={'m'}
 							margin={'0px'}
 							onClick={onClickFoldSummary}
 						>
 							{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
-						</IconButton>
+						</HoverIconButton>
 						요약 [ {user?.id} ]
 					</SubHeaderText>
 

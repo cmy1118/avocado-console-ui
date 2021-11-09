@@ -14,7 +14,7 @@ import RoleUserTab from '../Components/RoleUserTab';
 import RoleGroupTab from '../Components/RoleGroupTab';
 import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
-import {IconButton} from '../../../styles/components/icons';
+import {HoverIconButton, IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import {
 	NormalButton,
@@ -96,14 +96,14 @@ const RoleDescriptionSpace = ({roleId}) => {
 
 				<SubHeader>
 					<SubHeaderText>
-						<IconButton
+						<HoverIconButton
 							color={'font'}
 							size={'m'}
 							margin={'0px'}
 							onClick={onClickFoldSummary}
 						>
 							{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
-						</IconButton>
+						</HoverIconButton>
 						요약 [ {role?.name} ]
 					</SubHeaderText>
 					<AppBarButtons>
