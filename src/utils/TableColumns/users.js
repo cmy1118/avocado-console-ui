@@ -212,10 +212,13 @@ export const USER_ADD_PERMISSTIOMS_COLUMN = [
 				<div>
 					{v.value.split('\n').map((v, i) => {
 						return (
-							<div key={i}>
+							<RowDiv
+								alignItems={'center'}
+								height={'30px'}
+								key={i}
+							>
 								{v}
-								<br />
-							</div>
+							</RowDiv>
 						);
 					})}
 				</div>
@@ -304,16 +307,19 @@ export const USER_SUMMARY_PERMISSION_COLUMNS = [
 		width: 200,
 		Cell: function Component(v) {
 			return (
-				<ColDiv>
+				<div>
 					{v.value.split('\n').map((v, i) => {
 						return (
-							<RowDiv margin={'2px 0px'} key={i}>
+							<RowDiv
+								alignItems={'center'}
+								height={'30px'}
+								key={i}
+							>
 								{v}
-								<br />
 							</RowDiv>
 						);
 					})}
-				</ColDiv>
+				</div>
 			);
 		},
 	},
@@ -392,7 +398,7 @@ export const USER_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 		accessor: 'name',
 	},
 	{Header: '역할 유형', accessor: 'type'},
-	{Header: '설명', accessor: 'description'},
+	{Header: '설명', accessor: 'description', width: 400},
 	{
 		Header: '사용자 수',
 		accessor: 'numberOfUsers',
@@ -409,7 +415,7 @@ export const USER_SUMMARY_TABS_ROLES_INCLUDE_COLUMN = [
 		accessor: 'name',
 	},
 	{Header: '역할 유형', accessor: 'type'},
-	{Header: '설명', accessor: 'description'},
+	{Header: '설명', accessor: 'description', width: 400},
 	{
 		Header: '사용자 수',
 		accessor: 'numberOfUsers',
@@ -480,6 +486,7 @@ export const USER_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
 	{
 		Header: '설명',
 		accessor: 'description',
+		width: 400,
 	},
 	{
 		Header: '권한 부여 수',
@@ -503,6 +510,7 @@ export const USER_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
 	{
 		Header: '설명',
 		accessor: 'description',
+		width: 400,
 	},
 	{
 		Header: '권한 부여 수',
