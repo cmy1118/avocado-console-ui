@@ -10,4 +10,6 @@ export const TabContainer = styled.div`
 
 export const TabContents = styled.div`
 	padding: '10px 0px';
+	overflow: scroll;
+	height: auto;
 `;

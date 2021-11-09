@@ -5,7 +5,6 @@ import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'qs';
 
 const _TabContainer = styled.div`
-	display: block;
 	width: 100%;
 	box-shadow: 0 -4px 9px 0 rgba(0, 0, 0, 0.05);
 	background: #ffffff;

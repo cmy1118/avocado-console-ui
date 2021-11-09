@@ -38,21 +38,29 @@ import {
 import styled from 'styled-components';
 import {TabContainer, TabContents} from '../../../styles/components/tab';
 
+export const DescriptionPageContainer = styled.div`
+	margin-top: 54px;
+	height: calc(100% - 54px);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+`;
+
 const HeaderDiv = styled.div`
 	display: flex;
 	flex-direction: column;
-	position: sticky;
-	top: 54px;
-	background: #fff;
-	z-index: 75;
 `;
 
 const FlexDiv = styled.div`
-	display: flex;
-	flex-direction: ${(props) =>
-		props.isOpened ? 'column' : 'column-reverse'};
 	flex: 1;
+	overflow: scroll;
 `;
+
+const TabCc = styled.div``;
+
+// position: fixed;
+// top: ${(props) => props.top};
+// left: ${(props) => props.left};
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
@@ -76,7 +84,17 @@ const UserDescriptionSpace = ({userId}) => {
 
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
-	}, [isSummaryOpened]);
+		if (isSummaryOpened) {
+			history.push({
+				pathname: `/users/${userId}`,
+			});
+		} else {
+			history.push({
+				pathname: `/users/${userId}`,
+				search: 'tabs=user',
+			});
+		}
+	}, [history, isSummaryOpened, setIsSummaryOpened]);
 
 	const onClickLinkToAddUserPage = useCallback(() => {
 		history.push('/users/add');
@@ -89,9 +107,13 @@ const UserDescriptionSpace = ({userId}) => {
 		history.push(`${userId}`);
 	}, [userId, user, history]);
 
+	// console.log(
+	// 	document.getElementById('test11')?.getBoundingClientRect().bottom,
+	// );
+
 	return (
-		<IamContainer>
-			<HeaderDiv>
+		<DescriptionPageContainer>
+			<HeaderDiv id={'test11'}>
 				<CurrentPathContainer>
 					<AppBarLink to='/iam'>IAM</AppBarLink>
 					<NextPath>{' > '}</NextPath>
@@ -143,60 +165,57 @@ const UserDescriptionSpace = ({userId}) => {
 					</LiText>
 				</SummaryList>
 			</HeaderDiv>
-			<FlexDiv isOpened={isSummaryOpened}>
-				{isSummaryOpened ? (
-					<UserSummary
-						Id={userId}
-						param={'users'}
-						setIsOpened={setIsSummaryOpened}
-					/>
-				) : (
-					<TabContents>
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'user' && <UserInfoTab userId={userId} />}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'group' && (
-							<UserGroupsTab
-								title
-								userId={userId}
-								space={'UserGroupsTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'role' && (
-							<UserRolesTab
-								userId={userId}
-								space={'UserRolesTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'tag' && (
-							<UserOnDescPageTags
-								userId={userId}
-								space={'UserOnDescPageTags'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
-					</TabContents>
-				)}
-				<TabContainer
-					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}
-				>
-					<TabBar
-						Tabs={TabBarInfo}
-						param={'users'}
-						Id={userId}
-						isOpened={isSummaryOpened}
-						setIsOpened={setIsSummaryOpened}
-					/>
-				</TabContainer>
+
+			<FlexDiv>
+				<UserSummary
+					Id={userId}
+					param={'users'}
+					setIsOpened={setIsSummaryOpened}
+				/>
 			</FlexDiv>
-		</IamContainer>
+
+			<TabCc>
+				<TabBar
+					Tabs={TabBarInfo}
+					param={'users'}
+					Id={userId}
+					isOpened={isSummaryOpened}
+					setIsOpened={setIsSummaryOpened}
+				/>
+				<TabContents>
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'user' && <UserInfoTab userId={userId} />}
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'group' && (
+						<UserGroupsTab
+							title
+							userId={userId}
+							space={'UserGroupsTab'}
+							isFold={isTableFold}
+							setIsFold={setIsTableFold}
+						/>
+					)}
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'role' && (
+						<UserRolesTab
+							userId={userId}
+							space={'UserRolesTab'}
+							isFold={isTableFold}
+							setIsFold={setIsTableFold}
+						/>
+					)}
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'tag' && (
+						<UserOnDescPageTags
+							userId={userId}
+							space={'UserOnDescPageTags'}
+							isFold={isTableFold}
+							setIsFold={setIsTableFold}
+						/>
+					)}
+				</TabContents>
+			</TabCc>
+		</DescriptionPageContainer>
 	);
 };
 

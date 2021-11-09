@@ -169,7 +169,7 @@ const Table = ({
 							})}
 						</div>
 					))}
-					{/*<EmptySpace className={'tr body'} />*/}
+					<EmptySpace className={'tr body'} />
 					{page.map((row, index) => {
 						prepareRow(row);
 						return (
