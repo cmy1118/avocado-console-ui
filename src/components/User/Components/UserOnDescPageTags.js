@@ -117,7 +117,10 @@ const UserOnDescPageTags = ({userId}) => {
 					</_TableSpace>
 
 					<TableContainer
-						tableKey={tableKeys.users.summary.tabs.tags.basic}
+						tableKey={
+							tableKeys.users.summary.tabs.tags.permissions
+								.include
+						}
 						data={dummyPermission.filter((v) =>
 							select[
 								tableKeys.users.summary.tabs.tags.basic
@@ -155,7 +158,10 @@ const UserOnDescPageTags = ({userId}) => {
 					</_TableSpace>
 
 					<TableContainer
-						tableKey={tableKeys.users.summary.tabs.tags.basic}
+						tableKey={
+							tableKeys.users.summary.tabs.tags.permissions
+								.exclude
+						}
 						data={dummyPermission.filter(
 							(v) =>
 								!select[
