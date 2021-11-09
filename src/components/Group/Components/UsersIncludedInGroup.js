@@ -6,12 +6,7 @@ import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {
-	ColDiv,
-	DnDDiv,
-	RowDiv,
-	TableHeader,
-} from '../../../styles/components/div';
+import {ColDiv, RowDiv, TableHeader} from '../../../styles/components/div';
 import {TableFoldContainer} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
@@ -85,6 +80,7 @@ const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
 					>
 						<RowDiv>
 							<TableContainer
+								width={'100%'}
 								data={excludedData}
 								tableKey={tableKeys.groups.add.users.exclude}
 								columns={
@@ -96,7 +92,7 @@ const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
 								<TableOptionsBar />
 								<Table setSelect={setSelect} isDraggable />
 							</TableContainer>
-							<DnDDiv alignItems={'center'}>
+							<RowDiv alignItems={'center'}>
 								<DropButton
 									leftTableKey={
 										tableKeys.groups.add.users.exclude
@@ -110,7 +106,7 @@ const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
 									rightDataIds={includedDataIds}
 									setRightDataIds={setIncludedDataIds}
 								/>
-							</DnDDiv>
+							</RowDiv>
 							<ColDiv width={'700px'}>
 								<TableHeader>
 									추가 사용자: {includedDataIds.length}건

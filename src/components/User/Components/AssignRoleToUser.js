@@ -11,7 +11,7 @@ import {TableFoldContainer} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import TableFold from '../../Table/Options/TableFold';
 import PropTypes from 'prop-types';
-import {ColDiv, DnDDiv, RowDiv, TableHeader} from '../../../styles/components/div';
+import {ColDiv, RowDiv, TableHeader} from '../../../styles/components/div';
 import DragContainer from '../../Table/DragContainer';
 import TableContainer from '../../Table/TableContainer';
 import TableOptionsBar from '../../Table/TableOptionsBar';
@@ -72,6 +72,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 					>
 						<RowDiv>
 							<TableContainer
+								width={'100%'}
 								data={excludedData}
 								tableKey={tableKeys.users.add.roles.exclude}
 								columns={
@@ -83,7 +84,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 								<TableOptionsBar />
 								<Table setSelect={setSelect} isDraggable />
 							</TableContainer>
-							<DnDDiv alignItems={'center'}>
+							<RowDiv alignItems={'center'}>
 								<DropButton
 									leftTableKey={
 										tableKeys.users.add.roles.exclude
@@ -97,7 +98,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 									rightDataIds={includedDataIds}
 									setRightDataIds={setIncludedDataIds}
 								/>
-							</DnDDiv>
+							</RowDiv>
 							<ColDiv width={'700px'}>
 								<TableHeader>
 									추가 Roles: {includedDataIds.length}건
