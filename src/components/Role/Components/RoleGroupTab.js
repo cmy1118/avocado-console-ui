@@ -72,7 +72,9 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 		<>
 			<TableSpace>
 				이 역할의 그룹: {includedData.length}{' '}
-				<NormalBorderButton>연결 해제</NormalBorderButton>
+				<NormalBorderButton margin={'0px 0px 0px 8px'}>
+					연결 해제
+				</NormalBorderButton>
 			</TableSpace>
 			<DragContainer
 				selected={select}
@@ -103,7 +105,9 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 					>
 						<AppBarButtons>
 							<NormalButton>그룹 생성</NormalButton>
-							<NormalButton>그룹 연결</NormalButton>
+							<NormalButton margin={'0px 0px 0px 8px'}>
+								그룹 연결
+							</NormalButton>
 						</AppBarButtons>
 					</TableFold>
 					{isFold[space] && (

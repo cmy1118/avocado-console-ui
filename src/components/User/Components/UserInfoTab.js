@@ -4,12 +4,15 @@ import {useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import ModalFormContainer from '../../RecycleComponents/ModalFormContainer';
-import {NormalBorderButton, NormalButton,} from '../../../styles/components/buttons';
+import {
+	NormalBorderButton,
+	NormalButton,
+} from '../../../styles/components/buttons';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import Form from '../../RecycleComponents/New/Form';
 import {ColDiv, RowDiv} from '../../../styles/components/div';
 import {Label} from '../../../styles/components/text';
-import {TableSpace} from "../../../styles/components/table";
+import {TableSpace} from '../../../styles/components/table';
 
 const UserInfoTab = ({userId}) => {
 	const [values, setValues] = useState({email: '', number: ''});
@@ -41,67 +44,72 @@ const UserInfoTab = ({userId}) => {
 
 	return (
 		<div>
-				<TableSpace>기본정보
-				<NormalButton onClick={() => saveRef.current.handleSubmit()}>
+			<TableSpace>
+				기본정보
+				<NormalButton
+					margin='0px 0px 0px 5px'
+					onClick={() => saveRef.current.handleSubmit()}
+				>
 					저장
 				</NormalButton>
-				</TableSpace>
-			<div style={{padding:'10px 10px 0px 30px'}}>
-			<Form
-				initialValues={{
-					id: user.id,
-					name: user.name,
-					password: '*********',
-					email: user.email,
-					telephone: user.telephone,
-					mobile: user.mobile,
-				}}
-				onSubmit={(data) => console.log(data)}
-				innerRef={saveRef}
-			>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					<Label htmlFor={'id'}>
-						<li>사용자 ID</li>
-					</Label>
-					<TextBox name={'id'} />
-				</RowDiv>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					<Label htmlFor={'name'}>
-						<li>사용자 이름</li>
-					</Label>
-					<TextBox name={'name'} />
-				</RowDiv>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					<Label htmlFor={'password'}>
-						<li>비밀번호</li>
-					</Label>
-					<TextBox name={'password'} />
-					<NormalBorderButton
-						type={'button'}
-						onClick={onClickOpenIdentificationDialogBox}
-					>
-						비밀번호 변경
-					</NormalBorderButton>
-				</RowDiv>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					<Label htmlFor={'email'}>
-						<li>이메일 주소</li>
-					</Label>
-					<TextBox name={'email'} />
-				</RowDiv>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					<Label htmlFor={'telephone'}>
-						<li>전화번호</li>
-					</Label>
-					<TextBox name={'telephone'} />
-				</RowDiv>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					<Label htmlFor={'mobile'}>
-						<li>모바일 전화번호</li>
-					</Label>
-					<TextBox name={'mobile'} />
-				</RowDiv>
-			</Form>
+			</TableSpace>
+			<div style={{padding: '10px 10px 0px 30px'}}>
+				<Form
+					initialValues={{
+						id: user.id,
+						name: user.name,
+						password: '*********',
+						email: user.email,
+						telephone: user.telephone,
+						mobile: user.mobile,
+					}}
+					onSubmit={(data) => console.log(data)}
+					innerRef={saveRef}
+				>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						<Label htmlFor={'id'}>
+							<li>사용자 ID</li>
+						</Label>
+						<TextBox name={'id'} />
+					</RowDiv>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						<Label htmlFor={'name'}>
+							<li>사용자 이름</li>
+						</Label>
+						<TextBox name={'name'} />
+					</RowDiv>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						<Label htmlFor={'password'}>
+							<li>비밀번호</li>
+						</Label>
+						<TextBox name={'password'} />
+						<NormalBorderButton
+							type={'button'}
+							margin='0px 0px 0px 10px'
+							onClick={onClickOpenIdentificationDialogBox}
+						>
+							비밀번호 변경
+						</NormalBorderButton>
+					</RowDiv>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						<Label htmlFor={'email'}>
+							<li>이메일 주소</li>
+						</Label>
+						<TextBox name={'email'} />
+					</RowDiv>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						<Label htmlFor={'telephone'}>
+							<li>전화번호</li>
+						</Label>
+						<TextBox name={'telephone'} />
+					</RowDiv>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						<Label htmlFor={'mobile'}>
+							<li>모바일 전화번호</li>
+						</Label>
+						<TextBox name={'mobile'} />
+					</RowDiv>
+				</Form>
 			</div>
 
 			<ModalFormContainer

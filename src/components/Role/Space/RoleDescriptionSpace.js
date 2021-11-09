@@ -29,7 +29,7 @@ import {
 	SubHeader,
 	SubHeaderText,
 } from '../../../styles/components/style';
-import {TabContainer} from '../../../styles/components/tab';
+import {TabContainer, TabContents} from '../../../styles/components/tab';
 
 const RoleDescriptionSpace = ({roleId}) => {
 	const history = useHistory();
@@ -120,7 +120,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 					/>
 				</TabContainer>
 				{!isSummaryOpened && (
-					<div style={{padding: '10px 16px'}}>
+					<TabContents>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'role' && (
 							<RolePolicyTab
@@ -148,7 +148,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 								setIsFold={setIsTableFold}
 							/>
 						)}
-					</div>
+					</TabContents>
 				)}
 			</div>
 		</DescriptionPageContainer>

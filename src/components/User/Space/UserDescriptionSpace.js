@@ -35,7 +35,7 @@ import {
 	expiredConverter,
 	statusConverter,
 } from '../../../utils/tableDataConverter';
-import {TabContainer} from '../../../styles/components/tab';
+import {TabContainer, TabContents} from '../../../styles/components/tab';
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
@@ -143,7 +143,7 @@ const UserDescriptionSpace = ({userId}) => {
 					/>
 				</TabContainer>
 				{!isSummaryOpened && (
-					<div style={{padding: '10px 16px'}}>
+					<TabContents>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'user' && <UserInfoTab userId={userId} />}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
@@ -174,7 +174,7 @@ const UserDescriptionSpace = ({userId}) => {
 								setIsFold={setIsTableFold}
 							/>
 						)}
-					</div>
+					</TabContents>
 				)}
 			</div>
 		</DescriptionPageContainer>

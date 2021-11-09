@@ -31,7 +31,7 @@ import GroupRolesTab from '../Components/GroupRolesTab';
 import GroupUsersTab from '../Components/GroupUsersTab';
 import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
 import PropTypes from 'prop-types';
-import {TabContainer} from '../../../styles/components/tab';
+import {TabContainer, TabContents} from '../../../styles/components/tab';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
@@ -134,21 +134,21 @@ const GroupDescriptionSpace = ({groupId}) => {
 					/>
 				</TabContainer>
 				{!isSummaryOpened && (
-					<div style={{padding: '10px 16px'}}>
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'role' && (
-							<GroupRolesTab
-								groupId={groupId}
-								space={'GroupRolesTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
+					<TabContents>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'user' && (
 							<GroupUsersTab
 								groupId={groupId}
 								space={'GroupUsersTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'role' && (
+							<GroupRolesTab
+								groupId={groupId}
+								space={'GroupRolesTab'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
 							/>
@@ -162,7 +162,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 								setIsFold={setIsTableFold}
 							/>
 						)}
-					</div>
+					</TabContents>
 				)}
 			</div>
 		</DescriptionPageContainer>
