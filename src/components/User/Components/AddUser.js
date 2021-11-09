@@ -90,11 +90,11 @@ const AddUser = ({setIsOpened}) => {
 			<AddPageContentsContainer>
 				<Form
 					initialValues={{
-						id: '사용자 계정 ID',
-						name: '사용자 명',
-						email: '이메일 주소',
-						telephone: '전화번호',
-						mobile: '모바일 전화번호',
+						id: '',
+						name: '',
+						email: '',
+						telephone: '',
+						mobile: '',
 					}}
 					onSubmit={onSubmitUserData}
 					innerRef={formRef}
