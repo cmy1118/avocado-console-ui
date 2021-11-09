@@ -1,17 +1,13 @@
-import React, {useMemo, useRef, useState} from 'react';
+import React, {useCallback, useMemo, useRef} from 'react';
 import PropTypes from 'prop-types';
 
 import Table from '../../Table/Table';
 import {useSelector} from 'react-redux';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
-import ModalFormContainer from '../../RecycleComponents/ModalFormContainer';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import * as yup from 'yup';
-import Form from '../../RecycleComponents/New/Form';
-import TextBox from '../../RecycleComponents/New/TextBox';
-import {Label} from '../../../styles/components/text';
 import {
 	dummyDates,
 	dummyPolicyOnGroup,
@@ -22,18 +18,14 @@ import {
 	SummaryPageSubHeader,
 	SummaryTablesContainer,
 } from '../../../styles/components/style';
+import {useHistory} from 'react-router-dom';
 
-const GroupSummary = ({groupId}) => {
-	const formRef = useRef(null);
-
+const GroupSummary = ({Id, param, setIsOpened}) => {
+	const history = useHistory();
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const [isOpened, setIsOpened] = useState(false);
 
-	const group = useMemo(() => groups.find((v) => v.id === groupId), [
-		groups,
-		groupId,
-	]);
+	const group = useMemo(() => groups.find((v) => v.id === Id), [groups, Id]);
 
 	const userData = useMemo(() => {
 		return users
@@ -62,30 +54,20 @@ const GroupSummary = ({groupId}) => {
 			.min(10, '최소 길이는 10자 입니다.')
 			.max(40, '최대 길이는 100자 입니다.'),
 	};
+	const onClickChangeTab = useCallback(
+		(v) => () => {
+			setIsOpened(false);
+			history.push({
+				pathname: `/${param}/${Id}`,
+				search: `tabs=${v}`,
+			});
+		},
+		[history, setIsOpened, param],
+	);
 
 	return (
 		<SummaryTablesContainer>
-			{/*<ModalFormContainer*/}
-			{/*	isOpened={isOpened}*/}
-			{/*	setIsOpened={setIsOpened}*/}
-			{/*	title={'그룹명 변경'}*/}
-			{/*	innerRef={formRef}*/}
-			{/*>*/}
-			{/*	<Form*/}
-			{/*		initialValues={{name: group?.name}}*/}
-			{/*		onSubmit={(data) => console.log(data)}*/}
-			{/*		innerRef={formRef}*/}
-			{/*		validation={validation}*/}
-			{/*	>*/}
-			{/*		<Label htmlFor={'name'}>사용자 그룹명</Label>*/}
-			{/*		<TextBox*/}
-			{/*			name={'name'}*/}
-			{/*			placeholder={'그룹명을 입력하세요'}*/}
-			{/*		/>*/}
-			{/*	</Form>*/}
-			{/*</ModalFormContainer>*/}
-
-			<SummaryPageSubHeader>
+			<SummaryPageSubHeader onClick={onClickChangeTab('user')}>
 				사용자 : {userData.length}
 			</SummaryPageSubHeader>
 
@@ -98,7 +80,7 @@ const GroupSummary = ({groupId}) => {
 				<Table />
 			</TableContainer>
 
-			<SummaryPageSubHeader>
+			<SummaryPageSubHeader onClick={onClickChangeTab('role')}>
 				권한 : {roleData.length}
 			</SummaryPageSubHeader>
 			<TableContainer
@@ -110,7 +92,9 @@ const GroupSummary = ({groupId}) => {
 				<Table />
 			</TableContainer>
 
-			<SummaryPageSubHeader>태그 : {tagData.length}</SummaryPageSubHeader>
+			<SummaryPageSubHeader onClick={onClickChangeTab('tag')}>
+				태그 : {tagData.length}
+			</SummaryPageSubHeader>
 			<TableContainer
 				mode={'readOnly'}
 				data={tagData}
@@ -124,6 +108,8 @@ const GroupSummary = ({groupId}) => {
 };
 
 GroupSummary.propTypes = {
-	groupId: PropTypes.string.isRequired,
+	Id: PropTypes.string.isRequired,
+	param: PropTypes.string.isRequired,
+	setIsOpened: PropTypes.func.isRequired,
 };
 export default GroupSummary;

@@ -2,7 +2,7 @@ import {useSelector} from 'react-redux';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {parentGroupConverter} from '../../../utils/tableDataConverter';
 import {
 	dummyDates,
@@ -20,14 +20,16 @@ import {
 	SummaryPageSubHeader,
 	SummaryTablesContainer,
 } from '../../../styles/components/style';
+import {useHistory} from 'react-router-dom';
 
-const RoleSummary = ({roleId}) => {
+const RoleSummary = ({Id, param, setIsOpened}) => {
+	const history = useHistory();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const {users} = useSelector(IAM_USER.selector);
 
-	const role = useMemo(() => roles.find((v) => v.id === roleId), [roles]);
+	const role = useMemo(() => roles.find((v) => v.id === Id), [roles]);
 
 	const permissionData = useMemo(() => dummyPolicyOnRole, []);
 
@@ -41,6 +43,16 @@ const RoleSummary = ({roleId}) => {
 				grantUser: dummyUsers[i],
 			}));
 	}, [users, role]);
+	const onClickChangeTab = useCallback(
+		(v) => () => {
+			setIsOpened(false);
+			history.push({
+				pathname: `/${param}/${Id}`,
+				search: `tabs=${v}`,
+			});
+		},
+		[setIsOpened, history, param, Id],
+	);
 
 	const groupData = useMemo(() => {
 		return groups
@@ -61,7 +73,7 @@ const RoleSummary = ({roleId}) => {
 
 	return (
 		<SummaryTablesContainer>
-			<SummaryPageSubHeader>
+			<SummaryPageSubHeader onClick={onClickChangeTab('role')}>
 				권한 : {permissionData.length}
 			</SummaryPageSubHeader>
 
@@ -73,7 +85,7 @@ const RoleSummary = ({roleId}) => {
 				<Table />
 			</TableContainer>
 
-			<SummaryPageSubHeader>
+			<SummaryPageSubHeader onClick={onClickChangeTab('user')}>
 				이 역할의 사용자 : {userData.length}
 			</SummaryPageSubHeader>
 			<TableContainer
@@ -84,7 +96,7 @@ const RoleSummary = ({roleId}) => {
 				<Table />
 			</TableContainer>
 
-			<SummaryPageSubHeader>
+			<SummaryPageSubHeader onClick={onClickChangeTab('group')}>
 				이 역할의 사용자 그룹 : {groupData.length}
 			</SummaryPageSubHeader>
 			<TableContainer
@@ -99,6 +111,8 @@ const RoleSummary = ({roleId}) => {
 };
 
 RoleSummary.propTypes = {
-	roleId: PropTypes.string.isRequired,
+	Id: PropTypes.string.isRequired,
+	param: PropTypes.string.isRequired,
+	setIsOpened: PropTypes.func.isRequired,
 };
 export default RoleSummary;
