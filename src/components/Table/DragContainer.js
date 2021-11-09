@@ -11,6 +11,7 @@ import {
 	checkArraysIsUniqueHasDuplicates,
 } from '../../utils/dataFitering';
 import styled from 'styled-components';
+import {confirmAlertMessages} from '../../utils/alertMessage';
 
 const Container = styled(DragDropContext)`
 	height: 300px;
@@ -66,7 +67,9 @@ const DragContainer = ({
 					) {
 						dispatch(
 							DIALOG_BOX.action.openAlert({
-								key: 'singleCountGroupTypes',
+								key:
+									confirmAlertMessages.singleCountGroupTypes
+										.key,
 							}),
 						);
 						return true;
@@ -91,7 +94,9 @@ const DragContainer = ({
 					) {
 						dispatch(
 							DIALOG_BOX.action.openAlert({
-								key: 'singleCountRolesTypes',
+								key:
+									confirmAlertMessages.singleCountRolesTypes
+										.key,
 							}),
 						);
 						return true;

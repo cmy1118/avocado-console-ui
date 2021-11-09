@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {closeIcon, confirmIcon} from '../../../icons/icons';
+import {alertIcon, closeIcon, confirmIcon} from '../../../icons/icons';
 import DIALOG_BOX from '../../../reducers/dialogBoxs';
 import {
 	AlertDialogBox,
@@ -13,58 +13,30 @@ import {
 import {
 	NormalButton,
 	TransparentButton,
+	WarningButton,
 } from '../../../styles/components/buttons';
 import {CheckDropDataType} from '../../../utils/dropTableDataCheck';
 import {Icon, IconButton} from '../../../styles/components/icons';
+import {
+	confirmAlertMessages,
+	alertMessageTypes,
+} from '../../../utils/alertMessage';
 
-//type: 'alert' or 'confirm'
-export const alertMessages = {
-	singleCountGroupTypes: {
-		type: 'alert',
-		message: '그룹 유형별 1개의 그룹만 추가 가능합니다.',
-	},
-	singleCountRolesTypes: {
-		type: 'alert',
-		message: 'Private 유형은 한 사용자에게만 부여 가능합니다.',
-	},
-
-	//개수
-	maxNumberOfUsers: {
-		type: 'alert',
-		message: '최대 10개의 사용자만 추가 가능합니다.',
-	},
-	maxNumberOfGroups: {
-		type: 'alert',
-		message: '최대 10개의 그룹만 추가 가능합니다.',
-	},
-	maxNumberOfRoles: {
-		type: 'alert',
-		message: '최대 10개의 권한만 부여 가능합니다.',
-	},
-	maxNumberOfTags: {
-		type: 'alert',
-		message: '최대 10개의 태그만 등록 가능합니다.',
-	},
-	//default 값
-	maxNumberOfDatas: {
-		type: 'alert',
-		message: '최대 10개의 데이터만 추가 가능합니다.',
-	},
-};
 export const checkDropTypeAlertMessage = (tableKey) => {
 	switch (CheckDropDataType(tableKey)) {
 		case 'users':
-			return 'maxNumberOfUsers';
+			return confirmAlertMessages.maxNumberOfUsers.key;
 		case 'groups':
-			return 'maxNumberOfGroups';
+			return confirmAlertMessages.maxNumberOfGroups.key;
 		case 'roles':
-			return 'maxNumberOfRoles';
+			return confirmAlertMessages.maxNumberOfRoles.key;
 		case 'tags':
-			return 'maxNumberOfTags';
+			return confirmAlertMessages.maxNumberOfTags.key;
 		default:
-			return 'maxNumberOfDatas';
+			return confirmAlertMessages.maxNumberOfDatas.key;
 	}
 };
+
 const ConfirmDialogBox = () => {
 	const dispatch = useDispatch();
 	const {alert} = useSelector(DIALOG_BOX.selector);
@@ -77,20 +49,25 @@ const ConfirmDialogBox = () => {
 		<AlertDialogBox
 			isOpen={
 				alert.open &&
-				Object.prototype.hasOwnProperty.call(alertMessages, alert.key)
+				Object.prototype.hasOwnProperty.call(
+					confirmAlertMessages,
+					alert.key,
+				)
 			}
 			onRequestClose={onClickCloseDialogBox}
 			ariaHideApp={false}
 			shouldCloseOnOverlayClick={false}
 		>
 			<DialogBoxHeader>
-				{alertMessages[alert.key]?.type === 'alert' && <div>Alert</div>}
-				{alertMessages[alert.key]?.type === 'confirm' && (
+				{confirmAlertMessages[alert.key]?.type ===
+				alertMessageTypes.alert ? (
+					<div>Alert</div>
+				) : (
 					<div>Confirm</div>
 				)}
 				<IconButton
 					size={'sm'}
-					color={'#212121'}
+					color={'font'}
 					onClick={onClickCloseDialogBox}
 				>
 					{closeIcon}
@@ -98,22 +75,44 @@ const ConfirmDialogBox = () => {
 			</DialogBoxHeader>
 
 			<AlertDialogBoxContent>
-				<Icon>{confirmIcon}</Icon>
+				{confirmAlertMessages[alert.key]?.type ===
+				alertMessageTypes.alert ? (
+					<Icon>{alertIcon}</Icon>
+				) : (
+					<Icon>{confirmIcon}</Icon>
+				)}
 				<AlertDialogBoxText>
-					{alertMessages[alert.key]?.message}
+					{confirmAlertMessages[alert.key]?.message}
 				</AlertDialogBoxText>
 			</AlertDialogBoxContent>
 
 			<DialogBoxFooter>
 				<TransparentButton
 					width={'120px'}
+					margin={'0px 8px 0px 0px'}
 					onClick={onClickCloseDialogBox}
 				>
 					Cancel
 				</TransparentButton>
-				<NormalButton width={'120px'} onClick={onClickCloseDialogBox}>
-					Ok
-				</NormalButton>
+
+				{confirmAlertMessages[alert.key]?.type ===
+				alertMessageTypes.alert ? (
+					<WarningButton
+						width={'120px'}
+						margin={'0px 0px 0px 8px'}
+						onClick={onClickCloseDialogBox}
+					>
+						Ok
+					</WarningButton>
+				) : (
+					<NormalButton
+						width={'120px'}
+						margin={'0px 0px 0px 8px'}
+						onClick={onClickCloseDialogBox}
+					>
+						Ok
+					</NormalButton>
+				)}
 			</DialogBoxFooter>
 		</AlertDialogBox>
 	);

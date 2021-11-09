@@ -6,6 +6,7 @@ export const status = {
 	UNAUTHORIZED: 4,
 };
 export const authType = {ID: 0, GOOGLE: 1, APPLE: 2, NAVER: 3, KAKAO: 4};
+
 export const mfa = {
 	NONE: null,
 	EMAIL: 0,
@@ -81,5 +82,4 @@ export const FOLD_DATA = {
 	RolePolicyTab: false,
 	RoleUserTab: false,
 	RoleGroupTab: false,
-
 };

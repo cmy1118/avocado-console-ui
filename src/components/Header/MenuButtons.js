@@ -8,7 +8,6 @@ import AccountContextMenu from '../ContextMenu/AccountContextMenu';
 
 const _Container = styled.div`
 	display: flex;
-	// align-items: center;
 `;
 
 const _UserContainer = styled.div`

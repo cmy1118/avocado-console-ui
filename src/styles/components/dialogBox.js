@@ -36,6 +36,7 @@ export const DialogBoxFooter = styled.div`
 `;
 
 export const AlertDialogBox = styled(DialogBox)`
+	width: 288px;
 	z-index: 15;
 `;
 
@@ -43,7 +44,6 @@ export const AlertDialogBoxContent = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	// width: 288px;
 	height: 71px;
 `;
 

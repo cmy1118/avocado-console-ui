@@ -31,9 +31,10 @@ import TableContainer from '../../Table/TableContainer';
 const UserSpace = () => {
 	const history = useHistory();
 
-	const [select, setSelect] = useState({});
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
+
+	const [select, setSelect] = useState({});
 
 	const userData = useMemo(() => {
 		return users.map((v) => ({

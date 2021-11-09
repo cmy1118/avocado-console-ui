@@ -6,19 +6,24 @@ import {HoverIconButton} from '../../styles/components/icons';
 import {useDispatch} from 'react-redux';
 import USER from '../../reducers/api/Auth/user';
 
+const options = {logout: {value: 'logout', label: 'logout'}};
+
 const AccountContextMenu = () => {
 	const dispatch = useDispatch();
 
 	const [values, setValues] = useState({account: null});
 	const formRef = useRef(null);
 
-	const options = useMemo(() => [{value: 'logout', label: 'logout'}], []);
+	const contextMenuOptions = useMemo(() => Object.values(options), []);
 
-	const onClickAccountAction = useCallback((v) => {
-		if (v.account === 'logout') {
-			dispatch(USER.asyncAction.logoutAction());
-		}
-	}, []);
+	const onClickAccountAction = useCallback(
+		(v) => {
+			if (v.account === options.logout.value) {
+				dispatch(USER.asyncAction.logoutAction());
+			}
+		},
+		[dispatch],
+	);
 
 	return (
 		<Form
@@ -31,7 +36,7 @@ const AccountContextMenu = () => {
 				name='account'
 				header={<HoverIconButton>{userIcon}</HoverIconButton>}
 				type='drop'
-				options={options}
+				options={contextMenuOptions}
 			/>
 		</Form>
 	);
