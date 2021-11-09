@@ -1,5 +1,8 @@
 import {tableKeys} from '../Constants/Table/keys';
-import {alertMessages} from '../components/DialogBoxs/Alert/ConfirmDialogBox';
+import {
+	confirmAlertMessages,
+	confirmAlertMessages as alertMessages,
+} from './alertMessage';
 
 //drop table data 의 type 확인을 위한 객체
 export const tableDropDataType = [
@@ -41,31 +44,31 @@ export const isDropDataMaxNumber = (tableKey) => {
 	switch (tableKey) {
 		//사용자 상세
 		case tableKeys.users.summary.tabs.groups.exclude:
-			return alertMessages.maxNumberOfGroups;
+			return confirmAlertMessages.maxNumberOfGroups;
 
 		case tableKeys.users.summary.tabs.roles.exclude:
-			return alertMessages.maxNumberOfRoles;
+			return confirmAlertMessages.maxNumberOfRoles;
 
 		//사용자 생성
 		case tableKeys.users.add.groups.exclude:
-			return alertMessages.maxNumberOfGroups;
+			return confirmAlertMessages.maxNumberOfGroups;
 
 		case tableKeys.users.add.roles.exclude:
-			return alertMessages.maxNumberOfRoles;
+			return confirmAlertMessages.maxNumberOfRoles;
 
 		//그룹 상세
 		case tableKeys.groups.summary.tabs.users.exclude:
-			return alertMessages.maxNumberOfUsers;
+			return confirmAlertMessages.maxNumberOfUsers;
 
 		case tableKeys.groups.summary.tabs.roles.exclude:
-			return alertMessages.maxNumberOfRoles;
+			return confirmAlertMessages.maxNumberOfRoles;
 
 		//그룹 생성
 		case tableKeys.groups.add.users.exclude:
-			return alertMessages.maxNumberOfUsers;
+			return confirmAlertMessages.maxNumberOfUsers;
 
 		case tableKeys.groups.add.roles.exclude:
-			return alertMessages.maxNumberOfRoles;
+			return confirmAlertMessages.maxNumberOfRoles;
 
 		default:
 			return true;
@@ -77,25 +80,25 @@ export const isDropTypeLimited = (tableKey) => {
 	switch (tableKey) {
 		//사용자 상세
 		case tableKeys.users.summary.tabs.groups.exclude:
-			return alertMessages.singleCountGroupTypes;
+			return confirmAlertMessages.singleCountGroupTypes;
 
 		case tableKeys.users.summary.tabs.roles.exclude:
-			return alertMessages.singleCountRolesTypes;
+			return confirmAlertMessages.singleCountRolesTypes;
 
 		//사용자 생성
 		case tableKeys.users.add.groups.exclude:
-			return alertMessages.singleCountGroupTypes;
+			return confirmAlertMessages.singleCountGroupTypes;
 
 		case tableKeys.users.add.roles.exclude:
-			return alertMessages.singleCountRolesTypes;
+			return confirmAlertMessages.singleCountRolesTypes;
 
 		//그룹 상세
 		case tableKeys.groups.summary.tabs.roles.exclude:
-			return alertMessages.singleCountRolesTypes;
+			return confirmAlertMessages.singleCountRolesTypes;
 
 		//그룹 생성
 		case tableKeys.groups.add.roles.exclude:
-			return alertMessages.singleCountRolesTypes;
+			return confirmAlertMessages.singleCountRolesTypes;
 		default:
 			return true;
 	}

@@ -41,8 +41,10 @@ const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
 	const {search} = useLocation();
 	const {users} = useSelector(IAM_USER.selector);
+
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
+
 	const TabBarInfo = [
 		{name: '정보', href: 'user'},
 		{name: '그룹', href: 'group'},
@@ -54,9 +56,11 @@ const UserDescriptionSpace = ({userId}) => {
 		users,
 		userId,
 	]);
+
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
 	}, [isSummaryOpened]);
+
 	const onClickLinkToAddUserPage = useCallback(() => {
 		history.push('/users/add');
 	}, [history]);
@@ -66,6 +70,7 @@ const UserDescriptionSpace = ({userId}) => {
 			history.push('/404');
 		}
 	}, [userId, user, history]);
+
 	return (
 		<DescriptionPageContainer>
 			<CurrentPathContainer>

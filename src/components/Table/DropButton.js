@@ -13,6 +13,7 @@ import {ColDiv} from '../../styles/components/div';
 import {IconButton} from '../../styles/components/icons';
 import {arrowLeft, arrowRight} from '../../icons/icons';
 import styled from 'styled-components';
+import {confirmAlertMessages} from '../../utils/alertMessage';
 
 const BorderHoverIconButton = styled(IconButton)`
 	display: flex;
@@ -94,7 +95,9 @@ const DropButton = ({
 					) {
 						dispatch(
 							DIALOG_BOX.action.openAlert({
-								key: 'singleCountGroupTypes',
+								key:
+									confirmAlertMessages.singleCountGroupTypes
+										.key,
 							}),
 						);
 						return false;
@@ -115,7 +118,9 @@ const DropButton = ({
 					) {
 						dispatch(
 							DIALOG_BOX.action.openAlert({
-								key: 'singleCountRolesTypes',
+								key:
+									confirmAlertMessages.singleCountRolesTypes
+										.key,
 							}),
 						);
 						return false;

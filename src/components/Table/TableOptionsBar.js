@@ -12,7 +12,7 @@ import {
 import PageSizing from './Options/PageSizing';
 import * as PropTypes from 'prop-types';
 import Pagination from './Options/Pagination';
-import FilterColumnsContextMenu from '../ContextMenu/FilterColumnsContextMenu';
+import TableColumnFilterContextMenu from '../ContextMenu/TableColumnFilterContextMenu';
 import Search from './Options/Search';
 import {ColDiv, PositionRelativeDiv, RowDiv} from '../../styles/components/div';
 import {HoverIconButton, IconButton} from '../../styles/components/icons';
@@ -172,7 +172,7 @@ const TableOptionsBar = ({
 							{ListIcon}
 						</IconButton>
 						<PositionRelativeDiv>
-							<FilterColumnsContextMenu
+							<TableColumnFilterContextMenu
 								isOpened={isColumnFilterContextMenuOpened}
 								setIsOpened={setIsColumnFilterContextMenuOpened}
 								allColumns={allColumns}

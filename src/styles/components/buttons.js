@@ -29,10 +29,10 @@ export const NormalButton = styled(DefaultButton)`
 `;
 
 export const WarningButton = styled(DefaultButton)`
-	color: #ffffff';
+	color: #ffffff;
 	background: #d45959;
 	&:hover {
-		background:#de6565;
+		background: #de6565;
 	}
 	&:active {
 		background: #b84646;

@@ -57,11 +57,9 @@ const _MainSpace = styled.div`
 `;
 
 const IamLayout = ({children}) => {
-	const [isNavOpened, setIsNavOpened] = useState(true);
-
 	const history = useHistory();
-
 	const {user, companyId} = useSelector(USER.selector);
+	const [isNavOpened, setIsNavOpened] = useState(true);
 
 	useEffect(() => {
 		if (!user) {
@@ -84,7 +82,6 @@ const IamLayout = ({children}) => {
 						setIsOpened={setIsNavOpened}
 					/>
 					<_MainSpace style={{width: '100%'}}>{children}</_MainSpace>
-					{/*<Aside />*/}
 				</_Space>
 			</_Container>
 		</DragDropContext>

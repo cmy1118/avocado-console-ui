@@ -37,12 +37,7 @@ export const ErrorSpan = styled.span`
 	line-height: 1.75;
 	letter-spacing: 0.1px;
 	text-align: left;
-	// color: #757575;
 	color: #f34722;
-`;
-
-export const GreenSpan = styled(Span)`
-	color: #178082;
 `;
 
 export const LiText = styled.li`

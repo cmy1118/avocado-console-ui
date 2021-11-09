@@ -15,7 +15,7 @@ const _CheckboxContainer = styled.div`
 	cursor: pointer;
 `;
 
-const FilterColumnsContextMenu = ({
+const TableColumnFilterContextMenu = ({
 	isOpened,
 	setIsOpened,
 	allColumns,
@@ -95,11 +95,11 @@ const FilterColumnsContextMenu = ({
 		<></>
 	);
 };
-FilterColumnsContextMenu.propTypes = {
+TableColumnFilterContextMenu.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 	getToggleHideAllColumnsProps: PropTypes.func.isRequired,
 	setHiddenColumns: PropTypes.func.isRequired,
 	allColumns: PropTypes.array.isRequired,
 };
-export default FilterColumnsContextMenu;
+export default TableColumnFilterContextMenu;

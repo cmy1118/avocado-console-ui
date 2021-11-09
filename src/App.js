@@ -100,6 +100,7 @@ const App = () => {
 					layout={IamLayout}
 				/>
 				<Route path='/login/:companyId' component={Login} />
+
 				<Route component={NotFound} />
 			</Switch>
 

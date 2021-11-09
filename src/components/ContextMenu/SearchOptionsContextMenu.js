@@ -28,7 +28,7 @@ const SearchOptionsContextMenu = ({
 		selectedOptions,
 	);
 
-	const onClickSetCheck = useCallback(
+	const onClickSelectFilter = useCallback(
 		(columns) => (e) => {
 			e.stopPropagation();
 			if (tempSelectedOptions.includes(columns))
@@ -68,7 +68,7 @@ const SearchOptionsContextMenu = ({
 			{allOptions.map((column) => (
 				<_CheckboxContainer
 					key={column.accessor}
-					onClick={onClickSetCheck(column.accessor)}
+					onClick={onClickSelectFilter(column.accessor)}
 				>
 					<CheckBox
 						label={column.Header}
