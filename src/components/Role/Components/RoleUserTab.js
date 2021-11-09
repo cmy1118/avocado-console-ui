@@ -55,8 +55,8 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 	return (
 		<>
 			<TableSpace>
-				이 역할의 사용자: {includedData.length}{' '}
-				<NormalBorderButton margin={'0px 0px 0px 8px'}>
+				이 역할의 사용자: {includedData.length}
+				<NormalBorderButton margin={'0px 0px 0px 5px'}>
 					연결 해제
 				</NormalBorderButton>
 			</TableSpace>
@@ -87,7 +87,7 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 						isFold={isFold}
 						setIsFold={setIsFold}
 					>
-						<NormalButton margin={'0px 0px 0px 8px'}>
+						<NormalButton margin={'0px 0px 0px 5px'}>
 							그룹 추가
 						</NormalButton>
 					</TableFold>

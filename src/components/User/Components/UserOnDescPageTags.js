@@ -14,6 +14,13 @@ import TableOptionText from '../../Table/Options/TableOptionText';
 import {dummyPermission} from '../../../utils/dummyData';
 import TableContainer from '../../Table/TableContainer';
 import {AppBarButtons} from '../../../styles/components/style';
+import styled from 'styled-components';
+import TableOptionsBar from '../../Table/TableOptionsBar';
+
+const _TableSpace = styled(TableSpace)`
+	margin-top: 20px;
+	padding: 10px 16px 0px 16px;
+`;
 
 const UserOnDescPageTags = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
@@ -61,7 +68,6 @@ const UserOnDescPageTags = ({userId}) => {
 		}
 	}, [data, select]);
 
-	console.log(select);
 	return (
 		<>
 			<TableSpace>
@@ -93,24 +99,22 @@ const UserOnDescPageTags = ({userId}) => {
 
 			{select[tableKeys.users.summary.tabs.tags.basic]?.length === 1 && (
 				<div>
-					<div>
-						<div>
-							태그 [
-							{
-								select[
-									tableKeys.users.summary.tabs.tags.basic
-								][0].name
-							}
-							:
-							{
-								select[
-									tableKeys.users.summary.tabs.tags.basic
-								][0].value
-							}
-							]의 정책:
-						</div>
-						<TransparentButton>연결 해제</TransparentButton>
-					</div>
+					<_TableSpace>
+						태그 [
+						{
+							select[tableKeys.users.summary.tabs.tags.basic][0]
+								.name
+						}{' '}
+						:{' '}
+						{
+							select[tableKeys.users.summary.tabs.tags.basic][0]
+								.value
+						}
+						]의 정책 :
+						<TransparentButton margin='0px 0px 0px 5px'>
+							연결 해제
+						</TransparentButton>
+					</_TableSpace>
 
 					<TableContainer
 						tableKey={tableKeys.users.summary.tabs.tags.basic}
@@ -126,27 +130,30 @@ const UserOnDescPageTags = ({userId}) => {
 							]
 						}
 					>
+						<TableOptionsBar />
 						<Table />
 					</TableContainer>
-					<div>
-						<div>
-							태그 [
-							{
-								select[
-									tableKeys.users.summary.tabs.tags.basic
-								][0].name
-							}
-							:
-							{
-								select[
-									tableKeys.users.summary.tabs.tags.basic
-								][0].value
-							}
-							]의 다른 정책:
-						</div>
-						<NormalButton>정책 생성</NormalButton>
-						<NormalButton>정책 연결</NormalButton>
-					</div>
+
+					<_TableSpace>
+						태그 [
+						{
+							select[tableKeys.users.summary.tabs.tags.basic][0]
+								.name
+						}{' '}
+						:{' '}
+						{
+							select[tableKeys.users.summary.tabs.tags.basic][0]
+								.value
+						}
+						]의 다른 정책 :
+						<AppBarButtons>
+							<NormalButton>정책 생성</NormalButton>
+							<NormalButton margin='0px 0px 0px 5px'>
+								정책 연결
+							</NormalButton>
+						</AppBarButtons>
+					</_TableSpace>
+
 					<TableContainer
 						tableKey={tableKeys.users.summary.tabs.tags.basic}
 						data={dummyPermission.filter(
@@ -162,6 +169,7 @@ const UserOnDescPageTags = ({userId}) => {
 							]
 						}
 					>
+						<TableOptionsBar />
 						<Table />
 					</TableContainer>
 				</div>
