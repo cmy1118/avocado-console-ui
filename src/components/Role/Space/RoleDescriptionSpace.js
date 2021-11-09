@@ -1,8 +1,12 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import {useHistory, useLocation} from 'react-router-dom';
-import {AppBarLink, CurrentPathContainer, NextPath,} from '../../../styles/components/currentPath';
+import {
+	AppBarLink,
+	CurrentPathContainer,
+	NextPath,
+} from '../../../styles/components/currentPath';
 import RoleSummary from '../Components/RoleSummary';
 import TabBar from '../../Tab/TabBar';
 import RolePolicyTab from '../Components/RolePolicyTab';
@@ -12,12 +16,22 @@ import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
-import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 import {FOLD_DATA} from '../../../utils/data';
 import {LiText} from '../../../styles/components/text';
-import {AppBarButtons, IamContainer, SubHeader, SubHeaderText, SummaryList,} from '../../../styles/components/style';
+import {
+	AppBarButtons,
+	IamContainer,
+	SubHeader,
+	SubHeaderText,
+	SummaryList,
+} from '../../../styles/components/style';
 import styled from 'styled-components';
 import {TabContainer, TabContents} from '../../../styles/components/tab';
+import user from '../../../reducers/api/IAM/User/User/user';
 
 const HeaderDiv = styled.div`
 	display: flex;
@@ -60,6 +74,12 @@ const RoleDescriptionSpace = ({roleId}) => {
 	const onClickLinkToAddRolePage = useCallback(() => {
 		history.push('/roles/add');
 	}, []);
+	useEffect(() => {
+		if (roleId && !role) {
+			history.push('/404');
+		}
+		history.push(`${roleId}`);
+	}, [roleId, role, history]);
 
 	return (
 		<IamContainer>
@@ -69,7 +89,9 @@ const RoleDescriptionSpace = ({roleId}) => {
 					<NextPath>{' > '}</NextPath>
 					<AppBarLink to='/roles'>역할</AppBarLink>
 					<NextPath>{' > '}</NextPath>
-					<AppBarLink to={`/roles/${roleId}`}>{role?.name}</AppBarLink>
+					<AppBarLink to={`/roles/${roleId}`}>
+						{role?.name}
+					</AppBarLink>
 				</CurrentPathContainer>
 
 				<SubHeader>
@@ -107,8 +129,8 @@ const RoleDescriptionSpace = ({roleId}) => {
 			<FlexDiv isOpened={isSummaryOpened}>
 				{isSummaryOpened ? (
 					<RoleSummary
-						roleId={roleId}
-						isOpened={isSummaryOpened}
+						Id={roleId}
+						param={'roles'}
 						setIsOpened={setIsSummaryOpened}
 					/>
 				) : (

@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import {parentGroupConverter} from '../../../utils/tableDataConverter';
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
-import styled from 'styled-components';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {
@@ -20,16 +19,25 @@ import {
 	SummaryPageSubHeader,
 	SummaryTablesContainer,
 } from '../../../styles/components/style';
+import {useHistory} from 'react-router-dom';
 
-const UserSummary = ({userId}) => {
+const UserSummary = ({Id, param, setIsOpened}) => {
+	const history = useHistory();
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
-	const user = useMemo(() => users.find((v) => v.uid === userId), [
-		users,
-		userId,
-	]);
+	const user = useMemo(() => users.find((v) => v.uid === Id), [users, Id]);
+	const onClickChangeTab = useCallback(
+		(v) => () => {
+			setIsOpened(false);
+			history.push({
+				pathname: `/${param}/${Id}`,
+				search: `tabs=${v}`,
+			});
+		},
+		[history, setIsOpened, param],
+	);
 
 	const groupData = useMemo(() => {
 		return groups
@@ -62,7 +70,7 @@ const UserSummary = ({userId}) => {
 
 	return (
 		<SummaryTablesContainer>
-			<SummaryPageSubHeader>
+			<SummaryPageSubHeader onClick={onClickChangeTab('group')}>
 				그룹 : {groupData.length}
 			</SummaryPageSubHeader>
 			<TableContainer
@@ -74,7 +82,7 @@ const UserSummary = ({userId}) => {
 				<Table />
 			</TableContainer>
 
-			<SummaryPageSubHeader>
+			<SummaryPageSubHeader onClick={onClickChangeTab('role')}>
 				권한 : {roleData.length}
 			</SummaryPageSubHeader>
 			<TableContainer
@@ -86,7 +94,9 @@ const UserSummary = ({userId}) => {
 				<Table />
 			</TableContainer>
 
-			<SummaryPageSubHeader>태그 : {tagData.length}</SummaryPageSubHeader>
+			<SummaryPageSubHeader onClick={onClickChangeTab('tag')}>
+				태그 : {tagData.length}
+			</SummaryPageSubHeader>
 			<TableContainer
 				mode={'readOnly'}
 				data={tagData}
@@ -100,8 +110,8 @@ const UserSummary = ({userId}) => {
 };
 
 UserSummary.propTypes = {
-	userId: PropTypes.string.isRequired,
-	isOpened: PropTypes.bool.isRequired,
+	Id: PropTypes.string.isRequired,
+	param: PropTypes.string.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 };
 export default UserSummary;

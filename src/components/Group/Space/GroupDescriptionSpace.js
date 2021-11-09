@@ -2,13 +2,26 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
-import {AppBarButtons, IamContainer, SubHeader, SubHeaderText, SummaryList,} from '../../../styles/components/style';
+import {
+	AppBarButtons,
+	IamContainer,
+	SubHeader,
+	SubHeaderText,
+	SummaryList,
+} from '../../../styles/components/style';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import GroupSummary from '../Components/GroupSummary';
-import {arrowDownIcon, arrowRightIcon, arrowUpIcon} from '../../../icons/icons';
+import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import {IconButton} from '../../../styles/components/icons';
-import {AppBarLink, CurrentPathContainer, NextPath,} from '../../../styles/components/currentPath';
-import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
+import {
+	AppBarLink,
+	CurrentPathContainer,
+	NextPath,
+} from '../../../styles/components/currentPath';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 import {FOLD_DATA} from '../../../utils/data';
 import {LiText} from '../../../styles/components/text';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
@@ -71,6 +84,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 		if (groupId && !group) {
 			history.push('/404');
 		}
+		history.push(`${groupId}`);
 	}, [groupId, group, history]);
 
 	return (
@@ -81,7 +95,9 @@ const GroupDescriptionSpace = ({groupId}) => {
 					<NextPath>{' > '}</NextPath>
 					<AppBarLink to='/groups'>사용자 그룹</AppBarLink>
 					<NextPath>{' > '}</NextPath>
-					<AppBarLink to={`/groups/${groupId}`}>{group?.name}</AppBarLink>
+					<AppBarLink to={`/groups/${groupId}`}>
+						{group?.name}
+					</AppBarLink>
 				</CurrentPathContainer>
 
 				<SubHeader>
@@ -122,8 +138,8 @@ const GroupDescriptionSpace = ({groupId}) => {
 			<FlexDiv isOpened={isSummaryOpened}>
 				{isSummaryOpened ? (
 					<GroupSummary
-						groupId={groupId}
-						isOpened={isSummaryOpened}
+						Id={groupId}
+						param={'groups'}
 						setIsOpened={setIsSummaryOpened}
 					/>
 				) : (

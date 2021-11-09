@@ -75,6 +75,11 @@ export const SubHeader = styled.div`
 
 export const SummaryPageSubHeader = styled(SubHeader)`
 	padding: 30px 16px 13px 16px;
+	color: #178082;
+	&:hover {
+		color: ${(props) => props?.color || '#389193'};
+		text-decoration: underline;
+	}
 `;
 
 export const DottedBorderSubHeader = styled(SubHeader)`

@@ -6,7 +6,6 @@ import qs from 'qs';
 
 import {
 	AppBarButtons,
-	DescriptionPageContainer,
 	IamContainer,
 	SubHeader,
 	SubHeaderText,
@@ -22,7 +21,6 @@ import {
 	AppBarLink,
 	CurrentPathContainer,
 	NextPath,
-	PathLink,
 } from '../../../styles/components/currentPath';
 import {IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
@@ -88,6 +86,7 @@ const UserDescriptionSpace = ({userId}) => {
 		if (userId && !user) {
 			history.push('/404');
 		}
+		history.push(`${userId}`);
 	}, [userId, user, history]);
 
 	return (
@@ -98,7 +97,9 @@ const UserDescriptionSpace = ({userId}) => {
 					<NextPath>{' > '}</NextPath>
 					<AppBarLink to='/users'>사용자</AppBarLink>
 					<NextPath>{' > '}</NextPath>
-					<AppBarLink to={`/users/${userId}`}>{user?.name}</AppBarLink>
+					<AppBarLink to={`/users/${userId}`}>
+						{user?.name}
+					</AppBarLink>
 				</CurrentPathContainer>
 				<SubHeader className={'subHeader'}>
 					<SubHeaderText>
@@ -145,8 +146,8 @@ const UserDescriptionSpace = ({userId}) => {
 			<FlexDiv isOpened={isSummaryOpened}>
 				{isSummaryOpened ? (
 					<UserSummary
-						userId={userId}
-						isOpened={isSummaryOpened}
+						Id={userId}
+						param={'users'}
 						setIsOpened={setIsSummaryOpened}
 					/>
 				) : (
