@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const TableSpace = styled.div`
 	box-sizing: border-box;
-	padding: 10px 16px;
+	padding: 0px 16px;
 	height: 54px;
 	display: flex;
 	justify-content: space-between;
