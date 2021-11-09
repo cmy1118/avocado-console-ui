@@ -2,11 +2,7 @@ import React, {useCallback, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import {useHistory, useLocation} from 'react-router-dom';
-import {
-	CurrentPathContainer,
-	NextPath,
-	PathLink,
-} from '../../../styles/components/currentPath';
+import {AppBarLink, CurrentPathContainer, NextPath,} from '../../../styles/components/currentPath';
 import RoleSummary from '../Components/RoleSummary';
 import TabBar from '../../Tab/TabBar';
 import RolePolicyTab from '../Components/RolePolicyTab';
@@ -16,20 +12,10 @@ import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import {IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
+import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
 import {FOLD_DATA} from '../../../utils/data';
 import {LiText} from '../../../styles/components/text';
-import {
-	AppBarButtons,
-	SummaryList,
-	DescriptionPageContainer,
-	SubHeader,
-	SubHeaderText,
-	IamContainer,
-} from '../../../styles/components/style';
+import {AppBarButtons, IamContainer, SubHeader, SubHeaderText, SummaryList,} from '../../../styles/components/style';
 import styled from 'styled-components';
 import {TabContainer, TabContents} from '../../../styles/components/tab';
 
@@ -79,11 +65,11 @@ const RoleDescriptionSpace = ({roleId}) => {
 		<IamContainer>
 			<HeaderDiv>
 				<CurrentPathContainer>
-					<PathLink to='/iam'>IAM</PathLink>
+					<AppBarLink to='/iam'>IAM</AppBarLink>
 					<NextPath>{' > '}</NextPath>
-					<PathLink to='/roles'>역할</PathLink>
+					<AppBarLink to='/roles'>역할</AppBarLink>
 					<NextPath>{' > '}</NextPath>
-					<PathLink to={`/roles/${roleId}`}>{role?.name}</PathLink>
+					<AppBarLink to={`/roles/${roleId}`}>{role?.name}</AppBarLink>
 				</CurrentPathContainer>
 
 				<SubHeader>

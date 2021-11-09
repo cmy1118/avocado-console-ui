@@ -3,8 +3,8 @@ import {useSelector} from 'react-redux';
 
 import {
 	AppBarButtons,
-	SubHeader,
 	IamContainer,
+	SubHeader,
 } from '../../../styles/components/style';
 import {useHistory} from 'react-router-dom';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
@@ -17,8 +17,8 @@ import {
 	TransparentButton,
 } from '../../../styles/components/buttons';
 import {
+	AppBarLink,
 	CurrentPathContainer,
-	PathLink,
 	NextPath,
 } from '../../../styles/components/currentPath';
 import TableOptionText from '../../Table/Options/TableOptionText';
@@ -70,11 +70,11 @@ const GroupTypeSpace = () => {
 	return (
 		<IamContainer>
 			<CurrentPathContainer>
-				<PathLink to='/iam'>IAM</PathLink>
+				<AppBarLink to='/iam'>IAM</AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to='/groups'>사용자 그룹</PathLink>
+				<AppBarLink to='/groups'>사용자 그룹</AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to='/groups/types'>그룹 유형 관리</PathLink>
+				<AppBarLink to='/groups/types'>그룹 유형 관리</AppBarLink>
 			</CurrentPathContainer>
 
 			<SubHeader>

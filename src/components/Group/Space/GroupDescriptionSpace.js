@@ -2,27 +2,13 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
-import {
-	AppBarButtons,
-	SummaryList,
-	DescriptionPageContainer,
-	SubHeader,
-	SubHeaderText,
-	IamContainer,
-} from '../../../styles/components/style';
+import {AppBarButtons, IamContainer, SubHeader, SubHeaderText, SummaryList,} from '../../../styles/components/style';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import GroupSummary from '../Components/GroupSummary';
 import {arrowDownIcon, arrowRightIcon} from '../../../icons/icons';
 import {IconButton} from '../../../styles/components/icons';
-import {
-	CurrentPathContainer,
-	NextPath,
-	PathLink,
-} from '../../../styles/components/currentPath';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
+import {AppBarLink, CurrentPathContainer, NextPath,} from '../../../styles/components/currentPath';
+import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
 import {FOLD_DATA} from '../../../utils/data';
 import {LiText} from '../../../styles/components/text';
 import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
@@ -33,6 +19,7 @@ import GroupUsersTab from '../Components/GroupUsersTab';
 import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import {TabContainer, TabContents} from '../../../styles/components/tab';
 
 const HeaderDiv = styled.div`
 	display: flex;
@@ -49,7 +36,6 @@ const FlexDiv = styled.div`
 		props.isOpened ? 'column' : 'column-reverse'};
 	flex: 1;
 `;
-import {TabContainer, TabContents} from '../../../styles/components/tab';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
@@ -91,11 +77,11 @@ const GroupDescriptionSpace = ({groupId}) => {
 		<IamContainer>
 			<HeaderDiv>
 				<CurrentPathContainer>
-					<PathLink to='/iam'>IAM</PathLink>
+					<AppBarLink to='/iam'>IAM</AppBarLink>
 					<NextPath>{' > '}</NextPath>
-					<PathLink to='/groups'>사용자 그룹</PathLink>
+					<AppBarLink to='/groups'>사용자 그룹</AppBarLink>
 					<NextPath>{' > '}</NextPath>
-					<PathLink to={`/groups/${groupId}`}>{group?.name}</PathLink>
+					<AppBarLink to={`/groups/${groupId}`}>{group?.name}</AppBarLink>
 				</CurrentPathContainer>
 
 				<SubHeader>
