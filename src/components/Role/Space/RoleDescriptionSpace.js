@@ -30,8 +30,8 @@ import {
 	SubHeaderText,
 	IamContainer,
 } from '../../../styles/components/style';
-import {TabContainer} from '../../../styles/components/tab';
 import styled from 'styled-components';
+import {TabContainer, TabContents} from '../../../styles/components/tab';
 
 const HeaderDiv = styled.div`
 	display: flex;
@@ -126,7 +126,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 						setIsOpened={setIsSummaryOpened}
 					/>
 				) : (
-					<div>
+					<TabContents>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'role' && (
 							<RolePolicyTab
@@ -154,7 +154,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 								setIsFold={setIsTableFold}
 							/>
 						)}
-					</div>
+					</TabContents>
 				)}
 				<TabContainer
 					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}

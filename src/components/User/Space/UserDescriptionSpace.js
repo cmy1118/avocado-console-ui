@@ -36,8 +36,8 @@ import {
 	expiredConverter,
 	statusConverter,
 } from '../../../utils/tableDataConverter';
-import {TabContainer} from '../../../styles/components/tab';
 import styled from 'styled-components';
+import {TabContainer, TabContents} from '../../../styles/components/tab';
 
 const HeaderDiv = styled.div`
 	display: flex;
@@ -149,7 +149,7 @@ const UserDescriptionSpace = ({userId}) => {
 						setIsOpened={setIsSummaryOpened}
 					/>
 				) : (
-					<div>
+					<TabContents>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'user' && <UserInfoTab userId={userId} />}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
@@ -180,7 +180,7 @@ const UserDescriptionSpace = ({userId}) => {
 								setIsFold={setIsTableFold}
 							/>
 						)}
-					</div>
+					</TabContents>
 				)}
 				<TabContainer
 					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}

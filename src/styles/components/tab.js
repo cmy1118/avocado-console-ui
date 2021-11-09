@@ -7,3 +7,7 @@ export const TabContainer = styled.div`
 	background: #fff;
 	z-index: 75;
 `;
+
+export const TabContents = styled.div`
+	padding: '10px 0px';
+`;

@@ -56,7 +56,9 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 		<>
 			<TableSpace>
 				이 역할의 사용자: {includedData.length}{' '}
-				<NormalBorderButton>연결 해제</NormalBorderButton>
+				<NormalBorderButton margin={'0px 0px 0px 8px'}>
+					연결 해제
+				</NormalBorderButton>
 			</TableSpace>
 			<DragContainer
 				selected={select}
@@ -85,7 +87,9 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 						isFold={isFold}
 						setIsFold={setIsFold}
 					>
-						<NormalButton>그룹 추가</NormalButton>
+						<NormalButton margin={'0px 0px 0px 8px'}>
+							그룹 추가
+						</NormalButton>
 					</TableFold>
 					{isFold[space] && (
 						<>

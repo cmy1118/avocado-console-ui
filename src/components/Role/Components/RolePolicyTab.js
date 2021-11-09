@@ -27,7 +27,9 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold}) => {
 		<>
 			<TableSpace>
 				이 역할의 정책: {excludedData.length}
-				<TransparentButton>연결 해제</TransparentButton>
+				<TransparentButton margin={'0px 0px 0px 8px'}>
+					연결 해제
+				</TransparentButton>
 			</TableSpace>
 			<DragContainer
 				selected={select}
@@ -58,7 +60,9 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold}) => {
 					>
 						<AppBarButtons>
 							<NormalButton>정책 생성</NormalButton>
-							<NormalButton>정책 연결</NormalButton>
+							<NormalButton margin={'0px 0px 0px 8px'}>
+								정책 연결
+							</NormalButton>
 						</AppBarButtons>
 					</TableFold>
 					{isFold[space] && (

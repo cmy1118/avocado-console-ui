@@ -102,7 +102,10 @@ const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 		>
 			<TableSpace>
 				이 그룹의 권한 : {excludedData.length}
-				<TransparentButton onClick={onClickDeleteRolesFromGroup}>
+				<TransparentButton
+					margin='0px 0px 0px 5px'
+					onClick={onClickDeleteRolesFromGroup}
+				>
 					삭제
 				</TransparentButton>
 			</TableSpace>
@@ -123,7 +126,10 @@ const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 					isFold={isFold}
 					setIsFold={setIsFold}
 				>
-					<NormalButton onClick={onClickAddRolesToGroup}>
+					<NormalButton
+						margin='0px 0px 0px 5px'
+						onClick={onClickAddRolesToGroup}
+					>
 						권한 추가
 					</NormalButton>
 				</TableFold>

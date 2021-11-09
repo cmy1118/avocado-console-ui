@@ -65,11 +65,7 @@ const ConfirmDialogBox = () => {
 				) : (
 					<div>Confirm</div>
 				)}
-				<IconButton
-					size={'sm'}
-					color={'font'}
-					onClick={onClickCloseDialogBox}
-				>
+				<IconButton color={'font'} onClick={onClickCloseDialogBox}>
 					{closeIcon}
 				</IconButton>
 			</DialogBoxHeader>

@@ -84,6 +84,7 @@ export const DottedBorderSubHeader = styled(SubHeader)`
 export const SubHeaderText = styled.div`
 	display: flex;
 	align-items: center;
+	line-height: 20px;
 `;
 
 export const SubTitle = styled.div`

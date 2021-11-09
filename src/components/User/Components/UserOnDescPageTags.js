@@ -74,7 +74,7 @@ const UserOnDescPageTags = ({userId}) => {
 						태그 저장
 					</NormalButton>
 					<TransparentButton
-						margin='0xp 0px 0p 5px'
+						margin='0px 0px 0px 5px'
 						onClick={onClickDeleteRow}
 					>
 						태그 삭제

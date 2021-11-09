@@ -109,7 +109,10 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 		<>
 			<TableSpace>
 				이 사용자의 그룹: {includedData.length}{' '}
-				<TransparentButton onClick={onClickDeleteRolesFromUser}>
+				<TransparentButton
+					margin='0px 0px 0px 5px'
+					onClick={onClickDeleteRolesFromUser}
+				>
 					삭제
 				</TransparentButton>
 			</TableSpace>
@@ -142,7 +145,10 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 						isFold={isFold}
 						setIsFold={setIsFold}
 					>
-						<NormalButton onClick={onClickAddRolesToUser}>
+						<NormalButton
+							margin='0px 0px 0px 5px'
+							onClick={onClickAddRolesToUser}
+						>
 							그룹 추가
 						</NormalButton>
 					</TableFold>

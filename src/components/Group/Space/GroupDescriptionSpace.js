@@ -32,7 +32,6 @@ import GroupRolesTab from '../Components/GroupRolesTab';
 import GroupUsersTab from '../Components/GroupUsersTab';
 import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
 import PropTypes from 'prop-types';
-import {TabContainer} from '../../../styles/components/tab';
 import styled from 'styled-components';
 
 const HeaderDiv = styled.div`
@@ -50,6 +49,7 @@ const FlexDiv = styled.div`
 		props.isOpened ? 'column' : 'column-reverse'};
 	flex: 1;
 `;
+import {TabContainer, TabContents} from '../../../styles/components/tab';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
@@ -141,21 +141,21 @@ const GroupDescriptionSpace = ({groupId}) => {
 						setIsOpened={setIsSummaryOpened}
 					/>
 				) : (
-					<div>
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'role' && (
-							<GroupRolesTab
-								groupId={groupId}
-								space={'GroupRolesTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
+					<TabContents>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'user' && (
 							<GroupUsersTab
 								groupId={groupId}
 								space={'GroupUsersTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'role' && (
+							<GroupRolesTab
+								groupId={groupId}
+								space={'GroupRolesTab'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
 							/>
@@ -169,7 +169,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 								setIsFold={setIsTableFold}
 							/>
 						)}
-					</div>
+					</TabContents>
 				)}
 
 				<TabContainer
