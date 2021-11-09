@@ -23,10 +23,16 @@ const TableLink = ({cell}) => {
 	//  - uid , id 값 고려 추가
 	//****************************************************************//
 	const pathname = qs.parse(location).pathname;
+	//dataType : Column 에서 부여한 type 정보
+	const dataType = cell.column.type
 	const data = cell.row.original;
 	const paramId = data.uid ? data.uid : data.id;
-
+	if(dataType){
+		return <_Link to={{pathname :`/${dataType}/${paramId}`}}>{value}</_Link>;
+	}else{
 	return <_Link to={`${pathname}/${paramId}`}>{value}</_Link>;
+	}
+	// return <_Link to={`${pathname}/${paramId}`}>{value}</_Link>;
 };
 TableLink.propTypes = {
 	cell: PropTypes.object.isRequired,
