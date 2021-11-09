@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import PropTypes from 'prop-types';
 
 import Table from '../../Table/Table';

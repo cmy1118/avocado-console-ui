@@ -8,6 +8,10 @@ import styled from 'styled-components';
 const _Link = styled(Link)`
 	color: #0a6f71;
 	text-decoration: none;
+	&:hover {
+		color: ${(props) => props?.color || '#389193'};
+		text-decoration: underline;
+	}
 `;
 
 const TableLink = ({cell}) => {

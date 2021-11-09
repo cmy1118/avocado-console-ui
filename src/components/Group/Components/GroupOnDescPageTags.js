@@ -14,7 +14,7 @@ import TableOptionText from '../../Table/Options/TableOptionText';
 import TableContainer from '../../Table/TableContainer';
 import {AppBarButtons} from '../../../styles/components/style';
 
-const GroupOnDescPageTags = ({groupId, space, isFold, setIsFold}) => {
+const GroupOnDescPageTags = ({groupId}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const group = useMemo(() => groups.find((v) => v.id === groupId), [
 		groupId,
@@ -95,9 +95,6 @@ const GroupOnDescPageTags = ({groupId, space, isFold, setIsFold}) => {
 
 GroupOnDescPageTags.propTypes = {
 	groupId: PropTypes.string,
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
 };
 
 export default GroupOnDescPageTags;
