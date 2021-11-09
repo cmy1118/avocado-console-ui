@@ -8,16 +8,9 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import * as yup from 'yup';
-import {
-	dummyDates,
-	dummyPolicyOnGroup,
-	dummyUsers,
-} from '../../../utils/dummyData';
+import {dummyDates, dummyPolicyOnGroup, dummyUsers,} from '../../../utils/dummyData';
 import TableContainer from '../../Table/TableContainer';
-import {
-	SummaryPageSubHeader,
-	SummaryTablesContainer,
-} from '../../../styles/components/style';
+import {SummaryPageSubHeader, SummaryTablesContainer,} from '../../../styles/components/style';
 import {useHistory} from 'react-router-dom';
 
 const GroupSummary = ({Id, param, setIsOpened}) => {
