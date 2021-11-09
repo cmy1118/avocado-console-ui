@@ -1,8 +1,8 @@
 import React, {useMemo, useState} from 'react';
 import {
 	AppBarButtons,
-	SubHeader,
 	IamContainer,
+	SubHeader,
 } from '../../../styles/components/style';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
@@ -12,9 +12,9 @@ import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../reducers/api/IAM/User/Role/roles';
 import TableContainer from '../../Table/TableContainer';
 import {
+	AppBarLink,
 	CurrentPathContainer,
 	NextPath,
-	PathLink,
 } from '../../../styles/components/currentPath';
 import {
 	NormalButton,
@@ -35,9 +35,9 @@ const RoleSpace = () => {
 	return (
 		<IamContainer>
 			<CurrentPathContainer>
-				<PathLink to='/iam'>IAM</PathLink>
+				<AppBarLink to='/iam'>IAM</AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to='/roles'>역할</PathLink>
+				<AppBarLink to='/roles'>역할</AppBarLink>
 			</CurrentPathContainer>
 
 			<SubHeader>

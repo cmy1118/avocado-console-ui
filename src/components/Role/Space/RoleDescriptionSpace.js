@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import qs from 'qs';
 import {useHistory, useLocation} from 'react-router-dom';
 import {
+	AppBarLink,
 	CurrentPathContainer,
 	NextPath,
-	PathLink,
 } from '../../../styles/components/currentPath';
 import RoleSummary from '../Components/RoleSummary';
 import TabBar from '../../Tab/TabBar';
@@ -24,10 +24,10 @@ import {FOLD_DATA} from '../../../utils/data';
 import {LiText} from '../../../styles/components/text';
 import {
 	AppBarButtons,
-	SummaryList,
 	DescriptionPageContainer,
 	SubHeader,
 	SubHeaderText,
+	SummaryList,
 } from '../../../styles/components/style';
 import {TabContainer, TabContents} from '../../../styles/components/tab';
 
@@ -60,11 +60,11 @@ const RoleDescriptionSpace = ({roleId}) => {
 	return (
 		<DescriptionPageContainer>
 			<CurrentPathContainer>
-				<PathLink to='/iam'>IAM</PathLink>
+				<AppBarLink to='/iam'>IAM</AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to='/roles'>역할</PathLink>
+				<AppBarLink to='/roles'>역할</AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to={`/roles/${roleId}`}>{role?.name}</PathLink>
+				<AppBarLink to={`/roles/${roleId}`}>{role?.name}</AppBarLink>
 			</CurrentPathContainer>
 
 			<SubHeader>

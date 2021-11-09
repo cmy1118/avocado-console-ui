@@ -18,9 +18,9 @@ import UserOnDescPageTags from '../Components/UserOnDescPageTags';
 import UserSummary from '../Components/UserSummary';
 import UserRolesTab from '../Components/UserRolesTab';
 import {
+	AppBarLink,
 	CurrentPathContainer,
 	NextPath,
-	PathLink,
 } from '../../../styles/components/currentPath';
 import {IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
@@ -74,11 +74,11 @@ const UserDescriptionSpace = ({userId}) => {
 	return (
 		<DescriptionPageContainer>
 			<CurrentPathContainer>
-				<PathLink to='/iam'>IAM</PathLink>
+				<AppBarLink to='/iam'>IAM</AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to='/users'>사용자</PathLink>
+				<AppBarLink to='/users'>사용자</AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to={`/users/${userId}`}>{user?.name}</PathLink>
+				<AppBarLink to={`/users/${userId}`}>{user?.name}</AppBarLink>
 			</CurrentPathContainer>
 
 			<SubHeader>

@@ -6,8 +6,8 @@ import AddTagToGroup from '../Components/AddTagToGroup';
 import UsersIncludedInGroup from '../Components/UsersIncludedInGroup';
 import ReadOnly from '../Components/ReadOnly';
 import {
+	AppBarLink,
 	CurrentPathContainer,
-	PathLink,
 	NextPath,
 } from '../../../styles/components/currentPath';
 import {FOLD_DATA} from '../../../utils/data';
@@ -19,11 +19,11 @@ const AddGroupSpace = () => {
 	return (
 		<IamContainer>
 			<CurrentPathContainer>
-				<PathLink to='/iam'>IAM</PathLink>
+				<AppBarLink to='/iam'>IAM</AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to='/groups'>사용자 그룹</PathLink>
+				<AppBarLink to='/groups'>사용자 그룹</AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to='/groups/add'>사용자 그룹 생성</PathLink>
+				<AppBarLink to='/groups/add'>사용자 그룹 생성</AppBarLink>
 			</CurrentPathContainer>
 
 			<AddGroup setIsOpened={setIsOpened} />

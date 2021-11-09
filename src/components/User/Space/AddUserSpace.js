@@ -7,9 +7,9 @@ import AddUserToGroup from '../Components/AddUserToGroup';
 import AddUser from '../Components/AddUser';
 import ReadOnly from '../Components/ReadOnly';
 import {
+	AppBarLink,
 	CurrentPathContainer,
 	NextPath,
-	PathLink,
 } from '../../../styles/components/currentPath';
 import {FOLD_DATA} from '../../../utils/data';
 
@@ -20,11 +20,11 @@ const AddUserSpace = () => {
 	return (
 		<IamContainer>
 			<CurrentPathContainer>
-				<PathLink to='/iam'>IAM</PathLink>
+				<AppBarLink to='/iam'>IAM</AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to='/users'>사용자</PathLink>
+				<AppBarLink to='/users'>사용자</AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to='/users/add'>사용자 추가</PathLink>
+				<AppBarLink to='/users/add'>사용자 추가</AppBarLink>
 			</CurrentPathContainer>
 
 			<AddUser setIsOpened={setIsOpened} />

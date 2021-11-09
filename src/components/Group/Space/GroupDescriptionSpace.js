@@ -4,19 +4,19 @@ import {useSelector} from 'react-redux';
 
 import {
 	AppBarButtons,
-	SummaryList,
 	DescriptionPageContainer,
 	SubHeader,
 	SubHeaderText,
+	SummaryList,
 } from '../../../styles/components/style';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import GroupSummary from '../Components/GroupSummary';
 import {arrowDownIcon, arrowRightIcon} from '../../../icons/icons';
 import {IconButton} from '../../../styles/components/icons';
 import {
+	AppBarLink,
 	CurrentPathContainer,
 	NextPath,
-	PathLink,
 } from '../../../styles/components/currentPath';
 import {
 	NormalButton,
@@ -72,11 +72,11 @@ const GroupDescriptionSpace = ({groupId}) => {
 	return (
 		<DescriptionPageContainer>
 			<CurrentPathContainer>
-				<PathLink to='/iam'>IAM</PathLink>
+				<AppBarLink to='/iam'>IAM</AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to='/groups'>사용자 그룹</PathLink>
+				<AppBarLink to='/groups'>사용자 그룹</AppBarLink>
 				<NextPath>{' > '}</NextPath>
-				<PathLink to={`/groups/${groupId}`}>{group?.name}</PathLink>
+				<AppBarLink to={`/groups/${groupId}`}>{group?.name}</AppBarLink>
 			</CurrentPathContainer>
 
 			<SubHeader>
