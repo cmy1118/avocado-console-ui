@@ -51,6 +51,7 @@ const placeholders = {
 	authType: '인증유형',
 	MFA: 'MFA',
 	passwordExpiryTime: '비밀번호 수명',
+	lastConsoleLogin: '생성일',
 };
 
 const TableOptionsBar = ({
@@ -193,6 +194,7 @@ const TableOptionsBar = ({
 						key={i}
 						height={'84px'}
 						padding={'11px 0px'}
+						// padding={'11px 0px 16px'}
 						{...headerGroup.getHeaderGroupProps()}
 					>
 						<RowDiv alignItems={'center'}>

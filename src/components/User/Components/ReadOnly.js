@@ -56,6 +56,7 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 				{readOnlyData[tableKeys.users.add.groups.exclude]?.length}
 			</SummaryPageSubHeader>
 			<TableContainer
+				mode={'readOnly'}
 				tableKey={tableKeys.users.add.groups.exclude}
 				data={groupData}
 				columns={tableColumns[tableKeys.users.add.groups.exclude]}
@@ -67,6 +68,7 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 				권한 : {dummyPolicyOnDialogBox.length}
 			</SummaryPageSubHeader>
 			<TableContainer
+				mode={'readOnly'}
 				tableKey={tableKeys.users.add.permissions}
 				data={dummyPolicyOnDialogBox}
 				columns={tableColumns[tableKeys.users.add.permissions]}
@@ -78,6 +80,7 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 				태그 : {readOnlyData[tableKeys.users.add.tag].length}
 			</SummaryPageSubHeader>
 			<TableContainer
+				mode={'readOnly'}
 				tableKey={tableKeys.users.add.tag}
 				data={readOnlyData[tableKeys.users.add.tag]}
 				columns={tableColumns[tableKeys.users.add.tag]}

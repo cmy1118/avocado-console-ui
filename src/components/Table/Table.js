@@ -28,6 +28,7 @@ const Table = ({
 	headerGroups,
 	prepareRow,
 	page,
+	mode,
 }) => {
 	const [position, setPosition] = useState({x: 0, y: 0});
 
@@ -144,7 +145,7 @@ const Table = ({
 								return (
 									<Tds
 										className={'th'}
-										width={`${column.width}px`}
+										width={`${column.width + 20}px`}
 										key={i}
 										alignItems={'center'}
 										{...column.getHeaderProps(
@@ -152,8 +153,8 @@ const Table = ({
 										)}
 									>
 										{column.render('Header')}
-										{isSortable &&
-											!(i === 0 && isSelectable) && (
+										{mode === 'normal' &&
+											column.id !== 'selection' && (
 												<Icon margin={'0px'}>
 													{column.isSortedDesc ===
 														'ture' ||
@@ -225,7 +226,10 @@ const Table = ({
 												return (
 													<Tds
 														className={'td'}
-														width={`${cell.column.width}px`}
+														width={`${
+															cell.column.width +
+															20
+														}px`}
 														key={i}
 														{...cell.getCellProps}
 													>
@@ -250,6 +254,7 @@ const Table = ({
 Table.propTypes = {
 	tableKey: PropTypes.string,
 	isSortable: PropTypes.bool,
+	mode: PropTypes.string,
 	isSelectable: PropTypes.bool,
 	setData: PropTypes.func,
 	setSelect: PropTypes.func,

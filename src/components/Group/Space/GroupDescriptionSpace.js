@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 import {AppBarButtons, IamContainer, SubHeader, SubHeaderText, SummaryList,} from '../../../styles/components/style';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import GroupSummary from '../Components/GroupSummary';
-import {arrowDownIcon, arrowRightIcon} from '../../../icons/icons';
+import {arrowDownIcon, arrowRightIcon, arrowUpIcon} from '../../../icons/icons';
 import {IconButton} from '../../../styles/components/icons';
 import {AppBarLink, CurrentPathContainer, NextPath,} from '../../../styles/components/currentPath';
 import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
@@ -92,7 +92,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 							margin={'0px'}
 							onClick={onClickFoldSummary}
 						>
-							{isSummaryOpened ? arrowDownIcon : arrowRightIcon}
+							{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
 						</IconButton>
 						요약 [ {group?.name} ]
 					</SubHeaderText>
