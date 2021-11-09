@@ -192,7 +192,7 @@ const TableOptionsBar = ({
 						justifyContent={'space-between'}
 						key={i}
 						height={'84px'}
-						padding={'11px 16px 16px'}
+						padding={'11px 0px'}
 						{...headerGroup.getHeaderGroupProps()}
 					>
 						<RowDiv alignItems={'center'}>
@@ -224,6 +224,7 @@ const TableOptionsBar = ({
 						{selectedSearchFilters.length !== 0 && (
 							<RowDiv alignItems={'flex-end'}>
 								<NormalBorderButton
+									margin={'0px 0px 0px 10px'}
 									onClick={onClickResetFilters}
 								>
 									모두 삭제
