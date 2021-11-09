@@ -14,7 +14,7 @@ import styled from 'styled-components';
 
 const Container = styled(ColDiv)`
 	flex: 1;
-	height: 100%;
+	// height: 100%;
 	width: ${(props) => props.width};
 `;
 
@@ -28,7 +28,8 @@ const NormalTable = styled.div`
 		// flex: 1;
 		width: 100%;
 		position: relative;
-		overflow: ${(props) => (props.height ? 'scroll' : '')};
+		overflow: scroll;
+		// overflow: ${(props) => (props.height ? 'scroll' : '')};
 		height: ${(props) => props.height || '100%'};
 		display: flex;
 		flex-direction: column;
@@ -43,7 +44,7 @@ const NormalTable = styled.div`
 		text-align: left;
 		color: #212121;
 		.head {
-			position: ${(props) => (props.height ? 'sticky' : 'absolute')};
+			position: sticky;
 			top: ${(props) => (props.height ? 0 : '')};
 			height: 40px;
 			z-index: 1;
@@ -53,9 +54,9 @@ const NormalTable = styled.div`
 		}
 		.body {
 			position: relative;
-			border-bottom: 1px solid #e3e5e5;
 			background: #fff;
 			width: 100%;
+			border-bottom: 1px solid #e3e5e5;
 		}
 		.odd {
 			background: ${(props) => props.mode === 'readOnly' && '#f8f9fa'};
@@ -67,20 +68,24 @@ const NormalTable = styled.div`
 
 		.tr {
 			display: flex;
-			width: 100%;
+			width: max-content;
+			:last-child {
+				border: none;
+			}
 		}
 
 		.th,
 		.td {
 			display: flex;
-			// width: 100%;
 			height: ${(props) => (props.mode === 'normal' ? '40px' : '')};
 			min-height: 40px;
 			white-space: nowrap;
 			text-align: left;
 			text-overflow: ellipsis;
+
 			:first-child {
 				padding-left: 16px;
+				width: 40px;
 			}
 		}
 	}

@@ -3,6 +3,7 @@ import React from 'react';
 import TableLink from '../../components/Table/ColumnCells/TableLink';
 import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
 import {statusConverter} from '../tableDataConverter';
+import {RowDiv} from '../../styles/components/div';
 
 export const GROUP_COLUMN = [
 	{
@@ -62,6 +63,7 @@ export const GROUP_TYPE_COLUMN = [
 		Cell: function Component(cell) {
 			return <TableTextBox cell={cell} />;
 		},
+		width: 400,
 	},
 
 	{
@@ -82,6 +84,7 @@ export const GROUP_ADD_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '설명',
 		accessor: 'description',
+		width: 400,
 	},
 	{
 		Header: '사용자 수',
@@ -176,10 +179,13 @@ export const GROUP_SUMMARY_PERMISSION_COLUMN = [
 				<div>
 					{v.value.split('\n').map((v, i) => {
 						return (
-							<div key={i}>
+							<RowDiv
+								alignItems={'center'}
+								height={'30px'}
+								key={i}
+							>
 								{v}
-								<br />
-							</div>
+							</RowDiv>
 						);
 					})}
 				</div>
@@ -307,6 +313,7 @@ export const GROUP_SUMMARY_TABS_ROLES_INCLUDE_COLUMN = [
 	{
 		Header: '설명',
 		accessor: 'description',
+		width: 400,
 	},
 	{
 		Header: '사용자 수',
@@ -329,6 +336,7 @@ export const GROUP_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '설명',
 		accessor: 'description',
+		width: 400,
 	},
 	{
 		Header: '사용자 수',
@@ -419,6 +427,7 @@ export const GROUP_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
 	{
 		Header: '설명',
 		accessor: 'description',
+		width: 400,
 	},
 	{
 		Header: '권한 부여 수',
@@ -442,6 +451,7 @@ export const GROUP_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
 	{
 		Header: '설명',
 		accessor: 'description',
+		width: 400,
 	},
 	{
 		Header: '권한 부여 수',

@@ -9,6 +9,7 @@ import styled from 'styled-components';
 const Tds = styled(RowDiv)`
 	overflow: hidden;
 	align-items: center;
+	min-width: ${(props) => props.width};
 `;
 
 const EmptySpace = styled.div`
@@ -169,7 +170,6 @@ const Table = ({
 							})}
 						</div>
 					))}
-					{/*<EmptySpace className={'tr body'} />*/}
 					{page.map((row, index) => {
 						prepareRow(row);
 						return (
