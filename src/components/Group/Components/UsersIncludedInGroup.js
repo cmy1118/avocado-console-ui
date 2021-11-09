@@ -6,7 +6,12 @@ import DropButton from '../../Table/DropButton';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
-import {ColDiv, RowDiv, TableHeader} from '../../../styles/components/div';
+import {
+	ColDiv,
+	DnDDiv,
+	RowDiv,
+	TableHeader,
+} from '../../../styles/components/div';
 import {TableFoldContainer} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
@@ -91,7 +96,7 @@ const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
 								<TableOptionsBar />
 								<Table setSelect={setSelect} isDraggable />
 							</TableContainer>
-							<RowDiv alignItems={'center'}>
+							<DnDDiv alignItems={'center'}>
 								<DropButton
 									leftTableKey={
 										tableKeys.groups.add.users.exclude
@@ -105,8 +110,8 @@ const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
 									rightDataIds={includedDataIds}
 									setRightDataIds={setIncludedDataIds}
 								/>
-							</RowDiv>
-							<ColDiv width={'100%'}>
+							</DnDDiv>
+							<ColDiv width={'700px'}>
 								<TableHeader>
 									추가 사용자: {includedDataIds.length}건
 								</TableHeader>
