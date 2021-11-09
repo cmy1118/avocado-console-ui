@@ -55,6 +55,9 @@ const NormalTable = styled.div`
 			background: #fff;
 			width: 100%;
 		}
+		.odd {
+			background: ${(props) => props.mode === 'readOnly' && '#f8f9fa'};
+		}
 
 		.selected {
 			background: rgba(228, 243, 244, 0.7);
@@ -156,29 +159,30 @@ const TableContainer = ({data, columns, tableKey, mode, width, children}) => {
 		usePagination,
 		useRowSelect,
 		(hooks) => {
-			hooks.visibleColumns.push((columns) => [
-				{
-					id: 'selection',
-					// eslint-disable-next-line react/prop-types,react/display-name
-					Header: ({getToggleAllPageRowsSelectedProps}) => (
-						<TableCheckbox
-							{...getToggleAllPageRowsSelectedProps()}
-							tablekey={tableKey}
-						/>
-					),
-					// eslint-disable-next-line react/prop-types,react/display-name
-					Cell: ({row}) => (
-						<TableCheckbox
-							// eslint-disable-next-line react/prop-types,react/display-name
-							{...row.getToggleRowSelectedProps()}
-							tablekey={tableKey}
-						/>
-					),
-					width: 40,
-					disableChangeVisible: true,
-				},
-				...columns,
-			]);
+			mode !== 'readOnly' &&
+				hooks.visibleColumns.push((columns) => [
+					{
+						id: 'selection',
+						// eslint-disable-next-line react/prop-types,react/display-name
+						Header: ({getToggleAllPageRowsSelectedProps}) => (
+							<TableCheckbox
+								{...getToggleAllPageRowsSelectedProps()}
+								tablekey={tableKey}
+							/>
+						),
+						// eslint-disable-next-line react/prop-types,react/display-name
+						Cell: ({row}) => (
+							<TableCheckbox
+								// eslint-disable-next-line react/prop-types,react/display-name
+								{...row.getToggleRowSelectedProps()}
+								tablekey={tableKey}
+							/>
+						),
+						width: 40,
+						disableChangeVisible: true,
+					},
+					...columns,
+				]);
 		},
 	);
 

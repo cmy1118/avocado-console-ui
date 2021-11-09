@@ -4,7 +4,7 @@ export const IamContainer = styled.div`
 	margin-top: 54px;
 	flex: 1;
 	display: flex;
-	height: 100%;
+	// height: 100%;
 	flex-direction: column;
 `;
 
@@ -101,7 +101,7 @@ export const SummaryList = styled.ul`
 
 export const SummaryTablesContainer = styled.div`
 	flex: 1;
-	overflow-y: scroll;
+	// overflow-y: scroll;
 `;
 export const InputDescriptionText = styled.span`
 	color: #757575;

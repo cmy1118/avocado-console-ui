@@ -207,8 +207,12 @@ const Table = ({
 														? row.original.uid
 														: row.original.id,
 												)
-													? 'tr body selected'
-													: 'tr body'
+													? index % 2 === 0
+														? 'tr body selected even'
+														: 'tr body selected odd'
+													: index % 2 === 0
+													? 'tr body even'
+													: 'tr body odd'
 											}
 											id={
 												row.original.uid

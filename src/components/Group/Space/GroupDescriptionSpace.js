@@ -8,6 +8,7 @@ import {
 	DescriptionPageContainer,
 	SubHeader,
 	SubHeaderText,
+	IamContainer,
 } from '../../../styles/components/style';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import GroupSummary from '../Components/GroupSummary';
@@ -32,6 +33,23 @@ import GroupUsersTab from '../Components/GroupUsersTab';
 import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
 import PropTypes from 'prop-types';
 import {TabContainer} from '../../../styles/components/tab';
+import styled from 'styled-components';
+
+const HeaderDiv = styled.div`
+	display: flex;
+	flex-direction: column;
+	position: sticky;
+	top: 54px;
+	background: #fff;
+	z-index: 75;
+`;
+
+const FlexDiv = styled.div`
+	display: flex;
+	flex-direction: ${(props) =>
+		props.isOpened ? 'column' : 'column-reverse'};
+	flex: 1;
+`;
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
@@ -70,71 +88,60 @@ const GroupDescriptionSpace = ({groupId}) => {
 	}, [groupId, group, history]);
 
 	return (
-		<DescriptionPageContainer>
-			<CurrentPathContainer>
-				<PathLink to='/iam'>IAM</PathLink>
-				<NextPath>{' > '}</NextPath>
-				<PathLink to='/groups'>사용자 그룹</PathLink>
-				<NextPath>{' > '}</NextPath>
-				<PathLink to={`/groups/${groupId}`}>{group?.name}</PathLink>
-			</CurrentPathContainer>
+		<IamContainer>
+			<HeaderDiv>
+				<CurrentPathContainer>
+					<PathLink to='/iam'>IAM</PathLink>
+					<NextPath>{' > '}</NextPath>
+					<PathLink to='/groups'>사용자 그룹</PathLink>
+					<NextPath>{' > '}</NextPath>
+					<PathLink to={`/groups/${groupId}`}>{group?.name}</PathLink>
+				</CurrentPathContainer>
 
-			<SubHeader>
-				<SubHeaderText>
-					<IconButton
-						color={'font'}
-						size={'m'}
-						margin={'0px'}
-						onClick={onClickFoldSummary}
-					>
-						{isSummaryOpened ? arrowDownIcon : arrowRightIcon}
-					</IconButton>
-					요약 [ {group?.name} ]
-				</SubHeaderText>
-				<AppBarButtons>
-					<NormalButton onClick={onClickChangeGroupName}>
-						그룹명 편집
-					</NormalButton>
-					<TransparentButton margin={'0px 0px 0px 5px'}>
-						삭제
-					</TransparentButton>
-				</AppBarButtons>
-			</SubHeader>
+				<SubHeader>
+					<SubHeaderText>
+						<IconButton
+							color={'font'}
+							size={'m'}
+							margin={'0px'}
+							onClick={onClickFoldSummary}
+						>
+							{isSummaryOpened ? arrowDownIcon : arrowRightIcon}
+						</IconButton>
+						요약 [ {group?.name} ]
+					</SubHeaderText>
+					<AppBarButtons>
+						<NormalButton onClick={onClickChangeGroupName}>
+							그룹명 편집
+						</NormalButton>
+						<TransparentButton margin={'0px 0px 0px 5px'}>
+							삭제
+						</TransparentButton>
+					</AppBarButtons>
+				</SubHeader>
 
-			<SummaryList>
-				<LiText>그룹명 : {group?.name}</LiText>
-				<LiText>
-					그룹 유형 :{' '}
-					{
-						groupTypes.find((v) => v.id === group.clientGroupTypeId)
-							.name
-					}
-				</LiText>
-				<LiText>생성 일시 : {group?.creationDate}</LiText>
-			</SummaryList>
-
-			{isSummaryOpened && (
-				<GroupSummary
-					groupId={groupId}
-					isOpened={isSummaryOpened}
-					setIsOpened={setIsSummaryOpened}
-				/>
-			)}
-
-			<div>
-				<TabContainer
-					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}
-				>
-					<TabBar
-						Tabs={TabBarInfo}
-						param={'groups'}
-						Id={groupId}
+				<SummaryList>
+					<LiText>그룹명 : {group?.name}</LiText>
+					<LiText>
+						그룹 유형 :{' '}
+						{
+							groupTypes.find(
+								(v) => v.id === group.clientGroupTypeId,
+							).name
+						}
+					</LiText>
+					<LiText>생성 일시 : {group?.creationDate}</LiText>
+				</SummaryList>
+			</HeaderDiv>
+			<FlexDiv isOpened={isSummaryOpened}>
+				{isSummaryOpened ? (
+					<GroupSummary
+						groupId={groupId}
 						isOpened={isSummaryOpened}
 						setIsOpened={setIsSummaryOpened}
 					/>
-				</TabContainer>
-				{!isSummaryOpened && (
-					<div style={{padding: '10px 16px'}}>
+				) : (
+					<div>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'role' && (
 							<GroupRolesTab
@@ -164,8 +171,20 @@ const GroupDescriptionSpace = ({groupId}) => {
 						)}
 					</div>
 				)}
-			</div>
-		</DescriptionPageContainer>
+
+				<TabContainer
+					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}
+				>
+					<TabBar
+						Tabs={TabBarInfo}
+						param={'groups'}
+						Id={groupId}
+						isOpened={isSummaryOpened}
+						setIsOpened={setIsSummaryOpened}
+					/>
+				</TabContainer>
+			</FlexDiv>
+		</IamContainer>
 	);
 };
 

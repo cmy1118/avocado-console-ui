@@ -28,8 +28,26 @@ import {
 	DescriptionPageContainer,
 	SubHeader,
 	SubHeaderText,
+	IamContainer,
 } from '../../../styles/components/style';
 import {TabContainer} from '../../../styles/components/tab';
+import styled from 'styled-components';
+
+const HeaderDiv = styled.div`
+	display: flex;
+	flex-direction: column;
+	position: sticky;
+	top: 54px;
+	background: #fff;
+	z-index: 75;
+`;
+
+const FlexDiv = styled.div`
+	display: flex;
+	flex-direction: ${(props) =>
+		props.isOpened ? 'column' : 'column-reverse'};
+	flex: 1;
+`;
 
 const RoleDescriptionSpace = ({roleId}) => {
 	const history = useHistory();
@@ -58,69 +76,57 @@ const RoleDescriptionSpace = ({roleId}) => {
 	}, []);
 
 	return (
-		<DescriptionPageContainer>
-			<CurrentPathContainer>
-				<PathLink to='/iam'>IAM</PathLink>
-				<NextPath>{' > '}</NextPath>
-				<PathLink to='/roles'>역할</PathLink>
-				<NextPath>{' > '}</NextPath>
-				<PathLink to={`/roles/${roleId}`}>{role?.name}</PathLink>
-			</CurrentPathContainer>
+		<IamContainer>
+			<HeaderDiv>
+				<CurrentPathContainer>
+					<PathLink to='/iam'>IAM</PathLink>
+					<NextPath>{' > '}</NextPath>
+					<PathLink to='/roles'>역할</PathLink>
+					<NextPath>{' > '}</NextPath>
+					<PathLink to={`/roles/${roleId}`}>{role?.name}</PathLink>
+				</CurrentPathContainer>
 
-			<SubHeader>
-				<SubHeaderText>
-					<IconButton
-						color={'font'}
-						size={'m'}
-						margin={'0px'}
-						onClick={onClickFoldSummary}
-					>
-						{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
-					</IconButton>
-					요약 [ {role?.name} ]
-				</SubHeaderText>
-				<AppBarButtons>
-					<NormalButton onClick={onClickLinkToAddRolePage}>
-						역할 만들기
-					</NormalButton>
-					<TransparentButton margin={'0px 0px 0px 5px'}>
-						삭제
-					</TransparentButton>
-				</AppBarButtons>
-			</SubHeader>
+				<SubHeader>
+					<SubHeaderText>
+						<IconButton
+							color={'font'}
+							size={'m'}
+							margin={'0px'}
+							onClick={onClickFoldSummary}
+						>
+							{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
+						</IconButton>
+						요약 [ {role?.name} ]
+					</SubHeaderText>
+					<AppBarButtons>
+						<NormalButton onClick={onClickLinkToAddRolePage}>
+							역할 만들기
+						</NormalButton>
+						<TransparentButton margin={'0px 0px 0px 5px'}>
+							삭제
+						</TransparentButton>
+					</AppBarButtons>
+				</SubHeader>
 
-			<SummaryList>
-				<LiText>역할 이름 : {role?.name}</LiText>
-				<LiText>역할 유형 : {role?.type}</LiText>
-				<LiText>역할 설명 : {role?.description}</LiText>
-				<LiText>생성 일시 : {role?.creationDate}</LiText>
-				<LiText>마지막 작업 일시 : 2021.09.21. 16:05:18 </LiText>
-				<LiText>마지막 활동 : 사용자 접근정책 변경</LiText>
-				<LiText>마지막 활동 사용자 : 김영우 (kyoung634)</LiText>
-			</SummaryList>
-
-			{isSummaryOpened && (
-				<RoleSummary
-					roleId={roleId}
-					isOpened={isSummaryOpened}
-					setIsOpened={setIsSummaryOpened}
-				/>
-			)}
-
-			<div>
-				<TabContainer
-					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}
-				>
-					<TabBar
-						Tabs={TabBarInfo}
-						param={'roles'}
-						Id={roleId}
+				<SummaryList>
+					<LiText>역할 이름 : {role?.name}</LiText>
+					<LiText>역할 유형 : {role?.type}</LiText>
+					<LiText>역할 설명 : {role?.description}</LiText>
+					<LiText>생성 일시 : {role?.creationDate}</LiText>
+					<LiText>마지막 작업 일시 : 2021.09.21. 16:05:18 </LiText>
+					<LiText>마지막 활동 : 사용자 접근정책 변경</LiText>
+					<LiText>마지막 활동 사용자 : 김영우 (kyoung634)</LiText>
+				</SummaryList>
+			</HeaderDiv>
+			<FlexDiv isOpened={isSummaryOpened}>
+				{isSummaryOpened ? (
+					<RoleSummary
+						roleId={roleId}
 						isOpened={isSummaryOpened}
 						setIsOpened={setIsSummaryOpened}
 					/>
-				</TabContainer>
-				{!isSummaryOpened && (
-					<div style={{padding: '10px 16px'}}>
+				) : (
+					<div>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'role' && (
 							<RolePolicyTab
@@ -150,8 +156,19 @@ const RoleDescriptionSpace = ({roleId}) => {
 						)}
 					</div>
 				)}
-			</div>
-		</DescriptionPageContainer>
+				<TabContainer
+					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}
+				>
+					<TabBar
+						Tabs={TabBarInfo}
+						param={'roles'}
+						Id={roleId}
+						isOpened={isSummaryOpened}
+						setIsOpened={setIsSummaryOpened}
+					/>
+				</TabContainer>
+			</FlexDiv>
+		</IamContainer>
 	);
 };
 
