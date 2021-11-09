@@ -4,6 +4,7 @@ import SelectionOption from '../../components/Table/Options/Search/SelectionOpti
 import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
 import TableLink from '../../components/Table/ColumnCells/TableLink';
 import {statusConverter} from '../tableDataConverter';
+import {RowDiv} from '../../styles/components/div';
 
 export const ROLE_COLUMN = [
 	{
@@ -24,6 +25,7 @@ export const ROLE_COLUMN = [
 		accessor: 'description',
 		Header: '설명',
 		disableFilters: true,
+		width: 400,
 	},
 	{
 		accessor: 'numberOfPermissions',
@@ -51,10 +53,13 @@ export const ROLE_SUMMARY_PERMISSION_COLUMN = [
 				<div>
 					{v.value.split('\n').map((v, i) => {
 						return (
-							<div key={i}>
+							<RowDiv
+								alignItems={'center'}
+								height={'30px'}
+								key={i}
+							>
 								{v}
-								<br />
-							</div>
+							</RowDiv>
 						);
 					})}
 				</div>
@@ -122,7 +127,7 @@ export const ROLE_SUMMARY_GROUP_COLUMN = [
 export const ROLE_SUMMARY_PERMISSIONS_INCLUDE_COLUMN = [
 	{accessor: 'name', Header: '정책 이름'},
 	{accessor: 'type', Header: ' 유형'},
-	{accessor: 'description', Header: '설명'},
+	{accessor: 'description', Header: '설명', width: 400},
 	{accessor: 'numberOfRoles', Header: '역할 연결 수'},
 	{accessor: 'creationDate', Header: '생성 일시'},
 ];
@@ -130,7 +135,7 @@ export const ROLE_SUMMARY_PERMISSIONS_INCLUDE_COLUMN = [
 export const ROLE_SUMMARY_PERMISSIONS_EXCLUDE_COLUMN = [
 	{accessor: 'name', Header: '정책 이름'},
 	{accessor: 'type', Header: ' 유형'},
-	{accessor: 'description', Header: '설명'},
+	{accessor: 'description', Header: '설명', width: 400},
 	{accessor: 'numberOfRoles', Header: '역할 연결 수'},
 	{accessor: 'creationDate', Header: '생성 일시'},
 ];
