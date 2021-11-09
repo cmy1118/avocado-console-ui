@@ -34,7 +34,7 @@ const UserOnDescPageTags = ({userId}) => {
 	const [select, setSelect] = useState({});
 	const onClickAddRow = useCallback(() => {
 		const lastValues = data.slice().pop();
-		if (lastValues.name === '' || lastValues.value === '') {
+		if (lastValues?.name === '' || lastValues?.value === '') {
 			alert('입력하지 않은 값이 있습니다.');
 			return;
 		}
@@ -84,6 +84,7 @@ const UserOnDescPageTags = ({userId}) => {
 			<TableOptionText data={'tags'} />
 
 			<TableContainer
+				height={'200px'}
 				tableKey={tableKeys.users.summary.tabs.tags.basic}
 				data={data}
 				columns={tableColumns[tableKeys.users.summary.tabs.tags.basic]}
@@ -113,6 +114,7 @@ const UserOnDescPageTags = ({userId}) => {
 					</div>
 
 					<TableContainer
+						height={'200px'}
 						tableKey={tableKeys.users.summary.tabs.tags.basic}
 						data={dummyPermission.filter((v) =>
 							select[
@@ -148,6 +150,7 @@ const UserOnDescPageTags = ({userId}) => {
 						<NormalButton>정책 연결</NormalButton>
 					</div>
 					<TableContainer
+						height={'200px'}
 						tableKey={tableKeys.users.summary.tabs.tags.basic}
 						data={dummyPermission.filter(
 							(v) =>

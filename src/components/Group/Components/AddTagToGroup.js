@@ -83,6 +83,7 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 				<>
 					<TableOptionText data={'tags'} />
 					<TableContainer
+						height={'200px'}
 						tableKey={tableKeys.groups.add.tag}
 						data={tagData}
 						columns={tableColumns[tableKeys.groups.add.tag]}

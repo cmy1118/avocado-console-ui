@@ -90,6 +90,7 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 					<TableOptionText data={'tags'} />
 
 					<TableContainer
+						height={'200px'}
 						tableKey={tableKeys.users.add.tag}
 						data={tagData}
 						columns={tableColumns[tableKeys.users.add.tag]}

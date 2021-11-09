@@ -51,7 +51,9 @@ const placeholders = {
 	authType: '인증유형',
 	MFA: 'MFA',
 	passwordExpiryTime: '비밀번호 수명',
-	lastConsoleLogin: '생성일',
+	lastConsoleLogin: '마지막 콘솔 로그인',
+	creationDate: '생성일',
+	roleType: '역할 유형',
 };
 
 const TableOptionsBar = ({
@@ -207,6 +209,7 @@ const TableOptionsBar = ({
 										<ColDiv key={i}>
 											<Label>
 												{placeholders[column.id]}
+												{/*{column.id}*/}
 											</Label>
 											<RowDiv alignItems={'center'}>
 												{column.render('Filter')}
