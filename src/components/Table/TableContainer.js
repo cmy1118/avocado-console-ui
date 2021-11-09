@@ -14,7 +14,7 @@ import styled from 'styled-components';
 
 const Container = styled(ColDiv)`
 	flex: 1;
-	// height: 100%;
+	height: 100%;
 	width: ${(props) => props.width};
 `;
 
@@ -22,13 +22,14 @@ const NormalTable = styled.div`
 	margin: 0px 16px;
 	box-sizing: border-box;
 	display: flex;
-	height: 100%;
+	// height: 100%;
 
 	.table {
 		// flex: 1;
 		width: 100%;
 		position: relative;
-		height: 100%;
+		overflow: ${(props) => (props.height ? 'scroll' : '')};
+		height: ${(props) => props.height || '100%'};
 		display: flex;
 		flex-direction: column;
 		border-spacing: 0;
@@ -42,7 +43,8 @@ const NormalTable = styled.div`
 		text-align: left;
 		color: #212121;
 		.head {
-			position: absolute;
+			position: ${(props) => (props.height ? 'sticky' : 'absolute')};
+			top: ${(props) => (props.height ? 0 : '')};
 			height: 40px;
 			z-index: 1;
 			background: #f8f9fa;
@@ -90,6 +92,7 @@ const TableContainer = ({
 	tableKey,
 	mode = 'normal',
 	width,
+	height,
 	children,
 }) => {
 	const getRowId = useCallback((v) => {
@@ -199,7 +202,7 @@ const TableContainer = ({
 		<Container width={width}>
 			{React.Children.map(children, (child) => {
 				return (
-					<NormalTable mode={mode}>
+					<NormalTable mode={mode} height={height}>
 						{React.cloneElement(child, {
 							data,
 							columns,
@@ -241,6 +244,7 @@ TableContainer.propTypes = {
 		.isRequired,
 	mode: PropTypes.oneOf(['normal', 'readOnly']),
 	width: PropTypes.string,
+	height: PropTypes.string,
 };
 
 export default TableContainer;

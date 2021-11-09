@@ -78,7 +78,8 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 					>
 						<RowDiv>
 							<TableContainer
-								width={'100%'}
+								width={'700px'}
+								height={'300px'}
 								data={excludedData}
 								tableKey={tableKeys.groups.add.roles.exclude}
 								columns={
@@ -104,11 +105,13 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 									setRightDataIds={setIncludedDataIds}
 								/>
 							</RowDiv>
-							<ColDiv width={'700px'}>
+							<ColDiv>
 								<TableHeader>
 									추가 Roles: {includedDataIds.length}건
 								</TableHeader>
 								<TableContainer
+									width={'400px'}
+									height={'300px'}
 									data={includedData}
 									tableKey={
 										tableKeys.groups.add.roles.include
