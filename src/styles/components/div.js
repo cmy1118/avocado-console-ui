@@ -5,18 +5,6 @@ export const PositionRelativeDiv = styled.div`
 `;
 
 export const RowDiv = styled.div`
-	width: 100%;
-	display: flex;
-	width: ${(props) => props.width};
-	height: ${(props) => props.height || 'initial'};
-	margin: ${(props) => props.margin || '0px'};
-	padding: ${(props) => props.padding || '0px'};
-	align-items: ${(props) => props.alignItems || 'initial'};
-	justify-content: ${(props) => props.justifyContent || 'initial'};
-`;
-
-//임시
-export const DnDDiv = styled.div`
 	display: flex;
 	width: ${(props) => props.width};
 	height: ${(props) => props.height || 'initial'};
@@ -28,6 +16,17 @@ export const DnDDiv = styled.div`
 
 export const ColDiv = styled(RowDiv)`
 	flex-direction: column;
+`;
+
+//임시
+export const DnDDiv = styled.div`
+	display: flex;
+	width: ${(props) => props.width};
+	height: ${(props) => props.height || 'initial'};
+	margin: ${(props) => props.margin || '0px'};
+	padding: ${(props) => props.padding || '0px'};
+	align-items: ${(props) => props.alignItems || 'initial'};
+	justify-content: ${(props) => props.justifyContent || 'initial'};
 `;
 
 export const TableHeader = styled.div`
