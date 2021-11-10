@@ -11,11 +11,16 @@ const _Container = styled.div`
 	margin-top: 54px;
 	display: grid;
 	height: 100%;
+	background: #f8f9fa;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
 
 	img {
 		object-fit: contain;
+		width: 80%;
 		height: 100%;
-		width: 100%;
 		image-rendering: -moz-crisp-edges;
 		mage-rendering: -o-crisp-edges;
 		image-rendering: -webkit-optimize-contrast;
