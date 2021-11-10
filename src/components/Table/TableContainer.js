@@ -26,9 +26,8 @@ const NormalTable = styled.div`
 		width: 100%;
 		position: relative;
 		overflow: scroll;
-		// overflow: ${(props) => (props.height ? 'scroll' : '')};
 		height: ${(props) => props.height || '100%'};
-		display: flex;
+		display: grid;
 		flex-direction: column;
 		border-spacing: 0;
 		border-bottom: 1px solid #e3e5e5;

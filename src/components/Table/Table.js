@@ -7,13 +7,8 @@ import {Draggable, Droppable} from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 const Tds = styled(RowDiv)`
-	overflow: hidden;
 	align-items: center;
 	min-width: ${(props) => props.width};
-`;
-
-const EmptySpace = styled.div`
-	margin-bottom: 40px;
 `;
 
 const Table = ({
@@ -105,10 +100,6 @@ const Table = ({
 		},
 		[isDraggable],
 	);
-
-	useEffect(() => {
-		console.log(document.querySelector(`div.${tableKey}.table`));
-	}, [tableKey]);
 
 	useEffect(() => {
 		setSelect && selectedFlatRows && selectedDropButton(selectedFlatRows);
