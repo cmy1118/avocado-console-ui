@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import IamNav from '../Nav/IamNav';
 import Header from '../Header';
 import {DragDropContext} from 'react-beautiful-dnd';
+import Footer from '../Footer';
 
 const _Container = styled.div`
 	overflow-y: scroll;
@@ -68,23 +69,31 @@ const IamLayout = ({children}) => {
 	}, [user, companyId, history]);
 
 	return (
-		<DragDropContext>
-			<_Container>
-				<Header />
-				<_Space
-					className={
-						isNavOpened ? 'mainContainer' : 'mainContainer close'
-					}
-				>
-					<IamNav
-						leftSize={2}
-						isOpened={isNavOpened}
-						setIsOpened={setIsNavOpened}
-					/>
-					<_MainSpace style={{width: '100%'}}>{children}</_MainSpace>
-				</_Space>
-			</_Container>
-		</DragDropContext>
+		<>
+			<DragDropContext>
+				<_Container>
+					<Header />
+					<_Space
+						className={
+							isNavOpened
+								? 'mainContainer'
+								: 'mainContainer close'
+						}
+					>
+						<IamNav
+							leftSize={2}
+							isOpened={isNavOpened}
+							setIsOpened={setIsNavOpened}
+						/>
+						<_MainSpace style={{width: '100%'}}>
+							{children}
+						</_MainSpace>
+					</_Space>
+					{/*<Footer />*/}
+				</_Container>
+			</DragDropContext>
+			<Footer />
+		</>
 	);
 };
 
