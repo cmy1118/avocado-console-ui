@@ -6,8 +6,6 @@ import dashboard from '../images/backgound/dashboard@2x.png';
 const _MainSpace = styled.div`
 	height: 100%;
 	background: #f0f3f6;
-	display: flex;
-	justify-content: center;
 `;
 
 const _Container = styled.div`
