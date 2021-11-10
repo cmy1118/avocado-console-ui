@@ -14,6 +14,7 @@ import styled from 'styled-components';
 
 const Container = styled(ColDiv)`
 	width: ${(props) => props.width};
+	flex: 1;
 `;
 
 const NormalTable = styled.div`

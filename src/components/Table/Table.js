@@ -107,7 +107,7 @@ const Table = ({
 	);
 
 	useEffect(() => {
-		console.log(document.querySelector(`.${tableKey} .table`));
+		console.log(document.querySelector(`div.${tableKey}.table`));
 	}, [tableKey]);
 
 	useEffect(() => {
