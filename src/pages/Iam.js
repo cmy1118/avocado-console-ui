@@ -6,14 +6,18 @@ import dashboard from '../images/backgound/dashboard@2x.png';
 const _MainSpace = styled.div`
 	height: 100%;
 	background: #f0f3f6;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
 `;
 
 const _Container = styled.div`
 	margin-top: 54px;
 	background-image: url(${dashboard});
 	background-position: center;
-	width: 100%;
-	height: 90%;
+	width: 95%;
+	height: 100%;
 	background-size: contain;
 	background-repeat: no-repeat;
 	image-rendering: -moz-crisp-edges;
