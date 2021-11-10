@@ -82,22 +82,33 @@ const Table = ({
 		[setSelect, tableKey],
 	);
 
-	const onMouseDownItem = useCallback((e) => {
-		let checkbox;
-		if (e.target.classList.contains('td')) {
-			checkbox =
-				e.target.parentNode.childNodes[0]?.childNodes[0]?.childNodes[0];
-			if (checkbox.type === 'checkbox' && !checkbox.checked)
-				checkbox.click();
-		} else if (e.target.classList.contains('tr')) {
-			checkbox = e.target.childNodes[0]?.childNodes[0]?.childNodes[0];
-			if (checkbox.type === 'checkbox' && !checkbox.checked)
-				checkbox.click();
-		}
-		const x = e.pageX - 160 + 'px';
-		const y = e.pageY - 27 + 'px';
-		setPosition({x, y});
-	}, []);
+	const onMouseDownItem = useCallback(
+		(e) => {
+			if (isDraggable) {
+				let checkbox;
+				if (e.target.classList.contains('td')) {
+					checkbox =
+						e.target.parentNode.childNodes[0]?.childNodes[0]
+							?.childNodes[0];
+					if (checkbox.type === 'checkbox' && !checkbox.checked)
+						checkbox.click();
+				} else if (e.target.classList.contains('tr')) {
+					checkbox =
+						e.target.childNodes[0]?.childNodes[0]?.childNodes[0];
+					if (checkbox.type === 'checkbox' && !checkbox.checked)
+						checkbox.click();
+				}
+				const x = e.pageX - 160 + 'px';
+				const y = e.pageY - 27 + 'px';
+				setPosition({x, y});
+			}
+		},
+		[isDraggable],
+	);
+
+	useEffect(() => {
+		console.log(document.querySelector(`.${tableKey} .table`));
+	}, [tableKey]);
 
 	useEffect(() => {
 		setSelect && selectedFlatRows && selectedDropButton(selectedFlatRows);
@@ -199,7 +210,6 @@ const Table = ({
 												provided.draggableProps.style,
 											)}
 											onMouseDown={onMouseDownItem}
-											onDragStart={(e) => console.log(e)}
 											className={`tr body ${
 												Object.keys(
 													selectedRowIds,

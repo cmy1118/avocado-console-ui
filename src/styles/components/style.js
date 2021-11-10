@@ -34,6 +34,7 @@ export const NavContainer = styled.div`
 	height: 100%;
 	min-width: 255px;
 	background: #ffffff;
+	z-index: 75;
 
 	// &.close {
 	// 	display: none;

@@ -110,7 +110,8 @@ const TableOptionsBar = ({
 
 	const onClickOpenSearchFilterContextMenu = useCallback(() => {
 		setIsSearchFilterContextMenuOpened(true);
-	}, [setIsColumnFilterContextMenuOpened]);
+	}, []);
+
 	const onClickOpenSelectColumnsContextMenu = useCallback(() => {
 		setIsColumnFilterContextMenuOpened(true);
 	}, [setIsColumnFilterContextMenuOpened]);

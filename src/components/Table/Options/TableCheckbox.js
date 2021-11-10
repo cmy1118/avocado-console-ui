@@ -101,16 +101,17 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 						}
 					}
 				}
+			} else {
+				// if (!e.target.isBetween) {
+				// 	checkboxes.forEach((checkbox) => {
+				// 		checkbox.title !==
+				// 			'Toggle All Current Page Rows Selected' &&
+				// 			checkbox.checked &&
+				// 			checkbox.click();
+				// 	});
+				// 	e.target.click();
+				// }
 			}
-
-			// todo : checkbox 기본 클릭은 나중에 작업하겠습니다..
-			// checkboxes.forEach((checkbox) => {
-			// 	checkbox.title !==
-			// 	'Toggle All Current Page Rows Selected' &&
-			// 	checkbox.checked &&
-			// 	checkbox.click();
-			// });
-			// e.target.click();
 
 			// todo : 현재 타겟의 마지막 체크 true
 			checkboxes.forEach((checkbox) => {
