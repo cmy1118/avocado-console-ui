@@ -74,6 +74,7 @@ export const SubHeader = styled.div`
 `;
 
 export const SummaryPageSubHeader = styled(SubHeader)`
+	width: fit-content;
 	padding: 30px 16px 13px 16px;
 	color: #178082;
 	&:hover {
