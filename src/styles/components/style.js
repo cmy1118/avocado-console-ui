@@ -69,6 +69,12 @@ export const SummaryPageSubHeader = styled(SubHeader)`
 	}
 `;
 
+export const AddPageDialogBoxSubHeader = styled(SubHeader)`
+	width: fit-content;
+	padding: 30px 16px 13px 16px;
+	color: black;
+`;
+
 export const DottedBorderSubHeader = styled(SubHeader)`
 	border-bottom: 2px #e3e5e5 dotted;
 `;

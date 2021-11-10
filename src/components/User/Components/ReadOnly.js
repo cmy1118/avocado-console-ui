@@ -8,6 +8,7 @@ import CURRENT_TARGET from '../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
 import {LiText} from '../../../styles/components/text';
 import {
+	AddPageDialogBoxSubHeader,
 	SubHeader,
 	SummaryList,
 	SummaryPageSubHeader,
@@ -51,10 +52,10 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 				</LiText>
 			</SummaryList>
 
-			<SummaryPageSubHeader>
+			<AddPageDialogBoxSubHeader>
 				그룹 :{' '}
 				{readOnlyData[tableKeys.users.add.groups.exclude]?.length}
-			</SummaryPageSubHeader>
+			</AddPageDialogBoxSubHeader>
 			<TableContainer
 				mode={'readOnly'}
 				tableKey={tableKeys.users.add.groups.exclude}
@@ -64,9 +65,9 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 				<Table />
 			</TableContainer>
 
-			<SummaryPageSubHeader>
+			<AddPageDialogBoxSubHeader>
 				권한 : {dummyPolicyOnDialogBox.length}
-			</SummaryPageSubHeader>
+			</AddPageDialogBoxSubHeader>
 			<TableContainer
 				mode={'readOnly'}
 				tableKey={tableKeys.users.add.permissions}
@@ -76,9 +77,9 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 				<Table />
 			</TableContainer>
 
-			<SummaryPageSubHeader>
+			<AddPageDialogBoxSubHeader>
 				태그 : {readOnlyData[tableKeys.users.add.tag].length}
-			</SummaryPageSubHeader>
+			</AddPageDialogBoxSubHeader>
 			<TableContainer
 				mode={'readOnly'}
 				tableKey={tableKeys.users.add.tag}
