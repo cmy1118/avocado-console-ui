@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const DescriptionPageContainer = styled.div`
 	margin-top: 54px;
-	height: calc(100% - 54px);
+	// height: calc(100% - 54px);
+	height: calc(100% - 76px);
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
