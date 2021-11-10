@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Header from '../Header';
+import Footer from '../Footer';
 
 const _Container = styled.div`
 	overflow-y: scroll;
@@ -32,6 +33,7 @@ const Layout = ({children}) => {
 		<_Container>
 			<Header />
 			{children}
+			<Footer />
 		</_Container>
 	);
 };

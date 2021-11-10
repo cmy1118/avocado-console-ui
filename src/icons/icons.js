@@ -1,5 +1,9 @@
 import React from 'react';
 
+//footer
+export const zoomInIcon = <span className='material-icons'>zoom_in</span>;
+export const zoomOutIcon = <span className='material-icons'>zoom_out</span>;
+
 // nav - burger menu icon
 export const burgerMenuIcon = <span className='material-icons'>menu</span>;
 
