@@ -13,14 +13,22 @@ const _Container = styled.div`
 	height: 100%;
 	background: #f8f9fa;
 	display: flex;
-	align-items: center;
+	align-items: start;
 	justify-content: center;
 	overflow: hidden;
+`;
+
+const _ImageContainer = styled.div`
+	background: #f8f9fa;
+	max-width: 1500px;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: start;
 
 	img {
 		object-fit: contain;
-		width: 80%;
-		height: 100%;
+		width: 100%;
 		image-rendering: -moz-crisp-edges;
 		mage-rendering: -o-crisp-edges;
 		image-rendering: -webkit-optimize-contrast;
@@ -40,10 +48,14 @@ const Main = () => {
 	return (
 		<_Container>
 			{companyId === account.KT.companyId && (
-				<img src={kt} onClick={onClickMove} />
+				<_ImageContainer>
+					<img src={kt} onClick={onClickMove} />
+				</_ImageContainer>
 			)}
 			{companyId === account.SAMSUNG.companyId && (
-				<img src={samsung} onClick={onClickMove} />
+				<_ImageContainer>
+					<img src={samsung} onClick={onClickMove} />
+				</_ImageContainer>
 			)}
 		</_Container>
 	);
