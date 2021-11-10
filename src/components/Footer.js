@@ -4,7 +4,9 @@ import {searchIcon, zoomInIcon, zoomOutIcon} from '../icons/icons';
 import {HoverIconButton} from '../styles/components/icons';
 
 const _Footer = styled.footer`
-	position: relative;
+	width: -webkit-fill-available;
+	position: fixed;
+	bottom: 0;
 	height: 32px;
 	display: flex;
 	justify-content: space-between;
@@ -34,17 +36,6 @@ const Footer = () => {
 	return (
 		<_Footer>
 			<span>Copyright 2021. NETAND Inc. all rights reserved</span>
-			<_RightSideContainer>
-				<HoverIconButton margin_right={'10px'} size={'micro'}>
-					{zoomOutIcon}
-				</HoverIconButton>
-				<HoverIconButton margin_right={'10px'} size={'micro'}>
-					{zoomInIcon}
-				</HoverIconButton>
-				<HoverIconButton margin_right={'10px'} size={'micro'}>
-					{searchIcon}
-				</HoverIconButton>
-			</_RightSideContainer>
 		</_Footer>
 	);
 };

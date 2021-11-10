@@ -15,7 +15,7 @@ const _Container = styled.div`
 	overflow-y: scroll;
 	display: flex;
 	flex-direction: column;
-	flex: 1;
+	// flex: 1;
 	height: 100%;
 	width: 100%;
 	position: relative;
@@ -47,6 +47,8 @@ const _Container = styled.div`
 `;
 
 const _Space = styled.div`
+	margin-bottom: 130px;
+	flex: 1;
 	height: 100%;
 	display: flex;
 	transition: transform 0.5s ease-in-out;
@@ -89,10 +91,10 @@ const IamLayout = ({children}) => {
 							{children}
 						</_MainSpace>
 					</_Space>
-					{/*<Footer />*/}
+					<Footer />
 				</_Container>
 			</DragDropContext>
-			<Footer />
+			{/*<Footer />*/}
 		</>
 	);
 };
