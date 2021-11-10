@@ -36,23 +36,13 @@ import {
 	statusConverter,
 } from '../../../utils/tableDataConverter';
 import styled from 'styled-components';
-import {TabContainer, TabContents} from '../../../styles/components/tab';
-
-const HeaderDiv = styled.div`
-	display: flex;
-	flex-direction: column;
-	position: sticky;
-	top: 54px;
-	background: #fff;
-	z-index: 75;
-`;
-
-const FlexDiv = styled.div`
-	display: flex;
-	flex-direction: ${(props) =>
-		props.isOpened ? 'column' : 'column-reverse'};
-	flex: 1;
-`;
+import {
+	CoveredContent,
+	DescriptionPageContainer,
+	TabContainer,
+	TabContents,
+	VisibleContent,
+} from '../../../styles/components/tab';
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
@@ -76,7 +66,17 @@ const UserDescriptionSpace = ({userId}) => {
 
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
-	}, [isSummaryOpened]);
+		if (isSummaryOpened) {
+			history.push({
+				pathname: `/users/${userId}`,
+			});
+		} else {
+			history.push({
+				pathname: `/users/${userId}`,
+				search: 'tabs=user',
+			});
+		}
+	}, [history, isSummaryOpened, setIsSummaryOpened]);
 
 	const onClickLinkToAddUserPage = useCallback(() => {
 		history.push('/users/add');
@@ -90,8 +90,8 @@ const UserDescriptionSpace = ({userId}) => {
 	}, [userId, user, history]);
 
 	return (
-		<IamContainer>
-			<HeaderDiv>
+		<DescriptionPageContainer>
+			<VisibleContent id={'iam-tab-user'}>
 				<CurrentPathContainer>
 					<AppBarLink to='/iam'>IAM</AppBarLink>
 					<NextPath>{' > '}</NextPath>
@@ -101,6 +101,7 @@ const UserDescriptionSpace = ({userId}) => {
 						{user?.name}
 					</AppBarLink>
 				</CurrentPathContainer>
+
 				<SubHeader className={'subHeader'}>
 					<SubHeaderText>
 						<HoverIconButton
@@ -123,6 +124,7 @@ const UserDescriptionSpace = ({userId}) => {
 						</TransparentButton>
 					</AppBarButtons>
 				</SubHeader>
+
 				<SummaryList className={'summaryList'}>
 					<LiText>
 						사용자 : {user?.name} ({user?.id})
@@ -142,61 +144,67 @@ const UserDescriptionSpace = ({userId}) => {
 						{expiredConverter(user?.passwordExpired)}
 					</LiText>
 				</SummaryList>
-			</HeaderDiv>
-			<FlexDiv isOpened={isSummaryOpened}>
-				{isSummaryOpened ? (
-					<UserSummary
-						Id={userId}
-						param={'users'}
-						setIsOpened={setIsSummaryOpened}
-					/>
-				) : (
-					<TabContents>
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'user' && <UserInfoTab userId={userId} />}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'group' && (
-							<UserGroupsTab
-								title
-								userId={userId}
-								space={'UserGroupsTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'role' && (
-							<UserRolesTab
-								userId={userId}
-								space={'UserRolesTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'tag' && (
-							<UserOnDescPageTags
-								userId={userId}
-								space={'UserOnDescPageTags'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
-					</TabContents>
-				)}
-				<TabContainer
-					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}
-				>
-					<TabBar
-						Tabs={TabBarInfo}
-						param={'users'}
-						Id={userId}
-						isOpened={isSummaryOpened}
-						setIsOpened={setIsSummaryOpened}
-					/>
-				</TabContainer>
-			</FlexDiv>
-		</IamContainer>
+			</VisibleContent>
+
+			<CoveredContent>
+				<UserSummary
+					Id={userId}
+					param={'users'}
+					setIsOpened={setIsSummaryOpened}
+				/>
+			</CoveredContent>
+
+			<TabContainer
+				isOpend={!isSummaryOpened}
+				height={
+					document.getElementsByTagName('BODY')[0]?.clientHeight -
+					document
+						.getElementById('iam-tab-user')
+						?.getBoundingClientRect().bottom
+				}
+			>
+				<TabBar
+					Tabs={TabBarInfo}
+					param={'users'}
+					Id={userId}
+					isOpened={isSummaryOpened}
+					setIsOpened={setIsSummaryOpened}
+				/>
+
+				<TabContents>
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'user' && <UserInfoTab userId={userId} />}
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'group' && (
+						<UserGroupsTab
+							title
+							userId={userId}
+							space={'UserGroupsTab'}
+							isFold={isTableFold}
+							setIsFold={setIsTableFold}
+						/>
+					)}
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'role' && (
+						<UserRolesTab
+							userId={userId}
+							space={'UserRolesTab'}
+							isFold={isTableFold}
+							setIsFold={setIsTableFold}
+						/>
+					)}
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'tag' && (
+						<UserOnDescPageTags
+							userId={userId}
+							space={'UserOnDescPageTags'}
+							isFold={isTableFold}
+							setIsFold={setIsTableFold}
+						/>
+					)}
+				</TabContents>
+			</TabContainer>
+		</DescriptionPageContainer>
 	);
 };
 

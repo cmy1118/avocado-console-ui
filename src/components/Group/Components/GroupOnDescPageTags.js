@@ -13,6 +13,7 @@ import {
 import TableOptionText from '../../Table/Options/TableOptionText';
 import TableContainer from '../../Table/TableContainer';
 import {AppBarButtons} from '../../../styles/components/style';
+import {TabContentContainer} from '../../../styles/components/tab';
 
 const GroupOnDescPageTags = ({groupId}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -63,7 +64,7 @@ const GroupOnDescPageTags = ({groupId}) => {
 	}, [data, select]);
 
 	return (
-		<>
+		<TabContentContainer>
 			<TableSpace>
 				태그 추가
 				<AppBarButtons>
@@ -89,7 +90,7 @@ const GroupOnDescPageTags = ({groupId}) => {
 			>
 				<Table setSelect={setSelect} setData={setData} />
 			</TableContainer>
-		</>
+		</TabContentContainer>
 	);
 };
 

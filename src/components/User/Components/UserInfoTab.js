@@ -13,6 +13,7 @@ import Form from '../../RecycleComponents/New/Form';
 import {ColDiv, RowDiv} from '../../../styles/components/div';
 import {Label} from '../../../styles/components/text';
 import {TableSpace} from '../../../styles/components/table';
+import {TabContentContainer} from '../../../styles/components/tab';
 
 const UserInfoTab = ({userId}) => {
 	const [values, setValues] = useState({email: '', number: ''});
@@ -43,7 +44,7 @@ const UserInfoTab = ({userId}) => {
 	}, []);
 
 	return (
-		<div>
+		<TabContentContainer>
 			<TableSpace>
 				기본정보
 				<NormalButton
@@ -184,7 +185,7 @@ const UserInfoTab = ({userId}) => {
 					</ColDiv>
 				</Form>
 			</ModalFormContainer>
-		</div>
+		</TabContentContainer>
 	);
 };
 

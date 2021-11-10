@@ -17,6 +17,7 @@ import TableOptionsBar from '../../Table/TableOptionsBar';
 import {TableFoldContainer, TableSpace} from '../../../styles/components/table';
 import TableFold from '../../Table/Options/TableFold';
 import TableOptionText from '../../Table/Options/TableOptionText';
+import {TabContentContainer} from '../../../styles/components/tab';
 
 const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 	const {roles} = useSelector(IAM_ROLES.selector);
@@ -53,7 +54,7 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 	);
 
 	return (
-		<>
+		<TabContentContainer>
 			<TableSpace>
 				이 역할의 사용자: {includedData.length}
 				<NormalBorderButton margin={'0px 0px 0px 5px'}>
@@ -114,7 +115,7 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 					)}
 				</TableFoldContainer>
 			</DragContainer>
-		</>
+		</TabContentContainer>
 	);
 };
 

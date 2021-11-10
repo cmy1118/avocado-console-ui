@@ -20,6 +20,7 @@ import TableFold from '../../Table/Options/TableFold';
 import {AppBarButtons} from '../../../styles/components/style';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import {parentGroupConverter} from '../../../utils/tableDataConverter';
+import {TabContentContainer} from '../../../styles/components/tab';
 
 const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 	const {roles} = useSelector(IAM_ROLES.selector);
@@ -69,7 +70,7 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 	);
 
 	return (
-		<>
+		<TabContentContainer>
 			<TableSpace>
 				이 역할의 그룹: {includedData.length}
 				<NormalBorderButton margin={'0px 0px 0px 5px'}>
@@ -132,7 +133,7 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 					)}
 				</TableFoldContainer>
 			</DragContainer>
-		</>
+		</TabContentContainer>
 	);
 };
 

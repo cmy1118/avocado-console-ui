@@ -28,6 +28,7 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
 	const user = useMemo(() => users.find((v) => v.uid === Id), [users, Id]);
+
 	const onClickChangeTab = useCallback(
 		(v) => () => {
 			setIsOpened(false);

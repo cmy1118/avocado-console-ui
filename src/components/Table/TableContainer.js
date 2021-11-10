@@ -13,8 +13,6 @@ import {ColDiv} from '../../styles/components/div';
 import styled from 'styled-components';
 
 const Container = styled(ColDiv)`
-	flex: 1;
-	// height: 100%;
 	width: ${(props) => props.width};
 `;
 
@@ -22,10 +20,8 @@ const NormalTable = styled.div`
 	margin: 0px 16px;
 	box-sizing: border-box;
 	display: flex;
-	// height: 100%;
 
 	.table {
-		// flex: 1;
 		width: 100%;
 		position: relative;
 		overflow: scroll;

@@ -4,7 +4,6 @@ import {useSelector} from 'react-redux';
 
 import {
 	AppBarButtons,
-	IamContainer,
 	SubHeader,
 	SubHeaderText,
 	SummaryList,
@@ -32,23 +31,13 @@ import GroupUsersTab from '../Components/GroupUsersTab';
 import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {TabContainer, TabContents} from '../../../styles/components/tab';
-
-const HeaderDiv = styled.div`
-	display: flex;
-	flex-direction: column;
-	position: sticky;
-	top: 54px;
-	background: #fff;
-	z-index: 75;
-`;
-
-const FlexDiv = styled.div`
-	display: flex;
-	flex-direction: ${(props) =>
-		props.isOpened ? 'column' : 'column-reverse'};
-	flex: 1;
-`;
+import {
+	CoveredContent,
+	DescriptionPageContainer,
+	TabContainer,
+	TabContents,
+	VisibleContent,
+} from '../../../styles/components/tab';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const history = useHistory();
@@ -88,8 +77,8 @@ const GroupDescriptionSpace = ({groupId}) => {
 	}, [groupId, group, history]);
 
 	return (
-		<IamContainer>
-			<HeaderDiv>
+		<DescriptionPageContainer>
+			<VisibleContent id={'iam-tab-group'}>
 				<CurrentPathContainer>
 					<AppBarLink to='/iam'>IAM</AppBarLink>
 					<NextPath>{' > '}</NextPath>
@@ -112,6 +101,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 						</HoverIconButton>
 						요약 [ {group?.name} ]
 					</SubHeaderText>
+
 					<AppBarButtons>
 						<NormalButton onClick={onClickChangeGroupName}>
 							그룹명 편집
@@ -134,59 +124,63 @@ const GroupDescriptionSpace = ({groupId}) => {
 					</LiText>
 					<LiText>생성 일시 : {group?.creationDate}</LiText>
 				</SummaryList>
-			</HeaderDiv>
-			<FlexDiv isOpened={isSummaryOpened}>
-				{isSummaryOpened ? (
-					<GroupSummary
-						Id={groupId}
-						param={'groups'}
-						setIsOpened={setIsSummaryOpened}
-					/>
-				) : (
-					<TabContents>
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'user' && (
-							<GroupUsersTab
-								groupId={groupId}
-								space={'GroupUsersTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'role' && (
-							<GroupRolesTab
-								groupId={groupId}
-								space={'GroupRolesTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'tag' && (
-							<GroupOnDescPageTags
-								groupId={groupId}
-								space={'GroupOnDescPageTags'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
-					</TabContents>
-				)}
+			</VisibleContent>
 
-				<TabContainer
-					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}
-				>
-					<TabBar
-						Tabs={TabBarInfo}
-						param={'groups'}
-						Id={groupId}
-						isOpened={isSummaryOpened}
-						setIsOpened={setIsSummaryOpened}
-					/>
-				</TabContainer>
-			</FlexDiv>
-		</IamContainer>
+			<CoveredContent>
+				<GroupSummary
+					Id={groupId}
+					param={'groups'}
+					setIsOpened={setIsSummaryOpened}
+				/>
+			</CoveredContent>
+
+			<TabContainer
+				isOpend={!isSummaryOpened}
+				height={
+					document.getElementsByTagName('BODY')[0]?.clientHeight -
+					document
+						.getElementById('iam-tab-group')
+						?.getBoundingClientRect().bottom
+				}
+			>
+				<TabBar
+					Tabs={TabBarInfo}
+					param={'groups'}
+					Id={groupId}
+					isOpened={isSummaryOpened}
+					setIsOpened={setIsSummaryOpened}
+				/>
+				<TabContents>
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'user' && (
+						<GroupUsersTab
+							groupId={groupId}
+							space={'GroupUsersTab'}
+							isFold={isTableFold}
+							setIsFold={setIsTableFold}
+						/>
+					)}
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'role' && (
+						<GroupRolesTab
+							groupId={groupId}
+							space={'GroupRolesTab'}
+							isFold={isTableFold}
+							setIsFold={setIsTableFold}
+						/>
+					)}
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'tag' && (
+						<GroupOnDescPageTags
+							groupId={groupId}
+							space={'GroupOnDescPageTags'}
+							isFold={isTableFold}
+							setIsFold={setIsTableFold}
+						/>
+					)}
+				</TabContents>
+			</TabContainer>
+		</DescriptionPageContainer>
 	);
 };
 

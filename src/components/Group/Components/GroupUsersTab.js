@@ -16,6 +16,7 @@ import TableFold from '../../Table/Options/TableFold';
 import TableContainer from '../../Table/TableContainer';
 import DragContainer from '../../Table/DragContainer';
 import TableOptionsBar from '../../Table/TableOptionsBar';
+import {TabContentContainer} from '../../../styles/components/tab';
 
 const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -87,69 +88,76 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 		setIncludedDataIds(group.members);
 	}, [group.members]);
 	return (
-		<DragContainer
-			selected={select}
-			data={includedDataIds}
-			setData={setIncludedDataIds}
-			includedKey={tableKeys.groups.summary.tabs.users.include}
-			excludedData={excludedData}
-			includedData={includedData}
-		>
-			<TableSpace>
-				이 그룹의 사용자 : {includedData.length}
-				<TransparentButton
-					margin='0px 0px 0px 5px'
-					onClick={onClickDeleteRolesFromGroup}
-				>
-					사용자 삭제
-				</TransparentButton>
-			</TableSpace>
-			<TableContainer
-				data={excludedData}
-				tableKey={tableKeys.groups.summary.tabs.users.include}
-				columns={
-					tableColumns[tableKeys.groups.summary.tabs.users.include]
-				}
+		<TabContentContainer>
+			<DragContainer
+				selected={select}
+				data={includedDataIds}
+				setData={setIncludedDataIds}
+				includedKey={tableKeys.groups.summary.tabs.users.include}
+				excludedData={excludedData}
+				includedData={includedData}
 			>
-				<TableOptionsBar />
-				<Table setSelect={setSelect} isDraggable />
-			</TableContainer>
-			<TableFoldContainer>
-				<TableFold
-					title={<>이 그룹의 다른 사용자 : {excludedData.length}</>}
-					space={'GroupUsersTab'}
-					isFold={isFold}
-					setIsFold={setIsFold}
-				>
-					<NormalButton
+				<TableSpace>
+					이 그룹의 사용자 : {includedData.length}
+					<TransparentButton
 						margin='0px 0px 0px 5px'
-						onClick={onClickAddRolesToGroup}
+						onClick={onClickDeleteRolesFromGroup}
 					>
-						사용자 추가
-					</NormalButton>
-				</TableFold>
-				{isFold[space] && (
-					<>
-						<TableOptionText data={'usersGroups'} />
-
-						<TableContainer
-							data={excludedData}
-							tableKey={
-								tableKeys.groups.summary.tabs.users.exclude
-							}
-							columns={
-								tableColumns[
-									tableKeys.groups.summary.tabs.users.exclude
-								]
-							}
+						사용자 삭제
+					</TransparentButton>
+				</TableSpace>
+				<TableContainer
+					data={excludedData}
+					tableKey={tableKeys.groups.summary.tabs.users.include}
+					columns={
+						tableColumns[
+							tableKeys.groups.summary.tabs.users.include
+						]
+					}
+				>
+					<TableOptionsBar />
+					<Table setSelect={setSelect} isDraggable />
+				</TableContainer>
+				<TableFoldContainer>
+					<TableFold
+						title={
+							<>이 그룹의 다른 사용자 : {excludedData.length}</>
+						}
+						space={'GroupUsersTab'}
+						isFold={isFold}
+						setIsFold={setIsFold}
+					>
+						<NormalButton
+							margin='0px 0px 0px 5px'
+							onClick={onClickAddRolesToGroup}
 						>
-							<TableOptionsBar />
-							<Table setSelect={setSelect} isDraggable />
-						</TableContainer>
-					</>
-				)}
-			</TableFoldContainer>
-		</DragContainer>
+							사용자 추가
+						</NormalButton>
+					</TableFold>
+					{isFold[space] && (
+						<>
+							<TableOptionText data={'usersGroups'} />
+
+							<TableContainer
+								data={excludedData}
+								tableKey={
+									tableKeys.groups.summary.tabs.users.exclude
+								}
+								columns={
+									tableColumns[
+										tableKeys.groups.summary.tabs.users
+											.exclude
+									]
+								}
+							>
+								<TableOptionsBar />
+								<Table setSelect={setSelect} isDraggable />
+							</TableContainer>
+						</>
+					)}
+				</TableFoldContainer>
+			</DragContainer>
+		</TabContentContainer>
 	);
 };
 

@@ -170,6 +170,7 @@ const Table = ({
 							})}
 						</div>
 					))}
+
 					{page.map((row, index) => {
 						prepareRow(row);
 						return (
