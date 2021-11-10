@@ -51,6 +51,7 @@ const _Space = styled.div`
 	display: flex;
 	transition: transform 0.5s ease-in-out;
 	position: relative;
+	margin-bottom: 10px;
 `;
 
 const _MainSpace = styled.div`
