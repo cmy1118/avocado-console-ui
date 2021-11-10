@@ -13,13 +13,13 @@ const placeholders = {
 	roleType: '역할 유형',
 };
 
-const SelectionOption = ({column: {id}}) => {
+const SelectionOption = ({column: {setFilter, id}}) => {
 	const ref = useRef(null);
 
 	return (
 		<Form
 			initialValues={{[id]: ''}}
-			onSubmit={(data) => console.log(data)}
+			onSubmit={(data) => setFilter(data[id])}
 			innerRef={ref}
 		>
 			<ComboBox

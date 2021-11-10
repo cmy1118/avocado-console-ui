@@ -34,12 +34,13 @@ const placeholders = {
 	[tableKeys.roles.summary.tabs.groups.exclude]: '그룹 이름, 그룹 유형',
 };
 
-function Search({tableKey}) {
+function Search({tableKey, setGlobalFilter}) {
 	const ref = useRef(null);
 	const handleSubmit = (data) => {
 		console.log('api');
 		console.log('tableKey', tableKey);
 		console.log('data', data);
+		setGlobalFilter(data['search']);
 	};
 
 	return (
@@ -62,5 +63,6 @@ function Search({tableKey}) {
 }
 Search.propTypes = {
 	tableKey: PropTypes.string,
+	setGlobalFilter: PropTypes.func,
 };
 export default Search;

@@ -5,13 +5,13 @@ import Form from '../../../RecycleComponents/New/Form';
 import TextBox from '../../../RecycleComponents/New/TextBox';
 import {Span} from '../../../../styles/components/text';
 
-const TextBoxOption = ({column: {id}}) => {
+const TextBoxOption = ({column: {setFilter, id}}) => {
 	const ref = useRef(null);
 
 	return (
 		<Form
 			initialValues={{[id]: 0}}
-			onSubmit={(data) => console.log(data)}
+			onSubmit={(data) => setFilter(data[id])}
 			innerRef={ref}
 		>
 			<TextBox

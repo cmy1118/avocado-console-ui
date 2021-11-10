@@ -156,6 +156,7 @@ const TableContainer = ({
 		setAllFilters,
 		getToggleHideAllColumnsProps,
 		setHiddenColumns,
+		setGlobalFilter,
 		state: {pageIndex, selectedRowIds, pageSize, filters},
 	} = useTable(
 		{
@@ -216,6 +217,7 @@ const TableContainer = ({
 							allColumns,
 							canPreviousPage,
 							canNextPage,
+							setGlobalFilter,
 							pageOptions,
 							gotoPage,
 							nextPage,
