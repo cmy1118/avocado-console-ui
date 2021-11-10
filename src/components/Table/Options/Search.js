@@ -7,7 +7,7 @@ import {Icon} from '../../../styles/components/icons';
 import {tableKeys} from '../../../Constants/Table/keys';
 
 const placeholders = {
-	[tableKeys.users.basic]: '사용자 계정, 사용자 이름, 계정 상태, 태그명',
+	[tableKeys.users.basic]: '사용자 계정, 사용자 이름, 태그명',
 	[tableKeys.users.add.groups.exclude]: '그룹 이름',
 	[tableKeys.users.add.roles.exclude]: '역할 이름',
 	[tableKeys.users.summary.tabs.groups.include]: '그룹명, 그룹 유형',

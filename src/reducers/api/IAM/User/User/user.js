@@ -155,6 +155,12 @@ const slice = createSlice({
 				accountExpired: '2022.02.17',
 				tags: [
 					{
+						name: 'level',
+						value: 'Admin',
+						permissions: ['permission2'],
+						creationDate: '2021.05.02 14:50:14',
+					},
+					{
 						name: 'type',
 						value: 'White',
 						permissions: ['permission3', 'permission4'],
