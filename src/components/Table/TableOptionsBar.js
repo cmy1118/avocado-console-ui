@@ -68,6 +68,7 @@ const TableOptionsBar = ({
 	canNextPage,
 	pageIndex,
 	pageOptions,
+	setGlobalFilter,
 	pageSize,
 	setPageSize,
 	allColumns,
@@ -120,7 +121,10 @@ const TableOptionsBar = ({
 		<_Container>
 			<RowDiv justifyContent={'space-between'}>
 				<_OptionContainer>
-					<Search tableKey={tableKey} />
+					<Search
+						tableKey={tableKey}
+						setGlobalFilter={setGlobalFilter}
+					/>
 					{isSearchFilterable && (
 						<div>
 							<_FilterButton
@@ -269,6 +273,7 @@ TableOptionsBar.propTypes = {
 	allColumns: PropTypes.array,
 	filters: PropTypes.array,
 	setAllFilters: PropTypes.func,
+	setGlobalFilter: PropTypes.func,
 	getToggleHideAllColumnsProps: PropTypes.func,
 	setHiddenColumns: PropTypes.func,
 };
