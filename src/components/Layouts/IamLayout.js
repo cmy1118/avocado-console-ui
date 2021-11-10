@@ -12,8 +12,10 @@ import {DragDropContext} from 'react-beautiful-dnd';
 import Footer from '../Footer';
 
 const _Container = styled.div`
-	overflow-y: scroll;
+	// overflow-y: scroll;
 	display: flex;
+	overflow: auto;
+
 	flex-direction: column;
 	// flex: 1;
 	height: 100%;
@@ -22,10 +24,12 @@ const _Container = styled.div`
 
 	.mainContainer {
 		margin-left: 255px;
+		overflow: auto;
 		// transition: all 0.5s ease-in-out;
 	}
 	.mainContainer.close {
 		margin-left: 0;
+		overflow: auto;
 		// transition: 0.5s ease-in-out;
 	}
 
@@ -47,7 +51,7 @@ const _Container = styled.div`
 `;
 
 const _Space = styled.div`
-	margin-bottom: 130px;
+	margin-bottom: 30px;
 	flex: 1;
 	height: 100%;
 	display: flex;
