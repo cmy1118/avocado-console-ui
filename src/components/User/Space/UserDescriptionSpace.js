@@ -36,31 +36,13 @@ import {
 	statusConverter,
 } from '../../../utils/tableDataConverter';
 import styled from 'styled-components';
-import {TabContainer, TabContents} from '../../../styles/components/tab';
-
-export const DescriptionPageContainer = styled.div`
-	margin-top: 54px;
-	height: calc(100% - 54px);
-	overflow: hidden;
-	display: flex;
-	flex-direction: column;
-`;
-
-const HeaderDiv = styled.div`
-	display: flex;
-	flex-direction: column;
-`;
-
-const FlexDiv = styled.div`
-	flex: 1;
-	overflow: scroll;
-`;
-
-const TabCc = styled.div``;
-
-// position: fixed;
-// top: ${(props) => props.top};
-// left: ${(props) => props.left};
+import {
+	CoveredContent,
+	DescriptionPageContainer,
+	TabContainer,
+	TabContents,
+	VisibleContent,
+} from '../../../styles/components/tab';
 
 const UserDescriptionSpace = ({userId}) => {
 	const history = useHistory();
@@ -107,13 +89,9 @@ const UserDescriptionSpace = ({userId}) => {
 		history.push(`${userId}`);
 	}, [userId, user, history]);
 
-	// console.log(
-	// 	document.getElementById('test11')?.getBoundingClientRect().bottom,
-	// );
-
 	return (
 		<DescriptionPageContainer>
-			<HeaderDiv id={'test11'}>
+			<VisibleContent id={'iam-tab-user'}>
 				<CurrentPathContainer>
 					<AppBarLink to='/iam'>IAM</AppBarLink>
 					<NextPath>{' > '}</NextPath>
@@ -123,6 +101,7 @@ const UserDescriptionSpace = ({userId}) => {
 						{user?.name}
 					</AppBarLink>
 				</CurrentPathContainer>
+
 				<SubHeader className={'subHeader'}>
 					<SubHeaderText>
 						<IconButton
@@ -145,6 +124,7 @@ const UserDescriptionSpace = ({userId}) => {
 						</TransparentButton>
 					</AppBarButtons>
 				</SubHeader>
+
 				<SummaryList className={'summaryList'}>
 					<LiText>
 						사용자 : {user?.name} ({user?.id})
@@ -164,17 +144,25 @@ const UserDescriptionSpace = ({userId}) => {
 						{expiredConverter(user?.passwordExpired)}
 					</LiText>
 				</SummaryList>
-			</HeaderDiv>
+			</VisibleContent>
 
-			<FlexDiv>
+			<CoveredContent>
 				<UserSummary
 					Id={userId}
 					param={'users'}
 					setIsOpened={setIsSummaryOpened}
 				/>
-			</FlexDiv>
+			</CoveredContent>
 
-			<TabCc>
+			<TabContainer
+				isOpend={!isSummaryOpened}
+				height={
+					document.getElementsByTagName('BODY')[0]?.clientHeight -
+					document
+						.getElementById('iam-tab-user')
+						?.getBoundingClientRect().bottom
+				}
+			>
 				<TabBar
 					Tabs={TabBarInfo}
 					param={'users'}
@@ -182,6 +170,7 @@ const UserDescriptionSpace = ({userId}) => {
 					isOpened={isSummaryOpened}
 					setIsOpened={setIsSummaryOpened}
 				/>
+
 				<TabContents>
 					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 						'user' && <UserInfoTab userId={userId} />}
@@ -214,7 +203,7 @@ const UserDescriptionSpace = ({userId}) => {
 						/>
 					)}
 				</TabContents>
-			</TabCc>
+			</TabContainer>
 		</DescriptionPageContainer>
 	);
 };

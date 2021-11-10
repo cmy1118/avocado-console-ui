@@ -16,6 +16,7 @@ import TableContainer from '../../Table/TableContainer';
 import {AppBarButtons} from '../../../styles/components/style';
 import styled from 'styled-components';
 import TableOptionsBar from '../../Table/TableOptionsBar';
+import {TabContentContainer} from '../../../styles/components/tab';
 
 const _TableSpace = styled(TableSpace)`
 	margin-top: 30px;
@@ -69,7 +70,7 @@ const UserOnDescPageTags = ({userId}) => {
 	}, [data, select]);
 
 	return (
-		<>
+		<TabContentContainer>
 			<TableSpace>
 				태그 추가
 				<AppBarButtons>
@@ -183,7 +184,7 @@ const UserOnDescPageTags = ({userId}) => {
 					</TableContainer>
 				</div>
 			)}
-		</>
+		</TabContentContainer>
 	);
 };
 

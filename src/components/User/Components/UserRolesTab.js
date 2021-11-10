@@ -18,6 +18,7 @@ import TableFold from '../../Table/Options/TableFold';
 import TableContainer from '../../Table/TableContainer';
 import DragContainer from '../../Table/DragContainer';
 import TableOptionsBar from '../../Table/TableOptionsBar';
+import {TabContentContainer} from '../../../styles/components/tab';
 
 const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -94,7 +95,7 @@ const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 	}, [user.roles]);
 
 	return (
-		<>
+		<TabContentContainer>
 			<TableSpace>
 				이 사용자의 권한: {includedData.length}{' '}
 				<TransparentButton
@@ -161,7 +162,7 @@ const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 					)}
 				</TableFoldContainer>
 			</DragContainer>
-		</>
+		</TabContentContainer>
 	);
 };
 

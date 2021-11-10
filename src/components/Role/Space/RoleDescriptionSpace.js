@@ -24,30 +24,19 @@ import {FOLD_DATA} from '../../../utils/data';
 import {LiText} from '../../../styles/components/text';
 import {
 	AppBarButtons,
-	IamContainer,
 	SubHeader,
 	SubHeaderText,
 	SummaryList,
 } from '../../../styles/components/style';
 import styled from 'styled-components';
-import {TabContainer, TabContents} from '../../../styles/components/tab';
+import {
+	CoveredContent,
+	DescriptionPageContainer,
+	TabContainer,
+	TabContents,
+	VisibleContent,
+} from '../../../styles/components/tab';
 import user from '../../../reducers/api/IAM/User/User/user';
-
-const HeaderDiv = styled.div`
-	display: flex;
-	flex-direction: column;
-	position: sticky;
-	top: 54px;
-	background: #fff;
-	z-index: 75;
-`;
-
-const FlexDiv = styled.div`
-	display: flex;
-	flex-direction: ${(props) =>
-		props.isOpened ? 'column' : 'column-reverse'};
-	flex: 1;
-`;
 
 const RoleDescriptionSpace = ({roleId}) => {
 	const history = useHistory();
@@ -82,8 +71,8 @@ const RoleDescriptionSpace = ({roleId}) => {
 	}, [roleId, role, history]);
 
 	return (
-		<IamContainer>
-			<HeaderDiv>
+		<DescriptionPageContainer>
+			<VisibleContent id={'iam-tab-role'}>
 				<CurrentPathContainer>
 					<AppBarLink to='/iam'>IAM</AppBarLink>
 					<NextPath>{' > '}</NextPath>
@@ -125,58 +114,63 @@ const RoleDescriptionSpace = ({roleId}) => {
 					<LiText>마지막 활동 : 사용자 접근정책 변경</LiText>
 					<LiText>마지막 활동 사용자 : 김영우 (kyoung634)</LiText>
 				</SummaryList>
-			</HeaderDiv>
-			<FlexDiv isOpened={isSummaryOpened}>
-				{isSummaryOpened ? (
-					<RoleSummary
-						Id={roleId}
-						param={'roles'}
-						setIsOpened={setIsSummaryOpened}
-					/>
-				) : (
-					<TabContents>
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'role' && (
-							<RolePolicyTab
-								roleId={roleId}
-								space={'RolePolicyTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'user' && (
-							<RoleUserTab
-								roleId={roleId}
-								space={'RoleUserTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'group' && (
-							<RoleGroupTab
-								roleId={roleId}
-								space={'RoleGroupTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
-					</TabContents>
-				)}
-				<TabContainer
-					className={isSummaryOpened ? 'tabBar fix' : 'tabBar'}
-				>
-					<TabBar
-						Tabs={TabBarInfo}
-						param={'roles'}
-						Id={roleId}
-						isOpened={isSummaryOpened}
-						setIsOpened={setIsSummaryOpened}
-					/>
-				</TabContainer>
-			</FlexDiv>
-		</IamContainer>
+			</VisibleContent>
+
+			<CoveredContent>
+				<RoleSummary
+					Id={roleId}
+					param={'roles'}
+					setIsOpened={setIsSummaryOpened}
+				/>
+			</CoveredContent>
+
+			<TabContainer
+				isOpend={!isSummaryOpened}
+				height={
+					document.getElementsByTagName('BODY')[0]?.clientHeight -
+					document
+						.getElementById('iam-tab-role')
+						?.getBoundingClientRect().bottom
+				}
+			>
+				<TabBar
+					Tabs={TabBarInfo}
+					param={'roles'}
+					Id={roleId}
+					isOpened={isSummaryOpened}
+					setIsOpened={setIsSummaryOpened}
+				/>
+				<TabContents>
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'role' && (
+						<RolePolicyTab
+							roleId={roleId}
+							space={'RolePolicyTab'}
+							isFold={isTableFold}
+							setIsFold={setIsTableFold}
+						/>
+					)}
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'user' && (
+						<RoleUserTab
+							roleId={roleId}
+							space={'RoleUserTab'}
+							isFold={isTableFold}
+							setIsFold={setIsTableFold}
+						/>
+					)}
+					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+						'group' && (
+						<RoleGroupTab
+							roleId={roleId}
+							space={'RoleGroupTab'}
+							isFold={isTableFold}
+							setIsFold={setIsTableFold}
+						/>
+					)}
+				</TabContents>
+			</TabContainer>
+		</DescriptionPageContainer>
 	);
 };
 

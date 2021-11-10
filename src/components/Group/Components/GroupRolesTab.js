@@ -18,6 +18,7 @@ import TableFold from '../../Table/Options/TableFold';
 import TableContainer from '../../Table/TableContainer';
 import DragContainer from '../../Table/DragContainer';
 import TableOptionsBar from '../../Table/TableOptionsBar';
+import {TabContentContainer} from '../../../styles/components/tab';
 
 const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -92,68 +93,73 @@ const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 		setIncludedDataIds(group.roles);
 	}, [group.roles]);
 	return (
-		<DragContainer
-			selected={select}
-			data={includedDataIds}
-			setData={setIncludedDataIds}
-			includedKey={tableKeys.groups.summary.tabs.roles.include}
-			excludedData={excludedData}
-			includedData={includedData}
-		>
-			<TableSpace>
-				이 그룹의 권한 : {excludedData.length}
-				<TransparentButton
-					margin='0px 0px 0px 5px'
-					onClick={onClickDeleteRolesFromGroup}
-				>
-					삭제
-				</TransparentButton>
-			</TableSpace>
-			<TableContainer
-				data={excludedData}
-				tableKey={tableKeys.groups.summary.tabs.roles.include}
-				columns={
-					tableColumns[tableKeys.groups.summary.tabs.roles.include]
-				}
+		<TabContentContainer>
+			<DragContainer
+				selected={select}
+				data={includedDataIds}
+				setData={setIncludedDataIds}
+				includedKey={tableKeys.groups.summary.tabs.roles.include}
+				excludedData={excludedData}
+				includedData={includedData}
 			>
-				<TableOptionsBar />
-				<Table setSelect={setSelect} isDraggable />
-			</TableContainer>
-			<TableFoldContainer>
-				<TableFold
-					title={<>이 그룹의 다른권한 : {excludedData.length}</>}
-					space={'GroupRolesTab'}
-					isFold={isFold}
-					setIsFold={setIsFold}
-				>
-					<NormalButton
+				<TableSpace>
+					이 그룹의 권한 : {excludedData.length}
+					<TransparentButton
 						margin='0px 0px 0px 5px'
-						onClick={onClickAddRolesToGroup}
+						onClick={onClickDeleteRolesFromGroup}
 					>
-						권한 추가
-					</NormalButton>
-				</TableFold>
-				{isFold[space] && (
-					<>
-						<TableOptionText data={'roles'} />
-						<TableContainer
-							data={excludedData}
-							tableKey={
-								tableKeys.groups.summary.tabs.roles.exclude
-							}
-							columns={
-								tableColumns[
-									tableKeys.groups.summary.tabs.roles.exclude
-								]
-							}
+						삭제
+					</TransparentButton>
+				</TableSpace>
+				<TableContainer
+					data={excludedData}
+					tableKey={tableKeys.groups.summary.tabs.roles.include}
+					columns={
+						tableColumns[
+							tableKeys.groups.summary.tabs.roles.include
+						]
+					}
+				>
+					<TableOptionsBar />
+					<Table setSelect={setSelect} isDraggable />
+				</TableContainer>
+				<TableFoldContainer>
+					<TableFold
+						title={<>이 그룹의 다른권한 : {excludedData.length}</>}
+						space={'GroupRolesTab'}
+						isFold={isFold}
+						setIsFold={setIsFold}
+					>
+						<NormalButton
+							margin='0px 0px 0px 5px'
+							onClick={onClickAddRolesToGroup}
 						>
-							<TableOptionsBar />
-							<Table setSelect={setSelect} isDraggable />
-						</TableContainer>
-					</>
-				)}
-			</TableFoldContainer>
-		</DragContainer>
+							권한 추가
+						</NormalButton>
+					</TableFold>
+					{isFold[space] && (
+						<>
+							<TableOptionText data={'roles'} />
+							<TableContainer
+								data={excludedData}
+								tableKey={
+									tableKeys.groups.summary.tabs.roles.exclude
+								}
+								columns={
+									tableColumns[
+										tableKeys.groups.summary.tabs.roles
+											.exclude
+									]
+								}
+							>
+								<TableOptionsBar />
+								<Table setSelect={setSelect} isDraggable />
+							</TableContainer>
+						</>
+					)}
+				</TableFoldContainer>
+			</DragContainer>{' '}
+		</TabContentContainer>
 	);
 };
 

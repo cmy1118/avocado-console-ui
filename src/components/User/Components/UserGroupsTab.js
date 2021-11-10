@@ -19,6 +19,7 @@ import TableContainer from '../../Table/TableContainer';
 import DragContainer from '../../Table/DragContainer';
 import TableOptionsBar from '../../Table/TableOptionsBar';
 import {dummyDates} from '../../../utils/dummyData';
+import {TabContentContainer} from '../../../styles/components/tab';
 
 const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -106,16 +107,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 	}, [user.groups]);
 
 	return (
-		<>
-			<TableSpace>
-				이 사용자의 그룹: {includedData.length}{' '}
-				<TransparentButton
-					margin='0px 0px 0px 5px'
-					onClick={onClickDeleteRolesFromUser}
-				>
-					삭제
-				</TransparentButton>
-			</TableSpace>
+		<TabContentContainer>
 			<DragContainer
 				selected={select}
 				data={includedDataIds}
@@ -124,6 +116,15 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 				excludedData={excludedData}
 				includedData={includedData}
 			>
+				<TableSpace>
+					이 사용자의 그룹: {includedData.length}{' '}
+					<TransparentButton
+						margin='0px 0px 0px 5px'
+						onClick={onClickDeleteRolesFromUser}
+					>
+						삭제
+					</TransparentButton>
+				</TableSpace>
 				<TableContainer
 					data={includedData}
 					tableKey={tableKeys.users.summary.tabs.groups.include}
@@ -174,7 +175,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 					)}
 				</TableFoldContainer>
 			</DragContainer>
-		</>
+		</TabContentContainer>
 	);
 };
 

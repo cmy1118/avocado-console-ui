@@ -15,6 +15,7 @@ import {TableFoldContainer, TableSpace} from '../../../styles/components/table';
 import TableFold from '../../Table/Options/TableFold';
 import {AppBarButtons} from '../../../styles/components/style';
 import TableOptionText from '../../Table/Options/TableOptionText';
+import {TabContentContainer} from '../../../styles/components/tab';
 
 const RolePolicyTab = ({roleId, space, isFold, setIsFold}) => {
 	const [select, setSelect] = useState({});
@@ -24,7 +25,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold}) => {
 	const includedData = useMemo(() => dummyPermission.slice(2), []);
 
 	return (
-		<>
+		<TabContentContainer>
 			<TableSpace>
 				이 역할의 정책: {excludedData.length}
 				<TransparentButton margin={'0px 0px 0px 5px'}>
@@ -88,7 +89,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold}) => {
 					)}
 				</TableFoldContainer>
 			</DragContainer>
-		</>
+		</TabContentContainer>
 	);
 };
 

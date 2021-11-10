@@ -10,7 +10,7 @@ export const IamContainer = styled.div`
 export const NavContainer = styled.div`
 	border-right: 1px solid;
 	border-color: #e3e5e5;
-
+	z-index: 5;
 	display: flex;
 	flex-direction: column;
 	transform: translateX(1px);
