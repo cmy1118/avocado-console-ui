@@ -27,8 +27,8 @@ const NormalTable = styled.div`
 		position: relative;
 		overflow: scroll;
 		height: ${(props) => props.height || '100%'};
-		display: grid;
-		flex-direction: column;
+		display: inline-grid;
+		grid-auto-rows: max-content;
 		border-spacing: 0;
 		border-bottom: 1px solid #e3e5e5;
 		font-size: 13px;
