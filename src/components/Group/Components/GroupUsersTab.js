@@ -107,7 +107,7 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 					</TransparentButton>
 				</TableSpace>
 				<TableContainer
-					data={excludedData}
+					data={includedData}
 					tableKey={tableKeys.groups.summary.tabs.users.include}
 					columns={
 						tableColumns[
