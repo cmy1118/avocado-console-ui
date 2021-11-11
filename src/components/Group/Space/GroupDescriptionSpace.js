@@ -61,9 +61,20 @@ const GroupDescriptionSpace = ({groupId}) => {
 		groupId,
 	]);
 
-	const onClickFoldSummary = useCallback(() => {
+	let onClickFoldSummary;
+	onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
-	}, [isSummaryOpened]);
+		if (isSummaryOpened) {
+			history.push({
+				pathname: `/groups/${groupId}`,
+				search: 'tabs=user',
+			});
+		} else {
+			history.push({
+				pathname: `/groups/${groupId}`,
+			});
+		}
+	}, [history, isSummaryOpened, groupId]);
 
 	const onClickChangeGroupName = useCallback(() => {
 		setIsOpend(true);

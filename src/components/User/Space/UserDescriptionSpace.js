@@ -6,7 +6,6 @@ import qs from 'qs';
 
 import {
 	AppBarButtons,
-	IamContainer,
 	SubHeader,
 	SubHeaderText,
 	SummaryList,
@@ -22,7 +21,7 @@ import {
 	CurrentPathContainer,
 	NextPath,
 } from '../../../styles/components/currentPath';
-import {HoverIconButton, IconButton} from '../../../styles/components/icons';
+import {HoverIconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import TabBar from '../../Tab/TabBar';
 import {
@@ -35,7 +34,6 @@ import {
 	expiredConverter,
 	statusConverter,
 } from '../../../utils/tableDataConverter';
-import styled from 'styled-components';
 import {
 	CoveredContent,
 	DescriptionPageContainer,
@@ -69,14 +67,14 @@ const UserDescriptionSpace = ({userId}) => {
 		if (isSummaryOpened) {
 			history.push({
 				pathname: `/users/${userId}`,
+				search: 'tabs=user',
 			});
 		} else {
 			history.push({
 				pathname: `/users/${userId}`,
-				search: 'tabs=user',
 			});
 		}
-	}, [history, isSummaryOpened, setIsSummaryOpened]);
+	}, [history, isSummaryOpened, userId]);
 
 	const onClickLinkToAddUserPage = useCallback(() => {
 		history.push('/users/add');

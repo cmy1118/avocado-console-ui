@@ -50,9 +50,23 @@ const RoleDescriptionSpace = ({roleId}) => {
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
+	// const onClickFoldSummary = useCallback(() => {
+	// 	setIsSummaryOpened(!isSummaryOpened);
+	// }, [isSummaryOpened]);
+
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
-	}, [isSummaryOpened]);
+		if (isSummaryOpened) {
+			history.push({
+				pathname: `/roles/${roleId}`,
+				search: 'tabs=role',
+			});
+		} else {
+			history.push({
+				pathname: `/roles/${roleId}`,
+			});
+		}
+	}, [history, isSummaryOpened, roleId]);
 
 	const TabBarInfo = [
 		{name: '권한', href: 'role'},
