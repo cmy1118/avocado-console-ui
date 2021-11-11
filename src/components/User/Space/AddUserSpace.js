@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {IamContainer} from '../../../styles/components/style';
+import {AddContainer, AddInfo} from '../../../styles/components/style';
 
 import AddTagToUser from '../Components/AddTagToUser';
 import AssignRoleToUser from '../Components/AssignRoleToUser';
@@ -18,7 +18,7 @@ const AddUserSpace = () => {
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
 	return (
-		<IamContainer>
+		<AddContainer>
 			<CurrentPathContainer>
 				<AppBarLink to='/iam'>IAM</AppBarLink>
 				<NextPath>{' > '}</NextPath>
@@ -27,24 +27,27 @@ const AddUserSpace = () => {
 				<AppBarLink to='/users/add'>사용자 추가</AppBarLink>
 			</CurrentPathContainer>
 
-			<AddUser setIsOpened={setIsOpened} />
-			<AddUserToGroup
-				space={'AddUserToGroup'}
-				isFold={isTableFold}
-				setIsFold={setIsTableFold}
-			/>
-			<AssignRoleToUser
-				space={'AssignRoleToUser'}
-				isFold={isTableFold}
-				setIsFold={setIsTableFold}
-			/>
-			<AddTagToUser
-				space={'AddTagToUser'}
-				isFold={isTableFold}
-				setIsFold={setIsTableFold}
-			/>
+			<AddInfo>
+				<AddUser setIsOpened={setIsOpened} />
+				<AddUserToGroup
+					space={'AddUserToGroup'}
+					isFold={isTableFold}
+					setIsFold={setIsTableFold}
+				/>
+				<AssignRoleToUser
+					space={'AssignRoleToUser'}
+					isFold={isTableFold}
+					setIsFold={setIsTableFold}
+				/>
+				<AddTagToUser
+					space={'AddTagToUser'}
+					isFold={isTableFold}
+					setIsFold={setIsTableFold}
+				/>
+			</AddInfo>
+
 			<ReadOnly isOpened={isOpened} setIsOpened={setIsOpened} />
-		</IamContainer>
+		</AddContainer>
 	);
 };
 

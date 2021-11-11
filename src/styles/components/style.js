@@ -7,6 +7,19 @@ export const IamContainer = styled.div`
 	flex-direction: column;
 `;
 
+export const AddContainer = styled.div`
+	height: calc(100% - 67px);
+	margin: 54px 0px 25px 0px;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+`;
+
+export const AddInfo = styled.div`
+	flex: 1;
+	overflow: scroll;
+`;
+
 export const NavContainer = styled.div`
 	border-right: 1px solid;
 	border-color: #e3e5e5;

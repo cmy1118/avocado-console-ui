@@ -7,7 +7,7 @@ const _Footer = styled.footer`
 	width: -webkit-fill-available;
 	position: fixed;
 	bottom: 0;
-	height: 32px;
+	height: 25px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;

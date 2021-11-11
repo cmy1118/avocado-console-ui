@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
 export const DescriptionPageContainer = styled.div`
-	margin-top: 54px;
-	// height: calc(100% - 54px);
-	height: calc(100% - 76px);
+	margin: 54px 0px 25px 0px;
+	height: calc(100% - 67px);
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
@@ -20,6 +19,7 @@ export const TabContents = styled.div`
 	flex: 1;
 	overflow: scroll;
 	display: flex;
+	margin-bottom: 30px;
 `;
 
 export const VisibleContent = styled.div`

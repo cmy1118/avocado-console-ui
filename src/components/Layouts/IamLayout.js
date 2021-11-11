@@ -12,16 +12,12 @@ import {DragDropContext} from 'react-beautiful-dnd';
 import Footer from '../Footer';
 
 const _Container = styled.div`
-	// overflow-y: scroll;
 	display: flex;
-	overflow: auto;
-
+	overflow: hidden;
 	flex-direction: column;
-	// flex: 1;
 	height: 100%;
 	width: 100%;
 	position: relative;
-
 	.mainContainer {
 		margin-left: 255px;
 		overflow: auto;
@@ -76,31 +72,24 @@ const IamLayout = ({children}) => {
 	}, [user, companyId, history]);
 
 	return (
-		<>
-			<DragDropContext>
-				<_Container>
-					<Header />
-					<_Space
-						className={
-							isNavOpened
-								? 'mainContainer'
-								: 'mainContainer close'
-						}
-					>
-						<IamNav
-							leftSize={2}
-							isOpened={isNavOpened}
-							setIsOpened={setIsNavOpened}
-						/>
-						<_MainSpace style={{width: '100%'}}>
-							{children}
-						</_MainSpace>
-					</_Space>
-					<Footer />
-				</_Container>
-			</DragDropContext>
-			{/*<Footer />*/}
-		</>
+		<DragDropContext>
+			<_Container>
+				<Header />
+				<_Space
+					className={
+						isNavOpened ? 'mainContainer' : 'mainContainer close'
+					}
+				>
+					<IamNav
+						leftSize={2}
+						isOpened={isNavOpened}
+						setIsOpened={setIsNavOpened}
+					/>
+					<_MainSpace style={{width: '100%'}}>{children}</_MainSpace>
+				</_Space>
+				<Footer />
+			</_Container>
+		</DragDropContext>
 	);
 };
 
