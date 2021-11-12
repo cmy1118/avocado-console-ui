@@ -243,9 +243,9 @@ export const USER_SUMMARY_GROUP_COLUMN = [
 	{
 		Header: '그룹 이름',
 		accessor: 'name',
-		type:'groups',
+		type: 'groups',
 		Cell: function Component(cell) {
-			return <TableLink cell={cell}/>;
+			return <TableLink cell={cell} />;
 		},
 	},
 	{

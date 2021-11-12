@@ -88,11 +88,10 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 			{isFold[space] && (
 				<>
 					<TableOptionText data={'tags'} />
-
 					<TableContainer
-						height={'200px'}
 						tableKey={tableKeys.users.add.tag}
 						data={tagData}
+						setData={setData}
 						columns={tableColumns[tableKeys.users.add.tag]}
 					>
 						<Table setSelect={setSelect} />

@@ -1,68 +1,29 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 
-const TableTextBox = ({cell, isFocus = false}) => {
+const TableTextBox = ({cell, isFocus}) => {
+	const [value, setValue] = useState(cell.value);
 	const ref = useRef(null);
-	const [value, setValue] = useState(cell.row.original[cell.column.id]);
 	const [isOpened, setIsOpened] = useState(!value);
 
-	const handleChange = useCallback((e) => {
+	const onChange = (e) => {
 		setValue(e.target.value);
-	}, []);
-	const handlePressEnter = useCallback(
-		(e) => {
-			if (!e.target.value) return;
-			if (e.keyCode === 13) {
-				const data = cell.data.slice();
-				if (!data) return;
-				data.pop();
-				data.push({
-					...cell.row.original,
-					[cell.column.id]: e.target.value,
-				});
+	};
 
-				if (!cell.setData) return;
-				cell.setData(data);
-				setIsOpened(false);
-			}
-		},
-		[cell],
-	);
+	const onBlur = () => {
+		cell.updateMyData(cell.row.index, cell.column.id, value);
+	};
 
-	const handleBlur = useCallback(
-		(e) => {
-			if (!e.target.value) return;
-			const data = cell.data.slice();
-			if (!data) return;
-			data.pop();
-			data.push({
-				...cell.row.original,
-				[cell.column.id]: e.target.value,
-			});
-
-			if (!cell.setData) return;
-			cell.setData(data);
-			setIsOpened(false);
-		},
-		[cell],
-	);
-
-	// todo : 첫번째 input focus
 	useEffect(() => {
-		isFocus && value === '' && ref.current?.focus();
+		isFocus && !value && ref.current;
 	}, [isFocus, value]);
 
-	return isOpened ? (
-		<input
-			ref={ref}
-			type='text'
-			value={value}
-			onKeyUp={handlePressEnter}
-			onBlur={handleBlur}
-			onChange={handleChange}
-		/>
-	) : (
-		<div onDoubleClick={() => setIsOpened(true)}>{value}</div>
+	useEffect(() => {
+		setValue(cell.value);
+	}, [cell.value]);
+	//
+	return (
+		<input ref={ref} value={value} onChange={onChange} onBlur={onBlur} />
 	);
 };
 
