@@ -72,8 +72,6 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 					>
 						<RowDiv>
 							<TableContainer
-								width={'700px'}
-								height={'300px'}
 								data={excludedData}
 								tableKey={tableKeys.users.add.roles.exclude}
 								columns={
@@ -105,8 +103,6 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 									추가 Roles: {includedDataIds.length}건
 								</TableHeader>
 								<TableContainer
-									width={'400px'}
-									height={'300px'}
 									data={includedData}
 									tableKey={tableKeys.users.add.roles.include}
 									columns={

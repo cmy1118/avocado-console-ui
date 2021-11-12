@@ -88,8 +88,6 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 					>
 						<RowDiv>
 							<TableContainer
-								width={'700px'}
-								height={'300px'}
 								tableKey={tableKeys.users.add.groups.exclude}
 								columns={
 									tableColumns[
@@ -121,8 +119,6 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 									추가 그룹: {includedDataIds.length}건
 								</TableHeader>
 								<TableContainer
-									width={'400px'}
-									height={'300px'}
 									tableKey={
 										tableKeys.users.add.groups.include
 									}

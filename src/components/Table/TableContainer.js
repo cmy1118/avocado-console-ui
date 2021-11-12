@@ -25,14 +25,14 @@ const NormalTable = styled.div`
 	margin: 0px 16px 16px;
 	display: flex;
 	min-width: 380px;
-	min-height: ${(props) => props.mode === 'normal' && '280px'};
+	min-height: ${(props) => props.mode === 'normal' && '240px'};
 	height: ${(props) => props.mode === 'normal' && '0'};
 	flex: 1 1 auto;
 
 	.table {
 		width: 100%;
 		overflow-x: scroll;
-		height: ${(props) => props.height || '100%'};
+		height: ${(props) => (props.isDraggable ? '240px' : '100%')};
 		display: grid;
 		grid-template-rows: 40px;
 		border-spacing: 0;
@@ -92,7 +92,6 @@ const TableContainer = ({
 	columns,
 	tableKey,
 	mode = 'normal',
-	height,
 	children,
 }) => {
 	const getRowId = useCallback((v) => {
@@ -202,9 +201,11 @@ const TableContainer = ({
 	return (
 		<Container>
 			{React.Children.map(children, (child) => {
-				console.log(child.type.name);
 				return child.type.name === 'Table' ? (
-					<NormalTable mode={mode} height={height}>
+					<NormalTable
+						mode={mode}
+						isDraggable={child.props?.isDraggable}
+					>
 						{React.cloneElement(child, {
 							data,
 							columns,
@@ -276,7 +277,6 @@ TableContainer.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 		.isRequired,
 	mode: PropTypes.oneOf(['normal', 'readOnly']),
-	height: PropTypes.string,
 };
 
 export default TableContainer;
