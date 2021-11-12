@@ -8,6 +8,7 @@ const _TabContainer = styled.div`
 	width: 100%;
 	box-shadow: 0 -4px 9px 0 rgba(0, 0, 0, 0.05);
 	background: #ffffff;
+	// padding: 10px 0px;
 `;
 const _TabSpace = styled.div`
 	width: 100%;

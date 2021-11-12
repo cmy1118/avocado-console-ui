@@ -106,7 +106,9 @@ export const AppBarButtons = styled.div`
 `;
 
 export const SummaryList = styled.ul`
-	margin: 2px 17px 20px 0px;
+	margin: 0px 16px;
+	padding-left: 24px;
+	margin-bottom: ${(props) => (props.isOpened ? '40px' : '30px')};
 `;
 
 export const SummaryTablesContainer = styled.div`

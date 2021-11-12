@@ -1,26 +1,20 @@
 import styled from 'styled-components';
 
 export const DescriptionPageContainer = styled.div`
-	// margin: 54px 0px 25px 0px;
-	// height: calc(100% - 67px);
-	// overflow: hidden;
 	display: flex;
 	flex: 1 1 auto;
 	flex-direction: column;
 `;
 export const TabContainer = styled.div`
-	height: ${(props) => (props.isOpend ? props.height + 'px' : '50px')};
-	z-index: 3;
 	display: flex;
+	flex: ${(props) => props.isOpened && '1 1 auto'};
 	flex-direction: column;
 `;
 
 export const TabContents = styled.div`
-	padding: '10px 0px';
-	flex: 1;
+	flex: 1 1 auto;
+	height: 0;
 	overflow: scroll;
-	display: flex;
-	margin-bottom: 30px;
 `;
 
 export const VisibleContent = styled.div`
@@ -31,8 +25,19 @@ export const VisibleContent = styled.div`
 export const CoveredContent = styled.div`
 	flex: 1;
 	overflow: scroll;
+	display: ${(props) => !props.isOpened && 'none'};
 `;
 
 export const TabContentContainer = styled.div`
 	width: 100%;
+`;
+
+export const SummaryContainer = styled.div``;
+
+export const ContentsContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	height: 0;
+	overflow: scroll;
 `;
