@@ -17,29 +17,17 @@ const _Container = styled.div`
 	flex: 1 1 auto;
 
 	.mainContainer {
-		// margin-left: 255px;
-		// overflow: auto;
 		// transition: all 0.5s ease-in-out;
 	}
 	.mainContainer.close {
-		// margin-left: 0;
-		// overflow: auto;
 		// transition: 0.5s ease-in-out;
 	}
 
 	.nav {
-		// overflow: auto;
-		// position: fixed;
-		// top: 54px;
-		// left: 0px;
 		display: inline-block;
 		transition: all 0.5s ease-in-out;
-		// height: ;
 	}
 	.nav.close {
-		// position: absolute;
-		// left: 17px;
-		// transform: translateX(-255px);
 		// transition: all 0.5s ease-in-out;
 	}
 `;
