@@ -7,15 +7,14 @@ export const IamContainer = styled.div`
 `;
 
 export const AddContainer = styled.div`
-	height: calc(100% - 67px);
-	margin: 54px 0px 25px 0px;
 	display: flex;
+	flex: 1 1 auto;
 	flex-direction: column;
-	overflow: hidden;
 `;
 
 export const AddInfo = styled.div`
-	flex: 1;
+	flex: 1 1 auto;
+	height: 0;
 	overflow: scroll;
 `;
 

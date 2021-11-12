@@ -165,7 +165,8 @@ const Table = ({
 											key={i}
 											alignItems={'center'}
 											{...column.getHeaderProps(
-												column.getSortByToggleProps(),
+												mode === 'normal' &&
+													column.getSortByToggleProps(),
 											)}
 										>
 											{column.render('Header')}

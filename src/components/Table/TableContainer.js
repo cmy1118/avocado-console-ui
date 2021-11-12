@@ -24,8 +24,9 @@ const OptionContainer = styled.div`
 const NormalTable = styled.div`
 	margin: 0px 16px 16px;
 	display: flex;
-	min-height: 280px;
-	height: 0;
+	min-width: 380px;
+	min-height: ${(props) => props.mode === 'normal' && '280px'};
+	height: ${(props) => props.mode === 'normal' && '0'};
 	flex: 1 1 auto;
 
 	.table {

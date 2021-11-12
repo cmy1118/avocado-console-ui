@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
 export const DescriptionPageContainer = styled.div`
-	margin: 54px 0px 25px 0px;
-	height: calc(100% - 67px);
-	overflow: hidden;
+	// margin: 54px 0px 25px 0px;
+	// height: calc(100% - 67px);
+	// overflow: hidden;
 	display: flex;
+	flex: 1 1 auto;
 	flex-direction: column;
 `;
 export const TabContainer = styled.div`
