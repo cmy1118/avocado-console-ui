@@ -4,19 +4,17 @@ import styled from 'styled-components';
 import dashboard from '../images/backgound/dashboard@2x.png';
 
 const _MainSpace = styled.div`
-	height: 100%;
 	background: #f0f3f6;
 	display: flex;
+	flex: 1;
 	align-items: center;
 	justify-content: center;
-	overflow: hidden;
 `;
 
 const _Container = styled.div`
-	margin-top: 54px;
 	background-image: url(${dashboard});
 	background-position: center;
-	width: 95%;
+	width: 100%;
 	height: 100%;
 	background-size: contain;
 	background-repeat: no-repeat;
@@ -28,7 +26,11 @@ const _Container = styled.div`
 `;
 
 const Iam = () => {
-	return <div>대시보드</div>;
+	return (
+		<_MainSpace>
+			<_Container />
+		</_MainSpace>
+	);
 };
 
 export default Iam;

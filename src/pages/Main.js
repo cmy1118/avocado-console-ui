@@ -8,7 +8,6 @@ import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 
 const _Container = styled.div`
-	margin-top: 54px;
 	display: grid;
 	height: 100%;
 	background: #f8f9fa;
