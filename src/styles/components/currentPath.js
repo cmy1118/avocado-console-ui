@@ -2,9 +2,8 @@ import styled from 'styled-components';
 import {NavLink} from 'react-router-dom';
 
 export const CurrentPathContainer = styled.div`
-	box-sizing: border-box;
 	display: flex;
-	padding: 16px 15px 16px 15px;
+	padding: 16px 15px;
 	height: 50px;
 	border-bottom: 1px solid;
 	border-color: #e3e5e5;

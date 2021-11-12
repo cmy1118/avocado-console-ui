@@ -9,17 +9,12 @@ import {PathLink} from '../styles/components/currentPath';
 
 const _Container = styled.div`
 	background: #fff;
-	position: fixed;
-	top: 0;
-	width: 100%;
-	z-index: 9;
-
-	box-sizing: border-box;
+	// z-index: 9;
 	display: flex;
+	flex: 0 0 54px;
 	justify-content: space-between;
-	height: 54px;
 	border-bottom: 1px #e3e5e5 solid;
-	padding: 16px 16px;
+	padding: 0px 16px;
 	align-items: center;
 `;
 

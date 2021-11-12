@@ -13,51 +13,46 @@ import Footer from '../Footer';
 
 const _Container = styled.div`
 	display: flex;
-	overflow: hidden;
 	flex-direction: column;
-	height: 100%;
-	width: 100%;
-	position: relative;
+	flex: 1 1 auto;
+
 	.mainContainer {
-		margin-left: 255px;
-		overflow: auto;
+		// margin-left: 255px;
+		// overflow: auto;
 		// transition: all 0.5s ease-in-out;
 	}
 	.mainContainer.close {
-		margin-left: 0;
-		overflow: auto;
+		// margin-left: 0;
+		// overflow: auto;
 		// transition: 0.5s ease-in-out;
 	}
 
 	.nav {
-		overflow: auto;
-		position: fixed;
-		top: 54px;
-		left: 0px;
+		// overflow: auto;
+		// position: fixed;
+		// top: 54px;
+		// left: 0px;
 		display: inline-block;
 		transition: all 0.5s ease-in-out;
-		height: ;
+		// height: ;
 	}
 	.nav.close {
-		position: absolute;
-		left: 17px;
-		transform: translateX(-255px);
-		transition: all 0.5s ease-in-out;
+		// position: absolute;
+		// left: 17px;
+		// transform: translateX(-255px);
+		// transition: all 0.5s ease-in-out;
 	}
 `;
 
 const _Space = styled.div`
-	margin-bottom: 30px;
-	flex: 1;
-	height: 100%;
 	display: flex;
-	transition: transform 0.5s ease-in-out;
-	position: relative;
-	margin-bottom: 10px;
+	flex: 1 1 auto;
+	// transition: transform 0.5s ease-in-out;
 `;
 
 const _MainSpace = styled.div`
-	height: 100%;
+	display: flex;
+	flex: 1 1 auto;
 `;
 
 const IamLayout = ({children}) => {
@@ -85,7 +80,7 @@ const IamLayout = ({children}) => {
 						isOpened={isNavOpened}
 						setIsOpened={setIsNavOpened}
 					/>
-					<_MainSpace style={{width: '100%'}}>{children}</_MainSpace>
+					<_MainSpace>{children}</_MainSpace>
 				</_Space>
 				<Footer />
 			</_Container>

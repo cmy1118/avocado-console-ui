@@ -28,11 +28,7 @@ const _Container = styled.div`
 `;
 
 const Iam = () => {
-	return (
-		<_MainSpace>
-			<_Container />
-		</_MainSpace>
-	);
+	return <div>대시보드</div>;
 };
 
 export default Iam;

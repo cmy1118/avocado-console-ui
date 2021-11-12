@@ -13,22 +13,27 @@ import {ColDiv} from '../../styles/components/div';
 import styled from 'styled-components';
 
 const Container = styled(ColDiv)`
-	width: ${(props) => props.width};
 	flex: 1;
+	display: flex;
+`;
+
+const OptionContainer = styled.div`
+	margin: 0px 16px;
 `;
 
 const NormalTable = styled.div`
-	margin: 0px 16px;
-	box-sizing: border-box;
+	margin: 0px 16px 16px;
 	display: flex;
+	min-height: 280px;
+	height: 0;
+	flex: 1 1 auto;
 
 	.table {
 		width: 100%;
-		position: relative;
-		overflow: scroll;
+		overflow-x: scroll;
 		height: ${(props) => props.height || '100%'};
-		display: inline-grid;
-		grid-auto-rows: max-content;
+		display: grid;
+		grid-template-rows: 40px;
 		border-spacing: 0;
 		border-bottom: 1px solid #e3e5e5;
 		font-size: 13px;
@@ -39,19 +44,21 @@ const NormalTable = styled.div`
 		letter-spacing: 0.13px;
 		text-align: left;
 		color: #212121;
+		.tr {
+			display: flex;
+			// :last-child {
+			// 	border: none;
+			// }
+		}
+
 		.head {
-			position: sticky;
-			top: ${(props) => (props.height ? 0 : '')};
 			height: 40px;
-			z-index: 1;
 			background: #f8f9fa;
 			border-top: 1px solid #e3e5e5;
 			border-bottom: 1px solid #e3e5e5;
 		}
 		.body {
-			position: relative;
 			background: #fff;
-			width: 100%;
 			border-bottom: 1px solid #e3e5e5;
 		}
 		.odd {
@@ -60,14 +67,6 @@ const NormalTable = styled.div`
 
 		.selected {
 			background: rgba(228, 243, 244, 0.7);
-		}
-
-		.tr {
-			display: flex;
-			width: 100%;
-			// :last-child {
-			// 	border: none;
-			// }
 		}
 
 		.th,
@@ -92,7 +91,6 @@ const TableContainer = ({
 	columns,
 	tableKey,
 	mode = 'normal',
-	width,
 	height,
 	children,
 }) => {
@@ -201,9 +199,10 @@ const TableContainer = ({
 	);
 
 	return (
-		<Container width={width}>
+		<Container>
 			{React.Children.map(children, (child) => {
-				return (
+				console.log(child.type.name);
+				return child.type.name === 'Table' ? (
 					<NormalTable mode={mode} height={height}>
 						{React.cloneElement(child, {
 							data,
@@ -233,6 +232,36 @@ const TableContainer = ({
 							mode,
 						})}
 					</NormalTable>
+				) : (
+					<OptionContainer>
+						{React.cloneElement(child, {
+							data,
+							columns,
+							tableKey,
+							getTableProps,
+							headerGroups,
+							prepareRow,
+							page,
+							selectedFlatRows,
+							allColumns,
+							canPreviousPage,
+							canNextPage,
+							setGlobalFilter,
+							pageOptions,
+							gotoPage,
+							nextPage,
+							previousPage,
+							setPageSize,
+							setAllFilters,
+							getToggleHideAllColumnsProps,
+							setHiddenColumns,
+							pageIndex,
+							selectedRowIds,
+							pageSize,
+							filters,
+							mode,
+						})}
+					</OptionContainer>
 				);
 			})}
 		</Container>
@@ -246,7 +275,6 @@ TableContainer.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 		.isRequired,
 	mode: PropTypes.oneOf(['normal', 'readOnly']),
-	width: PropTypes.string,
 	height: PropTypes.string,
 };
 

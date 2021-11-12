@@ -11,6 +11,18 @@ const Tds = styled(RowDiv)`
 	min-width: ${(props) => props.width};
 `;
 
+const Container = styled.div`
+	flex: 1 1 auto;
+	width: 0;
+`;
+
+const BodyContainer = styled.div`
+	flex: 1;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	// width: fit-content;
+`;
+
 const Table = ({
 	tableKey,
 	selectedFlatRows,
@@ -106,150 +118,170 @@ const Table = ({
 	}, [selectedRowIds, setSelect, selectedDropButton, selectedFlatRows]);
 
 	return (
-		<Droppable
-			droppableId={tableKey}
-			mode={'Virtual'}
-			renderClone={(provided, snapshot, rubric) => {
-				return (
-					<div
-						{...provided.draggableProps}
-						{...provided.dragHandleProps}
-						ref={provided.innerRef}
-						style={getStyle({
-							provided: provided,
-							snapshot: snapshot,
-						})}
-					>
-						<RowDiv padding={'15px 12px'} alignItems={'center'}>
-							<Icon>{dragIndicator}</Icon>
-							<RowDiv width={'100%'}>
-								그룹 이동 {selectedFlatRows.length}건
-							</RowDiv>
-						</RowDiv>
-						{provided.placeholder}
-					</div>
-				);
-			}}
-		>
-			{(provided) => (
-				<div
-					className={`${tableKey} table`}
-					{...getTableProps()}
-					ref={provided.innerRef}
-					{...provided.droppableProps}
-				>
-					{headerGroups.map((headerGroup, i) => (
+		<Container>
+			<Droppable
+				droppableId={tableKey}
+				mode={'Virtual'}
+				renderClone={(provided, snapshot, rubric) => {
+					return (
 						<div
-							className={'tr head'}
-							key={i}
-							{...headerGroup.getHeaderGroupProps()}
+							{...provided.draggableProps}
+							{...provided.dragHandleProps}
+							ref={provided.innerRef}
+							style={getStyle({
+								provided: provided,
+								snapshot: snapshot,
+							})}
 						>
-							{headerGroup.headers.map((column, i) => {
-								return (
-									<Tds
-										className={'th'}
-										width={`${column.width + 20}px`}
-										key={i}
-										alignItems={'center'}
-										{...column.getHeaderProps(
-											column.getSortByToggleProps(),
-										)}
-									>
-										{column.render('Header')}
-										{mode === 'normal' &&
-											column.id !== 'selection' && (
-												<Icon margin={'0px'}>
-													{column.isSortedDesc ===
-														'ture' ||
-													column.isSortedDesc ===
-														undefined
-														? arrowDownIcon
-														: arrowUpIcon}
-												</Icon>
+							<RowDiv padding={'15px 12px'} alignItems={'center'}>
+								<Icon>{dragIndicator}</Icon>
+								<RowDiv width={'100%'}>
+									그룹 이동 {selectedFlatRows.length}건
+								</RowDiv>
+							</RowDiv>
+							{provided.placeholder}
+						</div>
+					);
+				}}
+			>
+				{(provided) => (
+					<div
+						className={`${tableKey} table`}
+						{...getTableProps()}
+						ref={provided.innerRef}
+						{...provided.droppableProps}
+					>
+						{headerGroups.map((headerGroup, i) => (
+							<div
+								className={'tr head'}
+								key={i}
+								{...headerGroup.getHeaderGroupProps()}
+							>
+								{headerGroup.headers.map((column, i) => {
+									return (
+										<Tds
+											className={'th'}
+											width={`${column.width + 20}px`}
+											key={i}
+											alignItems={'center'}
+											{...column.getHeaderProps(
+												column.getSortByToggleProps(),
 											)}
-									</Tds>
+										>
+											{column.render('Header')}
+											{mode === 'normal' &&
+												column.id !== 'selection' && (
+													<Icon margin={'0px'}>
+														{column.isSortedDesc ===
+															'ture' ||
+														column.isSortedDesc ===
+															undefined
+															? arrowDownIcon
+															: arrowUpIcon}
+													</Icon>
+												)}
+										</Tds>
+									);
+								})}
+							</div>
+						))}
+
+						<BodyContainer>
+							{page.map((row, index) => {
+								prepareRow(row);
+								return (
+									<Draggable
+										key={
+											row.original.uid
+												? row.original.uid
+												: row.original.id
+										}
+										draggableId={
+											row.original.uid
+												? row.original.uid
+												: row.original.id ||
+												  `${tableKey} ${index}`
+										}
+										isDragDisabled={!isDraggable}
+										index={index}
+									>
+										{(provided, snapshot) => {
+											return (
+												<div
+													ref={provided.innerRef}
+													{...provided.dragHandleProps}
+													{...provided.draggableProps}
+													style={getItemStyle(
+														snapshot.isDragging,
+														provided.draggableProps
+															.style,
+													)}
+													onMouseDown={
+														onMouseDownItem
+													}
+													className={`tr body ${
+														Object.keys(
+															selectedRowIds,
+														).includes(
+															row.original.uid
+																? row.original
+																		.uid
+																: row.original
+																		.id,
+														) && 'selected'
+													} ${
+														index % 2 === 0
+															? 'even'
+															: 'odd'
+													}`}
+													id={
+														row.original.uid
+															? row.original.uid
+															: row.original.id
+													}
+													key={
+														row.original.uid
+															? row.original.uid
+															: row.original.id
+													}
+												>
+													{row.cells.map(
+														(cell, i) => {
+															return (
+																<Tds
+																	className={
+																		'td'
+																	}
+																	width={`${
+																		cell
+																			.column
+																			.width +
+																		20
+																	}px`}
+																	key={i}
+																	{...cell.getCellProps}
+																>
+																	{cell.render(
+																		'Cell',
+																		{
+																			setData,
+																		},
+																	)}
+																</Tds>
+															);
+														},
+													)}
+												</div>
+											);
+										}}
+									</Draggable>
 								);
 							})}
-						</div>
-					))}
-
-					{page.map((row, index) => {
-						prepareRow(row);
-						return (
-							<Draggable
-								key={
-									row.original.uid
-										? row.original.uid
-										: row.original.id
-								}
-								draggableId={
-									row.original.uid
-										? row.original.uid
-										: row.original.id ||
-										  `${tableKey} ${index}`
-								}
-								isDragDisabled={!isDraggable}
-								index={index}
-							>
-								{(provided, snapshot) => {
-									return (
-										<div
-											ref={provided.innerRef}
-											{...provided.dragHandleProps}
-											{...provided.draggableProps}
-											style={getItemStyle(
-												snapshot.isDragging,
-												provided.draggableProps.style,
-											)}
-											onMouseDown={onMouseDownItem}
-											className={`tr body ${
-												Object.keys(
-													selectedRowIds,
-												).includes(
-													row.original.uid
-														? row.original.uid
-														: row.original.id,
-												) && 'selected'
-											} ${
-												index % 2 === 0 ? 'even' : 'odd'
-											}`}
-											id={
-												row.original.uid
-													? row.original.uid
-													: row.original.id
-											}
-											key={
-												row.original.uid
-													? row.original.uid
-													: row.original.id
-											}
-										>
-											{row.cells.map((cell, i) => {
-												return (
-													<Tds
-														className={'td'}
-														width={`${
-															cell.column.width +
-															20
-														}px`}
-														key={i}
-														{...cell.getCellProps}
-													>
-														{cell.render('Cell', {
-															setData,
-														})}
-													</Tds>
-												);
-											})}
-										</div>
-									);
-								}}
-							</Draggable>
-						);
-					})}
-				</div>
-			)}
-		</Droppable>
+						</BodyContainer>
+					</div>
+				)}
+			</Droppable>
+		</Container>
 	);
 };
 
