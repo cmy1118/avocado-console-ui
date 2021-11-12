@@ -34,7 +34,7 @@ import {
 	DescriptionPageContainer,
 	TabContainer,
 	TabContents,
-	VisibleContent,
+	ContentsContainer,
 } from '../../../styles/components/tab';
 import user from '../../../reducers/api/IAM/User/User/user';
 
@@ -76,7 +76,8 @@ const RoleDescriptionSpace = ({roleId}) => {
 
 	const onClickLinkToAddRolePage = useCallback(() => {
 		history.push('/roles/add');
-	}, []);
+	}, [history]);
+
 	useEffect(() => {
 		if (roleId && !role) {
 			history.push('/404');
@@ -86,104 +87,96 @@ const RoleDescriptionSpace = ({roleId}) => {
 
 	return (
 		<DescriptionPageContainer>
-			<VisibleContent id={'iam-tab-role'}>
-				<CurrentPathContainer>
-					<AppBarLink to='/iam'>IAM</AppBarLink>
-					<NextPath>{' > '}</NextPath>
-					<AppBarLink to='/roles'>역할</AppBarLink>
-					<NextPath>{' > '}</NextPath>
-					<AppBarLink to={`/roles/${roleId}`}>
-						{role?.name}
-					</AppBarLink>
-				</CurrentPathContainer>
+			<CurrentPathContainer>
+				<AppBarLink to='/iam'>IAM</AppBarLink>
+				<NextPath>{' > '}</NextPath>
+				<AppBarLink to='/roles'>역할</AppBarLink>
+				<NextPath>{' > '}</NextPath>
+				<AppBarLink to={`/roles/${roleId}`}>{role?.name}</AppBarLink>
+			</CurrentPathContainer>
+			<ContentsContainer>
+				<div>
+					<SubHeader>
+						<SubHeaderText>
+							<HoverIconButton
+								color={'font'}
+								size={'m'}
+								margin={'0px'}
+								onClick={onClickFoldSummary}
+							>
+								{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
+							</HoverIconButton>
+							요약 [ {role?.name} ]
+						</SubHeaderText>
+						<AppBarButtons>
+							<NormalButton onClick={onClickLinkToAddRolePage}>
+								역할 만들기
+							</NormalButton>
+							<TransparentButton margin={'0px 0px 0px 5px'}>
+								삭제
+							</TransparentButton>
+						</AppBarButtons>
+					</SubHeader>
 
-				<SubHeader>
-					<SubHeaderText>
-						<HoverIconButton
-							color={'font'}
-							size={'m'}
-							margin={'0px'}
-							onClick={onClickFoldSummary}
-						>
-							{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
-						</HoverIconButton>
-						요약 [ {role?.name} ]
-					</SubHeaderText>
-					<AppBarButtons>
-						<NormalButton onClick={onClickLinkToAddRolePage}>
-							역할 만들기
-						</NormalButton>
-						<TransparentButton margin={'0px 0px 0px 5px'}>
-							삭제
-						</TransparentButton>
-					</AppBarButtons>
-				</SubHeader>
+					<SummaryList>
+						<LiText>역할 이름 : {role?.name}</LiText>
+						<LiText>역할 유형 : {role?.type}</LiText>
+						<LiText>역할 설명 : {role?.description}</LiText>
+						<LiText>생성 일시 : {role?.creationDate}</LiText>
+						<LiText>
+							마지막 작업 일시 : 2021.09.21. 16:05:18{' '}
+						</LiText>
+						<LiText>마지막 활동 : 사용자 접근정책 변경</LiText>
+						<LiText>마지막 활동 사용자 : 김영우 (kyoung634)</LiText>
+					</SummaryList>
+				</div>
+				<CoveredContent isOpened={isSummaryOpened}>
+					<RoleSummary
+						Id={roleId}
+						param={'roles'}
+						setIsOpened={setIsSummaryOpened}
+					/>
+				</CoveredContent>
 
-				<SummaryList>
-					<LiText>역할 이름 : {role?.name}</LiText>
-					<LiText>역할 유형 : {role?.type}</LiText>
-					<LiText>역할 설명 : {role?.description}</LiText>
-					<LiText>생성 일시 : {role?.creationDate}</LiText>
-					<LiText>마지막 작업 일시 : 2021.09.21. 16:05:18 </LiText>
-					<LiText>마지막 활동 : 사용자 접근정책 변경</LiText>
-					<LiText>마지막 활동 사용자 : 김영우 (kyoung634)</LiText>
-				</SummaryList>
-			</VisibleContent>
-
-			<CoveredContent>
-				<RoleSummary
-					Id={roleId}
-					param={'roles'}
-					setIsOpened={setIsSummaryOpened}
-				/>
-			</CoveredContent>
-
-			<TabContainer
-				isOpend={!isSummaryOpened}
-				height={
-					document.getElementsByTagName('BODY')[0]?.clientHeight -
-					document
-						.getElementById('iam-tab-role')
-						?.getBoundingClientRect().bottom
-				}
-			>
-				<TabBar
-					Tabs={TabBarInfo}
-					param={'roles'}
-					Id={roleId}
-					isOpened={isSummaryOpened}
-					setIsOpened={setIsSummaryOpened}
-				/>
-				<TabContents>
-					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-						'role' && (
-						<RolePolicyTab
-							roleId={roleId}
-							space={'RolePolicyTab'}
-							isFold={isTableFold}
-							setIsFold={setIsTableFold}
-						/>
-					)}
-					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-						'user' && (
-						<RoleUserTab
-							roleId={roleId}
-							space={'RoleUserTab'}
-							isFold={isTableFold}
-							setIsFold={setIsTableFold}
-						/>
-					)}
-					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-						'group' && (
-						<RoleGroupTab
-							roleId={roleId}
-							space={'RoleGroupTab'}
-							isFold={isTableFold}
-							setIsFold={setIsTableFold}
-						/>
-					)}
-				</TabContents>
-			</TabContainer>
+				<TabContainer isOpened={!isSummaryOpened}>
+					<TabBar
+						Tabs={TabBarInfo}
+						param={'roles'}
+						Id={roleId}
+						isOpened={isSummaryOpened}
+						setIsOpened={setIsSummaryOpened}
+					/>
+					<TabContents>
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'role' && (
+							<RolePolicyTab
+								roleId={roleId}
+								space={'RolePolicyTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'user' && (
+							<RoleUserTab
+								roleId={roleId}
+								space={'RoleUserTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'group' && (
+							<RoleGroupTab
+								roleId={roleId}
+								space={'RoleGroupTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
+					</TabContents>
+				</TabContainer>
+			</ContentsContainer>
 		</DescriptionPageContainer>
 	);
 };

@@ -39,7 +39,6 @@ import {
 	DescriptionPageContainer,
 	TabContainer,
 	TabContents,
-	SummaryContainer,
 	ContentsContainer,
 } from '../../../styles/components/tab';
 

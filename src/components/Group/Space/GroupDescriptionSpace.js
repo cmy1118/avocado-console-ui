@@ -36,7 +36,7 @@ import {
 	DescriptionPageContainer,
 	TabContainer,
 	TabContents,
-	VisibleContent,
+	ContentsContainer,
 } from '../../../styles/components/tab';
 
 const GroupDescriptionSpace = ({groupId}) => {
@@ -47,7 +47,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
-	const [isOpend, setIsOpend] = useState(true);
+	const [isOpened, setIsOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
 	const TabBarInfo = [
@@ -77,8 +77,8 @@ const GroupDescriptionSpace = ({groupId}) => {
 	}, [history, isSummaryOpened, groupId]);
 
 	const onClickChangeGroupName = useCallback(() => {
-		setIsOpend(true);
-	}, [setIsOpend]);
+		setIsOpened(true);
+	}, [setIsOpened]);
 	// if groupId does not exist, direct to 404 page
 	useEffect(() => {
 		if (groupId && !group) {
@@ -89,108 +89,99 @@ const GroupDescriptionSpace = ({groupId}) => {
 
 	return (
 		<DescriptionPageContainer>
-			<VisibleContent id={'iam-tab-group'}>
-				<CurrentPathContainer>
-					<AppBarLink to='/iam'>IAM</AppBarLink>
-					<NextPath>{' > '}</NextPath>
-					<AppBarLink to='/groups'>사용자 그룹</AppBarLink>
-					<NextPath>{' > '}</NextPath>
-					<AppBarLink to={`/groups/${groupId}`}>
-						{group?.name}
-					</AppBarLink>
-				</CurrentPathContainer>
+			<CurrentPathContainer>
+				<AppBarLink to='/iam'>IAM</AppBarLink>
+				<NextPath>{' > '}</NextPath>
+				<AppBarLink to='/groups'>사용자 그룹</AppBarLink>
+				<NextPath>{' > '}</NextPath>
+				<AppBarLink to={`/groups/${groupId}`}>{group?.name}</AppBarLink>
+			</CurrentPathContainer>
+			<ContentsContainer>
+				<div>
+					<SubHeader>
+						<SubHeaderText>
+							<HoverIconButton
+								color={'font'}
+								size={'m'}
+								margin={'0px'}
+								onClick={onClickFoldSummary}
+							>
+								{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
+							</HoverIconButton>
+							요약 [ {group?.name} ]
+						</SubHeaderText>
 
-				<SubHeader>
-					<SubHeaderText>
-						<HoverIconButton
-							color={'font'}
-							size={'m'}
-							margin={'0px'}
-							onClick={onClickFoldSummary}
-						>
-							{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
-						</HoverIconButton>
-						요약 [ {group?.name} ]
-					</SubHeaderText>
+						<AppBarButtons>
+							<NormalButton onClick={onClickChangeGroupName}>
+								그룹명 편집
+							</NormalButton>
+							<TransparentButton margin={'0px 0px 0px 5px'}>
+								삭제
+							</TransparentButton>
+						</AppBarButtons>
+					</SubHeader>
 
-					<AppBarButtons>
-						<NormalButton onClick={onClickChangeGroupName}>
-							그룹명 편집
-						</NormalButton>
-						<TransparentButton margin={'0px 0px 0px 5px'}>
-							삭제
-						</TransparentButton>
-					</AppBarButtons>
-				</SubHeader>
+					<SummaryList>
+						<LiText>그룹명 : {group?.name}</LiText>
+						<LiText>
+							그룹 유형 :{' '}
+							{
+								groupTypes.find(
+									(v) => v.id === group.clientGroupTypeId,
+								).name
+							}
+						</LiText>
+						<LiText>생성 일시 : {group?.creationDate}</LiText>
+					</SummaryList>
+				</div>
 
-				<SummaryList>
-					<LiText>그룹명 : {group?.name}</LiText>
-					<LiText>
-						그룹 유형 :{' '}
-						{
-							groupTypes.find(
-								(v) => v.id === group.clientGroupTypeId,
-							).name
-						}
-					</LiText>
-					<LiText>생성 일시 : {group?.creationDate}</LiText>
-				</SummaryList>
-			</VisibleContent>
+				<CoveredContent isOpened={isSummaryOpened}>
+					<GroupSummary
+						Id={groupId}
+						param={'groups'}
+						setIsOpened={setIsSummaryOpened}
+					/>
+				</CoveredContent>
 
-			<CoveredContent>
-				<GroupSummary
-					Id={groupId}
-					param={'groups'}
-					setIsOpened={setIsSummaryOpened}
-				/>
-			</CoveredContent>
-
-			<TabContainer
-				isOpend={!isSummaryOpened}
-				height={
-					document.getElementsByTagName('BODY')[0]?.clientHeight -
-					document
-						.getElementById('iam-tab-group')
-						?.getBoundingClientRect().bottom
-				}
-			>
-				<TabBar
-					Tabs={TabBarInfo}
-					param={'groups'}
-					Id={groupId}
-					isOpened={isSummaryOpened}
-					setIsOpened={setIsSummaryOpened}
-				/>
-				<TabContents>
-					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-						'user' && (
-						<GroupUsersTab
-							groupId={groupId}
-							space={'GroupUsersTab'}
-							isFold={isTableFold}
-							setIsFold={setIsTableFold}
-						/>
-					)}
-					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-						'role' && (
-						<GroupRolesTab
-							groupId={groupId}
-							space={'GroupRolesTab'}
-							isFold={isTableFold}
-							setIsFold={setIsTableFold}
-						/>
-					)}
-					{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-						'tag' && (
-						<GroupOnDescPageTags
-							groupId={groupId}
-							space={'GroupOnDescPageTags'}
-							isFold={isTableFold}
-							setIsFold={setIsTableFold}
-						/>
-					)}
-				</TabContents>
-			</TabContainer>
+				<TabContainer isOpened={!isSummaryOpened}>
+					<TabBar
+						Tabs={TabBarInfo}
+						param={'groups'}
+						Id={groupId}
+						isOpened={isSummaryOpened}
+						setIsOpened={setIsSummaryOpened}
+					/>
+					<TabContents>
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'user' && (
+							<GroupUsersTab
+								groupId={groupId}
+								space={'GroupUsersTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'role' && (
+							<GroupRolesTab
+								groupId={groupId}
+								space={'GroupRolesTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'tag' && (
+							<GroupOnDescPageTags
+								groupId={groupId}
+								space={'GroupOnDescPageTags'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+							/>
+						)}
+					</TabContents>
+				</TabContainer>
+			</ContentsContainer>
 		</DescriptionPageContainer>
 	);
 };
