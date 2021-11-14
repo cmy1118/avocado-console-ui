@@ -5,13 +5,13 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import {DateRangePicker} from 'react-dates';
 
-const CalenderOption = ({column: {filterValue = [], setFilter, id}}) => {
+const CalenderOptionTemp = () => {
 	const [focusedInput, setFocusedInput] = useState(null);
 
-	const onClickDateChange = useCallback(({startDate, endDate}) => {
-		setFilter(() => [startDate, endDate]);
-	}, []);
-
+	// const onClickDateChange = useCallback(({startDate, endDate}) => {
+	// 	setFilter(() => [startDate, endDate]);
+	// }, []);
+	//
 	const onFocusChange = useCallback((focusedInput) => {
 		setFocusedInput(focusedInput);
 	}, []);
@@ -19,11 +19,11 @@ const CalenderOption = ({column: {filterValue = [], setFilter, id}}) => {
 	return (
 		<div style={{zIndex: '10'}}>
 			<DateRangePicker
-				startDate={filterValue[0]}
+				// startDate={filterValue[0]}
 				startDateId='start-date'
-				endDate={filterValue[1]}
-				endDateId='end-date'
-				onDatesChange={onClickDateChange}
+				// endDate={filterValue[1]}
+				// endDateId='end-date'
+				// onDatesChange={onClickDateChange}
 				focusedInput={focusedInput}
 				onFocusChange={onFocusChange}
 				isOutsideRange={() => false}
@@ -36,6 +36,4 @@ const CalenderOption = ({column: {filterValue = [], setFilter, id}}) => {
 	);
 };
 
-CalenderOption.propTypes = {column: PropTypes.object.isRequired};
-
-export default CalenderOption;
+export default CalenderOptionTemp;
