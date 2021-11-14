@@ -95,11 +95,9 @@ export const Icon = styled.div`
 				: '24px'};
 	}
 `;
-
 export const IconButton = styled(Icon)`
 	cursor: pointer;
 `;
-
 export const HoverIconButton = styled(Icon)`
 	cursor: pointer;
 	&:hover {

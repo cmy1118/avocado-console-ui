@@ -16,7 +16,6 @@ export const DefaultButton = styled.button`
 	letter-spacing: 0.14px;
 	cursor: pointer;
 `;
-
 export const NormalButton = styled(DefaultButton)`
 	color: #ffffff;
 	background: #178082;
@@ -27,7 +26,6 @@ export const NormalButton = styled(DefaultButton)`
 		background: #0a6f71;
 	}
 `;
-
 export const WarningButton = styled(DefaultButton)`
 	color: #ffffff;
 	background: #d45959;
@@ -38,7 +36,6 @@ export const WarningButton = styled(DefaultButton)`
 		background: #b84646;
 	}
 `;
-
 export const TransparentButton = styled(DefaultButton)`
 	background: transparent;
 	color: #556367;
@@ -52,12 +49,10 @@ export const TransparentButton = styled(DefaultButton)`
 		border: solid 1px #a8a8a8;
 	}
 `;
-
 export const DisabledButton = styled(DefaultButton)`
 	color: #ffffff';
 	background: #e7e9ea;
 `;
-
 export const NormalBorderButton = styled(TransparentButton)`
 	background: transparent;
 	color: #178082;
@@ -73,7 +68,6 @@ export const NormalBorderButton = styled(TransparentButton)`
 		border: solid 1px #0a6f71;
 	}
 `;
-
 export const WarningBorderButton = styled(TransparentButton)`
 	background: transparent;
 	color: #d45959;
@@ -89,7 +83,6 @@ export const WarningBorderButton = styled(TransparentButton)`
 		border: solid 1px #b84646;
 	}
 `;
-
 export const TransparentBorderButton = styled(DefaultButton)`
 	color: #556367;
 	background: transparent;

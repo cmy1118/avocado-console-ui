@@ -7,9 +7,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import IamNav from '../Nav/IamNav';
-import Header from '../Header';
+import Header from '../Header/Header';
 import {DragDropContext} from 'react-beautiful-dnd';
-import Footer from '../Footer';
+import Footer from '../Footer/Footer';
 
 const _Container = styled.div`
 	display: flex;

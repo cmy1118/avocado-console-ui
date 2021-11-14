@@ -5,7 +5,7 @@ import {closeIcon} from '../../icons/icons';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {NormalButton, TransparentButton} from '../../styles/components/buttons';
-import {Span} from '../../styles/components/text';
+import {Span} from '../../styles/components/style';
 
 const _DialogBox = styled(DialogBox)`
 	border-radius: 4px;

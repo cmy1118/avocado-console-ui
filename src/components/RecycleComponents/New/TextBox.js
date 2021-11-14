@@ -2,7 +2,7 @@ import {useField, Field, useFormikContext, ErrorMessage} from 'formik';
 import PropTypes from 'prop-types';
 import React, {useCallback} from 'react';
 import styled from 'styled-components';
-import {ErrorSpan} from '../../../styles/components/text';
+import {ErrorMessageText} from '../../../styles/components/text';
 
 const Container = styled.div`
 	.focus {
@@ -79,7 +79,7 @@ const TextBox = ({...props}) => {
 			</SubContainer>
 			{touched[field.name] && errors[field.name] ? (
 				<ErrorMessage name={field.name}>
-					{(msg) => <ErrorSpan>{msg}</ErrorSpan>}
+					{(msg) => <ErrorMessageText>{msg}</ErrorMessageText>}
 				</ErrorMessage>
 			) : null}
 		</Container>

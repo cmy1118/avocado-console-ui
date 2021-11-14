@@ -1,124 +1,63 @@
 import styled from 'styled-components';
 
-export const IamContainer = styled.div`
-	flex: 1;
+export const PositionRelativeDiv = styled.div`
+	position: relative;
+`;
+
+export const RowDiv = styled.div`
 	display: flex;
-	flex-direction: column;
+	width: ${(props) => props.width};
+	height: ${(props) => props.height || 'initial'};
+	margin: ${(props) => props.margin || '0px'};
+	padding: ${(props) => props.padding || '0px'};
+	align-items: ${(props) => props.alignItems || 'initial'};
+	justify-content: ${(props) => props.justifyContent || 'initial'};
 `;
-
-export const AddContainer = styled.div`
+export const Label = styled.label`
 	display: flex;
-	flex: 1 1 auto;
-	flex-direction: column;
-`;
-
-export const AddInfo = styled.div`
-	flex: 1 1 auto;
-	height: 0;
-	overflow: scroll;
-`;
-
-export const NavContainer = styled.div`
-	border-right: 1px solid;
-	border-color: #e3e5e5;
-	z-index: 5;
-	display: flex;
-	flex-direction: column;
-	transform: translateX(1px);
-	// transition: transform 0.5s ease-in-out;
-	width: 255px;
-	height: 100%;
-	min-width: 255px;
-	background: #ffffff;
-	z-index: 75;
-
-	// &.close {
-	// 	display: none;
-	// 	transform: translateX(-255px);
-	// }
-`;
-
-export const NavItemList = styled.div`
-	display: flex;
-	flex-direction: column;
-`;
-
-export const AsideContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	width: 255px;
-	transition: margin 0.5s ease-in-out;
-	&.close {
-		display: none;
-		transform: translateX(255px);
-	}
-`;
-
-export const SubHeader = styled.div`
-	border: none;
 	align-items: center;
-	box-sizing: border-box;
-	font-size: 16px;
-	font-weight: 500;
-	line-height: 1.31;
-	letter-spacing: 0.3px;
+	font-size: 14px;
+	font-weight: normal;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.5;
+	letter-spacing: 0.1px;
 	text-align: left;
 	color: #212121;
+	margin-bottom: 2px;
+	width: ${(props) => props.width || '120px'};
+`;
+export const Span = styled.span`
+	font-size: 14px;
+	font-weight: 500;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: ${(props) => props.lineHeight || 'normal'};
+	letter-spacing: 0.14px;
+	color: #212121;
+	white-space: nowrap;
+	padding: ${(props) => props.padding || '0px'};
+	margin: ${(props) => props.margin || '0px'};
+	color: ${(props) => props.color || 'initial'};
+`;
+//임시
+export const DnDDiv = styled.div`
 	display: flex;
-	justify-content: space-between;
-	height: 54px;
-	padding: 10px 16px;
+	width: ${(props) => props.width};
+	height: ${(props) => props.height || 'initial'};
+	margin: ${(props) => props.margin || '0px'};
+	padding: ${(props) => props.padding || '0px'};
+	align-items: ${(props) => props.alignItems || 'initial'};
+	justify-content: ${(props) => props.justifyContent || 'initial'};
 `;
 
-export const SummaryPageSubHeader = styled(SubHeader)`
-	width: fit-content;
-	padding: 30px 16px 13px 16px;
-	color: #178082;
-	&:hover {
-		color: ${(props) => props?.color || '#389193'};
-		text-decoration: underline;
-	}
+export const ColDiv = styled(RowDiv)`
+	flex-direction: column;
 `;
-
-export const AddPageDialogBoxSubHeader = styled(SubHeader)`
-	width: fit-content;
-	padding: 30px 16px 13px 16px;
-	color: black;
-`;
-
-export const DottedBorderSubHeader = styled(SubHeader)`
-	border-bottom: 2px #e3e5e5 dotted;
-`;
-
-export const SubHeaderText = styled.div`
+//group, role add page 정리 후 삭제 예정
+export const TableHeader = styled.div`
+	height: 62px;
 	display: flex;
-	align-items: center;
-	line-height: 20px;
-`;
-
-export const SubTitle = styled.div`
-	display: flex;
-	justify-content: space-between;
-`;
-
-export const AppBarButtons = styled.div`
-	display: flex;
-`;
-
-export const SummaryList = styled.ul`
-	margin: 0px 16px;
-	padding-left: 24px;
-	margin-bottom: ${(props) => (props.isOpened ? '40px' : '30px')};
-`;
-
-export const SummaryTablesContainer = styled.div`
-	flex: 1;
-	// overflow-y: scroll;
-`;
-export const InputDescriptionText = styled.span`
-	color: #757575;
-	margin: 0 10px;
-	font-size: 12px;
-	display: inline-flex;
+	padding: 14px 16px;
 	align-items: center;
 `;

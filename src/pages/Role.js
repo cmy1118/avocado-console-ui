@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import RoleSpace from '../components/Role/Space/RoleSpace';
-import RoleDescriptionSpace from '../components/Role/Space/RoleDescriptionSpace';
-import AddRoleSpace from '../components/Role/Space/AddRoleSpace';
+import RoleSpace from '../components/IAM/Role/Space/RoleSpace';
+import RoleDescriptionSpace from '../components/IAM/Role/Space/RoleDescriptionSpace';
+import AddRoleSpace from '../components/IAM/Role/Space/AddRoleSpace';
 
 const Role = ({match}) => {
 	return (

@@ -9,7 +9,7 @@ import {
 	useTable,
 } from 'react-table';
 import TableCheckbox from './Options/TableCheckbox';
-import {ColDiv} from '../../styles/components/div';
+import {ColDiv} from '../../styles/components/style';
 import styled from 'styled-components';
 
 const Container = styled(ColDiv)`

@@ -5,9 +5,9 @@ import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {useRootClose} from 'react-overlays';
-import {ErrorSpan} from '../../../styles/components/text';
+import {ErrorMessageText} from '../../../styles/components/text';
 
-const Container = styled.div`
+const _Container = styled.div`
 	background: #fff;
 	cursor: pointer;
 	.focus {
@@ -15,7 +15,7 @@ const Container = styled.div`
 	}
 `;
 
-const Header = styled.div`
+const _Header = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -26,7 +26,7 @@ const Header = styled.div`
 	box-sizing: border-box;
 `;
 
-const IconHeader = styled(Header)`
+const IconHeader = styled(_Header)`
 	justify-content: space-between;
 	width: ${(props) => props.width || '192px'};
 	border-radius: 4px;
@@ -68,6 +68,7 @@ const OptionContainer = styled.div`
 	background-color: #fff;
 `;
 
+//ErrorMessageText.propTypes = {children: PropTypes.node};
 const ComboBox = ({type = 'normal', ...props}) => {
 	const ref = useRef();
 	const {setFieldValue, errors, touched} = useFormikContext();
@@ -94,9 +95,9 @@ const ComboBox = ({type = 'normal', ...props}) => {
 	});
 
 	return (
-		<Container>
+		<_Container>
 			{type === 'drop' ? (
-				<Header
+				<_Header
 					onClick={() => setIsOpened(!isOpened)}
 					className={isOpened && ' focus'}
 				>
@@ -104,7 +105,7 @@ const ComboBox = ({type = 'normal', ...props}) => {
 						props.options.find((v) => v.value === field.value)
 							?.label ||
 						field.value}
-				</Header>
+				</_Header>
 			) : (
 				<IconHeader
 					width={props.width}
@@ -126,7 +127,7 @@ const ComboBox = ({type = 'normal', ...props}) => {
 			)}
 			{touched[field.name] && errors[field.name] ? (
 				<ErrorMessage name={field.name}>
-					{(msg) => <ErrorSpan>{msg}</ErrorSpan>}
+					{(msg) => <ErrorMessageText>{msg}</ErrorMessageText>}
 				</ErrorMessage>
 			) : null}
 			{isOpened && (
@@ -150,7 +151,7 @@ const ComboBox = ({type = 'normal', ...props}) => {
 					})}
 				</OptionContainer>
 			)}
-		</Container>
+		</_Container>
 	);
 };
 
