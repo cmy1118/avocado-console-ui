@@ -305,6 +305,10 @@ export const GROUP_SUMMARY_TABS_ROLES_INCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
+		type:'roles',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '역할 유형',
@@ -328,6 +332,10 @@ export const GROUP_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
+		type:'roles',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '역할 유형',
@@ -351,6 +359,10 @@ export const GROUP_SUMMARY_TABS_USERS_INCLUDE_COLUMN = [
 	{
 		Header: '사용자 계정',
 		accessor: 'id',
+		type:'users',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '사용자 명',
@@ -373,6 +385,10 @@ export const GROUP_SUMMARY_TABS_USERS_EXCLUDE_COLUMN = [
 	{
 		Header: '사용자 계정',
 		accessor: 'id',
+		type:'users',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '사용자 명',
