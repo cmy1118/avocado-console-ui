@@ -81,8 +81,11 @@ export const ROLE_SUMMARY_PERMISSION_COLUMN = [
 	{
 		accessor: 'grantUser',
 		Header: '부여 사용자',
-		Cell: function Component(v) {
-			return <div>{v.value?.name + '(' + v.value?.id + ')'}</div>;
+		type:'users',
+		Cell: function Component(cell) {
+			console.log('v?:',cell)
+			return<TableLink cell={cell} text={cell.value?.name + '(' + cell.value?.id + ')'}/>
+			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
 ];
@@ -103,8 +106,11 @@ export const ROLE_SUMMARY_USER_COLUMN = [
 	{
 		accessor: 'grantUser',
 		Header: '부여 사용자',
-		Cell: function Component(v) {
-			return <div>{v.value?.name + '(' + v.value?.id + ')'}</div>;
+		type:'users',
+		Cell: function Component(cell) {
+			console.log('v?:',cell)
+			return<TableLink cell={cell} text={cell.value?.name + '(' + cell.value?.id + ')'}/>
+			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
 ];
@@ -118,8 +124,11 @@ export const ROLE_SUMMARY_GROUP_COLUMN = [
 	{
 		accessor: 'grantUser',
 		Header: '부여 사용자',
-		Cell: function Component(v) {
-			return <div>{v.value?.name + '(' + v.value?.id + ')'}</div>;
+		type:'users',
+		Cell: function Component(cell) {
+			console.log('v?:',cell)
+			return<TableLink cell={cell} text={cell.value?.name + '(' + cell.value?.id + ')'}/>
+			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
 ];
@@ -158,8 +167,11 @@ export const ROLE_SUMMARY_TABS_USERS_INCLUDE_COLUMN = [
 	{
 		accessor: 'grantUser',
 		Header: '부여 사용자',
-		Cell: function Component(v) {
-			return <div>{v.value?.name + '(' + v.value?.id + ')'}</div>;
+		type:'users',
+		Cell: function Component(cell) {
+			console.log('v?:',cell)
+			return<TableLink cell={cell} text={cell.value?.name + '(' + cell.value?.id + ')'}/>
+			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
 ];
@@ -190,8 +202,11 @@ export const ROLE_SUMMARY_TABS_GROUPS_INCLUDE_COLUMN = [
 	{
 		accessor: 'grantUser',
 		Header: '부여 사용자',
-		Cell: function Component(v) {
-			return <div>{v.value?.name + '(' + v.value?.id + ')'}</div>;
+		type:'users',
+		Cell: function Component(cell) {
+			console.log('v?:',cell)
+			return<TableLink cell={cell} text={cell.value?.name + '(' + cell.value?.id + ')'}/>
+			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
 ];

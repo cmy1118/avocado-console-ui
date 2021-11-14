@@ -12,32 +12,32 @@ export const dummyDates = [
 
 export const dummyUsers = [
 	{
-		uid: 'user1',
+		uid: 'user5',
 		id: 'kyoung634',
 		name: '김영우',
 	},
 	{
-		uid: 'user3',
+		uid: 'user6',
 		id: 'minmin2',
 		name: '박민수',
 	},
 	{
-		uid: 'user1',
+		uid: 'user5',
 		id: 'kyoung634',
 		name: '김영우',
 	},
 	{
-		uid: 'user3',
+		uid: 'user6',
 		id: 'minmin2',
 		name: '박민수',
 	},
 	{
-		uid: 'user1',
+		uid: 'user5',
 		id: 'kyoung634',
 		name: '김영우',
 	},
 	{
-		uid: 'user3',
+		uid: 'user6',
 		id: 'minmin2',
 		name: '박민수',
 	},
@@ -58,7 +58,7 @@ export const dummyPolicyOnUser = [
 		authTarget: '사용자',
 		grantDate: '2021.09.03 15:35:58',
 		grantUser: {
-			uid: 'user3',
+			uid: 'user6',
 			id: 'minmin2',
 			name: '박민수',
 		},
@@ -75,7 +75,7 @@ export const dummyPolicyOnUser = [
 		authTarget: '사용자',
 		grantDate: '2021.12.01 19:23:02',
 		grantUser: {
-			uid: 'user3',
+			uid: 'user6',
 			id: 'minmin2',
 			name: '박민수',
 		},
@@ -92,7 +92,7 @@ export const dummyPolicyOnUser = [
 		authTarget: '그룹(Admin)',
 		grantDate: '2020.12.14 16:20:14',
 		grantUser: {
-			uid: 'user1',
+			uid: 'user5',
 			id: 'kyoung634',
 			name: '김영우',
 		},
@@ -106,7 +106,7 @@ export const dummyPolicyOnUser = [
 		authTarget: '사용자',
 		grantDate: '2020.01.05 12:00:02',
 		grantUser: {
-			uid: 'user3',
+			uid: 'user6',
 			id: 'minmin2',
 			name: '박민수',
 		},
@@ -123,7 +123,7 @@ export const dummyPolicyOnUser = [
 		authTarget: '계정처리 정책',
 		grantDate: '2021.09.03 15:35:58',
 		grantUser: {
-			uid: 'user1',
+			uid: 'user5',
 			id: 'kyoung634',
 			name: '김영우',
 		},
@@ -140,7 +140,7 @@ export const dummyPolicyOnUser = [
 		authTarget: '태그(type)',
 		grantDate: '2021.09.03 15:35:58',
 		grantUser: {
-			uid: 'user3',
+			uid: 'user6',
 			id: 'minmin2',
 			name: '박민수',
 		},
@@ -160,7 +160,7 @@ export const dummyPolicyOnGroup = [
 		authTarget: '사용자',
 		grantDate: '2021.09.03 15:35:55',
 		grantUser: {
-			uid: 'user3',
+			uid: 'user6',
 			id: 'minmin2',
 			name: '박민수',
 		},
@@ -177,7 +177,7 @@ export const dummyPolicyOnGroup = [
 		authTarget: '그룹(Admin)',
 		grantDate: '2021.09.03 15:35:55',
 		grantUser: {
-			uid: 'user3',
+			uid: 'user6',
 			id: 'minmin2',
 			name: '박민수',
 		},
@@ -191,7 +191,7 @@ export const dummyPolicyOnGroup = [
 		authTarget: '사용자',
 		grantDate: '2021.09.03 15:35:55',
 		grantUser: {
-			uid: 'user3',
+			uid: 'user6',
 			id: 'minmin2',
 			name: '박민수',
 		},
@@ -208,7 +208,7 @@ export const dummyPolicyOnGroup = [
 		authTarget: '태그(type)',
 		grantDate: '2021.09.03 15:35:58',
 		grantUser: {
-			uid: 'user1',
+			uid: 'user5',
 			id: 'kyoung634',
 			name: '김영우',
 		},
@@ -225,7 +225,7 @@ export const dummyPolicyOnGroup = [
 		authTarget: '태그(type)',
 		grantDate: '2021.09.03 15:35:58',
 		grantUser: {
-			uid: 'user3',
+			uid: 'user6',
 			id: 'minmin2',
 			name: '박민수',
 		},
@@ -244,7 +244,7 @@ export const dummyPolicyOnRole = [
 		policyName: 'AdminUser',
 		creationDate: '2021.09.03 15:35:55',
 		grantUser: {
-			uid: 'user3',
+			uid: 'user6',
 			id: 'minmin2',
 			name: '박민수',
 		},
@@ -260,7 +260,7 @@ export const dummyPolicyOnRole = [
 		policyName: 'AdminUserGrp',
 		creationDate: '2021.09.03 15:35:55',
 		grantUser: {
-			uid: 'user3',
+			uid: 'user6',
 			id: 'minmin2',
 			name: '박민수',
 		},
@@ -273,7 +273,7 @@ export const dummyPolicyOnRole = [
 		policyName: 'AdminRole',
 		creationDate: '2021.09.03 15:35:55',
 		grantUser: {
-			uid: 'user3',
+			uid: 'user6',
 			id: 'minmin2',
 			name: '박민수',
 		},
@@ -289,7 +289,7 @@ export const dummyPolicyOnRole = [
 		policyName: 'AdminAccount',
 		creationDate: '2021.09.03 15:35:58',
 		grantUser: {
-			uid: 'user1',
+			uid: 'user5',
 			id: 'kyoung634',
 			name: '김영우',
 		},
@@ -305,7 +305,7 @@ export const dummyPolicyOnRole = [
 		policyName: 'DefaultAccess',
 		creationDate: '2021.09.03 15:35:58',
 		grantUser: {
-			uid: 'user3',
+			uid: 'user6',
 			id: 'minmin2',
 			name: '박민수',
 		},
