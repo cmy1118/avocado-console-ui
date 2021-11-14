@@ -140,6 +140,10 @@ export const USER_ADD_GROUPS_EXCLUDE_COLUMN = [
 	{
 		Header: '그룹명',
 		accessor: 'name',
+		type:'groups',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '그룹 유형',
@@ -162,6 +166,10 @@ export const USER_ADD_GROUPS_INCLUDE_COLUMN = [
 	{
 		Header: '그룹명',
 		accessor: 'name',
+		type:'groups',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '그룹 유형',
@@ -173,6 +181,10 @@ export const USER_ADD_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
+		type:'roles',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '역할 유형',
@@ -192,6 +204,10 @@ export const USER_ADD_ROLES_INCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
+		type:'roles',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '역할 유형',
@@ -400,6 +416,10 @@ export const USER_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
+		type:'roles',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{Header: '역할 유형', accessor: 'type'},
 	{Header: '설명', accessor: 'description', width: 400},
@@ -417,6 +437,10 @@ export const USER_SUMMARY_TABS_ROLES_INCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
+		type:'roles',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{Header: '역할 유형', accessor: 'type'},
 	{Header: '설명', accessor: 'description', width: 400},
@@ -434,6 +458,10 @@ export const USER_SUMMARY_TABS_GROUPS_INCLUDE_COLUMN = [
 	{
 		Header: '그룹 명',
 		accessor: 'name',
+		type:'groups',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '그룹 유형',
@@ -458,6 +486,10 @@ export const USER_SUMMARY_TABS_GROUPS_EXCLUDE_COLUMN = [
 	{
 		Header: '그룹 명',
 		accessor: 'name',
+		type:'groups',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '그룹 유형',

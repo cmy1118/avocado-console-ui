@@ -76,6 +76,10 @@ export const GROUP_ADD_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
+		type:'roles',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '역할 유형',
@@ -100,6 +104,10 @@ export const GROUP_ADD_ROLES_INCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
+		type:'roles',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '역할 유형',
@@ -270,6 +278,10 @@ export const GROUP_ADD_USERS_EXCLUDE_COLUMN = [
 		//:TODO  uid-> id , id->_id
 		Header: '사용자 계정',
 		accessor: 'id',
+		type:'users',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '사용자 이름',
@@ -294,6 +306,10 @@ export const GROUP_ADD_USERS_INCLUDE_COLUMN = [
 		//:TODO  uid-> id , id->_id
 		Header: '사용자 계정',
 		accessor: '_id',
+		type:'users',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell}/>;
+		},
 	},
 	{
 		Header: '사용자 이름',

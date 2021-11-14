@@ -113,7 +113,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 
 						<AppBarButtons>
 							<NormalButton onClick={onClickChangeGroupName}>
-								그룹명 편집
+								그룹 생성
 							</NormalButton>
 							<TransparentButton margin={'0px 0px 0px 5px'}>
 								삭제
