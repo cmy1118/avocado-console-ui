@@ -49,12 +49,12 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		if (select[0]) {
-			setData(data.filter((v) => !select.includes(v.name)));
+		if (select[tableKeys.users.add.tag][0]) {
+			console.log('api 처리', select[tableKeys.users.add.tag]);
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
-	}, [data, select]);
+	}, [select]);
 
 	useEffect(() => {
 		dispatch(

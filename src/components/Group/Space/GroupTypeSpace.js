@@ -60,12 +60,12 @@ const GroupTypeSpace = () => {
 
 	const onClickDeleteGroupTypes = useCallback(() => {
 		console.log(select);
-		if (select[0]) {
-			setData(data.filter((v) => !select.includes(v.id)));
+		if (select[tableKeys.groups.type][0]) {
+			console.log('api 처리', select[tableKeys.groups.type]);
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
-	}, [data, select]);
+	}, [select]);
 
 	return (
 		<IamContainer>

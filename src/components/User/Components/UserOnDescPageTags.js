@@ -5,7 +5,10 @@ import PropTypes from 'prop-types';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import {tableKeys} from '../../../Constants/Table/keys';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {NormalButton, TransparentButton,} from '../../../styles/components/buttons';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 import {TableSpace} from '../../../styles/components/table';
 import TableOptionText from '../../Table/Options/TableOptionText';
 import {dummyPermission} from '../../../utils/dummyData';
@@ -58,13 +61,12 @@ const UserOnDescPageTags = ({userId}) => {
 	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		if (select[0]) {
-			console.log(select);
-			setData(data.filter((v) => !select.includes(v.name)));
+		if (select[tableKeys.users.summary.tabs.tags.basic][0]) {
+			console.log(select[tableKeys.users.summary.tabs.tags.basic]);
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
-	}, [data, select]);
+	}, [select]);
 
 	return (
 		<TabContentContainer>
@@ -91,6 +93,7 @@ const UserOnDescPageTags = ({userId}) => {
 				height={'200px'}
 				tableKey={tableKeys.users.summary.tabs.tags.basic}
 				data={data}
+				setData={setData}
 				columns={tableColumns[tableKeys.users.summary.tabs.tags.basic]}
 			>
 				<Table setSelect={setSelect} />
@@ -134,7 +137,7 @@ const UserOnDescPageTags = ({userId}) => {
 						}
 					>
 						<TableOptionsBar />
-						<Table />
+						<Table setSelect={setSelect} />
 					</TableContainer>
 
 					<_TableSpace>
@@ -162,7 +165,6 @@ const UserOnDescPageTags = ({userId}) => {
 							tableKeys.users.summary.tabs.tags.permissions
 								.exclude
 						}
-						height={'200px'}
 						data={dummyPermission.filter(
 							(v) =>
 								!select[

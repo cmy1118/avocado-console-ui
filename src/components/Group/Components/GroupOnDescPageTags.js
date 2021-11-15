@@ -55,9 +55,11 @@ const GroupOnDescPageTags = ({groupId}) => {
 	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		if (select[0]) {
-			console.log(select);
-			setData(data.filter((v) => !select.includes(v.name)));
+		if (select[tableKeys.groups.summary.tabs.tags.basic][0]) {
+			console.log(
+				'api 처리',
+				select[tableKeys.groups.summary.tabs.tags.basic],
+			);
 		} else {
 			alert('선택된 값이 없습니다.');
 		}

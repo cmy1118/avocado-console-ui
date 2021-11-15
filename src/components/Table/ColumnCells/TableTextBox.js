@@ -1,5 +1,12 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+const _Input = styled.input`
+	outline: none;
+	border: none;
+	background: transparent;
+`;
 
 const TableTextBox = ({cell, isFocus}) => {
 	const [value, setValue] = useState(cell.value);
@@ -15,7 +22,7 @@ const TableTextBox = ({cell, isFocus}) => {
 	};
 
 	useEffect(() => {
-		isFocus && !value && ref.current;
+		isFocus && !value && ref.current.focus();
 	}, [isFocus, value]);
 
 	useEffect(() => {
@@ -23,7 +30,14 @@ const TableTextBox = ({cell, isFocus}) => {
 	}, [cell.value]);
 	//
 	return (
-		<input ref={ref} value={value} onChange={onChange} onBlur={onBlur} />
+		<_Input
+			autoFocus
+			ref={ref}
+			className={`${cell.tableKey} TableTextBox`}
+			value={value}
+			onChange={onChange}
+			onBlur={onBlur}
+		/>
 	);
 };
 
