@@ -135,7 +135,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[createAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+			state.groups = action.payload;
 			state.loading = false;
 		},
 		[createAction.rejected]: (state, action) => {
@@ -147,7 +147,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[updateAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+			state.groups = action.payload;
 			state.loading = false;
 		},
 		[updateAction.rejected]: (state, action) => {
@@ -159,7 +159,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[deleteAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+			state.groups = action.payload;
 			state.loading = false;
 		},
 		[deleteAction.rejected]: (state, action) => {
@@ -171,7 +171,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByIdAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+			state.groups = action.payload;
 			state.loading = false;
 		},
 		[findByIdAction.rejected]: (state, action) => {
@@ -183,7 +183,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByUidAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+			state.groups = action.payload;
 			state.loading = false;
 		},
 		[findByUidAction.rejected]: (state, action) => {

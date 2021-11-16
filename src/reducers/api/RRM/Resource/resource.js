@@ -8,7 +8,7 @@ const NAME = 'RRM_RESOURCE';
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 		const response = await axios.post(
 			`/open/api/v1/remote/resources`,
 			{
@@ -36,7 +36,7 @@ const createAction = createAsyncThunk(
 const updateAction = createAsyncThunk(
 	`${NAME}/UPDATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.put(
 			`/open/api/v1/remote/resources/${payload.id}`,
@@ -65,7 +65,7 @@ const updateAction = createAsyncThunk(
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.delete(
 			`/open/api/v1/remote/resources/${payload.id}`,
@@ -84,7 +84,7 @@ const deleteAction = createAsyncThunk(
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.get(
 			`/open/api/v1/remote/resources/${payload.id}`,
@@ -103,7 +103,7 @@ const findByIdAction = createAsyncThunk(
 const findAllBasicAction = createAsyncThunk(
 	`${NAME}/FIND_ALL_BASIC`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.get(`/open/api/v1/remote/resources`, {
 			params: {
@@ -124,7 +124,7 @@ const findAllBasicAction = createAsyncThunk(
 const findAllServicePortAction = createAsyncThunk(
 	`${NAME}/FIND_ALL_SERVICE_PORT`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.get(
 			`/open/api/v1/remote/resources/${payload.id}/ports`,
@@ -144,7 +144,7 @@ const findAllServicePortAction = createAsyncThunk(
 const findAllTagAction = createAsyncThunk(
 	`${NAME}/FIND_ALL_TAG`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.get(
 			`/open/api/v1/remote/resources/${payload.id}/tags`,

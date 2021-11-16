@@ -8,7 +8,7 @@ const NAME = 'RRM_GROUP_TYPE';
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 		const response = await axios.post(
 			`/open/api/v1/remote/resources/group-types`,
 			{
@@ -29,7 +29,7 @@ const createAction = createAsyncThunk(
 const updateAction = createAsyncThunk(
 	`${NAME}/UPDATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.put(
 			`/open/api/v1/remote/resources/group-types/${payload.id}`,
@@ -52,7 +52,7 @@ const updateAction = createAsyncThunk(
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.delete(
 			`/open/api/v1/remote/resources/group-types/${payload.id}`,
@@ -71,7 +71,7 @@ const deleteAction = createAsyncThunk(
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.get(
 			`/open/api/v1/remote/resources/group-types/${payload.id}`,
@@ -90,7 +90,7 @@ const findByIdAction = createAsyncThunk(
 const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.get(
 			`/open/api/v1/remote/resources/group-types`,
