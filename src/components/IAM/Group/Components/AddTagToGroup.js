@@ -38,7 +38,7 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		console.log(select);
+		console.log(select[tableKeys.groups.add.tag]);
 		console.log('삭제 처리 필요');
 	}, [select]);
 
@@ -85,12 +85,12 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 				<>
 					<TableOptionText data={'tags'} />
 					<TableContainer
-						height={'200px'}
 						tableKey={tableKeys.groups.add.tag}
 						data={tagData}
+						setData={setData}
 						columns={tableColumns[tableKeys.groups.add.tag]}
 					>
-						<Table setSelect={setSelect} setData={setData} />
+						<Table setSelect={setSelect} />
 					</TableContainer>
 				</>
 			)}

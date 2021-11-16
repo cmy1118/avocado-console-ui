@@ -264,9 +264,6 @@ const Table = ({
 																>
 																	{cell.render(
 																		'Cell',
-																		{
-																			setData,
-																		},
 																	)}
 																</Tds>
 															);

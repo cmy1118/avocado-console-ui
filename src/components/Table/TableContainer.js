@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
 	useFilters,
@@ -89,15 +89,34 @@ const NormalTable = styled.div`
 
 const TableContainer = ({
 	data,
+	setData,
 	columns,
 	tableKey,
 	mode = 'normal',
 	children,
 }) => {
+	const [skipPageReset, setSkipPageReset] = useState(false);
+
 	const getRowId = useCallback((v) => {
 		if (v.uid) return v.uid;
 		return v.id;
 	}, []);
+
+	const updateMyData = (rowIndex, columnId, value) => {
+		// We also turn on the flag to not reset the page
+		setSkipPageReset(true);
+		setData((old) =>
+			old.map((row, index) => {
+				if (index === rowIndex) {
+					return {
+						...old[rowIndex],
+						[columnId]: value,
+					};
+				}
+				return row;
+			}),
+		);
+	};
 
 	function dateBetweenFilterFn(rows, id, filterValues) {
 		let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;
@@ -163,6 +182,8 @@ const TableContainer = ({
 			initialState: {pageSize: 50},
 			getRowId,
 			filterTypes,
+			autoResetPage: !skipPageReset,
+			updateMyData,
 		},
 		useGlobalFilter,
 		useFilters,
@@ -273,6 +294,7 @@ const TableContainer = ({
 TableContainer.propTypes = {
 	tableKey: PropTypes.string.isRequired,
 	data: PropTypes.array.isRequired,
+	setData: PropTypes.func,
 	columns: PropTypes.array.isRequired,
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 		.isRequired,

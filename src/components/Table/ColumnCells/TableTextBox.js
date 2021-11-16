@@ -1,68 +1,43 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-const TableTextBox = ({cell, isFocus = false}) => {
+const _Input = styled.input`
+	outline: none;
+	border: none;
+	background: transparent;
+`;
+
+const TableTextBox = ({cell, isFocus}) => {
+	const [value, setValue] = useState(cell.value);
 	const ref = useRef(null);
-	const [value, setValue] = useState(cell.row.original[cell.column.id]);
 	const [isOpened, setIsOpened] = useState(!value);
 
-	const handleChange = useCallback((e) => {
+	const onChange = (e) => {
 		setValue(e.target.value);
-	}, []);
-	const handlePressEnter = useCallback(
-		(e) => {
-			if (!e.target.value) return;
-			if (e.keyCode === 13) {
-				const data = cell.data.slice();
-				if (!data) return;
-				data.pop();
-				data.push({
-					...cell.row.original,
-					[cell.column.id]: e.target.value,
-				});
+	};
 
-				if (!cell.setData) return;
-				cell.setData(data);
-				setIsOpened(false);
-			}
-		},
-		[cell],
-	);
+	const onBlur = () => {
+		cell.updateMyData(cell.row.index, cell.column.id, value);
+	};
 
-	const handleBlur = useCallback(
-		(e) => {
-			if (!e.target.value) return;
-			const data = cell.data.slice();
-			if (!data) return;
-			data.pop();
-			data.push({
-				...cell.row.original,
-				[cell.column.id]: e.target.value,
-			});
-
-			if (!cell.setData) return;
-			cell.setData(data);
-			setIsOpened(false);
-		},
-		[cell],
-	);
-
-	// todo : 첫번째 input focus
 	useEffect(() => {
-		isFocus && value === '' && ref.current?.focus();
+		isFocus && !value && ref.current.focus();
 	}, [isFocus, value]);
 
-	return isOpened ? (
-		<input
+	useEffect(() => {
+		setValue(cell.value);
+	}, [cell.value]);
+	//
+	return (
+		<_Input
+			autoFocus
 			ref={ref}
-			type='text'
+			className={`${cell.tableKey} TableTextBox`}
 			value={value}
-			onKeyUp={handlePressEnter}
-			onBlur={handleBlur}
-			onChange={handleChange}
+			onChange={onChange}
+			onBlur={onBlur}
 		/>
-	) : (
-		<div onDoubleClick={() => setIsOpened(true)}>{value}</div>
 	);
 };
 
