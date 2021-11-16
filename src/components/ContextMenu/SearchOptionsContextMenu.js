@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import DropdownBtnContainer from '../RecycleComponents/DropdownBtnContainer';
@@ -18,15 +18,23 @@ const _CheckboxContainer = styled.div`
 const SearchOptionsContextMenu = ({
 	isOpened,
 	setIsOpened,
-	allOptions,
-	selectedOptions,
+	allColumns,
+	selectedOptions, //선택된 필터 옵션들
 	setSelectedOptions,
-	filters,
+	filters, // 필터링될 값
 	setAllFilters,
 }) => {
 	const [tempSelectedOptions, setTempSelectedOptions] = useState(
 		selectedOptions,
 	);
+
+	const allOptions = useMemo(() => {
+		return allColumns.filter(
+			(v) =>
+				Object.prototype.hasOwnProperty.call(v, 'filter') &&
+				v.isVisible === true,
+		);
+	}, [allColumns]);
 
 	const onClickSelectFilter = useCallback(
 		(columns) => (e) => {
@@ -67,12 +75,12 @@ const SearchOptionsContextMenu = ({
 		>
 			{allOptions.map((column) => (
 				<_CheckboxContainer
-					key={column.accessor}
-					onClick={onClickSelectFilter(column.accessor)}
+					key={column.id}
+					onClick={onClickSelectFilter(column.id)}
 				>
 					<CheckBox
 						label={column.Header}
-						checked={tempSelectedOptions.includes(column.accessor)}
+						checked={tempSelectedOptions.includes(column.id)}
 						readOnly
 					/>
 				</_CheckboxContainer>
@@ -83,7 +91,7 @@ const SearchOptionsContextMenu = ({
 SearchOptionsContextMenu.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
-	allOptions: PropTypes.array.isRequired,
+	allColumns: PropTypes.array.isRequired,
 	selectedOptions: PropTypes.array.isRequired,
 	setSelectedOptions: PropTypes.func.isRequired,
 	filters: PropTypes.array.isRequired,

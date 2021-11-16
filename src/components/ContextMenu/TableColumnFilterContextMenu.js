@@ -20,6 +20,10 @@ const TableColumnFilterContextMenu = ({
 	setIsOpened,
 	allColumns,
 	setHiddenColumns,
+	selectedOptions,
+	setSelectedOptions,
+	filters,
+	setAllFilters,
 }) => {
 	const filteredList = useMemo(() => {
 		return allColumns.filter((v) => !v.disableChangeVisible);
@@ -38,8 +42,22 @@ const TableColumnFilterContextMenu = ({
 		setHiddenColumns(
 			filteredList.filter((v) => !check.includes(v.id)).map((v) => v.id),
 		);
+
+		setSelectedOptions(
+			selectedOptions.filter((v) => !check.includes(v.id)),
+		);
+		setAllFilters(filters.filter((v) => check.includes(v.id)));
 		setIsOpened(false);
-	}, [check, filteredList, setHiddenColumns, setIsOpened]);
+	}, [
+		setHiddenColumns,
+		filteredList,
+		setSelectedOptions,
+		selectedOptions,
+		setAllFilters,
+		filters,
+		setIsOpened,
+		check,
+	]);
 
 	const onClickSetCheck = useCallback(
 		(columns) => (e) => {
@@ -101,5 +119,9 @@ TableColumnFilterContextMenu.propTypes = {
 	getToggleHideAllColumnsProps: PropTypes.func.isRequired,
 	setHiddenColumns: PropTypes.func.isRequired,
 	allColumns: PropTypes.array.isRequired,
+	selectedOptions: PropTypes.array.isRequired,
+	setSelectedOptions: PropTypes.func.isRequired,
+	filters: PropTypes.array.isRequired,
+	setAllFilters: PropTypes.func.isRequired,
 };
 export default TableColumnFilterContextMenu;
