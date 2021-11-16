@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {TableSpace} from '../../../styles/components/table';
+import {TableTitle} from '../../../styles/components/table';
 import {HoverIconButton, IconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowRightIcon} from '../../../icons/icons';
 import PropTypes from 'prop-types';
@@ -17,7 +17,7 @@ const TableFold = ({children, title, space, isFold, setIsFold}) => {
 	}, [isFold, setIsFold, space]);
 	return (
 		<div>
-			<TableSpace className={isFold[space] ? 'fold' : 'fold close'}>
+			<TableTitle className={isFold[space] ? 'fold' : 'fold close'}>
 				<>
 					<_TableFoldTitle>
 						<HoverIconButton
@@ -32,7 +32,7 @@ const TableFold = ({children, title, space, isFold, setIsFold}) => {
 					</_TableFoldTitle>
 					{children ? children : ''}
 				</>
-			</TableSpace>
+			</TableTitle>
 		</div>
 	);
 };

@@ -9,7 +9,7 @@ import {
 	checkArrayIsUniqueHasDuplicates,
 	checkArraysIsUniqueHasDuplicates,
 } from '../../utils/dataFitering';
-import {ColDiv} from '../../styles/components/div';
+import {ColDiv} from '../../styles/components/style';
 import {IconButton} from '../../styles/components/icons';
 import {arrowLeft, arrowRight} from '../../icons/icons';
 import styled from 'styled-components';

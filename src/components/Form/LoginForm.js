@@ -11,14 +11,14 @@ import {useHistory, useParams} from 'react-router-dom';
 import USER from '../../reducers/api/Auth/user';
 
 import {
-	SignInContainer,
-	UserSubmitButton,
-	UserTitle,
-	UserTitleSpan,
+	LogInContainer,
+	LogInButton,
+	LogInTitle,
+	LogInTitleSpan,
 } from '../../styles/components/login';
 import Form from '../RecycleComponents/New/Form';
 import TextBox from '../RecycleComponents/New/TextBox';
-import {RowDiv} from '../../styles/components/div';
+import {RowDiv} from '../../styles/components/style';
 import CheckBox from '../RecycleComponents/New/CheckBox';
 
 const _CheckBoxContainer = styled.div`
@@ -34,7 +34,7 @@ const _CheckBoxContainer = styled.div`
 	}
 `;
 
-const _UserSubmitButton = styled(UserSubmitButton)`
+const _UserSubmitButton = styled(LogInButton)`
 	margin: 42px 0;
 `;
 
@@ -110,11 +110,11 @@ const LoginForm = () => {
 	}, [history, user]);
 
 	return (
-		<SignInContainer>
-			<UserTitle>Avocado 로그인</UserTitle>
-			<UserTitleSpan>
+		<LogInContainer>
+			<LogInTitle>Avocado 로그인</LogInTitle>
+			<LogInTitleSpan>
 				계정이 없으신가요? <a href={'/signup'}> 회원가입 </a>
-			</UserTitleSpan>
+			</LogInTitleSpan>
 			<Form
 				initialValues={{
 					id: rememberMe ? localStorage.getItem('id') : '',
@@ -177,7 +177,7 @@ const LoginForm = () => {
 					<img src={appleButton} alt='appleButton' />
 				</_AlternativeAuthButton>
 			</_AlternativeAuthContainer>
-		</SignInContainer>
+		</LogInContainer>
 	);
 };
 

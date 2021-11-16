@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {NormalButton} from './buttons';
 
-export const SignInContainer = styled.div`
+export const LogInContainer = styled.div`
 	color: black;
 	background: #fff;
 	padding: 70px;
@@ -11,14 +11,12 @@ export const SignInContainer = styled.div`
 	flex-direction: column;
 	box-sizing: border-box;
 `;
-
-export const UserTitle = styled.div`
+export const LogInTitle = styled.div`
 	font-size: 28px;
 	font-weight: bold;
 	margin-bottom: 20px;
 `;
-
-export const UserTitleSpan = styled.div`
+export const LogInTitleSpan = styled.div`
 	font-size: 14px;
 	margin-bottom: 52px;
 	a {
@@ -26,8 +24,7 @@ export const UserTitleSpan = styled.div`
 		text-decoration: underline;
 	}
 `;
-
-export const UserSubmitButton = styled(NormalButton)`
+export const LogInButton = styled(NormalButton)`
 	width: 360px;
 	height: 40px;
 	border-radius: 4px;

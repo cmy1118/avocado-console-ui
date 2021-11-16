@@ -15,7 +15,6 @@ export const DialogBox = styled(Modal)`
 	font-size: 14px;
 	background: #ffffff;
 `;
-
 export const DialogBoxHeader = styled.div`
 	display: flex;
 	align-items: center;
@@ -34,19 +33,16 @@ export const DialogBoxFooter = styled.div`
 	box-sizing: border-box;
 	border-top: 1px solid #e3e5e5;
 `;
-
 export const AlertDialogBox = styled(DialogBox)`
 	width: 288px;
 	z-index: 15;
 `;
-
 export const AlertDialogBoxContent = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	height: 71px;
 `;
-
 export const AlertDialogBoxText = styled.div`
 	margin-right: 8px;
 `;

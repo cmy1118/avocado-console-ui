@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {arrowDownIcon, arrowUpIcon, dragIndicator} from '../../icons/icons';
 import {Icon} from '../../styles/components/icons';
-import {RowDiv} from '../../styles/components/div';
+import {RowDiv} from '../../styles/components/style';
 import {Draggable, Droppable} from 'react-beautiful-dnd';
 import styled from 'styled-components';
 

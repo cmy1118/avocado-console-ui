@@ -14,9 +14,13 @@ import * as PropTypes from 'prop-types';
 import Pagination from './Options/Pagination';
 import TableColumnFilterContextMenu from '../ContextMenu/TableColumnFilterContextMenu';
 import Search from './Options/Search';
-import {ColDiv, PositionRelativeDiv, RowDiv} from '../../styles/components/div';
+import {
+	ColDiv,
+	Label,
+	PositionRelativeDiv,
+	RowDiv,
+} from '../../styles/components/style';
 import {HoverIconButton, IconButton} from '../../styles/components/icons';
-import {Label} from '../../styles/components/text';
 
 const _Container = styled(ColDiv)`
 	display: flex;

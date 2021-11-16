@@ -16,7 +16,7 @@ const _UserContainer = styled.div`
 	padding-right: 8px;
 `;
 
-const _UserName = styled.div`
+const _UserId = styled.div`
 	display: flex;
 	font-size: 14px;
 	padding-right: 8px;
@@ -39,7 +39,7 @@ const MenuButtons = () => {
 		<_Container>
 			<_UserContainer>
 				<AccountContextMenu />
-				<_UserName>{user?.user_id}</_UserName>
+				<_UserId>{user?.user_id}</_UserId>
 			</_UserContainer>
 			<_Settings>
 				<HoverIconButton>{notificationIcon}</HoverIconButton>

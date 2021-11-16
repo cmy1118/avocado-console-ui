@@ -3,7 +3,7 @@ import React from 'react';
 import TableLink from '../../components/Table/ColumnCells/TableLink';
 import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
 import {statusConverter} from '../tableDataConverter';
-import {RowDiv} from '../../styles/components/div';
+import {RowDiv} from '../../styles/components/style';
 
 export const GROUP_COLUMN = [
 	{

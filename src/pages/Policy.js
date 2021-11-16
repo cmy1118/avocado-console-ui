@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import PolicySpace from '../components/Policy/Space/PolicySpace';
-import AddRolicySpace from '../components/Policy/Space/AddRolicySpace';
-import PolicyDescriptionSpace from '../components/Policy/Space/PolicyDescriptionSpace';
+import PolicySpace from '../components/IAM/Policy/Space/PolicySpace';
+import AddRolicySpace from '../components/IAM/Policy/Space/AddRolicySpace';
+import PolicyDescriptionSpace from '../components/IAM/Policy/Space/PolicyDescriptionSpace';
 
 const Policy = ({match}) => {
 	return (

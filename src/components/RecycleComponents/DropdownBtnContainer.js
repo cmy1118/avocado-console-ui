@@ -35,7 +35,7 @@ const _Header = styled.div`
 	color: #212121;
 	border-bottom: 1px solid #e3e5e5;
 `;
-const _Body = styled.div`
+const _Content = styled.div`
 	padding: 8px 0px;
 	width: 100%;
 `;
@@ -66,11 +66,11 @@ const DropdownBtnContainer = ({
 			<_Header>
 				<span>{title}</span>
 			</_Header>
-			<_Body>
+			<_Content>
 				{React.Children.map(children, (child) => {
 					return child;
 				})}
-			</_Body>
+			</_Content>
 			<_Footer>
 				<TransparentBorderButton onClick={onClickCancelBtn}>
 					취소
