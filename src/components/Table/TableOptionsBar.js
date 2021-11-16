@@ -83,12 +83,6 @@ const TableOptionsBar = ({
 }) => {
 	const [selectedSearchFilters, setSelectedSearchFilters] = useState([]);
 
-	const searchFilters = useMemo(() => {
-		return columns.filter((v) =>
-			Object.prototype.hasOwnProperty.call(v, 'filter'),
-		);
-	}, [columns]);
-
 	const onClickCloseFilter = useCallback(
 		(v) => () => {
 			setSelectedSearchFilters(
@@ -146,7 +140,7 @@ const TableOptionsBar = ({
 										setIsOpened={
 											setIsSearchFilterContextMenuOpened
 										}
-										allOptions={searchFilters}
+										allColumns={allColumns}
 										selectedOptions={selectedSearchFilters}
 										setSelectedOptions={
 											setSelectedSearchFilters
@@ -193,6 +187,10 @@ const TableOptionsBar = ({
 									getToggleHideAllColumnsProps
 								}
 								setHiddenColumns={setHiddenColumns}
+								selectedOptions={selectedSearchFilters}
+								setSelectedOptions={setSelectedSearchFilters}
+								filters={filters}
+								setAllFilters={setAllFilters}
 							/>
 						</PositionRelativeDiv>
 					</div>
@@ -257,7 +255,6 @@ TableOptionsBar.propTypes = {
 	headerGroups: PropTypes.array,
 	isSearchable: PropTypes.bool,
 	isSearchFilterable: PropTypes.bool,
-	searchFilters: PropTypes.array,
 	selectedSearchFilters: PropTypes.array,
 	setSelectedSearchFilters: PropTypes.func,
 	isRefreshable: PropTypes.bool,
