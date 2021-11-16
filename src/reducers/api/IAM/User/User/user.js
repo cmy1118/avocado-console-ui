@@ -245,7 +245,7 @@ const IAM_USER = {
 		createAction,
 		updateAction,
 		deleteAction,
-		findByIdAction,
+		findByIdActi
 		findByUidAction,
 		findAllAction,
 	},
