@@ -8,19 +8,14 @@ const NAME = 'IAM_USER_GROUP_TYPE';
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 		// eslint-disable-next-line no-console
 		console.log(client);
 		const response = await axios.post(
-			`/open/api/v1/users`,
+			`/open-api/v1/iam/user-group-types`,
 			{
-				id: payload.id,
-				companyId: payload.companyId,
 				name: payload.name,
-				password: payload.password,
-				email: payload.email,
-				telephone: payload.telephone,
-				mobile: payload.mobile,
+				description: payload.description,
 			},
 			{
 				headers: {
@@ -37,13 +32,13 @@ const createAction = createAsyncThunk(
 const updateAction = createAsyncThunk(
 	`${NAME}/UPDATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.put(
-			`/open/api/v1/users/${payload.uid}`,
+			`/open-api/v1/iam/user-group-types/${payload.id}`,
 			{
 				name: payload.name,
-				password: payload.password,
+				description: payload.description,
 			},
 			{
 				headers: {
@@ -61,13 +56,14 @@ const updateAction = createAsyncThunk(
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.delete(
-			`/open/api/v1/users/${payload.uid}`,
+			`/open-api/v1/iam/user-group-types/${payload.id}`,
 			{
 				headers: {
 					Authorization: `${client.token_type} ${client.access_token}`,
+					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
 			},
@@ -80,13 +76,14 @@ const deleteAction = createAsyncThunk(
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.get(
-			`/open/api/v1/users/id/${payload.id}`,
+			`/open-api/v1/iam/user-group-types/${payload.id}`,
 			{
 				headers: {
 					Authorization: `${client.token_type} ${client.access_token}`,
+					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
 			},
@@ -95,34 +92,19 @@ const findByIdAction = createAsyncThunk(
 	},
 );
 
-//todo : this function requires uid
-const findByUidAction = createAsyncThunk(
-	`${NAME}/FIND_BY_UID`,
-	async (payload, {getState}) => {
-		const {client} = getState().client;
-
-		const response = await axios.get(`/open/api/v1/users/${payload.uid}`, {
-			headers: {
-				Authorization: `${client.token_type} ${client.access_token}`,
-			},
-			baseURL: baseUrl.openApi,
-		});
-		return response.data;
-	},
-);
-
 //todo : this function requires companyId, first range and last range
 const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
-		const {client} = getState().client;
+		const {client} = getState().IAM_CLIENT;
 
-		const response = await axios.get(`/open/api/v1/users`, {
+		const response = await axios.get(`/open-api/v1/iam/user-group-types`, {
 			params: {
-				companyId: payload.companyId,
+				name: payload.name,
 			},
 			headers: {
 				Authorization: `${client.token_type} ${client.access_token}`,
+				'Content-Type': 'application/json',
 				Range: `elements=${payload.first}-${payload.last}`,
 			},
 			baseURL: baseUrl.openApi,
@@ -134,47 +116,11 @@ const findAllAction = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
-		index: 4,
-		//groups, authType, MFA, tags, lastConsoleLogin, creationDate는 다른 곳으로 빠질 예정 => 아직 다른 부분 생성 전이라 users에 추가
-		groupTypes: [
-			{
-				id: 'groupType1',
-				name: '사용자 레벨',
-				parentId: null,
-				description: '사용자 권한 레벨을 분류하기 위한 유형',
-				creationDate: '2021.03.02 15:55:32',
-			},
-			{
-				id: 'groupType2',
-				name: '직무',
-				parentId: null,
-				description: '사용자의 직무 유형',
-				creationDate: '2021.03.02 15:55:32',
-			},
-			{
-				id: 'groupType3',
-				name: '조직',
-				parentId: null,
-				description: '회사의 조직',
-				creationDate: '2021.03.02 15:55:32',
-			},
-		],
-
+		groupTypes: [],
 		loading: false,
 		error: null,
 	},
-	reducers: {
-		addGroupType: (state, {payload}) => {
-			state.groupTypes.unshift({
-				id: 'groupType_' + state.index.toString(),
-				name: payload.name,
-				parentId: payload.parentId,
-				description: payload.description,
-				creationDate: new Date().toLocaleString(),
-			});
-			state.index++;
-		},
-	},
+	reducers: {},
 	extraReducers: {
 		[createAction.pending]: (state) => {
 			state.loading = true;
@@ -224,18 +170,6 @@ const slice = createSlice({
 			state.loading = false;
 		},
 
-		[findByUidAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[findByUidAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
-			state.loading = false;
-		},
-		[findByUidAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-
 		[findAllAction.pending]: (state) => {
 			state.loading = true;
 		},
@@ -269,7 +203,6 @@ const IAM_USER_GROUP_TYPE = {
 		updateAction,
 		deleteAction,
 		findByIdAction,
-		findByUidAction,
 		findAllAction,
 	},
 };

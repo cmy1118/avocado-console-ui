@@ -1,8 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {baseUrl} from '../../../../../api/constants';
-import faker from 'faker';
-import {authType, mfa, status} from '../../../../../utils/data';
 
 const NAME = 'IAM_USER';
 
@@ -14,10 +12,9 @@ const createAction = createAsyncThunk(
 		// eslint-disable-next-line no-console
 		console.log(client);
 		const response = await axios.post(
-			`/open/api/v1/users`,
+			`/open-api/v1/iam/users`,
 			{
 				id: payload.id,
-				companyId: payload.companyId,
 				name: payload.name,
 				password: payload.password,
 				email: payload.email,
@@ -42,10 +39,13 @@ const updateAction = createAsyncThunk(
 		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.put(
-			`/open/api/v1/users/${payload.uid}`,
+			`/open-api/v1/iam/users/${payload.uid}`,
 			{
 				name: payload.name,
 				password: payload.password,
+				email: payload.email,
+				telephone: payload.telephone,
+				mobile: payload.mobile,
 			},
 			{
 				headers: {
@@ -66,10 +66,11 @@ const deleteAction = createAsyncThunk(
 		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.delete(
-			`/open/api/v1/users/${payload.uid}`,
+			`/open-api/v1/iam/users/${payload.uid}`,
 			{
 				headers: {
 					Authorization: `${client.token_type} ${client.access_token}`,
+					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
 			},
@@ -85,10 +86,11 @@ const findByIdAction = createAsyncThunk(
 		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.get(
-			`/open/api/v1/users/id/${payload.id}`,
+			`/open-api/v1/iam/user-ids/${payload.id}`,
 			{
 				headers: {
 					Authorization: `${client.token_type} ${client.access_token}`,
+					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
 			},
@@ -103,12 +105,16 @@ const findByUidAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
 
-		const response = await axios.get(`/open/api/v1/users/${payload.uid}`, {
-			headers: {
-				Authorization: `${client.token_type} ${client.access_token}`,
+		const response = await axios.get(
+			`/open-api/v1/iam/users/${payload.uid}`,
+			{
+				headers: {
+					Authorization: `${client.token_type} ${client.access_token}`,
+					'Content-Type': 'application/json',
+				},
+				baseURL: baseUrl.openApi,
 			},
-			baseURL: baseUrl.openApi,
-		});
+		);
 		return response.data;
 	},
 );
@@ -119,9 +125,13 @@ const findAllAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
 
-		const response = await axios.get(`/open/api/v1/users`, {
+		const response = await axios.get(`/open-api/v1/iam/users`, {
 			params: {
-				companyId: payload.companyId,
+				keyword: payload.keyword,
+				userUid: payload.uid,
+				id: payload.id,
+				accountExpiryTime: payload.accountExpiryTime,
+				createdTime: payload.createdTime,
 			},
 			headers: {
 				Authorization: `${client.token_type} ${client.access_token}`,
@@ -136,322 +146,11 @@ const findAllAction = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
-		//groups, authType, MFA, tags, lastConsoleLogin, creationDate는 다른 곳으로 빠질 예정 => 아직 다른 부분 생성 전이라 users에 추가
-		index: 0,
-		users: [
-			{
-				uid: 'user1',
-				id: 'leehyun63',
-				name: '이현정',
-				email: 'leehyun63@google.com',
-				telephone: '010-7295-4655',
-				mobile: '010-7295-4655',
-				groups: ['group4'],
-				roles: ['role2', 'role4'],
-				status: status.NORMAL,
-				authType: authType.ID,
-				MFA: mfa.EMAIL,
-				passwordExpired: '2021.12.14',
-				accountExpired: '2022.02.17',
-				tags: [
-					{
-						name: 'level',
-						value: 'Admin',
-						permissions: ['permission2'],
-						creationDate: '2021.05.02 14:50:14',
-					},
-					{
-						name: 'type',
-						value: 'White',
-						permissions: ['permission3', 'permission4'],
-						creationDate: '2021.05.30 14:02:21',
-					},
-				],
-				lastConsoleLogin: '2021.10.17 20:14:31',
-				creationDate: '2021.02.12 17:03:07',
-			},
-			{
-				uid: 'user2',
-				id: 'ambacc244',
-				name: '이영애',
-				email: 'ambacc244@google.com',
-				telephone: '010-9434-5272',
-				mobile: '010-9434-5272',
-				groups: ['group1', 'group5', 'group9'],
-				roles: ['role1'],
-				status: status.NORMAL,
-				authType: authType.ID,
-				MFA: mfa.NONE,
-				passwordExpired: '2022.01.11',
-				accountExpired: '2022.03.16',
-				tags: [],
-				lastConsoleLogin: '2021.11.12 01:02:06',
-				creationDate: '2020.03.12 18:01:06',
-			},
-			{
-				uid: 'user3',
-				id: 'seob717',
-				name: '심유섭',
-				email: 'seob717@google.com',
-				telephone: '010-9688-5549',
-				mobile: '010-9688-5549',
-				groups: ['group2', 'group5', 'group8'],
-				roles: [],
-				status: status.NORMAL,
-				authType: authType.APPLE,
-				MFA: mfa.NONE,
-				passwordExpired: '2021.11.25',
-				accountExpired: '2022.02.28',
-				tags: [
-					{
-						name: 'type',
-						value: 'Black',
-						permissions: [
-							'permission1',
-							'permission3',
-							'permission5',
-						],
-
-						creationDate: '2020.12.23 17:59:14',
-					},
-				],
-				lastConsoleLogin: '2021.10.28 22:14:20',
-				creationDate: '2020.04.15 20:07:55',
-			},
-			{
-				uid: 'user4',
-				id: 'roberto',
-				name: '박건욱',
-				email: 'roberto@google.com',
-				telephone: '010-2225-1154',
-				mobile: '010-2225-1154',
-				groups: ['group2', 'group6', 'group7'],
-				roles: [],
-				status: status.UNAUTHORIZED,
-				authType: authType.ID,
-				MFA: mfa.NONE,
-				passwordExpired: '2021.11.27',
-				accountExpired: '2022.05.01',
-				tags: [],
-				lastConsoleLogin: null,
-				creationDate: '2020.11.01 15:06:20',
-			},
-			{
-				uid: 'user5',
-				id: 'kyoung634',
-				name: '김영우',
-				email: 'kyoung634@google.com',
-				telephone: '010-2634-2164',
-				mobile: '010-2634-2164',
-				groups: ['group2', 'group6'],
-				roles: ['role1', 'role2'],
-				status: status.NORMAL,
-				authType: authType.ID,
-				MFA: mfa.NONE,
-				passwordExpired: '2021.11.27',
-				accountExpired: '2022.04.02',
-				tags: [
-					{
-						name: 'level',
-						value: 'Admin',
-						permissions: ['permission2'],
-						creationDate: '2021.03.02 15:50:14',
-					},
-					{
-						name: 'type',
-						value: 'White',
-						permissions: ['permission3', 'permission4'],
-						creationDate: '2021.03.02 15:55:32',
-					},
-				],
-				lastConsoleLogin: '2021.05.24 17:30:21',
-				creationDate: '2021.01.11 14:53:30',
-			},
-
-			{
-				uid: 'user6',
-				id: 'minmin2',
-				name: '박민수',
-				email: 'minmin2@google.com',
-				telephone: '010-5543-2362',
-				mobile: '010-5543-2362',
-				groups: ['group1', 'group6'],
-				roles: ['role5', 'role6'],
-				status: status.NORMAL,
-				authType: authType.GOOGLE,
-				MFA: mfa.NONE,
-				passwordExpired: '2021.11.30',
-				accountExpired: '2021.12.31',
-				tags: [
-					{
-						name: 'level',
-						value: 'Admin',
-						permissions: ['permission2'],
-						creationDate: '2021.03.02 15:50:14',
-					},
-				],
-				lastConsoleLogin: '2021.08.04 13:10:49',
-				creationDate: '2021.06.12 20:42:12',
-			},
-			{
-				uid: 'user7',
-				id: 'kimgap263',
-				name: '김가영',
-				email: 'kimgap263@google.com',
-				telephone: '010-1426-8345',
-				mobile: '010-1426-8345',
-				groups: ['group4'],
-				roles: [],
-				status: status.WAITING,
-				authType: authType.NAVER,
-				MFA: mfa.NONE,
-				passwordExpired: '2021.12.20',
-				accountExpired: '2022.03.11',
-				tags: [],
-				lastConsoleLogin: '2021.11.02 12:00:07',
-				creationDate: '2021.06.12 20:44:52',
-			},
-
-			{
-				uid: 'user8',
-				id: 'hongben263',
-				name: '홍정빈',
-				email: 'hongben263@google.com',
-				telephone: '010-9054-1028',
-				mobile: '010-9054-1028',
-				groups: ['group4'],
-				roles: [],
-				status: status.LOCKED,
-				authType: authType.KAKAO,
-				MFA: mfa.NONE,
-				passwordExpired: '2022.01.05',
-				accountExpired: '2022.04.20',
-				tags: [],
-				lastConsoleLogin: '2021.06.14 18:08:23',
-				creationDate: '2018.04.09 16:20:27',
-			},
-			{
-				uid: 'user9',
-				id: 'airbone9403',
-				name: '이공아',
-				email: 'airbone9403@google.com',
-				telephone: '010-2074-2657',
-				mobile: '010-2074-2657',
-				groups: ['group1', 'group6'],
-				roles: [],
-				status: status.NORMAL,
-				authType: authType.ID,
-				MFA: mfa.SMS,
-				passwordExpired: '2021.11.20',
-				accountExpired: '2022.03.12',
-				tags: [],
-				lastConsoleLogin: '2021.09.28 18:44:02',
-				creationDate: '2019.07.05 17:01:05',
-			},
-
-			{
-				uid: 'user10',
-				id: 'receipt77',
-				name: '우문휘',
-				email: 'receipt77@google.com',
-				telephone: '010-1256-7345',
-				mobile: '010-1256-7345',
-				groups: ['group3'],
-				roles: [],
-				status: status.DELETED,
-				authType: authType.GOOGLE,
-				MFA: mfa.NONE,
-				passwordExpired: '2022.02.12',
-				accountExpired: '2022.04.02',
-				tags: [],
-				lastConsoleLogin: '2019.12.09. 17:43:51',
-				creationDate: '2019.04.13. 10:24:06',
-			},
-		],
+		users: [],
 		loading: false,
 		error: null,
 	},
-	reducers: {
-		addUser: (state, action) => {
-			state.users.unshift({
-				uid: action.payload.id + '_' + state.index.toString(),
-				id: action.payload.id,
-				name: action.payload.name,
-				email: action.payload.email,
-				telephone: action.payload.telephone,
-				mobile: action.payload.mobile,
-				groups: [],
-				status: 5,
-				authType: 'ID/PWD',
-				MFA: null,
-				passwordExpired: String(faker.date.future()),
-				tags: [],
-				lastConsoleLogin: null,
-				creationDate: String(new Date()),
-			});
-			state.index++;
-		},
-
-		deleteUser: (state, action) => {
-			let users = state.users;
-			action.payload.currentTarget.map((target) => {
-				users = onDeleteUser(users, target);
-			});
-			state.users = users;
-		},
-
-		addRolesToUser: (state, action) => {
-			const user = state.users.find((v) => v.uid === action.payload.uid);
-
-			user.roles = user.roles.concat(action.payload.roles);
-		},
-
-		deleteRolesFromUser: (state, action) => {
-			const user = state.users.find((v) => v.uid === action.payload.uid);
-
-			user.roles = user.roles.filter(
-				(v) => !action.payload.roles.includes(v),
-			);
-		},
-
-		addGroupsToUser: (state, action) => {
-			const user = state.users.find((v) => v.uid === action.payload.uid);
-
-			user.groups = user.groups.concat(action.payload.groups);
-		},
-
-		deleteGroupsFromUser: (state, action) => {
-			const user = state.users.find((v) => v.uid === action.payload.uid);
-
-			user.groups = user.groups.filter(
-				(v) => !action.payload.groups.includes(v),
-			);
-		},
-		//그룹 상세 상용자Tab
-		addUsersToGroup: (state, action) => {
-			const users = state.users.filter((v) =>
-				action.payload.users.includes(v.uid),
-			);
-
-			users.map((v) => {
-				v.groups.push(action.payload.id);
-				return v;
-			});
-		},
-		deleteUsersFromGroup: (state, action) => {
-			const users = state.users.filter((v) =>
-				action.payload.users.includes(v.uid),
-			);
-
-			users.map((v) => {
-				const index = v.groups.findIndex(
-					(val) => val === action.payload.id,
-				);
-				v.groups.splice(index, 1);
-				return v;
-			});
-		},
-	},
+	reducers: {},
 	extraReducers: {
 		[createAction.pending]: (state) => {
 			state.loading = true;
@@ -535,18 +234,6 @@ const selectAllState = createSelector(
 		return {users, error, loading};
 	},
 );
-
-/******************************************/
-/* roberto : Table_update 삭제 기능추가
-/*
-/******************************************/
-function onDeleteUser(users, target) {
-	users.map((u, index) => {
-		u.id === target.id ? users.splice(index, 1) : '';
-	});
-	return users;
-}
-/******************************************/
 
 // NAME 의 value 값으로 변수명 선언
 const IAM_USER = {
