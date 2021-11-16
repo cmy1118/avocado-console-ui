@@ -92,22 +92,6 @@ const findByIdAction = createAsyncThunk(
 	},
 );
 
-//todo : this function requires uid
-const findByUidAction = createAsyncThunk(
-	`${NAME}/FIND_BY_UID`,
-	async (payload, {getState}) => {
-		const {client} = getState().client;
-
-		const response = await axios.get(`/open/api/v1/users/${payload.uid}`, {
-			headers: {
-				Authorization: `${client.token_type} ${client.access_token}`,
-			},
-			baseURL: baseUrl.openApi,
-		});
-		return response.data;
-	},
-);
-
 //todo : this function requires companyId, first range and last range
 const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
@@ -116,7 +100,7 @@ const findAllAction = createAsyncThunk(
 
 		const response = await axios.get(`/open-api/v1/iam/user-group-types`, {
 			params: {
-				name: payload.name || '',
+				name: payload.name,
 			},
 			headers: {
 				Authorization: `${client.token_type} ${client.access_token}`,
@@ -186,18 +170,6 @@ const slice = createSlice({
 			state.loading = false;
 		},
 
-		[findByUidAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[findByUidAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
-			state.loading = false;
-		},
-		[findByUidAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-
 		[findAllAction.pending]: (state) => {
 			state.loading = true;
 		},
@@ -231,7 +203,6 @@ const IAM_USER_GROUP_TYPE = {
 		updateAction,
 		deleteAction,
 		findByIdAction,
-		findByUidAction,
 		findAllAction,
 	},
 };
