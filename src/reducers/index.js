@@ -8,7 +8,7 @@ import IAM_USER from './api/IAM/User/User/user';
 import IAM_USER_GROUP_TYPE from './api/IAM/User/Group/groupType';
 import IAM_USER_GROUP from './api/IAM/User/Group/group';
 import IAM_USER_GROUP_MEMBER from './api/IAM/User/Group/groupMember';
-import IAM_CLIENT from './api/IAM/client';
+import IAM_CLIENT from './api/IAM/Client/client';
 
 import SETTING from './setting';
 import DIALOG_BOX from './dialogBoxs';
