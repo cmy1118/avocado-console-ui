@@ -5,7 +5,6 @@ import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux';
 import store, {persistor} from './store/configureStore';
 import './styles/default.css';
-import './styles/calendar.scss';
 import {PersistGate} from 'redux-persist/integration/react';
 
 ReactDOM.render(

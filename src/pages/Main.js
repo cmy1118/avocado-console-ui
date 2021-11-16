@@ -6,8 +6,6 @@ import {useSelector} from 'react-redux';
 import USER from '../reducers/api/Auth/user';
 import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
-import CalenderOption from '../components/Table/Options/Search/CalenderOption';
-import CalenderOptionTemp from '../components/Table/Options/Search/CalenderOptionTemp';
 
 const _Container = styled.div`
 	display: grid;
@@ -48,7 +46,6 @@ const Main = () => {
 
 	return (
 		<_Container>
-			{/*<CalenderOptionTemp />*/}
 			{companyId === account.KT.companyId && (
 				<_ImageContainer>
 					<img src={kt} onClick={onClickMove} />
