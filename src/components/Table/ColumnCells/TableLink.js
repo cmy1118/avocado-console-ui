@@ -14,7 +14,7 @@ const _Link = styled(Link)`
 	}
 `;
 
-const TableLink = ({cell,text}) => {
+const TableLink = ({cell, text}) => {
 	const location = useLocation();
 	const [value, setValue] = useState(cell.value);
 	//****************************************************************//
@@ -24,21 +24,20 @@ const TableLink = ({cell,text}) => {
 	//****************************************************************//
 	const pathname = qs.parse(location).pathname;
 
-    //grantUserId : 부여사용자 여부 확인
-	const grantUserId = cell.value.uid
+	//grantUserId : 부여사용자 여부 확인
+	const grantUserId = cell.value?.uid;
 	//dataType : Column 에서 부여한 type 정보
-	const dataType = cell.column.type
+	const dataType = cell.column?.type;
 	const data = cell.row.original;
 	const paramId = data.uid ? data.uid : data.id;
 
-	return (
-	grantUserId?
-	<_Link to={{pathname :`/${dataType}/${grantUserId}`}}>{text}</_Link>
-	: dataType?
-	<_Link to={{pathname :`/${dataType}/${paramId}`}}>{value}</_Link>
-	:<_Link to={`${pathname}/${paramId}`}>{value}</_Link>
+	return grantUserId ? (
+		<_Link to={{pathname: `/${dataType}/${grantUserId}`}}>{text}</_Link>
+	) : dataType ? (
+		<_Link to={{pathname: `/${dataType}/${paramId}`}}>{value}</_Link>
+	) : (
+		<_Link to={`${pathname}/${paramId}`}>{value}</_Link>
 	);
-
 };
 TableLink.propTypes = {
 	cell: PropTypes.object.isRequired,

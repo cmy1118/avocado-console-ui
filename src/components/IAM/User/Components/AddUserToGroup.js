@@ -25,41 +25,27 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const {page} = useSelector(PAGINATION.selector);
 
-	console.log(includedDataIds);
-
 	const includedData = useMemo(() => {
 		return (
-			groups.map((v) => ({
-				...v,
-				userGroupType: v.userGroupType.name,
-			})) || []
+			groups
+				.filter((v) => includedDataIds.includes(v.id))
+				.map((v) => ({
+					...v,
+					userGroupType: v.userGroupType.name,
+				})) || []
 		);
-	}, [groups]);
+	}, [groups, includedDataIds]);
 
 	const excludedData = useMemo(() => {
 		return (
-			groups.map((v) => ({
-				...v,
-				userGroupType: v.userGroupType.name,
-			})) || []
+			groups
+				.filter((v) => !includedDataIds.includes(v.id))
+				.map((v) => ({
+					...v,
+					userGroupType: v.userGroupType.name,
+				})) || []
 		);
-		// groups
-		// 	.filter(
-		// 		(v) =>
-		// 			!groups
-		// 				.filter((v) => includedDataIds.includes(v.id))
-		// 				.map((v) => v.clientGroupTypeId)
-		// 				.includes(v.clientGroupTypeId),
-		// 	)
-		// 	.map((v, i) => ({
-		// 		...v,
-		// 		type: groupTypes.find(
-		// 			(val) => val.id === v.clientGroupTypeId,
-		// 		).name,
-		// 		roles: rolesConverter(v.roles),
-		// 		numberOfUsers: v.members.length,
-		// 	})) || [],
-	}, [groups]);
+	}, [groups, includedDataIds]);
 
 	useEffect(() => {
 		dispatch(
