@@ -8,7 +8,7 @@ import naverButton from '../../images/auth/naver_btn.png';
 import kakaoButton from '../../images/auth/kakao_btn.png';
 
 import {useHistory, useParams} from 'react-router-dom';
-import USER from '../../reducers/api/Auth/user';
+import AUTH_USER from '../../reducers/api/Auth/AUTH_USER';
 
 import {
 	LogInContainer,
@@ -69,7 +69,7 @@ const LoginForm = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {companyId} = useParams();
-	const {user} = useSelector(USER.selector);
+	const {user} = useSelector(AUTH_USER.selector);
 	const [rememberMe, setRememberMe] = useState(
 		localStorage.getItem('rememberMe'),
 	);
@@ -79,7 +79,7 @@ const LoginForm = () => {
 	const onSubmitLogin = useCallback(
 		(v) => {
 			dispatch(
-				USER.asyncAction.loginAction({
+				AUTH_USER.asyncAction.loginAction({
 					username: v.id,
 					password: v.password,
 					companyId: companyId,

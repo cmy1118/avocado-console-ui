@@ -4,15 +4,15 @@ import axios from 'axios';
 import {baseUrl} from '../../../api/constants';
 import {authorization, contentType, grantType} from '../../../utils/auth';
 
-const NAME = 'USER';
+const NAME = 'AUTH_USER';
 
 const loginAction = createAsyncThunk(`${NAME}/LOGIN`, async (payload) => {
 	console.log(payload);
 	const response = await axios.post(`/oauth2/v1/token`, null, {
 		params: {
-			grant_type: grantType.CLIENT_CREDENTIALS,
-			// username: payload.username,
-			// password: payload.password,
+			grant_type: grantType.PASSWORD,
+			username: payload.username,
+			password: payload.password,
 		},
 		headers: {
 			'Content-Type': contentType,
@@ -88,7 +88,7 @@ const selectAllState = createSelector(
 );
 
 // NAME 의 value 값으로 변수명 선언
-const USER = {
+const AUTH_USER = {
 	name: slice.name,
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
@@ -99,4 +99,4 @@ const USER = {
 	},
 };
 
-export default USER;
+export default AUTH_USER;

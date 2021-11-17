@@ -2,7 +2,7 @@ import {combineReducers} from '@reduxjs/toolkit';
 import storageSession from 'redux-persist/lib/storage/session';
 import createFilter from 'redux-persist-transform-filter';
 
-import USER from './api/Auth/user';
+import AUTH_USER from './api/Auth/AUTH_USER';
 
 import IAM_USER from './api/IAM/User/User/user';
 import IAM_USER_GROUP_TYPE from './api/IAM/User/Group/groupType';
@@ -19,12 +19,12 @@ import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
 import IAM_ROLES from './api/IAM/User/Role/roles';
 import {persistReducer} from 'redux-persist';
 
-const userFilter = createFilter(USER.name, ['companyId', 'user']);
+const userFilter = createFilter(AUTH_USER.name, ['companyId', 'user']);
 
 const persistConfig = {
 	key: 'root',
 	storage: storageSession,
-	whitelist: [USER.name],
+	whitelist: [AUTH_USER.name],
 	transforms: [userFilter],
 };
 
@@ -33,7 +33,7 @@ const rootReducer = combineReducers({
 	[PAGINATION.name]: PAGINATION.reducer,
 	[IAM_CLIENT.name]: IAM_CLIENT.reducer,
 
-	[USER.name]: USER.reducer,
+	[AUTH_USER.name]: AUTH_USER.reducer,
 	/******************************************/
 	/* seob : IAM - User reducers
     /******************************************/

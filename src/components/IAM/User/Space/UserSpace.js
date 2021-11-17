@@ -1,10 +1,11 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import {
 	groupsConverter,
 	passwordExpiredConverter,
+	statusConverter,
 	tagsConverter,
 } from '../../../../utils/tableDataConverter';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
@@ -39,8 +40,20 @@ const UserSpace = () => {
 	const [select, setSelect] = useState({});
 
 	const userData = useMemo(() => {
-		console.log(page[tableKeys.users.basic]);
+		return users.map((v) => ({
+			...v,
+			groupIds: groupsConverter(v.groupIds || []),
+			status: statusConverter(v.status.code),
+		}));
+	}, [users]);
 
+	const onClickLinkToAddUserPage = useCallback(() => {
+		history.push('/users/add');
+	}, [history]);
+
+	const onClickDeleteUsers = useCallback(() => {}, []);
+
+	useEffect(() => {
 		if (page[tableKeys.users.basic]) {
 			dispatch(
 				IAM_USER.asyncAction.findAllAction({
@@ -48,24 +61,7 @@ const UserSpace = () => {
 				}),
 			);
 		}
-		return [];
-		// return users.map((v) => ({
-		// 	...v,
-		// 	groups: groupsConverter(
-		// 		v.groups.map(
-		// 			(val) => groups.find((val2) => val2.id === val).name,
-		// 		),
-		// 	),
-		// 	passwordExpiryTime: passwordExpiredConverter(v.passwordExpired),
-		// 	tags: tagsConverter(v.tags),
-		// }));
 	}, [dispatch, page]);
-
-	const onClickLinkToAddUserPage = useCallback(() => {
-		history.push('/users/add');
-	}, [history]);
-
-	const onClickDeleteUsers = useCallback(() => {}, []);
 
 	return (
 		<IamContainer>

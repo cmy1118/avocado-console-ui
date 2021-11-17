@@ -124,7 +124,7 @@ const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
-		const {user} = getState().USER;
+		const {user} = getState().AUTH_USER;
 
 		console.log(client);
 		console.log(user);
@@ -161,7 +161,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[createAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+			state.users = action.payload;
 			state.loading = false;
 		},
 		[createAction.rejected]: (state, action) => {
@@ -173,7 +173,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[updateAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+			state.users = action.payload;
 			state.loading = false;
 		},
 		[updateAction.rejected]: (state, action) => {
@@ -185,7 +185,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[deleteAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+			state.users = action.payload;
 			state.loading = false;
 		},
 		[deleteAction.rejected]: (state, action) => {
@@ -197,7 +197,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByIdAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+			state.users = action.payload;
 			state.loading = false;
 		},
 		[findByIdAction.rejected]: (state, action) => {
@@ -209,7 +209,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByUidAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+			state.users = action.payload;
 			state.loading = false;
 		},
 		[findByUidAction.rejected]: (state, action) => {
@@ -221,7 +221,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findAllAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
+			state.users = action.payload;
 			state.loading = false;
 		},
 		[findAllAction.rejected]: (state, action) => {

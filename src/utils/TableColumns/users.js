@@ -5,6 +5,7 @@ import SelectionOption from '../../components/Table/Options/Search/SelectionOpti
 import TextBoxOption from '../../components/Table/Options/Search/TextBoxOption';
 import {
 	authTypeConverter,
+	expiredConverter,
 	mfaConverter,
 	statusConverter,
 } from '../tableDataConverter';
@@ -30,7 +31,7 @@ export const USER_COLUMN = [
 		width: 80,
 	},
 	{
-		accessor: 'groups',
+		accessor: 'groupIds',
 		Header: '그룹',
 		disableFilters: true,
 		width: 100,
@@ -71,7 +72,7 @@ export const USER_COLUMN = [
 		filter: 'equals',
 		Filter: TextBoxOption,
 		Cell: function Component(v) {
-			return <div>{v.value}일전</div>;
+			return <div>{expiredConverter(v.value)}</div>;
 		},
 	},
 	{
@@ -140,9 +141,9 @@ export const USER_ADD_GROUPS_EXCLUDE_COLUMN = [
 	{
 		Header: '그룹명',
 		accessor: 'name',
-		type:'groups',
+		type: 'groups',
 		Cell: function Component(cell) {
-			return <TableLink cell={cell}/>;
+			return <TableLink cell={cell} />;
 		},
 	},
 	{
@@ -166,9 +167,9 @@ export const USER_ADD_GROUPS_INCLUDE_COLUMN = [
 	{
 		Header: '그룹명',
 		accessor: 'name',
-		type:'groups',
+		type: 'groups',
 		Cell: function Component(cell) {
-			return <TableLink cell={cell}/>;
+			return <TableLink cell={cell} />;
 		},
 	},
 	{
@@ -181,9 +182,9 @@ export const USER_ADD_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
-		type:'roles',
+		type: 'roles',
 		Cell: function Component(cell) {
-			return <TableLink cell={cell}/>;
+			return <TableLink cell={cell} />;
 		},
 	},
 	{
@@ -204,9 +205,9 @@ export const USER_ADD_ROLES_INCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
-		type:'roles',
+		type: 'roles',
 		Cell: function Component(cell) {
-			return <TableLink cell={cell}/>;
+			return <TableLink cell={cell} />;
 		},
 	},
 	{
@@ -287,10 +288,15 @@ export const USER_SUMMARY_GROUP_COLUMN = [
 	{
 		Header: '부여 사용자',
 		accessor: 'grantUser',
-		type:'users',
+		type: 'users',
 		Cell: function Component(cell) {
-			console.log('v?:',cell)
-			return<TableLink cell={cell} text={cell.value?.name + '(' + cell.value?.id + ')'}/>
+			console.log('v?:', cell);
+			return (
+				<TableLink
+					cell={cell}
+					text={cell.value?.name + '(' + cell.value?.id + ')'}
+				/>
+			);
 			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
@@ -365,9 +371,14 @@ export const USER_SUMMARY_PERMISSION_COLUMNS = [
 	{
 		Header: '부여 사용자',
 		accessor: 'grantUser',
-		type:'users',
+		type: 'users',
 		Cell: function Component(cell) {
-			return<TableLink cell={cell} text={cell.value?.name + '(' + cell.value?.id + ')'}/>
+			return (
+				<TableLink
+					cell={cell}
+					text={cell.value?.name + '(' + cell.value?.id + ')'}
+				/>
+			);
 			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
@@ -421,9 +432,9 @@ export const USER_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
-		type:'roles',
+		type: 'roles',
 		Cell: function Component(cell) {
-			return <TableLink cell={cell}/>;
+			return <TableLink cell={cell} />;
 		},
 	},
 	{Header: '역할 유형', accessor: 'type'},
@@ -442,9 +453,9 @@ export const USER_SUMMARY_TABS_ROLES_INCLUDE_COLUMN = [
 	{
 		Header: '역할 이름',
 		accessor: 'name',
-		type:'roles',
+		type: 'roles',
 		Cell: function Component(cell) {
-			return <TableLink cell={cell}/>;
+			return <TableLink cell={cell} />;
 		},
 	},
 	{Header: '역할 유형', accessor: 'type'},
@@ -463,9 +474,9 @@ export const USER_SUMMARY_TABS_GROUPS_INCLUDE_COLUMN = [
 	{
 		Header: '그룹 명',
 		accessor: 'name',
-		type:'groups',
+		type: 'groups',
 		Cell: function Component(cell) {
-			return <TableLink cell={cell}/>;
+			return <TableLink cell={cell} />;
 		},
 	},
 	{
@@ -491,9 +502,9 @@ export const USER_SUMMARY_TABS_GROUPS_EXCLUDE_COLUMN = [
 	{
 		Header: '그룹 명',
 		accessor: 'name',
-		type:'groups',
+		type: 'groups',
 		Cell: function Component(cell) {
-			return <TableLink cell={cell}/>;
+			return <TableLink cell={cell} />;
 		},
 	},
 	{
