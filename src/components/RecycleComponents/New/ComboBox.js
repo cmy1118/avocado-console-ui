@@ -8,6 +8,7 @@ import {useRootClose} from 'react-overlays';
 import {ErrorMessageText} from '../../../styles/components/text';
 
 const _Container = styled.div`
+	position: relative;
 	background: #fff;
 	cursor: pointer;
 	.focus {

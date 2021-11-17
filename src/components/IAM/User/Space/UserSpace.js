@@ -4,9 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import {
 	groupsConverter,
-	passwordExpiredConverter,
 	statusConverter,
-	tagsConverter,
 } from '../../../../utils/tableDataConverter';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import Table from '../../../Table/Table';
@@ -17,8 +15,8 @@ import {
 } from '../../../../styles/components/buttons';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {
-	CurrentPathBarLink,
 	CurrentPathBar,
+	CurrentPathBarLink,
 	NextPath,
 } from '../../../../styles/components/currentPathBar';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
