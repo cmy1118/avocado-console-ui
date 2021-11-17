@@ -2,7 +2,6 @@ import React, {useCallback, useMemo, useState} from 'react';
 import Table from '../../../Table/Table';
 import {useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
-<<<<<<< HEAD:src/components/IAM/User/Components/UserOnDescPageTags.js
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
@@ -14,20 +13,6 @@ import {TableTitle} from '../../../../styles/components/table';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import {dummyPermission} from '../../../../utils/dummyData';
 import TableContainer from '../../../Table/TableContainer';
-=======
-import IAM_USER from '../../../reducers/api/IAM/User/User/user';
-import {tableKeys} from '../../../Constants/Table/keys';
-import {tableColumns} from '../../../Constants/Table/columns';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../styles/components/buttons';
-import {TableSpace} from '../../../styles/components/table';
-import TableOptionText from '../../Table/Options/TableOptionText';
-import {dummyPermission} from '../../../utils/dummyData';
-import TableContainer from '../../Table/TableContainer';
-import {AppBarButtons} from '../../../styles/components/style';
->>>>>>> tag/seob:src/components/User/Components/UserOnDescPageTags.js
 import styled from 'styled-components';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
