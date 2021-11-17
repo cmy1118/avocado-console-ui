@@ -3,7 +3,7 @@ import {HoverIconButton} from '../../styles/components/icons';
 import {helpIcon, notificationIcon, settingIcon} from '../../icons/icons';
 import styled from 'styled-components';
 import {useSelector} from 'react-redux';
-import AUTH_USER from '../../reducers/api/Auth/AUTH_USER';
+import AUTH_USER from '../../reducers/api/Auth/authUser';
 import AccountContextMenu from '../ContextMenu/AccountContextMenu';
 
 const _Container = styled.div`

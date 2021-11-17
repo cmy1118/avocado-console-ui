@@ -8,7 +8,7 @@ import naverButton from '../../images/auth/naver_btn.png';
 import kakaoButton from '../../images/auth/kakao_btn.png';
 
 import {useHistory, useParams} from 'react-router-dom';
-import AUTH_USER from '../../reducers/api/Auth/AUTH_USER';
+import AUTH_USER from '../../reducers/api/Auth/authUser';
 
 import {
 	LogInContainer,

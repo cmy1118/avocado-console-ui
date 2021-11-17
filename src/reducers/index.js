@@ -2,7 +2,7 @@ import {combineReducers} from '@reduxjs/toolkit';
 import storageSession from 'redux-persist/lib/storage/session';
 import createFilter from 'redux-persist-transform-filter';
 
-import AUTH_USER from './api/Auth/AUTH_USER';
+import AUTH_USER from './api/Auth/authUser';
 
 import IAM_USER from './api/IAM/User/User/user';
 import IAM_USER_GROUP_TYPE from './api/IAM/User/Group/groupType';

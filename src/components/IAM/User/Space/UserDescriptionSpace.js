@@ -83,12 +83,12 @@ const UserDescriptionSpace = ({userId}) => {
 		history.push('/users/add');
 	}, [history]);
 	// if userId does not exist, direct to 404 page
-	useEffect(() => {
-		if (userId && !user) {
-			history.push('/404');
-		}
-		history.push(`${userId}`);
-	}, [userId, user, history]);
+	// useEffect(() => {
+	// if (userId && !user) {
+	// 	history.push('/404');
+	// }
+	// history.push(`${userId}`);
+	// }, [userId, user, history]);
 
 	return (
 		<IamContainer>
@@ -131,7 +131,8 @@ const UserDescriptionSpace = ({userId}) => {
 							사용자 : {user?.name} ({user?.id})
 						</LiText>
 						<LiText>
-							사용자 계정 상태 : {statusConverter(user?.status)}
+							사용자 계정 상태 :{' '}
+							{statusConverter(user?.status.code)}
 						</LiText>
 						<LiText>
 							마지막 콘솔 로그인 : {user?.lastConsoleLogin}
@@ -139,11 +140,11 @@ const UserDescriptionSpace = ({userId}) => {
 						<LiText>생성 일시 : {user?.creationDate}</LiText>
 						<LiText>
 							계정 사용기간 :{' '}
-							{expiredConverter(user?.accountExpired)}
+							{expiredConverter(user?.accountExpiryTime)}
 						</LiText>
 						<LiText>
 							비밀번호 사용기간 :{' '}
-							{expiredConverter(user?.passwordExpired)}
+							{expiredConverter(user?.passwordExpiryTime)}
 						</LiText>
 					</SummaryList>
 				</div>

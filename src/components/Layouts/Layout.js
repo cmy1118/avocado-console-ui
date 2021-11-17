@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import AUTH_USER from '../../reducers/api/Auth/AUTH_USER';
+import AUTH_USER from '../../reducers/api/Auth/authUser';
 
 import PropTypes from 'prop-types';
 import styled from 'styled-components';

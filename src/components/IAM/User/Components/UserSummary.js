@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import {parentGroupConverter} from '../../../../utils/tableDataConverter';
-import React, {useCallback, useMemo} from 'react';
-import {useSelector} from 'react-redux';
+import React, {useCallback, useEffect, useMemo} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
@@ -22,6 +22,7 @@ import {
 } from '../../../../styles/components/iam/descriptionPage';
 
 const UserSummary = ({Id, param, setIsOpened}) => {
+	const dispatch = useDispatch();
 	const history = useHistory();
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -31,6 +32,8 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 		users,
 		Id,
 	]);
+
+	console.log(user);
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
@@ -44,23 +47,28 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 	);
 
 	const groupData = useMemo(() => {
-		return groups
-			.filter((v) => user.groups.includes(v.id))
-			.map((v, i) => ({
-				...v,
-				clientGroupType: groupTypes.find(
-					(val) => val.id === v.clientGroupTypeId,
-				).name,
-				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
-					?.name,
-				numberOfRoles: v.roles.length,
-				parentGroup: parentGroupConverter(
-					groups.find((val) => val.id === v.parentId)?.name,
-				),
-				grantDate: dummyDates[i],
-				grantUser: dummyUsers[i],
-			}));
-	}, [groups, user, groupTypes]);
+		return groups.map((v) => ({
+			...v,
+			userGroupType: v.userGroupType.name,
+			parentGroup: v.parentGroup.name,
+		}));
+		// return groups
+		// 	.filter((v) => user.groups.includes(v.id))
+		// 	.map((v, i) => ({
+		// 		...v,
+		// 		clientGroupType: groupTypes.find(
+		// 			(val) => val.id === v.clientGroupTypeId,
+		// 		).name,
+		// 		type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
+		// 			?.name,
+		// 		numberOfRoles: v.roles.length,
+		// 		parentGroup: parentGroupConverter(
+		// 			groups.find((val) => val.id === v.parentId)?.name,
+		// 		),
+		// 		grantDate: dummyDates[i],
+		// 		grantUser: dummyUsers[i],
+		// 	}));
+	}, [groups]);
 
 	const roleData = useMemo(() => dummyPolicyOnUser, []);
 
@@ -72,6 +80,16 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 		// 	numberOfPermissions: v.permissions.length,
 		// }));
 	}, []);
+
+	useEffect(() => {
+		user &&
+			dispatch(
+				IAM_USER_GROUP.asyncAction.findAllAction({
+					ids: user.groupIds,
+					range: 'element=1-50',
+				}),
+			);
+	}, [dispatch, user]);
 
 	return (
 		<SummaryTablesContainer>

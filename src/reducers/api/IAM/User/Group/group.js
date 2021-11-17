@@ -108,7 +108,7 @@ const findAllAction = createAsyncThunk(
 				groupTypeId: payload.groupTypeId,
 				parentId: payload.parentId,
 				keyword: payload.keyword,
-				id: payload.id,
+				id: payload.ids,
 				createdTime: payload.createdTime,
 			},
 			headers: {

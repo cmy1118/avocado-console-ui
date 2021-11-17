@@ -267,7 +267,7 @@ export const USER_SUMMARY_GROUP_COLUMN = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'type',
+		accessor: 'userGroupType',
 	},
 	{
 		Header: '권한 수',

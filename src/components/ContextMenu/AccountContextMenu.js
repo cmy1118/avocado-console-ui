@@ -4,7 +4,7 @@ import Form from '../RecycleComponents/New/Form';
 import {userIcon} from '../../icons/icons';
 import {HoverIconButton} from '../../styles/components/icons';
 import {useDispatch} from 'react-redux';
-import AUTH_USER from '../../reducers/api/Auth/AUTH_USER';
+import AUTH_USER from '../../reducers/api/Auth/authUser';
 
 const options = {logout: {value: 'logout', label: 'logout'}};
 

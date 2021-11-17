@@ -3,7 +3,7 @@ import {account} from '../utils/auth';
 import kt from '../images/backgound/workplace-2@2x.png';
 import samsung from '../images/backgound/workplce@2x.png';
 import {useSelector} from 'react-redux';
-import AUTH_USER from '../reducers/api/Auth/AUTH_USER';
+import AUTH_USER from '../reducers/api/Auth/authUser';
 import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 
