@@ -27,7 +27,10 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
-	const user = useMemo(() => users.find((v) => v.uid === Id), [users, Id]);
+	const user = useMemo(() => users.find((v) => v.userUid === Id), [
+		users,
+		Id,
+	]);
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
@@ -37,7 +40,7 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 				search: `tabs=${v}`,
 			});
 		},
-		[history, setIsOpened, param],
+		[setIsOpened, history, param, Id],
 	);
 
 	const groupData = useMemo(() => {
@@ -62,12 +65,13 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 	const roleData = useMemo(() => dummyPolicyOnUser, []);
 
 	const tagData = useMemo(() => {
-		return user.tags.map((v, i) => ({
-			...v,
-			id: v.name,
-			numberOfPermissions: v.permissions.length,
-		}));
-	}, [user]);
+		return [];
+		// return user.tags.map((v, i) => ({
+		// 	...v,
+		// 	id: v.name,
+		// 	numberOfPermissions: v.permissions.length,
+		// }));
+	}, []);
 
 	return (
 		<SummaryTablesContainer>

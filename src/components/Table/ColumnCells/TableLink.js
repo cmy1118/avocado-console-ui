@@ -29,7 +29,7 @@ const TableLink = ({cell, text}) => {
 	//dataType : Column 에서 부여한 type 정보
 	const dataType = cell.column?.type;
 	const data = cell.row.original;
-	const paramId = data.uid ? data.uid : data.id;
+	const paramId = data.userUid ? data.userUid : data.id;
 
 	return grantUserId ? (
 		<_Link to={{pathname: `/${dataType}/${grantUserId}`}}>{text}</_Link>

@@ -45,6 +45,7 @@ import {
 } from '../../../../styles/components/iam/iam';
 
 const UserDescriptionSpace = ({userId}) => {
+	console.log(userId);
 	const history = useHistory();
 	const {search} = useLocation();
 	const {users} = useSelector(IAM_USER.selector);
@@ -59,7 +60,7 @@ const UserDescriptionSpace = ({userId}) => {
 		{name: '태그', href: 'tag'},
 	];
 
-	const user = useMemo(() => users.find((v) => v.uid === userId), [
+	const user = useMemo(() => users.find((v) => v.userUid === userId), [
 		users,
 		userId,
 	]);
