@@ -7,21 +7,58 @@ const NAME = 'IAM_ROLES';
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
 		const response = await axios.post(
-			`/open-api/v1/iam/users`,
+			`/open-api/v1/pam/roles`,
 			{
-				id: payload.id,
 				name: payload.name,
-				password: payload.password,
-				email: payload.email,
-				telephone: payload.telephone,
-				mobile: payload.mobile,
 			},
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
+					'Content-Type': 'application/json',
+				},
+				baseURL: baseUrl.openApi,
+			},
+		);
+		return response.data;
+	},
+);
+
+const updateAction = createAsyncThunk(
+	`${NAME}/UPDATE`,
+	async (payload, {getState}) => {
+		const {user} = getState().AUTH_USER;
+
+		const response = await axios.put(
+			`/open-api/v1/pam/role/${payload.id}`,
+			{
+				name: payload.name,
+				parentId: payload.parentId,
+			},
+			{
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
+					'Content-Type': 'application/json',
+				},
+				baseURL: baseUrl.openApi,
+			},
+		);
+		return response.data;
+	},
+);
+
+const deleteAction = createAsyncThunk(
+	`${NAME}/DELETE`,
+	async (payload, {getState}) => {
+		const {user} = getState().AUTH_USER;
+
+		const response = await axios.delete(
+			`/open-api/v1/pam/role/${payload.id}`,
+			{
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -60,6 +97,38 @@ const GetAllRolesAction = createAsyncThunk(
 			params: {
 				name: payload.name || null,
 				ids: payload.ids || null,
+			},
+			headers: {
+				Authorization: `${user.token_type} ${user.access_token}`,
+				Range: payload.range,
+			},
+			baseURL: baseUrl.openApi,
+		});
+		return response.data;
+	},
+);
+
+const GetEventsAction = createAsyncThunk(
+	`${NAME}/GET_ALL_ROLES`,
+	async (payload, {getState}) => {
+		//로그인 처리
+		const {user} = getState().AUTH_USER;
+
+		const response = await axios.get(`/open-api/v1/pam/roles/events`, {
+			params: {
+				id:pay
+				name: payload.name,
+				applicationCode: payload.applicationCode,
+				clientId: payload.clientId,
+
+
+
+
+
+
+
+
+
 			},
 			headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,
