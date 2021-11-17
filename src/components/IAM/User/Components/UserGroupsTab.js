@@ -33,37 +33,40 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 		userId,
 	]);
 
-	const [includedDataIds, setIncludedDataIds] = useState(user.groups);
+	const [includedDataIds, setIncludedDataIds] = useState([]);
 
 	const includedData = useMemo(() => {
-		return groups
-			.filter((v) => includedDataIds.includes(v.id))
-			.map((v, i) => ({
-				...v,
-				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
-					?.name,
-				numberOfRoles: v.roles.length,
-				parentGroup: parentGroupConverter(
-					groups.find((val) => val.id === v.parentId)?.name,
-				),
-				grantDate: dummyDates[i],
-			}));
-	}, [groupTypes, groups, includedDataIds]);
+		return [];
+		// return groups
+		// 	.filter((v) => includedDataIds.includes(v.id))
+		// 	.map((v, i) => ({
+		// 		...v,
+		// 		type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
+		// 			?.name,
+		// 		numberOfRoles: v.roles.length,
+		// 		parentGroup: parentGroupConverter(
+		// 			groups.find((val) => val.id === v.parentId)?.name,
+		// 		),
+		// 		grantDate: dummyDates[i],
+		// 	}));
+	}, []);
 
 	const excludedData = useMemo(() => {
-		return groups
-			.filter((v) => !includedDataIds.includes(v.id))
-			.map((v, i) => ({
-				...v,
-				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
-					?.name,
-				numberOfRoles: v.roles.length,
-				parentGroup: parentGroupConverter(
-					groups.find((val) => val.id === v.parentId)?.name,
-				),
-				grantDate: dummyDates[dummyDates.length - i - 1],
-			}));
-	}, [groups, groupTypes, includedDataIds]);
+		return [];
+
+		// return groups
+		// 	.filter((v) => !includedDataIds.includes(v.id))
+		// 	.map((v, i) => ({
+		// 		...v,
+		// 		type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
+		// 			?.name,
+		// 		numberOfRoles: v.roles.length,
+		// 		parentGroup: parentGroupConverter(
+		// 			groups.find((val) => val.id === v.parentId)?.name,
+		// 		),
+		// 		grantDate: dummyDates[dummyDates.length - i - 1],
+		// 	}));
+	}, []);
 	//삭제
 	const onClickDeleteRolesFromUser = useCallback(() => {
 		dispatch(
@@ -103,9 +106,9 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 		);
 	}, [dispatch, select, userId]);
 
-	useEffect(() => {
-		setIncludedDataIds(user.groups);
-	}, [user.groups]);
+	// useEffect(() => {
+	// 	setIncludedDataIds(user.groups);
+	// }, [user.groups]);
 
 	return (
 		<TabContentContainer>

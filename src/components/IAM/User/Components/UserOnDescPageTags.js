@@ -30,13 +30,14 @@ const UserOnDescPageTags = ({userId}) => {
 		userId,
 	]);
 	const [data, setData] = useState(
-		user.tags.map((v) => {
-			return {
-				...v,
-				id: v.name,
-				numberOfPermissions: v.permissions.length,
-			};
-		}) || [],
+		[],
+		// user.tags.map((v) => {
+		// 	return {
+		// 		...v,
+		// 		id: v.name,
+		// 		numberOfPermissions: v.permissions.length,
+		// 	};
+		// }) || [],
 	);
 
 	const [select, setSelect] = useState({});

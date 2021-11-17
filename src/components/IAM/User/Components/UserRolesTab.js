@@ -31,27 +31,30 @@ const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 		userId,
 	]);
 
-	const [includedDataIds, setIncludedDataIds] = useState(user.roles);
+	const [includedDataIds, setIncludedDataIds] = useState([]);
 
 	const includedData = useMemo(() => {
-		return roles
-			.filter((v) => includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-				numberOfUsers: v.users.length,
-			}));
-	}, [includedDataIds, roles]);
+		return [];
+		// return roles
+		// 	.filter((v) => includedDataIds.includes(v.id))
+		// 	.map((v) => ({
+		// 		...v,
+		// 		type: roleTypeConverter(v.companyId),
+		// 		numberOfUsers: v.users.length,
+		// 	}));
+	}, []);
 
 	const excludedData = useMemo(() => {
-		return roles
-			.filter((v) => !includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-				numberOfUsers: v.users.length,
-			}));
-	}, [includedDataIds, roles]);
+		return [];
+
+		// return roles
+		// 	.filter((v) => !includedDataIds.includes(v.id))
+		// 	.map((v) => ({
+		// 		...v,
+		// 		type: roleTypeConverter(v.companyId),
+		// 		numberOfUsers: v.users.length,
+		// 	}));
+	}, []);
 
 	const onClickDeleteRolesFromUser = useCallback(() => {
 		dispatch(
@@ -91,9 +94,9 @@ const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 		);
 	}, [dispatch, select, userId]);
 
-	useEffect(() => {
-		setIncludedDataIds(user.roles);
-	}, [user.roles]);
+	// useEffect(() => {
+	// 	setIncludedDataIds(user.roles);
+	// }, [user.roles]);
 
 	return (
 		<TabContentContainer>
