@@ -88,7 +88,7 @@ export const USER_COLUMN = [
 		Filter: CalenderOption,
 	},
 	{
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 		Header: '생성 일시',
 		filter: 'dateBetween',
 		Filter: CalenderOption,
@@ -290,7 +290,7 @@ export const USER_SUMMARY_GROUP_COLUMN = [
 		accessor: 'grantUser',
 		type: 'users',
 		Cell: function Component(cell) {
-			console.log('v?:', cell);
+			// console.log('v?:', cell);
 			return (
 				<TableLink
 					cell={cell}

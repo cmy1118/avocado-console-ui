@@ -193,13 +193,13 @@ const Table = ({
 								return (
 									<Draggable
 										key={
-											row.original.uid
-												? row.original.uid
+											row.original.userUid
+												? row.original.userUid
 												: row.original.id
 										}
 										draggableId={
-											row.original.uid
-												? row.original.uid
+											row.original.userUid
+												? row.original.userUid
 												: row.original.id ||
 												  `${tableKey} ${index}`
 										}
@@ -224,9 +224,9 @@ const Table = ({
 														Object.keys(
 															selectedRowIds,
 														).includes(
-															row.original.uid
+															row.original.userUid
 																? row.original
-																		.uid
+																		.userUid
 																: row.original
 																		.id,
 														) && 'selected'
@@ -236,13 +236,15 @@ const Table = ({
 															: 'odd'
 													}`}
 													id={
-														row.original.uid
-															? row.original.uid
+														row.original.userUid
+															? row.original
+																	.userUid
 															: row.original.id
 													}
 													key={
-														row.original.uid
-															? row.original.uid
+														row.original.userUid
+															? row.original
+																	.userUid
 															: row.original.id
 													}
 												>

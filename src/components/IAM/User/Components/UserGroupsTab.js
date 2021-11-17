@@ -28,7 +28,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [select, setSelect] = useState({});
-	const user = useMemo(() => users.find((v) => v.uid === userId), [
+	const user = useMemo(() => users.find((v) => v.userUid === userId), [
 		users,
 		userId,
 	]);
@@ -68,7 +68,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 	const onClickDeleteRolesFromUser = useCallback(() => {
 		dispatch(
 			IAM_USER.action.deleteGroupsFromUser({
-				uid: userId,
+				userUid: userId,
 				groups: Object.keys(
 					select[tableKeys.users.summary.tabs.groups.include],
 				),
@@ -76,7 +76,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 		);
 		dispatch(
 			IAM_USER_GROUP.action.deleteGroupsFromUser({
-				uid: userId,
+				userUid: userId,
 				groups: Object.keys(
 					select[tableKeys.users.summary.tabs.groups.include],
 				),
@@ -87,7 +87,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 	const onClickAddRolesToUser = useCallback(() => {
 		dispatch(
 			IAM_USER.action.addGroupsToUser({
-				uid: userId,
+				userUid: userId,
 				groups: Object.keys(
 					select[tableKeys.users.summary.tabs.groups.exclude],
 				),

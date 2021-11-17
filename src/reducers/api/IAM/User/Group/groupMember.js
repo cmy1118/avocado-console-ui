@@ -13,7 +13,7 @@ const joinAction = createAsyncThunk(
 		console.log(client);
 		const response = await axios.put(
 			`/open-api/v1/iam/user-group-sets/${payload.id}`,
-			[...payload.uids],
+			[...payload.userUids],
 			{
 				headers: {
 					Authorization: `${client.token_type} ${client.access_token}`,
@@ -43,7 +43,7 @@ const disjointAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 				},
 				params: {
-					userUid: payload.uid,
+					userUid: payload.userUid,
 				},
 				baseURL: baseUrl.openApi,
 			},

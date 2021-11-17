@@ -3,7 +3,7 @@ import ModalTableContainer from '../../RecycleComponents/ModalTableContainer';
 import {tableKeys} from '../../../Constants/Table/keys';
 import Table from '../../Table/Table';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
 import {LiText} from '../../../styles/components/text';
@@ -17,18 +17,22 @@ import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 
 const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
+	const dispatch = useDispatch();
 
 	const submitUserInfo = useCallback(() => {
 		console.log(readOnlyData);
-		IAM_USER.asyncAction.createAction({
-			id: readOnlyData['user'].id,
-			name: readOnlyData['user'].name,
-			password: 'Netand141)', // 비밀번호는 생성 규칙에 따라 랜덤생성이며 사용자 이메일로 발송. 현재는 임의값.
-			email: readOnlyData['user'].email,
-			telephone: readOnlyData['user'].telephone,
-			mobile: readOnlyData['user'].mobile,
-		});
-	}, [readOnlyData]);
+		// 나머지 그룹, 역할, 태그 맵핑은 이후에 처리..
+		dispatch(
+			IAM_USER.asyncAction.createAction({
+				id: readOnlyData['user'].id,
+				name: readOnlyData['user'].name,
+				password: 'Netand141)', // 비밀번호는 생성 규칙에 따라 랜덤생성이며 사용자 이메일로 발송. 현재는 임의값.
+				email: readOnlyData['user'].email,
+				telephone: readOnlyData['user'].telephone,
+				mobile: readOnlyData['user'].mobile,
+			}),
+		);
+	}, [dispatch, readOnlyData]);
 
 	const groupData = useMemo(
 		() =>

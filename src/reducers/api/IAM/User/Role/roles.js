@@ -97,7 +97,7 @@ const slice = createSlice({
 			);
 
 			roles.map((v) => {
-				v.users.push(action.payload.uid);
+				v.users.push(action.payload.userUid);
 				return v;
 			});
 		},
@@ -109,7 +109,7 @@ const slice = createSlice({
 
 			roles.map((v) => {
 				const index = v.users.findIndex(
-					(val) => val === action.payload.uid,
+					(val) => val === action.payload.userUid,
 				);
 				v.users.splice(index, 1);
 				return v;

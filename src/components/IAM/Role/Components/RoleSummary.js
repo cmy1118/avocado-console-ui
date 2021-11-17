@@ -35,7 +35,7 @@ const RoleSummary = ({Id, param, setIsOpened}) => {
 
 	const userData = useMemo(() => {
 		return users
-			.filter((v) => role.users.includes(v.uid))
+			.filter((v) => role.users.includes(v.userUid))
 			.map((v, i) => ({
 				...v,
 				numberOfGroups: v.groups.length,

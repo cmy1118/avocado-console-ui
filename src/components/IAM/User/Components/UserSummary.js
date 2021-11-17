@@ -47,6 +47,7 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 	);
 
 	const groupData = useMemo(() => {
+		console.log(groups);
 		return groups.map((v) => ({
 			...v,
 			userGroupType: v.userGroupType.name,

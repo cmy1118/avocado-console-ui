@@ -51,10 +51,10 @@ const AddUserSpace = () => {
 				/>
 			</AddPageContainer>
 
-			{/*<UserPreviewDialogBox*/}
-			{/*	isOpened={isOpened}*/}
-			{/*	setIsOpened={setIsOpened}*/}
-			{/*/>*/}
+			<UserPreviewDialogBox
+				isOpened={isOpened}
+				setIsOpened={setIsOpened}
+			/>
 		</AddSpaceContainer>
 	);
 };

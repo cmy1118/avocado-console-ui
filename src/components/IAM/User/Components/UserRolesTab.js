@@ -26,7 +26,7 @@ const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 	const {users} = useSelector(IAM_USER.selector);
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const [select, setSelect] = useState({});
-	const user = useMemo(() => users.find((v) => v.uid === userId), [
+	const user = useMemo(() => users.find((v) => v.userUid === userId), [
 		users,
 		userId,
 	]);
@@ -56,7 +56,7 @@ const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 	const onClickDeleteRolesFromUser = useCallback(() => {
 		dispatch(
 			IAM_USER.action.deleteRolesFromUser({
-				uid: userId,
+				userUid: userId,
 				roles: Object.keys(
 					select[tableKeys.users.summary.tabs.roles.include],
 				),
@@ -64,7 +64,7 @@ const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 		);
 		dispatch(
 			IAM_ROLES.action.deleteRolesFromUser({
-				uid: userId,
+				userUid: userId,
 				roles: Object.keys(
 					select[tableKeys.users.summary.tabs.roles.include],
 				),
@@ -75,7 +75,7 @@ const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 	const onClickAddRolesToUser = useCallback(() => {
 		dispatch(
 			IAM_USER.action.addRolesToUser({
-				uid: userId,
+				userUid: userId,
 				roles: Object.keys(
 					select[tableKeys.users.summary.tabs.roles.exclude],
 				),
@@ -83,7 +83,7 @@ const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 		);
 		dispatch(
 			IAM_ROLES.action.addRolesToUser({
-				uid: userId,
+				userUid: userId,
 				roles: Object.keys(
 					select[tableKeys.users.summary.tabs.roles.exclude],
 				),

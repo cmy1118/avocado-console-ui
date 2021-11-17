@@ -23,7 +23,7 @@ const UserInfoTab = ({userId}) => {
 	const [isIdentificationOpened, setIsIdentificationOpened] = useState(false);
 	const [isChangePasswordOpened, setIsChangePasswordOpened] = useState(false);
 	const {users} = useSelector(IAM_USER.selector);
-	const user = useMemo(() => users.find((v) => v.uid === userId), [
+	const user = useMemo(() => users.find((v) => v.userUid === userId), [
 		users,
 		userId,
 	]);

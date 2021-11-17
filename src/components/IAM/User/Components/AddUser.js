@@ -34,7 +34,7 @@ const AddUser = ({setIsOpened}) => {
 	const validation = {
 		id: yup
 			.string()
-			.min(10, '최소 길이는 10자 입니다.')
+			.min(5, '최소 길이는 5자 입니다.')
 			.max(40, '최대 길이는 40자 입니다.')
 			.required('아이디는 필수 입력 값입니다.'),
 		name: yup

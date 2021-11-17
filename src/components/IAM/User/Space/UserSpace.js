@@ -39,7 +39,8 @@ const UserSpace = () => {
 		return users.map((v) => ({
 			...v,
 			groupIds: groupsConverter(v.groupIds || []),
-			status: statusConverter(v.status.code),
+			status: v.status.code,
+			createdTime: v.createdTag.createdTime,
 		}));
 	}, [users]);
 

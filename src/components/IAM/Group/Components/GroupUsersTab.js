@@ -32,7 +32,7 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 
 	const includedData = useMemo(() => {
 		return users
-			.filter((v) => includedDataIds.includes(v.uid))
+			.filter((v) => includedDataIds.includes(v.userUid))
 			.map((v) => ({
 				...v,
 				numberOfGroups: v.groups.length,
@@ -41,7 +41,7 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 
 	const excludedData = useMemo(() => {
 		return users
-			.filter((v) => !includedDataIds.includes(v.uid))
+			.filter((v) => !includedDataIds.includes(v.userUid))
 			.map((v) => ({
 				...v,
 				numberOfGroups: v.groups.length,

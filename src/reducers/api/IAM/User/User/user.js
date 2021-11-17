@@ -9,6 +9,8 @@ const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
+
 		// eslint-disable-next-line no-console
 		console.log(client);
 		const response = await axios.post(
@@ -23,7 +25,7 @@ const createAction = createAsyncThunk(
 			},
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -39,7 +41,7 @@ const updateAction = createAsyncThunk(
 		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.put(
-			`/open-api/v1/iam/users/${payload.uid}`,
+			`/open-api/v1/iam/users/${payload.userUid}`,
 			{
 				name: payload.name,
 				password: payload.password,
@@ -66,7 +68,7 @@ const deleteAction = createAsyncThunk(
 		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.delete(
-			`/open-api/v1/iam/users/${payload.uid}`,
+			`/open-api/v1/iam/users/${payload.userUid}`,
 			{
 				headers: {
 					Authorization: `${client.token_type} ${client.access_token}`,
@@ -106,7 +108,7 @@ const findByUidAction = createAsyncThunk(
 		const {client} = getState().IAM_CLIENT;
 
 		const response = await axios.get(
-			`/open-api/v1/iam/users/${payload.uid}`,
+			`/open-api/v1/iam/users/${payload.userUid}`,
 			{
 				headers: {
 					Authorization: `${client.token_type} ${client.access_token}`,
@@ -132,7 +134,7 @@ const findAllAction = createAsyncThunk(
 		const response = await axios.get(`/open-api/v1/iam/users`, {
 			params: {
 				keyword: payload.keyword || null,
-				userUid: payload.uid || null,
+				userUid: payload.userUid || null,
 				id: payload.id || null,
 				accountExpiryTime: payload.accountExpiryTime || null,
 				createdTime: payload.createdTime || null,

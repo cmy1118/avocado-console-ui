@@ -25,7 +25,7 @@ const TableLink = ({cell, text}) => {
 	const pathname = qs.parse(location).pathname;
 
 	//grantUserId : 부여사용자 여부 확인
-	const grantUserId = cell.value?.uid;
+	const grantUserId = cell.value?.userUid;
 	//dataType : Column 에서 부여한 type 정보
 	const dataType = cell.column?.type;
 	const data = cell.row.original;

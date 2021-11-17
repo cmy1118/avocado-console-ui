@@ -143,7 +143,8 @@ const DropButton = ({
 		//TODO: users 의 uid 데이터 처리 수정
 		if (CheckDropDataType(leftTableKey) === UESRS) {
 			selectId =
-				select[leftTableKey] && select[leftTableKey].map((v) => v.uid);
+				select[leftTableKey] &&
+				select[leftTableKey].map((v) => v.userUid);
 		} else {
 			selectId =
 				select[leftTableKey] && select[leftTableKey].map((v) => v.id);

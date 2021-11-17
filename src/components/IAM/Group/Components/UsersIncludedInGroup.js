@@ -22,7 +22,7 @@ const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
 	const [select, setSelect] = useState({});
 	const excludedData = useMemo(() => {
 		const dropDataName = users
-			.map(({uid: id, id: _id, ...rest}) => ({
+			.map(({userUid: id, id: _id, ...rest}) => ({
 				id,
 				_id,
 				...rest,
@@ -39,7 +39,7 @@ const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
 
 	const includedData = useMemo(() => {
 		return users
-			.map(({uid: id, id: _id, ...rest}) => ({
+			.map(({userUid: id, id: _id, ...rest}) => ({
 				id,
 				_id,
 				...rest,

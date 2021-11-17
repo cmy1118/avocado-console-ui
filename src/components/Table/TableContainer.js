@@ -98,12 +98,13 @@ const TableContainer = ({
 	const [skipPageReset, setSkipPageReset] = useState(false);
 
 	const getRowId = useCallback((v) => {
-		if (v.uid) return v.uid;
+		if (v.userUid) return v.userUid;
 		return v.id;
 	}, []);
 
 	const updateMyData = (rowIndex, columnId, value) => {
 		// We also turn on the flag to not reset the page
+		if (mode === 'readOnly') return;
 		setSkipPageReset(true);
 		setData((old) =>
 			old.map((row, index) => {

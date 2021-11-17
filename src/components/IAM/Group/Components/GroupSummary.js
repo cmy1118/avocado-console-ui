@@ -29,7 +29,7 @@ const GroupSummary = ({Id, param, setIsOpened}) => {
 
 	const userData = useMemo(() => {
 		return users
-			.filter((v) => group.members.includes(v.uid))
+			.filter((v) => group.members.includes(v.userUid))
 			.map((v, i) => ({
 				...v,
 				groupsLength: v.groups.length,
@@ -51,7 +51,7 @@ const GroupSummary = ({Id, param, setIsOpened}) => {
 	const validation = {
 		name: yup
 			.string()
-			.min(10, '최소 길이는 10자 입니다.')
+			.min(5, '최소 길이는 5자 입니다.')
 			.max(40, '최대 길이는 100자 입니다.'),
 	};
 	const onClickChangeTab = useCallback(

@@ -25,7 +25,7 @@ const _TableSpace = styled(TableTitle)`
 
 const UserOnDescPageTags = ({userId}) => {
 	const {users} = useSelector(IAM_USER.selector);
-	const user = useMemo(() => users.find((v) => v.uid === userId), [
+	const user = useMemo(() => users.find((v) => v.userUid === userId), [
 		users,
 		userId,
 	]);
