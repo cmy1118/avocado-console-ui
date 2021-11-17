@@ -1,6 +1,75 @@
-import {createSelector, createSlice} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
+import axios from 'axios';
+import {baseUrl} from '../../../../../api/constants';
 
 const NAME = 'IAM_ROLES';
+
+const createAction = createAsyncThunk(
+	`${NAME}/CREATE`,
+	async (payload, {getState}) => {
+		const {client} = getState().IAM_CLIENT;
+		// eslint-disable-next-line no-console
+		const response = await axios.post(
+			`/open-api/v1/iam/users`,
+			{
+				id: payload.id,
+				name: payload.name,
+				password: payload.password,
+				email: payload.email,
+				telephone: payload.telephone,
+				mobile: payload.mobile,
+			},
+			{
+				headers: {
+					Authorization: `${client.token_type} ${client.access_token}`,
+					'Content-Type': 'application/json',
+				},
+				baseURL: baseUrl.openApi,
+			},
+		);
+		return response.data;
+	},
+);
+
+const findRolesByIdsAction = createAsyncThunk(
+	`${NAME}/FIND_ROLES_BY_ID`,
+	async (payload, {getState}) => {
+		const {user} = getState().AUTH_USER;
+
+		const response = await axios.get(
+			`/open-api/v1/pam/roles/${payload.id}`,
+			{
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
+					'Content-Type': 'application/json',
+				},
+				baseURL: baseUrl.openApi,
+			},
+		);
+		return response.data;
+	},
+);
+
+const GetAllRolesAction = createAsyncThunk(
+	`${NAME}/GET_ALL_ROLES`,
+	async (payload, {getState}) => {
+		//로그인 처리
+		const {user} = getState().AUTH_USER;
+
+		const response = await axios.get(`/open-api/v1/pam/roles`, {
+			params: {
+				name: payload.name || null,
+				ids: payload.ids || null,
+			},
+			headers: {
+				Authorization: `${user.token_type} ${user.access_token}`,
+				Range: payload.range,
+			},
+			baseURL: baseUrl.openApi,
+		});
+		return response.data;
+	},
+);
 
 const slice = createSlice({
 	name: NAME,
@@ -141,6 +210,30 @@ const slice = createSlice({
 			});
 		},
 	},
+	extraReducers: {
+		[findRolesByIdsAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[findRolesByIdsAction.fulfilled]: (state, action) => {
+			state.users = action.payload;
+			state.loading = false;
+		},
+		[findRolesByIdsAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
+		[GetAllRolesAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[GetAllRolesAction.fulfilled]: (state, action) => {
+			state.users = action.payload;
+			state.loading = false;
+		},
+		[GetAllRolesAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
+	},
 });
 
 const selectAllState = createSelector(
@@ -157,6 +250,10 @@ const IAM_ROLES = {
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
 	action: slice.actions,
+	asyncAction: {
+		findRolesByIdsAction,
+		GetAllRolesAction,
+	},
 };
 
 export default IAM_ROLES;
