@@ -10,6 +10,7 @@ import IAM_USER_GROUP from './api/IAM/User/Group/group';
 import IAM_USER_GROUP_MEMBER from './api/IAM/User/Group/groupMember';
 import IAM_CLIENT from './api/IAM/Client/client';
 
+import PAGINATION from './pagination';
 import SETTING from './setting';
 import DIALOG_BOX from './dialogBoxs';
 import CURRENT_TARGET from './currentTarget';
@@ -29,6 +30,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
 	[SETTING.name]: SETTING.reducer,
+	[PAGINATION.name]: PAGINATION.reducer,
 	[IAM_CLIENT.name]: IAM_CLIENT.reducer,
 
 	[USER.name]: USER.reducer,

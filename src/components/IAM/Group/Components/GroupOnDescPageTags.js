@@ -89,8 +89,9 @@ const GroupOnDescPageTags = ({groupId}) => {
 				tableKey={tableKeys.groups.summary.tabs.tags.basic}
 				data={data}
 				columns={tableColumns[tableKeys.groups.summary.tabs.tags.basic]}
+				setData={setData}
 			>
-				<Table setSelect={setSelect} setData={setData} />
+				<Table setSelect={setSelect} />
 			</TableContainer>
 		</TabContentContainer>
 	);

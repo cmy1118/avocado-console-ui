@@ -124,21 +124,26 @@ const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().USER;
+
+		console.log(client);
+		console.log(user);
 
 		const response = await axios.get(`/open-api/v1/iam/users`, {
 			params: {
-				keyword: payload.keyword,
-				userUid: payload.uid,
-				id: payload.id,
-				accountExpiryTime: payload.accountExpiryTime,
-				createdTime: payload.createdTime,
+				keyword: payload.keyword || null,
+				userUid: payload.uid || null,
+				id: payload.id || null,
+				accountExpiryTime: payload.accountExpiryTime || null,
+				createdTime: payload.createdTime || null,
 			},
 			headers: {
-				Authorization: `${client.token_type} ${client.access_token}`,
-				Range: `elements=${payload.first}-${payload.last}`,
+				Authorization: `${user.token_type} ${user.access_token}`,
+				Range: payload.range,
 			},
 			baseURL: baseUrl.openApi,
 		});
+		console.log(response);
 		return response.data;
 	},
 );

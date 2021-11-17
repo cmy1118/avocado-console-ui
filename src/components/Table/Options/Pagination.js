@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import PAGINATION from '../../../reducers/pagination';
+import {useDispatch} from 'react-redux';
 
 const Button = styled.button`
 	border: none;
@@ -33,15 +35,20 @@ const Pagination = ({
 	pageCount,
 	pageOptions,
 	pageSize,
+	tableKey,
 }) => {
+	const dispatch = useDispatch();
+
 	useEffect(() => {
-		console.log('api 요청');
-		console.log(
-			`elements=${pageSize * pageCount + 1}-${
-				pageSize * (pageCount + 1)
-			}`,
+		dispatch(
+			PAGINATION.action.setPage({
+				tableKey,
+				element: `elements=${pageSize * pageCount + 1}-${
+					pageSize * (pageCount + 1)
+				}`,
+			}),
 		);
-	}, [pageCount, pageSize]);
+	}, [dispatch, pageCount, pageSize, tableKey]);
 
 	return (
 		<Container className='pagination'>
@@ -75,6 +82,7 @@ Pagination.propTypes = {
 	pageCount: PropTypes.number.isRequired,
 	pageSize: PropTypes.number.isRequired,
 	pageOptions: PropTypes.array.isRequired,
+	tableKey: PropTypes.string.isRequired,
 };
 
 export default Pagination;

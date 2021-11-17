@@ -17,6 +17,7 @@ export const authorization = {
 export const contentType = 'application/x-www-form-urlencoded';
 
 export const grantType = {
+	CLIENT_CREDENTIALS: 'client_credentials',
 	PASSWORD: 'password',
 	REFRESH_TOKEN: 'refresh_token',
 	AUTHORIZATION_CODE: 'authorization_code',

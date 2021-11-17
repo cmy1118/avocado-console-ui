@@ -169,6 +169,7 @@ const TableOptionsBar = ({
 						pageCount={pageIndex}
 						pageOptions={pageOptions}
 						pageSize={pageSize}
+						tableKey={tableKey}
 					/>
 					<PageSizing pageSize={pageSize} setPageSize={setPageSize} />
 					<div>

@@ -7,11 +7,12 @@ import {authorization, contentType, grantType} from '../../../utils/auth';
 const NAME = 'USER';
 
 const loginAction = createAsyncThunk(`${NAME}/LOGIN`, async (payload) => {
+	console.log(payload);
 	const response = await axios.post(`/oauth2/v1/token`, null, {
 		params: {
-			grant_type: grantType.PASSWORD,
-			username: payload.username,
-			password: payload.password,
+			grant_type: grantType.CLIENT_CREDENTIALS,
+			// username: payload.username,
+			// password: payload.password,
 		},
 		headers: {
 			'Content-Type': contentType,

@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import {
 	groupsConverter,
@@ -27,27 +27,39 @@ import {
 	TitleBar,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
+import PAGINATION from '../../../../reducers/pagination';
 
 const UserSpace = () => {
 	const history = useHistory();
+	const dispatch = useDispatch();
 
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-
+	const {page} = useSelector(PAGINATION.selector);
 	const [select, setSelect] = useState({});
 
 	const userData = useMemo(() => {
-		return users.map((v) => ({
-			...v,
-			groups: groupsConverter(
-				v.groups.map(
-					(val) => groups.find((val2) => val2.id === val).name,
-				),
-			),
-			passwordExpiryTime: passwordExpiredConverter(v.passwordExpired),
-			tags: tagsConverter(v.tags),
-		}));
-	}, [users, groups]);
+		console.log(page[tableKeys.users.basic]);
+
+		if (page[tableKeys.users.basic]) {
+			dispatch(
+				IAM_USER.asyncAction.findAllAction({
+					range: page[tableKeys.users.basic],
+				}),
+			);
+		}
+		return [];
+		// return users.map((v) => ({
+		// 	...v,
+		// 	groups: groupsConverter(
+		// 		v.groups.map(
+		// 			(val) => groups.find((val2) => val2.id === val).name,
+		// 		),
+		// 	),
+		// 	passwordExpiryTime: passwordExpiredConverter(v.passwordExpired),
+		// 	tags: tagsConverter(v.tags),
+		// }));
+	}, [dispatch, page]);
 
 	const onClickLinkToAddUserPage = useCallback(() => {
 		history.push('/users/add');

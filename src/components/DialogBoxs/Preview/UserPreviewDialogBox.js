@@ -13,14 +13,22 @@ import {rolesConverter} from '../../../utils/tableDataConverter';
 import {SummaryList} from '../../../styles/components/iam/descriptionPage';
 import {TitleBar} from '../../../styles/components/iam/iam';
 import {AddPageDialogBoxTitle} from '../../../styles/components/iam/addPage';
+import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 
 const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
 
 	const submitUserInfo = useCallback(() => {
-		// console.log(readOnlyData);
-		// console.log('api 작업..');
-	}, []);
+		console.log(readOnlyData);
+		IAM_USER.asyncAction.createAction({
+			id: readOnlyData['user'].id,
+			name: readOnlyData['user'].name,
+			password: 'Netand141)', // 비밀번호는 생성 규칙에 따라 랜덤생성이며 사용자 이메일로 발송. 현재는 임의값.
+			email: readOnlyData['user'].email,
+			telephone: readOnlyData['user'].telephone,
+			mobile: readOnlyData['user'].mobile,
+		});
+	}, [readOnlyData]);
 
 	const groupData = useMemo(
 		() =>
