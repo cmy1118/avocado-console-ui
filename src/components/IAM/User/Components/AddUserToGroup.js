@@ -13,9 +13,9 @@ import TableFold from '../../../Table/Options/TableFold';
 import DragContainer from '../../../Table/DragContainer';
 import TableContainer from '../../../Table/TableContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
-import {rolesConverter} from '../../../../utils/tableDataConverter';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
+import PAGINATION from '../../../../reducers/pagination';
 
 const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -23,40 +23,43 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
+	const {page} = useSelector(PAGINATION.selector);
 
-	const includedData = useMemo(
-		() =>
-			groups
-				.filter((v) => includedDataIds.includes(v.id))
-				.map((v, i) => ({
-					...v,
-					type: groupTypes.find(
-						(val) => val.id === v.clientGroupTypeId,
-					).name,
-					numberOfUsers: v.members.length,
-				})),
-		[groups, includedDataIds, groupTypes],
-	);
-	const excludedData = useMemo(
-		() =>
-			groups
-				.filter(
-					(v) =>
-						!groups
-							.filter((v) => includedDataIds.includes(v.id))
-							.map((v) => v.clientGroupTypeId)
-							.includes(v.clientGroupTypeId),
-				)
-				.map((v, i) => ({
-					...v,
-					type: groupTypes.find(
-						(val) => val.id === v.clientGroupTypeId,
-					).name,
-					roles: rolesConverter(v.roles),
-					numberOfUsers: v.members.length,
-				})) || [],
-		[groups, includedDataIds, groupTypes],
-	);
+	console.log(includedDataIds);
+
+	const includedData = useMemo(() => {
+		return (
+			groups.map((v) => ({
+				...v,
+				userGroupType: v.userGroupType.name,
+			})) || []
+		);
+	}, [groups]);
+
+	const excludedData = useMemo(() => {
+		return (
+			groups.map((v) => ({
+				...v,
+				userGroupType: v.userGroupType.name,
+			})) || []
+		);
+		// groups
+		// 	.filter(
+		// 		(v) =>
+		// 			!groups
+		// 				.filter((v) => includedDataIds.includes(v.id))
+		// 				.map((v) => v.clientGroupTypeId)
+		// 				.includes(v.clientGroupTypeId),
+		// 	)
+		// 	.map((v, i) => ({
+		// 		...v,
+		// 		type: groupTypes.find(
+		// 			(val) => val.id === v.clientGroupTypeId,
+		// 		).name,
+		// 		roles: rolesConverter(v.roles),
+		// 		numberOfUsers: v.members.length,
+		// 	})) || [],
+	}, [groups]);
 
 	useEffect(() => {
 		dispatch(
@@ -66,6 +69,15 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 			}),
 		);
 	}, [dispatch, includedData]);
+
+	useEffect(() => {
+		page[tableKeys.users.add.groups.exclude] &&
+			dispatch(
+				IAM_USER_GROUP.asyncAction.findAllAction({
+					range: page[tableKeys.users.add.groups.exclude],
+				}),
+			);
+	}, [dispatch, page]);
 
 	return (
 		<FoldableContainer>

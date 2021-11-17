@@ -6,7 +6,6 @@ import {
 	groupsConverter,
 	statusConverter,
 } from '../../../../utils/tableDataConverter';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import Table from '../../../Table/Table';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import {
@@ -33,7 +32,6 @@ const UserSpace = () => {
 	const dispatch = useDispatch();
 
 	const {users} = useSelector(IAM_USER.selector);
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {page} = useSelector(PAGINATION.selector);
 	const [select, setSelect] = useState({});
 

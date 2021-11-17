@@ -97,10 +97,10 @@ const findByIdAction = createAsyncThunk(
 );
 
 //todo : this function requires uid
-const findByUidAction = createAsyncThunk(
+const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
 		const response = await axios.get(`/open-api/v1/iam/user-groups`, {
 			params: {
@@ -112,9 +112,9 @@ const findByUidAction = createAsyncThunk(
 				createdTime: payload.createdTime,
 			},
 			headers: {
-				Authorization: `${client.token_type} ${client.access_token}`,
+				Authorization: `${user.token_type} ${user.access_token}`,
 				'Content-Type': 'application/json',
-				Range: `elements=${payload.first}-${payload.last}`,
+				Range: payload.range,
 			},
 			baseURL: baseUrl.openApi,
 		});
@@ -179,14 +179,14 @@ const slice = createSlice({
 			state.loading = false;
 		},
 
-		[findByUidAction.pending]: (state) => {
+		[findAllAction.pending]: (state) => {
 			state.loading = true;
 		},
-		[findByUidAction.fulfilled]: (state, action) => {
+		[findAllAction.fulfilled]: (state, action) => {
 			state.groups = action.payload;
 			state.loading = false;
 		},
-		[findByUidAction.rejected]: (state, action) => {
+		[findAllAction.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
 		},
@@ -211,7 +211,7 @@ const IAM_USER_GROUP = {
 		updateAction,
 		deleteAction,
 		findByIdAction,
-		findByUidAction,
+		findAllAction,
 	},
 };
 

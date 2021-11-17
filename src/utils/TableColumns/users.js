@@ -148,7 +148,7 @@ export const USER_ADD_GROUPS_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'type',
+		accessor: 'userGroupType',
 	},
 	{
 		Header: '사용자 수',
