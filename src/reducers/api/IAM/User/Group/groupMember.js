@@ -2,6 +2,11 @@ import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {baseUrl} from '../../../../../api/constants';
 
+// import qs from 'qs';
+// axios.default.paramsSerializer = (params) => {
+// 	return qs.stringify(params);
+// };
+
 const NAME = 'IAM_USER_GROUP_MEMBER';
 
 //todo : this function requires id, companyId, name, password, email, telephone and mobile
@@ -55,11 +60,11 @@ const findAllAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 
 		const response = await axios.get(`/open-api/v1/iam/user-group-sets`, {
-			params: {groupId: payload.id},
+			params: {groupId: payload.groupId},
 			headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,
 				'Content-Type': 'application/json',
-				Range: `elements=${payload.first}-${payload.last}`,
+				Range: payload.range,
 			},
 			baseURL: baseUrl.openApi,
 		});
@@ -92,7 +97,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[disjointAction.fulfilled]: (state, action) => {
-			state.members = action.payload;
 			state.loading = false;
 		},
 		[disjointAction.rejected]: (state, action) => {

@@ -1,59 +1,65 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import PropTypes from 'prop-types';
 
 import Table from '../../../Table/Table';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
-import * as yup from 'yup';
-import {
-	dummyDates,
-	dummyPolicyOnGroup,
-	dummyUsers,
-} from '../../../../utils/dummyData';
+import {dummyPolicyOnGroup} from '../../../../utils/dummyData';
 import TableContainer from '../../../Table/TableContainer';
 import {useHistory} from 'react-router-dom';
 import {
 	SummaryTablesContainer,
 	SummaryTableTitle,
 } from '../../../../styles/components/iam/descriptionPage';
+import PAGINATION from '../../../../reducers/pagination';
+import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 
 const GroupSummary = ({Id, param, setIsOpened}) => {
 	const history = useHistory();
+	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-
+	const {members} = useSelector(IAM_USER_GROUP_MEMBER.selector);
+	const {page} = useSelector(PAGINATION.selector);
 	const group = useMemo(() => groups.find((v) => v.id === Id), [groups, Id]);
+
+	console.log(users);
+	console.log(members);
 
 	const userData = useMemo(() => {
 		return users
-			.filter((v) => group.members.includes(v.userUid))
+			.filter((v) => v.groupIds && v.groupIds.includes(Id))
 			.map((v, i) => ({
 				...v,
-				groupsLength: v.groups.length,
-				grantUser: dummyUsers[i],
+				id: v.id,
+				name: v.name,
+				groupsLength: v.groupIds ? v.groupIds.length : 0,
+				status: v.status.code,
+				createdTime: v.createdTag.createdTime,
+				grantUser: members.find((x) => x.userUid === v.userUid)
+					?.grantedTag.userUid,
+
+				// groupsLength: v.groups.length,
+				// grantUser: dummyUsers[i],
 			}));
-	}, [users, group]);
+	}, [Id, members, users]);
 
 	const roleData = useMemo(() => dummyPolicyOnGroup, []);
 
 	const tagData = useMemo(() => {
-		return group.tags.map((v, i) => ({
-			...v,
-			id: v.name,
-			numberOfPermissions: v.permissions.length,
-			creationDate: dummyDates[i],
-		}));
-	}, [group]);
+		return [];
 
-	const validation = {
-		name: yup
-			.string()
-			.min(5, '최소 길이는 5자 입니다.')
-			.max(40, '최대 길이는 100자 입니다.'),
-	};
+		// return group.tags.map((v, i) => ({
+		// 	...v,
+		// 	id: v.name,
+		// 	numberOfPermissions: v.permissions.length,
+		// 	creationDate: dummyDates[i],
+		// }));
+	}, []);
+
 	const onClickChangeTab = useCallback(
 		(v) => () => {
 			setIsOpened(false);
@@ -62,8 +68,22 @@ const GroupSummary = ({Id, param, setIsOpened}) => {
 				search: `tabs=${v}`,
 			});
 		},
-		[history, setIsOpened, param],
+		[setIsOpened, history, param, Id],
 	);
+
+	useEffect(() => {
+		dispatch(
+			IAM_USER.asyncAction.findAllAction({
+				range: 'element=0-50',
+			}),
+		);
+		dispatch(
+			IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
+				groupId: Id,
+				range: 'elements=0-50',
+			}),
+		);
+	}, [Id, dispatch]);
 
 	return (
 		<SummaryTablesContainer>

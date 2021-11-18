@@ -34,17 +34,12 @@ const GroupSpace = () => {
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
 	const data = useMemo(() => {
-		return groups.map((v) => ({}));
-		// return groups.map((v) => ({
-		// 	...v,
-		// 	roles: rolesConverter(v.roles),
-		// 	type: groupTypes.find((val) => val.id === v.clientGroupTypeId).name,
-		//
-		// 	numberOfUsers: v.members.length,
-		// 	parentGroup: parentGroupConverter(
-		// 		groups.find((val) => val.id === v.parentId)?.name,
-		// 	),
-		// }));
+		return groups.map((v) => ({
+			...v,
+			name: v.name,
+			userGroupType: v.userGroupType.name,
+			parentGroup: v.parentGroup.name ? v.parentGroup.name : '없음',
+		}));
 	}, [groups]);
 
 	const onCLickLinkToAddGroup = useCallback(() => {

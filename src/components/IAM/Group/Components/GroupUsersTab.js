@@ -18,76 +18,88 @@ import DragContainer from '../../../Table/DragContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
+import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 
 const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {members} = useSelector(IAM_USER_GROUP_MEMBER.selector);
 	const {users} = useSelector(IAM_USER.selector);
 	const [select, setSelect] = useState({});
 	const group = useMemo(() => groups.find((v) => v.id === groupId), [
 		groups,
 		groupId,
 	]);
-	const [includedDataIds, setIncludedDataIds] = useState(group.members);
+	const [includedDataIds, setIncludedDataIds] = useState(
+		members.map((v) => v.userUid) || [],
+	);
+
+	console.log(users);
+	console.log(members);
 
 	const includedData = useMemo(() => {
 		return users
 			.filter((v) => includedDataIds.includes(v.userUid))
 			.map((v) => ({
 				...v,
-				numberOfGroups: v.groups.length,
+				id: v.id,
+				name: v.name,
+				numberOfGroups: v.groupIds ? v.groupIds.length : 0,
+				createdTime: v.createdTag.createdTime,
 			}));
-	}, [users, includedDataIds]);
+	}, [includedDataIds, users]);
 
 	const excludedData = useMemo(() => {
 		return users
 			.filter((v) => !includedDataIds.includes(v.userUid))
 			.map((v) => ({
 				...v,
-				numberOfGroups: v.groups.length,
+				id: v.id,
+				name: v.name,
+				numberOfGroups: v.groupIds ? v.groupIds.length : 0,
+				createdTime: v.createdTag.createdTime,
 			}));
-	}, [users, includedDataIds]);
+	}, [includedDataIds, users]);
 
 	const onClickDeleteRolesFromGroup = useCallback(() => {
 		dispatch(
-			IAM_USER_GROUP.action.deleteUsersFromGroup({
-				id: groupId,
-				users: Object.keys(
-					select[tableKeys.groups.summary.tabs.users.include],
-				),
-			}),
-		);
-		dispatch(
-			IAM_USER.action.deleteUsersFromGroup({
-				id: groupId,
-				users: Object.keys(
-					select[tableKeys.groups.summary.tabs.users.include],
-				),
+			IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
+				groupId: groupId,
+				userUid: select[
+					tableKeys.groups.summary.tabs.users.include
+				].map((v) => v.userUid),
 			}),
 		);
 	}, [dispatch, groupId, select]);
 
 	const onClickAddRolesToGroup = useCallback(() => {
 		dispatch(
-			IAM_USER_GROUP.action.addUsersToGroup({
-				id: groupId,
-				users: Object.keys(
-					select[tableKeys.groups.summary.tabs.users.exclude],
-				),
-			}),
-		);
-		dispatch(
-			IAM_USER.action.addUsersToGroup({
-				id: groupId,
-				users: Object.keys(
-					select[tableKeys.groups.summary.tabs.users.exclude],
-				),
+			IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
+				groupId: groupId,
+				userUid: select[
+					tableKeys.groups.summary.tabs.users.exclude
+				].map((v) => v.userUid),
 			}),
 		);
 	}, [dispatch, groupId, select]);
+
 	useEffect(() => {
-		setIncludedDataIds(group.members);
-	}, [group.members]);
+		dispatch(
+			IAM_USER.asyncAction.findAllAction({
+				range: 'elements=0-50',
+			}),
+		);
+	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(
+			IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
+				groupId: groupId,
+				range: 'elements=0-50',
+			}),
+		);
+	}, [dispatch, groupId]);
+
 	return (
 		<TabContentContainer>
 			<DragContainer

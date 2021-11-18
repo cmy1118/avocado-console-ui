@@ -58,10 +58,12 @@ const GroupDescriptionSpace = ({groupId}) => {
 		{name: '태그', href: 'tag'},
 	];
 
-	const group = useMemo(() => groups.find((v) => v.id === groupId), [
+	const group = useMemo(() => groups.find((v) => v.id === groupId) || {}, [
 		groups,
 		groupId,
 	]);
+
+	console.log(group);
 
 	let onClickFoldSummary;
 	onClickFoldSummary = useCallback(() => {
@@ -129,14 +131,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 
 					<SummaryList>
 						<LiText>그룹명 : {group?.name}</LiText>
-						<LiText>
-							그룹 유형 :{' '}
-							{
-								groupTypes.find(
-									(v) => v.id === group.clientGroupTypeId,
-								).name
-							}
-						</LiText>
+						<LiText>그룹 유형 : {group.userGroupType.name}</LiText>
 						<LiText>생성 일시 : {group?.creationDate}</LiText>
 					</SummaryList>
 				</div>
