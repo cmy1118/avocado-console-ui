@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import PropTypes from 'prop-types';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
@@ -15,6 +15,7 @@ import {TableTitle} from '../../../../styles/components/table';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 
 const UserInfoTab = ({userId}) => {
+	const dispatch = useDispatch();
 	const [values, setValues] = useState({email: '', number: ''});
 	const saveRef = useRef(null);
 	const confirmAuthRef = useRef(null);
@@ -23,6 +24,7 @@ const UserInfoTab = ({userId}) => {
 	const [isIdentificationOpened, setIsIdentificationOpened] = useState(false);
 	const [isChangePasswordOpened, setIsChangePasswordOpened] = useState(false);
 	const {users} = useSelector(IAM_USER.selector);
+
 	const user = useMemo(() => users.find((v) => v.userUid === userId), [
 		users,
 		userId,
@@ -41,6 +43,23 @@ const UserInfoTab = ({userId}) => {
 		setIsChangePasswordOpened(true);
 		setIsIdentificationOpened(false);
 	}, []);
+
+	const onSubmitChangedUserInfo = useCallback(
+		(data) => {
+			console.log(data);
+			const {name, email, telephone, mobile} = data;
+			dispatch(
+				IAM_USER.asyncAction.updateAction({
+					userUid: userId,
+					name,
+					email,
+					telephone,
+					mobile,
+				}),
+			);
+		},
+		[dispatch, userId],
+	);
 
 	return (
 		<TabContentContainer>
@@ -63,14 +82,14 @@ const UserInfoTab = ({userId}) => {
 						telephone: user.telephone,
 						mobile: user.mobile,
 					}}
-					onSubmit={(data) => console.log(data)}
+					onSubmit={onSubmitChangedUserInfo}
 					innerRef={saveRef}
 				>
 					<RowDiv margin={'0px 0px 12px 0px'}>
 						<Label htmlFor={'id'}>
 							<li>사용자 ID</li>
 						</Label>
-						<TextBox name={'id'} />
+						<TextBox name={'id'} readOnly />
 					</RowDiv>
 					<RowDiv margin={'0px 0px 12px 0px'}>
 						<Label htmlFor={'name'}>
@@ -82,7 +101,7 @@ const UserInfoTab = ({userId}) => {
 						<Label htmlFor={'password'}>
 							<li>비밀번호</li>
 						</Label>
-						<TextBox name={'password'} />
+						<TextBox name={'password'} readOnly />
 						<NormalBorderButton
 							type={'button'}
 							margin='0px 0px 0px 10px'

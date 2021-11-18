@@ -34,6 +34,11 @@ const ModalTableContainer = ({
 		setIsOpened(false);
 	}, [setIsOpened]);
 
+	const onSubmitCreateUser = useCallback(() => {
+		setIsOpened(false);
+		handleSubmit();
+	}, [handleSubmit, setIsOpened]);
+
 	return (
 		<_DialogBox
 			isOpen={isOpened}
@@ -58,7 +63,7 @@ const ModalTableContainer = ({
 				<NormalButton
 					width={'120px'}
 					margin={'0px 8px 0px 0px'}
-					onClick={handleSubmit}
+					onClick={onSubmitCreateUser}
 					type={'submit'}
 				>
 					Save
