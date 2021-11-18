@@ -8,11 +8,10 @@ const NAME = 'IAM_USER';
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
 		const {user} = getState().AUTH_USER;
 
 		// eslint-disable-next-line no-console
-		console.log(client);
+		console.log(user);
 		const response = await axios.post(
 			`/open-api/v1/iam/users`,
 			{
@@ -38,7 +37,7 @@ const createAction = createAsyncThunk(
 const updateAction = createAsyncThunk(
 	`${NAME}/UPDATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
 		const response = await axios.put(
 			`/open-api/v1/iam/users/${payload.userUid}`,
@@ -51,7 +50,7 @@ const updateAction = createAsyncThunk(
 			},
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -65,13 +64,13 @@ const updateAction = createAsyncThunk(
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
 		const response = await axios.delete(
 			`/open-api/v1/iam/users/${payload.userUid}`,
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -85,13 +84,13 @@ const deleteAction = createAsyncThunk(
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
 		const response = await axios.get(
 			`/open-api/v1/iam/user-ids/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -105,13 +104,13 @@ const findByIdAction = createAsyncThunk(
 const findByUidAction = createAsyncThunk(
 	`${NAME}/FIND_BY_UID`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
 		const response = await axios.get(
 			`/open-api/v1/iam/users/${payload.userUid}`,
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -125,10 +124,8 @@ const findByUidAction = createAsyncThunk(
 const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
 		const {user} = getState().AUTH_USER;
 
-		console.log(client);
 		console.log(user);
 
 		const response = await axios.get(`/open-api/v1/iam/users`, {
@@ -163,7 +160,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[createAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[createAction.rejected]: (state, action) => {
@@ -175,7 +171,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[updateAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[updateAction.rejected]: (state, action) => {
@@ -187,7 +182,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[deleteAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[deleteAction.rejected]: (state, action) => {
@@ -199,7 +193,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByIdAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[findByIdAction.rejected]: (state, action) => {
@@ -211,7 +204,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByUidAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[findByUidAction.rejected]: (state, action) => {

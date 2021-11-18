@@ -36,19 +36,28 @@ const UserSpace = () => {
 	const [select, setSelect] = useState({});
 
 	const userData = useMemo(() => {
-		return users.map((v) => ({
-			...v,
-			groupIds: groupsConverter(v.groupIds || []),
-			status: v.status.code,
-			createdTime: v.createdTag.createdTime,
-		}));
+		return (
+			users?.map((v) => ({
+				...v,
+				groupIds: groupsConverter(v.groupIds || []),
+				status: v.status.code,
+				createdTime: v.createdTag.createdTime,
+			})) || []
+		);
 	}, [users]);
 
 	const onClickLinkToAddUserPage = useCallback(() => {
 		history.push('/users/add');
 	}, [history]);
 
-	const onClickDeleteUsers = useCallback(() => {}, []);
+	const onClickDeleteUsers = useCallback(() => {
+		console.log(select[tableKeys.users.basic]);
+		dispatch(
+			IAM_USER.asyncAction.deleteAction({
+				userUid: select[tableKeys.users.basic][0].userUid,
+			}),
+		);
+	}, [dispatch, select]);
 
 	useEffect(() => {
 		if (page[tableKeys.users.basic]) {
