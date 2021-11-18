@@ -4,7 +4,7 @@ import {tableColumns} from '../../../../Constants/Table/columns';
 import Table from '../../../Table/Table';
 import {useSelector} from 'react-redux';
 
-import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
+import IAM_ROLES from '../../../../reducers/api/ PAM/Role/roles';
 import TableContainer from '../../../Table/TableContainer';
 import {
 	CurrentPathBarLink,

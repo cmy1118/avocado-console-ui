@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {roleTypeConverter} from '../../../../utils/tableDataConverter';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
+import IAM_ROLES from '../../../../reducers/api/ PAM/Role/roles';
 import Table from '../../../Table/Table';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
