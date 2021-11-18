@@ -23,23 +23,31 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 	const [select, setSelect] = useState({});
 
 	const excludedData = useMemo(() => {
-		return roles
-			.filter((v) => !includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-				numberOfUsers: v.users.length,
-			}));
-	}, [roles, includedDataIds]);
+		return [];
+
+		// return (
+		// 	roles
+		// .filter((v) => !includedDataIds.includes(v.id))
+		// .map((v) => ({
+		// 	...v,
+		// 	type: roleTypeConverter(v.companyId),
+		// 	numberOfUsers: v.users.length,
+		// }))
+		// );
+	}, []);
 
 	const includedData = useMemo(() => {
-		return roles
-			.filter((v) => includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-			}));
-	}, [roles, includedDataIds]);
+		return [];
+
+		// return (
+		// 	roles
+		// .filter((v) => includedDataIds.includes(v.id))
+		// .map((v) => ({
+		// 	...v,
+		// 	type: roleTypeConverter(v.companyId),
+		// }))
+		// );
+	}, []);
 
 	useEffect(() => {
 		dispatch(
