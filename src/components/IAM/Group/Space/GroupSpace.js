@@ -1,16 +1,12 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import Table from '../../../Table/Table';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
-import {
-	parentGroupConverter,
-	rolesConverter,
-} from '../../../../utils/tableDataConverter';
 import {
 	NormalButton,
 	TransparentButton,
@@ -27,25 +23,29 @@ import {
 	TitleBar,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
+import PAGINATION from '../../../../reducers/pagination';
 
 const GroupSpace = () => {
 	const [select, setSelect] = useState({});
+	const dispatch = useDispatch();
 	const history = useHistory();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {page} = useSelector(PAGINATION.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
 	const data = useMemo(() => {
-		return groups.map((v) => ({
-			...v,
-			roles: rolesConverter(v.roles),
-			type: groupTypes.find((val) => val.id === v.clientGroupTypeId).name,
-
-			numberOfUsers: v.members.length,
-			parentGroup: parentGroupConverter(
-				groups.find((val) => val.id === v.parentId)?.name,
-			),
-		}));
-	}, [groups, groupTypes]);
+		return groups.map((v) => ({}));
+		// return groups.map((v) => ({
+		// 	...v,
+		// 	roles: rolesConverter(v.roles),
+		// 	type: groupTypes.find((val) => val.id === v.clientGroupTypeId).name,
+		//
+		// 	numberOfUsers: v.members.length,
+		// 	parentGroup: parentGroupConverter(
+		// 		groups.find((val) => val.id === v.parentId)?.name,
+		// 	),
+		// }));
+	}, [groups]);
 
 	const onCLickLinkToAddGroup = useCallback(() => {
 		history.push('/groups/add');
@@ -55,6 +55,15 @@ const GroupSpace = () => {
 		console.log(select);
 		console.log('여기서 api 요청');
 	}, [select]);
+
+	useEffect(() => {
+		page[tableKeys.groups.basic] &&
+			dispatch(
+				IAM_USER_GROUP.asyncAction.findAllAction({
+					range: page[tableKeys.groups.basic],
+				}),
+			);
+	}, [dispatch, page]);
 
 	return (
 		<IamContainer>
