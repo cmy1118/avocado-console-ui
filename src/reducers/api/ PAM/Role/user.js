@@ -10,11 +10,11 @@ const createAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 
 		const response = await axios.post(
-			`/open-api/v1/pam/users/${userUid}/roles`,
+			`/open-api/v1/pam/users/${payload.userUid}/roles`,
 			{
-				params: {
-					parrentRoleId: payload.parrentRoleId,
-				},
+				roleId: payload.roleId,
+			},
+			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ const deleteAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 
 		const response = await axios.delete(
-			` /open-api/v1/pam/roles/${payload.id}/role-sets`,
+			`/open-api/v1/pam/users/${payload.userUid}/roles/${payload.roleId}`,
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
@@ -44,13 +44,13 @@ const deleteAction = createAsyncThunk(
 	},
 );
 
-const findRoleSetByIdAction = createAsyncThunk(
-	`${NAME}/FIND_ROLE_SET_BY_ID`,
+const findRoleByIdAction = createAsyncThunk(
+	`${NAME}/FIND_ROLE_BY_ID`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-
+		// roleIds: payload.roleIds,
 		const response = await axios.get(
-			`open-api/v1/pam/roles/${payload.id}/role-sets`,
+			`/open-api/v1/pam/users/${payload.id}/roles`,
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
@@ -59,27 +59,6 @@ const findRoleSetByIdAction = createAsyncThunk(
 				baseURL: baseUrl.openApi,
 			},
 		);
-		return response.data;
-	},
-);
-
-const getAllRoleSetsAction = createAsyncThunk(
-	`${NAME}/GET_ALL_ROLE_SETS`,
-	async (payload, {getState}) => {
-		//로그인 처리
-		const {user} = getState().AUTH_USER;
-
-		const response = await axios.get(`/open-api/v1/pam/roles/role-sets`, {
-			params: {
-				id: payload.id,
-				name: payload.name,
-			},
-			headers: {
-				Authorization: `${user.token_type} ${user.access_token}`,
-				Range: payload.range,
-			},
-			baseURL: baseUrl.openApi,
-		});
 		return response.data;
 	},
 );
@@ -90,13 +69,14 @@ const getEventsAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 
 		const response = await axios.get(
-			`/open-api/v1/pam/roles/role-sets/events`,
+			`/open-api/v1/pam/users/roles/events`,
 			{
 				params: {
 					fromTime: payload.fromTime,
 					toTime: payload.toTime,
-					parentRoleId: payload.parentRoleId,
-					childRoleId: payload.childRoleId,
+					id: payload.id,
+					roleId: payload.roleId,
+					roleName: payload.roleName,
 					applicationCode: payload.applicationCode,
 					clientId: payload.clientId,
 					userUid: payload.userUid,
@@ -104,7 +84,6 @@ const getEventsAction = createAsyncThunk(
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
 					Range: payload.range,
-					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
 			},
@@ -142,26 +121,14 @@ const slice = createSlice({
 			state.loading = false;
 		},
 
-		[findRoleSetByIdAction.pending]: (state) => {
+		[findRoleByIdAction.pending]: (state) => {
 			state.loading = true;
 		},
-		[findRoleSetByIdAction.fulfilled]: (state, action) => {
+		[findRoleByIdAction.fulfilled]: (state, action) => {
 			state.users = action.payload;
 			state.loading = false;
 		},
-		[findRoleSetByIdAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-
-		[getAllRoleSetsAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[getAllRoleSetsAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
-			state.loading = false;
-		},
-		[getAllRoleSetsAction.rejected]: (state, action) => {
+		[findRoleByIdAction.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
 		},
@@ -189,7 +156,7 @@ const selectAllState = createSelector(
 	},
 );
 
-const PAM_ROLE_SET = {
+const PAM_ROLE_USER = {
 	name: slice.name,
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
@@ -197,10 +164,9 @@ const PAM_ROLE_SET = {
 	asyncAction: {
 		createAction,
 		deleteAction,
-		findRoleSetByIdAction,
-		getAllRoleSetsAction,
+		findRoleByIdAction,
 		getEventsAction,
 	},
 };
 
-export default PAM_ROLE_SET;
+export default PAM_ROLE_USER;
