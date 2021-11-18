@@ -57,9 +57,14 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 	}, [groups, includedDataIds]);
 
 	const excludedData = useMemo(() => {
+		const types = groups
+			.filter((v) => includedDataIds.includes(v.id))
+			.map((v) => v.userGroupType.name);
+
 		return (
 			groups
 				.filter((v) => !includedDataIds.includes(v.id))
+				.filter((v) => !types.includes(v.userGroupType.name))
 				.map((v) => ({
 					...v,
 					name: v.name,
@@ -101,16 +106,11 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 		) {
 			dispatch(
 				IAM_USER_GROUP.asyncAction.findAllAction({
-					// ids: user.groupIds,
 					range: page[tableKeys.users.summary.tabs.groups.include],
 				}),
 			);
 		}
 	}, [dispatch, isSummaryOpened, page, user]);
-
-	// useEffect(() => {
-	// 	setIncludedDataIds(user.groups);
-	// }, [user.groups]);
 
 	return (
 		<TabContentContainer>
