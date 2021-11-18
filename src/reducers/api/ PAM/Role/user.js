@@ -2,42 +2,19 @@ import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {baseUrl} from '../../../../api/constants';
 
-const NAME = 'PAM_ROLES';
+const NAME = 'PAM_ROLE_USER';
 
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		// eslint-disable-next-line no-console
+
 		const response = await axios.post(
-			`/open-api/v1/pam/roles`,
+			`/open-api/v1/pam/users/${userUid}/roles`,
 			{
-				name: payload.name,
-			},
-			{
-				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
-					'Content-Type': 'application/json',
+				params: {
+					parrentRoleId: payload.parrentRoleId,
 				},
-				baseURL: baseUrl.openApi,
-			},
-		);
-		return response.data;
-	},
-);
-
-const updateAction = createAsyncThunk(
-	`${NAME}/UPDATE`,
-	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
-
-		const response = await axios.put(
-			`/open-api/v1/pam/role/${payload.id}`,
-			{
-				name: payload.name,
-				parentId: payload.parentId,
-			},
-			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
@@ -55,11 +32,10 @@ const deleteAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 
 		const response = await axios.delete(
-			`/open-api/v1/pam/role/${payload.id}`,
+			` /open-api/v1/pam/roles/${payload.id}/role-sets`,
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
-					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
 			},
@@ -68,17 +44,17 @@ const deleteAction = createAsyncThunk(
 	},
 );
 
-const findRolesByIdsAction = createAsyncThunk(
-	`${NAME}/FIND_ROLES_BY_ID`,
+const findRoleSetByIdAction = createAsyncThunk(
+	`${NAME}/FIND_ROLE_SET_BY_ID`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
 		const response = await axios.get(
-			`/open-api/v1/pam/roles/${payload.id}`,
+			`open-api/v1/pam/roles/${payload.id}/role-sets`,
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
-					'Content-Type': 'application/json',
+					Range: payload.range,
 				},
 				baseURL: baseUrl.openApi,
 			},
@@ -87,16 +63,16 @@ const findRolesByIdsAction = createAsyncThunk(
 	},
 );
 
-const getAllRolesAction = createAsyncThunk(
-	`${NAME}/GET_ALL_ROLES`,
+const getAllRoleSetsAction = createAsyncThunk(
+	`${NAME}/GET_ALL_ROLE_SETS`,
 	async (payload, {getState}) => {
 		//로그인 처리
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(`/open-api/v1/pam/roles`, {
+		const response = await axios.get(`/open-api/v1/pam/roles/role-sets`, {
 			params: {
-				name: payload.name || null,
-				ids: payload.ids || null,
+				id: payload.id,
+				name: payload.name,
 			},
 			headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,
@@ -113,22 +89,26 @@ const getEventsAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(`/open-api/v1/pam/roles/events`, {
-			params: {
-				fromTime: payload.fromTime,
-				toTime: payload.toTime,
-				id: payload.id,
-				name: payload.name,
-				applicationCode: payload.applicationCode,
-				clientId: payload.clientId,
-				uid: payload.uid,
+		const response = await axios.get(
+			`/open-api/v1/pam/roles/role-sets/events`,
+			{
+				params: {
+					fromTime: payload.fromTime,
+					toTime: payload.toTime,
+					parentRoleId: payload.parentRoleId,
+					childRoleId: payload.childRoleId,
+					applicationCode: payload.applicationCode,
+					clientId: payload.clientId,
+					userUid: payload.userUid,
+				},
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
+					Range: payload.range,
+					'Content-Type': 'application/json',
+				},
+				baseURL: baseUrl.openApi,
 			},
-			headers: {
-				Authorization: `${user.token_type} ${user.access_token}`,
-				Range: payload.range,
-			},
-			baseURL: baseUrl.openApi,
-		});
+		);
 		return response.data;
 	},
 );
@@ -150,18 +130,6 @@ const slice = createSlice({
 			state.loading = false;
 		},
 
-		[updateAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[updateAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
-			state.loading = false;
-		},
-		[updateAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-
 		[deleteAction.pending]: (state) => {
 			state.loading = true;
 		},
@@ -174,38 +142,26 @@ const slice = createSlice({
 			state.loading = false;
 		},
 
-		[findRolesByIdsAction.pending]: (state) => {
+		[findRoleSetByIdAction.pending]: (state) => {
 			state.loading = true;
 		},
-		[findRolesByIdsAction.fulfilled]: (state, action) => {
+		[findRoleSetByIdAction.fulfilled]: (state, action) => {
 			state.users = action.payload;
 			state.loading = false;
 		},
-		[findRolesByIdsAction.rejected]: (state, action) => {
+		[findRoleSetByIdAction.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
 		},
 
-		[findRolesByIdsAction.pending]: (state) => {
+		[getAllRoleSetsAction.pending]: (state) => {
 			state.loading = true;
 		},
-		[findRolesByIdsAction.fulfilled]: (state, action) => {
+		[getAllRoleSetsAction.fulfilled]: (state, action) => {
 			state.users = action.payload;
 			state.loading = false;
 		},
-		[findRolesByIdsAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-
-		[getAllRolesAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[getAllRolesAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
-			state.loading = false;
-		},
-		[getAllRolesAction.rejected]: (state, action) => {
+		[getAllRoleSetsAction.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
 		},
@@ -233,19 +189,18 @@ const selectAllState = createSelector(
 	},
 );
 
-const PAM_ROLES = {
+const PAM_ROLE_SET = {
 	name: slice.name,
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
 	action: slice.actions,
 	asyncAction: {
 		createAction,
-		updateAction,
 		deleteAction,
-		findRolesByIdsAction,
-		getAllRolesAction,
+		findRoleSetByIdAction,
+		getAllRoleSetsAction,
 		getEventsAction,
 	},
 };
 
-export default PAM_ROLES;
+export default PAM_ROLE_SET;

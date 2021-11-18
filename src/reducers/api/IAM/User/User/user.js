@@ -145,7 +145,6 @@ const findAllAction = createAsyncThunk(
 			},
 			baseURL: baseUrl.openApi,
 		});
-		console.log(response);
 		return response.data;
 	},
 );
