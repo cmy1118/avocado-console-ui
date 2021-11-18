@@ -3,22 +3,22 @@ import PropTypes from 'prop-types';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../styles/components/buttons';
-import Table from '../../../Table/Table';
-import {tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
-import {dummyPermission} from '../../../../utils/dummyData';
-import TableContainer from '../../../Table/TableContainer';
-import DragContainer from '../../../Table/DragContainer';
-import TableOptionsBar from '../../../Table/TableOptionsBar';
-import {TableTitle} from '../../../../styles/components/table';
-import TableFold from '../../../Table/Options/TableFold';
-import TableOptionText from '../../../Table/Options/TableOptionText';
-import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
+} from '../../../../../styles/components/buttons';
+import Table from '../../../../Table/Table';
+import {tableKeys} from '../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../Constants/Table/columns';
+import {dummyPermission} from '../../../../../utils/dummyData';
+import TableContainer from '../../../../Table/TableContainer';
+import DragContainer from '../../../../Table/DragContainer';
+import TableOptionsBar from '../../../../Table/TableOptionsBar';
+import {TableTitle} from '../../../../../styles/components/table';
+import TableFold from '../../../../Table/Options/TableFold';
+import TableOptionText from '../../../../Table/Options/TableOptionText';
+import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
 import {
 	FoldableContainer,
 	TitleBarButtons,
-} from '../../../../styles/components/iam/iam';
+} from '../../../../../styles/components/iam/iam';
 
 const RolePolicyTab = ({roleId, space, isFold, setIsFold}) => {
 	const [select, setSelect] = useState({});

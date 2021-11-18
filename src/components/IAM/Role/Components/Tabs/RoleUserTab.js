@@ -3,22 +3,22 @@ import PropTypes from 'prop-types';
 import {
 	NormalBorderButton,
 	NormalButton,
-} from '../../../../styles/components/buttons';
-import Table from '../../../Table/Table';
-import {tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
+} from '../../../../../styles/components/buttons';
+import Table from '../../../../Table/Table';
+import {tableKeys} from '../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../Constants/Table/columns';
 import {useSelector} from 'react-redux';
-import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
-import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import {dummyUsers} from '../../../../utils/dummyData';
-import TableContainer from '../../../Table/TableContainer';
-import DragContainer from '../../../Table/DragContainer';
-import TableOptionsBar from '../../../Table/TableOptionsBar';
-import {TableTitle} from '../../../../styles/components/table';
-import TableFold from '../../../Table/Options/TableFold';
-import TableOptionText from '../../../Table/Options/TableOptionText';
-import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
-import {FoldableContainer} from '../../../../styles/components/iam/iam';
+import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
+import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
+import {dummyUsers} from '../../../../../utils/dummyData';
+import TableContainer from '../../../../Table/TableContainer';
+import DragContainer from '../../../../Table/DragContainer';
+import TableOptionsBar from '../../../../Table/TableOptionsBar';
+import {TableTitle} from '../../../../../styles/components/table';
+import TableFold from '../../../../Table/Options/TableFold';
+import TableOptionText from '../../../../Table/Options/TableOptionText';
+import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
+import {FoldableContainer} from '../../../../../styles/components/iam/iam';
 
 const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 	const {roles} = useSelector(IAM_ROLES.selector);

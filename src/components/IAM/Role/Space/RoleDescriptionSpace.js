@@ -9,9 +9,9 @@ import {
 } from '../../../../styles/components/currentPathBar';
 import RoleSummary from '../Components/RoleSummary';
 import TabBar from '../../TabBar';
-import RolePolicyTab from '../Components/RolePolicyTab';
-import RoleUserTab from '../Components/RoleUserTab';
-import RoleGroupTab from '../Components/RoleGroupTab';
+import RolePolicyTab from '../Components/Tabs/RolePolicyTab';
+import RoleUserTab from '../Components/Tabs/RoleUserTab';
+import RoleGroupTab from '../Components/Tabs/RoleGroupTab';
 import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import {HoverIconButton, IconButton} from '../../../../styles/components/icons';
