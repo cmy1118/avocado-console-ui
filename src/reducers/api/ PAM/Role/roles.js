@@ -2,7 +2,7 @@ import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {baseUrl} from '../../../../api/constants';
 
-const NAME = 'IAM_ROLES';
+const NAME = 'PAM_ROLES';
 
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
