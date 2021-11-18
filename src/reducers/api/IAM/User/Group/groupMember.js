@@ -39,7 +39,7 @@ const disjointAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 				},
 				params: {
-					userUid: [...payload.userUid],
+					userUid: payload.userUid,
 				},
 				baseURL: baseUrl.openApi,
 			},

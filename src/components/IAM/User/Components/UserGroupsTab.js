@@ -80,7 +80,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 			dispatch(
 				IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
 					groupId: v.id,
-					userUid: [userId],
+					userUid: userId,
 				}),
 			);
 		});
