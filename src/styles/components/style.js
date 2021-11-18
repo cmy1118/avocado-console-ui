@@ -61,3 +61,8 @@ export const TableHeader = styled.div`
 	padding: 14px 16px;
 	align-items: center;
 `;
+
+export const PermissionName = styled.div`
+	display: flex;
+	align-items: center;
+`;

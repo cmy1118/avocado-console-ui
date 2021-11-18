@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
+	useExpanded,
 	useFilters,
 	useGlobalFilter,
 	usePagination,
@@ -22,7 +23,7 @@ const OptionContainer = styled.div`
 `;
 
 const NormalTable = styled.div`
-	margin: 0px 16px 16px;
+	margin: ${(props) => (props.mode === 'inner' ? '0px' : ' 0px 16px 16px')};
 	display: flex;
 	min-width: 380px;
 	min-height: ${(props) => props.mode === 'normal' && '240px'};
@@ -36,7 +37,10 @@ const NormalTable = styled.div`
 		display: grid;
 		grid-template-rows: 40px;
 		border-spacing: 0;
-		border-bottom: 1px solid #e3e5e5;
+		border-bottom: ${(props) =>
+			props.mode === 'inner' ? 'none' : '1px solid #e3e5e5'};
+		border-left: ${(props) =>
+			props.mode === 'inner' && '2px solid #4ca6a8'};
 		font-size: 13px;
 		font-weight: normal;
 		font-stretch: normal;
@@ -47,19 +51,20 @@ const NormalTable = styled.div`
 		color: #212121;
 		.tr {
 			display: flex;
-			// :last-child {
-			// 	border: none;
-			// }
 		}
 
 		.head {
+			color: ${(props) => props.mode === 'inner' && '#0a6f71'};
 			height: 40px;
 			background: #f8f9fa;
-			border-top: 1px solid #e3e5e5;
+			border-top: ${(props) =>
+				props.mode === 'inner' ? 'none' : '1px solid #e3e5e5'};
 			border-bottom: 1px solid #e3e5e5;
+			font-weight: 500;
 		}
 		.body {
-			background: #fff;
+			background: ${(props) =>
+				props.mode === 'inner' ? '#f8f9fa' : '#fff'};
 			border-bottom: 1px solid #e3e5e5;
 		}
 		.odd {
@@ -174,7 +179,7 @@ const TableContainer = ({
 		getToggleHideAllColumnsProps,
 		setHiddenColumns,
 		setGlobalFilter,
-		state: {pageIndex, selectedRowIds, pageSize, filters},
+		state: {pageIndex, selectedRowIds, pageSize, filters, expanded},
 	} = useTable(
 		{
 			data,
@@ -189,10 +194,11 @@ const TableContainer = ({
 		useFilters,
 		useGlobalFilter,
 		useSortBy,
+		useExpanded,
 		usePagination,
 		useRowSelect,
 		(hooks) => {
-			mode !== 'readOnly' &&
+			mode === 'normal' &&
 				hooks.visibleColumns.push((columns) => [
 					{
 						id: 'selection',
@@ -253,6 +259,7 @@ const TableContainer = ({
 							pageSize,
 							filters,
 							mode,
+							expanded,
 						})}
 					</NormalTable>
 				) : (
@@ -298,7 +305,7 @@ TableContainer.propTypes = {
 	columns: PropTypes.array.isRequired,
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 		.isRequired,
-	mode: PropTypes.oneOf(['normal', 'readOnly']),
+	mode: PropTypes.oneOf(['normal', 'readOnly', 'inner']),
 };
 
 export default TableContainer;

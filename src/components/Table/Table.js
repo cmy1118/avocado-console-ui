@@ -5,6 +5,7 @@ import {Icon} from '../../styles/components/icons';
 import {RowDiv} from '../../styles/components/style';
 import {Draggable, Droppable} from 'react-beautiful-dnd';
 import styled from 'styled-components';
+import InnerTableContainer from './InnerTableContainer';
 
 const Tds = styled(RowDiv)`
 	align-items: center;
@@ -20,7 +21,6 @@ const BodyContainer = styled.div`
 	flex: 1;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	// width: fit-content;
 `;
 
 const Table = ({
@@ -37,6 +37,7 @@ const Table = ({
 	prepareRow,
 	page,
 	mode,
+	expanded,
 }) => {
 	const [position, setPosition] = useState({x: 0, y: 0});
 
@@ -122,7 +123,7 @@ const Table = ({
 			<Droppable
 				droppableId={tableKey}
 				mode={'Virtual'}
-				renderClone={(provided, snapshot, rubric) => {
+				renderClone={(provided, snapshot) => {
 					return (
 						<div
 							{...provided.draggableProps}
@@ -208,68 +209,86 @@ const Table = ({
 									>
 										{(provided, snapshot) => {
 											return (
-												<div
-													ref={provided.innerRef}
-													{...provided.dragHandleProps}
-													{...provided.draggableProps}
-													style={getItemStyle(
-														snapshot.isDragging,
-														provided.draggableProps
-															.style,
-													)}
-													onMouseDown={
-														onMouseDownItem
-													}
-													className={`tr body ${
-														Object.keys(
-															selectedRowIds,
-														).includes(
+												<>
+													<div
+														ref={provided.innerRef}
+														{...provided.dragHandleProps}
+														{...provided.draggableProps}
+														style={getItemStyle(
+															snapshot.isDragging,
+															provided
+																.draggableProps
+																.style,
+														)}
+														onMouseDown={
+															onMouseDownItem
+														}
+														className={`tr body ${
+															Object.keys(
+																selectedRowIds,
+															).includes(
+																row.original.uid
+																	? row
+																			.original
+																			.uid
+																	: row
+																			.original
+																			.id,
+															) && 'selected'
+														} ${
+															index % 2 === 0
+																? 'even'
+																: 'odd'
+														}`}
+														id={
 															row.original.uid
 																? row.original
 																		.uid
 																: row.original
-																		.id,
-														) && 'selected'
-													} ${
-														index % 2 === 0
-															? 'even'
-															: 'odd'
-													}`}
-													id={
+																		.id
+														}
+														key={
+															row.original.uid
+																? row.original
+																		.uid
+																: row.original
+																		.id
+														}
+													>
+														{row.cells.map(
+															(cell, i) => {
+																return (
+																	<Tds
+																		className={
+																			'td'
+																		}
+																		width={`${
+																			cell
+																				.column
+																				.width +
+																			20
+																		}px`}
+																		key={i}
+																		{...cell.getCellProps}
+																	>
+																		{cell.render(
+																			'Cell',
+																		)}
+																	</Tds>
+																);
+															},
+														)}
+													</div>
+													{Object.keys(
+														expanded,
+													).includes(
 														row.original.uid
 															? row.original.uid
-															: row.original.id
-													}
-													key={
-														row.original.uid
-															? row.original.uid
-															: row.original.id
-													}
-												>
-													{row.cells.map(
-														(cell, i) => {
-															return (
-																<Tds
-																	className={
-																		'td'
-																	}
-																	width={`${
-																		cell
-																			.column
-																			.width +
-																		20
-																	}px`}
-																	key={i}
-																	{...cell.getCellProps}
-																>
-																	{cell.render(
-																		'Cell',
-																	)}
-																</Tds>
-															);
-														},
+															: row.original.id,
+													) && (
+														<InnerTableContainer />
 													)}
-												</div>
+												</>
 											);
 										}}
 									</Draggable>
@@ -297,6 +316,7 @@ Table.propTypes = {
 	page: PropTypes.array,
 	selectedFlatRows: PropTypes.array,
 	selectedRowIds: PropTypes.object,
+	expanded: PropTypes.object,
 };
 
 export default Table;
