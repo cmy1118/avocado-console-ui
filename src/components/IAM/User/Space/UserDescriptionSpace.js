@@ -177,6 +177,7 @@ const UserDescriptionSpace = ({userId}) => {
 								space={'UserGroupsTab'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
+								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
@@ -186,6 +187,7 @@ const UserDescriptionSpace = ({userId}) => {
 								space={'UserRolesTab'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
+								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
@@ -195,6 +197,7 @@ const UserDescriptionSpace = ({userId}) => {
 								space={'UserOnDescPageTags'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
+								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
 					</TabContentSpace>

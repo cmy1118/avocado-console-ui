@@ -43,7 +43,7 @@ const Pagination = ({
 		dispatch(
 			PAGINATION.action.setPage({
 				tableKey,
-				element: `elements=${pageSize * pageCount + 1}-${
+				element: `elements=${pageSize * pageCount}-${
 					pageSize * (pageCount + 1)
 				}`,
 			}),

@@ -8,15 +8,15 @@ const NAME = 'IAM_USER_GROUP_MEMBER';
 const joinAction = createAsyncThunk(
 	`${NAME}/JOIN`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
-		console.log(client);
+		console.log(user);
 		const response = await axios.put(
-			`/open-api/v1/iam/user-group-sets/${payload.id}`,
-			[...payload.userUids],
+			`/open-api/v1/iam/user-group-sets/${payload.groupId}`,
+			[...payload.userUid],
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -29,21 +29,17 @@ const joinAction = createAsyncThunk(
 const disjointAction = createAsyncThunk(
 	`${NAME}/DISJOINT`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
 		const response = await axios.delete(
-			`/open-api/v1/iam/user-group-sets/${payload.id}`,
-			{
-				name: payload.name,
-				password: payload.password,
-			},
+			`/open-api/v1/iam/user-group-sets/${payload.groupId}`,
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				params: {
-					userUid: payload.userUid,
+					userUid: [...payload.userUid],
 				},
 				baseURL: baseUrl.openApi,
 			},
@@ -56,12 +52,12 @@ const disjointAction = createAsyncThunk(
 const findAllAction = createAsyncThunk(
 	`${NAME}/FINDALL`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
 		const response = await axios.get(`/open-api/v1/iam/user-group-sets`, {
 			params: {groupId: payload.id},
 			headers: {
-				Authorization: `${client.token_type} ${client.access_token}`,
+				Authorization: `${user.token_type} ${user.access_token}`,
 				'Content-Type': 'application/json',
 				Range: `elements=${payload.first}-${payload.last}`,
 			},
@@ -85,7 +81,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[joinAction.fulfilled]: (state, action) => {
-			state.members = action.payload;
 			state.loading = false;
 		},
 		[joinAction.rejected]: (state, action) => {

@@ -48,11 +48,17 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 
 	const groupData = useMemo(() => {
 		console.log(groups);
-		return groups.map((v) => ({
-			...v,
-			userGroupType: v.userGroupType.name,
-			parentGroup: v.parentGroup.name,
-		}));
+		return groups
+			.filter((v) =>
+				user.groupIds
+					? user.groupIds.includes(v.id)
+					: [].includes(v.id),
+			)
+			.map((v) => ({
+				...v,
+				userGroupType: v.userGroupType.name,
+				parentGroup: v.parentGroup.name,
+			}));
 		// return groups
 		// 	.filter((v) => user.groups.includes(v.id))
 		// 	.map((v, i) => ({
@@ -69,7 +75,7 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 		// 		grantDate: dummyDates[i],
 		// 		grantUser: dummyUsers[i],
 		// 	}));
-	}, [groups]);
+	}, [groups, user]);
 
 	const roleData = useMemo(() => dummyPolicyOnUser, []);
 
@@ -86,8 +92,8 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 		user &&
 			dispatch(
 				IAM_USER_GROUP.asyncAction.findAllAction({
-					ids: user.groupIds,
-					range: 'element=1-50',
+					// ids: user.groupIds,
+					range: 'element=0-50',
 				}),
 			);
 	}, [dispatch, user]);

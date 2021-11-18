@@ -21,10 +21,13 @@ import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {dummyDates} from '../../../../utils/dummyData';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
+import PAGINATION from '../../../../reducers/pagination';
+import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 
-const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
+const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
+	const {page} = useSelector(PAGINATION.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [select, setSelect] = useState({});
@@ -33,78 +36,77 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold}) => {
 		userId,
 	]);
 
-	const [includedDataIds, setIncludedDataIds] = useState([]);
+	const [includedDataIds, setIncludedDataIds] = useState(
+		user?.groupIds || [],
+	);
+
+	console.log(includedDataIds);
+	console.log(groups);
 
 	const includedData = useMemo(() => {
-		return [];
-		// return groups
-		// 	.filter((v) => includedDataIds.includes(v.id))
-		// 	.map((v, i) => ({
-		// 		...v,
-		// 		type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
-		// 			?.name,
-		// 		numberOfRoles: v.roles.length,
-		// 		parentGroup: parentGroupConverter(
-		// 			groups.find((val) => val.id === v.parentId)?.name,
-		// 		),
-		// 		grantDate: dummyDates[i],
-		// 	}));
-	}, []);
+		return (
+			groups
+				.filter((v) => includedDataIds.includes(v.id))
+				.map((v) => ({
+					...v,
+					name: v.name,
+					type: v.userGroupType.name,
+					parentGroup: v.parentGroup.name,
+				})) || []
+		);
+	}, [groups, includedDataIds]);
 
 	const excludedData = useMemo(() => {
-		return [];
-
-		// return groups
-		// 	.filter((v) => !includedDataIds.includes(v.id))
-		// 	.map((v, i) => ({
-		// 		...v,
-		// 		type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
-		// 			?.name,
-		// 		numberOfRoles: v.roles.length,
-		// 		parentGroup: parentGroupConverter(
-		// 			groups.find((val) => val.id === v.parentId)?.name,
-		// 		),
-		// 		grantDate: dummyDates[dummyDates.length - i - 1],
-		// 	}));
-	}, []);
+		return (
+			groups
+				.filter((v) => !includedDataIds.includes(v.id))
+				.map((v) => ({
+					...v,
+					name: v.name,
+					type: v.userGroupType.name,
+					parentGroup: v.parentGroup.name,
+				})) || []
+		);
+	}, [groups, includedDataIds]);
 	//삭제
 	const onClickDeleteRolesFromUser = useCallback(() => {
-		dispatch(
-			IAM_USER.action.deleteGroupsFromUser({
-				userUid: userId,
-				groups: Object.keys(
-					select[tableKeys.users.summary.tabs.groups.include],
-				),
-			}),
-		);
-		dispatch(
-			IAM_USER_GROUP.action.deleteGroupsFromUser({
-				userUid: userId,
-				groups: Object.keys(
-					select[tableKeys.users.summary.tabs.groups.include],
-				),
-			}),
-		);
+		console.log(select[tableKeys.users.summary.tabs.groups.include]);
+		select[tableKeys.users.summary.tabs.groups.include].forEach((v) => {
+			dispatch(
+				IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
+					groupId: v.id,
+					userUid: [userId],
+				}),
+			);
+		});
 	}, [dispatch, select, userId]);
 
 	const onClickAddRolesToUser = useCallback(() => {
-		dispatch(
-			IAM_USER.action.addGroupsToUser({
-				userUid: userId,
-				groups: Object.keys(
-					select[tableKeys.users.summary.tabs.groups.exclude],
-				),
-			}),
-		);
-		dispatch(
-			IAM_USER_GROUP.action.addGroupsToUser({
-				uid: userId,
-				groups: Object.keys(
-					select[tableKeys.users.summary.tabs.groups.exclude],
-				),
-			}),
-		);
+		select[tableKeys.users.summary.tabs.groups.exclude].forEach((v) => {
+			dispatch(
+				IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
+					groupId: v.id,
+					userUid: [userId],
+				}),
+			);
+		});
 	}, [dispatch, select, userId]);
+
+	useEffect(() => {
+		console.log(page[tableKeys.users.summary.tabs.groups.include]);
+		if (
+			!isSummaryOpened &&
+			page[tableKeys.users.summary.tabs.groups.include] &&
+			user
+		) {
+			dispatch(
+				IAM_USER_GROUP.asyncAction.findAllAction({
+					// ids: user.groupIds,
+					range: page[tableKeys.users.summary.tabs.groups.include],
+				}),
+			);
+		}
+	}, [dispatch, isSummaryOpened, page, user]);
 
 	// useEffect(() => {
 	// 	setIncludedDataIds(user.groups);
@@ -188,6 +190,7 @@ UserGroupsTab.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
+	isSummaryOpened: PropTypes.bool,
 };
 
 export default UserGroupsTab;
