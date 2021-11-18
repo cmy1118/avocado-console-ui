@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {baseUrl} from '../../../../../api/constants';
+import {baseUrl} from '../../../../api/constants';
 
 const NAME = 'IAM_ROLES';
 
@@ -109,26 +109,19 @@ const GetAllRolesAction = createAsyncThunk(
 );
 
 const GetEventsAction = createAsyncThunk(
-	`${NAME}/GET_ALL_ROLES`,
+	`${NAME}/GET_EVENTS`,
 	async (payload, {getState}) => {
-		//로그인 처리
 		const {user} = getState().AUTH_USER;
 
 		const response = await axios.get(`/open-api/v1/pam/roles/events`, {
 			params: {
-				id:pay
+				fromTime: payload.fromTime,
+				toTime: payload.toTime,
+				id: payload.id,
 				name: payload.name,
 				applicationCode: payload.applicationCode,
 				clientId: payload.clientId,
-
-
-
-
-
-
-
-
-
+				uid: payload.uid,
 			},
 			headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,

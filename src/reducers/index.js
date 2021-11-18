@@ -16,7 +16,7 @@ import DIALOG_BOX from './dialogBoxs';
 import CURRENT_TARGET from './currentTarget';
 import RRM_RESOURCE from './api/RRM/Resource/resource';
 import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
-import IAM_ROLES from './api/IAM/User/Role/roles';
+import IAM_ROLES from './api/ PAM/Role/roles';
 import {persistReducer} from 'redux-persist';
 
 const userFilter = createFilter(AUTH_USER.name, ['companyId', 'user']);

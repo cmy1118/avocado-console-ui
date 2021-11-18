@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
-import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
+import IAM_ROLES from '../../../../reducers/api/ PAM/Role/roles';
 import {dummyDates, dummyUsers} from '../../../../utils/dummyData';
 import {
 	NormalBorderButton,
