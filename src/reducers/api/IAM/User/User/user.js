@@ -130,11 +130,11 @@ const findAllAction = createAsyncThunk(
 
 		const response = await Axios.get(`/open-api/v1/iam/users`, {
 			params: {
-				keyword: payload.keyword || null,
-				userUid: payload.userUid || null,
-				id: payload.id || null,
-				accountExpiryTime: payload.accountExpiryTime || null,
-				createdTime: payload.createdTime || null,
+				keyword: payload.keyword,
+				userUid: payload.userUid,
+				id: payload.id,
+				accountExpiryTime: payload.accountExpiryTime,
+				createdTime: payload.createdTime,
 			},
 			headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,

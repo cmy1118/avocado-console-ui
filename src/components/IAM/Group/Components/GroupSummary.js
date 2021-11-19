@@ -71,7 +71,7 @@ const GroupSummary = ({Id, param, setIsOpened}) => {
 	useEffect(() => {
 		dispatch(
 			IAM_USER.asyncAction.findAllAction({
-				range: 'element=0-50',
+				range: 'elements=0-50',
 			}),
 		);
 		dispatch(

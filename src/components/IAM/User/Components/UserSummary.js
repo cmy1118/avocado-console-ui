@@ -93,7 +93,7 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 			dispatch(
 				IAM_USER_GROUP.asyncAction.findAllAction({
 					// ids: user.groupIds,
-					range: 'element=0-50',
+					range: 'elements=0-50',
 				}),
 			);
 	}, [dispatch, user]);

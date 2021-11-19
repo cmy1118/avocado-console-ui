@@ -99,6 +99,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	useEffect(() => {
 		console.log(page[tableKeys.users.summary.tabs.groups.include]);
+		console.log(!isSummaryOpened);
 		if (
 			!isSummaryOpened &&
 			page[tableKeys.users.summary.tabs.groups.include] &&

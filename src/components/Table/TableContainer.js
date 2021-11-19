@@ -77,6 +77,9 @@ const NormalTable = styled.div`
 			white-space: nowrap;
 			text-align: left;
 			text-overflow: ellipsis;
+			:first-child {
+				padding-left: ${(props) => props.mode === 'readOnly' && '16px'};
+			}
 		}
 	}
 `;

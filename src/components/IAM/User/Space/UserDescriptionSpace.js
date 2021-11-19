@@ -82,6 +82,7 @@ const UserDescriptionSpace = ({userId}) => {
 	const onClickLinkToAddUserPage = useCallback(() => {
 		history.push('/users/add');
 	}, [history]);
+
 	// if userId does not exist, direct to 404 page
 	// useEffect(() => {
 	// if (userId && !user) {
