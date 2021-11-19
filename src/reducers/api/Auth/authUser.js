@@ -1,14 +1,14 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import {baseUrl} from '../../../api/constants';
+import {baseUrl, Axios} from '../../../api/constants';
 import {authorization, contentType, grantType} from '../../../utils/auth';
 
 const NAME = 'AUTH_USER';
 
 const loginAction = createAsyncThunk(`${NAME}/LOGIN`, async (payload) => {
 	console.log(payload);
-	const response = await axios.post(`/oauth2/v1/token`, null, {
+	const response = await Axios.post(`/oauth2/v1/token`, null, {
 		params: {
 			grant_type: grantType.PASSWORD,
 			username: payload.username,
@@ -29,7 +29,7 @@ const logoutAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const token = getState()[NAME].user.access_token;
 
-		const response = await axios.post(`/oauth2/v1/revoke`, null, {
+		const response = await Axios.post(`/oauth2/v1/revoke`, null, {
 			headers: {
 				'Content-Type': contentType,
 				Authorization: authorization.LOGOUT + token,

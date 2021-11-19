@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {baseUrl} from '../../../../api/constants';
+import {baseUrl, Axios} from '../../../../api/constants';
 
 const NAME = 'PAM_ROLES';
 
@@ -9,7 +9,7 @@ const createAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
-		const response = await axios.post(
+		const response = await Axios.post(
 			`/open-api/v1/pam/roles`,
 			{
 				name: payload.name,
@@ -31,7 +31,7 @@ const updateAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.put(
+		const response = await Axios.put(
 			`/open-api/v1/pam/role/${payload.id}`,
 			{
 				name: payload.name,
@@ -54,7 +54,7 @@ const deleteAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.delete(
+		const response = await Axios.delete(
 			`/open-api/v1/pam/role/${payload.id}`,
 			{
 				headers: {
@@ -73,7 +73,7 @@ const findRolesByIdsAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open-api/v1/pam/roles/${payload.id}`,
 			{
 				headers: {
@@ -93,7 +93,7 @@ const getAllRolesAction = createAsyncThunk(
 		//로그인 처리
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(`/open-api/v1/pam/roles`, {
+		const response = await Axios.get(`/open-api/v1/pam/roles`, {
 			params: {
 				name: payload.name || null,
 				ids: payload.ids || null,
@@ -113,7 +113,7 @@ const getEventsAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(`/open-api/v1/pam/roles/events`, {
+		const response = await Axios.get(`/open-api/v1/pam/roles/events`, {
 			params: {
 				fromTime: payload.fromTime,
 				toTime: payload.toTime,

@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {baseUrl} from '../../../../api/constants';
+import {baseUrl, Axios} from '../../../../api/constants';
 
 const NAME = 'PAM_ROLE_USER_GROUP';
 
@@ -9,7 +9,7 @@ const createAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.post(
+		const response = await Axios.post(
 			`/open-api/v1/pam/users-group/${payload.id}/roles/`,
 			{
 				roleId: payload.roleId,
@@ -31,7 +31,7 @@ const deleteAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.delete(
+		const response = await Axios.delete(
 			`/open-api/v1/pam/users-group/${payload.id}/roles/${payload.roleId}`,
 			{
 				headers: {
@@ -49,7 +49,7 @@ const findRoleByIdAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 		// roleIds: payload.roleIds,
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open-api/v1/pam/users-group/${payload.id}/roles`,
 			{
 				headers: {
@@ -68,7 +68,7 @@ const getEventsAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open-api/v1/pam/user-group/roles/events`,
 			{
 				params: {

@@ -1,6 +1,6 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import PropTypes from 'prop-types';
 import {
@@ -21,15 +21,18 @@ import {
 	TitleBarButtons,
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
+import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 
 const AddGroup = () => {
+	const dispatch = useDispatch();
 	const history = useHistory();
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
+	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const formRef = useRef(null);
 
 	const [values, setValues] = useState({
 		type: '',
-		id: '',
+		parentId: '',
 		name: '',
 	});
 
@@ -45,6 +48,36 @@ const AddGroup = () => {
 	const onClickCancelAddGroup = useCallback(() => {
 		history.push('/groups');
 	}, [history]);
+
+	const onSubmitCreateGroup = useCallback(
+		(data) => {
+			console.log(data);
+			dispatch(
+				IAM_USER_GROUP.asyncAction.createAction({
+					userGroupTypeId: data.type,
+					parentId: data.parentId,
+					name: data.name,
+				}),
+			);
+		},
+		[dispatch],
+	);
+
+	useEffect(() => {
+		dispatch(
+			IAM_USER_GROUP_TYPE.asyncAction.findAllAction({
+				range: 'elements=0-50',
+			}),
+		);
+	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(
+			IAM_USER_GROUP.asyncAction.findAllAction({
+				range: 'elements=0-50',
+			}),
+		);
+	}, [dispatch]);
 
 	return (
 		<>
@@ -72,7 +105,7 @@ const AddGroup = () => {
 				<Form
 					initialValues={values}
 					setValues={setValues}
-					onSubmit={(data) => console.log(data)}
+					onSubmit={onSubmitCreateGroup}
 					innerRef={formRef}
 					validation={validation}
 				>
@@ -87,10 +120,19 @@ const AddGroup = () => {
 								})}
 							/>
 						</ColDiv>
-						{values.type === 'groupType1' && (
+						{values.type === 'KR-2020-0001:001' && (
 							<ColDiv>
-								<Label htmlFor={'id'}>상위 그룹 선택</Label>
-								<TextBox name={'id'} />
+								<Label htmlFor={'parentId'}>
+									상위 그룹 선택
+								</Label>
+								{/*<TextBox name={'id'} />*/}
+								<ComboBox
+									name='parentId'
+									header={'상위 그룹 선택'}
+									options={groups.map((v) => {
+										return {value: v.id, label: v.name};
+									})}
+								/>
 							</ColDiv>
 						)}
 					</RowDiv>

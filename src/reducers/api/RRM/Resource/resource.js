@@ -1,7 +1,7 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import * as _ from 'lodash';
-import {baseUrl} from '../../../../api/constants';
+import {baseUrl, Axios} from '../../../../api/constants';
 
 const NAME = 'RRM_RESOURCE';
 
@@ -9,7 +9,7 @@ const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
-		const response = await axios.post(
+		const response = await Axios.post(
 			`/open/api/v1/remote/resources`,
 			{
 				name: payload.name, //desc: 원격 자원 명 / type: string
@@ -38,7 +38,7 @@ const updateAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
 
-		const response = await axios.put(
+		const response = await Axios.put(
 			`/open/api/v1/remote/resources/${payload.id}`,
 			{
 				name: payload.name, //desc: 원격 자원 명 / type: string
@@ -67,7 +67,7 @@ const deleteAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
 
-		const response = await axios.delete(
+		const response = await Axios.delete(
 			`/open/api/v1/remote/resources/${payload.id}`,
 			{
 				headers: {
@@ -86,7 +86,7 @@ const findByIdAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
 
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open/api/v1/remote/resources/${payload.id}`,
 			{
 				headers: {
@@ -105,7 +105,7 @@ const findAllBasicAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
 
-		const response = await axios.get(`/open/api/v1/remote/resources`, {
+		const response = await Axios.get(`/open/api/v1/remote/resources`, {
 			params: {
 				...(payload.type && {type: payload.type}),
 				...(payload.osType && {osType: payload.osType}),
@@ -126,7 +126,7 @@ const findAllServicePortAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
 
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open/api/v1/remote/resources/${payload.id}/ports`,
 			{
 				headers: {
@@ -146,7 +146,7 @@ const findAllTagAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
 
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open/api/v1/remote/resources/${payload.id}/tags`,
 			{
 				headers: {

@@ -1,12 +1,12 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {baseUrl} from '../../../../api/constants';
+import {baseUrl, Axios} from '../../../../api/constants';
 
 const NAME = 'IAM_CLIENT';
 
 //todo : this function requires access_token, id, companyId, name and password
 const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
-	const response = await axios.post(
+	const response = await Axios.post(
 		`/open/api/v1/clients`,
 		{
 			id: payload.id,
@@ -27,7 +27,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 
 //todo : this function requires access_token, id, name and password
 const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
-	const response = await axios.put(
+	const response = await Axios.put(
 		`/open/api/v1/clients/${payload.id}`,
 		{
 			name: payload.name,
@@ -46,7 +46,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 
 //todo : this function requires access_token and id
 const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
-	const response = await axios.delete(`/open/api/v1/clients/${payload.id}`, {
+	const response = await Axios.delete(`/open/api/v1/clients/${payload.id}`, {
 		headers: {
 			Authorization: `Bearer ${payload.access_token}`,
 		},
@@ -59,7 +59,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload) => {
-		const response = await axios.get(`/open/api/v1/clients/${payload.id}`, {
+		const response = await Axios.get(`/open/api/v1/clients/${payload.id}`, {
 			headers: {
 				Authorization: `Bearer ${payload.access_token}`,
 			},
@@ -71,7 +71,7 @@ const findByIdAction = createAsyncThunk(
 
 //todo : this function requires access_token, companyId, first range and last range
 const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
-	const response = await axios.get(`/open/api/v1/clients`, {
+	const response = await Axios.get(`/open/api/v1/clients`, {
 		params: {
 			companyId: payload.companyId,
 		},

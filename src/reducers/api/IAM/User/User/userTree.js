@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {baseUrl} from '../../../../../api/constants';
+import {baseUrl, Axios} from '../../../../../api/constants';
 
 const NAME = 'IAM_USER_TREE';
 
@@ -11,7 +11,7 @@ const createAction = createAsyncThunk(
 		const {client} = getState().IAM_CLIENT;
 		// eslint-disable-next-line no-console
 		console.log(client);
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open-api/v1/iam/user-trees`,
 			{
 				id: payload.id,

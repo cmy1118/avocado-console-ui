@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {baseUrl} from '../../../../../api/constants';
+import {baseUrl, Axios} from '../../../../../api/constants';
 
 const NAME = 'IAM_USER';
 
@@ -12,7 +12,7 @@ const createAction = createAsyncThunk(
 
 		// eslint-disable-next-line no-console
 		console.log(user);
-		const response = await axios.post(
+		const response = await Axios.post(
 			`/open-api/v1/iam/users`,
 			{
 				id: payload.id,
@@ -39,7 +39,7 @@ const updateAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.put(
+		const response = await Axios.put(
 			`/open-api/v1/iam/users/${payload.userUid}`,
 			{
 				name: payload.name,
@@ -66,7 +66,7 @@ const deleteAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.delete(
+		const response = await Axios.delete(
 			`/open-api/v1/iam/users/${payload.userUid}`,
 			{
 				headers: {
@@ -86,7 +86,7 @@ const findByIdAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open-api/v1/iam/user-ids/${payload.id}`,
 			{
 				headers: {
@@ -106,7 +106,7 @@ const findByUidAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open-api/v1/iam/users/${payload.userUid}`,
 			{
 				headers: {
@@ -128,7 +128,7 @@ const findAllAction = createAsyncThunk(
 
 		console.log(user);
 
-		const response = await axios.get(`/open-api/v1/iam/users`, {
+		const response = await Axios.get(`/open-api/v1/iam/users`, {
 			params: {
 				keyword: payload.keyword || null,
 				userUid: payload.userUid || null,

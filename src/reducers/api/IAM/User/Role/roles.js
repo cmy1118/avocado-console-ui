@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {baseUrl} from '../../../../../api/constants';
+import {baseUrl, Axios} from '../../../../../api/constants';
 
 const NAME = 'IAM_ROLES';
 
@@ -10,7 +10,7 @@ const createAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
 		console.log(user);
-		const response = await axios.post(
+		const response = await Axios.post(
 			`/open-api/v1/iam/roles`,
 			{
 				name: payload.name,
@@ -36,7 +36,7 @@ const updateAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
 		console.log(user);
-		const response = await axios.put(
+		const response = await Axios.put(
 			`/open-api/v1/iam/roles/${payload.id}`,
 			{
 				name: payload.name,
@@ -61,7 +61,7 @@ const deleteAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
 		console.log(user);
-		const response = await axios.delete(
+		const response = await Axios.delete(
 			`/open-api/v1/iam/roles/${payload.id}`,
 			{
 				headers: {
@@ -80,7 +80,7 @@ const findByIdAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
 		console.log(user);
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open-api/v1/iam/roles/${payload.id}`,
 			{
 				headers: {
@@ -98,7 +98,7 @@ const getsAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
 		console.log(user);
-		const response = await axios.get(`/open-api/v1/iam/roles`, {
+		const response = await Axios.get(`/open-api/v1/iam/roles`, {
 			headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,
 				Range: payload.range,
@@ -119,7 +119,7 @@ const getEventsAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
 		console.log(user);
-		const response = await axios.get(`/open-api/v1/iam/roles/events`, {
+		const response = await Axios.get(`/open-api/v1/iam/roles/events`, {
 			headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,
 				Range: payload.range,

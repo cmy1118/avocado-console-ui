@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {baseUrl} from '../../../../api/constants';
+import {baseUrl, Axios} from '../../../../api/constants';
 
 const NAME = 'PAM_ROLE_SET';
 
@@ -9,7 +9,7 @@ const createAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.post(
+		const response = await Axios.post(
 			`/open-api/v1/pam/roles/${payload.id}/role-sets`,
 			{
 				params: {
@@ -31,7 +31,7 @@ const deleteAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.delete(
+		const response = await Axios.delete(
 			` /open-api/v1/pam/roles/${payload.id}/role-sets`,
 			{
 				headers: {
@@ -49,7 +49,7 @@ const findRoleSetByIdAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(
+		const response = await Axios.get(
 			`open-api/v1/pam/roles/${payload.id}/role-sets`,
 			{
 				headers: {
@@ -69,7 +69,7 @@ const getAllRoleSetsAction = createAsyncThunk(
 		//로그인 처리
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(`/open-api/v1/pam/roles/role-sets`, {
+		const response = await Axios.get(`/open-api/v1/pam/roles/role-sets`, {
 			params: {
 				id: payload.id,
 				name: payload.name,
@@ -89,7 +89,7 @@ const getEventsAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open-api/v1/pam/roles/role-sets/events`,
 			{
 				params: {

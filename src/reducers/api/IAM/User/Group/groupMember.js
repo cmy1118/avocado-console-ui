@@ -1,14 +1,5 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import axios from 'axios';
-import {baseUrl} from '../../../../../api/constants';
-import qs from 'qs';
-// axios.default.paramsSerializer = (params) => {
-// 	return qs.stringify(params);
-// };
-
-let Axios = axios.create({
-	paramsSerializer: (params) => qs.stringify(params, {arrayFormat: 'repeat'}),
-});
+import {Axios, baseUrl} from '../../../../../api/constants';
 
 const NAME = 'IAM_USER_GROUP_MEMBER';
 

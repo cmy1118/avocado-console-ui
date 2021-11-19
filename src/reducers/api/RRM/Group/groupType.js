@@ -1,7 +1,7 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import * as _ from 'lodash';
-import {baseUrl} from '../../../../api/constants';
+import {baseUrl, Axios} from '../../../../api/constants';
 
 const NAME = 'RRM_GROUP_TYPE';
 
@@ -9,7 +9,7 @@ const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
-		const response = await axios.post(
+		const response = await Axios.post(
 			`/open/api/v1/remote/resources/group-types`,
 			{
 				name: payload.name, //desc: 그룹 유형 명 / type: string
@@ -31,7 +31,7 @@ const updateAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
 
-		const response = await axios.put(
+		const response = await Axios.put(
 			`/open/api/v1/remote/resources/group-types/${payload.id}`,
 			{
 				name: payload.name, //desc: 그룹 유형 명 / type: string
@@ -54,7 +54,7 @@ const deleteAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
 
-		const response = await axios.delete(
+		const response = await Axios.delete(
 			`/open/api/v1/remote/resources/group-types/${payload.id}`,
 			{
 				headers: {
@@ -73,7 +73,7 @@ const findByIdAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
 
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open/api/v1/remote/resources/group-types/${payload.id}`,
 			{
 				headers: {
@@ -92,7 +92,7 @@ const findAllAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
 
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open/api/v1/remote/resources/group-types`,
 			{
 				params: {

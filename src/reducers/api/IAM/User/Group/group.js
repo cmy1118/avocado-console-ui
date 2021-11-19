@@ -1,6 +1,5 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import axios from 'axios';
-import {baseUrl} from '../../../../../api/constants';
+import {Axios, baseUrl} from '../../../../../api/constants';
 
 const NAME = 'IAM_USER_GROUP';
 
@@ -8,20 +7,20 @@ const NAME = 'IAM_USER_GROUP';
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
-		console.log(client);
-		const response = await axios.post(
+		console.log(user);
+		const response = await Axios.post(
 			`/open-api/v1/iam/user-groups`,
 			{
 				name: payload.name,
 				userGroupTypeId: payload.userGroupTypeId,
 				parentId: payload.parentId,
-				members: payload.members,
+				members: payload.members || [],
 			},
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -34,9 +33,9 @@ const createAction = createAsyncThunk(
 const updateAction = createAsyncThunk(
 	`${NAME}/UPDATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
-		const response = await axios.put(
+		const response = await Axios.put(
 			`/open-api/v1/iam/user-groups/${payload.id}`,
 			{
 				name: payload.name,
@@ -46,7 +45,7 @@ const updateAction = createAsyncThunk(
 			},
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -60,13 +59,13 @@ const updateAction = createAsyncThunk(
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
-		const response = await axios.delete(
+		const response = await Axios.delete(
 			`/open-api/v1/iam/user-groups/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -80,13 +79,13 @@ const deleteAction = createAsyncThunk(
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(
+		const response = await Axios.get(
 			`/open-api/v1/iam/user-groups/id/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -102,7 +101,7 @@ const findAllAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(`/open-api/v1/iam/user-groups`, {
+		const response = await Axios.get(`/open-api/v1/iam/user-groups`, {
 			params: {
 				name: payload.name,
 				groupTypeId: payload.groupTypeId,
@@ -135,7 +134,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[createAction.fulfilled]: (state, action) => {
-			state.groups = action.payload;
 			state.loading = false;
 		},
 		[createAction.rejected]: (state, action) => {
@@ -147,7 +145,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[updateAction.fulfilled]: (state, action) => {
-			state.groups = action.payload;
 			state.loading = false;
 		},
 		[updateAction.rejected]: (state, action) => {
@@ -159,7 +156,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[deleteAction.fulfilled]: (state, action) => {
-			state.groups = action.payload;
 			state.loading = false;
 		},
 		[deleteAction.rejected]: (state, action) => {
@@ -171,7 +167,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByIdAction.fulfilled]: (state, action) => {
-			state.groups = action.payload;
 			state.loading = false;
 		},
 		[findByIdAction.rejected]: (state, action) => {
@@ -183,8 +178,8 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findAllAction.fulfilled]: (state, action) => {
-			state.groups = action.payload;
 			state.loading = false;
+			state.groups = action.payload;
 		},
 		[findAllAction.rejected]: (state, action) => {
 			state.error = action.payload;
