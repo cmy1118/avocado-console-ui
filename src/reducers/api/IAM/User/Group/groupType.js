@@ -8,9 +8,9 @@ const NAME = 'IAM_USER_GROUP_TYPE';
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
-		console.log(client);
+		console.log(user);
 		const response = await axios.post(
 			`/open-api/v1/iam/user-group-types`,
 			{
@@ -19,7 +19,7 @@ const createAction = createAsyncThunk(
 			},
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -32,7 +32,7 @@ const createAction = createAsyncThunk(
 const updateAction = createAsyncThunk(
 	`${NAME}/UPDATE`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
 		const response = await axios.put(
 			`/open-api/v1/iam/user-group-types/${payload.id}`,
@@ -42,7 +42,7 @@ const updateAction = createAsyncThunk(
 			},
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -56,13 +56,13 @@ const updateAction = createAsyncThunk(
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
 		const response = await axios.delete(
 			`/open-api/v1/iam/user-group-types/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -76,13 +76,13 @@ const deleteAction = createAsyncThunk(
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
 		const response = await axios.get(
 			`/open-api/v1/iam/user-group-types/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseUrl.openApi,
@@ -96,16 +96,16 @@ const findByIdAction = createAsyncThunk(
 const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
 		const response = await axios.get(`/open-api/v1/iam/user-group-types`, {
 			params: {
 				name: payload.name,
 			},
 			headers: {
-				Authorization: `${client.token_type} ${client.access_token}`,
+				Authorization: `${user.token_type} ${user.access_token}`,
 				'Content-Type': 'application/json',
-				Range: `elements=${payload.first}-${payload.last}`,
+				Range: payload.range,
 			},
 			baseURL: baseUrl.openApi,
 		});
@@ -126,7 +126,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[createAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
 			state.loading = false;
 		},
 		[createAction.rejected]: (state, action) => {
@@ -138,7 +137,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[updateAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
 			state.loading = false;
 		},
 		[updateAction.rejected]: (state, action) => {
@@ -150,7 +148,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[deleteAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
 			state.loading = false;
 		},
 		[deleteAction.rejected]: (state, action) => {
@@ -162,7 +159,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByIdAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
 			state.loading = false;
 		},
 		[findByIdAction.rejected]: (state, action) => {
@@ -174,8 +170,8 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findAllAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
 			state.loading = false;
+			state.groupTypes = action.payload;
 		},
 		[findAllAction.rejected]: (state, action) => {
 			state.error = action.payload;

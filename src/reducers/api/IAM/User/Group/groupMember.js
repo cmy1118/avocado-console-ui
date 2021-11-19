@@ -1,11 +1,14 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {baseUrl} from '../../../../../api/constants';
-
-// import qs from 'qs';
+import qs from 'qs';
 // axios.default.paramsSerializer = (params) => {
 // 	return qs.stringify(params);
 // };
+
+let Axios = axios.create({
+	paramsSerializer: (params) => qs.stringify(params, {arrayFormat: 'repeat'}),
+});
 
 const NAME = 'IAM_USER_GROUP_MEMBER';
 
@@ -16,7 +19,7 @@ const joinAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
 		console.log(user);
-		const response = await axios.put(
+		const response = await Axios.put(
 			`/open-api/v1/iam/user-group-sets/${payload.groupId}`,
 			[...payload.userUid],
 			{
@@ -36,7 +39,7 @@ const disjointAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.delete(
+		const response = await Axios.delete(
 			`/open-api/v1/iam/user-group-sets/${payload.groupId}`,
 			{
 				headers: {
@@ -59,7 +62,7 @@ const findAllAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await axios.get(`/open-api/v1/iam/user-group-sets`, {
+		const response = await Axios.get(`/open-api/v1/iam/user-group-sets`, {
 			params: {groupId: payload.groupId},
 			headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,

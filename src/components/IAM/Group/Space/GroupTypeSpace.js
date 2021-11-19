@@ -1,5 +1,5 @@
-import React, {useCallback, useState} from 'react';
-import {useSelector} from 'react-redux';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {useHistory} from 'react-router-dom';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
@@ -25,16 +25,15 @@ import {
 } from '../../../../styles/components/iam/iam';
 
 const GroupTypeSpace = () => {
+	const dispatch = useDispatch();
 	const history = useHistory();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
+	const [initialGroupTypes, setInitialGroupTypes] = useState([]);
 	const [select, setSelect] = useState({});
 	const [data, setData] = useState(
 		groupTypes.map((v) => ({
 			...v,
-			numberOfGroups: groups.filter(
-				(val) => val.clientGroupTypeId === v.id,
-			).length,
 		})),
 	);
 
@@ -50,22 +49,76 @@ const GroupTypeSpace = () => {
 				numberOfGroups: 0,
 				description: '',
 				creationDate: new Date().toLocaleString(),
+				new: true,
 			},
 		]);
 	}, [data]);
 
 	const onClickSaveGroupTypes = useCallback(() => {
-		console.log(data);
-	}, [data]);
+		data.forEach((v) => {
+			console.log(v);
+			if (v.new) {
+				dispatch(
+					IAM_USER_GROUP_TYPE.asyncAction.createAction({
+						name: v.name,
+						description: v.description,
+					}),
+				);
+			} else {
+				if (
+					JSON.stringify(
+						initialGroupTypes.find((x) => x.id === v.id),
+					) !== JSON.stringify(v)
+				) {
+					dispatch(
+						IAM_USER_GROUP_TYPE.asyncAction.updateAction({
+							id: v.id,
+							name: v.name,
+							description: v.description,
+						}),
+					);
+				}
+			}
+		});
+	}, [data, dispatch, initialGroupTypes]);
 
 	const onClickDeleteGroupTypes = useCallback(() => {
 		console.log(select);
 		if (select[tableKeys.groups.type][0]) {
-			console.log('api 처리', select[tableKeys.groups.type]);
+			select[tableKeys.groups.type].forEach((v) => {
+				dispatch(
+					IAM_USER_GROUP_TYPE.asyncAction.deleteAction({
+						id: v.id,
+					}),
+				);
+			});
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
-	}, [select]);
+	}, [dispatch, select]);
+
+	useEffect(() => {
+		dispatch(
+			IAM_USER_GROUP_TYPE.asyncAction.findAllAction({
+				range: 'elements=0-50',
+			}),
+		);
+	}, [dispatch]);
+
+	useEffect(() => {
+		if (groupTypes) {
+			setData(
+				groupTypes.map((v) => ({
+					...v,
+				})),
+			);
+			setInitialGroupTypes(
+				groupTypes.map((v) => ({
+					...v,
+				})),
+			);
+		}
+	}, [groupTypes]);
 
 	return (
 		<IamContainer>
@@ -104,6 +157,7 @@ const GroupTypeSpace = () => {
 				tableKey={tableKeys.groups.type}
 				columns={tableColumns[tableKeys.groups.type]}
 				data={data}
+				setData={setData}
 			>
 				<Table setSelect={setSelect} />
 			</TableContainer>

@@ -181,7 +181,6 @@ const Table = ({
 								{...headerGroup.getHeaderGroupProps()}
 							>
 								{headerGroup.headers.map((column, i) => {
-									console.log(column);
 									return (
 										<Tds
 											className={'th'}
@@ -227,17 +226,8 @@ const Table = ({
 								prepareRow(row);
 								return (
 									<Draggable
-										key={
-											row.original.userUid
-												? row.original.userUid
-												: row.original.id
-										}
-										draggableId={
-											row.original.userUid
-												? row.original.userUid
-												: row.original.id ||
-												  `${tableKey} ${index}`
-										}
+										key={`${tableKey} ${index}`}
+										draggableId={`${tableKey} ${index}`}
 										isDragDisabled={!isDraggable}
 										index={index}
 									>
@@ -270,18 +260,6 @@ const Table = ({
 															? 'even'
 															: 'odd'
 													}`}
-													id={
-														row.original.userUid
-															? row.original
-																	.userUid
-															: row.original.id
-													}
-													key={
-														row.original.userUid
-															? row.original
-																	.userUid
-															: row.original.id
-													}
 												>
 													{row.cells.map(
 														(cell, i) => {

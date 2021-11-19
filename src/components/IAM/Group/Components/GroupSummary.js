@@ -26,9 +26,6 @@ const GroupSummary = ({Id, param, setIsOpened}) => {
 	const {page} = useSelector(PAGINATION.selector);
 	const group = useMemo(() => groups.find((v) => v.id === Id), [groups, Id]);
 
-	console.log(users);
-	console.log(members);
-
 	const userData = useMemo(() => {
 		return users
 			.filter((v) => v.groupIds && v.groupIds.includes(Id))

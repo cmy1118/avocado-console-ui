@@ -21,34 +21,37 @@ const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [select, setSelect] = useState({});
 	const excludedData = useMemo(() => {
-		const dropDataName = users
-			.map(({userUid: id, id: _id, ...rest}) => ({
-				id,
-				_id,
-				...rest,
-			}))
-			.filter((v) => includedDataIds.includes(v.id))
-			.map((v) => v.name);
-		return users
-			.filter((v) => !dropDataName.includes(v.name))
-			.map((v) => ({
-				...v,
-				numberOfGroups: v.groups.length,
-			}));
-	}, [users, includedDataIds]);
+		return [];
+		// const dropDataName = users
+		// 	.map(({userUid: id, id: _id, ...rest}) => ({
+		// 		id,
+		// 		_id,
+		// 		...rest,
+		// 	}))
+		// 	.filter((v) => includedDataIds.includes(v.id))
+		// 	.map((v) => v.name);
+		// return users
+		// 	.filter((v) => !dropDataName.includes(v.name))
+		// 	.map((v) => ({
+		// 		...v,
+		// 		numberOfGroups: v.groups.length,
+		// 	}));
+	}, []);
 
 	const includedData = useMemo(() => {
-		return users
-			.map(({userUid: id, id: _id, ...rest}) => ({
-				id,
-				_id,
-				...rest,
-			}))
-			.filter((v) => includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-			}));
-	}, [users, includedDataIds]);
+		return [];
+
+		// return users
+		// 	.map(({userUid: id, id: _id, ...rest}) => ({
+		// 		id,
+		// 		_id,
+		// 		...rest,
+		// 	}))
+		// 	.filter((v) => includedDataIds.includes(v.id))
+		// 	.map((v) => ({
+		// 		...v,
+		// 	}));
+	}, []);
 
 	useEffect(() => {
 		dispatch(

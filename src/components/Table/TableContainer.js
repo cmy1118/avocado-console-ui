@@ -47,9 +47,7 @@ const NormalTable = styled.div`
 		color: #212121;
 		.tr {
 			display: flex;
-			// :last-child {
-			// 	border: none;
-			// }
+			justify-content: space-between;
 		}
 
 		.head {

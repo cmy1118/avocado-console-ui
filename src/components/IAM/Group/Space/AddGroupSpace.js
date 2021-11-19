@@ -39,11 +39,11 @@ const AddGroupSpace = () => {
 					isFold={isTableFold}
 					setIsFold={setIsTableFold}
 				/>
-				<AssignRoleToGroup
-					space={'AssignRoleToGroup'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-				/>
+				{/*<AssignRoleToGroup*/}
+				{/*	space={'AssignRoleToGroup'}*/}
+				{/*	isFold={isTableFold}*/}
+				{/*	setIsFold={setIsTableFold}*/}
+				{/*/>*/}
 				<AddTagToGroup
 					space={'AddTagToGroup'}
 					isFold={isTableFold}
