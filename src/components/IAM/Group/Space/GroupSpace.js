@@ -34,6 +34,7 @@ const GroupSpace = () => {
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
 	const data = useMemo(() => {
+		// groups ?
 		return groups.map((v) => ({
 			...v,
 			name: v.name,

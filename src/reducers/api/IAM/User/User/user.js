@@ -142,10 +142,7 @@ const findAllAction = createAsyncThunk(
 			},
 			baseURL: baseUrl.openApi,
 		});
-		return {
-			...response.data,
-			responseRange: response.headers['Content-Range'],
-		};
+		return response.data;
 	},
 );
 

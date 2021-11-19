@@ -115,7 +115,7 @@ const AddGroup = ({values, groupMembers, setValues}) => {
 								})}
 							/>
 						</ColDiv>
-						{values.type === 'KR-2020-0001:001' && (
+						{values.type !== 'KR-2020-0001:001' && (
 							<ColDiv>
 								<Label htmlFor={'parentId'}>
 									상위 그룹 선택
