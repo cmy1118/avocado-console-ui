@@ -10,7 +10,7 @@ import {
 	statusConverter,
 } from '../tableDataConverter';
 import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
-import {ColDiv, RowDiv} from '../../styles/components/style';
+import {RowDiv} from '../../styles/components/style';
 
 export const USER_COLUMN = [
 	{
@@ -21,20 +21,17 @@ export const USER_COLUMN = [
 		},
 		disableFilters: true,
 		disableChangeVisible: true,
-		width: 100,
 	},
 	{
 		accessor: 'name',
 		Header: '이름',
 		disableFilters: true,
 		disableChangeVisible: true,
-		width: 80,
 	},
 	{
 		accessor: 'groupIds',
 		Header: '그룹',
 		disableFilters: true,
-		width: 100,
 	},
 	{
 		accessor: 'status',
@@ -44,7 +41,6 @@ export const USER_COLUMN = [
 		Cell: function Component(v) {
 			return <div>{statusConverter(v.value)}</div>;
 		},
-		width: 100,
 	},
 	{
 		accessor: 'authType',
@@ -54,7 +50,6 @@ export const USER_COLUMN = [
 		Cell: function Component(v) {
 			return <div>{authTypeConverter(v.value)}</div>;
 		},
-		width: 100,
 	},
 	{
 		accessor: 'MFA',
@@ -64,22 +59,17 @@ export const USER_COLUMN = [
 			return <div>{mfaConverter(v.value)}</div>;
 		},
 		Filter: SelectionOption,
-		width: 100,
 	},
 	{
 		accessor: 'passwordExpiryTime',
 		Header: '비밀번호 수명',
 		filter: 'equals',
 		Filter: TextBoxOption,
-		Cell: function Component(v) {
-			return <div>{expiredConverter(v.value)}</div>;
-		},
 	},
 	{
 		accessor: 'tags',
 		Header: '태그',
 		disableFilters: true,
-		width: 100,
 	},
 	{
 		accessor: 'lastConsoleLogin',

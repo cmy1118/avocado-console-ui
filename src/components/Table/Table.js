@@ -5,6 +5,7 @@ import {Icon} from '../../styles/components/icons';
 import {RowDiv} from '../../styles/components/style';
 import {Draggable, Droppable} from 'react-beautiful-dnd';
 import styled from 'styled-components';
+import * as _ from 'lodash';
 
 const Tds = styled(RowDiv)`
 	align-items: center;
@@ -39,6 +40,28 @@ const Table = ({
 	mode,
 }) => {
 	const [position, setPosition] = useState({x: 0, y: 0});
+
+	const getColumnWidth = (data, accessor, headerText) => {
+		const cellLength = Math.max(
+			...data.map((row) => {
+				let value = '';
+
+				if (typeof accessor === 'string') {
+					value = _.get(row, accessor);
+				} else {
+					value = accessor(row);
+				}
+
+				if (typeof value === 'number') return value.toString().length;
+				return (value || '').length;
+			}),
+			headerText.length,
+		);
+
+		const magicSpacing = 10;
+
+		return cellLength * magicSpacing + 26 + 'px';
+	};
 
 	const getItemStyle = (isDragging, draggableStyle, style) => ({
 		// 혹시 모를 나중의 스타일 적용을 대비해서 제거 ㄴㄴ
@@ -158,10 +181,22 @@ const Table = ({
 								{...headerGroup.getHeaderGroupProps()}
 							>
 								{headerGroup.headers.map((column, i) => {
+									console.log(column);
 									return (
 										<Tds
 											className={'th'}
-											width={`${column.width + 20}px`}
+											width={
+												column.id === 'selection'
+													? '40px'
+													: getColumnWidth(
+															page.map(
+																(v) =>
+																	v.original,
+															),
+															column.accessor,
+															column.Header,
+													  )
+											}
 											key={i}
 											alignItems={'center'}
 											{...column.getHeaderProps(
@@ -255,12 +290,27 @@ const Table = ({
 																	className={
 																		'td'
 																	}
-																	width={`${
+																	width={
 																		cell
 																			.column
-																			.width +
-																		20
-																	}px`}
+																			.id ===
+																		'selection'
+																			? '40px'
+																			: getColumnWidth(
+																					page.map(
+																						(
+																							v,
+																						) =>
+																							v.original,
+																					),
+																					cell
+																						.column
+																						.accessor,
+																					cell
+																						.column
+																						.Header,
+																			  )
+																	}
 																	key={i}
 																	{...cell.getCellProps}
 																>

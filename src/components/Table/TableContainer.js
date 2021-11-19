@@ -75,6 +75,7 @@ const NormalTable = styled.div`
 			display: flex;
 			height: ${(props) => (props.mode === 'normal' ? '40px' : '')};
 			min-height: 40px;
+			margin-right: 6px;
 			white-space: nowrap;
 			text-align: left;
 			text-overflow: ellipsis;

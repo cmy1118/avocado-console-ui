@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import {
+	expiredConverter,
 	groupsConverter,
 	statusConverter,
 } from '../../../../utils/tableDataConverter';
@@ -42,6 +43,7 @@ const UserSpace = () => {
 				groupIds: groupsConverter(v.groupIds || []),
 				status: v.status.code,
 				createdTime: v.createdTag.createdTime,
+				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
 			})) || []
 		);
 	}, [users]);
