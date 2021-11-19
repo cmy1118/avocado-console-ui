@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
@@ -23,22 +23,16 @@ import {
 } from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 
-const AddGroup = () => {
+const AddGroup = ({values, groupMembers, setValues}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const formRef = useRef(null);
 
-	const [values, setValues] = useState({
-		type: '',
-		parentId: '',
-		name: '',
-	});
-
 	const validation = {
-		type: yup.string().required('타입은 필수값입니다.'),
-		name: yup.string().required('이름은 필수값입니다.'),
+		type: yup.string().required('그룹 유형은 필수값입니다.'),
+		name: yup.string().required('그룹명은 필수값입니다.'),
 	};
 
 	const onClickManageGroupType = useCallback(() => {
@@ -57,10 +51,11 @@ const AddGroup = () => {
 					userGroupTypeId: data.type,
 					parentId: data.parentId,
 					name: data.name,
+					members: groupMembers,
 				}),
 			);
 		},
-		[dispatch],
+		[dispatch, groupMembers],
 	);
 
 	useEffect(() => {
@@ -155,7 +150,9 @@ const AddGroup = () => {
 };
 
 AddGroup.propTypes = {
-	setIsOpened: PropTypes.func.isRequired,
+	values: PropTypes.object.isRequired,
+	setValues: PropTypes.func.isRequired,
+	groupMembers: PropTypes.array.isRequired,
 };
 
 export default AddGroup;

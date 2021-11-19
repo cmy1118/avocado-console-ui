@@ -14,44 +14,51 @@ import TableContainer from '../../../Table/TableContainer';
 import DragContainer from '../../../Table/DragContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
+import PAGINATION from '../../../../reducers/pagination';
+import {
+	expiredConverter,
+	groupsConverter,
+} from '../../../../utils/tableDataConverter';
 
-const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
+const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
+	const {page} = useSelector(PAGINATION.selector);
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [select, setSelect] = useState({});
+
+	console.log(users);
+	console.log(includedDataIds);
+
 	const excludedData = useMemo(() => {
-		return [];
-		// const dropDataName = users
-		// 	.map(({userUid: id, id: _id, ...rest}) => ({
-		// 		id,
-		// 		_id,
-		// 		...rest,
-		// 	}))
-		// 	.filter((v) => includedDataIds.includes(v.id))
-		// 	.map((v) => v.name);
-		// return users
-		// 	.filter((v) => !dropDataName.includes(v.name))
-		// 	.map((v) => ({
-		// 		...v,
-		// 		numberOfGroups: v.groups.length,
-		// 	}));
-	}, []);
+		return (
+			users
+				.filter((x) => !includedDataIds.includes(x.userUid))
+				.map((v) => ({
+					...v,
+					groupIds: groupsConverter(v.groupIds || []),
+					numberOfGroups: v.groupIds ? v.groupIds.length : 0,
+					status: v.status.code,
+					createdTime: v.createdTag.createdTime,
+					passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
+				})) || []
+		);
+	}, [includedDataIds, users]);
 
 	const includedData = useMemo(() => {
-		return [];
-
-		// return users
-		// 	.map(({userUid: id, id: _id, ...rest}) => ({
-		// 		id,
-		// 		_id,
-		// 		...rest,
-		// 	}))
-		// 	.filter((v) => includedDataIds.includes(v.id))
-		// 	.map((v) => ({
-		// 		...v,
-		// 	}));
-	}, []);
+		return (
+			users
+				.filter((x) => includedDataIds.includes(x.userUid))
+				.map((v) => ({
+					...v,
+					id: v.id,
+					groupIds: groupsConverter(v.groupIds || []),
+					status: v.status.code,
+					createdTime: v.createdTag.createdTime,
+					passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
+				})) || []
+		);
+	}, [includedDataIds, users]);
 
 	useEffect(() => {
 		dispatch(
@@ -61,6 +68,19 @@ const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
 			}),
 		);
 	}, [includedData, dispatch]);
+
+	useEffect(() => {
+		page[tableKeys.groups.add.users.exclude] &&
+			dispatch(
+				IAM_USER.asyncAction.findAllAction({
+					range: page[tableKeys.groups.add.users.exclude],
+				}),
+			);
+	}, [dispatch, page]);
+
+	useEffect(() => {
+		setValue(includedDataIds);
+	}, [includedDataIds, setValue]);
 
 	return (
 		<FoldableContainer>
@@ -137,6 +157,7 @@ const UsersIncludedInGroup = ({space, isFold, setIsFold}) => {
 UsersIncludedInGroup.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
+	setValue: PropTypes.func,
 	space: PropTypes.string,
 };
 export default UsersIncludedInGroup;

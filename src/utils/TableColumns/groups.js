@@ -313,7 +313,7 @@ export const GROUP_ADD_USERS_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 
@@ -321,7 +321,7 @@ export const GROUP_ADD_USERS_INCLUDE_COLUMN = [
 	{
 		//:TODO  uid-> id , id->_id
 		Header: '사용자 계정',
-		accessor: '_id',
+		accessor: 'id',
 		type: 'users',
 		Cell: function Component(cell) {
 			return <TableLink cell={cell} />;

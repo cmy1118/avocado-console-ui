@@ -46,11 +46,11 @@ const Main = () => {
 
 	return (
 		<_Container>
-			{companyId === account.KT.companyId && (
-				<_ImageContainer>
-					<img src={kt} onClick={onClickMove} />
-				</_ImageContainer>
-			)}
+			{/*{companyId === account.KT.companyId && (*/}
+			<_ImageContainer>
+				<img src={kt} onClick={onClickMove} />
+			</_ImageContainer>
+			{/*)}*/}
 			{companyId === account.SAMSUNG.companyId && (
 				<_ImageContainer>
 					<img src={samsung} onClick={onClickMove} />
