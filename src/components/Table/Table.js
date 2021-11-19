@@ -50,6 +50,12 @@ const Table = ({
 					value = _.get(row, accessor);
 				} else {
 					value = accessor(row);
+					// let maxValue = '';
+					// const temp = value;
+					// temp.split(/\r\n|\r|\n/).forEach((v) => {
+					// 	if (v.length > maxValue.length) maxValue = v;
+					// });
+					// value = maxValue;
 				}
 
 				if (typeof value === 'number') return value.toString().length;
