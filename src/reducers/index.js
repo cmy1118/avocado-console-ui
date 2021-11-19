@@ -20,12 +20,22 @@ import IAM_ROLES from './api/ PAM/Role/roles';
 import {persistReducer} from 'redux-persist';
 
 const userFilter = createFilter(AUTH_USER.name, ['companyId', 'user']);
+const iamUserFilter = createFilter(IAM_USER.name, ['users']);
+const iamGroupFilter = createFilter(IAM_USER_GROUP.name, ['groups']);
+const iamGroupTypeFilter = createFilter(IAM_USER_GROUP_TYPE.name, [
+	'groupTypes',
+]);
 
 const persistConfig = {
 	key: 'root',
 	storage: storageSession,
-	whitelist: [AUTH_USER.name],
-	transforms: [userFilter],
+	whitelist: [
+		AUTH_USER.name,
+		IAM_USER.name,
+		IAM_USER_GROUP.name,
+		IAM_USER_GROUP_TYPE.name,
+	],
+	transforms: [userFilter, iamUserFilter, iamGroupFilter, iamGroupTypeFilter],
 };
 
 const rootReducer = combineReducers({

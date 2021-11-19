@@ -9,6 +9,7 @@ import {
 
 const _Container = styled.div`
 	z-index: 0;
+	margin: auto;
 	display: flex !important;
 	align-items: center;
 	width: ${(props) => props.label === '' && '15px'};

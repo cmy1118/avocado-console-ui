@@ -60,7 +60,7 @@ const Table = ({
 
 		const magicSpacing = 10;
 
-		return cellLength * magicSpacing + 26 + 'px';
+		return cellLength * magicSpacing + 24 + 'px';
 	};
 
 	const getItemStyle = (isDragging, draggableStyle, style) => ({

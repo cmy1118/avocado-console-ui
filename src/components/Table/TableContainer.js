@@ -71,17 +71,12 @@ const NormalTable = styled.div`
 		.th,
 		.td {
 			display: flex;
+			margin-right: 12px;
 			height: ${(props) => (props.mode === 'normal' ? '40px' : '')};
 			min-height: 40px;
-			margin-right: 6px;
 			white-space: nowrap;
 			text-align: left;
 			text-overflow: ellipsis;
-
-			:first-child {
-				padding-left: 16px;
-				width: 40px;
-			}
 		}
 	}
 `;
