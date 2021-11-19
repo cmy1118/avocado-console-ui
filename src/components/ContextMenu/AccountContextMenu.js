@@ -4,7 +4,7 @@ import Form from '../RecycleComponents/New/Form';
 import {userIcon} from '../../icons/icons';
 import {HoverIconButton} from '../../styles/components/icons';
 import {useDispatch} from 'react-redux';
-import USER from '../../reducers/api/Auth/user';
+import Auth from '../../reducers/api/Auth/auth';
 
 const options = {logout: {value: 'logout', label: 'logout'}};
 
@@ -19,7 +19,7 @@ const AccountContextMenu = () => {
 	const onClickAccountAction = useCallback(
 		(v) => {
 			if (v.account === options.logout.value) {
-				dispatch(USER.asyncAction.logoutAction());
+				dispatch(Auth.asyncAction.logoutAction());
 			}
 		},
 		[dispatch],

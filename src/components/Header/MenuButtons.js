@@ -3,7 +3,7 @@ import {HoverIconButton} from '../../styles/components/icons';
 import {helpIcon, notificationIcon, settingIcon} from '../../icons/icons';
 import styled from 'styled-components';
 import {useSelector} from 'react-redux';
-import USER from '../../reducers/api/Auth/user';
+import Auth from '../../reducers/api/Auth/auth';
 import AccountContextMenu from '../ContextMenu/AccountContextMenu';
 
 const _Container = styled.div`
@@ -29,7 +29,7 @@ const _Settings = styled.div`
 `;
 
 const MenuButtons = () => {
-	const {user} = useSelector(USER.selector);
+	const {user} = useSelector(Auth.selector);
 
 	// const onClickCloseAside = useCallback(() => {
 	// 	document.querySelector('.aside-bar').classList.toggle('close');

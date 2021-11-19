@@ -1,9 +1,9 @@
 import React, {useCallback} from 'react';
 import {account} from '../utils/auth';
-import kt from '../images/backgound/workplace-2@2x.png';
-import samsung from '../images/backgound/workplce@2x.png';
+import kt from '../images/background/workplace-2@2x.png';
+import samsung from '../images/background/workplce@2x.png';
 import {useSelector} from 'react-redux';
-import USER from '../reducers/api/Auth/user';
+import Auth from '../reducers/api/Auth/auth';
 import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -38,7 +38,7 @@ const _ImageContainer = styled.div`
 
 const Main = () => {
 	const history = useHistory();
-	const {companyId} = useSelector(USER.selector);
+	const {companyId} = useSelector(Auth.selector);
 
 	const onClickMove = useCallback(() => {
 		history.push('/iam');

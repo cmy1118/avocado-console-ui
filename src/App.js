@@ -1,7 +1,17 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
-import {Group, Iam, Login, Main, NotFound, Policy, Role, User} from './pages';
+import {
+	Group,
+	Iam,
+	Login,
+	Main,
+	NotFound,
+	Policy,
+	Role,
+	User,
+	AltAuthRedirect,
+} from './pages';
 import RouteWithLayout from './components/Layouts/RouteWithLayout';
 import IamLayout from './components/Layouts/IamLayout';
 import ConfirmDialogBox from './components/DialogBoxs/Alert/ConfirmDialogBox';
@@ -100,7 +110,7 @@ const App = () => {
 					layout={IamLayout}
 				/>
 				<Route path='/login/:companyId' component={Login} />
-
+				<Route path={'/altauthredirect'} component={AltAuthRedirect} />
 				<Route component={NotFound} />
 			</Switch>
 

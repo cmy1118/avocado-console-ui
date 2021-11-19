@@ -1,7 +1,7 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import * as _ from 'lodash';
-import {baseUrl} from '../../../../api/constants';
+import {baseURL} from '../../../../api/constants';
 
 const NAME = 'RRM_RESOURCE';
 
@@ -27,7 +27,7 @@ const createAction = createAsyncThunk(
 					Authorization: `${client.token_type} ${client.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -55,7 +55,7 @@ const updateAction = createAsyncThunk(
 					Authorization: `${client.token_type} ${client.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -74,7 +74,7 @@ const deleteAction = createAsyncThunk(
 					Authorization: `${client.token_type} ${client.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -93,7 +93,7 @@ const findByIdAction = createAsyncThunk(
 					Authorization: `${client.token_type} ${client.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -115,7 +115,7 @@ const findAllBasicAction = createAsyncThunk(
 				'Content-Type': 'application/json',
 				Range: `elements=${payload.first}-${payload.last}`,
 			},
-			baseURL: baseUrl.openApi,
+			baseURL: baseURL.openApi,
 		});
 		return response.data;
 	},
@@ -134,7 +134,7 @@ const findAllServicePortAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 					Range: `elements=${payload.first}-${payload.last}`,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return {id: payload.id, data: response.data};
@@ -154,7 +154,7 @@ const findAllTagAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 					Range: `elements=${payload.first}-${payload.last}`,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return {id: payload.id, data: response.data};
@@ -200,7 +200,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[deleteAction.fulfilled]: (state, action) => {
-			// state.user = action.payload;
+			// state.userAuth = action.payload;
 			state.loading = false;
 		},
 		[deleteAction.rejected]: (state, action) => {

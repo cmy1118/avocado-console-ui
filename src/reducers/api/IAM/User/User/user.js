@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {baseUrl} from '../../../../../api/constants';
+import {baseURL} from '../../../../../api/constants';
 
 const NAME = 'IAM_USER';
 
@@ -26,7 +26,7 @@ const createAction = createAsyncThunk(
 					Authorization: `${client.token_type} ${client.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -52,7 +52,7 @@ const updateAction = createAsyncThunk(
 					Authorization: `${client.token_type} ${client.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -72,7 +72,7 @@ const deleteAction = createAsyncThunk(
 					Authorization: `${client.token_type} ${client.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -92,7 +92,7 @@ const findByIdAction = createAsyncThunk(
 					Authorization: `${client.token_type} ${client.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -112,7 +112,7 @@ const findByUidAction = createAsyncThunk(
 					Authorization: `${client.token_type} ${client.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -137,7 +137,7 @@ const findAllAction = createAsyncThunk(
 				Authorization: `${client.token_type} ${client.access_token}`,
 				Range: `elements=${payload.first}-${payload.last}`,
 			},
-			baseURL: baseUrl.openApi,
+			baseURL: baseURL.openApi,
 		});
 		return response.data;
 	},

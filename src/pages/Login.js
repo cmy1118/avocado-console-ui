@@ -2,13 +2,13 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
 
-import USER from '../reducers/api/Auth/user';
+import Auth from '../reducers/api/Auth/auth';
 import {useHistory} from 'react-router-dom';
 import {account} from '../utils/auth';
 import LoginForm from '../components/Form/LoginForm';
 import {consoleManagement} from '../icons/icons';
 import styled from 'styled-components';
-import background from '../images/backgound/bg-img-1@2x.png';
+import background from '../images/background/bg-img-1@2x.png';
 
 const _Container = styled.div`
 	background-image: url(${background});
@@ -58,16 +58,17 @@ const _Logo = styled.div`
 
 const Login = ({match}) => {
 	const history = useHistory();
-	const {user} = useSelector(USER.selector);
+	const {userAuth} = useSelector(Auth.selector);
 
 	useEffect(() => {
-		if (user) {
+		if (userAuth) {
 			history.push('/');
 		}
-	}, [history, user]);
+	}, [history, userAuth]);
 
 	useEffect(() => {
 		if (
+			match.params.companyId !== account.NETAND.companyId &&
 			match.params.companyId !== account.KT.companyId &&
 			match.params.companyId !== account.SAMSUNG.companyId
 		) {

@@ -8,7 +8,7 @@ import naverButton from '../../images/auth/naver_btn.png';
 import kakaoButton from '../../images/auth/kakao_btn.png';
 
 import {useHistory, useParams} from 'react-router-dom';
-import USER from '../../reducers/api/Auth/user';
+import Auth from '../../reducers/api/Auth/auth';
 
 import {
 	LogInContainer,
@@ -20,6 +20,7 @@ import Form from '../RecycleComponents/New/Form';
 import TextBox from '../RecycleComponents/New/TextBox';
 import {RowDiv} from '../../styles/components/style';
 import CheckBox from '../RecycleComponents/New/CheckBox';
+import {Google} from '../../utils/auth';
 
 const _CheckBoxContainer = styled.div`
 	display: flex;
@@ -69,7 +70,7 @@ const LoginForm = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {companyId} = useParams();
-	const {user} = useSelector(USER.selector);
+	const {userAuth} = useSelector(Auth.selector);
 	const [rememberMe, setRememberMe] = useState(
 		localStorage.getItem('rememberMe'),
 	);
@@ -79,7 +80,7 @@ const LoginForm = () => {
 	const onSubmitLogin = useCallback(
 		(v) => {
 			dispatch(
-				USER.asyncAction.loginAction({
+				Auth.asyncAction.userAuthAction({
 					username: v.id,
 					password: v.password,
 					companyId: companyId,
@@ -103,11 +104,16 @@ const LoginForm = () => {
 		setRememberMe(!rememberMe);
 	}, [rememberMe]);
 
+	const onClickGoogleAltAuth = useCallback(() => {
+		localStorage.setItem('companyId', companyId);
+		location.href = Google.location;
+	}, []);
+
 	useEffect(() => {
-		if (user) {
+		if (userAuth) {
 			history.push('/');
 		}
-	}, [history, user]);
+	}, [history, userAuth]);
 
 	return (
 		<LogInContainer>
@@ -170,7 +176,7 @@ const LoginForm = () => {
 				</_AlternativeAuthButton>
 			</_AlternativeAuthContainer>
 			<_AlternativeAuthContainer>
-				<_AlternativeAuthButton>
+				<_AlternativeAuthButton onClick={onClickGoogleAltAuth}>
 					<img src={googleButton} alt='googleButton' />
 				</_AlternativeAuthButton>
 				<_AlternativeAuthButton>

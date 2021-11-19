@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import USER from '../../reducers/api/Auth/user';
+import Auth from '../../reducers/api/Auth/auth';
 
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -45,14 +45,14 @@ const _MainSpace = styled.div`
 
 const IamLayout = ({children}) => {
 	const history = useHistory();
-	const {user, companyId} = useSelector(USER.selector);
+	const {userAuth, companyId} = useSelector(Auth.selector);
 	const [isNavOpened, setIsNavOpened] = useState(true);
 
 	useEffect(() => {
-		if (!user) {
+		if (!userAuth) {
 			history.push('/login/' + companyId);
 		}
-	}, [user, companyId, history]);
+	}, [userAuth, companyId, history]);
 
 	return (
 		<DragDropContext>

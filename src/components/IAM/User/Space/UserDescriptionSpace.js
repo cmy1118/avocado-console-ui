@@ -69,7 +69,7 @@ const UserDescriptionSpace = ({userId}) => {
 		if (isSummaryOpened) {
 			history.push({
 				pathname: `/users/${userId}`,
-				search: 'tabs=user',
+				search: 'tabs=userAuth',
 			});
 		} else {
 			history.push({

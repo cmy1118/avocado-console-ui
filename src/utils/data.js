@@ -51,9 +51,9 @@ export const tableSearchSelectOptions = {
 export const LINK = 'link';
 
 export const formKeys = {
-	addUserForm: 'add-user-form',
+	addUserForm: 'add-userAuth-form',
 	addGroupForm: 'add-group-form',
-	userInfoForm: 'user-info-form',
+	userInfoForm: 'userAuth-info-form',
 };
 
 //테이블 unfold 데이터

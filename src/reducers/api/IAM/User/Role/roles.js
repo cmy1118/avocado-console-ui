@@ -32,7 +32,7 @@ const slice = createSlice({
 			},
 			{
 				id: 'role3',
-				name: 'user-role',
+				name: 'userAuth-role',
 				description: '일반 User에게 부여 하는 역할',
 				type: 'Public',
 				users: ['user3', 'user8', 'user9', 'user10'],

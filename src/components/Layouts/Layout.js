@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import USER from '../../reducers/api/Auth/user';
+import Auth from '../../reducers/api/Auth/auth';
 
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -21,13 +21,13 @@ const _Container = styled.div`
 
 const Layout = ({children}) => {
 	const history = useHistory();
-	const {user, companyId} = useSelector(USER.selector);
+	const {userAuth, companyId} = useSelector(Auth.selector);
 
 	useEffect(() => {
-		if (!user) {
+		if (!userAuth) {
 			history.push('/login/' + companyId);
 		}
-	}, [user, companyId]);
+	}, [userAuth, companyId]);
 
 	return (
 		<_Container>
