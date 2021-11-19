@@ -81,7 +81,10 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 		},
 		baseURL: baseUrl.openApi,
 	});
-	return response.data;
+	return {
+		...response.data,
+		responseRange: response.headers['Content-Range'],
+	};
 });
 
 const slice = createSlice({

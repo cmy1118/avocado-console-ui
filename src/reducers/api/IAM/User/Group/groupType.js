@@ -108,7 +108,10 @@ const findAllAction = createAsyncThunk(
 			},
 			baseURL: baseUrl.openApi,
 		});
-		return response.data;
+		return {
+			...response.data,
+			responseRange: response.headers['Content-Range'],
+		};
 	},
 );
 

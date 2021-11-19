@@ -1,5 +1,4 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
 import {baseUrl, Axios} from '../../../../api/constants';
 
 const NAME = 'PAM_ROLE_USER_GROUP';
@@ -59,7 +58,10 @@ const findRoleByIdAction = createAsyncThunk(
 				baseURL: baseUrl.openApi,
 			},
 		);
-		return response.data;
+		return {
+			...response.data,
+			responseRange: response.headers['Content-Range'],
+		};
 	},
 );
 
@@ -88,7 +90,10 @@ const getEventsAction = createAsyncThunk(
 				baseURL: baseUrl.openApi,
 			},
 		);
-		return response.data;
+		return {
+			...response.data,
+			responseRange: response.headers['Content-Range'],
+		};
 	},
 );
 
