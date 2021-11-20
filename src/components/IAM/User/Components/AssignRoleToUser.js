@@ -1,12 +1,11 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_ROLES from '../../../../reducers/api/ PAM/Role/roles';
+import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import {roleTypeConverter} from '../../../../utils/tableDataConverter';
 import DropButton from '../../../Table/DropButton';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
-import CURRENT_TARGET from '../../../../reducers/currentTarget';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import TableFold from '../../../Table/Options/TableFold';
 import PropTypes from 'prop-types';
@@ -15,48 +14,55 @@ import DragContainer from '../../../Table/DragContainer';
 import TableContainer from '../../../Table/TableContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
+import PAGINATION from "../../../../reducers/pagination";
 
 const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
+	const {page} = useSelector(PAGINATION.selector);
+
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [select, setSelect] = useState({});
 
 	const excludedData = useMemo(() => {
-		return [];
-
-		// return (
-		// 	roles
-		// .filter((v) => !includedDataIds.includes(v.id))
-		// .map((v) => ({
-		// 	...v,
-		// 	type: roleTypeConverter(v.companyId),
-		// 	numberOfUsers: v.users.length,
-		// }))
-		// );
-	}, []);
+		// return [];
+		return (
+			roles?.filter((v) => !includedDataIds.includes(v.id))
+		.map((v) => ({
+			...v,
+			type: roleTypeConverter(v.companyId),
+			// numberOfUsers: v.users.length,
+		}))
+		);
+	}, [includedDataIds, roles]);
 
 	const includedData = useMemo(() => {
-		return [];
-
-		// return (
-		// 	roles
-		// .filter((v) => includedDataIds.includes(v.id))
-		// .map((v) => ({
-		// 	...v,
-		// 	type: roleTypeConverter(v.companyId),
-		// }))
-		// );
-	}, []);
-
-	useEffect(() => {
-		dispatch(
-			CURRENT_TARGET.action.addReadOnlyData({
-				title: tableKeys.users.add.roles.exclude,
-				data: includedData,
-			}),
+		// return [];
+		return (
+			roles?.filter((v) => includedDataIds.includes(v.id))
+		.map((v) => ({
+			...v,
+			type: roleTypeConverter(v.companyId),
+		}))
 		);
-	}, [includedData, dispatch]);
+	}, [includedDataIds, roles]);
+	// useEffect(() => {
+	// 	dispatch(
+	// 		CURRENT_TARGET.action.addReadOnlyData({
+	// 			title: tableKeys.users.add.roles.exclude,
+	// 			data: includedData,
+	// 		}),
+	// 	);
+	// }, [includedData, dispatch]);
+	useEffect(() => {
+		if (page[tableKeys.roles.basic]) {
+			dispatch(
+				IAM_ROLES.asyncAction.getsAction({
+					range: page[tableKeys.roles.basic],
+				}),
+			);
+		}
+	}, [dispatch, page]);
 
 	return (
 		<FoldableContainer>

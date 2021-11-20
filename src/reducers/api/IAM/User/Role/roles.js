@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
-import {baseUrl, Axios} from '../../../../../api/constants';
+import {Axios, baseUrl} from '../../../../../api/constants';
 
 const NAME = 'IAM_ROLES';
 
@@ -96,17 +95,19 @@ const getsAction = createAsyncThunk(
 	`${NAME}/GETS`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		// eslint-disable-next-line no-console
-		console.log(user);
-		const response = await Axios.get(`/open-api/v1/iam/roles`, {
-			headers: {
+
+		const response = await Axios.get(
+			`/open-api/v1/iam/roles`, {
+				params: {
+					keyword: payload.keyword || null ,
+					// maxGrants 임시 설정 : 0
+					maxGrants: 0 || null ,
+				},
+				headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,
 				Range: payload.range,
 			},
-			params: {
-				keyword: payload.keyword,
-				maxGrants: payload.maxGrants,
-			},
+
 			baseURL: baseUrl.openApi,
 		});
 		return response.data;
@@ -144,75 +145,77 @@ const slice = createSlice({
 	},
 	reducers: {},
 	extraReducers: {
-		[createAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[createAction.fulfilled]: (state, action) => {
-			state.loading = false;
-		},
-		[createAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-		[updateAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[updateAction.fulfilled]: (state, action) => {
-			state.loading = false;
-		},
-		[updateAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-		[deleteAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[deleteAction.fulfilled]: (state, action) => {
-			state.loading = false;
-		},
-		[deleteAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-		[findByIdAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[findByIdAction.fulfilled]: (state, action) => {
-			state.loading = false;
-		},
-		[findByIdAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
+		// [createAction.pending]: (state) => {
+		// 	state.loading = true;
+		// },
+		// [createAction.fulfilled]: (state, action) => {
+		// 	state.loading = false;
+		// },
+		// [createAction.rejected]: (state, action) => {
+		// 	state.error = action.payload;
+		// 	state.loading = false;
+		// },
+		// [updateAction.pending]: (state) => {
+		// 	state.loading = true;
+		// },
+		// [updateAction.fulfilled]: (state, action) => {
+		// 	state.loading = false;
+		// },
+		// [updateAction.rejected]: (state, action) => {
+		// 	state.error = action.payload;
+		// 	state.loading = false;
+		// },
+		// [deleteAction.pending]: (state) => {
+		// 	state.loading = true;
+		// },
+		// [deleteAction.fulfilled]: (state, action) => {
+		// 	state.loading = false;
+		// },
+		// [deleteAction.rejected]: (state, action) => {
+		// 	state.error = action.payload;
+		// 	state.loading = false;
+		// },
+		// [findByIdAction.pending]: (state) => {
+		// 	state.loading = true;
+		// },
+		// [findByIdAction.fulfilled]: (state, action) => {
+		// 	state.loading = false;
+		// },
+		// [findByIdAction.rejected]: (state, action) => {
+		// 	state.error = action.payload;
+		// 	state.loading = false;
+		// },
 		[getsAction.pending]: (state) => {
 			state.loading = true;
 		},
 		[getsAction.fulfilled]: (state, action) => {
+			state.roles = action.payload
 			state.loading = false;
+
 		},
 		[getsAction.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
 		},
-		[getEventsAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[getEventsAction.fulfilled]: (state, action) => {
-			state.loading = false;
-		},
-		[getEventsAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
+		// [getEventsAction.pending]: (state) => {
+		// 	state.loading = true;
+		// },
+		// [getEventsAction.fulfilled]: (state, action) => {
+		// 	state.loading = false;
+		// },
+		// [getEventsAction.rejected]: (state, action) => {
+		// 	state.error = action.payload;
+		// 	state.loading = false;
+		// },
 	},
 });
 
 const selectAllState = createSelector(
 	(state) => state.roles,
-	(roles) => {
-		return {
-			roles,
-		};
+	(state) => state.error,
+	(state) => state.loading,
+	(roles, error, loading) => {
+		return {roles, error, loading};
 	},
 );
 
@@ -222,11 +225,12 @@ const IAM_ROLES = {
 	selector: (state) => selectAllState(state[slice.name]),
 	action: slice.actions,
 	asyncAction: {
+		getsAction,
 		createAction,
 		updateAction,
 		deleteAction,
 		findByIdAction,
-		getsAction,
+		// getsAction,
 		getEventsAction,
 	},
 };

@@ -233,7 +233,12 @@ const Table = ({
 								return (
 									<Draggable
 										key={`${tableKey} ${index}`}
-										draggableId={`${tableKey} ${index}`}
+										draggableId={
+											row.original.userUid
+												? row.original.userUid
+												: row.original.id ||
+												`${tableKey} ${index}`
+										}
 										isDragDisabled={!isDraggable}
 										index={index}
 									>
@@ -266,6 +271,18 @@ const Table = ({
 															? 'even'
 															: 'odd'
 													}`}
+													id={
+														row.original.userUid
+															? row.original
+																.userUid
+															: row.original.id
+													}
+													key={
+														row.original.userUid
+															? row.original
+																.userUid
+															: row.original.id
+													}
 												>
 													{row.cells.map(
 														(cell, i) => {

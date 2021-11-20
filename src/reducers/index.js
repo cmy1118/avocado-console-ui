@@ -16,11 +16,12 @@ import DIALOG_BOX from './dialogBoxs';
 import CURRENT_TARGET from './currentTarget';
 import RRM_RESOURCE from './api/RRM/Resource/resource';
 import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
-import IAM_ROLES from './api/ PAM/Role/roles';
+import IAM_ROLES from './api/IAM/User/Role/roles';
 import {persistReducer} from 'redux-persist';
 
 const userFilter = createFilter(AUTH_USER.name, ['companyId', 'user']);
 const iamUserFilter = createFilter(IAM_USER.name, ['users']);
+const iamRolesFilter = createFilter(IAM_ROLES.name, ['roles']);
 const iamGroupFilter = createFilter(IAM_USER_GROUP.name, ['groups']);
 const iamGroupTypeFilter = createFilter(IAM_USER_GROUP_TYPE.name, [
 	'groupTypes',
@@ -34,8 +35,9 @@ const persistConfig = {
 		IAM_USER.name,
 		IAM_USER_GROUP.name,
 		IAM_USER_GROUP_TYPE.name,
+		IAM_ROLES.name,
 	],
-	transforms: [userFilter, iamUserFilter, iamGroupFilter, iamGroupTypeFilter],
+	transforms: [userFilter, iamUserFilter, iamGroupFilter, iamGroupTypeFilter,iamRolesFilter],
 };
 
 const rootReducer = combineReducers({
