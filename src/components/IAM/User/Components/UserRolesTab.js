@@ -20,11 +20,12 @@ import DragContainer from '../../../Table/DragContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
+import IAM_ROLES_GRANT_ROLE_USER from "../../../../reducers/api/IAM/User/Role/GrantRole/user";
 
 const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
-	const {roles} = useSelector(IAM_ROLES.selector);
+	const {roles} = useSelector(IAM_ROLES_GRANT_ROLE_USER.selector);
 	const [select, setSelect] = useState({});
 	const user = useMemo(() => users.find((v) => v.userUid === userId), [
 		users,
@@ -33,27 +34,31 @@ const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
+	console.log(includedDataIds);
+
 	const includedData = useMemo(() => {
-		return [];
-		// return roles
-		// 	.filter((v) => includedDataIds.includes(v.id))
-		// 	.map((v) => ({
-		// 		...v,
-		// 		type: roleTypeConverter(v.companyId),
-		// 		numberOfUsers: v.users.length,
-		// 	}));
-	}, []);
+		return (
+			roles
+			.filter((v) => includedDataIds.includes(v.id))
+			.map((v) => ({
+				...v,
+				type: roleTypeConverter(v.companyId),
+				numberOfUsers: v.users.length,
+			}))  || []
+		);
+	}, [includedDataIds, roles]);
 
 	const excludedData = useMemo(() => {
-		return [];
 
-		// return roles
-		// 	.filter((v) => !includedDataIds.includes(v.id))
-		// 	.map((v) => ({
-		// 		...v,
-		// 		type: roleTypeConverter(v.companyId),
-		// 		numberOfUsers: v.users.length,
-		// 	}));
+		return (
+			roles
+			.filter((v) => !includedDataIds.includes(v.id))
+			.map((v) => ({
+				...v,
+				type: roleTypeConverter(v.companyId),
+				numberOfUsers: v.users.length,
+			})) || []
+		);
 	}, []);
 
 	const onClickDeleteRolesFromUser = useCallback(() => {
