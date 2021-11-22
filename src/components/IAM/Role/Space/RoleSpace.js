@@ -34,9 +34,9 @@ const RoleSpace = () => {
 					range: page[tableKeys.roles.basic],
 				}),
 			);
-
+console.log('select:',select);
 		}
-	}, [dispatch, page]);
+	}, [dispatch, page, select]);
 
 
 	return (

@@ -21,9 +21,12 @@ import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_ROLES_GRANT_ROLE_USER from "../../../../reducers/api/IAM/User/Role/GrantRole/user";
+import IAM_USER_GROUP from "../../../../reducers/api/IAM/User/Group/group";
+import PAGINATION from "../../../../reducers/pagination";
 
-const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
+const UserRolesTab = ({userId, space, isFold, setIsFold,isSummaryOpened}) => {
 	const dispatch = useDispatch();
+	const {page} = useSelector(PAGINATION.selector);
 	const {users} = useSelector(IAM_USER.selector);
 	const {roles} = useSelector(IAM_ROLES_GRANT_ROLE_USER.selector);
 	const [select, setSelect] = useState({});
@@ -59,7 +62,7 @@ const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 				numberOfUsers: v.users.length,
 			})) || []
 		);
-	}, []);
+	}, [includedDataIds, roles]);
 
 	const onClickDeleteRolesFromUser = useCallback(() => {
 		dispatch(
@@ -99,9 +102,24 @@ const UserRolesTab = ({userId, space, isFold, setIsFold}) => {
 		);
 	}, [dispatch, select, userId]);
 
-	// useEffect(() => {
-	// 	setIncludedDataIds(user.roles);
-	// }, [user.roles]);
+	useEffect(() => {
+		console.log(!isSummaryOpened);
+		if (
+			!isSummaryOpened &&
+			page[tableKeys.users.summary.tabs.roles.include] &&
+			user
+		) {
+			dispatch(
+				IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
+					range: page[tableKeys.users.summary.tabs.roles.include],
+				}),
+			);
+		}
+	}, [dispatch, isSummaryOpened, page, user]);
+
+	useEffect(()=>{
+		// if(includedDataIds)
+	},[includedDataIds])
 
 	return (
 		<TabContentContainer>
@@ -180,6 +198,8 @@ UserRolesTab.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
+	isSummaryOpened: PropTypes.bool,
+
 };
 
 export default UserRolesTab;
