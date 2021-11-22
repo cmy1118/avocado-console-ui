@@ -50,12 +50,15 @@ const Table = ({
 					value = _.get(row, accessor);
 				} else {
 					value = accessor(row);
-					// let maxValue = '';
-					// const temp = value;
-					// temp.split(/\r\n|\r|\n/).forEach((v) => {
-					// 	if (v.length > maxValue.length) maxValue = v;
-					// });
-					// value = maxValue;
+					if (typeof value === 'string' && value.includes('\n')) {
+						let maxValue = '';
+						const temp = value;
+						console.log(value);
+						temp.split('\n').forEach((v) => {
+							if (v.length > maxValue.length) maxValue = v;
+						});
+						value = maxValue;
+					}
 				}
 
 				if (typeof value === 'number') return value.toString().length;
@@ -237,7 +240,7 @@ const Table = ({
 											row.original.userUid
 												? row.original.userUid
 												: row.original.id ||
-												`${tableKey} ${index}`
+												  `${tableKey} ${index}`
 										}
 										isDragDisabled={!isDraggable}
 										index={index}
@@ -274,13 +277,13 @@ const Table = ({
 													id={
 														row.original.userUid
 															? row.original
-																.userUid
+																	.userUid
 															: row.original.id
 													}
 													key={
 														row.original.userUid
 															? row.original
-																.userUid
+																	.userUid
 															: row.original.id
 													}
 												>
