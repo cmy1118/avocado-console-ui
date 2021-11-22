@@ -25,6 +25,8 @@ const DragContainer = ({
 	includedKey,
 	excludedData,
 	includedData,
+	joinFunction,
+	disjointFunction,
 }) => {
 	const dispatch = useDispatch();
 	const [selectedItems, setSelectedItems] = useState([]);
@@ -152,21 +154,23 @@ const DragContainer = ({
 
 				console.log('selectedItems :: ', selectedItems);
 				if (destination.droppableId === includedKey) {
+					joinFunction && joinFunction(selectedItems);
 					setData([...data, ...selectedItems]);
-					//추가
 				} else {
+					disjointFunction && disjointFunction(selectedItems);
 					setData(data.filter((v) => !selectedItems.includes(v)));
-					// 제거
 				}
 			}
 		},
 		[
 			includedKey,
-			onDropCheckMaxNumber,
 			selectedItems,
+			onDropCheckMaxNumber,
 			data,
 			onDropCheckTypeLimited,
+			joinFunction,
 			setData,
+			disjointFunction,
 		],
 	);
 
@@ -181,6 +185,8 @@ DragContainer.propTypes = {
 	selected: PropTypes.object,
 	data: PropTypes.array,
 	setData: PropTypes.func,
+	joinFunction: PropTypes.func,
+	disjointFunction: PropTypes.func,
 	includedKey: PropTypes.string,
 	excludedData: PropTypes.array,
 	includedData: PropTypes.array,

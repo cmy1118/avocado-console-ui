@@ -6,7 +6,6 @@ import Table from '../../../Table/Table';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
-import {parentGroupConverter} from '../../../../utils/tableDataConverter';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import {TableTitle} from '../../../../styles/components/table';
 import {
@@ -18,7 +17,6 @@ import TableFold from '../../../Table/Options/TableFold';
 import TableContainer from '../../../Table/TableContainer';
 import DragContainer from '../../../Table/DragContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
-import {dummyDates} from '../../../../utils/dummyData';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
@@ -71,28 +69,33 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 		);
 	}, [groups, includedDataIds]);
 	//삭제
-	const onClickDeleteRolesFromUser = useCallback(() => {
-		console.log(select[tableKeys.users.summary.tabs.groups.include]);
-		select[tableKeys.users.summary.tabs.groups.include].forEach((v) => {
-			dispatch(
-				IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
-					groupId: v.id,
-					userUid: userId,
-				}),
-			);
-		});
-	}, [dispatch, select, userId]);
+	const onClickDeleteRolesFromUser = useCallback(
+		(data) => {
+			data.forEach((v) => {
+				dispatch(
+					IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
+						groupId: v,
+						userUid: userId,
+					}),
+				);
+			});
+		},
+		[dispatch, select, userId],
+	);
 
-	const onClickAddRolesToUser = useCallback(() => {
-		select[tableKeys.users.summary.tabs.groups.exclude].forEach((v) => {
-			dispatch(
-				IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
-					groupId: v.id,
-					userUid: [userId],
-				}),
-			);
-		});
-	}, [dispatch, select, userId]);
+	const onClickAddGroupToUser = useCallback(
+		(data) => {
+			data.forEach((v) => {
+				dispatch(
+					IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
+						groupId: v,
+						userUid: [userId],
+					}),
+				);
+			});
+		},
+		[dispatch, userId],
+	);
 
 	useEffect(() => {
 		console.log(page[tableKeys.users.summary.tabs.groups.include]);
@@ -119,12 +122,20 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 				includedKey={tableKeys.users.summary.tabs.groups.include}
 				excludedData={excludedData}
 				includedData={includedData}
+				joinFunction={onClickAddGroupToUser}
+				disjointFunction={onClickDeleteRolesFromUser}
 			>
 				<TableTitle>
 					이 사용자의 그룹: {includedData.length}{' '}
 					<TransparentButton
 						margin='0px 0px 0px 5px'
-						onClick={onClickDeleteRolesFromUser}
+						onClick={() =>
+							onClickDeleteRolesFromUser(
+								select[
+									tableKeys.users.summary.tabs.groups.include
+								].map((v) => v.id),
+							)
+						}
 					>
 						삭제
 					</TransparentButton>
@@ -152,7 +163,14 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 					>
 						<NormalButton
 							margin='0px 0px 0px 5px'
-							onClick={onClickAddRolesToUser}
+							onClick={() =>
+								onClickAddGroupToUser(
+									select[
+										tableKeys.users.summary.tabs.groups
+											.exclude
+									].map((v) => v.id),
+								)
+							}
 						>
 							그룹 추가
 						</NormalButton>

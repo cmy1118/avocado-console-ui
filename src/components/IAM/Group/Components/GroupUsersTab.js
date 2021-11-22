@@ -61,16 +61,19 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 			}));
 	}, [includedDataIds, users]);
 
-	const onClickDeleteRolesFromGroup = useCallback(() => {
-		dispatch(
-			IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
-				groupId: groupId,
-				userUid: select[
-					tableKeys.groups.summary.tabs.users.include
-				].map((v) => v.userUid),
-			}),
-		);
-	}, [dispatch, groupId, select]);
+	const onClickDeleteRolesFromGroup = useCallback(
+		(data) => {
+			dispatch(
+				IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
+					groupId: groupId,
+					userUid: select[
+						tableKeys.groups.summary.tabs.users.include
+					].map((v) => v.userUid),
+				}),
+			);
+		},
+		[dispatch, groupId, select],
+	);
 
 	const onClickAddRolesToGroup = useCallback(() => {
 		dispatch(
