@@ -139,6 +139,7 @@ const slice = createSlice({
 		[userAuthAction.fulfilled]: (state, action) => {
 			state.loading = false;
 			state.user = action.payload;
+			state.isLoggedIn = true;
 		},
 		[userAuthAction.rejected]: (state, action) => {
 			state.loading = false;
@@ -178,6 +179,7 @@ const slice = createSlice({
 			//TODO: authAuth, clientAuth 지워줘야 할까?? 경하님께 물어보기
 			// state.clientAuth = null;
 			state.userAuth = action.payload;
+			state.isLoggedIn = true;
 		},
 		[altAuthVerificationAction.rejected]: (state, action) => {
 			state.loading = false;
@@ -189,26 +191,38 @@ const slice = createSlice({
 		},
 		[logoutAction.fulfilled]: (state) => {
 			state.loading = false;
-			state.user = null;
+			state.userAuth = null;
+			state.isLoggedIn = false;
 		},
 		[logoutAction.rejected]: (state, action) => {
 			state.loading = false;
-			state.user = null;
+			state.userAuth = null;
 			state.error = action.error;
+			state.isLoggedIn = false;
 		},
 	},
 });
 
 const selectAllState = createSelector(
 	(state) => state.companyId,
+	(state) => state.isLoggedIn,
 	(state) => state.userAuth,
 	(state) => state.clientAuth,
 	(state) => state.alternativeAuth,
 	(state) => state.error,
 	(state) => state.loading,
-	(companyId, userAuth, clientAuth, alternativeAuth, error, loading) => {
+	(
+		companyId,
+		isLoggedIn,
+		userAuth,
+		clientAuth,
+		alternativeAuth,
+		error,
+		loading,
+	) => {
 		return {
 			companyId,
+			isLoggedIn,
 			userAuth,
 			clientAuth,
 			alternativeAuth,

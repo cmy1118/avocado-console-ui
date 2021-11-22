@@ -18,7 +18,11 @@ import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
 import IAM_ROLES from './api/IAM/User/Role/roles';
 import {persistReducer} from 'redux-persist';
 
-const userFilter = createFilter(AUTH.name, ['companyId', 'userAuth']);
+const userFilter = createFilter(AUTH.name, [
+	'companyId',
+	'userAuth',
+	'isLoggedIn',
+]);
 
 const persistConfig = {
 	key: 'root',
@@ -30,7 +34,6 @@ const persistConfig = {
 const rootReducer = combineReducers({
 	[SETTING.name]: SETTING.reducer,
 	[IAM_CLIENT.name]: IAM_CLIENT.reducer,
-
 	[AUTH.name]: AUTH.reducer,
 	/******************************************/
 	/* seob : IAM - User reducers
@@ -51,7 +54,6 @@ const rootReducer = combineReducers({
     /******************************************/
 	[CURRENT_TARGET.name]: CURRENT_TARGET.reducer,
 	/******************************************/
-
 	[DIALOG_BOX.name]: DIALOG_BOX.reducer,
 });
 

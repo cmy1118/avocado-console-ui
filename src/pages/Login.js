@@ -58,13 +58,6 @@ const _Logo = styled.div`
 
 const Login = ({match}) => {
 	const history = useHistory();
-	const {userAuth} = useSelector(Auth.selector);
-
-	useEffect(() => {
-		if (userAuth) {
-			history.push('/');
-		}
-	}, [history, userAuth]);
 
 	useEffect(() => {
 		if (

@@ -20,15 +20,6 @@ const _Container = styled.div`
 `;
 
 const Layout = ({children}) => {
-	const history = useHistory();
-	const {userAuth, companyId} = useSelector(Auth.selector);
-
-	useEffect(() => {
-		if (!userAuth) {
-			history.push('/login/' + companyId);
-		}
-	}, [userAuth, companyId]);
-
 	return (
 		<_Container>
 			<Header />

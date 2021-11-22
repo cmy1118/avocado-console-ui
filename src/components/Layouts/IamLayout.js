@@ -44,15 +44,7 @@ const _MainSpace = styled.div`
 `;
 
 const IamLayout = ({children}) => {
-	const history = useHistory();
-	const {userAuth, companyId} = useSelector(Auth.selector);
 	const [isNavOpened, setIsNavOpened] = useState(true);
-
-	useEffect(() => {
-		if (!userAuth) {
-			history.push('/login/' + companyId);
-		}
-	}, [userAuth, companyId, history]);
 
 	return (
 		<DragDropContext>

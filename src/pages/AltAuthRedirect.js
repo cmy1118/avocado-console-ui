@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import background from '../images/background/bg-img-1@2x.png';
 import {useDispatch, useSelector} from 'react-redux';
 import Auth from '../reducers/api/Auth/auth';
-import IAM_USER_GROUP from '../reducers/api/IAM/User/Group/group';
 import {useHistory} from 'react-router-dom';
 
 const _Container = styled.div`
@@ -22,7 +21,7 @@ const _Container = styled.div`
 
 const AltAuthRedirect = () => {
 	const dispatch = useDispatch();
-	const history = useHistory();
+	// const history = useHistory();
 
 	const {userAuth, clientAuth, alternativeAuth} = useSelector(Auth.selector);
 
@@ -41,11 +40,11 @@ const AltAuthRedirect = () => {
 		dispatch(Auth.asyncAction.GoogleAuthAction());
 	}, [dispatch]);
 
-	useEffect(() => {
-		if (userAuth) {
-			history.push('/');
-		}
-	}, [history, userAuth]);
+	// useEffect(() => {
+	// 	if (userAuth) {
+	// 		history.push('/');
+	// 	}
+	// }, [history, userAuth]);
 
 	return <_Container></_Container>;
 };
