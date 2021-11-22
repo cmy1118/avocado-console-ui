@@ -96,20 +96,20 @@ const getsAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		const response = await Axios.get(
-			`/open-api/v1/iam/roles`, {
-				params: {
-					keyword: payload.keyword || null ,
-					// maxGrants 임시 설정 : 0
-					maxGrants: 0 || null ,
-				},
-				headers: {
+		const response = await Axios.get(`/open-api/v1/iam/roles`, {
+			params: {
+				keyword: payload.keyword || null,
+				// maxGrants 임시 설정 : 0
+				maxGrants: 0 || null,
+			},
+			headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,
 				Range: payload.range,
 			},
 
 			baseURL: baseUrl.openApi,
 		});
+		console.log('ROLE_getsAction:', response.data);
 		return response.data;
 	},
 );
@@ -189,9 +189,8 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[getsAction.fulfilled]: (state, action) => {
-			state.roles = action.payload
+			state.roles = action.payload;
 			state.loading = false;
-
 		},
 		[getsAction.rejected]: (state, action) => {
 			state.error = action.payload;

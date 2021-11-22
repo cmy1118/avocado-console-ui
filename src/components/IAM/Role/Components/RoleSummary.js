@@ -13,7 +13,7 @@ import Table from '../../../Table/Table';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import PropTypes from 'prop-types';
-import IAM_ROLES from '../../../../reducers/api/ PAM/Role/roles';
+import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import TableContainer from '../../../Table/TableContainer';
 
 import {useHistory} from 'react-router-dom';

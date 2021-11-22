@@ -12,8 +12,8 @@ import TabBar from '../../TabBar';
 import RolePolicyTab from '../Components/RolePolicyTab';
 import RoleUserTab from '../Components/RoleUserTab';
 import RoleGroupTab from '../Components/RoleGroupTab';
-import {useSelector} from 'react-redux';
-import IAM_ROLES from '../../../../reducers/api/ PAM/Role/roles';
+import {useDispatch, useSelector} from 'react-redux';
+import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import {HoverIconButton, IconButton} from '../../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
 import {
@@ -39,10 +39,15 @@ import {
 	TitleBarButtons,
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
+import {tableKeys} from '../../../../Constants/Table/keys';
+import PAGINATION from '../../../../reducers/pagination';
 
 const RoleDescriptionSpace = ({roleId}) => {
+	const dispatch = useDispatch();
 	const history = useHistory();
 	const {search} = useLocation();
+	const {page} = useSelector(PAGINATION.selector);
+
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const role = useMemo(() => roles.find((v) => v.id === roleId), [
 		roles,
@@ -87,6 +92,15 @@ const RoleDescriptionSpace = ({roleId}) => {
 		history.push(`${roleId}`);
 	}, [roleId, role, history]);
 
+	useEffect(() => {
+		if (page[tableKeys.roles.basic]) {
+			dispatch(
+				IAM_ROLES.asyncAction.getsAction({
+					range: page[tableKeys.roles.basic],
+				}),
+			);
+		}
+	}, [dispatch, page]);
 	return (
 		<IamContainer>
 			<CurrentPathBar>

@@ -29,6 +29,7 @@ const DragContainer = ({
 	const dispatch = useDispatch();
 	const [selectedItems, setSelectedItems] = useState([]);
 
+	console.log('✅ data:', data);
 	/***************************************************************************/
 	/* DndTable_update : 유형별 조건에 맞는 경고 알림추가
 	/*

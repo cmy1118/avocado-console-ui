@@ -6,11 +6,22 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import TableContainer from '../../../Table/TableContainer';
-import {CurrentPathBar, CurrentPathBarLink, NextPath,} from '../../../../styles/components/currentPathBar';
-import {NormalButton, TransparentButton,} from '../../../../styles/components/buttons';
+import {
+	CurrentPathBar,
+	CurrentPathBarLink,
+	NextPath,
+} from '../../../../styles/components/currentPathBar';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../../styles/components/buttons';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
-import {IamContainer, TitleBar, TitleBarButtons,} from '../../../../styles/components/iam/iam';
-import PAGINATION from "../../../../reducers/pagination";
+import {
+	IamContainer,
+	TitleBar,
+	TitleBarButtons,
+} from '../../../../styles/components/iam/iam';
+import PAGINATION from '../../../../reducers/pagination';
 
 const RoleSpace = () => {
 	const dispatch = useDispatch();
@@ -20,9 +31,9 @@ const RoleSpace = () => {
 	const data = useMemo(() => {
 		return (
 			roles?.map((v) => ({
-			...v,
-			roleType: v.type,
-			numberOfPermissions: v.policies?.length,
+				...v,
+				roleType: v.type,
+				numberOfPermissions: v.policies?.length,
 			})) || []
 		);
 	}, [roles]);
@@ -34,10 +45,8 @@ const RoleSpace = () => {
 					range: page[tableKeys.roles.basic],
 				}),
 			);
-console.log('select:',select);
 		}
-	}, [dispatch, page, select]);
-
+	}, [dispatch, page]);
 
 	return (
 		<IamContainer>
