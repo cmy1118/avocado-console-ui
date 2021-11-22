@@ -45,6 +45,7 @@ const GroupTypeSpace = () => {
 		setData([
 			...data,
 			{
+				id: tableKeys.groups.type + data.length,
 				name: '',
 				numberOfGroups: 0,
 				description: '',

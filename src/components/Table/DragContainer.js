@@ -149,11 +149,12 @@ const DragContainer = ({
 						return;
 					}
 				}
+
+				console.log('selectedItems :: ', selectedItems);
 				if (destination.droppableId === includedKey) {
 					setData([...data, ...selectedItems]);
 					//추가
 				} else {
-					console.log(data);
 					setData(data.filter((v) => !selectedItems.includes(v)));
 					// 제거
 				}
