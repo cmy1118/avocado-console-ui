@@ -40,9 +40,6 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 		user?.groupIds || [],
 	);
 
-	console.log(includedDataIds);
-	console.log(groups);
-
 	const includedData = useMemo(() => {
 		return (
 			groups

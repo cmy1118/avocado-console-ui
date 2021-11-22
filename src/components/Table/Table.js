@@ -50,12 +50,14 @@ const Table = ({
 					value = _.get(row, accessor);
 				} else {
 					value = accessor(row);
-					// let maxValue = '';
-					// const temp = value;
-					// temp.split(/\r\n|\r|\n/).forEach((v) => {
-					// 	if (v.length > maxValue.length) maxValue = v;
-					// });
-					// value = maxValue;
+					if (typeof value === 'string' && value.includes('\n')) {
+						let maxValue = '';
+						const temp = value;
+						temp.split('\n').forEach((v) => {
+							if (v.length > maxValue.length) maxValue = v;
+						});
+						value = maxValue;
+					}
 				}
 
 				if (typeof value === 'number') return value.toString().length;
@@ -232,12 +234,15 @@ const Table = ({
 								prepareRow(row);
 								return (
 									<Draggable
-										key={`${tableKey} ${index}`}
+										key={
+											row.original.userUid
+												? row.original.userUid
+												: row.original.id
+										}
 										draggableId={
 											row.original.userUid
 												? row.original.userUid
-												: row.original.id ||
-												`${tableKey} ${index}`
+												: row.original.id
 										}
 										isDragDisabled={!isDraggable}
 										index={index}
@@ -266,21 +271,19 @@ const Table = ({
 																: row.original
 																		.id,
 														) && 'selected'
-													} ${
-														index % 2 === 0
-															? 'even'
-															: 'odd'
-													}`}
+													}
+													 ${index % 2 === 0 ? 'even' : 'odd'}
+													`}
 													id={
 														row.original.userUid
 															? row.original
-																.userUid
+																	.userUid
 															: row.original.id
 													}
 													key={
 														row.original.userUid
 															? row.original
-																.userUid
+																	.userUid
 															: row.original.id
 													}
 												>

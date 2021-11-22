@@ -38,7 +38,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 		() =>
 			readOnlyData[tableKeys.users.add.groups.exclude]?.map((v) => ({
 				...v,
-				roles: rolesConverter(v.roles),
+				// roles: rolesConverter(v.roles),
 			})),
 		[readOnlyData],
 	);
