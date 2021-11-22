@@ -78,6 +78,8 @@ const LoginForm = () => {
 
 	const onSubmitLogin = useCallback(
 		(v) => {
+			if (!v.id || !v.password) return;
+
 			dispatch(
 				AUTH_USER.asyncAction.loginAction({
 					username: v.id,
@@ -147,7 +149,12 @@ const LoginForm = () => {
 					<CheckBox
 						onClick={onClickRememberPassword}
 						label={'비밀번호 기억하기'}
-						checked={rememberMe}
+						checked={rememberMe === 'true'}
+						onChange={() =>
+							setRememberMe(
+								rememberMe === 'true' ? 'true' : 'false',
+							)
+						}
 					/>
 					<a href={'/password'}>패스워드 찾기</a>
 				</_CheckBoxContainer>
