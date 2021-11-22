@@ -82,6 +82,7 @@ const AddUser = ({setIsOpened}) => {
 						사용자 생성
 					</NormalButton>
 					<TransparentButton
+						type={'button'}
 						margin='0px 0px 0px 5px'
 						onClick={onClickCancelAddUser}
 					>

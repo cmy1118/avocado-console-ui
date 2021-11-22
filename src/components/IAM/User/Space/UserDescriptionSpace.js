@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useHistory, useLocation} from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import qs from 'qs';
 
 import UserInfoTab from '../Components/UserInfoTab';
@@ -46,6 +46,7 @@ import {
 
 const UserDescriptionSpace = ({userId}) => {
 	console.log(userId);
+	const dispatch = useDispatch();
 	const history = useHistory();
 	const {search} = useLocation();
 	const {users} = useSelector(IAM_USER.selector);
@@ -82,6 +83,15 @@ const UserDescriptionSpace = ({userId}) => {
 	const onClickLinkToAddUserPage = useCallback(() => {
 		history.push('/users/add');
 	}, [history]);
+
+	const onClickDeleteGroup = useCallback(() => {
+		dispatch(
+			IAM_USER.asyncAction.deleteAction({
+				userUid: userId,
+			}),
+		);
+		console.log('경로 이동 처리 필요!');
+	}, [dispatch, userId]);
 
 	// if userId does not exist, direct to 404 page
 	// useEffect(() => {
@@ -121,7 +131,10 @@ const UserDescriptionSpace = ({userId}) => {
 							<NormalButton onClick={onClickLinkToAddUserPage}>
 								사용자 생성
 							</NormalButton>
-							<TransparentButton margin={'0px 0px 0px 5px'}>
+							<TransparentButton
+								onClick={onClickDeleteGroup}
+								margin={'0px 0px 0px 5px'}
+							>
 								삭제
 							</TransparentButton>
 						</TitleBarButtons>

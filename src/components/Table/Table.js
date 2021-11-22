@@ -53,7 +53,6 @@ const Table = ({
 					if (typeof value === 'string' && value.includes('\n')) {
 						let maxValue = '';
 						const temp = value;
-						console.log(value);
 						temp.split('\n').forEach((v) => {
 							if (v.length > maxValue.length) maxValue = v;
 						});

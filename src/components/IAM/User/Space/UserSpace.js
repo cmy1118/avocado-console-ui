@@ -53,12 +53,15 @@ const UserSpace = () => {
 	}, [history]);
 
 	const onClickDeleteUsers = useCallback(() => {
-		console.log(select[tableKeys.users.basic]);
-		dispatch(
-			IAM_USER.asyncAction.deleteAction({
-				userUid: select[tableKeys.users.basic][0].userUid,
-			}),
-		);
+		if (select[tableKeys.users.basic][0]) {
+			select[tableKeys.users.basic].forEach((v) => {
+				dispatch(
+					IAM_USER.asyncAction.deleteAction({
+						userUid: v.userUid,
+					}),
+				);
+			});
+		}
 	}, [dispatch, select]);
 
 	useEffect(() => {
