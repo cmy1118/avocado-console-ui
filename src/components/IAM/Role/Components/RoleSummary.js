@@ -56,7 +56,7 @@ const RoleSummary = ({Id, param, setIsOpened}) => {
 
 	const groupData = useMemo(() => {
 		return groups
-			.filter((v) => role.groups.includes(v.id))
+			?.filter((v) => role.groups?.includes(v.id))
 			.map((v, i) => ({
 				...v,
 				clientGroupType: groupTypes.find(
