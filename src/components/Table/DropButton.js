@@ -181,7 +181,7 @@ const DropButton = ({
 		rightDataIds &&
 			selectId &&
 			setRightDataIds(rightDataIds.filter((v) => !selectId.includes(v)));
-	}, [RightTableKey, leftTableKey, rightDataIds, select, setRightDataIds]);
+	}, [RightTableKey, rightDataIds, select, setRightDataIds]);
 
 	return (
 		<ColDiv>

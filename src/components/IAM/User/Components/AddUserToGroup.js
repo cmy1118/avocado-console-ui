@@ -47,6 +47,9 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 		);
 	}, [groups, includedDataIds]);
 
+	console.log('excludedData ::', excludedData);
+	console.log('includedData ::', includedData);
+
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({

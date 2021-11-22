@@ -234,12 +234,15 @@ const Table = ({
 								prepareRow(row);
 								return (
 									<Draggable
-										key={`${tableKey} ${index}`}
+										key={
+											row.original.userUid
+												? row.original.userUid
+												: row.original.id
+										}
 										draggableId={
 											row.original.userUid
 												? row.original.userUid
-												: row.original.id ||
-												  `${tableKey} ${index}`
+												: row.original.id
 										}
 										isDragDisabled={!isDraggable}
 										index={index}
@@ -268,11 +271,9 @@ const Table = ({
 																: row.original
 																		.id,
 														) && 'selected'
-													} ${
-														index % 2 === 0
-															? 'even'
-															: 'odd'
-													}`}
+													}
+													 ${index % 2 === 0 ? 'even' : 'odd'}
+													`}
 													id={
 														row.original.userUid
 															? row.original

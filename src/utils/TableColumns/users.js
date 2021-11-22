@@ -164,7 +164,7 @@ export const USER_ADD_GROUPS_INCLUDE_COLUMN = [
 	},
 	{
 		Header: '그룹 유형',
-		accessor: 'type', //has to be changed
+		accessor: 'userGroupType', //has to be changed
 	},
 ];
 
