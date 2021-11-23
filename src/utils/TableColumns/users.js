@@ -428,6 +428,7 @@ export const USER_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 		},
 	},
 	{Header: '역할 유형', accessor: 'type'},
+	{Header: '역할 아이디', accessor: 'id'},
 	{Header: '설명', accessor: 'description', width: 400},
 	{
 		Header: '사용자 수',

@@ -14,6 +14,7 @@ import TableOptionText from '../../../Table/Options/TableOptionText';
 import TableContainer from '../../../Table/TableContainer';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {TitleBarButtons} from '../../../../styles/components/iam/iam';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const GroupOnDescPageTags = ({groupId}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -28,7 +29,7 @@ const GroupOnDescPageTags = ({groupId}) => {
 				...v,
 				id: v.name,
 				numberOfPermissions: v.permissions.length,
-				DRAGGABLE_KEY: v.id,
+				[DRAGGABLE_KEY]: v.id,
 			};
 		}) || [],
 	);

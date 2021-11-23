@@ -27,6 +27,7 @@ import {
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const UserSpace = () => {
 	const history = useHistory();
@@ -44,7 +45,7 @@ const UserSpace = () => {
 				status: v.status.code,
 				createdTime: v.createdTag.createdTime,
 				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
-				DRAGGABLE_KEY: v.userUid,
+				[DRAGGABLE_KEY]: v.userUid,
 			})) || []
 		);
 	}, [users]);

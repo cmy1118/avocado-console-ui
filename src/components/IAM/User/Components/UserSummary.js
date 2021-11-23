@@ -20,6 +20,7 @@ import {
 	SummaryTablesContainer,
 	SummaryTableTitle,
 } from '../../../../styles/components/iam/descriptionPage';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const UserSummary = ({Id, param, setIsOpened}) => {
 	const dispatch = useDispatch();
@@ -57,7 +58,7 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 				...v,
 				userGroupType: v.userGroupType.name,
 				parentGroup: v.parentGroup.name,
-				DRAGGABLE_KEY: v.id,
+				[DRAGGABLE_KEY]: v.id,
 			}));
 		// return groups
 		// 	.filter((v) => user.groups.includes(v.id))

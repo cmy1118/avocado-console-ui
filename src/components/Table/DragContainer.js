@@ -12,6 +12,7 @@ import {
 } from '../../utils/dataFitering';
 import styled from 'styled-components';
 import {confirmAlertMessages} from '../../utils/alertMessage';
+import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
 
 const Container = styled(DragDropContext)`
 	height: 300px;
@@ -116,7 +117,7 @@ const DragContainer = ({
 	const onDragStart = useCallback(
 		(result) => {
 			const items = selected[result.source.droppableId]?.map(
-				(v) => v.DRAGGABLE_KEY,
+				(v) => v[DRAGGABLE_KEY],
 				// v.userUid ? v.userUid : v.id,
 			);
 

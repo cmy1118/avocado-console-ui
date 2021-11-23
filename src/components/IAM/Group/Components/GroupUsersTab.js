@@ -20,6 +20,7 @@ import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import {usePrevState} from '../../../../hooks/usePrevState';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -49,7 +50,7 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 				...v,
 				numberOfGroups: v.groupIds ? v.groupIds.length : 0,
 				createdTime: v.createdTag.createdTime,
-				DRAGGABLE_KEY: v.userUid,
+				[DRAGGABLE_KEY]: v.userUid,
 			}));
 	}, [includedDataIds, users]);
 
@@ -60,7 +61,7 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 				...v,
 				numberOfGroups: v.groupIds ? v.groupIds.length : 0,
 				createdTime: v.createdTag.createdTime,
-				DRAGGABLE_KEY: v.userUid,
+				[DRAGGABLE_KEY]: v.userUid,
 			}));
 	}, [includedDataIds, users]);
 

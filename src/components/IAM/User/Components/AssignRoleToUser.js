@@ -16,6 +16,7 @@ import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import CURRENT_TARGET from '../../../../reducers/currentTarget';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
-				DRAGGABLE_KEY: v.roleId,
+				[DRAGGABLE_KEY]: v.roleId,
 				// numberOfUsers: v.users.length,
 			}));
 	}, [includedDataIds, roles]);
@@ -44,7 +45,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
-				DRAGGABLE_KEY: v.roleId,
+				[DRAGGABLE_KEY]: v.roleId,
 			}));
 	}, [includedDataIds, roles]);
 

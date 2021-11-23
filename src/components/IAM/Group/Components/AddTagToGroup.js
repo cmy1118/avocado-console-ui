@@ -16,6 +16,8 @@ import {
 	FoldableContainer,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
+
 
 const AddTagToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -48,7 +50,7 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 				...v,
 				id: v?.name,
 				numberOfPermissions: v?.permissions.length,
-				DRAGGABLE_KEY: v.id,
+				[DRAGGABLE_KEY]: v.id,
 			};
 		});
 	}, [data]);

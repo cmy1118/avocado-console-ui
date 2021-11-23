@@ -6,6 +6,7 @@ import {RowDiv} from '../../styles/components/style';
 import {Draggable, Droppable} from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import * as _ from 'lodash';
+import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
 
 const Tds = styled(RowDiv)`
 	align-items: center;
@@ -238,13 +239,13 @@ const Table = ({
 											// row.original.userUid
 											// 	? row.original.userUid
 											// 	: row.original.id
-											row.original.DRAGGABLE_KEY
+											row.original[DRAGGABLE_KEY]
 										}
 										draggableId={
 											// row.original.userUid
 											// 	? row.original.userUid
 											// 	: row.original.id
-											row.original.DRAGGABLE_KEY
+											row.original[DRAGGABLE_KEY]
 										}
 										isDragDisabled={!isDraggable}
 										index={index}
@@ -273,7 +274,7 @@ const Table = ({
 															// 	: row.original
 															// 			.id,
 															row.original
-																.DRAGGABLE_KEY,
+																[DRAGGABLE_KEY],
 														) && 'selected'
 													}
 													 ${index % 2 === 0 ? 'even' : 'odd'}
@@ -283,8 +284,9 @@ const Table = ({
 														// 	? row.original
 														// 			.userUid
 														// 	: row.original.id
-														row.original
-															.DRAGGABLE_KEY
+														row.original[
+															DRAGGABLE_KEY
+														]
 													}
 													key={
 														row.original.userUid

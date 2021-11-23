@@ -16,6 +16,7 @@ import TableOptionsBar from '../../../Table/TableOptionsBar';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 				.map((v) => ({
 					...v,
 					userGroupType: v.userGroupType.name,
-					DRAGGABLE_KEY: v.id,
+					[DRAGGABLE_KEY]: v.id,
 				})) || []
 		);
 	}, [groups, includedDataIds]);
@@ -44,7 +45,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 				.map((v) => ({
 					...v,
 					userGroupType: v.userGroupType.name,
-					DRAGGABLE_KEY: v.id,
+					[DRAGGABLE_KEY]: v.id,
 				})) || []
 		);
 	}, [groups, includedDataIds]);

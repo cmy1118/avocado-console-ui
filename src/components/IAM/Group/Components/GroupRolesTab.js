@@ -20,6 +20,8 @@ import DragContainer from '../../../Table/DragContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
+
 
 const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -39,7 +41,7 @@ const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 				...v,
 				type: roleTypeConverter(v.companyId),
 				numberOfUsers: v.groups.length,
-				DRAGGABLE_KEY: v.roleId,
+				[DRAGGABLE_KEY]: v.roleId,
 			}));
 	}, [roles, includedDataIds]);
 
@@ -50,7 +52,7 @@ const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 				...v,
 				type: roleTypeConverter(v.companyId),
 				numberOfUsers: v.groups.length,
-				DRAGGABLE_KEY: v.roleId,
+				[DRAGGABLE_KEY]: v.roleId,
 			}));
 	}, [roles, includedDataIds]);
 

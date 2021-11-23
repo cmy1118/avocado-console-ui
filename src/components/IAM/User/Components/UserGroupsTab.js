@@ -21,6 +21,7 @@ import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 					name: v.name,
 					type: v.userGroupType.name,
 					parentGroup: v.parentGroup.name,
-					DRAGGABLE_KEY: v.id,
+					[DRAGGABLE_KEY]: v.id,
 				})) || []
 		);
 	}, [groups, includedDataIds]);
@@ -65,7 +66,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 					name: v.name,
 					type: v.userGroupType.name,
 					parentGroup: v.parentGroup.name,
-					DRAGGABLE_KEY: v.id,
+					[DRAGGABLE_KEY]: v.id,
 				})) || []
 		);
 	}, [groups, includedDataIds]);

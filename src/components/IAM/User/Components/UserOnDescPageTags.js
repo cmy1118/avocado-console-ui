@@ -36,7 +36,7 @@ const UserOnDescPageTags = ({userId}) => {
 		// 		...v,
 		// 		id: v.name,
 		// 		numberOfPermissions: v.permissions.length,
-		// DRAGGABLE_KEY: v.userUid,
+		// [DRAGGABLE_KEY] v.userUid,
 		// 	};
 		// }) || [],
 	);

@@ -22,6 +22,8 @@ import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
+// import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys'
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -40,15 +42,16 @@ const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const includedData = useMemo(() => {
 		return userRoles
 			? userRoles
-					.filter((v) => includedDataIds?.includes(v.roleId))
+					// .filter((v) => includedDataIds?.includes(v.roleId))
 					?.map((v) => ({
 						...v,
 						type: roleTypeConverter(v.companyId),
 						// numberOfUsers: v.users?.length,
-						DRAGGABLE_KEY: v.roleId,
+						name: '임시역할',
+						[DRAGGABLE_KEY]: v.roleId,
 					}))
 			: [];
-	}, [includedDataIds, userRoles]);
+	}, [userRoles]);
 
 	const excludedData = useMemo(() => {
 		return roles
@@ -59,7 +62,7 @@ const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 						...v,
 						type: roleTypeConverter(v.companyId),
 						// numberOfUsers: v.users?.length,
-						DRAGGABLE_KEY: v.id,
+						[DRAGGABLE_KEY]: v.id,
 					}))
 			: [];
 	}, [includedDataIds, roles]);
