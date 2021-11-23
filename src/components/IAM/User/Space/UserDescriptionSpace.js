@@ -90,7 +90,6 @@ const UserDescriptionSpace = ({userId}) => {
 				userUid: userId,
 			}),
 		);
-		console.log('경로 이동 처리 필요!');
 	}, [dispatch, userId]);
 
 	// if userId does not exist, direct to 404 page

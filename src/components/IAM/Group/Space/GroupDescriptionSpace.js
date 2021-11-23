@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import GroupSummary from '../Components/GroupSummary';
@@ -42,6 +42,7 @@ import {
 } from '../../../../styles/components/iam/iam';
 
 const GroupDescriptionSpace = ({groupId}) => {
+	const dispatch = useDispatch();
 	const history = useHistory();
 	const {search} = useLocation();
 
@@ -83,6 +84,15 @@ const GroupDescriptionSpace = ({groupId}) => {
 	const onClickChangeGroupName = useCallback(() => {
 		setIsOpened(true);
 	}, [setIsOpened]);
+
+	const onClickDeleteGroup = useCallback(() => {
+		dispatch(
+			IAM_USER_GROUP.asyncAction.deleteAction({
+				id: groupId,
+			}),
+		);
+	}, [dispatch, groupId]);
+
 	// if groupId does not exist, direct to 404 page
 	useEffect(() => {
 		if (groupId && !group) {
@@ -123,7 +133,10 @@ const GroupDescriptionSpace = ({groupId}) => {
 							<NormalButton onClick={onClickChangeGroupName}>
 								그룹 생성
 							</NormalButton>
-							<TransparentButton margin={'0px 0px 0px 5px'}>
+							<TransparentButton
+								onClick={onClickDeleteGroup}
+								margin={'0px 0px 0px 5px'}
+							>
 								삭제
 							</TransparentButton>
 						</TitleBarButtons>

@@ -48,9 +48,16 @@ const GroupSpace = () => {
 	}, [history]);
 
 	const onClickDeleteGroup = useCallback(() => {
-		console.log(select);
-		console.log('여기서 api 요청');
-	}, [select]);
+		if (select[tableKeys.groups.basic][0]) {
+			select[tableKeys.groups.basic].forEach((v) => {
+				dispatch(
+					IAM_USER_GROUP.asyncAction.deleteAction({
+						id: v.id,
+					}),
+				);
+			});
+		}
+	}, [dispatch, select]);
 
 	useEffect(() => {
 		page[tableKeys.groups.basic] &&
