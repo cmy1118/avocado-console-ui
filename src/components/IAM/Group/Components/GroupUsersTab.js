@@ -19,6 +19,7 @@ import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
+import {usePrevState} from '../../../../hooks/usePrevState';
 
 const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -30,12 +31,16 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 		groups,
 		groupId,
 	]);
+
 	const [includedDataIds, setIncludedDataIds] = useState(
 		members.map((v) => v.userUid) || [],
 	);
 
-	console.log(users);
-	console.log(members);
+	const prevIncludedDataIds = usePrevState(includedDataIds);
+	const prevSelect = usePrevState(select);
+
+	// console.log(users);
+	// console.log(members);
 
 	const includedData = useMemo(() => {
 		return users
@@ -99,6 +104,16 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 			}),
 		);
 	}, [dispatch, groupId]);
+
+	// useEffect(() => {
+	// 	console.log('✅ prevIncludedDataIds:', prevIncludedDataIds);
+	// 	console.log('✅ includedDataIds:', includedDataIds);
+	// }, [includedDataIds]);
+	//
+	// useEffect(() => {
+	// 	console.log('🅾️ prevSelect:', prevSelect);
+	// 	console.log('🅾️ select:', select);
+	// }, [select]);
 
 	return (
 		<TabContentContainer>

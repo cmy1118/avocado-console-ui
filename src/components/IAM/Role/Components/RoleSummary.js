@@ -13,7 +13,7 @@ import Table from '../../../Table/Table';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import PropTypes from 'prop-types';
-import IAM_ROLES from '../../../../reducers/api/ PAM/Role/roles';
+import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import TableContainer from '../../../Table/TableContainer';
 
 import {useHistory} from 'react-router-dom';
@@ -35,7 +35,7 @@ const RoleSummary = ({Id, param, setIsOpened}) => {
 
 	const userData = useMemo(() => {
 		return users
-			.filter((v) => role.users.includes(v.userUid))
+			?.filter((v) => role.users?.includes(v.userUid))
 			.map((v, i) => ({
 				...v,
 				numberOfGroups: v.groups.length,
@@ -56,7 +56,7 @@ const RoleSummary = ({Id, param, setIsOpened}) => {
 
 	const groupData = useMemo(() => {
 		return groups
-			.filter((v) => role.groups.includes(v.id))
+			?.filter((v) => role.groups?.includes(v.id))
 			.map((v, i) => ({
 				...v,
 				clientGroupType: groupTypes.find(
