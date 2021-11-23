@@ -24,6 +24,7 @@ import PAGINATION from '../../../../reducers/pagination';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 // import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys'
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
+import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 
 const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -48,6 +49,7 @@ const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 						type: roleTypeConverter(v.companyId),
 						// numberOfUsers: v.users?.length,
 						name: '임시역할',
+						// rold_info: v.roleId,
 						[DRAGGABLE_KEY]: v.roleId,
 					}))
 			: [];
@@ -61,49 +63,82 @@ const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 					.map((v) => ({
 						...v,
 						type: roleTypeConverter(v.companyId),
+						// rold_info: v.id,
 						// numberOfUsers: v.users?.length,
 						[DRAGGABLE_KEY]: v.id,
 					}))
 			: [];
 	}, [includedDataIds, roles]);
 
-	const onClickDeleteRolesFromUser = useCallback(() => {
-		dispatch(
-			IAM_USER.action.deleteRolesFromUser({
-				userUid: userId,
-				roles: Object.keys(
-					select[tableKeys.users.summary.tabs.roles.include],
-				),
-			}),
-		);
-		dispatch(
-			IAM_ROLES.action.deleteRolesFromUser({
-				userUid: userId,
-				roles: Object.keys(
-					select[tableKeys.users.summary.tabs.roles.include],
-				),
-			}),
-		);
-	}, [dispatch, select, userId]);
+	// const onClickDeleteRolesFromUser = useCallback(() => {
+	// 	dispatch(
+	// 		IAM_USER.action.deleteRolesFromUser({
+	// 			userUid: userId,
+	// 			roles: Object.keys(
+	// 				select[tableKeys.users.summary.tabs.roles.include],
+	// 			),
+	// 		}),
+	// 	);
+	// 	dispatch(
+	// 		IAM_ROLES.action.deleteRolesFromUser({
+	// 			userUid: userId,
+	// 			roles: Object.keys(
+	// 				select[tableKeys.users.summary.tabs.roles.include],
+	// 			),
+	// 		}),
+	// 	);
+	// }, [dispatch, select, userId]);
 
-	const onClickAddRolesToUser = useCallback(() => {
-		dispatch(
-			IAM_USER.action.addRolesToUser({
-				userUid: userId,
-				roles: Object.keys(
-					select[tableKeys.users.summary.tabs.roles.exclude],
-				),
-			}),
-		);
-		dispatch(
-			IAM_ROLES.action.addRolesToUser({
-				userUid: userId,
-				roles: Object.keys(
-					select[tableKeys.users.summary.tabs.roles.exclude],
-				),
-			}),
-		);
-	}, [dispatch, select, userId]);
+	// const onClickAddRolesToUser = useCallback(() => {
+	// 	dispatch(
+	// 		IAM_USER.action.addRolesToUser({
+	// 			userUid: userId,
+	// 			roles: Object.keys(
+	// 				select[tableKeys.users.summary.tabs.roles.exclude],
+	// 			),
+	// 		}),
+	// 	);
+	// 	dispatch(
+	// 		IAM_ROLES.action.addRolesToUser({
+	// 			userUid: userId,
+	// 			roles: Object.keys(
+	// 				select[tableKeys.users.summary.tabs.roles.exclude],
+	// 			),
+	// 		}),
+	// 	);
+	// }, [dispatch, select, userId]);
+
+	//button 동작
+
+	//사용자 롤 제거
+	const onClickDeleteRolesFromUser = useCallback(
+		(data) => {
+			data.forEach((v) => {
+				dispatch(
+					IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
+						roleId: v,
+						userUid: userId,
+					}),
+				);
+			});
+		},
+		[dispatch, userId],
+	);
+
+	//사용자 롤추가
+	const onClickAddRolesToUser = useCallback(
+		(data) => {
+			data.forEach((v) => {
+				dispatch(
+					IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
+						roleId: v,
+						userUid: [userId],
+					}),
+				);
+			});
+		},
+		[dispatch, userId],
+	);
 
 	useEffect(() => {
 		if (
@@ -149,7 +184,7 @@ const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 				이 사용자의 권한: {includedData.length}{' '}
 				<TransparentButton
 					margin='0px 0px 0px 5px'
-					onClick={onClickDeleteRolesFromUser}
+					// onClick={onClickDeleteRolesFromUser}
 				>
 					삭제
 				</TransparentButton>
@@ -161,6 +196,8 @@ const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 				includedKey={tableKeys.users.summary.tabs.roles.include}
 				excludedData={excludedData}
 				includedData={includedData}
+				joinFunction={onClickAddRolesToUser}
+				disjointFunction={onClickDeleteRolesFromUser}
 			>
 				<TableContainer
 					data={includedData}

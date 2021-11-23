@@ -108,6 +108,26 @@ const slice = createSlice({
 	},
 	reducers: {},
 	extraReducers: {
+		[grantAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[grantAction.fulfilled]: (state, action) => {
+			state.loading = false;
+		},
+		[grantAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
+		[revokeAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[revokeAction.fulfilled]: (state, action) => {
+			state.loading = false;
+		},
+		[revokeAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
 		[getsAction.pending]: (state) => {
 			state.loading = true;
 		},

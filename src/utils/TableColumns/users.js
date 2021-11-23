@@ -419,6 +419,9 @@ export const USER_SUMMARY_TAG_COLUMN = [
 ];
 
 export const USER_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
+	//임시추가
+	// {Header: '역할 아이디', accessor: 'rold_info'},
+
 	{
 		Header: '역할 이름',
 		accessor: 'name',
@@ -441,6 +444,9 @@ export const USER_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 ];
 
 export const USER_SUMMARY_TABS_ROLES_INCLUDE_COLUMN = [
+	//임시추가
+	// {Header: '역할 아이디', accessor: 'rold_info'},
+
 	{
 		Header: '역할 이름',
 		accessor: 'name',
