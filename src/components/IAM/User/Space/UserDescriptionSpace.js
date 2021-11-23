@@ -44,12 +44,11 @@ import {
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
 
-const UserDescriptionSpace = ({userId}) => {
-	console.log(userId);
+const UserDescriptionSpace = ({userUid}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {search} = useLocation();
-	const {users} = useSelector(IAM_USER.selector);
+	const {user} = useSelector(IAM_USER.selector);
 
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
@@ -61,24 +60,19 @@ const UserDescriptionSpace = ({userId}) => {
 		{name: '태그', href: 'tag'},
 	];
 
-	const user = useMemo(() => users.find((v) => v.userUid === userId), [
-		users,
-		userId,
-	]);
-
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
 		if (isSummaryOpened) {
 			history.push({
-				pathname: `/users/${userId}`,
+				pathname: `/users/${userUid}`,
 				search: 'tabs=user',
 			});
 		} else {
 			history.push({
-				pathname: `/users/${userId}`,
+				pathname: `/users/${userUid}`,
 			});
 		}
-	}, [history, isSummaryOpened, userId]);
+	}, [history, isSummaryOpened, userUid]);
 
 	const onClickLinkToAddUserPage = useCallback(() => {
 		history.push('/users/add');
@@ -87,18 +81,18 @@ const UserDescriptionSpace = ({userId}) => {
 	const onClickDeleteGroup = useCallback(() => {
 		dispatch(
 			IAM_USER.asyncAction.deleteAction({
-				userUid: userId,
+				userUid: userUid,
 			}),
 		);
-	}, [dispatch, userId]);
+	}, [dispatch, userUid]);
 
-	// if userId does not exist, direct to 404 page
-	// useEffect(() => {
-	// if (userId && !user) {
-	// 	history.push('/404');
-	// }
-	// history.push(`${userId}`);
-	// }, [userId, user, history]);
+	useEffect(() => {
+		dispatch(
+			IAM_USER.asyncAction.findByUidAction({
+				userUid: userUid,
+			}),
+		);
+	}, [dispatch, userUid]);
 
 	return (
 		<IamContainer>
@@ -107,7 +101,7 @@ const UserDescriptionSpace = ({userId}) => {
 				<NextPath>{' > '}</NextPath>
 				<CurrentPathBarLink to='/users'>사용자</CurrentPathBarLink>
 				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to={`/users/${userId}`}>
+				<CurrentPathBarLink to={`/users/${userUid}`}>
 					{user?.name}
 				</CurrentPathBarLink>
 			</CurrentPathBar>
@@ -150,7 +144,9 @@ const UserDescriptionSpace = ({userId}) => {
 						<LiText>
 							마지막 콘솔 로그인 : {user?.lastConsoleLogin}
 						</LiText>
-						<LiText>생성 일시 : {user?.creationDate}</LiText>
+						<LiText>
+							생성 일시 : {user?.createdTag.createdTime}
+						</LiText>
 						<LiText>
 							계정 사용기간 :{' '}
 							{expiredConverter(user?.accountExpiryTime)}
@@ -164,7 +160,7 @@ const UserDescriptionSpace = ({userId}) => {
 
 				<CoveredByTabContent isOpened={isSummaryOpened}>
 					<UserSummary
-						Id={userId}
+						userUid={userUid}
 						param={'users'}
 						setIsOpened={setIsSummaryOpened}
 					/>
@@ -174,19 +170,19 @@ const UserDescriptionSpace = ({userId}) => {
 					<TabBar
 						Tabs={TabBarInfo}
 						param={'users'}
-						Id={userId}
+						id={userUid}
 						isOpened={isSummaryOpened}
 						setIsOpened={setIsSummaryOpened}
 					/>
 
 					<TabContentSpace>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'user' && <UserInfoTab userId={userId} />}
+							'user' && <UserInfoTab userUid={userUid} />}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'group' && (
 							<UserGroupsTab
 								title
-								userId={userId}
+								userUid={userUid}
 								space={'UserGroupsTab'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
@@ -196,7 +192,7 @@ const UserDescriptionSpace = ({userId}) => {
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'role' && (
 							<UserRolesTab
-								userId={userId}
+								userUid={userUid}
 								space={'UserRolesTab'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
@@ -206,7 +202,7 @@ const UserDescriptionSpace = ({userId}) => {
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'tag' && (
 							<UserOnDescPageTags
-								userId={userId}
+								userUid={userUid}
 								space={'UserOnDescPageTags'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
@@ -221,7 +217,7 @@ const UserDescriptionSpace = ({userId}) => {
 };
 
 UserDescriptionSpace.propTypes = {
-	userId: PropTypes.string.isRequired,
+	userUid: PropTypes.string.isRequired,
 };
 
 export default UserDescriptionSpace;

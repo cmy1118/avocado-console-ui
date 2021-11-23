@@ -36,6 +36,8 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 		members.map((v) => v.userUid) || [],
 	);
 
+	console.log(members);
+
 	const prevIncludedDataIds = usePrevState(includedDataIds);
 	const prevSelect = usePrevState(select);
 

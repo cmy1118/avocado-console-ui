@@ -134,6 +134,7 @@ const findAllAction = createAsyncThunk(
 				userUid: payload.userUid,
 				id: payload.id,
 				accountExpiryTime: payload.accountExpiryTime,
+				passwordExpiryTime: payload.passwordExpiryTime,
 				createdTime: payload.createdTime,
 			},
 			headers: {
@@ -142,6 +143,7 @@ const findAllAction = createAsyncThunk(
 			},
 			baseURL: baseUrl.openApi,
 		});
+		console.log(response);
 		return response.data;
 	},
 );
@@ -149,6 +151,7 @@ const findAllAction = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
+		user: null,
 		users: [],
 		loading: false,
 		error: null,
@@ -203,6 +206,8 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByUidAction.fulfilled]: (state, action) => {
+			state.user = action.payload;
+
 			state.loading = false;
 		},
 		[findByUidAction.rejected]: (state, action) => {
@@ -226,10 +231,11 @@ const slice = createSlice({
 
 const selectAllState = createSelector(
 	(state) => state.users,
+	(state) => state.user,
 	(state) => state.error,
 	(state) => state.loading,
-	(users, error, loading) => {
-		return {users, error, loading};
+	(users, user, error, loading) => {
+		return {users, user, error, loading};
 	},
 );
 

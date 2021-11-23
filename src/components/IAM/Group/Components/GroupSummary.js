@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 
 import Table from '../../../Table/Table';
@@ -17,32 +17,26 @@ import {
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 
-const GroupSummary = ({Id, param, setIsOpened}) => {
+const GroupSummary = ({groupId, param, setIsOpened}) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const {users} = useSelector(IAM_USER.selector);
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const {members} = useSelector(IAM_USER_GROUP_MEMBER.selector);
 	const {page} = useSelector(PAGINATION.selector);
-	const group = useMemo(() => groups.find((v) => v.id === Id), [groups, Id]);
+	const [groupUserMembers, setGroupUserMembers] = useState([]);
+
+	console.log(groupUserMembers);
 
 	const userData = useMemo(() => {
-		return users
-			.filter((v) => v.groupIds && v.groupIds.includes(Id))
-			.map((v, i) => ({
-				...v,
-				id: v.id,
-				name: v.name,
-				groupsLength: v.groupIds ? v.groupIds.length : 0,
-				status: v.status.code,
-				createdTime: v.createdTag.createdTime,
-				grantUser: members.find((x) => x.userUid === v.userUid)
-					?.grantedTag.userUid,
-
-				// groupsLength: v.groups.length,
-				// grantUser: dummyUsers[i],
-			}));
-	}, [Id, members, users]);
+		return groupUserMembers.map((v) => ({
+			...v,
+			id: v.id,
+			name: v.name,
+			groupsLength: v.groupIds ? v.groupIds.length : 0,
+			status: v.status.code,
+			createdTime: v.createdTag.createdTime,
+			// grantUser: groupUserMembers.find((x) => x.userUid === v.userUid)
+			// 	?.grantedTag.userUid,
+		}));
+	}, [groupUserMembers]);
 
 	const roleData = useMemo(() => dummyPolicyOnGroup, []);
 
@@ -61,26 +55,40 @@ const GroupSummary = ({Id, param, setIsOpened}) => {
 		(v) => () => {
 			setIsOpened(false);
 			history.push({
-				pathname: `/${param}/${Id}`,
+				pathname: `/${param}/${groupId}`,
 				search: `tabs=${v}`,
 			});
 		},
-		[setIsOpened, history, param, Id],
+		[setIsOpened, history, param, groupId],
 	);
 
 	useEffect(() => {
 		dispatch(
-			IAM_USER.asyncAction.findAllAction({
-				range: 'elements=0-50',
-			}),
-		);
-		dispatch(
 			IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
-				groupId: Id,
-				range: 'elements=0-50',
+				groupId: groupId,
+				range: 'elements=0-50', // todo : 상세 페이지는 페이지네이션이 없음 => how?
 			}),
-		);
-	}, [Id, dispatch]);
+		)
+			.unwrap()
+			.then((v) => v.map((x) => x.userUid))
+			.then(async (uids) => {
+				const arr = [];
+				for await (let value of uids) {
+					dispatch(
+						IAM_USER.asyncAction.findByUidAction({
+							userUid: value,
+						}),
+					)
+						.unwrap()
+						.then((data) => {
+							console.log(data);
+							arr.push(data);
+							if (arr.length === uids.length)
+								setGroupUserMembers(arr);
+						});
+				}
+			});
+	}, [dispatch, groupId]);
 
 	return (
 		<SummaryTablesContainer>
@@ -125,7 +133,7 @@ const GroupSummary = ({Id, param, setIsOpened}) => {
 };
 
 GroupSummary.propTypes = {
-	Id: PropTypes.string.isRequired,
+	groupId: PropTypes.string.isRequired,
 	param: PropTypes.string.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 };

@@ -9,7 +9,7 @@ const User = ({match}) => {
 	return match.path === '/users/add' ? (
 		<AddUserSpace />
 	) : match.params?.id ? (
-		<UserDescriptionSpace userId={match.params.id} />
+		<UserDescriptionSpace userUid={match.params.id} />
 	) : (
 		<UserSpace />
 	);

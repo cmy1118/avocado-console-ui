@@ -20,19 +20,19 @@ import DragContainer from '../../../Table/DragContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
-import IAM_ROLES_GRANT_ROLE_USER from "../../../../reducers/api/IAM/User/Role/GrantRole/user";
-import IAM_USER_GROUP from "../../../../reducers/api/IAM/User/Group/group";
-import PAGINATION from "../../../../reducers/pagination";
+import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
+import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
+import PAGINATION from '../../../../reducers/pagination';
 
-const UserRolesTab = ({userId, space, isFold, setIsFold,isSummaryOpened}) => {
+const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
 	const {users} = useSelector(IAM_USER.selector);
 	const {roles} = useSelector(IAM_ROLES_GRANT_ROLE_USER.selector);
 	const [select, setSelect] = useState({});
-	const user = useMemo(() => users.find((v) => v.userUid === userId), [
+	const user = useMemo(() => users.find((v) => v.userUid === userUid), [
 		users,
-		userId,
+		userUid,
 	]);
 
 	const [includedDataIds, setIncludedDataIds] = useState([]);
@@ -42,32 +42,31 @@ const UserRolesTab = ({userId, space, isFold, setIsFold,isSummaryOpened}) => {
 	const includedData = useMemo(() => {
 		return (
 			roles
-			.filter((v) => includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-				numberOfUsers: v.users.length,
-			}))  || []
+				.filter((v) => includedDataIds.includes(v.id))
+				.map((v) => ({
+					...v,
+					type: roleTypeConverter(v.companyId),
+					numberOfUsers: v.users.length,
+				})) || []
 		);
 	}, [includedDataIds, roles]);
 
 	const excludedData = useMemo(() => {
-
 		return (
 			roles
-			.filter((v) => !includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-				numberOfUsers: v.users.length,
-			})) || []
+				.filter((v) => !includedDataIds.includes(v.id))
+				.map((v) => ({
+					...v,
+					type: roleTypeConverter(v.companyId),
+					numberOfUsers: v.users.length,
+				})) || []
 		);
 	}, [includedDataIds, roles]);
 
 	const onClickDeleteRolesFromUser = useCallback(() => {
 		dispatch(
 			IAM_USER.action.deleteRolesFromUser({
-				userUid: userId,
+				userUid: userUid,
 				roles: Object.keys(
 					select[tableKeys.users.summary.tabs.roles.include],
 				),
@@ -75,18 +74,18 @@ const UserRolesTab = ({userId, space, isFold, setIsFold,isSummaryOpened}) => {
 		);
 		dispatch(
 			IAM_ROLES.action.deleteRolesFromUser({
-				userUid: userId,
+				userUid: userUid,
 				roles: Object.keys(
 					select[tableKeys.users.summary.tabs.roles.include],
 				),
 			}),
 		);
-	}, [dispatch, select, userId]);
+	}, [dispatch, select, userUid]);
 
 	const onClickAddRolesToUser = useCallback(() => {
 		dispatch(
 			IAM_USER.action.addRolesToUser({
-				userUid: userId,
+				userUid: userUid,
 				roles: Object.keys(
 					select[tableKeys.users.summary.tabs.roles.exclude],
 				),
@@ -94,13 +93,13 @@ const UserRolesTab = ({userId, space, isFold, setIsFold,isSummaryOpened}) => {
 		);
 		dispatch(
 			IAM_ROLES.action.addRolesToUser({
-				userUid: userId,
+				userUid: userUid,
 				roles: Object.keys(
 					select[tableKeys.users.summary.tabs.roles.exclude],
 				),
 			}),
 		);
-	}, [dispatch, select, userId]);
+	}, [dispatch, select, userUid]);
 
 	useEffect(() => {
 		console.log(!isSummaryOpened);
@@ -117,9 +116,9 @@ const UserRolesTab = ({userId, space, isFold, setIsFold,isSummaryOpened}) => {
 		}
 	}, [dispatch, isSummaryOpened, page, user]);
 
-	useEffect(()=>{
+	useEffect(() => {
 		// if(includedDataIds)
-	},[includedDataIds])
+	}, [includedDataIds]);
 
 	return (
 		<TabContentContainer>
@@ -194,12 +193,11 @@ const UserRolesTab = ({userId, space, isFold, setIsFold,isSummaryOpened}) => {
 };
 
 UserRolesTab.propTypes = {
-	userId: PropTypes.string.isRequired,
+	userUid: PropTypes.string.isRequired,
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
 	isSummaryOpened: PropTypes.bool,
-
 };
 
 export default UserRolesTab;

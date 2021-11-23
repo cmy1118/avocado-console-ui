@@ -82,7 +82,7 @@ const findByIdAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 
 		const response = await Axios.get(
-			`/open-api/v1/iam/user-groups/id/${payload.id}`,
+			`/open-api/v1/iam/user-groups/${payload.id}`,
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
@@ -117,6 +117,7 @@ const findAllAction = createAsyncThunk(
 			},
 			baseURL: baseUrl.openApi,
 		});
+		console.log(response);
 		return response.data;
 	},
 );
@@ -125,6 +126,7 @@ const slice = createSlice({
 	name: NAME,
 	initialState: {
 		groups: [],
+		members: [],
 		loading: false,
 		error: null,
 	},
@@ -167,6 +169,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByIdAction.fulfilled]: (state, action) => {
+			state.groups = state.groups.concat(action.payload);
 			state.loading = false;
 		},
 		[findByIdAction.rejected]: (state, action) => {

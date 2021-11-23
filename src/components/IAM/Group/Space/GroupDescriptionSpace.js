@@ -40,31 +40,26 @@ import {
 	TitleBarButtons,
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
+import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {search} = useLocation();
 
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
+	const {members} = useSelector(IAM_USER_GROUP_MEMBER.selector);
 
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isOpened, setIsOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
+	const [group, setGroup] = useState(null);
 
 	const TabBarInfo = [
 		{name: '사용자', href: 'user'},
 		{name: '권한', href: 'role'},
 		{name: '태그', href: 'tag'},
 	];
-
-	const group = useMemo(() => groups.find((v) => v.id === groupId) || {}, [
-		groups,
-		groupId,
-	]);
-
-	console.log(group);
 
 	let onClickFoldSummary;
 	onClickFoldSummary = useCallback(() => {
@@ -94,12 +89,25 @@ const GroupDescriptionSpace = ({groupId}) => {
 	}, [dispatch, groupId]);
 
 	// if groupId does not exist, direct to 404 page
+	// useEffect(() => {
+	// 	if (groupId && !group) {
+	// 		history.push('/404');
+	// 	}
+	// 	history.push(`${groupId}`);
+	// }, [groupId, group, history]);
+
 	useEffect(() => {
-		if (groupId && !group) {
-			history.push('/404');
-		}
-		history.push(`${groupId}`);
-	}, [groupId, group, history]);
+		dispatch(
+			IAM_USER_GROUP.asyncAction.findByIdAction({
+				id: groupId,
+			}),
+		)
+			.unwrap()
+			.then((v) => {
+				setGroup(v);
+			})
+			.catch((err) => console.log(err));
+	}, [dispatch, groupId]);
 
 	return (
 		<IamContainer>
@@ -144,14 +152,14 @@ const GroupDescriptionSpace = ({groupId}) => {
 
 					<SummaryList>
 						<LiText>그룹명 : {group?.name}</LiText>
-						<LiText>그룹 유형 : {group.userGroupType.name}</LiText>
+						<LiText>그룹 유형 : {group?.userGroupType.name}</LiText>
 						<LiText>생성 일시 : {group?.creationDate}</LiText>
 					</SummaryList>
 				</div>
 
 				<CoveredByTabContent isOpened={isSummaryOpened}>
 					<GroupSummary
-						Id={groupId}
+						groupId={groupId}
 						param={'groups'}
 						setIsOpened={setIsSummaryOpened}
 					/>
@@ -161,7 +169,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 					<TabBar
 						Tabs={TabBarInfo}
 						param={'groups'}
-						Id={groupId}
+						id={groupId}
 						isOpened={isSummaryOpened}
 						setIsOpened={setIsSummaryOpened}
 					/>

@@ -160,7 +160,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 					<TabBar
 						Tabs={TabBarInfo}
 						param={'roles'}
-						Id={roleId}
+						id={roleId}
 						isOpened={isSummaryOpened}
 						setIsOpened={setIsSummaryOpened}
 					/>

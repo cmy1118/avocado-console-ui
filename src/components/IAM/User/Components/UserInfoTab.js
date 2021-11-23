@@ -14,7 +14,7 @@ import {ColDiv, Label, RowDiv} from '../../../../styles/components/style';
 import {TableTitle} from '../../../../styles/components/table';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 
-const UserInfoTab = ({userId}) => {
+const UserInfoTab = ({userUid}) => {
 	const dispatch = useDispatch();
 	const [values, setValues] = useState({email: '', number: ''});
 	const saveRef = useRef(null);
@@ -25,9 +25,9 @@ const UserInfoTab = ({userId}) => {
 	const [isChangePasswordOpened, setIsChangePasswordOpened] = useState(false);
 	const {users} = useSelector(IAM_USER.selector);
 
-	const user = useMemo(() => users.find((v) => v.userUid === userId), [
+	const user = useMemo(() => users.find((v) => v.userUid === userUid), [
 		users,
-		userId,
+		userUid,
 	]);
 
 	const onClickSaveChangedInfo = useCallback((data) => {
@@ -50,7 +50,7 @@ const UserInfoTab = ({userId}) => {
 			const {name, email, telephone, mobile} = data;
 			dispatch(
 				IAM_USER.asyncAction.updateAction({
-					userUid: userId,
+					userUid: userUid,
 					name,
 					email,
 					telephone,
@@ -58,7 +58,7 @@ const UserInfoTab = ({userId}) => {
 				}),
 			);
 		},
-		[dispatch, userId],
+		[dispatch, userUid],
 	);
 
 	return (
@@ -208,7 +208,7 @@ const UserInfoTab = ({userId}) => {
 };
 
 UserInfoTab.propTypes = {
-	userId: PropTypes.string.isRequired,
+	userUid: PropTypes.string.isRequired,
 };
 
 export default UserInfoTab;

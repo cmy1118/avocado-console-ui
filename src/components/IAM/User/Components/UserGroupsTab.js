@@ -22,16 +22,22 @@ import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 
-const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
+const UserGroupsTab = ({
+	userUid,
+	space,
+	isFold,
+	setIsFold,
+	isSummaryOpened,
+}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {page} = useSelector(PAGINATION.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [select, setSelect] = useState({});
-	const user = useMemo(() => users.find((v) => v.userUid === userId), [
+	const user = useMemo(() => users.find((v) => v.userUid === userUid), [
 		users,
-		userId,
+		userUid,
 	]);
 
 	const [includedDataIds, setIncludedDataIds] = useState(
@@ -75,12 +81,12 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 				dispatch(
 					IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
 						groupId: v,
-						userUid: userId,
+						userUid: userUid,
 					}),
 				);
 			});
 		},
-		[dispatch, select, userId],
+		[dispatch, select, userUid],
 	);
 
 	const onClickAddGroupToUser = useCallback(
@@ -89,12 +95,12 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 				dispatch(
 					IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
 						groupId: v,
-						userUid: [userId],
+						userUid: [userUid],
 					}),
 				);
 			});
 		},
-		[dispatch, userId],
+		[dispatch, userUid],
 	);
 
 	useEffect(() => {
@@ -202,7 +208,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 };
 
 UserGroupsTab.propTypes = {
-	userId: PropTypes.string.isRequired,
+	userUid: PropTypes.string.isRequired,
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,

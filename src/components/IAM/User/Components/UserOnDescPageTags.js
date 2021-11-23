@@ -23,11 +23,11 @@ const _TableSpace = styled(TableTitle)`
 	height: 30px;
 `;
 
-const UserOnDescPageTags = ({userId}) => {
+const UserOnDescPageTags = ({userUid}) => {
 	const {users} = useSelector(IAM_USER.selector);
-	const user = useMemo(() => users.find((v) => v.userUid === userId), [
+	const user = useMemo(() => users.find((v) => v.userUid === userUid), [
 		users,
-		userId,
+		userUid,
 	]);
 	const [data, setData] = useState(
 		[],
@@ -189,7 +189,7 @@ const UserOnDescPageTags = ({userId}) => {
 };
 
 UserOnDescPageTags.propTypes = {
-	userId: PropTypes.string,
+	userUid: PropTypes.string,
 };
 
 export default UserOnDescPageTags;

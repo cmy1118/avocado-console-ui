@@ -1,17 +1,11 @@
 import PropTypes from 'prop-types';
-import {parentGroupConverter} from '../../../../utils/tableDataConverter';
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
-import {
-	dummyDates,
-	dummyPolicyOnUser,
-	dummyUsers,
-} from '../../../../utils/dummyData';
+import {dummyPolicyOnUser} from '../../../../utils/dummyData';
 
 import TableContainer from '../../../Table/TableContainer';
 import Table from '../../../Table/Table';
@@ -20,37 +14,30 @@ import {
 	SummaryTablesContainer,
 	SummaryTableTitle,
 } from '../../../../styles/components/iam/descriptionPage';
+import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 
-const UserSummary = ({Id, param, setIsOpened}) => {
+const UserSummary = ({userUid, param, setIsOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const {users} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const {user} = useSelector(IAM_USER.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
-
-	const user = useMemo(() => users.find((v) => v.userUid === Id), [
-		users,
-		Id,
-	]);
-
-	console.log(user);
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
 			setIsOpened(false);
 			history.push({
-				pathname: `/${param}/${Id}`,
+				pathname: `/${param}/${userUid}`,
 				search: `tabs=${v}`,
 			});
 		},
-		[setIsOpened, history, param, Id],
+		[setIsOpened, history, param, userUid],
 	);
 
 	const groupData = useMemo(() => {
-		console.log(groups);
 		return groups
 			.filter((v) =>
-				user.groupIds
+				user?.groupIds
 					? user.groupIds.includes(v.id)
 					: [].includes(v.id),
 			)
@@ -59,22 +46,6 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 				userGroupType: v.userGroupType.name,
 				parentGroup: v.parentGroup.name,
 			}));
-		// return groups
-		// 	.filter((v) => user.groups.includes(v.id))
-		// 	.map((v, i) => ({
-		// 		...v,
-		// 		clientGroupType: groupTypes.find(
-		// 			(val) => val.id === v.clientGroupTypeId,
-		// 		).name,
-		// 		type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
-		// 			?.name,
-		// 		numberOfRoles: v.roles.length,
-		// 		parentGroup: parentGroupConverter(
-		// 			groups.find((val) => val.id === v.parentId)?.name,
-		// 		),
-		// 		grantDate: dummyDates[i],
-		// 		grantUser: dummyUsers[i],
-		// 	}));
 	}, [groups, user]);
 
 	const roleData = useMemo(() => dummyPolicyOnUser, []);
@@ -88,14 +59,26 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 		// }));
 	}, []);
 
+	// useEffect(() => {
+	// 	dispatch(
+	// 		IAM_USER_GROUP.asyncAction.findAllAction({
+	// 			ids: user.groupIds,
+	// range: 'elements=0-50',
+	// }),
+	// );
+	// }, [dispatch, user]);
+
 	useEffect(() => {
-		user &&
-			dispatch(
-				IAM_USER_GROUP.asyncAction.findAllAction({
-					// ids: user.groupIds,
-					range: 'elements=0-50',
-				}),
+		if (user && user.groupIds[0]) {
+			console.log(user.groupIds);
+			user.groupIds.forEach((v) =>
+				dispatch(
+					IAM_USER_GROUP.asyncAction.findByIdAction({
+						id: v,
+					}),
+				),
 			);
+		}
 	}, [dispatch, user]);
 
 	return (
@@ -140,7 +123,7 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 };
 
 UserSummary.propTypes = {
-	Id: PropTypes.string.isRequired,
+	userUid: PropTypes.string.isRequired,
 	param: PropTypes.string.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 };
