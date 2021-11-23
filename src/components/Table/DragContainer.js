@@ -115,7 +115,9 @@ const DragContainer = ({
 
 	const onDragStart = useCallback(
 		(result) => {
-			const items = selected[result.source.droppableId]?.map((v) => v.id);
+			const items = selected[result.source.droppableId]?.map((v) =>
+				v.userUid ? v.userUid : v.id,
+			);
 			if (items) {
 				if (items.includes(result.draggableId)) {
 					console.log('포함');

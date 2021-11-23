@@ -42,8 +42,6 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 			.filter((v) => includedDataIds.includes(v.userUid))
 			.map((v) => ({
 				...v,
-				id: v.id,
-				name: v.name,
 				numberOfGroups: v.groupIds ? v.groupIds.length : 0,
 				createdTime: v.createdTag.createdTime,
 			}));
@@ -54,37 +52,36 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 			.filter((v) => !includedDataIds.includes(v.userUid))
 			.map((v) => ({
 				...v,
-				id: v.id,
-				name: v.name,
 				numberOfGroups: v.groupIds ? v.groupIds.length : 0,
 				createdTime: v.createdTag.createdTime,
 			}));
 	}, [includedDataIds, users]);
 
-	const onClickDeleteRolesFromGroup = useCallback(
+	const onClickDeleteUsersFromGroup = useCallback(
 		(data) => {
+			console.log(data);
 			dispatch(
 				IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
 					groupId: groupId,
-					userUid: select[
-						tableKeys.groups.summary.tabs.users.include
-					].map((v) => v.userUid),
+					userUid: data,
 				}),
 			);
 		},
-		[dispatch, groupId, select],
+		[dispatch, groupId],
 	);
 
-	const onClickAddRolesToGroup = useCallback(() => {
-		dispatch(
-			IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
-				groupId: groupId,
-				userUid: select[
-					tableKeys.groups.summary.tabs.users.exclude
-				].map((v) => v.userUid),
-			}),
-		);
-	}, [dispatch, groupId, select]);
+	const onClickAddUsersToGroup = useCallback(
+		(data) => {
+			console.log(data);
+			dispatch(
+				IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
+					groupId: groupId,
+					userUid: data,
+				}),
+			);
+		},
+		[dispatch, groupId],
+	);
 
 	useEffect(() => {
 		dispatch(
@@ -112,12 +109,20 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 				includedKey={tableKeys.groups.summary.tabs.users.include}
 				excludedData={excludedData}
 				includedData={includedData}
+				joinFunction={onClickAddUsersToGroup}
+				disjointFunction={onClickDeleteUsersFromGroup}
 			>
 				<TableTitle>
 					이 그룹의 사용자 : {includedData.length}
 					<TransparentButton
 						margin='0px 0px 0px 5px'
-						onClick={onClickDeleteRolesFromGroup}
+						onClick={() =>
+							onClickDeleteUsersFromGroup(
+								select[
+									tableKeys.groups.summary.tabs.users.include
+								].map((v) => v.userUid),
+							)
+						}
 					>
 						사용자 삭제
 					</TransparentButton>
@@ -145,7 +150,14 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 					>
 						<NormalButton
 							margin='0px 0px 0px 5px'
-							onClick={onClickAddRolesToGroup}
+							onClick={() =>
+								onClickAddUsersToGroup(
+									select[
+										tableKeys.groups.summary.tabs.users
+											.exclude
+									].map((v) => v.userUid),
+								)
+							}
 						>
 							사용자 추가
 						</NormalButton>
