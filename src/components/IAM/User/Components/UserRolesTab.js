@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {roleTypeConverter} from '../../../../utils/tableDataConverter';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import IAM_ROLES from '../../../../reducers/api/ PAM/Role/roles';
+import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import Table from '../../../Table/Table';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
@@ -20,15 +20,16 @@ import DragContainer from '../../../Table/DragContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
-import IAM_ROLES_GRANT_ROLE_USER from "../../../../reducers/api/IAM/User/Role/GrantRole/user";
-import IAM_USER_GROUP from "../../../../reducers/api/IAM/User/Group/group";
-import PAGINATION from "../../../../reducers/pagination";
+import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
+import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
+import PAGINATION from '../../../../reducers/pagination';
 
-const UserRolesTab = ({userId, space, isFold, setIsFold,isSummaryOpened}) => {
+const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
 	const {users} = useSelector(IAM_USER.selector);
-	const {roles} = useSelector(IAM_ROLES_GRANT_ROLE_USER.selector);
+	const {roles} = useSelector(IAM_ROLES.selector);
+	const {userRoles} = useSelector(IAM_ROLES_GRANT_ROLE_USER.selector);
 	const [select, setSelect] = useState({});
 	const user = useMemo(() => users.find((v) => v.userUid === userId), [
 		users,
@@ -37,31 +38,32 @@ const UserRolesTab = ({userId, space, isFold, setIsFold,isSummaryOpened}) => {
 
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
-	console.log(includedDataIds);
+	console.log('roles?:', roles);
+	console.log('userRoles?:', userRoles);
 
 	const includedData = useMemo(() => {
-		return (
-			roles
-			.filter((v) => includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-				numberOfUsers: v.users.length,
-			}))  || []
-		);
+		return userRoles
+			? userRoles
+					.filter((v) => includedDataIds.includes(v.id))
+					.map((v) => ({
+						...v,
+						type: roleTypeConverter(v.companyId),
+						numberOfUsers: v.users?.length,
+					}))
+			: [];
 	}, [includedDataIds, roles]);
 
 	const excludedData = useMemo(() => {
-
-		return (
-			roles
-			.filter((v) => !includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-				numberOfUsers: v.users.length,
-			})) || []
-		);
+		return roles
+			? roles
+					.filter((n) => !userRoles?.includes(n.id))
+					.filter((v) => !includedDataIds.includes(v.id))
+					.map((v) => ({
+						...v,
+						type: roleTypeConverter(v.companyId),
+						numberOfUsers: v.users?.length,
+					}))
+			: [];
 	}, [includedDataIds, roles]);
 
 	const onClickDeleteRolesFromUser = useCallback(() => {
@@ -103,23 +105,29 @@ const UserRolesTab = ({userId, space, isFold, setIsFold,isSummaryOpened}) => {
 	}, [dispatch, select, userId]);
 
 	useEffect(() => {
-		console.log(!isSummaryOpened);
 		if (
 			!isSummaryOpened &&
 			page[tableKeys.users.summary.tabs.roles.include] &&
 			user
 		) {
-			dispatch(
-				IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
-					range: page[tableKeys.users.summary.tabs.roles.include],
-				}),
-			);
+			// dispatch(
+			// 	IAM_ROLES.asyncAction.getsAction({
+			// 		range: page[tableKeys.users.summary.tabs.roles.exclude],
+			// 	}),
+			// );
 		}
-	}, [dispatch, isSummaryOpened, page, user]);
-
-	useEffect(()=>{
-		// if(includedDataIds)
-	},[includedDataIds])
+		dispatch(
+			IAM_ROLES.asyncAction.getsAction({
+				range: page[tableKeys.users.summary.tabs.roles.exclude],
+			}),
+		);
+		dispatch(
+			IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
+				userUid: userId,
+				range: page[tableKeys.users.summary.tabs.roles.include],
+			}),
+		);
+	}, [dispatch, isSummaryOpened, page, user, userId]);
 
 	return (
 		<TabContentContainer>
@@ -199,7 +207,6 @@ UserRolesTab.propTypes = {
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
 	isSummaryOpened: PropTypes.bool,
-
 };
 
 export default UserRolesTab;

@@ -14,7 +14,8 @@ import DragContainer from '../../../Table/DragContainer';
 import TableContainer from '../../../Table/TableContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
-import PAGINATION from "../../../../reducers/pagination";
+import PAGINATION from '../../../../reducers/pagination';
+import CURRENT_TARGET from '../../../../reducers/currentTarget';
 
 const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -26,34 +27,36 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 
 	const excludedData = useMemo(() => {
 		// return [];
-		return (
-			roles?.filter((v) => !includedDataIds.includes(v.id))
-		.map((v) => ({
-			...v,
-			type: roleTypeConverter(v.companyId),
-			// numberOfUsers: v.users.length,
-		}))
-		);
+		return roles
+			?.filter((v) => !includedDataIds.includes(v.id))
+			.map((v) => ({
+				...v,
+				type: roleTypeConverter(v.companyId),
+				// numberOfUsers: v.users.length,
+			}));
 	}, [includedDataIds, roles]);
 
 	const includedData = useMemo(() => {
 		// return [];
-		return (
-			roles?.filter((v) => includedDataIds.includes(v.id))
-		.map((v) => ({
-			...v,
-			type: roleTypeConverter(v.companyId),
-		}))
-		);
+		return roles
+			?.filter((v) => includedDataIds.includes(v.id))
+			.map((v) => ({
+				...v,
+				type: roleTypeConverter(v.companyId),
+			}));
 	}, [includedDataIds, roles]);
-	// useEffect(() => {
-	// 	dispatch(
-	// 		CURRENT_TARGET.action.addReadOnlyData({
-	// 			title: tableKeys.users.add.roles.exclude,
-	// 			data: includedData,
-	// 		}),
-	// 	);
-	// }, [includedData, dispatch]);
+
+	//readonly 정보 추가
+	useEffect(() => {
+		dispatch(
+			CURRENT_TARGET.action.addReadOnlyData({
+				title: tableKeys.users.add.roles.exclude,
+				data: includedData,
+			}),
+		);
+	}, [includedData, dispatch]);
+
+	//Role 정보 조회
 	useEffect(() => {
 		if (page[tableKeys.roles.basic]) {
 			dispatch(

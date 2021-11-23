@@ -43,6 +43,15 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 		[readOnlyData],
 	);
 
+	const roleData = useMemo(
+		() =>
+			readOnlyData[tableKeys.users.add.roles.exclude]?.map((v) => ({
+				...v,
+				// roles: rolesConverter(v.roles),
+			})),
+		[readOnlyData],
+	);
+
 	return readOnlyData['user'] ? (
 		<ModalTableContainer
 			title={'사용자 생성 요약보기'}
@@ -80,7 +89,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 			<TableContainer
 				mode={'readOnly'}
 				tableKey={tableKeys.users.add.permissions}
-				data={dummyPolicyOnDialogBox}
+				data={roleData}
 				columns={tableColumns[tableKeys.users.add.permissions]}
 			>
 				<Table />
