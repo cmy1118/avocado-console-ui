@@ -81,10 +81,14 @@ export const ROLE_SUMMARY_PERMISSION_COLUMN = [
 	{
 		accessor: 'grantUser',
 		Header: '부여 사용자',
-		type:'users',
+		type: 'users',
 		Cell: function Component(cell) {
-			console.log('v?:',cell)
-			return<TableLink cell={cell} text={cell.value?.name + '(' + cell.value?.id + ')'}/>
+			return (
+				<TableLink
+					cell={cell}
+					text={cell.value?.name + '(' + cell.value?.id + ')'}
+				/>
+			);
 			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
@@ -106,16 +110,20 @@ export const ROLE_SUMMARY_USER_COLUMN = [
 	{
 		accessor: 'grantUser',
 		Header: '부여 사용자',
-		type:'users',
+		type: 'users',
 		Cell: function Component(cell) {
-			console.log('v?:',cell)
-			return<TableLink cell={cell} text={cell.value?.name + '(' + cell.value?.id + ')'}/>
+			return (
+				<TableLink
+					cell={cell}
+					text={cell.value?.name + '(' + cell.value?.id + ')'}
+				/>
+			);
 			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
 ];
 export const ROLE_SUMMARY_GROUP_COLUMN = [
-	{accessor: 'name', Header: '그룹 이름',},
+	{accessor: 'name', Header: '그룹 이름'},
 	{accessor: 'clientGroupType', Header: '그룹 유형'},
 	{accessor: 'numberOfPermissions', Header: '권한 수'},
 	{accessor: 'parentGroup', Header: '상위 그룹'},
@@ -124,10 +132,14 @@ export const ROLE_SUMMARY_GROUP_COLUMN = [
 	{
 		accessor: 'grantUser',
 		Header: '부여 사용자',
-		type:'users',
+		type: 'users',
 		Cell: function Component(cell) {
-			console.log('v?:',cell)
-			return<TableLink cell={cell} text={cell.value?.name + '(' + cell.value?.id + ')'}/>
+			return (
+				<TableLink
+					cell={cell}
+					text={cell.value?.name + '(' + cell.value?.id + ')'}
+				/>
+			);
 			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
@@ -145,9 +157,7 @@ export const ROLE_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
 ];
 //정책 x =>  권한 o
 export const ROLE_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
-	{accessor: 'name', Header: '정책 이름',
-		type:'roles',
-	},
+	{accessor: 'name', Header: '정책 이름', type: 'roles'},
 	{accessor: 'type', Header: ' 유형'},
 	{accessor: 'description', Header: '설명', width: 400},
 	{accessor: 'numberOfRoles', Header: '역할 연결 수'},
@@ -155,11 +165,14 @@ export const ROLE_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
 ];
 
 export const ROLE_SUMMARY_TABS_USERS_INCLUDE_COLUMN = [
-	{accessor: 'id', Header: '사용자 계정',
-		type:'users',
+	{
+		accessor: 'id',
+		Header: '사용자 계정',
+		type: 'users',
 		Cell: function Component(cell) {
-			return <TableLink cell={cell}/>;
-		},},
+			return <TableLink cell={cell} />;
+		},
+	},
 	{accessor: 'name', Header: '사용자 이름'},
 	{accessor: 'numberOfGroups', Header: '그룹 수'},
 	{accessor: 'lastConsoleLogin', Header: '마지막 콘솔 로그인'},
@@ -167,21 +180,28 @@ export const ROLE_SUMMARY_TABS_USERS_INCLUDE_COLUMN = [
 	{
 		accessor: 'grantUser',
 		Header: '부여 사용자',
-		type:'users',
+		type: 'users',
 		Cell: function Component(cell) {
-			console.log('v?:',cell)
-			return<TableLink cell={cell} text={cell.value?.name + '(' + cell.value?.id + ')'}/>
+			return (
+				<TableLink
+					cell={cell}
+					text={cell.value?.name + '(' + cell.value?.id + ')'}
+				/>
+			);
 			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
 ];
 
 export const ROLE_SUMMARY_TABS_USERS_EXCLUDE_COLUMN = [
-	{accessor: 'id', Header: '사용자 계정',
-		type:'users',
+	{
+		accessor: 'id',
+		Header: '사용자 계정',
+		type: 'users',
 		Cell: function Component(cell) {
-			return <TableLink cell={cell}/>;
-		},},
+			return <TableLink cell={cell} />;
+		},
+	},
 	{accessor: 'name', Header: '사용자 이름'},
 	{accessor: 'numberOfGroups', Header: '그룹 수'},
 	{accessor: 'lastConsoleLogin', Header: '마지막 콘솔 로그인'},
@@ -189,11 +209,14 @@ export const ROLE_SUMMARY_TABS_USERS_EXCLUDE_COLUMN = [
 ];
 
 export const ROLE_SUMMARY_TABS_GROUPS_INCLUDE_COLUMN = [
-	{accessor: 'name', Header: '그룹 명',
-		type:'groups',
+	{
+		accessor: 'name',
+		Header: '그룹 명',
+		type: 'groups',
 		Cell: function Component(cell) {
-			return <TableLink cell={cell}/>;
-		},},
+			return <TableLink cell={cell} />;
+		},
+	},
 	{accessor: 'type', Header: '그룹 유형'},
 	{accessor: 'numberOfPermissions', Header: '권한 수'},
 	{Header: '상위 그룹', accessor: 'parentGroup'},
@@ -202,21 +225,28 @@ export const ROLE_SUMMARY_TABS_GROUPS_INCLUDE_COLUMN = [
 	{
 		accessor: 'grantUser',
 		Header: '부여 사용자',
-		type:'users',
+		type: 'users',
 		Cell: function Component(cell) {
-			console.log('v?:',cell)
-			return<TableLink cell={cell} text={cell.value?.name + '(' + cell.value?.id + ')'}/>
+			return (
+				<TableLink
+					cell={cell}
+					text={cell.value?.name + '(' + cell.value?.id + ')'}
+				/>
+			);
 			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
 ];
 
 export const ROLE_SUMMARY_TABS_GROUPS_EXCLUDE_COLUMN = [
-	{accessor: 'name', Header: '그룹 명',
-		type:'groups',
+	{
+		accessor: 'name',
+		Header: '그룹 명',
+		type: 'groups',
 		Cell: function Component(cell) {
-			return <TableLink cell={cell}/>;
-		},},
+			return <TableLink cell={cell} />;
+		},
+	},
 	{accessor: 'type', Header: '그룹 유형'},
 	{accessor: 'numberOfPermissions', Header: '권한 수'},
 	{Header: '상위 그룹', accessor: 'parentGroup'},
