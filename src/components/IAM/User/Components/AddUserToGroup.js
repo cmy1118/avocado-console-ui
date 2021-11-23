@@ -32,6 +32,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 				.map((v) => ({
 					...v,
 					userGroupType: v.userGroupType.name,
+					DRAGGABLE_KEY: v.id,
 				})) || []
 		);
 	}, [groups, includedDataIds]);
@@ -43,6 +44,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 				.map((v) => ({
 					...v,
 					userGroupType: v.userGroupType.name,
+					DRAGGABLE_KEY: v.id,
 				})) || []
 		);
 	}, [groups, includedDataIds]);

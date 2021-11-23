@@ -49,6 +49,7 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 				...v,
 				numberOfGroups: v.groupIds ? v.groupIds.length : 0,
 				createdTime: v.createdTag.createdTime,
+				DRAGGABLE_KEY: v.userUid,
 			}));
 	}, [includedDataIds, users]);
 
@@ -59,6 +60,7 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 				...v,
 				numberOfGroups: v.groupIds ? v.groupIds.length : 0,
 				createdTime: v.createdTag.createdTime,
+				DRAGGABLE_KEY: v.userUid,
 			}));
 	}, [includedDataIds, users]);
 

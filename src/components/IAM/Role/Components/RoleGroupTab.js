@@ -51,6 +51,7 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 				),
 				grantDate: dummyDates[i],
 				grantUser: dummyUsers[i],
+				DRAGGABLE_KEY: v.id,
 			}));
 	}, [groupTypes, groups, role]);
 
@@ -68,6 +69,7 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 						groups.find((val) => val.id === v.parentId)?.name,
 					),
 					grantDate: dummyDates[dummyDates.length - i - 1],
+					DRAGGABLE_KEY: v.id,
 				})),
 		[groupTypes, groups, role],
 	);

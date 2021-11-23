@@ -39,6 +39,7 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 				...v,
 				numberOfGroups: v.groups.length,
 				grantUser: dummyUsers[i],
+				DRAGGABLE_KEY: v.userUid,
 			}));
 	}, [users, role]);
 
@@ -50,6 +51,7 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 					...v,
 					numberOfGroups: v.groups.length,
 					grantUser: dummyUsers[dummyUsers.length - i - 1],
+					DRAGGABLE_KEY: v.userUid,
 				})),
 		[users, role],
 	);

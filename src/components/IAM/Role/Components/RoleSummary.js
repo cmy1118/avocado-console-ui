@@ -41,6 +41,7 @@ const RoleSummary = ({Id, param, setIsOpened}) => {
 				numberOfGroups: v.groups.length,
 				grantDate: dummyDates[i],
 				grantUser: dummyUsers[i],
+				DRAGGABLE_KEY: v.userUid,
 			}));
 	}, [users, role]);
 	const onClickChangeTab = useCallback(
@@ -68,6 +69,7 @@ const RoleSummary = ({Id, param, setIsOpened}) => {
 				),
 				grantDate: dummyDates[dummyDates.length - i - 1],
 				grantUser: dummyUsers[dummyUsers.length - i - 1],
+				DRAGGABLE_KEY: v.id,
 			}));
 	}, [role, groups, groupTypes]);
 

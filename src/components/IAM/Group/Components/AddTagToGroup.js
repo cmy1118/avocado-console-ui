@@ -48,6 +48,7 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 				...v,
 				id: v?.name,
 				numberOfPermissions: v?.permissions.length,
+				DRAGGABLE_KEY: v.id,
 			};
 		});
 	}, [data]);

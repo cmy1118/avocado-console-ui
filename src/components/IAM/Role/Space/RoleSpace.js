@@ -34,6 +34,7 @@ const RoleSpace = () => {
 				...v,
 				roleType: v.type,
 				numberOfPermissions: v.policies?.length,
+				DRAGGABLE_KEY: v.roleId,
 			})) || []
 		);
 	}, [roles]);

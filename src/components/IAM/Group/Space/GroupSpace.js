@@ -40,6 +40,7 @@ const GroupSpace = () => {
 			name: v.name,
 			userGroupType: v.userGroupType.name,
 			parentGroup: v.parentGroup.name ? v.parentGroup.name : '없음',
+			DRAGGABLE_KEY: v.id,
 		}));
 	}, [groups]);
 

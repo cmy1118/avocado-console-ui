@@ -47,7 +47,6 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 	);
 
 	const groupData = useMemo(() => {
-		console.log(groups);
 		return groups
 			.filter((v) =>
 				user.groupIds
@@ -58,6 +57,7 @@ const UserSummary = ({Id, param, setIsOpened}) => {
 				...v,
 				userGroupType: v.userGroupType.name,
 				parentGroup: v.parentGroup.name,
+				DRAGGABLE_KEY: v.id,
 			}));
 		// return groups
 		// 	.filter((v) => user.groups.includes(v.id))

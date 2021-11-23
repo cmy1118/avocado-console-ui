@@ -32,6 +32,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
+				DRAGGABLE_KEY: v.roleId,
 				// numberOfUsers: v.users.length,
 			}));
 	}, [includedDataIds, roles]);
@@ -43,6 +44,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
+				DRAGGABLE_KEY: v.roleId,
 			}));
 	}, [includedDataIds, roles]);
 

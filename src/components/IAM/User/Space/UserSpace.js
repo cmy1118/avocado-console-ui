@@ -44,6 +44,7 @@ const UserSpace = () => {
 				status: v.status.code,
 				createdTime: v.createdTag.createdTime,
 				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
+				DRAGGABLE_KEY: v.userUid,
 			})) || []
 		);
 	}, [users]);

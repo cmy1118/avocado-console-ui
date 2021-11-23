@@ -115,9 +115,12 @@ const DragContainer = ({
 
 	const onDragStart = useCallback(
 		(result) => {
-			const items = selected[result.source.droppableId]?.map((v) =>
-				v.userUid ? v.userUid : v.id,
+			const items = selected[result.source.droppableId]?.map(
+				(v) => v.DRAGGABLE_KEY,
+				// v.userUid ? v.userUid : v.id,
 			);
+
+			console.log('result.draggableId', result.draggableId);
 			if (items) {
 				if (items.includes(result.draggableId)) {
 					console.log('포함');
@@ -155,6 +158,7 @@ const DragContainer = ({
 				}
 
 				console.log('selectedItems :: ', selectedItems);
+				console.log('data:', data);
 				if (destination.droppableId === includedKey) {
 					joinFunction && joinFunction(selectedItems);
 					setData([...data, ...selectedItems]);

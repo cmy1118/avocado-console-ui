@@ -20,9 +20,8 @@ import DragContainer from '../../../Table/DragContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
-import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import PAGINATION from '../../../../reducers/pagination';
+import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 
 const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -37,31 +36,30 @@ const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 	]);
 
 	const [includedDataIds, setIncludedDataIds] = useState([]);
-
-	console.log('roles?:', roles);
-	console.log('userRoles?:', userRoles);
-
+	console.log('includedDataIds:', includedDataIds);
 	const includedData = useMemo(() => {
 		return userRoles
 			? userRoles
-					.filter((v) => includedDataIds.includes(v.id))
-					.map((v) => ({
+					.filter((v) => includedDataIds?.includes(v.roleId))
+					?.map((v) => ({
 						...v,
 						type: roleTypeConverter(v.companyId),
-						numberOfUsers: v.users?.length,
+						// numberOfUsers: v.users?.length,
+						DRAGGABLE_KEY: v.roleId,
 					}))
 			: [];
-	}, [includedDataIds, roles]);
+	}, [includedDataIds, userRoles]);
 
 	const excludedData = useMemo(() => {
 		return roles
 			? roles
-					.filter((n) => !userRoles?.includes(n.id))
-					.filter((v) => !includedDataIds.includes(v.id))
+					// .filter((n) => !userRoles?.includes(n.id))
+					.filter((v) => !includedDataIds?.includes(v.id))
 					.map((v) => ({
 						...v,
 						type: roleTypeConverter(v.companyId),
-						numberOfUsers: v.users?.length,
+						// numberOfUsers: v.users?.length,
+						DRAGGABLE_KEY: v.id,
 					}))
 			: [];
 	}, [includedDataIds, roles]);
@@ -106,21 +104,17 @@ const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	useEffect(() => {
 		if (
-			!isSummaryOpened &&
+			isSummaryOpened &&
 			page[tableKeys.users.summary.tabs.roles.include] &&
 			user
 		) {
-			// dispatch(
-			// 	IAM_ROLES.asyncAction.getsAction({
-			// 		range: page[tableKeys.users.summary.tabs.roles.exclude],
-			// 	}),
-			// );
+			dispatch(
+				IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
+					userUid: userId,
+					range: page[tableKeys.users.summary.tabs.roles.include],
+				}),
+			);
 		}
-		dispatch(
-			IAM_ROLES.asyncAction.getsAction({
-				range: page[tableKeys.users.summary.tabs.roles.exclude],
-			}),
-		);
 		dispatch(
 			IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
 				userUid: userId,
@@ -128,6 +122,23 @@ const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 			}),
 		);
 	}, [dispatch, isSummaryOpened, page, user, userId]);
+
+	useEffect(() => {
+		console.log('isFold:', isFold);
+		if (
+			isFold &&
+			page[tableKeys.users.summary.tabs.roles.exclude] &&
+			user
+		) {
+			dispatch(
+				IAM_ROLES.asyncAction.getsAction({
+					range: page[tableKeys.users.summary.tabs.roles.exclude],
+				}),
+			);
+		}
+
+		setIncludedDataIds(userRoles?.map((v) => v.roleId));
+	}, [dispatch, isFold, page, user, userRoles]);
 
 	return (
 		<TabContentContainer>
@@ -144,7 +155,7 @@ const UserRolesTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 				selected={select}
 				data={includedDataIds}
 				setData={setIncludedDataIds}
-				includedKey={tableKeys.groups.add.roles.include}
+				includedKey={tableKeys.users.summary.tabs.roles.include}
 				excludedData={excludedData}
 				includedData={includedData}
 			>

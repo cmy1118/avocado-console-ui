@@ -47,6 +47,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 					name: v.name,
 					type: v.userGroupType.name,
 					parentGroup: v.parentGroup.name,
+					DRAGGABLE_KEY: v.id,
 				})) || []
 		);
 	}, [groups, includedDataIds]);
@@ -55,7 +56,6 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 		const types = groups
 			.filter((v) => includedDataIds.includes(v.id))
 			.map((v) => v.userGroupType.name);
-
 		return (
 			groups
 				.filter((v) => !includedDataIds.includes(v.id))
@@ -65,6 +65,7 @@ const UserGroupsTab = ({userId, space, isFold, setIsFold, isSummaryOpened}) => {
 					name: v.name,
 					type: v.userGroupType.name,
 					parentGroup: v.parentGroup.name,
+					DRAGGABLE_KEY: v.id,
 				})) || []
 		);
 	}, [groups, includedDataIds]);

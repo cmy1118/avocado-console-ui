@@ -39,6 +39,7 @@ const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 				...v,
 				type: roleTypeConverter(v.companyId),
 				numberOfUsers: v.groups.length,
+				DRAGGABLE_KEY: v.roleId,
 			}));
 	}, [roles, includedDataIds]);
 
@@ -49,6 +50,7 @@ const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 				...v,
 				type: roleTypeConverter(v.companyId),
 				numberOfUsers: v.groups.length,
+				DRAGGABLE_KEY: v.roleId,
 			}));
 	}, [roles, includedDataIds]);
 

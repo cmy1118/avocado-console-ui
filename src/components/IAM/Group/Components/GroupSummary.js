@@ -38,7 +38,7 @@ const GroupSummary = ({Id, param, setIsOpened}) => {
 				createdTime: v.createdTag.createdTime,
 				grantUser: members.find((x) => x.userUid === v.userUid)
 					?.grantedTag.userUid,
-
+				DRAGGABLE_KEY: v.userUid,
 				// groupsLength: v.groups.length,
 				// grantUser: dummyUsers[i],
 			}));

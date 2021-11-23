@@ -116,3 +116,5 @@ export const tableKeys = Object.freeze({
 	},
 	policyAndPermission: {}, // 아직 설계 없음. 우선 네이밍 저렇게 할게요..
 });
+
+const DRAGGABLE_KEY = 'keyId';
