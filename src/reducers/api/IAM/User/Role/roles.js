@@ -175,16 +175,17 @@ const slice = createSlice({
 		// 	state.error = action.payload;
 		// 	state.loading = false;
 		// },
-		// [findByIdAction.pending]: (state) => {
-		// 	state.loading = true;
-		// },
-		// [findByIdAction.fulfilled]: (state, action) => {
-		// 	state.loading = false;
-		// },
-		// [findByIdAction.rejected]: (state, action) => {
-		// 	state.error = action.payload;
-		// 	state.loading = false;
-		// },
+		[findByIdAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[findByIdAction.fulfilled]: (state, action) => {
+			state.roles = action.payload;
+			state.loading = false;
+		},
+		[findByIdAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
 		[getsAction.pending]: (state) => {
 			state.loading = true;
 		},

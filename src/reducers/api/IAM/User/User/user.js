@@ -101,6 +101,7 @@ const findByIdAction = createAsyncThunk(
 );
 
 //todo : this function requires uid
+//사용자 등록 정보를 UID 기반으로 조회
 const findByUidAction = createAsyncThunk(
 	`${NAME}/FIND_BY_UID`,
 	async (payload, {getState}) => {
