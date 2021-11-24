@@ -42,7 +42,7 @@ const _text = styled.div`
 	// text-shadow: 0.5px 0.5px 0.5px black;
 `;
 
-const ContentsButton = ({img, title, text}) => {
+const ContentsButton = ({url, img, title, text}) => {
 	const history = useHistory();
 
 	const onClickMove = useCallback(() => {

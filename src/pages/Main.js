@@ -14,18 +14,18 @@ import IAM_green from '../images/dashboard/service_iam_green@2x.png';
 import PAM_green from '../images/dashboard/service_pam_green@2x.png';
 import Approal_green from '../images/dashboard/service_app_green@2x.png';
 
-// import Approal_green from '../images/dashboard/service_app_green@2x.png';
-// import Approal_green from '../images/dashboard/service_app_green@2x.png';
-// import Approal_green from '../images/dashboard/service_app_green@2x.png';
+import IAM_grey from '../images/dashboard/service_iam_gray@2x.png';
+import PAM_grey from '../images/dashboard/service_pam_gray@2x.png';
+import Approal_grey from '../images/dashboard/service_app_gray@2x.png';
 
 const utils = [
-	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green},
-	{title: 'PAM', text: '특권 접근 관리', img: PAM_green},
+	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green, url: 'ssh://'},
+	{title: 'PAM', text: '특권 접근 관리', img: PAM_green, href: 'iam'},
 ];
 const favorite = [
-	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green},
-	{title: 'PAM', text: '특권 접근 관리', img: PAM_green},
-	{title: 'Approal', text: '승인 워크플로우 관리', img: Approal_green},
+	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_grey},
+	{title: 'PAM', text: '특권 접근 관리', img: PAM_grey},
+	{title: 'Approal', text: '승인 워크플로우 관리', img: Approal_grey},
 ];
 const service = [
 	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green},
@@ -122,6 +122,20 @@ const Main = () => {
 			<_side></_side>
 			<_contentsContainer>
 				<_contents>
+					{utils.map((v, index) => {
+						return (
+							<ContentsButton
+								url={v.url}
+								href={v.href}
+								img={v.img}
+								title={v.title}
+								text={v.text}
+								key={index}
+							/>
+						);
+					})}
+				</_contents>
+				<_contents>
 					{favorite.map((v, index) => {
 						return (
 							<ContentsButton
@@ -133,7 +147,6 @@ const Main = () => {
 						);
 					})}
 				</_contents>
-				<_contents></_contents>
 				<_contents></_contents>
 				<_contents></_contents>
 			</_contentsContainer>

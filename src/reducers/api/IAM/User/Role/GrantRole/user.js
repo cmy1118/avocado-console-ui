@@ -69,7 +69,7 @@ const getsAction = createAsyncThunk(
 			},
 		);
 		console.log('IAM_ROLES_GRANT_ROLE_USER_getsAction', response.data);
-		return response.data;
+		return response.data || [];
 	},
 );
 
