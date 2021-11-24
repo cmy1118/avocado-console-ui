@@ -122,7 +122,7 @@ const UserGroupsTab = ({
 					.then((roles) => {
 						arr.push({
 							...group,
-							numberOfRoles: !roles ? 0 : roles.length,
+							numberOfRoles: !roles.data ? 0 : roles.data.length,
 						});
 						if (arr.length === groups.length) {
 							setExcluedeGroups(arr);
@@ -183,9 +183,9 @@ const UserGroupsTab = ({
 												.then((role) => {
 													arr2.push({
 														...v,
-														numberOfRoles: !role
+														numberOfRoles: !role.data
 															? 0
-															: role.length,
+															: role.data.length,
 													});
 													if (
 														arr.length ===

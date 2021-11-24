@@ -119,9 +119,9 @@ const UserSummary = ({userUid, param, setIsOpened}) => {
 												.then((role) => {
 													arr2.push({
 														...v,
-														numberOfRoles: !role
+														numberOfRoles: !role.data
 															? 0
-															: role.length,
+															: role.data.length,
 													});
 													if (
 														arr.length ===
