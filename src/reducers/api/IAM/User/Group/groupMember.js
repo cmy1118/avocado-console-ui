@@ -62,7 +62,7 @@ const findAllAction = createAsyncThunk(
 			},
 			baseURL: baseUrl.openApi,
 		});
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 
@@ -102,7 +102,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findAllAction.fulfilled]: (state, action) => {
-			state.members = action.payload;
+			state.members = action.payload.data;
 			state.loading = false;
 		},
 		[findAllAction.rejected]: (state, action) => {

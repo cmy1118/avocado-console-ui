@@ -25,6 +25,7 @@ import {
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
+import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 
 const GroupSpace = () => {
 	const [select, setSelect] = useState({});
@@ -67,7 +68,22 @@ const GroupSpace = () => {
 				IAM_USER_GROUP.asyncAction.findAllAction({
 					range: page[tableKeys.groups.basic],
 				}),
-			);
+			)
+				.unwrap()
+				.then((groups) => {
+					groups.forEach((group) => {
+						dispatch(
+							IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
+								groupId: group.id,
+								range: 'elements=0-1',
+							}),
+						)
+							.unwrap()
+							.then((member) => {
+								console.log(member);
+							});
+					});
+				});
 	}, [dispatch, page]);
 
 	return (

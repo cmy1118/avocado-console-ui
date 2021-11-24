@@ -59,7 +59,7 @@ const findRoleByIdAction = createAsyncThunk(
 				baseURL: baseUrl.openApi,
 			},
 		);
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 
@@ -88,7 +88,7 @@ const getEventsAction = createAsyncThunk(
 				baseURL: baseUrl.openApi,
 			},
 		);
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 
@@ -101,7 +101,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[createAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[createAction.rejected]: (state, action) => {
@@ -113,7 +112,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[deleteAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[deleteAction.rejected]: (state, action) => {
@@ -125,7 +123,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findRoleByIdAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[findRoleByIdAction.rejected]: (state, action) => {
@@ -137,7 +134,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[getEventsAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[getEventsAction.rejected]: (state, action) => {

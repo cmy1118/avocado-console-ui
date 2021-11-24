@@ -21,7 +21,6 @@ import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import PAGINATION from '../../../../reducers/pagination';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
@@ -72,47 +71,6 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 			: [];
 	}, [includedDataIds, roles]);
 
-	// const onClickDeleteRolesFromUser = useCallback(() => {
-	// 	dispatch(
-	// 		IAM_USER.action.deleteRolesFromUser({
-	// 			userUid: userId,
-	// 			roles: Object.keys(
-	// 				select[tableKeys.users.summary.tabs.roles.include],
-	// 			),
-	// 		}),
-	// 	);
-	// 	dispatch(
-	// 		IAM_ROLES.action.deleteRolesFromUser({
-	// 			userUid: userId,
-	// 			roles: Object.keys(
-	// 				select[tableKeys.users.summary.tabs.roles.include],
-	// 			),
-	// 		}),
-	// 	);
-	// }, [dispatch, select, userId]);
-
-	// const onClickAddRolesToUser = useCallback(() => {
-	// 	dispatch(
-	// 		IAM_USER.action.addRolesToUser({
-	// 			userUid: userId,
-	// 			roles: Object.keys(
-	// 				select[tableKeys.users.summary.tabs.roles.exclude],
-	// 			),
-	// 		}),
-	// 	);
-	// 	dispatch(
-	// 		IAM_ROLES.action.addRolesToUser({
-	// 			userUid: userId,
-	// 			roles: Object.keys(
-	// 				select[tableKeys.users.summary.tabs.roles.exclude],
-	// 			),
-	// 		}),
-	// 	);
-	// }, [dispatch, select, userId]);
-
-	//button 동작
-
-	//사용자 롤 제거
 	const onClickDeleteRolesFromUser = useCallback(
 		(data) => {
 			data.forEach((v) => {

@@ -60,12 +60,12 @@ const UserGroupsTab = ({
 
 	const excludedData = useMemo(() => {
 		const types = excluedeGroups
-			.filter((v) => includedDataIds.includes(v.id))
+			.filter((v) => includedDataIds?.includes(v.id))
 			.map((v) => v.userGroupType.name);
 
 		return (
 			excluedeGroups
-				.filter((v) => !includedDataIds.includes(v.id))
+				.filter((v) => !includedDataIds?.includes(v.id))
 				.filter((v) => !types.includes(v.userGroupType.name))
 				.map((v) => ({
 					...v,
@@ -137,7 +137,7 @@ const UserGroupsTab = ({
 		(user) => {
 			console.log(user.groupIds);
 			const arr = [];
-			user.groupIds.forEach((v) =>
+			user.groupIds?.forEach((v) =>
 				dispatch(
 					IAM_USER_GROUP.asyncAction.findByIdAction({
 						id: v,

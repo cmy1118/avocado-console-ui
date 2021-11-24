@@ -69,7 +69,7 @@ const getsAction = createAsyncThunk(
 			},
 		);
 		console.log('IAM_ROLES_GRANT_ROLE_USER_getsAction', response.data);
-		return response.data || [];
+		return {data: response.data || [], headers: response.headers};
 	},
 );
 
@@ -95,7 +95,7 @@ const getEventsAction = createAsyncThunk(
 				baseURL: baseUrl.openApi,
 			},
 		);
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 
@@ -132,7 +132,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[getsAction.fulfilled]: (state, action) => {
-			state.userRoles = action.payload;
+			state.userRoles = action.payload.data;
 			state.loading = false;
 		},
 		[getsAction.rejected]: (state, action) => {

@@ -117,8 +117,7 @@ const findAllAction = createAsyncThunk(
 			},
 			baseURL: baseUrl.openApi,
 		});
-		console.log(response);
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 
@@ -181,8 +180,8 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findAllAction.fulfilled]: (state, action) => {
+			state.groups = action.payload.data;
 			state.loading = false;
-			state.groups = action.payload;
 		},
 		[findAllAction.rejected]: (state, action) => {
 			state.error = action.payload;
