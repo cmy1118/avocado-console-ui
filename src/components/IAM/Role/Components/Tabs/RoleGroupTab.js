@@ -6,26 +6,26 @@ import {dummyDates, dummyUsers} from '../../../../../utils/dummyData';
 import {
 	NormalBorderButton,
 	NormalButton,
-} from '../../../../styles/components/buttons';
-import Table from '../../../Table/Table';
-import {tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
-import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
-import DragContainer from '../../../Table/DragContainer';
-import TableContainer from '../../../Table/TableContainer';
-import TableOptionsBar from '../../../Table/TableOptionsBar';
-import {TableTitle} from '../../../../styles/components/table';
-import TableFold from '../../../Table/Options/TableFold';
-import TableOptionText from '../../../Table/Options/TableOptionText';
-import {parentGroupConverter} from '../../../../utils/tableDataConverter';
-import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
+} from '../../../../../styles/components/buttons';
+import Table from '../../../../Table/Table';
+import {tableKeys} from '../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../Constants/Table/columns';
+import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
+import IAM_USER_GROUP_TYPE from '../../../../../reducers/api/IAM/User/Group/groupType';
+import DragContainer from '../../../../Table/DragContainer';
+import TableContainer from '../../../../Table/TableContainer';
+import TableOptionsBar from '../../../../Table/TableOptionsBar';
+import {TableTitle} from '../../../../../styles/components/table';
+import TableFold from '../../../../Table/Options/TableFold';
+import TableOptionText from '../../../../Table/Options/TableOptionText';
+import {parentGroupConverter} from '../../../../../utils/tableDataConverter';
+import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
 import {
 	FoldableContainer,
 	TitleBarButtons,
-} from '../../../../styles/components/iam/iam';
+} from '../../../../../styles/components/iam/iam';
 // } from '../../../../../styles/components/iam/iam';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY} from '../../../../../Constants/Table/keys';
 
 const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 	const {roles} = useSelector(IAM_ROLES.selector);
