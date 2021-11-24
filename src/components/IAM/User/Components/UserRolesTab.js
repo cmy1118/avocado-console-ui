@@ -23,6 +23,7 @@ import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import PAGINATION from '../../../../reducers/pagination';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -44,86 +45,116 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const includedData = useMemo(() => {
 		return userRoles
 			? userRoles
-					.filter((v) => includedDataIds.includes(v.id))
+					// .filter((v) => includedDataIds.includes(v.id))
 					.map((v) => ({
 						...v,
 						type: roleTypeConverter(v.companyId),
-						numberOfUsers: v.users?.length,
+						// numberOfUsers: v.users?.length,
+						name: '임시역할',
+						// rold_info: v.roleId,
+						[DRAGGABLE_KEY]: v.roleId,
 					}))
 			: [];
-	}, [includedDataIds, userRoles]);
+	}, [userRoles]);
 
 	const excludedData = useMemo(() => {
 		return roles
 			? roles
-					.filter((n) => !userRoles?.includes(n.id))
-					.filter((v) => !includedDataIds.includes(v.id))
+					// .filter((n) => !userRoles?.includes(n.id))
+					.filter((v) => !includedDataIds?.includes(v.id))
 					.map((v) => ({
 						...v,
 						type: roleTypeConverter(v.companyId),
-						numberOfUsers: v.users?.length,
+						// rold_info: v.id,
+						// numberOfUsers: v.users?.length,
+						[DRAGGABLE_KEY]: v.id,
 					}))
 			: [];
-	}, [includedDataIds, roles, userRoles]);
+	}, [includedDataIds, roles]);
 
-	const onClickDeleteRolesFromUser = useCallback(() => {
-		dispatch(
-			IAM_USER.action.deleteRolesFromUser({
-				userUid: userUid,
-				roles: Object.keys(
-					select[tableKeys.users.summary.tabs.roles.include],
-				),
-			}),
-		);
-		dispatch(
-			IAM_ROLES.action.deleteRolesFromUser({
-				userUid: userUid,
-				roles: Object.keys(
-					select[tableKeys.users.summary.tabs.roles.include],
-				),
-			}),
-		);
-	}, [dispatch, select, userUid]);
+	// const onClickDeleteRolesFromUser = useCallback(() => {
+	// 	dispatch(
+	// 		IAM_USER.action.deleteRolesFromUser({
+	// 			userUid: userId,
+	// 			roles: Object.keys(
+	// 				select[tableKeys.users.summary.tabs.roles.include],
+	// 			),
+	// 		}),
+	// 	);
+	// 	dispatch(
+	// 		IAM_ROLES.action.deleteRolesFromUser({
+	// 			userUid: userId,
+	// 			roles: Object.keys(
+	// 				select[tableKeys.users.summary.tabs.roles.include],
+	// 			),
+	// 		}),
+	// 	);
+	// }, [dispatch, select, userId]);
 
-	const onClickAddRolesToUser = useCallback(() => {
-		dispatch(
-			IAM_USER.action.addRolesToUser({
-				userUid: userUid,
-				roles: Object.keys(
-					select[tableKeys.users.summary.tabs.roles.exclude],
-				),
-			}),
-		);
-		dispatch(
-			IAM_ROLES.action.addRolesToUser({
-				userUid: userUid,
-				roles: Object.keys(
-					select[tableKeys.users.summary.tabs.roles.exclude],
-				),
-			}),
-		);
-	}, [dispatch, select, userUid]);
+	// const onClickAddRolesToUser = useCallback(() => {
+	// 	dispatch(
+	// 		IAM_USER.action.addRolesToUser({
+	// 			userUid: userId,
+	// 			roles: Object.keys(
+	// 				select[tableKeys.users.summary.tabs.roles.exclude],
+	// 			),
+	// 		}),
+	// 	);
+	// 	dispatch(
+	// 		IAM_ROLES.action.addRolesToUser({
+	// 			userUid: userId,
+	// 			roles: Object.keys(
+	// 				select[tableKeys.users.summary.tabs.roles.exclude],
+	// 			),
+	// 		}),
+	// 	);
+	// }, [dispatch, select, userId]);
+
+	//button 동작
+
+	//사용자 롤 제거
+	const onClickDeleteRolesFromUser = useCallback(
+		(data) => {
+			data.forEach((v) => {
+				dispatch(
+					IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
+						roleId: v,
+						userUid: userUid,
+					}),
+				);
+			});
+		},
+		[dispatch, userUid],
+	);
+
+	//사용자 롤추가
+	const onClickAddRolesToUser = useCallback(
+		(data) => {
+			data.forEach((v) => {
+				dispatch(
+					IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
+						roleId: v,
+						userUid: [userUid],
+					}),
+				);
+			});
+		},
+		[dispatch, userUid],
+	);
 
 	useEffect(() => {
 		if (
-			!isSummaryOpened &&
+			isSummaryOpened &&
 			page[tableKeys.users.summary.tabs.roles.include] &&
 			user
 		) {
 			dispatch(
 				IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
+					userUid: userUid,
 					range: page[tableKeys.users.summary.tabs.roles.include],
 				}),
 			);
 		}
-	}, [dispatch, isSummaryOpened, page, user]);
-
-	useEffect(() => {
-		dispatch(
-			IAM_ROLES.asyncAction.getsAction({
-				range: page[tableKeys.users.summary.tabs.roles.exclude],
-			}),
-		);
 		dispatch(
 			IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
 				userUid: userUid,
@@ -132,13 +163,30 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 		);
 	}, [dispatch, isSummaryOpened, page, user, userUid]);
 
+	useEffect(() => {
+		console.log('isFold:', isFold);
+		if (
+			isFold &&
+			page[tableKeys.users.summary.tabs.roles.exclude] &&
+			user
+		) {
+			dispatch(
+				IAM_ROLES.asyncAction.getsAction({
+					range: page[tableKeys.users.summary.tabs.roles.exclude],
+				}),
+			);
+		}
+
+		setIncludedDataIds(userRoles?.map((v) => v.roleId));
+	}, [dispatch, isFold, page, user, userRoles]);
+
 	return (
 		<TabContentContainer>
 			<TableTitle>
 				이 사용자의 권한: {includedData.length}{' '}
 				<TransparentButton
 					margin='0px 0px 0px 5px'
-					onClick={onClickDeleteRolesFromUser}
+					// onClick={onClickDeleteRolesFromUser}
 				>
 					삭제
 				</TransparentButton>
@@ -147,9 +195,11 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				selected={select}
 				data={includedDataIds}
 				setData={setIncludedDataIds}
-				includedKey={tableKeys.groups.add.roles.include}
+				includedKey={tableKeys.users.summary.tabs.roles.include}
 				excludedData={excludedData}
 				includedData={includedData}
+				joinFunction={onClickAddRolesToUser}
+				disjointFunction={onClickDeleteRolesFromUser}
 			>
 				<TableContainer
 					data={includedData}

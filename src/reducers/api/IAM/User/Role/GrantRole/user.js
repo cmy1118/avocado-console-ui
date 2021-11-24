@@ -53,6 +53,8 @@ const revokeAction = createAsyncThunk(
 const getsAction = createAsyncThunk(
 	`${NAME}/GETS`,
 	async (payload, {getState}) => {
+		console.log('payload.userUid:', payload.userUid);
+		console.log('payload.range:', payload.range);
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
 		const response = await Axios.get(
@@ -66,8 +68,8 @@ const getsAction = createAsyncThunk(
 				baseURL: baseUrl.openApi,
 			},
 		);
-		console.log('response', response);
-		return response.data;
+		console.log('IAM_ROLES_GRANT_ROLE_USER_getsAction', response.data);
+		return response.data || [];
 	},
 );
 
@@ -100,17 +102,37 @@ const getEventsAction = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
-		roles: [],
+		userRoles: [],
 		loading: false,
 		error: null,
 	},
 	reducers: {},
 	extraReducers: {
+		[grantAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[grantAction.fulfilled]: (state, action) => {
+			state.loading = false;
+		},
+		[grantAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
+		[revokeAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[revokeAction.fulfilled]: (state, action) => {
+			state.loading = false;
+		},
+		[revokeAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
 		[getsAction.pending]: (state) => {
 			state.loading = true;
 		},
 		[getsAction.fulfilled]: (state, action) => {
-			state.roles = action.payload;
+			state.userRoles = action.payload;
 			state.loading = false;
 		},
 		[getsAction.rejected]: (state, action) => {
@@ -121,11 +143,11 @@ const slice = createSlice({
 });
 
 const selectAllState = createSelector(
-	(state) => state.roles,
+	(state) => state.userRoles,
 	(state) => state.error,
 	(state) => state.loading,
-	(roles, error, loading) => {
-		return {roles, error, loading};
+	(userRoles, error, loading) => {
+		return {userRoles, error, loading};
 	},
 );
 

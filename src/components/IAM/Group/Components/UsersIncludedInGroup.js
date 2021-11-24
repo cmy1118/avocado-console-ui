@@ -19,6 +19,7 @@ import {
 	expiredConverter,
 	groupsConverter,
 } from '../../../../utils/tableDataConverter';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -41,6 +42,7 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 					status: v.status.code,
 					createdTime: v.createdTag.createdTime,
 					passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
+					[DRAGGABLE_KEY]: v.userUid,
 				})) || []
 		);
 	}, [includedDataIds, users]);
@@ -56,6 +58,7 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 					status: v.status.code,
 					createdTime: v.createdTag.createdTime,
 					passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
+					[DRAGGABLE_KEY]: v.userUid,
 				})) || []
 		);
 	}, [includedDataIds, users]);

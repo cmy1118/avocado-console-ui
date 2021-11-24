@@ -6,6 +6,7 @@ import {RowDiv} from '../../styles/components/style';
 import {Draggable, Droppable} from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import * as _ from 'lodash';
+import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
 
 const Tds = styled(RowDiv)`
 	align-items: center;
@@ -235,14 +236,16 @@ const Table = ({
 								return (
 									<Draggable
 										key={
-											row.original.userUid
-												? row.original.userUid
-												: row.original.id
+											// row.original.userUid
+											// 	? row.original.userUid
+											// 	: row.original.id
+											row.original[DRAGGABLE_KEY]
 										}
 										draggableId={
-											row.original.userUid
-												? row.original.userUid
-												: row.original.id
+											// row.original.userUid
+											// 	? row.original.userUid
+											// 	: row.original.id
+											row.original[DRAGGABLE_KEY]
 										}
 										isDragDisabled={!isDraggable}
 										index={index}
@@ -265,26 +268,32 @@ const Table = ({
 														Object.keys(
 															selectedRowIds,
 														).includes(
-															row.original.userUid
-																? row.original
-																		.userUid
-																: row.original
-																		.id,
+															// row.original.userUid
+															// 	? row.original
+															// 			.userUid
+															// 	: row.original
+															// 			.id,
+															row.original
+																[DRAGGABLE_KEY],
 														) && 'selected'
 													}
 													 ${index % 2 === 0 ? 'even' : 'odd'}
 													`}
 													id={
-														row.original.userUid
-															? row.original
-																	.userUid
-															: row.original.id
+														// row.original.userUid
+														// 	? row.original
+														// 			.userUid
+														// 	: row.original.id
+														row.original[
+															DRAGGABLE_KEY
+														]
 													}
 													key={
 														row.original.userUid
 															? row.original
 																	.userUid
 															: row.original.id
+														// row.original.keyId
 													}
 												>
 													{row.cells.map(

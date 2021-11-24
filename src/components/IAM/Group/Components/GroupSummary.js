@@ -16,6 +16,7 @@ import {
 } from '../../../../styles/components/iam/descriptionPage';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const GroupSummary = ({groupId, param, setIsOpened}) => {
 	const history = useHistory();
@@ -35,6 +36,8 @@ const GroupSummary = ({groupId, param, setIsOpened}) => {
 			createdTime: v.createdTag.createdTime,
 			// grantUser: groupUserMembers.find((x) => x.userUid === v.userUid)
 			// 	?.grantedTag.userUid,
+			[DRAGGABLE_KEY]: v.userUid,
+
 		}));
 	}, [groupUserMembers]);
 

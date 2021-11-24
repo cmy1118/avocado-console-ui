@@ -24,6 +24,7 @@ import {
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const GroupSpace = () => {
 	const [select, setSelect] = useState({});
@@ -40,6 +41,7 @@ const GroupSpace = () => {
 			name: v.name,
 			userGroupType: v.userGroupType.name,
 			parentGroup: v.parentGroup.name ? v.parentGroup.name : '없음',
+			[DRAGGABLE_KEY]: v.id,
 		}));
 	}, [groups]);
 

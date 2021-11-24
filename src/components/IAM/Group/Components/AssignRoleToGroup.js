@@ -15,6 +15,7 @@ import DragContainer from '../../../Table/DragContainer';
 import TableContainer from '../../../Table/TableContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -27,13 +28,18 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 			.map((v) => ({
 				...v,
 				numberOfUsers: v.users.length,
+				[DRAGGABLE_KEY]: v.roleId,
 			}));
 	}, [roles, includedDataIds]);
 
 	const includedData = useMemo(() => {
 		return roles
 			.filter((v) => includedDataIds.includes(v.id))
-			.map((v) => ({...v, type: roleTypeConverter(v.companyId)}));
+			.map((v) => ({
+				...v,
+				type: roleTypeConverter(v.companyId),
+				[DRAGGABLE_KEY]: v.roleId,
+			}));
 	}, [roles, includedDataIds]);
 
 	// const onClickDeleteRolesFromGroup = useCallback(() => {

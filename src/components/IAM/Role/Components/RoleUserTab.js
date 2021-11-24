@@ -19,6 +19,7 @@ import TableFold from '../../../Table/Options/TableFold';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 	const {roles} = useSelector(IAM_ROLES.selector);
@@ -39,6 +40,7 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 				...v,
 				numberOfGroups: v.groups.length,
 				grantUser: dummyUsers[i],
+				[DRAGGABLE_KEY]: v.userUid,
 			}));
 	}, [users, role]);
 
@@ -50,6 +52,7 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 					...v,
 					numberOfGroups: v.groups.length,
 					grantUser: dummyUsers[dummyUsers.length - i - 1],
+					[DRAGGABLE_KEY]: v.userUid,
 				})),
 		[users, role],
 	);
