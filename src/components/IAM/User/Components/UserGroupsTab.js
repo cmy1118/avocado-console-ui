@@ -30,7 +30,7 @@ const UserGroupsTab = ({
 	isSummaryOpened,
 }) => {
 	const dispatch = useDispatch();
-	const {user} = useSelector(IAM_USER.selector);
+	const [user, setUser] = useState(null);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {page} = useSelector(PAGINATION.selector);
 	const [includedGroups, setIncludedGroups] = useState([]);
@@ -39,6 +39,8 @@ const UserGroupsTab = ({
 	const [includedDataIds, setIncludedDataIds] = useState(
 		user?.groupIds || [],
 	);
+
+	console.log(includedGroups);
 
 	const includedData = useMemo(() => {
 		return (
@@ -99,6 +101,77 @@ const UserGroupsTab = ({
 		[dispatch, userUid],
 	);
 
+	const getGroupsData = useCallback(
+		(user) => {
+			console.log(user.groupIds);
+			const arr = [];
+			user.groupIds.forEach((v) =>
+				dispatch(
+					IAM_USER_GROUP.asyncAction.findByIdAction({
+						id: v,
+					}),
+				)
+					.unwrap()
+					.then((group) => {
+						console.log(group);
+						dispatch(
+							IAM_USER.asyncAction.findByUidAction({
+								userUid: group.createdTag.actorTag.userUid,
+							}),
+						)
+							.unwrap()
+							.then((grantUser) => {
+								arr.push({
+									...group,
+									grantUser: {
+										userUid: grantUser.userUid,
+										id: grantUser.id,
+										name: grantUser.name,
+									},
+								});
+								if (user.groupIds.length === arr.length) {
+									if (arr[0]) {
+										const arr2 = [];
+										arr.forEach((v) => {
+											dispatch(
+												IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
+													{
+														id: v.id,
+														range:
+															page[
+																tableKeys.users
+																	.summary
+																	.tabs.groups
+																	.include
+															],
+													},
+												),
+											)
+												.unwrap()
+												.then((role) => {
+													arr2.push({
+														...v,
+														numberOfRoles: !role
+															? 0
+															: role.length,
+													});
+													if (
+														arr.length ===
+														arr2.length
+													) {
+														setIncludedGroups(arr2);
+													}
+												});
+										});
+									}
+								}
+							});
+					}),
+			);
+		},
+		[dispatch, page],
+	);
+
 	useEffect(() => {
 		if (
 			!isSummaryOpened &&
@@ -114,39 +187,20 @@ const UserGroupsTab = ({
 	}, [dispatch, isSummaryOpened, page, user]);
 
 	useEffect(() => {
-		if (user && user.groupIds[0]) {
-			console.log(user.groupIds);
-			const arr = [];
-			user.groupIds.forEach((v) =>
-				dispatch(
-					IAM_USER_GROUP.asyncAction.findByIdAction({
-						id: v,
-					}),
-				)
-					.unwrap()
-					.then((res) => {
-						arr.push(res);
-						if (user.groupIds.length === arr.length) {
-							setIncludedGroups(arr);
-						}
-					}),
-			);
+		if (!user && page[tableKeys.users.summary.tabs.groups.include]) {
+			dispatch(
+				IAM_USER.asyncAction.findByUidAction({
+					userUid: userUid,
+				}),
+			)
+				.unwrap()
+				.then((res) => {
+					setUser(res);
+					setIncludedDataIds(res.groupIds);
+					getGroupsData(res);
+				});
 		}
-	}, [dispatch, user]);
-
-	useEffect(() => {
-		if (includedGroups) {
-			includedGroups.forEach((v) => {
-				dispatch(
-					IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
-						id: v.id,
-						range:
-							page[tableKeys.users.summary.tabs.groups.include],
-					}),
-				);
-			});
-		}
-	}, [dispatch, includedGroups, page]);
+	}, [user, dispatch, userUid, getGroupsData, page]);
 
 	return (
 		<TabContentContainer>

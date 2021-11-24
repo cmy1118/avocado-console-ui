@@ -186,7 +186,9 @@ const UserDescriptionSpace = ({userUid}) => {
 
 					<TabContentSpace>
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'user' && <UserInfoTab userUid={userUid} />}
+							'user' && (
+							<UserInfoTab user={user} userUid={userUid} />
+						)}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
 							'group' && (
 							<UserGroupsTab

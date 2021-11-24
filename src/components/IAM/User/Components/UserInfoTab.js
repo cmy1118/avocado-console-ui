@@ -1,5 +1,5 @@
-import React, {useCallback, useRef, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {useDispatch} from 'react-redux';
 
 import PropTypes from 'prop-types';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
@@ -14,17 +14,15 @@ import {ColDiv, Label, RowDiv} from '../../../../styles/components/style';
 import {TableTitle} from '../../../../styles/components/table';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 
-const UserInfoTab = ({userUid}) => {
+const UserInfoTab = ({user, userUid}) => {
 	const dispatch = useDispatch();
 	const [values, setValues] = useState({email: '', number: ''});
-
 	const saveRef = useRef(null);
 	const confirmAuthRef = useRef(null);
 	const changePasswordRef = useRef(null);
 
 	const [isIdentificationOpened, setIsIdentificationOpened] = useState(false);
 	const [isChangePasswordOpened, setIsChangePasswordOpened] = useState(false);
-	const {user} = useSelector(IAM_USER.selector);
 
 	const onClickSaveChangedInfo = useCallback((data) => {
 		console.log('api 처리 : ', data);
@@ -71,12 +69,12 @@ const UserInfoTab = ({userUid}) => {
 			<div style={{padding: '10px 10px 0px 30px'}}>
 				<Form
 					initialValues={{
-						id: user.id,
-						name: user.name,
+						id: user?.id,
+						name: user?.name,
 						password: '*********',
-						email: user.email,
-						telephone: user.telephone,
-						mobile: user.mobile,
+						email: user?.email,
+						telephone: user?.telephone,
+						mobile: user?.mobile,
 					}}
 					onSubmit={onSubmitChangedUserInfo}
 					innerRef={saveRef}
@@ -205,6 +203,7 @@ const UserInfoTab = ({userUid}) => {
 
 UserInfoTab.propTypes = {
 	userUid: PropTypes.string.isRequired,
+	user: PropTypes.object.isRequired,
 };
 
 export default UserInfoTab;

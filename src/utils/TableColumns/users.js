@@ -513,7 +513,6 @@ export const USER_SUMMARY_TABS_GROUPS_EXCLUDE_COLUMN = [
 		Header: '생성 일시',
 		accessor: 'creationDate',
 	},
-	{accessor: 'grantDate', Header: '부여 일시'},
 ];
 
 export const USER_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
