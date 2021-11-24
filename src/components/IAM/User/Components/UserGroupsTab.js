@@ -6,7 +6,6 @@ import Table from '../../../Table/Table';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
-import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import {TableTitle} from '../../../../styles/components/table';
 import {
 	NormalButton,
@@ -30,15 +29,11 @@ const UserGroupsTab = ({
 	isSummaryOpened,
 }) => {
 	const dispatch = useDispatch();
-	const {users} = useSelector(IAM_USER.selector);
-	const {page} = useSelector(PAGINATION.selector);
+	const {user} = useSelector(IAM_USER.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
+	const {page} = useSelector(PAGINATION.selector);
+	const [includedGroups, setIncludedGroups] = useState([]);
 	const [select, setSelect] = useState({});
-	const user = useMemo(() => users.find((v) => v.userUid === userUid), [
-		users,
-		userUid,
-	]);
 
 	const [includedDataIds, setIncludedDataIds] = useState(
 		user?.groupIds || [],
@@ -46,7 +41,7 @@ const UserGroupsTab = ({
 
 	const includedData = useMemo(() => {
 		return (
-			groups
+			includedGroups
 				.filter((v) => includedDataIds.includes(v.id))
 				.map((v) => ({
 					...v,
@@ -55,7 +50,7 @@ const UserGroupsTab = ({
 					parentGroup: v.parentGroup.name,
 				})) || []
 		);
-	}, [groups, includedDataIds]);
+	}, [includedGroups, includedDataIds]);
 
 	const excludedData = useMemo(() => {
 		const types = groups
@@ -86,7 +81,7 @@ const UserGroupsTab = ({
 				);
 			});
 		},
-		[dispatch, select, userUid],
+		[dispatch, userUid],
 	);
 
 	const onClickAddGroupToUser = useCallback(
@@ -104,8 +99,6 @@ const UserGroupsTab = ({
 	);
 
 	useEffect(() => {
-		console.log(page[tableKeys.users.summary.tabs.groups.include]);
-		console.log(!isSummaryOpened);
 		if (
 			!isSummaryOpened &&
 			page[tableKeys.users.summary.tabs.groups.include] &&
@@ -118,6 +111,27 @@ const UserGroupsTab = ({
 			);
 		}
 	}, [dispatch, isSummaryOpened, page, user]);
+
+	useEffect(() => {
+		if (user && user.groupIds[0]) {
+			console.log(user.groupIds);
+			const arr = [];
+			user.groupIds.forEach((v) =>
+				dispatch(
+					IAM_USER_GROUP.asyncAction.findByIdAction({
+						id: v,
+					}),
+				)
+					.unwrap()
+					.then((res) => {
+						arr.push(res);
+						if (user.groupIds.length === arr.length) {
+							setIncludedGroups(arr);
+						}
+					}),
+			);
+		}
+	}, [dispatch, user]);
 
 	return (
 		<TabContentContainer>

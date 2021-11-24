@@ -94,6 +94,13 @@ const UserDescriptionSpace = ({userUid}) => {
 		);
 	}, [dispatch, userUid]);
 
+	useEffect(() => {
+		if (isSummaryOpened && history.location.search)
+			history.push({
+				pathname: `/users/${userUid}`,
+			});
+	}, [history, isSummaryOpened, userUid]);
+
 	return (
 		<IamContainer>
 			<CurrentPathBar>

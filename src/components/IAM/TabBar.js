@@ -56,7 +56,7 @@ const TabBar = ({Tabs, param, id, isOpened, setIsOpened}) => {
 				search: `tabs=${v}`,
 			});
 		},
-		[history, setIsOpened, id],
+		[setIsOpened, history, param, id],
 	);
 	return (
 		<_TabContainer>

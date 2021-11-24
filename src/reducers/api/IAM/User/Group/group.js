@@ -125,8 +125,8 @@ const findAllAction = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
+		group: null,
 		groups: [],
-		members: [],
 		loading: false,
 		error: null,
 	},
@@ -169,7 +169,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByIdAction.fulfilled]: (state, action) => {
-			state.groups = state.groups.concat(action.payload);
+			state.group = action.payload;
 			state.loading = false;
 		},
 		[findByIdAction.rejected]: (state, action) => {
@@ -193,8 +193,9 @@ const slice = createSlice({
 
 const selectAllState = createSelector(
 	(state) => state.groups,
-	(groups) => {
-		return {groups};
+	(state) => state.group,
+	(groups, group) => {
+		return {groups, group};
 	},
 );
 

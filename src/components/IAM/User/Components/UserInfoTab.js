@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -17,18 +17,14 @@ import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 const UserInfoTab = ({userUid}) => {
 	const dispatch = useDispatch();
 	const [values, setValues] = useState({email: '', number: ''});
+
 	const saveRef = useRef(null);
 	const confirmAuthRef = useRef(null);
 	const changePasswordRef = useRef(null);
 
 	const [isIdentificationOpened, setIsIdentificationOpened] = useState(false);
 	const [isChangePasswordOpened, setIsChangePasswordOpened] = useState(false);
-	const {users} = useSelector(IAM_USER.selector);
-
-	const user = useMemo(() => users.find((v) => v.userUid === userUid), [
-		users,
-		userUid,
-	]);
+	const {user} = useSelector(IAM_USER.selector);
 
 	const onClickSaveChangedInfo = useCallback((data) => {
 		console.log('api 처리 : ', data);

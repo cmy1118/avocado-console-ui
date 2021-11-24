@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
-import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import {dummyPolicyOnUser} from '../../../../utils/dummyData';
@@ -19,10 +18,8 @@ import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 const UserSummary = ({userUid, param, setIsOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {user} = useSelector(IAM_USER.selector);
-	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
-
+	const [groups, setGroups] = useState([]);
 	const onClickChangeTab = useCallback(
 		(v) => () => {
 			setIsOpened(false);
@@ -59,24 +56,23 @@ const UserSummary = ({userUid, param, setIsOpened}) => {
 		// }));
 	}, []);
 
-	// useEffect(() => {
-	// 	dispatch(
-	// 		IAM_USER_GROUP.asyncAction.findAllAction({
-	// 			ids: user.groupIds,
-	// range: 'elements=0-50',
-	// }),
-	// );
-	// }, [dispatch, user]);
-
 	useEffect(() => {
 		if (user && user.groupIds[0]) {
 			console.log(user.groupIds);
+			const arr = [];
 			user.groupIds.forEach((v) =>
 				dispatch(
 					IAM_USER_GROUP.asyncAction.findByIdAction({
 						id: v,
 					}),
-				),
+				)
+					.unwrap()
+					.then((res) => {
+						arr.push(res);
+						if (user.groupIds.length === arr.length) {
+							setGroups(arr);
+						}
+					}),
 			);
 		}
 	}, [dispatch, user]);
