@@ -9,7 +9,10 @@ import {dummyPolicyOnUser} from '../../../../utils/dummyData';
 import TableContainer from '../../../Table/TableContainer';
 import Table from '../../../Table/Table';
 import {useHistory} from 'react-router-dom';
-import {SummaryTablesContainer, SummaryTableTitle,} from '../../../../styles/components/iam/descriptionPage';
+import {
+	SummaryTablesContainer,
+	SummaryTableTitle,
+} from '../../../../styles/components/iam/descriptionPage';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import PAGINATION from '../../../../reducers/pagination';
@@ -67,7 +70,9 @@ const UserSummary = ({userUid, param, setIsOpened}) => {
 			}),
 		)
 			.unwrap()
-			.then((res) => setUser(res));
+			.then((res) =>
+				setUser({...res, groupIds: res.groupIds ? res.groupIds : []}),
+			);
 	}, [dispatch, userUid]);
 
 	useEffect(() => {
