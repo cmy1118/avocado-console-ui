@@ -206,8 +206,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByUidAction.fulfilled]: (state, action) => {
-			state.user = action.payload;
-
+			// state.user = action.payload;
 			state.loading = false;
 		},
 		[findByUidAction.rejected]: (state, action) => {

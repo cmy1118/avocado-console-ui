@@ -27,7 +27,7 @@ const GroupOnDescPageTags = ({groupId}) => {
 			return {
 				...v,
 				id: v.name,
-				numberOfPermissions: v.permissions.length,
+				numberOfRoles: v.permissions.length,
 			};
 		}) || [],
 	);

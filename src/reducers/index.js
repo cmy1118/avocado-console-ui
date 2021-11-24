@@ -18,14 +18,24 @@ import RRM_RESOURCE from './api/RRM/Resource/resource';
 import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
 import IAM_ROLES from './api/IAM/User/Role/roles';
 import {persistReducer} from 'redux-persist';
-import IAM_ROLES_GRANT_ROLE_GROUP from "./api/IAM/User/Role/GrantRole/group";
-import IAM_ROLES_GRANT_ROLE_USER from "./api/IAM/User/Role/GrantRole/user";
+import IAM_ROLES_GRANT_ROLE_GROUP from './api/IAM/User/Role/GrantRole/group';
+import IAM_ROLES_GRANT_ROLE_USER from './api/IAM/User/Role/GrantRole/user';
+import PAM_ROLES from './api/ PAM/Role/roles';
+import PAM_ROLE_SET from './api/ PAM/Role/roleSet';
+import PAM_ROLE_USER from './api/ PAM/Role/user';
+import PAM_ROLE_USER_GROUP from './api/ PAM/Role/userGroup';
 
 const userFilter = createFilter(AUTH_USER.name, ['companyId', 'user']);
 const iamUserFilter = createFilter(IAM_USER.name, ['users']);
 const iamRolesFilter = createFilter(IAM_ROLES.name, ['roles']);
-const iamRolesGrantRoleUserFilter = createFilter(IAM_ROLES_GRANT_ROLE_USER.name, ['roles']);
-const iamRolesGrantRoleGroupFilter = createFilter(IAM_ROLES_GRANT_ROLE_GROUP.name, ['roles']);
+const iamRolesGrantRoleUserFilter = createFilter(
+	IAM_ROLES_GRANT_ROLE_USER.name,
+	['roles'],
+);
+const iamRolesGrantRoleGroupFilter = createFilter(
+	IAM_ROLES_GRANT_ROLE_GROUP.name,
+	['roles'],
+);
 const iamGroupFilter = createFilter(IAM_USER_GROUP.name, ['groups']);
 const iamGroupTypeFilter = createFilter(IAM_USER_GROUP_TYPE.name, [
 	'groupTypes',
@@ -50,7 +60,7 @@ const persistConfig = {
 		iamGroupTypeFilter,
 		iamRolesFilter,
 		iamRolesGrantRoleUserFilter,
-		iamRolesGrantRoleGroupFilter
+		iamRolesGrantRoleGroupFilter,
 	],
 };
 
@@ -71,6 +81,15 @@ const rootReducer = combineReducers({
 	[IAM_ROLES_GRANT_ROLE_USER.name]: IAM_ROLES_GRANT_ROLE_USER.reducer,
 	[IAM_ROLES_GRANT_ROLE_GROUP.name]: IAM_ROLES_GRANT_ROLE_GROUP.reducer,
 	/******************************************/
+
+	/******************************************/
+	/* seob : PAM reducers
+    /******************************************/
+	[PAM_ROLES.name]: PAM_ROLES.reducer,
+	[PAM_ROLE_SET.name]: PAM_ROLE_SET.reducer,
+	[PAM_ROLE_USER.name]: PAM_ROLE_USER.reducer,
+	[PAM_ROLE_USER_GROUP.name]: PAM_ROLE_USER_GROUP.reducer,
+
 	/******************************************/
 	/* seob : RRM reducers
     /******************************************/

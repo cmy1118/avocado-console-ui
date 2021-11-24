@@ -4,6 +4,7 @@ const slice = createSlice({
 	name: 'PAGINATION',
 	initialState: {
 		page: {},
+		initialPage: 'elements=0-100',
 	},
 	reducers: {
 		setPage: (state, {payload}) => {
@@ -14,9 +15,11 @@ const slice = createSlice({
 
 const selectAllState = createSelector(
 	(state) => state.page,
-	(page) => {
+	(state) => state.initialPage,
+	(page, initialPage) => {
 		return {
 			page,
+			initialPage,
 		};
 	},
 );

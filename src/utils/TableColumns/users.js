@@ -269,7 +269,7 @@ export const USER_SUMMARY_GROUP_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 	{
 		Header: '부여 일시',

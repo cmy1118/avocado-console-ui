@@ -48,7 +48,7 @@ const UserDescriptionSpace = ({userUid}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {search} = useLocation();
-	const {user} = useSelector(IAM_USER.selector);
+	const [user, setUser] = useState(null);
 
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
@@ -91,7 +91,9 @@ const UserDescriptionSpace = ({userUid}) => {
 			IAM_USER.asyncAction.findByUidAction({
 				userUid: userUid,
 			}),
-		);
+		)
+			.unwrap()
+			.then((res) => setUser(res));
 	}, [dispatch, userUid]);
 
 	useEffect(() => {

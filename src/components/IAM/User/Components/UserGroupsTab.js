@@ -20,6 +20,7 @@ import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 
 const UserGroupsTab = ({
 	userUid,
@@ -132,6 +133,20 @@ const UserGroupsTab = ({
 			);
 		}
 	}, [dispatch, user]);
+
+	useEffect(() => {
+		if (includedGroups) {
+			includedGroups.forEach((v) => {
+				dispatch(
+					IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
+						id: v.id,
+						range:
+							page[tableKeys.users.summary.tabs.groups.include],
+					}),
+				);
+			});
+		}
+	}, [dispatch, includedGroups, page]);
 
 	return (
 		<TabContentContainer>

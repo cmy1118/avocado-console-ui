@@ -2,8 +2,6 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {roleTypeConverter} from '../../../../utils/tableDataConverter';
-import IAM_ROLES from '../../../../reducers/api/ PAM/Role/roles';
 import Table from '../../../Table/Table';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import {tableKeys} from '../../../../Constants/Table/keys';
@@ -20,6 +18,7 @@ import DragContainer from '../../../Table/DragContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
+import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 
 const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -33,24 +32,27 @@ const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 	const [includedDataIds, setIncludedDataIds] = useState(group.roles);
 
 	const includedData = useMemo(() => {
-		return roles
-			.filter((v) => includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-				numberOfUsers: v.groups.length,
-			}));
-	}, [roles, includedDataIds]);
+		return [];
+		// return roles
+		// 	.filter((v) => includedDataIds.includes(v.id))
+		// 	.map((v) => ({
+		// 		...v,
+		// 		type: roleTypeConverter(v.companyId),
+		// 		numberOfUsers: v.groups.length,
+		// 	}));
+	}, []);
 
 	const excludedData = useMemo(() => {
-		return roles
-			.filter((v) => !includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-				numberOfUsers: v.groups.length,
-			}));
-	}, [roles, includedDataIds]);
+		return [];
+
+		// return roles
+		// 	.filter((v) => !includedDataIds.includes(v.id))
+		// 	.map((v) => ({
+		// 		...v,
+		// 		type: roleTypeConverter(v.companyId),
+		// 		numberOfUsers: v.groups.length,
+		// 	}));
+	}, []);
 
 	const onClickDeleteRolesFromGroup = useCallback(() => {
 		dispatch(

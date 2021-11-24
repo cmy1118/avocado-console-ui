@@ -109,6 +109,13 @@ const GroupDescriptionSpace = ({groupId}) => {
 			.catch((err) => console.log(err));
 	}, [dispatch, groupId]);
 
+	useEffect(() => {
+		if (isSummaryOpened && history.location.search)
+			history.push({
+				pathname: `/groups/${groupId}`,
+			});
+	}, [history, isSummaryOpened, groupId]);
+
 	return (
 		<IamContainer>
 			<CurrentPathBar>

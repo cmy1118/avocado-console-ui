@@ -1,5 +1,4 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
 import {baseUrl, Axios} from '../../../../api/constants';
 
 const NAME = 'PAM_ROLES';
@@ -135,14 +134,15 @@ const getEventsAction = createAsyncThunk(
 
 const slice = createSlice({
 	name: NAME,
-	initialState: {},
+	initialState: {
+		roles: [],
+	},
 	reducers: {},
 	extraReducers: {
 		[createAction.pending]: (state) => {
 			state.loading = true;
 		},
 		[createAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[createAction.rejected]: (state, action) => {
@@ -154,7 +154,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[updateAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[updateAction.rejected]: (state, action) => {
@@ -166,7 +165,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[deleteAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[deleteAction.rejected]: (state, action) => {
@@ -178,7 +176,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findRolesByIdsAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[findRolesByIdsAction.rejected]: (state, action) => {
@@ -190,7 +187,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findRolesByIdsAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[findRolesByIdsAction.rejected]: (state, action) => {
@@ -202,7 +198,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[getAllRolesAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[getAllRolesAction.rejected]: (state, action) => {
@@ -214,7 +209,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[getEventsAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
 			state.loading = false;
 		},
 		[getEventsAction.rejected]: (state, action) => {
