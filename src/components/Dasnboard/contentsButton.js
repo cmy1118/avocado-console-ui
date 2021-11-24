@@ -9,6 +9,13 @@ const _imgContainer = styled.div`
 	position: relative;
 	width: 252px;
 	height: 240px;
+	cursor: pointer;
+	transform: 2s;
+	transition: 0.4s;
+	:hover {
+		transform: translate(0, -5px);
+		opacity: 0.9;
+	}
 `;
 const _textContents = styled.div`
 	position: absolute;
@@ -42,30 +49,52 @@ const _text = styled.div`
 	// text-shadow: 0.5px 0.5px 0.5px black;
 `;
 
-const ContentsButton = ({url, img, title, text}) => {
+const ContentsButton = ({url, href, img, title, text}) => {
 	const history = useHistory();
 
 	const onClickMove = useCallback(() => {
-		history.push('./ssh://');
-		// history.push('/iam');
-	}, [history]);
+		// history.push('');
+		console.log('href:', href);
+		console.log('href:', url);
+		history.push(url);
+	}, [history, href, url]);
 
 	return (
 		<_Container>
-			<a href={'ssh://'}>
+			{href === 'ssh://' ? (
+				<a href={'ssh://'}>
+					<_imgContainer>
+						<img
+							style={{width: '252px', height: '240px'}}
+							src={img}
+						/>
+						{/*<img style={{width:"252px",height:"240px"}} src={img} onClick={onClickMove} />*/}
+						<_textContents>
+							<_title>{title}</_title>
+							<_text>{text}</_text>
+						</_textContents>
+					</_imgContainer>
+				</a>
+			) : (
 				<_imgContainer>
-					<img style={{width: '252px', height: '240px'}} src={img} />
-					{/*<img style={{width:"252px",height:"240px"}} src={img} onClick={onClickMove} />*/}
+					{/*<img style={{width: '252px', height: '240px'}} src={img} />*/}
+					<img
+						style={{width: '252px', height: '240px'}}
+						src={img}
+						onClick={onClickMove}
+					/>
 					<_textContents>
 						<_title>{title}</_title>
 						<_text>{text}</_text>
 					</_textContents>
 				</_imgContainer>
-			</a>
+			)}
 		</_Container>
 	);
 };
 ContentsButton.propTypes = {
+	url: PropTypes.string,
+	href: PropTypes.string,
 	img: PropTypes.string,
 	title: PropTypes.string,
 	text: PropTypes.string,

@@ -8,47 +8,63 @@ import AUTH_USER from '../reducers/api/Auth/authUser';
 import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import ContentsButton from '../components/Dasnboard/contentsButton';
-import {status} from '../utils/data';
+
 //img
 import IAM_green from '../images/dashboard/service_iam_green@2x.png';
 import PAM_green from '../images/dashboard/service_pam_green@2x.png';
 import Approal_green from '../images/dashboard/service_app_green@2x.png';
+import RRM_green from '../images/dashboard/service_rrm_green@2x.png';
 
 import IAM_grey from '../images/dashboard/service_iam_gray@2x.png';
 import PAM_grey from '../images/dashboard/service_pam_gray@2x.png';
 import Approal_grey from '../images/dashboard/service_app_gray@2x.png';
+import RRM_grey from '../images/dashboard/service_rrm_gray@2x.png';
+
+import IAM_red from '../images/dashboard/service_iam_red@2x.png';
+import PAM_red from '../images/dashboard/service_pam_red@2x.png';
+import Approal_red from '../images/dashboard/service_app_red@2x.png';
+import RRM_red from '../images/dashboard/service_rrm_red@2x.png';
 
 const utils = [
-	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green, url: 'ssh://'},
-	{title: 'PAM', text: '특권 접근 관리', img: PAM_green, href: 'iam'},
+	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green, url: 'iam'},
+	{title: 'PAM', text: '특권 접근 관리', img: PAM_green, href: 'ssh://'},
+	{
+		title: 'Approal',
+		text: '승인 워크플로우 관리',
+		img: Approal_green,
+		url: 'iam',
+	},
+	{title: 'RRM', text: '원격 자원 관리', img: RRM_green, url: 'iam'},
 ];
 const favorite = [
-	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_grey},
-	{title: 'PAM', text: '특권 접근 관리', img: PAM_grey},
-	{title: 'Approal', text: '승인 워크플로우 관리', img: Approal_grey},
+	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_grey, url: 'iam'},
+	{title: 'PAM', text: '특권 접근 관리', img: PAM_grey, url: 'iam'},
+	{
+		title: 'Approal',
+		text: '승인 워크플로우 관리',
+		img: Approal_grey,
+		url: 'iam',
+	},
+	// {title: 'RRM', text: '원격 자원 관리', img: RRM_grey, url: 'iam'},
 ];
 const service = [
-	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green},
-	{title: 'PAM', text: '특권 접근 관리', img: PAM_green},
-	{title: 'Approal', text: '승인 워크플로우 관리', img: Approal_green},
-	{title: 'Approal', text: '승인 워크플로우 관리', img: Approal_green},
-	{title: 'Approal', text: '승인 워크플로우 관리', img: Approal_green},
+	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_red, url: 'iam'},
+	{title: 'PAM', text: '특권 접근 관리', img: PAM_red, url: 'iam'},
+	{title: 'RRM', text: '원격 자원 관리', img: RRM_red, url: 'iam'},
+	{
+		title: 'Approal',
+		text: '승인 워크플로우 관리',
+		img: Approal_red,
+		url: 'iam',
+	},
 ];
 
-// const _Container = styled.div`
-// 	display: grid;
-// 	height: 100%;
-// 	background: #f8f9fa;
-// 	display: flex;
-// 	align-items: start;
-// 	justify-content: center;
-// 	overflow: hidden;
-// `;
 const _Container = styled.div`
 	display: grid;
+	place-items: center;
 	height: 955px;
 	grid-template-rows: 100%;
-	grid-template-columns: 10% 80% 10%;
+	grid-template-columns: 15% 80% 15%;
 	height: 100%;
 	background: #f8f9fa;
 	width: 100%;
@@ -60,6 +76,7 @@ const _Container = styled.div`
 	}
 `;
 
+// ************************** 이미지를 삽입 했을때 [s]**************************
 // const _ImageContainer = styled.div`
 // 	background: #f8f9fa;
 // 	max-width: 1500px;
@@ -78,6 +95,7 @@ const _Container = styled.div`
 // 		image-rendering: crisp-edges;
 // 	}
 // `;
+// ************************** 이미지를 삽입 했을때 [e]**************************
 
 const _contentsContainer = styled.div`
 	padding: 55px 0px;
@@ -91,18 +109,31 @@ const _contentsContainer = styled.div`
 
 const _contents = styled.div`
 	display: flex;
+	flex-direction: column;
 	width: 100%;
 	height: 300px;
+`;
+const _contentsTitle = styled.div`
+	font-family: NotoSansCJKKR;
+	font-size: 16px;
+	font-weight: bold;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.25;
+	letter-spacing: 0.25px;
+	text-align: left;
+	color: #212121;
+	padding-left: 15px;
+	margin-bottom: 10px;
+`;
+const _contentsItem = styled.div`
+	display: flex;
 `;
 const _side = styled.div``;
 
 const Main = () => {
 	const history = useHistory();
 	const {companyId} = useSelector(AUTH_USER.selector);
-
-	const onClickMove = useCallback(() => {
-		history.push('/iam');
-	}, [history]);
 
 	return (
 		// <_Container>
@@ -122,33 +153,56 @@ const Main = () => {
 			<_side></_side>
 			<_contentsContainer>
 				<_contents>
-					{utils.map((v, index) => {
-						return (
-							<ContentsButton
-								url={v.url}
-								href={v.href}
-								img={v.img}
-								title={v.title}
-								text={v.text}
-								key={index}
-							/>
-						);
-					})}
+					<_contentsTitle>Avocado 기능</_contentsTitle>
+					<_contentsItem>
+						{utils.map((v, index) => {
+							return (
+								<ContentsButton
+									url={v.url}
+									href={v.href}
+									img={v.img}
+									title={v.title}
+									text={v.text}
+									key={index}
+								/>
+							);
+						})}
+					</_contentsItem>
 				</_contents>
 				<_contents>
-					{favorite.map((v, index) => {
-						return (
-							<ContentsButton
-								img={v.img}
-								title={v.title}
-								text={v.text}
-								key={index}
-							/>
-						);
-					})}
+					<_contentsTitle>즐겨찾기</_contentsTitle>
+					<_contentsItem>
+						{favorite.map((v, index) => {
+							return (
+								<ContentsButton
+									url={v.url}
+									href={v.href}
+									img={v.img}
+									title={v.title}
+									text={v.text}
+									key={index}
+								/>
+							);
+						})}
+					</_contentsItem>
 				</_contents>
-				<_contents></_contents>
-				<_contents></_contents>
+				<_contents>
+					<_contentsTitle>모든 서비스</_contentsTitle>
+					<_contentsItem>
+						{service.map((v, index) => {
+							return (
+								<ContentsButton
+									url={v.url}
+									href={v.href}
+									img={v.img}
+									title={v.title}
+									text={v.text}
+									key={index}
+								/>
+							);
+						})}
+					</_contentsItem>
+				</_contents>
 			</_contentsContainer>
 			<_side></_side>
 		</_Container>
