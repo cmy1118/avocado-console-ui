@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import AssignRoleToUser from '../IAM/User/Components/AssignRoleToUser';
 import styled from 'styled-components';
 import {useHistory} from 'react-router-dom';
+import {moreButtonIcon, starIcon} from '../../icons/icons';
+import {HoverIconButton, Icon, IconButton} from '../../styles/components/icons';
 
 const _Container = styled.div``;
 const _imgContainer = styled.div`
@@ -16,6 +18,13 @@ const _imgContainer = styled.div`
 		transform: translate(0, -5px);
 		opacity: 0.9;
 	}
+`;
+const _iconCOntents = styled.div`
+	display: flex;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(120%, -620%);
 `;
 const _textContents = styled.div`
 	position: absolute;
@@ -69,6 +78,22 @@ const ContentsButton = ({url, href, img, title, text}) => {
 							src={img}
 						/>
 						{/*<img style={{width:"252px",height:"240px"}} src={img} onClick={onClickMove} />*/}
+						<_iconCOntents>
+							<Icon
+								style={{padding: '0px 4px', color: 'white'}}
+								margin={'0px'}
+								size={'micro'}
+							>
+								{starIcon}
+							</Icon>
+							<Icon
+								style={{padding: '0px 4px', color: 'white'}}
+								margin={'0px'}
+								size={'micro'}
+							>
+								{moreButtonIcon}
+							</Icon>
+						</_iconCOntents>
 						<_textContents>
 							<_title>{title}</_title>
 							<_text>{text}</_text>
@@ -83,6 +108,22 @@ const ContentsButton = ({url, href, img, title, text}) => {
 						src={img}
 						onClick={onClickMove}
 					/>
+					<_iconCOntents>
+						<Icon
+							style={{padding: '0px 4px', color: 'white'}}
+							margin={'0px'}
+							size={'micro'}
+						>
+							{starIcon}
+						</Icon>
+						<Icon
+							style={{padding: '0px 4px', color: 'white'}}
+							margin={'0px'}
+							size={'micro'}
+						>
+							{moreButtonIcon}
+						</Icon>
+					</_iconCOntents>
 					<_textContents>
 						<_title>{title}</_title>
 						<_text>{text}</_text>

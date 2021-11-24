@@ -29,11 +29,17 @@ const utils = [
 	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green, url: 'iam'},
 	{title: 'PAM', text: '특권 접근 관리', img: PAM_green, href: 'ssh://'},
 	{
-		title: 'Approal',
-		text: '승인 워크플로우 관리',
+		title: 'Web Terminal ',
+		text: '웹터미널',
 		img: Approal_green,
 		url: 'iam',
 	},
+	// {
+	// 	title: 'Approal',
+	// 	text: '승인 워크플로우 관리',
+	// 	img: Approal_green,
+	// 	url: 'iam',
+	// },
 	{title: 'RRM', text: '원격 자원 관리', img: RRM_green, url: 'iam'},
 ];
 const favorite = [
