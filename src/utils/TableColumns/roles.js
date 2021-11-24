@@ -151,6 +151,29 @@ export const ROLE_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
 	{
 		accessor: 'name',
 		Header: '정책 이름',
+		id: 'expander',
+		// eslint-disable-next-line react/prop-types,react/display-name
+		Cell: ({row}) => (
+			// eslint-disable-next-line react/prop-types,react/display-name,react/jsx-no-undef
+			<PermissionName {...row.getToggleRowExpandedProps()}>
+				{/* eslint-disable-next-line react/prop-types */}
+				{row.isExpanded ? (
+					<IconButton
+						size={'sm'}
+						itype={'confirm'}
+						margin={'0px 6px 0px 0px'}
+					>
+						{keyboardArrowDownIcon}
+					</IconButton>
+				) : (
+					<IconButton size={'sm'} margin={'0px 6px 0px 0px'}>
+						{NavigateNextIcon}
+					</IconButton>
+				)}
+				{/* eslint-disable-next-line react/prop-types */}
+				{row.original.name}
+			</PermissionName>
+		),
 	},
 	{accessor: 'type', Header: ' 유형'},
 	{accessor: 'description', Header: '설명', width: 400},
@@ -159,7 +182,34 @@ export const ROLE_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
 ];
 //정책 x =>  권한 o
 export const ROLE_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
-	{accessor: 'name', Header: '정책 이름', type: 'roles'},
+	{
+		accessor: 'name',
+		Header: '정책 이름',
+		type: 'roles',
+		id: 'expander',
+		// eslint-disable-next-line react/prop-types,react/display-name
+		Cell: ({row}) => (
+			// eslint-disable-next-line react/prop-types,react/display-name,react/jsx-no-undef
+			<PermissionName {...row.getToggleRowExpandedProps()}>
+				{/* eslint-disable-next-line react/prop-types */}
+				{row.isExpanded ? (
+					<IconButton
+						size={'sm'}
+						itype={'confirm'}
+						margin={'0px 6px 0px 0px'}
+					>
+						{keyboardArrowDownIcon}
+					</IconButton>
+				) : (
+					<IconButton size={'sm'} margin={'0px 6px 0px 0px'}>
+						{NavigateNextIcon}
+					</IconButton>
+				)}
+				{/* eslint-disable-next-line react/prop-types */}
+				{row.original.name}
+			</PermissionName>
+		),
+	},
 	{accessor: 'type', Header: ' 유형'},
 	{accessor: 'description', Header: '설명', width: 400},
 	{accessor: 'numberOfRoles', Header: '역할 연결 수'},
