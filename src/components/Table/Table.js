@@ -156,7 +156,7 @@ const Table = ({
 			<Droppable
 				droppableId={tableKey}
 				mode={'Virtual'}
-				renderClone={(provided, snapshot,rubric) => {
+				renderClone={(provided, snapshot, rubric) => {
 					return (
 						<div
 							{...provided.draggableProps}
@@ -255,95 +255,96 @@ const Table = ({
 										{(provided, snapshot) => {
 											return (
 												<>
-												<div
-													ref={provided.innerRef}
-													{...provided.dragHandleProps}
-													{...provided.draggableProps}
-													style={getItemStyle(
-														snapshot.isDragging,
-														provided.draggableProps
-															.style,
-													)}
-													onMouseDown={
-														onMouseDownItem
-													}
-													className={`tr body ${
-														Object.keys(
-															selectedRowIds,
-														).includes(
+													<div
+														ref={provided.innerRef}
+														{...provided.dragHandleProps}
+														{...provided.draggableProps}
+														style={getItemStyle(
+															snapshot.isDragging,
+															provided
+																.draggableProps
+																.style,
+														)}
+														onMouseDown={
+															onMouseDownItem
+														}
+														className={`tr body ${
+															Object.keys(
+																selectedRowIds,
+															).includes(
+																// row.original.userUid
+																// 	? row.original
+																// 			.userUid
+																// 	: row.original
+																// 			.id,
+																row.original[
+																	DRAGGABLE_KEY
+																],
+															) && 'selected'
+														}
+													 ${index % 2 === 0 ? 'even' : 'odd'}
+													`}
+														id={
 															// row.original.userUid
 															// 	? row.original
 															// 			.userUid
-															// 	: row.original
-															// 			.id,
-															row.original
-																[DRAGGABLE_KEY],
-														) && 'selected'
-													}
-													 ${index % 2 === 0 ? 'even' : 'odd'}
-													`}
-													id={
-														// row.original.userUid
-														// 	? row.original
-														// 			.userUid
-														// 	: row.original.id
-														row.original[
-															DRAGGABLE_KEY
-														]
-													}
-													key={
-														row.original.userUid
-															? row.original
-																	.userUid
-															: row.original.id
-														// row.original.keyId
-													}
-												>
-													{row.cells.map(
-														(cell, i) => {
-															return (
-																<Tds
-																	className={
-																		'td'
-																	}
-																	width={
-																		cell
-																			.column
-																			.id ===
-																		'selection'
-																			? '40px'
-																			: getColumnWidth(
-																					page.map(
-																						(
-																							v,
-																						) =>
-																							v.original,
-																					),
-																					cell
-																						.column
-																						.accessor,
-																					cell
-																						.column
-																						.Header,
-																			  )
-																	}
-																	key={i}
-																	{...cell.getCellProps}
-																>
-																	{cell.render(
-																		'Cell',
-																	)}
-																</Tds>
-															);
-														},
-													)}
-												</div>
+															// 	: row.original.id
+															row.original[
+																DRAGGABLE_KEY
+															]
+														}
+														key={
+															row.original.userUid
+																? row.original
+																		.userUid
+																: row.original
+																		.id
+															// row.original.keyId
+														}
+													>
+														{row.cells.map(
+															(cell, i) => {
+																return (
+																	<Tds
+																		className={
+																			'td'
+																		}
+																		width={
+																			cell
+																				.column
+																				.id ===
+																			'selection'
+																				? '40px'
+																				: getColumnWidth(
+																						page.map(
+																							(
+																								v,
+																							) =>
+																								v.original,
+																						),
+																						cell
+																							.column
+																							.accessor,
+																						cell
+																							.column
+																							.Header,
+																				  )
+																		}
+																		key={i}
+																		{...cell.getCellProps}
+																	>
+																		{cell.render(
+																			'Cell',
+																		)}
+																	</Tds>
+																);
+															},
+														)}
+													</div>
 													{Object.keys(
 														expanded,
 													).includes(
-														row.original.uid
-															? row.original.uid
-															: row.original.id,
+														row.original.id,
 													) && (
 														<InnerTableContainer />
 													)}
@@ -375,6 +376,7 @@ Table.propTypes = {
 	page: PropTypes.array,
 	selectedFlatRows: PropTypes.array,
 	selectedRowIds: PropTypes.object,
+	expanded: PropTypes.object,
 };
 
 export default Table;
