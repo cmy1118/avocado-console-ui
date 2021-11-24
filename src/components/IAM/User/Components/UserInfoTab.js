@@ -203,7 +203,7 @@ const UserInfoTab = ({user, userUid}) => {
 
 UserInfoTab.propTypes = {
 	userUid: PropTypes.string.isRequired,
-	user: PropTypes.object.isRequired,
+	user: PropTypes.object,
 };
 
 export default UserInfoTab;

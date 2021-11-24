@@ -140,7 +140,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 						<LiText>역할 이름 : {role?.name}</LiText>
 						<LiText>역할 유형 : {role?.type}</LiText>
 						<LiText>역할 설명 : {role?.description}</LiText>
-						<LiText>생성 일시 : {role?.creationDate}</LiText>
+						<LiText>생성 일시 : {role?.createdTime}</LiText>
 						<LiText>
 							마지막 작업 일시 : 2021.09.21. 16:05:18{' '}
 						</LiText>

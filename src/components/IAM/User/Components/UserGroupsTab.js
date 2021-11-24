@@ -21,6 +21,7 @@ import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import {parentGroupConverter} from '../../../../utils/tableDataConverter';
 
 const UserGroupsTab = ({
 	userUid,
@@ -34,13 +35,12 @@ const UserGroupsTab = ({
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {page} = useSelector(PAGINATION.selector);
 	const [includedGroups, setIncludedGroups] = useState([]);
+	const [excluedeGroups, setExcluedeGroups] = useState([]);
 	const [select, setSelect] = useState({});
 
 	const [includedDataIds, setIncludedDataIds] = useState(
 		user?.groupIds || [],
 	);
-
-	console.log(includedGroups);
 
 	const includedData = useMemo(() => {
 		return (
@@ -50,28 +50,30 @@ const UserGroupsTab = ({
 					...v,
 					name: v.name,
 					type: v.userGroupType.name,
-					parentGroup: v.parentGroup.name,
+					parentGroup: parentGroupConverter(v.parentGroup.name),
+					createdTime: v.createdTag.createdTime,
 				})) || []
 		);
 	}, [includedGroups, includedDataIds]);
 
 	const excludedData = useMemo(() => {
-		const types = groups
+		const types = excluedeGroups
 			.filter((v) => includedDataIds.includes(v.id))
 			.map((v) => v.userGroupType.name);
 
 		return (
-			groups
+			excluedeGroups
 				.filter((v) => !includedDataIds.includes(v.id))
 				.filter((v) => !types.includes(v.userGroupType.name))
 				.map((v) => ({
 					...v,
 					name: v.name,
 					type: v.userGroupType.name,
-					parentGroup: v.parentGroup.name,
+					parentGroup: parentGroupConverter(v.parentGroup.name),
+					createdTime: v.createdTag.createdTime,
 				})) || []
 		);
-	}, [groups, includedDataIds]);
+	}, [excluedeGroups, includedDataIds]);
 	//삭제
 	const onClickDeleteRolesFromUser = useCallback(
 		(data) => {
@@ -101,7 +103,34 @@ const UserGroupsTab = ({
 		[dispatch, userUid],
 	);
 
-	const getGroupsData = useCallback(
+	const getExcludedGroupData = useCallback(
+		(groups) => {
+			const arr = [];
+			groups.forEach((group) => {
+				dispatch(
+					IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
+						id: group.id,
+						range:
+							page[tableKeys.users.summary.tabs.groups.exclude] ||
+							'elements=0-50',
+					}),
+				)
+					.unwrap()
+					.then((roles) => {
+						arr.push({
+							...group,
+							numberOfRoles: !roles ? 0 : roles.length,
+						});
+						if (arr.length === groups.length) {
+							setExcluedeGroups(arr);
+						}
+					});
+			});
+		},
+		[dispatch, page],
+	);
+
+	const getIncludedGroupsData = useCallback(
 		(user) => {
 			console.log(user.groupIds);
 			const arr = [];
@@ -197,10 +226,16 @@ const UserGroupsTab = ({
 				.then((res) => {
 					setUser(res);
 					setIncludedDataIds(res.groupIds);
-					getGroupsData(res);
+					getIncludedGroupsData(res);
 				});
 		}
-	}, [user, dispatch, userUid, getGroupsData, page]);
+	}, [user, dispatch, userUid, getIncludedGroupsData, page]);
+
+	useEffect(() => {
+		if (groups[0]) {
+			getExcludedGroupData(groups);
+		}
+	}, [getExcludedGroupData, groups]);
 
 	return (
 		<TabContentContainer>

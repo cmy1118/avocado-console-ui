@@ -47,7 +47,7 @@ const GroupSummary = ({groupId, param, setIsOpened}) => {
 		// 	...v,
 		// 	id: v.name,
 		// 	numberOfPermissions: v.permissions.length,
-		// 	creationDate: dummyDates[i],
+		// 	createdTime: dummyDates[i],
 		// }));
 	}, []);
 

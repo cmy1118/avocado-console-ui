@@ -36,7 +36,7 @@ export const GROUP_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 		filter: 'dateBetween',
 		Filter: CalenderOption,
 	},
@@ -68,7 +68,7 @@ export const GROUP_TYPE_COLUMN = [
 
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 
@@ -96,7 +96,7 @@ export const GROUP_ADD_ROLES_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 
@@ -162,7 +162,7 @@ export const GROUP_SUMMARY_USER_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 	{
 		Header: '부여 사용자',
@@ -262,7 +262,7 @@ export const GROUP_SUMMARY_TAG_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 export const GROUP_SUMMARY_TABS_TAG_COLUMN = [
@@ -286,7 +286,7 @@ export const GROUP_SUMMARY_TABS_TAG_COLUMN = [
 	},
 	// {
 	// 	Header: '생성 일시',
-	// 	accessor: 'creationDate',
+	// 	accessor: 'createdTime',
 	// },
 ];
 export const GROUP_ADD_USERS_EXCLUDE_COLUMN = [
@@ -357,7 +357,7 @@ export const GROUP_SUMMARY_TABS_ROLES_INCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 export const GROUP_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
@@ -384,7 +384,7 @@ export const GROUP_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 export const GROUP_SUMMARY_TABS_USERS_INCLUDE_COLUMN = [
@@ -436,7 +436,7 @@ export const GROUP_SUMMARY_TABS_USERS_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 
@@ -483,7 +483,7 @@ export const GROUP_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 
@@ -507,6 +507,6 @@ export const GROUP_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];

@@ -33,7 +33,7 @@ export const ROLE_COLUMN = [
 		disableFilters: true,
 	},
 	{
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 		Header: '생성 일시',
 		filter: 'dateBetween',
 		Filter: CalenderOption,
@@ -75,7 +75,7 @@ export const ROLE_SUMMARY_PERMISSION_COLUMN = [
 		accessor: 'policyName',
 	},
 	{
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 		Header: '생성 일시',
 	},
 	{
@@ -105,7 +105,7 @@ export const ROLE_SUMMARY_USER_COLUMN = [
 		},
 	},
 	{accessor: 'lastConsoleLogin', Header: '마지막 콘솔 로그인'},
-	{accessor: 'creationDate', Header: '생성 일시'},
+	{accessor: 'createdTime', Header: '생성 일시'},
 	{accessor: 'grantDate', Header: '부여 일시'},
 	{
 		accessor: 'grantUser',
@@ -127,7 +127,7 @@ export const ROLE_SUMMARY_GROUP_COLUMN = [
 	{accessor: 'clientGroupType', Header: '그룹 유형'},
 	{accessor: 'numberOfPermissions', Header: '권한 수'},
 	{accessor: 'parentGroup', Header: '상위 그룹'},
-	{accessor: 'creationDate', Header: '생성 일시'},
+	{accessor: 'createdTime', Header: '생성 일시'},
 	{accessor: 'grantDate', Header: '부여 일시'},
 	{
 		accessor: 'grantUser',
@@ -153,7 +153,7 @@ export const ROLE_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
 	{accessor: 'type', Header: ' 유형'},
 	{accessor: 'description', Header: '설명', width: 400},
 	{accessor: 'numberOfRoles', Header: '역할 연결 수'},
-	{accessor: 'creationDate', Header: '생성 일시'},
+	{accessor: 'createdTime', Header: '생성 일시'},
 ];
 //정책 x =>  권한 o
 export const ROLE_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
@@ -161,7 +161,7 @@ export const ROLE_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
 	{accessor: 'type', Header: ' 유형'},
 	{accessor: 'description', Header: '설명', width: 400},
 	{accessor: 'numberOfRoles', Header: '역할 연결 수'},
-	{accessor: 'creationDate', Header: '생성 일시'},
+	{accessor: 'createdTime', Header: '생성 일시'},
 ];
 
 export const ROLE_SUMMARY_TABS_USERS_INCLUDE_COLUMN = [
@@ -176,7 +176,7 @@ export const ROLE_SUMMARY_TABS_USERS_INCLUDE_COLUMN = [
 	{accessor: 'name', Header: '사용자 이름'},
 	{accessor: 'numberOfGroups', Header: '그룹 수'},
 	{accessor: 'lastConsoleLogin', Header: '마지막 콘솔 로그인'},
-	{accessor: 'creationDate', Header: '생성 일시'},
+	{accessor: 'createdTime', Header: '생성 일시'},
 	{
 		accessor: 'grantUser',
 		Header: '부여 사용자',
@@ -205,7 +205,7 @@ export const ROLE_SUMMARY_TABS_USERS_EXCLUDE_COLUMN = [
 	{accessor: 'name', Header: '사용자 이름'},
 	{accessor: 'numberOfGroups', Header: '그룹 수'},
 	{accessor: 'lastConsoleLogin', Header: '마지막 콘솔 로그인'},
-	{accessor: 'creationDate', Header: '생성 일시'},
+	{accessor: 'createdTime', Header: '생성 일시'},
 ];
 
 export const ROLE_SUMMARY_TABS_GROUPS_INCLUDE_COLUMN = [
@@ -220,7 +220,7 @@ export const ROLE_SUMMARY_TABS_GROUPS_INCLUDE_COLUMN = [
 	{accessor: 'type', Header: '그룹 유형'},
 	{accessor: 'numberOfPermissions', Header: '권한 수'},
 	{Header: '상위 그룹', accessor: 'parentGroup'},
-	{accessor: 'creationDate', Header: '생성 일시'},
+	{accessor: 'createdTime', Header: '생성 일시'},
 	{accessor: 'grantDate', Header: '부여 일시'},
 	{
 		accessor: 'grantUser',
@@ -250,5 +250,5 @@ export const ROLE_SUMMARY_TABS_GROUPS_EXCLUDE_COLUMN = [
 	{accessor: 'type', Header: '그룹 유형'},
 	{accessor: 'numberOfPermissions', Header: '권한 수'},
 	{Header: '상위 그룹', accessor: 'parentGroup'},
-	{accessor: 'creationDate', Header: '생성 일시'},
+	{accessor: 'createdTime', Header: '생성 일시'},
 ];

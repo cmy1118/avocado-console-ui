@@ -49,7 +49,7 @@ const GroupTypeSpace = () => {
 				name: '',
 				numberOfGroups: 0,
 				description: '',
-				creationDate: new Date().toLocaleString(),
+				createdTime: new Date().toLocaleString(),
 				new: true,
 			},
 		]);

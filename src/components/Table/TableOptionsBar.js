@@ -56,7 +56,7 @@ const placeholders = {
 	MFA: 'MFA',
 	passwordExpiryTime: '비밀번호 수명',
 	lastConsoleLogin: '마지막 콘솔 로그인',
-	creationDate: '생성일',
+	createdTime: '생성일',
 	roleType: '역할 유형',
 };
 

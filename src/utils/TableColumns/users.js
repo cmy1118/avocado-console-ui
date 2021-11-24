@@ -150,7 +150,7 @@ export const USER_ADD_GROUPS_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 export const USER_ADD_GROUPS_INCLUDE_COLUMN = [
@@ -187,7 +187,7 @@ export const USER_ADD_ROLES_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 
@@ -435,7 +435,7 @@ export const USER_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 
@@ -456,7 +456,7 @@ export const USER_SUMMARY_TABS_ROLES_INCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 // 이 사용자의 그룹
@@ -483,7 +483,7 @@ export const USER_SUMMARY_TABS_GROUPS_INCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 	{accessor: 'grantDate', Header: '부여 일시'},
 ];
@@ -511,7 +511,7 @@ export const USER_SUMMARY_TABS_GROUPS_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 
@@ -535,7 +535,7 @@ export const USER_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];
 
@@ -559,6 +559,6 @@ export const USER_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '생성 일시',
-		accessor: 'creationDate',
+		accessor: 'createdTime',
 	},
 ];

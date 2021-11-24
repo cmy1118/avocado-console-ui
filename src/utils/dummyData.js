@@ -242,7 +242,7 @@ export const dummyPolicyOnRole = [
 			'역할 : 설정/삭제/조회',
 		type: '사용자 관리권한',
 		policyName: 'AdminUser',
-		creationDate: '2021.09.03 15:35:55',
+		createdTime: '2021.09.03 15:35:55',
 		grantUser: {
 			userUid: 'user6',
 			id: 'minmin2',
@@ -258,7 +258,7 @@ export const dummyPolicyOnRole = [
 			'역할 : 설정/삭제/조회',
 		type: '사용자 그룹 관리 권한',
 		policyName: 'AdminUserGrp',
-		creationDate: '2021.09.03 15:35:55',
+		createdTime: '2021.09.03 15:35:55',
 		grantUser: {
 			userUid: 'user6',
 			id: 'minmin2',
@@ -271,7 +271,7 @@ export const dummyPolicyOnRole = [
 		description: '역할 : 추가/수정/삭제/조회\n' + '권한 : 설정/삭제/조회',
 		type: '역할 관리 권한',
 		policyName: 'AdminRole',
-		creationDate: '2021.09.03 15:35:55',
+		createdTime: '2021.09.03 15:35:55',
 		grantUser: {
 			userUid: 'user6',
 			id: 'minmin2',
@@ -287,7 +287,7 @@ export const dummyPolicyOnRole = [
 			'해제 조건 : 본인확인인증',
 		type: '계정처리 정책',
 		policyName: 'AdminAccount',
-		creationDate: '2021.09.03 15:35:58',
+		createdTime: '2021.09.03 15:35:58',
 		grantUser: {
 			userUid: 'user5',
 			id: 'kyoung634',
@@ -303,7 +303,7 @@ export const dummyPolicyOnRole = [
 			'요일 : 월~금',
 		type: '사용자 접근',
 		policyName: 'DefaultAccess',
-		creationDate: '2021.09.03 15:35:58',
+		createdTime: '2021.09.03 15:35:58',
 		grantUser: {
 			userUid: 'user6',
 			id: 'minmin2',
@@ -320,7 +320,7 @@ export const dummyPermission = [
 		description:
 			'사용자 레벨의 최고 관리자인 Manager에게 부여된 역할 (기본제공)',
 		numberOfRoles: 1,
-		creationDate: '2019.01.12 14:24:28',
+		createdTime: '2019.01.12 14:24:28',
 	},
 	{
 		id: 'permission2',
@@ -328,7 +328,7 @@ export const dummyPermission = [
 		type: 'IAM 권한',
 		description: 'Admin 사용자에게 부여 하는 역할',
 		numberOfRoles: 2,
-		creationDate: '2019.02.21 16:02:46',
+		createdTime: '2019.02.21 16:02:46',
 	},
 	{
 		id: 'permission3',
@@ -336,7 +336,7 @@ export const dummyPermission = [
 		type: 'IAM 권한',
 		description: '정책을 일반 User에게 부여 하는 역할',
 		numberOfRoles: 4,
-		creationDate: '2019.06.24 15:46:02',
+		createdTime: '2019.06.24 15:46:02',
 	},
 	{
 		id: 'permission4',
@@ -344,7 +344,7 @@ export const dummyPermission = [
 		type: 'PAM 정책',
 		description: '일반 User의 역할을 부을 하는 역할',
 		numberOfRoles: 2,
-		creationDate: '2019.04.30 21:23:43',
+		createdTime: '2019.04.30 21:23:43',
 	},
 	{
 		id: 'permission5',
@@ -352,7 +352,7 @@ export const dummyPermission = [
 		type: 'PAM 정책',
 		description: '일반 User에게 임시로 부여 하는 역할',
 		numberOfRoles: 10,
-		creationDate: '2020.01.06 14:03:25',
+		createdTime: '2020.01.06 14:03:25',
 	},
 ];
 
@@ -396,7 +396,7 @@ export const dummyPolicyOnDialogBox = [
 			'해제 조건 : 본인확인인증',
 		type: '계정처리 정책',
 		policyName: 'AdminAccount',
-		creationDate: '2021.09.03 15:35:58',
+		createdTime: '2021.09.03 15:35:58',
 		grantTarget: '태그(type)',
 	},
 	{
@@ -408,7 +408,7 @@ export const dummyPolicyOnDialogBox = [
 			'요일 : 월~금',
 		type: '사용자 접근',
 		policyName: 'DefaultAccess',
-		creationDate: '2021.09.03 15:35:58',
+		createdTime: '2021.09.03 15:35:58',
 		grantTarget: '태그(type)',
 	},
 ];

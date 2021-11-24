@@ -160,7 +160,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 					<SummaryList>
 						<LiText>그룹명 : {group?.name}</LiText>
 						<LiText>그룹 유형 : {group?.userGroupType.name}</LiText>
-						<LiText>생성 일시 : {group?.creationDate}</LiText>
+						<LiText>생성 일시 : {group?.createdTime}</LiText>
 					</SummaryList>
 				</div>
 
