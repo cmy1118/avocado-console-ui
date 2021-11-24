@@ -20,6 +20,7 @@ import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {parentGroupConverter} from '../../../../utils/tableDataConverter';
 
@@ -52,6 +53,7 @@ const UserGroupsTab = ({
 					type: v.userGroupType.name,
 					parentGroup: parentGroupConverter(v.parentGroup.name),
 					createdTime: v.createdTag.createdTime,
+					[DRAGGABLE_KEY]: v.id,
 				})) || []
 		);
 	}, [includedGroups, includedDataIds]);
@@ -71,6 +73,7 @@ const UserGroupsTab = ({
 					type: v.userGroupType.name,
 					parentGroup: parentGroupConverter(v.parentGroup.name),
 					createdTime: v.createdTag.createdTime,
+					[DRAGGABLE_KEY]: v.id,
 				})) || []
 		);
 	}, [excluedeGroups, includedDataIds]);

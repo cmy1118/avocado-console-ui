@@ -15,6 +15,7 @@ import {tableColumns} from '../../../../Constants/Table/columns';
 import PropTypes from 'prop-types';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import TableContainer from '../../../Table/TableContainer';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 import {useHistory} from 'react-router-dom';
 import {
@@ -41,6 +42,7 @@ const RoleSummary = ({Id, param, setIsOpened}) => {
 				numberOfGroups: v.groups.length,
 				grantDate: dummyDates[i],
 				grantUser: dummyUsers[i],
+				[DRAGGABLE_KEY]: v.userUid,
 			}));
 	}, [users, role]);
 	const onClickChangeTab = useCallback(
@@ -68,6 +70,7 @@ const RoleSummary = ({Id, param, setIsOpened}) => {
 				),
 				grantDate: dummyDates[dummyDates.length - i - 1],
 				grantUser: dummyUsers[dummyUsers.length - i - 1],
+				[DRAGGABLE_KEY]: v.id,
 			}));
 	}, [role, groups, groupTypes]);
 

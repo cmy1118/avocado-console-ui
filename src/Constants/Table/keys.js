@@ -1,3 +1,4 @@
+export const DRAGGABLE_KEY = 'keyId';
 export const tableKeys = Object.freeze({
 	users: {
 		basic: 'USER', // 기본

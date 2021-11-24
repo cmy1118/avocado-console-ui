@@ -95,12 +95,12 @@ const getsAction = createAsyncThunk(
 	`${NAME}/GETS`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-
+		console.log('payload.range:', payload.range);
 		const response = await Axios.get(`/open-api/v1/iam/roles`, {
 			params: {
-				keyword: payload.keyword || null,
+				keyword: payload.keyword,
 				// maxGrants 임시 설정 : 0
-				maxGrants: 0 || null,
+				maxGrants: payload.maxGrants,
 			},
 			headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,

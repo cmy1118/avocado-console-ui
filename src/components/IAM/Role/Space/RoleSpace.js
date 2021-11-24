@@ -22,6 +22,7 @@ import {
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
+import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const RoleSpace = () => {
 	const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const RoleSpace = () => {
 				...v,
 				roleType: v.type,
 				numberOfPermissions: v.policies?.length,
+				[DRAGGABLE_KEY]: v.roleId,
 			})) || []
 		);
 	}, [roles]);
