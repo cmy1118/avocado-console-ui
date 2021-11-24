@@ -63,13 +63,10 @@ const getsAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 					Range: payload.range,
 				},
-				params: {
-					roleld: payload.roleld,
-				},
 				baseURL: baseUrl.openApi,
 			},
 		);
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 

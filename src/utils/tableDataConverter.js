@@ -85,3 +85,8 @@ export const parentGroupConverter = (parent) => {
 	if (parent) return parent;
 	return '없음';
 };
+
+export const totalNumberConverter = (range) => {
+	if (!range) return 0;
+	return parseInt(range.split('/')[1]);
+};
