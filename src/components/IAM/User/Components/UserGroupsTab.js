@@ -42,6 +42,7 @@ const UserGroupsTab = ({
 	const [includedDataIds, setIncludedDataIds] = useState(
 		user?.groupIds || [],
 	);
+	console.log('isSummaryOpened?:', isSummaryOpened);
 
 	const includedData = useMemo(() => {
 		return (
@@ -114,6 +115,7 @@ const UserGroupsTab = ({
 					IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
 						id: group.id,
 						range:
+							// 안펼져도 가능 하도록
 							page[tableKeys.users.summary.tabs.groups.exclude] ||
 							'elements=0-50',
 					}),

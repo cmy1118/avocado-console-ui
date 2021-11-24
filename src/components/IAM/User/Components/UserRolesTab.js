@@ -37,15 +37,19 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 		userUid,
 	]);
 
-	const [includedDataIds, setIncludedDataIds] = useState([]);
+	const [includedDataIds, setIncludedDataIds] = useState(
+		//사용자 역할정보 가 있으면
+		userRoles || [],
+	);
 
 	console.log('roles?:', roles);
 	console.log('userRoles?:', userRoles);
+	console.log('isSummaryOpened?:', isSummaryOpened);
 
 	const includedData = useMemo(() => {
 		return userRoles
 			? userRoles
-					// .filter((v) => includedDataIds.includes(v.id))
+					.filter((v) => includedDataIds?.includes(v.roleId))
 					.map((v) => ({
 						...v,
 						type: roleTypeConverter(v.companyId),
@@ -55,7 +59,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 						[DRAGGABLE_KEY]: v.roleId,
 					}))
 			: [];
-	}, [userRoles]);
+	}, [includedDataIds, userRoles]);
 
 	const excludedData = useMemo(() => {
 		return roles
@@ -144,10 +148,11 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	useEffect(() => {
 		if (
-			isSummaryOpened &&
+			!isSummaryOpened &&
 			page[tableKeys.users.summary.tabs.roles.include] &&
 			user
 		) {
+			console.log('dispatch getsAction');
 			dispatch(
 				IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
 					userUid: userUid,
@@ -155,16 +160,9 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				}),
 			);
 		}
-		dispatch(
-			IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
-				userUid: userUid,
-				range: page[tableKeys.users.summary.tabs.roles.include],
-			}),
-		);
 	}, [dispatch, isSummaryOpened, page, user, userUid]);
 
 	useEffect(() => {
-		console.log('isFold:', isFold);
 		if (
 			isFold &&
 			page[tableKeys.users.summary.tabs.roles.exclude] &&
