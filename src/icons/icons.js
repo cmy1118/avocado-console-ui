@@ -1,5 +1,8 @@
 import React from 'react';
 
+//dashbord
+export const starIcon = <span className='material-icons'>star</span>;
+export const moreButtonIcon = <span className='material-icons'>more_vert</span>;
 //footer
 export const zoomInIcon = <span className='material-icons'>zoom_in</span>;
 export const zoomOutIcon = <span className='material-icons'>zoom_out</span>;
