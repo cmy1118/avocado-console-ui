@@ -1,8 +1,8 @@
 import React, {useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
-import IAM_ROLES from '../../../../reducers/api/ PAM/Role/roles';
-import {dummyDates, dummyUsers} from '../../../../utils/dummyData';
+import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
+import {dummyDates, dummyUsers} from '../../../../../utils/dummyData';
 import {
 	NormalBorderButton,
 	NormalButton,
@@ -24,6 +24,7 @@ import {
 	FoldableContainer,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
+// } from '../../../../../styles/components/iam/iam';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {

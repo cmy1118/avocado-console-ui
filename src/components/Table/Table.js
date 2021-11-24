@@ -7,6 +7,7 @@ import {Draggable, Droppable} from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import * as _ from 'lodash';
 import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
+import InnerTableContainer from './InnerTableContainer';
 
 const Tds = styled(RowDiv)`
 	align-items: center;
@@ -39,6 +40,7 @@ const Table = ({
 	prepareRow,
 	page,
 	mode,
+	expanded,
 }) => {
 	const [position, setPosition] = useState({x: 0, y: 0});
 
@@ -154,7 +156,7 @@ const Table = ({
 			<Droppable
 				droppableId={tableKey}
 				mode={'Virtual'}
-				renderClone={(provided, snapshot, rubric) => {
+				renderClone={(provided, snapshot,rubric) => {
 					return (
 						<div
 							{...provided.draggableProps}
@@ -252,6 +254,7 @@ const Table = ({
 									>
 										{(provided, snapshot) => {
 											return (
+												<>
 												<div
 													ref={provided.innerRef}
 													{...provided.dragHandleProps}
@@ -335,6 +338,16 @@ const Table = ({
 														},
 													)}
 												</div>
+													{Object.keys(
+														expanded,
+													).includes(
+														row.original.uid
+															? row.original.uid
+															: row.original.id,
+													) && (
+														<InnerTableContainer />
+													)}
+												</>
 											);
 										}}
 									</Draggable>

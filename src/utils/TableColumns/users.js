@@ -280,14 +280,12 @@ export const USER_SUMMARY_GROUP_COLUMN = [
 		accessor: 'grantUser',
 		type: 'users',
 		Cell: function Component(cell) {
-			// console.log('v?:', cell);
 			return (
 				<TableLink
 					cell={cell}
 					text={cell.value?.name + '(' + cell.value?.id + ')'}
 				/>
 			);
-			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
 ];
@@ -369,7 +367,6 @@ export const USER_SUMMARY_PERMISSION_COLUMNS = [
 					text={cell.value?.name + '(' + cell.value?.id + ')'}
 				/>
 			);
-			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
 		},
 	},
 ];
