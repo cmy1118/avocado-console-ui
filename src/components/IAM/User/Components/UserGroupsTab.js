@@ -43,11 +43,6 @@ const UserGroupsTab = ({
 		user?.groupIds || [],
 	);
 
-	console.log('🅾️isSummaryOpened?:', isSummaryOpened);
-	console.log('🅾️includedGroups?:', includedGroups);
-	console.log('🅾️excluedeGroups?:', excluedeGroups);
-	console.log('🅾️includedGroups?:', includedGroups);
-
 	const includedData = useMemo(() => {
 		return (
 			includedGroups
@@ -141,7 +136,6 @@ const UserGroupsTab = ({
 
 	const getIncludedGroupsData = useCallback(
 		(user) => {
-			console.log(user.groupIds);
 			const arr = [];
 			user.groupIds.forEach((v) =>
 				dispatch(
@@ -151,7 +145,6 @@ const UserGroupsTab = ({
 				)
 					.unwrap()
 					.then((group) => {
-						console.log(group);
 						dispatch(
 							IAM_USER.asyncAction.findByUidAction({
 								//1.조회한 group id 로 사용자 userUid 채취
@@ -236,7 +229,6 @@ const UserGroupsTab = ({
 			)
 				.unwrap()
 				.then((res) => {
-					console.log('res:', res);
 					setUser(res);
 					setIncludedDataIds(res.groupIds);
 					getIncludedGroupsData(res);

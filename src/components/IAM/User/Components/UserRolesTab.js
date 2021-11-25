@@ -24,19 +24,11 @@ import PAGINATION from '../../../../reducers/pagination';
 const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
-	const {users} = useSelector(IAM_USER.selector);
-	// const [user, setUser] = useState(null);
-	//전체 롤 정보
 	const {roles} = useSelector(IAM_ROLES.selector);
-	//사용자에게  부여된 롤정보
 	const {userRoles} = useSelector(IAM_ROLES_GRANT_ROLE_USER.selector);
 	const [includedRoles, setIncludedRoles] = useState([]);
 	const [excluedeRoles, setExcluedeRoles] = useState([]);
 	const [select, setSelect] = useState({});
-	// const user = useMemo(() => users.find((v) => v.userUid === userUid), [
-	// 	users,
-	// 	userUid,
-	// ]);
 	const [includedDataIds, setIncludedDataIds] = useState(userRoles || []);
 
 	const includedData = useMemo(() => {
