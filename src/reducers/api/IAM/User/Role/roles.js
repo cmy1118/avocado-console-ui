@@ -139,6 +139,7 @@ const getEventsAction = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
+		role: null,
 		roles: [],
 		loading: false,
 		error: null,
@@ -179,7 +180,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByIdAction.fulfilled]: (state, action) => {
-			state.roles = action.payload;
+			state.role = action.payload;
 			state.loading = false;
 		},
 		[findByIdAction.rejected]: (state, action) => {

@@ -32,65 +32,44 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const {page} = useSelector(PAGINATION.selector);
 	const {users} = useSelector(IAM_USER.selector);
 	// const [user, setUser] = useState(null);
-
 	//전체 롤 정보
 	const {roles} = useSelector(IAM_ROLES.selector);
-
 	//사용자에게  부여된 롤정보
 	const {userRoles} = useSelector(IAM_ROLES_GRANT_ROLE_USER.selector);
-
-	const [includedGroups, setIncludedGroups] = useState([]);
-	const [excluedeGroups, setExcluedeGroups] = useState([]);
+	const [includedRoles, setIncludedRoles] = useState([]);
+	const [excluedeRoles, setExcluedeRoles] = useState([]);
 	const [select, setSelect] = useState({});
 	// const user = useMemo(() => users.find((v) => v.userUid === userUid), [
 	// 	users,
 	// 	userUid,
 	// ]);
-
 	const [includedDataIds, setIncludedDataIds] = useState(userRoles || []);
 
-	console.log('✅roles?:', roles);
-	console.log('✅users?:', users);
-	console.log('✅userRoles?:', userRoles);
-	console.log('✅isSummaryOpened?:', isSummaryOpened);
-	console.log('✅includedGroups:', includedGroups);
-	console.log('✅excluedeGroups:', excluedeGroups);
-
 	const includedData = useMemo(() => {
-		// return [];
-		return includedGroups
-			? includedGroups
-					// .filter((v) => includedDataIds?.includes(v.roleId))
+		return includedRoles
+			? includedRoles.map((v) => ({
+					...v,
+					// numberOfUsers: v.users?.length,
+					createdTime: v.createdTime,
+					[DRAGGABLE_KEY]: v.roleId,
+			  }))
+			: [];
+	}, [includedRoles]);
+
+	const excludedData = useMemo(() => {
+		return excluedeRoles
+			? excluedeRoles
+					.filter((v) => !includedDataIds?.includes(v.id))
 					.map((v) => ({
 						...v,
+						createdTime: v.createdTag.createdTime,
 						// numberOfUsers: v.users?.length,
-						// name: '임시역할',
-						createdTime: '11',
-						// createdTime: v.createdTag.createdTime,
-						// rold_info: v.roleId,
-						[DRAGGABLE_KEY]: v.roleId,
+						[DRAGGABLE_KEY]: v.id,
 					}))
 			: [];
-	}, [includedGroups]);
-
-	// 1. 전체 role 조회
-	// 2. roleType 정보추가 (Public,Private)
-	const excludedData = useMemo(() => {
-		return [];
-		// return roles
-		// 	? roles
-		// 			// .filter((n) => !userRoles?.includes(n.id))
-		// 			.filter((v) => !includedDataIds?.includes(v.id))
-		// 			.map((v) => ({
-		// 				...v,
-		// 				createdTime: v.createdTag.createdTime,
-		//
-		// 				// rold_info: v.id,
-		// 				// numberOfUsers: v.users?.length,
-		// 				[DRAGGABLE_KEY]: v.id,
-		// 			}))
-		// 	: [];
-	}, []);
+	}, [excluedeRoles, includedDataIds]);
+	console.log('⭕️excludedData:', excludedData);
+	console.log('⭕includedData:', includedData);
 
 	// const includedData = useMemo(() => {
 	// 	return userRoles
@@ -230,46 +209,19 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const getExcludedGroupData = useCallback((roles) => {
 		const arr = [];
 		roles.forEach((role) => {
-			console.log('📛roles:', roles);
 			arr.push({
 				...role,
 				type: role.maxGrants === '1' ? 'Private' : 'Public',
 			});
 			if (arr.length === roles.length) {
-				setExcluedeGroups(arr);
+				setExcluedeRoles(arr);
 			}
-			// console.log('excluedeGroups', excluedeGroups);
 		});
-
-		// roles.forEach((role) => {
-		// 	dispatch(
-		// 		IAM_ROLES.asyncAction.getsAction({
-		// 			id: role.id,
-		// 			range:
-		// 				// 안펼져도 가능 하도록
-		// 				page[tableKeys.users.summary.tabs.roles.exclude] ||
-		// 				'elements=0-50',
-		// 		}),
-		// 	)
-		// 		.unwrap()
-		// 		.then((res) => {
-		// 			console.log('res:', res);
-		// 			arr.push({
-		// 				...res,
-		// 				type: res.maxGrants === '1' ? 'Private' : 'Public',
-		// 			});
-		// 			if (arr.length === roles.length) {
-		// 				setExcluedeGroups(arr);
-		// 			}
-		// 		});
-		// });
 	}, []);
 
-	const getIncludedGroupsData = useCallback(
+	const getIncludedRolesData = useCallback(
 		(userRoles) => {
-			console.log('🅰️userRoles:', userRoles);
 			const userRolesId = userRoles.map((v) => v.roleId);
-			console.log('🅰️userRoles.roleId:', userRolesId);
 			const arr = [];
 			userRolesId.forEach((v) =>
 				dispatch(
@@ -279,7 +231,6 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				)
 					.unwrap()
 					.then((role) => {
-						console.log('🅱️role:', role);
 						arr.push({
 							id: role.id,
 							name: role.name,
@@ -287,11 +238,9 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 							createdTime: role.createdTag.createdTime,
 							type: role.maxGrants === '1' ? 'Private' : 'Public',
 						});
-						console.log('🆘arr:', arr);
 						if (userRoles.length === arr.length) {
-							setIncludedGroups(arr);
+							setIncludedRoles(arr);
 						}
-						console.log('🆘includedGroups:', includedGroups);
 					}),
 			);
 		},
@@ -302,7 +251,6 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 		if (
 			!isSummaryOpened &&
 			page[tableKeys.users.summary.tabs.roles.include]
-			// user
 		) {
 			dispatch(
 				IAM_ROLES.asyncAction.getsAction({
@@ -326,10 +274,10 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					// res : 사용자에게 부여된 role 정보
 					res.map((v) => arr.push(v.roleId));
 					setIncludedDataIds(arr);
-					getIncludedGroupsData(res);
+					getIncludedRolesData(res);
 				});
 		}
-	}, [dispatch, getIncludedGroupsData, page, userUid]);
+	}, [dispatch, getIncludedRolesData, page, userUid]);
 
 	useEffect(() => {
 		if (roles[0]) {
@@ -342,7 +290,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				이 사용자의 권한: {includedData.length}{' '}
 				<TransparentButton
 					margin='0px 0px 0px 5px'
-					// onClick={onClickDeleteRolesFromUser}
+					onClick={onClickDeleteRolesFromUser}
 				>
 					삭제
 				</TransparentButton>
