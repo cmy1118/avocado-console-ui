@@ -5,7 +5,10 @@ import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import Table from '../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
-import {NormalButton, TransparentButton,} from '../../../../styles/components/buttons';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../../styles/components/buttons';
 import {TableTitle} from '../../../../styles/components/table';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import TableFold from '../../../Table/Options/TableFold';
@@ -56,7 +59,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 			console.log(data);
 			dispatch(
 				IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
-					roleIds: data,
+					roleIds: data.map((v) => v.id),
 					userUid: userUid,
 				}),
 			);
@@ -67,14 +70,12 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	//사용자 롤추가
 	const onClickDeleteRolesFromUser = useCallback(
 		(data) => {
-			data.forEach((v) => {
-				dispatch(
-					IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
-						roleId: v,
-						userUid: [userUid],
-					}),
-				);
-			});
+			dispatch(
+				IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
+					roleId: data,
+					userUid: userUid,
+				}),
+			);
 		},
 		[dispatch, userUid],
 	);
@@ -145,9 +146,9 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				.unwrap()
 				.then((res) => {
 					// res : 사용자에게 부여된 role 정보
-					res.map((v) => arr.push(v.roleId));
+					res.data.map((v) => arr.push(v.roleId));
 					setIncludedDataIds(arr);
-					getIncludedRolesData(res);
+					getIncludedRolesData(res.data);
 				});
 		}
 	}, [dispatch, getIncludedRolesData, page, userUid]);

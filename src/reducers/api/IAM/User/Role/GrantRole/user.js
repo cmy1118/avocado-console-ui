@@ -33,6 +33,7 @@ const revokeAction = createAsyncThunk(
 		// eslint-disable-next-line no-console
 		const response = await Axios.put(
 			`/open-api/v1/iam/users/${payload.userUid}/roles`,
+			{},
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,

@@ -7,7 +7,10 @@ import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import {TableTitle} from '../../../../styles/components/table';
-import {NormalButton, TransparentButton,} from '../../../../styles/components/buttons';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../../styles/components/buttons';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import TableFold from '../../../Table/Options/TableFold';
 import TableContainer from '../../../Table/TableContainer';
@@ -37,7 +40,7 @@ const UserGroupsTab = ({
 	const [select, setSelect] = useState({});
 
 	const [includedDataIds, setIncludedDataIds] = useState(
-		user?.groups.map((v) => v.id) || [],
+		user?.groups?.map((v) => v.id) || [],
 	);
 
 	const includedData = useMemo(() => {
@@ -227,12 +230,13 @@ const UserGroupsTab = ({
 				.unwrap()
 				.then((res) => {
 					setUser(res);
-					setIncludedDataIds(res.groups.map((v) => v.id));
+					setIncludedDataIds(
+						res.groups ? res.groups.map((v) => v.id) : [],
+					);
 					getIncludedGroupsData(res);
 				});
 		}
 	}, [user, dispatch, userUid, getIncludedGroupsData, page, isSummaryOpened]);
-
 	useEffect(() => {
 		if (!isSummaryOpened && groups[0]) {
 			getExcludedGroupData(groups);
