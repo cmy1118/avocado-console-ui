@@ -23,6 +23,7 @@ import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/group
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {parentGroupConverter} from '../../../../utils/tableDataConverter';
+import * as _ from 'lodash';
 
 const UserGroupsTab = ({
 	userUid,
@@ -45,8 +46,8 @@ const UserGroupsTab = ({
 
 	const includedData = useMemo(() => {
 		return (
-			includedGroups
-				.filter((v) => includedDataIds.includes(v.id))
+			_.uniqBy(includedGroups.concat(excluedeGroups), 'id')
+				.filter((v) => includedDataIds?.includes(v.id))
 				.map((v) => ({
 					...v,
 					name: v.name,
@@ -56,7 +57,7 @@ const UserGroupsTab = ({
 					[DRAGGABLE_KEY]: v.id,
 				})) || []
 		);
-	}, [includedGroups, includedDataIds]);
+	}, [includedGroups, excluedeGroups, includedDataIds]);
 
 	const excludedData = useMemo(() => {
 		const types = excluedeGroups
@@ -77,6 +78,13 @@ const UserGroupsTab = ({
 				})) || []
 		);
 	}, [excluedeGroups, includedDataIds]);
+
+	console.log('includedData', includedData);
+	console.log('excludedData', excludedData);
+	console.log('includedGroups', includedGroups);
+	console.log('excluedeGroups', excluedeGroups);
+	console.log('includedDataIds', includedDataIds);
+
 	//삭제
 	const onClickDeleteRolesFromUser = useCallback(
 		(data) => {
@@ -219,7 +227,11 @@ const UserGroupsTab = ({
 	}, [dispatch, isSummaryOpened, page, user]);
 
 	useEffect(() => {
-		if (!user && page[tableKeys.users.summary.tabs.groups.include]) {
+		if (
+			!user &&
+			page[tableKeys.users.summary.tabs.groups.include] &&
+			!isSummaryOpened
+		) {
 			dispatch(
 				IAM_USER.asyncAction.findByUidAction({
 					userUid: userUid,
@@ -232,13 +244,13 @@ const UserGroupsTab = ({
 					getIncludedGroupsData(res);
 				});
 		}
-	}, [user, dispatch, userUid, getIncludedGroupsData, page]);
+	}, [user, dispatch, userUid, getIncludedGroupsData, page, isSummaryOpened]);
 
 	useEffect(() => {
-		if (groups[0]) {
+		if (!isSummaryOpened && groups[0]) {
 			getExcludedGroupData(groups);
 		}
-	}, [getExcludedGroupData, groups]);
+	}, [getExcludedGroupData, groups, isSummaryOpened]);
 
 	return (
 		<TabContentContainer>

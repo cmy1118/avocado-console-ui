@@ -84,7 +84,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 			</TableContainer>
 
 			<AddPageDialogBoxTitle>
-				권한 : {dummyPolicyOnDialogBox.length}
+				{/*권한 : {dummyPolicyOnDialogBox.length}*/}
 			</AddPageDialogBoxTitle>
 			<TableContainer
 				mode={'readOnly'}

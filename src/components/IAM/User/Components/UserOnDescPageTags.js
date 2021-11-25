@@ -126,11 +126,14 @@ const UserOnDescPageTags = ({userUid}) => {
 								.include
 						}
 						height={'200px'}
-						data={dummyPermission.filter((v) =>
-							select[
-								tableKeys.users.summary.tabs.tags.basic
-							][0].permissions.includes(v.id),
-						)}
+						data={
+							[]
+							// dummyPermission.filter((v) =>
+							// select[
+							// 	tableKeys.users.summary.tabs.tags.basic
+							// ][0].permissions.includes(v.id),
+							// )
+						}
 						columns={
 							tableColumns[
 								tableKeys.users.summary.tabs.tags.permissions
@@ -167,12 +170,15 @@ const UserOnDescPageTags = ({userUid}) => {
 							tableKeys.users.summary.tabs.tags.permissions
 								.exclude
 						}
-						data={dummyPermission.filter(
-							(v) =>
-								!select[
-									tableKeys.users.summary.tabs.tags.basic
-								][0].permissions.includes(v.id),
-						)}
+						data={
+							[]
+							// dummyPermission.filter(
+							// (v) =>
+							// 	!select[
+							// 		tableKeys.users.summary.tabs.tags.basic
+							// 	][0].permissions.includes(v.id),
+							// )
+						}
 						columns={
 							tableColumns[
 								tableKeys.users.summary.tabs.tags.permissions

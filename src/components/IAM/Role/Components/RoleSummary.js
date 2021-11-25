@@ -32,7 +32,7 @@ const RoleSummary = ({Id, param, setIsOpened}) => {
 
 	const role = useMemo(() => roles.find((v) => v.id === Id), [roles]);
 
-	const permissionData = useMemo(() => dummyPolicyOnRole, []);
+	const permissionData = useMemo(() => [], []);
 
 	const userData = useMemo(() => {
 		return users

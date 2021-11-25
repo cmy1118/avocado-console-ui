@@ -52,7 +52,7 @@ const UserSummary = ({userUid, param, setIsOpened}) => {
 			}));
 	}, [groups, user]);
 
-	const roleData = useMemo(() => dummyPolicyOnUser, []);
+	const roleData = useMemo(() => [], []);
 
 	const tagData = useMemo(() => {
 		return [];

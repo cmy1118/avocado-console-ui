@@ -17,14 +17,19 @@ import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupTy
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
+import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 
 const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const [groups, setGroups] = useState([]);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const {page} = useSelector(PAGINATION.selector);
+
+	console.log(groups);
 
 	const includedData = useMemo(() => {
 		return (
@@ -39,12 +44,19 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	}, [groups, includedDataIds]);
 
 	const excludedData = useMemo(() => {
+		const types = groups
+			.filter((v) => includedDataIds?.includes(v.id))
+			.map((v) => v.userGroupType.name);
+
 		return (
 			groups
 				.filter((v) => !includedDataIds.includes(v.id))
+				.filter((v) => !types.includes(v.userGroupType.name))
 				.map((v) => ({
 					...v,
 					userGroupType: v.userGroupType.name,
+					roles: v.numberOfRoles === 0 ? '없음' : '정의됨',
+					createdTime: v.createdTag.createdTime,
 					[DRAGGABLE_KEY]: v.id,
 				})) || []
 		);
@@ -63,12 +75,48 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	}, [dispatch, includedData]);
 
 	useEffect(() => {
+		const arr = [];
 		page[tableKeys.users.add.groups.exclude] &&
 			dispatch(
 				IAM_USER_GROUP.asyncAction.findAllAction({
 					range: page[tableKeys.users.add.groups.exclude],
 				}),
-			);
+			)
+				.unwrap()
+				.then((groups) => {
+					groups.data.forEach((group) => {
+						dispatch(
+							IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
+								groupId: group.id,
+								range: 'elements=0-1',
+							}),
+						)
+							.unwrap()
+							.then((member) => {
+								dispatch(
+									IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
+										{id: group.id, range: 'elements=0-1'},
+									),
+								)
+									.unwrap()
+									.then((roles) => {
+										console.log(roles);
+										arr.push({
+											...group,
+											numberOfRoles: totalNumberConverter(
+												roles.headers['content-range'],
+											),
+											numberOfUsers: totalNumberConverter(
+												member.headers['content-range'],
+											),
+										});
+										if (groups.data.length === arr.length) {
+											setGroups(arr);
+										}
+									});
+							});
+					});
+				});
 	}, [dispatch, page]);
 
 	return (

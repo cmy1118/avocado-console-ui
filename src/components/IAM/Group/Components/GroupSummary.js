@@ -37,11 +37,10 @@ const GroupSummary = ({groupId, param, setIsOpened}) => {
 			// grantUser: groupUserMembers.find((x) => x.userUid === v.userUid)
 			// 	?.grantedTag.userUid,
 			[DRAGGABLE_KEY]: v.userUid,
-
 		}));
 	}, [groupUserMembers]);
 
-	const roleData = useMemo(() => dummyPolicyOnGroup, []);
+	const roleData = useMemo(() => [], []);
 
 	const tagData = useMemo(() => {
 		return [];
