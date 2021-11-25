@@ -24,13 +24,14 @@ import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/Gr
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import PAGINATION from '../../../../reducers/pagination';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
-import IAM_ROLES_GRANT_ROLE_GROUP from "../../../../reducers/api/IAM/User/Role/GrantRole/group";
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import {setIn} from 'formik';
 
 const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
-	// const {users} = useSelector(IAM_USER.selector);
-	const [user, setUser] = useState(null);
+	const {users} = useSelector(IAM_USER.selector);
+	// const [user, setUser] = useState(null);
 
 	//전체 롤 정보
 	const {roles} = useSelector(IAM_ROLES.selector);
@@ -46,50 +47,50 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	// 	userUid,
 	// ]);
 
-	const [includedDataIds, setIncludedDataIds] = useState(
-		userRoles || [],
-	);
+	const [includedDataIds, setIncludedDataIds] = useState(userRoles || []);
 
-	console.log('roles?:', roles);
-	console.log('userRoles?:', userRoles);
-	console.log('isSummaryOpened?:', isSummaryOpened);
-
-
-
+	console.log('✅roles?:', roles);
+	console.log('✅users?:', users);
+	console.log('✅userRoles?:', userRoles);
+	console.log('✅isSummaryOpened?:', isSummaryOpened);
+	console.log('✅includedGroups:', includedGroups);
+	console.log('✅excluedeGroups:', excluedeGroups);
 
 	const includedData = useMemo(() => {
-		return userRoles
-			? userRoles
-				.filter((v) => includedDataIds?.includes(v.roleId))
-				.map((v) => ({
-					...v,
-					type: roleTypeConverter(v.companyId),
-					// numberOfUsers: v.users?.length,
-					// name: '임시역할',
-					createdTime: v.createdTag.createdTime,
-					// rold_info: v.roleId,
-					[DRAGGABLE_KEY]: v.roleId,
-				}))
+		// return [];
+		return includedGroups
+			? includedGroups
+					// .filter((v) => includedDataIds?.includes(v.roleId))
+					.map((v) => ({
+						...v,
+						// numberOfUsers: v.users?.length,
+						// name: '임시역할',
+						createdTime: '11',
+						// createdTime: v.createdTag.createdTime,
+						// rold_info: v.roleId,
+						[DRAGGABLE_KEY]: v.roleId,
+					}))
 			: [];
-	}, [includedDataIds, userRoles]);
+	}, [includedGroups]);
 
+	// 1. 전체 role 조회
+	// 2. roleType 정보추가 (Public,Private)
 	const excludedData = useMemo(() => {
-		return roles
-			? roles
-				// .filter((n) => !userRoles?.includes(n.id))
-				.filter((v) => !includedDataIds?.includes(v.id))
-				.map((v) => ({
-					...v,
-					type: roleTypeConverter(v.companyId),
-					createdTime: v.createdTag.createdTime,
-
-
-					// rold_info: v.id,
-					// numberOfUsers: v.users?.length,
-					[DRAGGABLE_KEY]: v.id,
-				}))
-			: [];
-	}, [includedDataIds, roles]);
+		return [];
+		// return roles
+		// 	? roles
+		// 			// .filter((n) => !userRoles?.includes(n.id))
+		// 			.filter((v) => !includedDataIds?.includes(v.id))
+		// 			.map((v) => ({
+		// 				...v,
+		// 				createdTime: v.createdTag.createdTime,
+		//
+		// 				// rold_info: v.id,
+		// 				// numberOfUsers: v.users?.length,
+		// 				[DRAGGABLE_KEY]: v.id,
+		// 			}))
+		// 	: [];
+	}, []);
 
 	// const includedData = useMemo(() => {
 	// 	return userRoles
@@ -166,7 +167,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	//button 동작
 
 	//사용자 롤 제거
-	const onClickDeleteRolesFromUser = useCallback(
+	const onClickAddRolesToUser = useCallback(
 		(data) => {
 			data.forEach((v) => {
 				dispatch(
@@ -181,7 +182,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	);
 
 	//사용자 롤추가
-	const onClickAddRolesToUser = useCallback(
+	const onClickDeleteRolesFromUser = useCallback(
 		(data) => {
 			data.forEach((v) => {
 				dispatch(
@@ -226,111 +227,82 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	//
 	// 	setIncludedDataIds(userRoles?.map((v) => v.roleId));
 	// }, [dispatch, isFold, page, user, userRoles]);
-	const getExcludedGroupData = useCallback(
-		(userRoles) => {
-			const arr = [];
-			userRoles.forEach((userRoles) => {
-				dispatch(
-					IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
-						id: userRoles.id,
-						range:
-						// 안펼져도 가능 하도록
-							page[tableKeys.users.summary.tabs.roles.exclude] ||
-							'elements=0-50',
-					}),
-				)
-					.unwrap()
-					.then((res) => {
-						console.log('res:',res);
-						arr.push({
-							...userRoles,
-							type: res.maxGrants === '1' ? 'Private' : 'Public',
-						});
-						if (arr.length === userRoles.length) {
-							setExcluedeGroups(arr);
-						}
-					});
+	const getExcludedGroupData = useCallback((roles) => {
+		const arr = [];
+		roles.forEach((role) => {
+			console.log('📛roles:', roles);
+			arr.push({
+				...role,
+				type: role.maxGrants === '1' ? 'Private' : 'Public',
 			});
-		},
-		[dispatch, page],
-	);
+			if (arr.length === roles.length) {
+				setExcluedeGroups(arr);
+			}
+			// console.log('excluedeGroups', excluedeGroups);
+		});
+
+		// roles.forEach((role) => {
+		// 	dispatch(
+		// 		IAM_ROLES.asyncAction.getsAction({
+		// 			id: role.id,
+		// 			range:
+		// 				// 안펼져도 가능 하도록
+		// 				page[tableKeys.users.summary.tabs.roles.exclude] ||
+		// 				'elements=0-50',
+		// 		}),
+		// 	)
+		// 		.unwrap()
+		// 		.then((res) => {
+		// 			console.log('res:', res);
+		// 			arr.push({
+		// 				...res,
+		// 				type: res.maxGrants === '1' ? 'Private' : 'Public',
+		// 			});
+		// 			if (arr.length === roles.length) {
+		// 				setExcluedeGroups(arr);
+		// 			}
+		// 		});
+		// });
+	}, []);
 
 	const getIncludedGroupsData = useCallback(
-		(user) => {
-			console.log(user.groupIds);
+		(userRoles) => {
+			console.log('🅰️userRoles:', userRoles);
+			const userRolesId = userRoles.map((v) => v.roleId);
+			console.log('🅰️userRoles.roleId:', userRolesId);
 			const arr = [];
-			user.groupIds.forEach((v) =>
-				dispatch(IAM_USER_GROUP.asyncAction.findByIdAction({
+			userRolesId.forEach((v) =>
+				dispatch(
+					IAM_ROLES.asyncAction.findByIdAction({
 						id: v,
 					}),
 				)
 					.unwrap()
-					.then((group) => {
-						console.log(group);
-						dispatch(
-							IAM_USER.asyncAction.findByUidAction({
-								userUid: group.createdTag.actorTag.userUid,
-							}),
-						)
-							.unwrap()
-							.then((grantUser) => {
-								arr.push({
-									...group,
-									grantUser: {
-										userUid: grantUser.userUid,
-										id: grantUser.id,
-										name: grantUser.name,
-									},
-								});
-								if (user.groupIds.length === arr.length) {
-									if (arr[0]) {
-										const arr2 = [];
-										arr.forEach((v) => {
-											dispatch(
-												IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
-													{
-														id: v.id,
-														range:
-															page[
-																tableKeys.users
-																	.summary
-																	.tabs.groups
-																	.include
-																],
-													},
-												),
-											)
-												.unwrap()
-												.then((role) => {
-													arr2.push({
-														...v,
-														numberOfRoles: !role
-															? 0
-															: role.length,
-													});
-													if (
-														arr.length ===
-														arr2.length
-													) {
-														setIncludedGroups(arr2);
-													}
-												});
-										});
-									}
-								}
-							});
+					.then((role) => {
+						console.log('🅱️role:', role);
+						arr.push({
+							id: role.id,
+							name: role.name,
+							description: role.description,
+							createdTime: role.createdTag.createdTime,
+							type: role.maxGrants === '1' ? 'Private' : 'Public',
+						});
+						console.log('🆘arr:', arr);
+						if (userRoles.length === arr.length) {
+							setIncludedGroups(arr);
+						}
+						console.log('🆘includedGroups:', includedGroups);
 					}),
 			);
 		},
-		[dispatch, page],
+		[dispatch],
 	);
-
 
 	useEffect(() => {
 		if (
 			!isSummaryOpened &&
-			page[tableKeys.users.summary.tabs.roles.include] &&
-			user
+			page[tableKeys.users.summary.tabs.roles.include]
+			// user
 		) {
 			dispatch(
 				IAM_ROLES.asyncAction.getsAction({
@@ -338,31 +310,32 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				}),
 			);
 		}
-	}, [dispatch, isSummaryOpened, page, user]);
+	}, [dispatch, isSummaryOpened, page]);
 
 	useEffect(() => {
-		if (!user && page[tableKeys.users.summary.tabs.roles.include]) {
+		const arr = [];
+		if (page[tableKeys.users.summary.tabs.roles.include]) {
 			dispatch(
 				IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
 					userUid: userUid,
+					range: page[tableKeys.users.summary.tabs.roles.include],
 				}),
 			)
 				.unwrap()
 				.then((res) => {
-					console.log('res:',res);
-					setUser(res);
-					setIncludedDataIds(res.roleId);
+					// res : 사용자에게 부여된 role 정보
+					res.map((v) => arr.push(v.roleId));
+					setIncludedDataIds(arr);
 					getIncludedGroupsData(res);
 				});
 		}
-	}, [user, dispatch, userUid, getIncludedGroupsData, page]);
+	}, [dispatch, getIncludedGroupsData, page, userUid]);
 
 	useEffect(() => {
-		if (userRoles[0]) {
-			getExcludedGroupData(userRoles);
+		if (roles[0]) {
+			getExcludedGroupData(roles);
 		}
-	}, [getExcludedGroupData, userRoles]);
-
+	}, [getExcludedGroupData, roles]);
 	return (
 		<TabContentContainer>
 			<TableTitle>

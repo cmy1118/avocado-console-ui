@@ -42,9 +42,11 @@ const UserGroupsTab = ({
 	const [includedDataIds, setIncludedDataIds] = useState(
 		user?.groupIds || [],
 	);
-	console.log('isSummaryOpened?:', isSummaryOpened);
-	console.log('includedGroups?:', includedGroups);
 
+	console.log('🅾️isSummaryOpened?:', isSummaryOpened);
+	console.log('🅾️includedGroups?:', includedGroups);
+	console.log('🅾️excluedeGroups?:', excluedeGroups);
+	console.log('🅾️includedGroups?:', includedGroups);
 
 	const includedData = useMemo(() => {
 		return (
@@ -142,7 +144,8 @@ const UserGroupsTab = ({
 			console.log(user.groupIds);
 			const arr = [];
 			user.groupIds.forEach((v) =>
-				dispatch(IAM_USER_GROUP.asyncAction.findByIdAction({
+				dispatch(
+					IAM_USER_GROUP.asyncAction.findByIdAction({
 						id: v,
 					}),
 				)
@@ -151,6 +154,8 @@ const UserGroupsTab = ({
 						console.log(group);
 						dispatch(
 							IAM_USER.asyncAction.findByUidAction({
+								//1.조회한 group id 로 사용자 userUid 채취
+								//2.userUid 값들로 배열에 추가
 								userUid: group.createdTag.actorTag.userUid,
 							}),
 						)
@@ -164,6 +169,7 @@ const UserGroupsTab = ({
 										name: grantUser.name,
 									},
 								});
+								// 조회한  유저아이디가 같다면
 								if (user.groupIds.length === arr.length) {
 									if (arr[0]) {
 										const arr2 = [];
@@ -186,9 +192,14 @@ const UserGroupsTab = ({
 												.then((role) => {
 													arr2.push({
 														...v,
-														numberOfRoles: !role ? 0 : role.length,
+														numberOfRoles: !role
+															? 0
+															: role.length,
 													});
-													if (arr.length === arr2.length) {
+													if (
+														arr.length ===
+														arr2.length
+													) {
 														setIncludedGroups(arr2);
 													}
 												});
@@ -225,7 +236,7 @@ const UserGroupsTab = ({
 			)
 				.unwrap()
 				.then((res) => {
-					console.log('res:',res);
+					console.log('res:', res);
 					setUser(res);
 					setIncludedDataIds(res.groupIds);
 					getIncludedGroupsData(res);
