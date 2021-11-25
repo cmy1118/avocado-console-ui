@@ -1,12 +1,10 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
-
-import {roleTypeConverter} from '../../../../utils/tableDataConverter';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import Table from '../../../Table/Table';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import {
 	NormalButton,
@@ -21,11 +19,7 @@ import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import PAGINATION from '../../../../reducers/pagination';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
-import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
-import {setIn} from 'formik';
 
 const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -51,7 +45,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					...v,
 					// numberOfUsers: v.users?.length,
 					createdTime: v.createdTime,
-					[DRAGGABLE_KEY]: v.roleId,
+					[DRAGGABLE_KEY]: v.id,
 			  }))
 			: [];
 	}, [includedRoles]);
@@ -68,8 +62,6 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					}))
 			: [];
 	}, [excluedeRoles, includedDataIds]);
-	console.log('⭕️excludedData:', excludedData);
-	console.log('⭕includedData:', includedData);
 
 	// const includedData = useMemo(() => {
 	// 	return userRoles

@@ -1,8 +1,5 @@
-import React, {useCallback} from 'react';
-import {account} from '../utils/auth';
-import kt from '../images/backgound/workplace-2@2x.png';
-import samsung from '../images/backgound/workplce@2x.png';
-import img from '../images/dashboard/service_app_gray@2x.png';
+import React from 'react';
+import Approal_grey from '../images/dashboard/service_app_gray@2x.png';
 import {useSelector} from 'react-redux';
 import AUTH_USER from '../reducers/api/Auth/authUser';
 import {useHistory} from 'react-router-dom';
@@ -17,8 +14,6 @@ import RRM_green from '../images/dashboard/service_rrm_green@2x.png';
 
 import IAM_grey from '../images/dashboard/service_iam_gray@2x.png';
 import PAM_grey from '../images/dashboard/service_pam_gray@2x.png';
-import Approal_grey from '../images/dashboard/service_app_gray@2x.png';
-import RRM_grey from '../images/dashboard/service_rrm_gray@2x.png';
 
 import IAM_red from '../images/dashboard/service_iam_red@2x.png';
 import PAM_red from '../images/dashboard/service_pam_red@2x.png';
@@ -32,7 +27,8 @@ const utils = [
 		title: 'Web Terminal ',
 		text: '웹터미널',
 		img: Approal_green,
-		url: 'iam',
+		href:
+			'http://ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com:3002/webterm/login/KR-2020-0001',
 	},
 	// {
 	// 	title: 'Approal',
