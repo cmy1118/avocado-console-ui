@@ -56,10 +56,9 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	const onClickAddRolesToUser = useCallback(
 		(data) => {
-			console.log(data);
 			dispatch(
 				IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
-					roleIds: data.map((v) => v.id),
+					roleIds: data,
 					userUid: userUid,
 				}),
 			);

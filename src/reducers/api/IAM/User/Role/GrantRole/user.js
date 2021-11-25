@@ -31,9 +31,8 @@ const revokeAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
-		const response = await Axios.put(
+		const response = await Axios.delete(
 			`/open-api/v1/iam/users/${payload.userUid}/roles`,
-			{},
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
