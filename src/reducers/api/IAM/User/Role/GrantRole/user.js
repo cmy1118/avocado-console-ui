@@ -52,8 +52,6 @@ const revokeAction = createAsyncThunk(
 const getsAction = createAsyncThunk(
 	`${NAME}/GETS`,
 	async (payload, {getState}) => {
-		console.log('payload.userUid:', payload.userUid);
-		console.log('payload.range:', payload.range);
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
 		const response = await Axios.get(

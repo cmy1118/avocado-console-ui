@@ -1,10 +1,9 @@
 import React, {useCallback} from 'react';
 import PropTypes from 'prop-types';
-import AssignRoleToUser from '../IAM/User/Components/AssignRoleToUser';
 import styled from 'styled-components';
 import {useHistory} from 'react-router-dom';
 import {moreButtonIcon, starIcon} from '../../icons/icons';
-import {HoverIconButton, Icon, IconButton} from '../../styles/components/icons';
+import {Icon} from '../../styles/components/icons';
 
 const _Container = styled.div``;
 const _imgContainer = styled.div`
@@ -60,18 +59,14 @@ const _text = styled.div`
 
 const ContentsButton = ({url, href, img, title, text}) => {
 	const history = useHistory();
-
 	const onClickMove = useCallback(() => {
-		// history.push('');
-		console.log('href:', href);
-		console.log('href:', url);
 		history.push(url);
-	}, [history, href, url]);
+	}, [history, url]);
 
 	return (
 		<_Container>
-			{href === 'ssh://' ? (
-				<a href={'ssh://'}>
+			{href ? (
+				<a href={`${href}`}>
 					<_imgContainer>
 						<img
 							style={{width: '252px', height: '240px'}}

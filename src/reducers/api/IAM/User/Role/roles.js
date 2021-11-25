@@ -139,6 +139,7 @@ const getEventsAction = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
+		role: null,
 		roles: [],
 		loading: false,
 		error: null,
@@ -175,16 +176,17 @@ const slice = createSlice({
 		// 	state.error = action.payload;
 		// 	state.loading = false;
 		// },
-		// [findByIdAction.pending]: (state) => {
-		// 	state.loading = true;
-		// },
-		// [findByIdAction.fulfilled]: (state, action) => {
-		// 	state.loading = false;
-		// },
-		// [findByIdAction.rejected]: (state, action) => {
-		// 	state.error = action.payload;
-		// 	state.loading = false;
-		// },
+		[findByIdAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[findByIdAction.fulfilled]: (state, action) => {
+			state.role = action.payload;
+			state.loading = false;
+		},
+		[findByIdAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
 		[getsAction.pending]: (state) => {
 			state.loading = true;
 		},

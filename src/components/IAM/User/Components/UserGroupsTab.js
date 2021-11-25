@@ -4,13 +4,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import Table from '../../../Table/Table';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import {TableTitle} from '../../../../styles/components/table';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../../styles/components/buttons';
+import {NormalButton, TransparentButton,} from '../../../../styles/components/buttons';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import TableFold from '../../../Table/Options/TableFold';
 import TableContainer from '../../../Table/TableContainer';
@@ -20,7 +17,6 @@ import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {parentGroupConverter} from '../../../../utils/tableDataConverter';
 import * as _ from 'lodash';
@@ -78,13 +74,6 @@ const UserGroupsTab = ({
 				})) || []
 		);
 	}, [excluedeGroups, includedDataIds]);
-
-	console.log('includedData', includedData);
-	console.log('excludedData', excludedData);
-	console.log('includedGroups', includedGroups);
-	console.log('excluedeGroups', excluedeGroups);
-	console.log('includedDataIds', includedDataIds);
-
 	//삭제
 	const onClickDeleteRolesFromUser = useCallback(
 		(data) => {
@@ -152,7 +141,6 @@ const UserGroupsTab = ({
 				)
 					.unwrap()
 					.then((group) => {
-						console.log(group);
 						dispatch(
 							IAM_USER.asyncAction.findByUidAction({
 								userUid: group.createdTag.actorTag.userUid,

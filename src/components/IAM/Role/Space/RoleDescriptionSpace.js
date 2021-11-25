@@ -53,11 +53,11 @@ const RoleDescriptionSpace = ({roleId}) => {
 	const {page} = useSelector(PAGINATION.selector);
 
 	const {roles} = useSelector(IAM_ROLES.selector);
+	console.log('!!!', roles, roleId);
 	const role = useMemo(() => roles.find((v) => v.id === roleId), [
 		roles,
 		roleId,
 	]);
-
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
