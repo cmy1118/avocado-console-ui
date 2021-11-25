@@ -35,3 +35,13 @@ export const NavItem = styled(NavLink)`
 	text-decoration: none;
 	align-items: center;
 `;
+
+export const NavItemTemp = styled.div`
+	font-size: 16px;
+	font-style: normal;
+	line-height: 1.31;
+	letter-spacing: 0.1px;
+	color: ${(props) => props?.color || '#212121'};
+	text-decoration: none;
+	align-items: center;
+`;

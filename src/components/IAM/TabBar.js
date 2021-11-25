@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'qs';
+import DIALOG_BOX from '../../reducers/dialogBoxs';
+import {confirmAlertMessages} from '../../utils/alertMessage';
+import {useDispatch} from 'react-redux';
 
 const _TabContainer = styled.div`
 	width: 100%;
@@ -45,18 +48,30 @@ const _TabItem = styled.div`
 `;
 
 const TabBar = ({Tabs, param, id, isOpened, setIsOpened}) => {
+	const dispatch = useDispatch();
 	const history = useHistory();
 	const {search} = useLocation();
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
-			setIsOpened(false);
-			history.push({
-				pathname: `/${param}/${id}`,
-				search: `tabs=${v}`,
-			});
+			if (
+				(param === 'groups' && (v === 'role' || v === 'tag')) ||
+				(param === 'roles' && (v === 'user' || v === 'group'))
+			) {
+				dispatch(
+					DIALOG_BOX.action.openAlert({
+						key: confirmAlertMessages.developing.key,
+					}),
+				);
+			} else {
+				setIsOpened(false);
+				history.push({
+					pathname: `/${param}/${id}`,
+					search: `tabs=${v}`,
+				});
+			}
 		},
-		[setIsOpened, history, param, id],
+		[setIsOpened, param, dispatch, history, id],
 	);
 	return (
 		<_TabContainer>

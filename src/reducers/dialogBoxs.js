@@ -17,7 +17,6 @@ const slice = createSlice({
 
 const selectAllState = createSelector(
 	(state) => state.alert,
-	(state) => state.form,
 	(alert) => {
 		return {alert};
 	},

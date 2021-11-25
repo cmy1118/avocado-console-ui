@@ -14,7 +14,15 @@ import {
 } from '../../icons/icons';
 import PropTypes from 'prop-types';
 import qs from 'qs';
-import {NavContainer, NavItem, NavItemList} from '../../styles/components/nav';
+import {
+	NavContainer,
+	NavItem,
+	NavItemList,
+	NavItemTemp,
+} from '../../styles/components/nav';
+import {useDispatch} from 'react-redux';
+import DIALOG_BOX from '../../reducers/dialogBoxs';
+import {confirmAlertMessages} from '../../utils/alertMessage';
 
 const _NavItem = styled.div`
 	box-sizing: border-box;
@@ -103,6 +111,7 @@ const _IamNavClose = styled.div`
 `;
 
 const IamNav = ({isOpened, setIsOpened, leftSize}) => {
+	const dispatch = useDispatch();
 	const location = useLocation();
 	const pathname = qs.parse(location).pathname;
 	const [isUnfolded, setIsUnfolded] = useState(false);
@@ -116,6 +125,14 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 	const onClickFoldFolder = useCallback(() => {
 		setIsUnfolded(!isUnfolded);
 	}, [isUnfolded]);
+
+	const onClickDeveloping = useCallback(() => {
+		dispatch(
+			DIALOG_BOX.action.openAlert({
+				key: confirmAlertMessages.developing.key,
+			}),
+		);
+	}, []);
 
 	return isOpened ? (
 		<NavContainer className={isOpened ? 'nav' : 'nav close'}>
@@ -235,7 +252,7 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 								</ResourceItemText>
 							</ResourceItem>
 						</NavItem>
-						<NavItem to='/policies'>
+						<NavItemTemp onClick={onClickDeveloping}>
 							<ResourceItem
 								left={(leftSize * 11 + 8).toString() + 'px'}
 								selected={pathname.includes('policies') ? 1 : 0}
@@ -257,7 +274,7 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 									정책
 								</ResourceItemText>
 							</ResourceItem>
-						</NavItem>
+						</NavItemTemp>
 					</NavItemList>
 				)}
 			</_NavContents>

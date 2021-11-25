@@ -11,7 +11,7 @@ export const DialogBox = styled(Modal)`
 	transform: translate(-50%, -50%);
 	box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.22);
 	border-radius: 4px;
-	border: 1px solid #e3e5e5;
+	border: solid 1px #e3e5e5;
 	font-size: 14px;
 	background: #ffffff;
 `;
@@ -45,4 +45,5 @@ export const AlertDialogBoxContent = styled.div`
 `;
 export const AlertDialogBoxText = styled.div`
 	margin-right: 8px;
+	width: 226px;
 `;

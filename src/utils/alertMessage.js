@@ -5,6 +5,11 @@ export const alertMessageTypes = {
 };
 
 export const confirmAlertMessages = {
+	developing: {
+		key: 'developing',
+		type: alertMessageTypes.alert,
+		message: '개발중입니다!',
+	},
 	singleCountGroupTypes: {
 		key: 'singleCountGroupTypes',
 		type: alertMessageTypes.alert,
