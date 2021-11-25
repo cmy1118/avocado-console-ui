@@ -20,7 +20,7 @@ import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/Gr
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 
-const UserSummary = ({userUid, param, setIsOpened}) => {
+const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [user, setUser] = useState(null);
@@ -78,117 +78,123 @@ const UserSummary = ({userUid, param, setIsOpened}) => {
 	}, []);
 
 	useEffect(() => {
-		dispatch(
-			IAM_USER.asyncAction.findByUidAction({
-				userUid: userUid,
-			}),
-		)
-			.unwrap()
-			.then((res) =>
-				setUser({...res, groups: res.groups ? res.groups : []}),
-			);
-	}, [dispatch, userUid]);
+		isSummaryOpened &&
+			dispatch(
+				IAM_USER.asyncAction.findByUidAction({
+					userUid: userUid,
+				}),
+			)
+				.unwrap()
+				.then((res) =>
+					setUser({...res, groups: res.groups ? res.groups : []}),
+				);
+	}, [dispatch, isSummaryOpened, userUid]);
 
 	useEffect(() => {
-		dispatch(
-			IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
-				userUid,
-				range: initialPage,
-			}),
-		)
-			.unwrap()
-			.then((roles) => {
-				console.log(roles);
-				roles.data.forEach((role) => {
-					console.log(role);
-					dispatch(
-						IAM_USER.asyncAction.findByUidAction({
-							userUid: role.createdTag.actorTag.userUid,
-						}),
-					)
-						.unwrap()
-						.then((grantUser) => {
-							dispatch(
-								IAM_USER_POLICY.asyncAction.getsAction({
-									userUid: role.targetId,
-								}),
-							)
-								.unwrap()
-								.then((policys) => {
-									const roles = policys.map((policy) => {
-										if (policy.role.id === role.roleId)
-											return {
-												...policy,
+		isSummaryOpened &&
+			dispatch(
+				IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
+					userUid,
+					range: initialPage,
+				}),
+			)
+				.unwrap()
+				.then((roles) => {
+					console.log(roles);
+					roles.data.forEach((role) => {
+						console.log(role);
+						dispatch(
+							IAM_USER.asyncAction.findByUidAction({
+								userUid: role.createdTag.actorTag.userUid,
+							}),
+						)
+							.unwrap()
+							.then((grantUser) => {
+								dispatch(
+									IAM_USER_POLICY.asyncAction.getsAction({
+										userUid: role.targetId,
+									}),
+								)
+									.unwrap()
+									.then((policys) => {
+										const roles = policys.map((policy) => {
+											if (policy.role.id === role.roleId)
+												return {
+													...policy,
+													grant: {
+														createdTag:
+															role.createdTag,
+														user: grantUser,
+													},
+												};
+										});
+										console.log(roles);
+										setRoles([
+											{
+												role: {
+													id: 'KR-2020-0001:0000003',
+													name: 'template-name',
+													maxGrants: 0,
+													createdTag: {
+														createdTime:
+															'2021-11-25T11:06:01.689+09:00',
+														actorTag: {
+															applicationCode: {
+																code:
+																	'open-api',
+																description:
+																	'Open API Server',
+															},
+															clientId: 'client',
+															requestId:
+																'440e54a2-0b43-4f06-bd6b-f60f7bdd18ec',
+															userUid:
+																'KR-2020-0001:0000001',
+														},
+													},
+												},
+												policyTemplateDetails: [
+													{
+														templateId:
+															'KR-2020-0001:202111:0127',
+														templateName:
+															'template-name',
+														applicationCode:
+															'OPEN_API',
+														policyParameter: {
+															policyType:
+																'AccountExpired',
+															expiryDays: 5,
+														},
+													},
+												],
 												grant: {
-													createdTag: role.createdTag,
+													createdTag: {
+														createdTime:
+															'2021-11-20T00:06:44.5+09:00',
+														actorTag: {
+															applicationCode: {
+																code:
+																	'open-api',
+																description:
+																	'Open API Server',
+															},
+															clientId: 'client',
+															requestId:
+																'3cffca66-9ebf-471c-8cfa-9392abc9b4a6',
+															userUid:
+																'KR-2020-0001:0000001',
+														},
+													},
 													user: grantUser,
 												},
-											};
+											},
+										]);
 									});
-									console.log(roles);
-									setRoles([
-										{
-											role: {
-												id: 'KR-2020-0001:0000003',
-												name: 'template-name',
-												maxGrants: 0,
-												createdTag: {
-													createdTime:
-														'2021-11-25T11:06:01.689+09:00',
-													actorTag: {
-														applicationCode: {
-															code: 'open-api',
-															description:
-																'Open API Server',
-														},
-														clientId: 'client',
-														requestId:
-															'440e54a2-0b43-4f06-bd6b-f60f7bdd18ec',
-														userUid:
-															'KR-2020-0001:0000001',
-													},
-												},
-											},
-											policyTemplateDetails: [
-												{
-													templateId:
-														'KR-2020-0001:202111:0127',
-													templateName:
-														'template-name',
-													applicationCode: 'OPEN_API',
-													policyParameter: {
-														policyType:
-															'AccountExpired',
-														expiryDays: 5,
-													},
-												},
-											],
-											grant: {
-												createdTag: {
-													createdTime:
-														'2021-11-20T00:06:44.5+09:00',
-													actorTag: {
-														applicationCode: {
-															code: 'open-api',
-															description:
-																'Open API Server',
-														},
-														clientId: 'client',
-														requestId:
-															'3cffca66-9ebf-471c-8cfa-9392abc9b4a6',
-														userUid:
-															'KR-2020-0001:0000001',
-													},
-												},
-												user: grantUser,
-											},
-										},
-									]);
-								});
-						});
+							});
+					});
 				});
-			});
-	}, [dispatch, initialPage, userUid]);
+	}, [dispatch, initialPage, isSummaryOpened, userUid]);
 
 	useEffect(() => {
 		if (user && user.groups) {
@@ -298,5 +304,6 @@ UserSummary.propTypes = {
 	userUid: PropTypes.string.isRequired,
 	param: PropTypes.string.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
+	isSummaryOpened: PropTypes.bool.isRequired,
 };
 export default UserSummary;
