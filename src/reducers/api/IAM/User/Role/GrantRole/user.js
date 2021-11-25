@@ -8,16 +8,15 @@ const grantAction = createAsyncThunk(
 	`${NAME}/GRANT`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
+		console.log(user);
 		// eslint-disable-next-line no-console
 		const response = await Axios.post(
 			`/open-api/v1/iam/users/${payload.userUid}/roles`,
+			[...payload.roleIds],
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
-				},
-				params: {
-					roleld: payload.roleld,
 				},
 				baseURL: baseUrl.openApi,
 			},
@@ -40,7 +39,7 @@ const revokeAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 				},
 				params: {
-					roleld: payload.roleld,
+					roleId: payload.roleId,
 				},
 				baseURL: baseUrl.openApi,
 			},

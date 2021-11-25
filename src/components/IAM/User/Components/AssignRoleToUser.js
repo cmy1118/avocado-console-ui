@@ -26,6 +26,8 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [select, setSelect] = useState({});
 
+	console.log(roles);
+
 	const excludedData = useMemo(() => {
 		// return [];
 		return roles
@@ -33,7 +35,8 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
-				[DRAGGABLE_KEY]: v.roleId,
+				createdTime: v.createdTag.createdTime,
+				[DRAGGABLE_KEY]: v.id,
 				// numberOfUsers: v.users.length,
 			}));
 	}, [includedDataIds, roles]);
@@ -45,7 +48,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
-				[DRAGGABLE_KEY]: v.roleId,
+				[DRAGGABLE_KEY]: v.id,
 			}));
 	}, [includedDataIds, roles]);
 
@@ -61,10 +64,10 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 
 	//Role 정보 조회
 	useEffect(() => {
-		if (page[tableKeys.roles.basic]) {
+		if (page[tableKeys.users.add.roles.exclude]) {
 			dispatch(
 				IAM_ROLES.asyncAction.getsAction({
-					range: page[tableKeys.roles.basic],
+					range: page[tableKeys.users.add.roles.exclude],
 				}),
 			);
 		}

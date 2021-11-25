@@ -71,22 +71,21 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 			: [];
 	}, [includedDataIds, roles]);
 
-	const onClickDeleteRolesFromUser = useCallback(
+	const onClickAddRolesToUser = useCallback(
 		(data) => {
-			data.forEach((v) => {
-				dispatch(
-					IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
-						roleId: v,
-						userUid: userUid,
-					}),
-				);
-			});
+			console.log(data);
+			dispatch(
+				IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
+					roleIds: data,
+					userUid: userUid,
+				}),
+			);
 		},
 		[dispatch, userUid],
 	);
 
 	//사용자 롤추가
-	const onClickAddRolesToUser = useCallback(
+	const onClickDeleteRolesFromUser = useCallback(
 		(data) => {
 			data.forEach((v) => {
 				dispatch(
@@ -113,12 +112,6 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				}),
 			);
 		}
-		dispatch(
-			IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
-				userUid: userUid,
-				range: page[tableKeys.users.summary.tabs.roles.include],
-			}),
-		);
 	}, [dispatch, isSummaryOpened, page, user, userUid]);
 
 	useEffect(() => {

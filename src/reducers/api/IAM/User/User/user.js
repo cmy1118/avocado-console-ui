@@ -30,6 +30,7 @@ const createAction = createAsyncThunk(
 				baseURL: baseUrl.openApi,
 			},
 		);
+		console.log(response);
 		return response.data;
 	},
 );
