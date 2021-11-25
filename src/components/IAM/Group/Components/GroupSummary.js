@@ -31,7 +31,7 @@ const GroupSummary = ({groupId, param, setIsOpened}) => {
 			...v,
 			id: v.id,
 			name: v.name,
-			groupsLength: v.groupIds ? v.groupIds.length : 0,
+			groupsLength: v.groups ? v.groups.length : 0,
 			status: v.status.code,
 			createdTime: v.createdTag.createdTime,
 			// grantUser: groupUserMembers.find((x) => x.userUid === v.userUid)

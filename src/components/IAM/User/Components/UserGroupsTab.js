@@ -41,7 +41,7 @@ const UserGroupsTab = ({
 	const [select, setSelect] = useState({});
 
 	const [includedDataIds, setIncludedDataIds] = useState(
-		user?.groupIds || [],
+		user?.groups.map((v) => v.id) || [],
 	);
 
 	const includedData = useMemo(() => {
@@ -143,12 +143,11 @@ const UserGroupsTab = ({
 
 	const getIncludedGroupsData = useCallback(
 		(user) => {
-			console.log(user.groupIds);
 			const arr = [];
-			user.groupIds?.forEach((v) =>
+			user.groups?.forEach((v) =>
 				dispatch(
 					IAM_USER_GROUP.asyncAction.findByIdAction({
-						id: v,
+						id: v.id,
 					}),
 				)
 					.unwrap()
@@ -169,7 +168,7 @@ const UserGroupsTab = ({
 										name: grantUser.name,
 									},
 								});
-								if (user.groupIds.length === arr.length) {
+								if (user.groups.length === arr.length) {
 									if (arr[0]) {
 										const arr2 = [];
 										arr.forEach((v) => {
@@ -240,7 +239,7 @@ const UserGroupsTab = ({
 				.unwrap()
 				.then((res) => {
 					setUser(res);
-					setIncludedDataIds(res.groupIds);
+					setIncludedDataIds(res.groups.map((v) => v.id));
 					getIncludedGroupsData(res);
 				});
 		}

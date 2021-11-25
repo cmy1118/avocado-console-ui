@@ -29,7 +29,7 @@ export const USER_COLUMN = [
 		disableChangeVisible: true,
 	},
 	{
-		accessor: 'groupIds',
+		accessor: 'groups',
 		Header: '그룹',
 		disableFilters: true,
 	},

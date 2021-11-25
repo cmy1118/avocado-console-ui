@@ -30,8 +30,7 @@ const createAction = createAsyncThunk(
 				baseURL: baseUrl.openApi,
 			},
 		);
-		console.log(response);
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 //todo : this function requires uid, name and password

@@ -60,7 +60,7 @@ const GroupUsersTab = ({
 			.filter((v) => includedDataIds.includes(v.userUid))
 			.map((v) => ({
 				...v,
-				numberOfGroups: v.groupIds ? v.groupIds.length : 0,
+				numberOfGroups: v.groups ? v.groups.length : 0,
 				createdTime: v.createdTag.createdTime,
 				[DRAGGABLE_KEY]: v.userUid,
 			}));
@@ -71,7 +71,7 @@ const GroupUsersTab = ({
 			.filter((v) => !includedDataIds.includes(v.userUid))
 			.map((v) => ({
 				...v,
-				numberOfGroups: v.groupIds ? v.groupIds.length : 0,
+				numberOfGroups: v.groups ? v.groups.length : 0,
 				createdTime: v.createdTag.createdTime,
 				[DRAGGABLE_KEY]: v.userUid,
 			}));

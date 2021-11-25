@@ -62,6 +62,7 @@ const findAllAction = createAsyncThunk(
 			},
 			baseURL: baseUrl.openApi,
 		});
+		console.log('response:::', response);
 		return {data: response.data, headers: response.headers};
 	},
 );

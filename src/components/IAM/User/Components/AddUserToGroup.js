@@ -75,48 +75,63 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	}, [dispatch, includedData]);
 
 	useEffect(() => {
-		const arr = [];
-		page[tableKeys.users.add.groups.exclude] &&
-			dispatch(
-				IAM_USER_GROUP.asyncAction.findAllAction({
-					range: page[tableKeys.users.add.groups.exclude],
-				}),
-			)
-				.unwrap()
-				.then((groups) => {
-					groups.data.forEach((group) => {
-						dispatch(
-							IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
-								groupId: group.id,
-								range: 'elements=0-1',
-							}),
-						)
-							.unwrap()
-							.then((member) => {
-								dispatch(
-									IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
-										{id: group.id, range: 'elements=0-1'},
-									),
-								)
-									.unwrap()
-									.then((roles) => {
-										console.log(roles);
-										arr.push({
-											...group,
-											numberOfRoles: totalNumberConverter(
-												roles.headers['content-range'],
-											),
-											numberOfUsers: totalNumberConverter(
-												member.headers['content-range'],
-											),
+		if (isFold[space]) {
+			const arr = [];
+			page[tableKeys.users.add.groups.exclude] &&
+				dispatch(
+					IAM_USER_GROUP.asyncAction.findAllAction({
+						range: page[tableKeys.users.add.groups.exclude],
+					}),
+				)
+					.unwrap()
+					.then((groups) => {
+						groups.data.forEach((group) => {
+							console.log(group);
+							dispatch(
+								IAM_USER_GROUP_MEMBER.asyncAction.findAllAction(
+									{
+										groupId: group.id,
+										range: 'elements=0-1',
+									},
+								),
+							)
+								.unwrap()
+								.then((member) => {
+									dispatch(
+										IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
+											{
+												id: group.id,
+												range: 'elements=0-1',
+											},
+										),
+									)
+										.unwrap()
+										.then((roles) => {
+											console.log(roles);
+											arr.push({
+												...group,
+												numberOfRoles: totalNumberConverter(
+													roles.headers[
+														'content-range'
+													],
+												),
+												numberOfUsers: totalNumberConverter(
+													member.headers[
+														'content-range'
+													],
+												),
+											});
+											if (
+												groups.data.length ===
+												arr.length
+											) {
+												setGroups(arr);
+											}
 										});
-										if (groups.data.length === arr.length) {
-											setGroups(arr);
-										}
-									});
-							});
+								});
+						});
 					});
-				});
+		}
 	}, [dispatch, page]);
 
 	return (

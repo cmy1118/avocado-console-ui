@@ -38,29 +38,29 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 		)
 			.unwrap()
 			.then((user) => {
-				// if (user.headers.location) {
-				const userUid = 'KR-2020-0001:0000023'; // user.headers.location.split('/').pop();
-				readOnlyData[tableKeys.users.add.groups.exclude]
-					.map((v) => v.id)
-					.forEach((groupId) => {
-						dispatch(
-							IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
-								groupId: groupId,
-								userUid: [userUid],
-							}),
-						);
-					});
+				if (user.headers.location) {
+					const userUid = user.headers.location.split('/').pop();
+					readOnlyData[tableKeys.users.add.groups.exclude]
+						.map((v) => v.id)
+						.forEach((groupId) => {
+							dispatch(
+								IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
+									groupId: groupId,
+									userUid: [userUid],
+								}),
+							);
+						});
 
-				dispatch(
-					IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
-						roleIds: readOnlyData[
-							tableKeys.users.add.roles.exclude
-						].map((v) => v.id),
-						userUid,
-					}),
-				);
-				// console.log(readOnlyData[tableKeys.users.add.tag]);
-				// }
+					dispatch(
+						IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
+							roleIds: readOnlyData[
+								tableKeys.users.add.roles.exclude
+							].map((v) => v.id),
+							userUid,
+						}),
+					);
+					console.log(readOnlyData[tableKeys.users.add.tag]);
+				}
 			});
 	}, [dispatch, readOnlyData]);
 

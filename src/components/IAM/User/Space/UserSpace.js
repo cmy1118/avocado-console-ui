@@ -29,7 +29,6 @@ import {
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 
 const UserSpace = () => {
 	const history = useHistory();
@@ -44,7 +43,7 @@ const UserSpace = () => {
 		return (
 			users?.map((v) => ({
 				...v,
-				groupIds: groupsConverter(v.groupIds || []),
+				groups: groupsConverter(v.groups || []),
 				status: v.status.code,
 				createdTime: v.createdTag.createdTime,
 				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
@@ -75,7 +74,13 @@ const UserSpace = () => {
 				IAM_USER.asyncAction.findAllAction({
 					range: page[tableKeys.users.basic],
 				}),
-			);
+			)
+				.unwrap()
+				.then((users) => {
+					setTotal(
+						totalNumberConverter(users.headers['content-range']),
+					);
+				});
 		}
 	}, [dispatch, page]);
 
