@@ -18,6 +18,7 @@ import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/G
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
+import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 
 const UserSummary = ({userUid, param, setIsOpened}) => {
 	const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const UserSummary = ({userUid, param, setIsOpened}) => {
 	const [groups, setGroups] = useState([]);
 	const [roles, setRoles] = useState([]);
 	console.log(groups);
+	console.log(roles);
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
@@ -59,7 +61,10 @@ const UserSummary = ({userUid, param, setIsOpened}) => {
 		console.log(roles);
 		return roles.map((v) => ({
 			...v,
-			[DRAGGABLE_KEY]: v.id,
+			roleName: v.role.name,
+			grantDate: v.grant.createdTag?.createdTime,
+			grantUser: v.grant.user,
+			[DRAGGABLE_KEY]: v.role.id,
 		}));
 	}, [roles]);
 
@@ -94,32 +99,91 @@ const UserSummary = ({userUid, param, setIsOpened}) => {
 			.unwrap()
 			.then((roles) => {
 				console.log(roles);
-				const arr = [];
 				roles.data.forEach((role) => {
+					console.log(role);
 					dispatch(
-						IAM_ROLES.asyncAction.findByIdAction({
-							id: role.roleId,
+						IAM_USER.asyncAction.findByUidAction({
+							userUid: role.createdTag.actorTag.userUid,
 						}),
 					)
 						.unwrap()
-						.then((res) => {
+						.then((grantUser) => {
 							dispatch(
-								IAM_USER.asyncAction.findByUidAction({
-									userUid: res.createdTag.actorTag.userUid,
+								IAM_USER_POLICY.asyncAction.getsAction({
+									userUid: role.targetId,
 								}),
 							)
 								.unwrap()
-								.then((user) => {
-									arr.push({
-										...res,
-										grant: {
-											role: role.createdTag,
-											user: user.createdTag,
-										},
+								.then((policys) => {
+									const roles = policys.map((policy) => {
+										if (policy.role.id === role.roleId)
+											return {
+												...policy,
+												grant: {
+													createdTag: role.createdTag,
+													user: grantUser,
+												},
+											};
 									});
-									if (arr.length === roles.data.length) {
-										setRoles(arr);
-									}
+									console.log(roles);
+									setRoles([
+										{
+											role: {
+												id: 'KR-2020-0001:0000003',
+												name: 'template-name',
+												maxGrants: 0,
+												createdTag: {
+													createdTime:
+														'2021-11-25T11:06:01.689+09:00',
+													actorTag: {
+														applicationCode: {
+															code: 'open-api',
+															description:
+																'Open API Server',
+														},
+														clientId: 'client',
+														requestId:
+															'440e54a2-0b43-4f06-bd6b-f60f7bdd18ec',
+														userUid:
+															'KR-2020-0001:0000001',
+													},
+												},
+											},
+											policyTemplateDetails: [
+												{
+													templateId:
+														'KR-2020-0001:202111:0127',
+													templateName:
+														'template-name',
+													applicationCode: 'OPEN_API',
+													policyParameter: {
+														policyType:
+															'AccountExpired',
+														expiryDays: 5,
+													},
+												},
+											],
+											grant: {
+												createdTag: {
+													createdTime:
+														'2021-11-20T00:06:44.5+09:00',
+													actorTag: {
+														applicationCode: {
+															code: 'open-api',
+															description:
+																'Open API Server',
+														},
+														clientId: 'client',
+														requestId:
+															'3cffca66-9ebf-471c-8cfa-9392abc9b4a6',
+														userUid:
+															'KR-2020-0001:0000001',
+													},
+												},
+												user: grantUser,
+											},
+										},
+									]);
 								});
 						});
 				});
