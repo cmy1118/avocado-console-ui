@@ -72,13 +72,18 @@ const GroupSummary = ({groupId, param, setIsOpened}) => {
 			}),
 		)
 			.unwrap()
-			.then((v) => v.map((x) => x.userUid))
-			.then(async (uids) => {
+			.then((member) => {
+				console.log(member.data);
+				return member.data.map((x) => x.userUid);
+			})
+			.then((uids) => {
 				const arr = [];
-				for await (let value of uids) {
+				console.log(uids);
+				if (!uids) return;
+				uids.forEach((uid) => {
 					dispatch(
 						IAM_USER.asyncAction.findByUidAction({
-							userUid: value,
+							userUid: uid,
 						}),
 					)
 						.unwrap()
@@ -88,7 +93,7 @@ const GroupSummary = ({groupId, param, setIsOpened}) => {
 							if (arr.length === uids.length)
 								setGroupUserMembers(arr);
 						});
-				}
+				});
 			});
 	}, [dispatch, groupId]);
 

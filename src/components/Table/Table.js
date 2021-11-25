@@ -23,6 +23,7 @@ const BodyContainer = styled.div`
 	flex: 1;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	min-height: 40px;
 	// width: fit-content;
 `;
 

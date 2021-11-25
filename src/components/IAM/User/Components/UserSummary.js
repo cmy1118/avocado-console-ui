@@ -46,7 +46,7 @@ const UserSummary = ({userUid, param, setIsOpened}) => {
 			.map((v) => ({
 				...v,
 				userGroupType: v.userGroupType.name,
-				parentGroup: v.parentGroup.name,
+				parentGroup: v.parentGroup.name ? v.parentGroup.name : '없음',
 				createdTime: v.createdTag.createdTime,
 				[DRAGGABLE_KEY]: v.id,
 			}));

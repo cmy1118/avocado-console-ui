@@ -160,7 +160,9 @@ const GroupDescriptionSpace = ({groupId}) => {
 					<SummaryList>
 						<LiText>그룹명 : {group?.name}</LiText>
 						<LiText>그룹 유형 : {group?.userGroupType.name}</LiText>
-						<LiText>생성 일시 : {group?.createdTime}</LiText>
+						<LiText>
+							생성 일시 : {group?.createdTag.createdTime}
+						</LiText>
 					</SummaryList>
 				</div>
 
@@ -188,6 +190,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 								space={'GroupUsersTab'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
+								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===

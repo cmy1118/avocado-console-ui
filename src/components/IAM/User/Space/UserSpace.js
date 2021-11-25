@@ -6,6 +6,7 @@ import {
 	expiredConverter,
 	groupsConverter,
 	statusConverter,
+	totalNumberConverter,
 } from '../../../../utils/tableDataConverter';
 import Table from '../../../Table/Table';
 import {tableColumns} from '../../../../Constants/Table/columns';
@@ -28,12 +29,14 @@ import {
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
+import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 
 const UserSpace = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
 	const {users} = useSelector(IAM_USER.selector);
+	const [total, setTotal] = useState(0);
 	const {page} = useSelector(PAGINATION.selector);
 	const [select, setSelect] = useState({});
 
@@ -85,7 +88,7 @@ const UserSpace = () => {
 			</CurrentPathBar>
 
 			<TitleBar>
-				<div>사용자 : {users.length}</div>
+				<div>사용자 : {total}</div>
 				<TitleBarButtons>
 					<NormalButton onClick={onClickLinkToAddUserPage}>
 						사용자 생성

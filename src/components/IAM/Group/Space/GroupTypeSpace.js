@@ -5,7 +5,7 @@ import {useHistory} from 'react-router-dom';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import Table from '../../../Table/Table';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import {
 	NormalButton,
@@ -34,8 +34,11 @@ const GroupTypeSpace = () => {
 	const [data, setData] = useState(
 		groupTypes.map((v) => ({
 			...v,
+			[DRAGGABLE_KEY]: v.id,
 		})),
 	);
+
+	console.log(data);
 
 	const onClickAddGroups = useCallback(() => {
 		history.push('/groups/add');
