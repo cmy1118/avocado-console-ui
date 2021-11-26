@@ -23,7 +23,7 @@ import {
 	SummaryTableTitle,
 } from '../../../../styles/components/iam/descriptionPage';
 
-const RoleSummary = ({Id, param, setIsOpened}) => {
+const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const history = useHistory();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
@@ -120,5 +120,6 @@ RoleSummary.propTypes = {
 	Id: PropTypes.string.isRequired,
 	param: PropTypes.string.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
+	isSummaryOpened: PropTypes.bool.isRequired,
 };
 export default RoleSummary;

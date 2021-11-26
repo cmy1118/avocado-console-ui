@@ -31,18 +31,17 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState(userRoles || []);
 
-	console.log(select);
 	const includedData = useMemo(() => {
-		return (
-			_.uniqBy(includedRoles.concat(excluedeRoles), 'id')
-				.filter((v) => includedDataIds?.includes(v.id))
-				.map((v) => ({
-					...v,
-					// numberOfUsers: v.users?.length,
-					createdTime: v.createdTime,
-					[DRAGGABLE_KEY]: v.id,
-				})) || []
-		);
+		return includedRoles
+			? _.uniqBy(includedRoles.concat(excluedeRoles), 'id')
+					.filter((v) => includedDataIds?.includes(v.id))
+					.map((v) => ({
+						...v,
+						// numberOfUsers: v.users?.length,
+						createdTime: v.createdTime,
+						[DRAGGABLE_KEY]: v.id,
+					}))
+			: [];
 	}, [excluedeRoles, includedDataIds, includedRoles]);
 
 	const excludedData = useMemo(() => {
@@ -60,14 +59,19 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	const onClickAddRolesToUser = useCallback(
 		(data) => {
-			dispatch(
-				IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
-					roleIds: data,
-					userUid: userUid,
-				}),
-			);
-			console.log(data);
-
+			data &&
+				dispatch(
+					IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
+						roleIds: data,
+						userUid: userUid,
+					}),
+				);
+			// dispatch(
+			// 	IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
+			// 		userUid: userUid,
+			// 		range: page[tableKeys.users.summary.tabs.roles.include],
+			// 	}),
+			// );
 			setIncludedDataIds(includedDataIds.concat(data));
 		},
 		[dispatch, includedDataIds, userUid],
@@ -75,12 +79,13 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	const onClickDeleteRolesFromUser = useCallback(
 		(data) => {
-			dispatch(
-				IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
-					roleId: data,
-					userUid: userUid,
-				}),
-			);
+			data &&
+				dispatch(
+					IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
+						roleId: data,
+						userUid: userUid,
+					}),
+				);
 
 			setIncludedDataIds(
 				includedDataIds.filter((v) => !data.includes(v)),
@@ -177,7 +182,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 						onClickDeleteRolesFromUser(
 							select[
 								tableKeys.users.summary.tabs.roles.include
-							].map((v) => v.id),
+							]?.map((v) => v.id),
 						)
 					}
 				>
@@ -220,7 +225,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 									select[
 										tableKeys.users.summary.tabs.roles
 											.exclude
-									].map((v) => v.id),
+									]?.map((v) => v.id),
 								)
 							}
 						>

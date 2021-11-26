@@ -25,8 +25,6 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	const {initialPage} = useSelector(PAGINATION.selector);
 	const [groups, setGroups] = useState([]);
 	const [roles, setRoles] = useState([]);
-	console.log(groups);
-	console.log(roles);
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
@@ -255,7 +253,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 					}),
 			);
 		}
-	}, [dispatch, initialPage, user]);
+	}, [dispatch, initialPage, isSummaryOpened, user]);
 
 	return (
 		<SummaryTablesContainer>
