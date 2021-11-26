@@ -25,9 +25,10 @@ import PAGINATION from '../../../../reducers/pagination';
 
 const RoleSpace = () => {
 	const dispatch = useDispatch();
-	const {roles} = useSelector(IAM_ROLES.selector);
+	// const {roles} = useSelector(IAM_ROLES.selector);
 	const {page} = useSelector(PAGINATION.selector);
 	const [select, setSelect] = useState({});
+	const [roles, setRoles] = useState([]);
 	const data = useMemo(() => {
 		return (
 			roles?.map((v) => ({
@@ -42,12 +43,27 @@ const RoleSpace = () => {
 	console.log(roles);
 
 	useEffect(() => {
+		const arr = [];
 		if (page[tableKeys.roles.basic]) {
 			dispatch(
 				IAM_ROLES.asyncAction.getsAction({
 					range: page[tableKeys.roles.basic],
 				}),
-			);
+			)
+				.unwrap()
+				.then((res) => {
+					res.data.map((v) => {
+						arr.push({
+							id: v.id,
+							name: v.name,
+							description: v.description,
+							createdTime: v.createdTag.createdTime,
+							type: v.maxGrants === '1' ? 'Private' : 'Public',
+						});
+					});
+
+					setRoles(arr);
+				});
 		}
 	}, [dispatch, page]);
 
