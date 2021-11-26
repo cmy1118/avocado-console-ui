@@ -149,6 +149,33 @@ const findAllAction = createAsyncThunk(
 	},
 );
 
+//todo : this function requires companyId, first range and last range
+const getUserGroupsAction = createAsyncThunk(
+	`${NAME}/GET_INCLUDE_GROUPS`,
+	async (payload, {getState}) => {
+		const {user} = getState().AUTH_USER;
+
+		console.log(user);
+
+		const response = await Axios.get(
+			`/open-api/v1/iam/users/${payload.userUid}/user-groups`,
+			{
+				params: {
+					groupTypeId: payload.groupTypeId,
+					includeGroup: payload.isIncludeGroup,
+				},
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
+					Range: payload.range,
+				},
+				baseURL: baseUrl.openApi,
+			},
+		);
+		console.log(response);
+		return {data: response.data, headers: response.headers};
+	},
+);
+
 const slice = createSlice({
 	name: NAME,
 	initialState: {
@@ -226,6 +253,16 @@ const slice = createSlice({
 			state.error = action.payload;
 			state.loading = false;
 		},
+		[getUserGroupsAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[getUserGroupsAction.fulfilled]: (state) => {
+			state.loading = false;
+		},
+		[getUserGroupsAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
 	},
 });
 
@@ -252,6 +289,7 @@ const IAM_USER = {
 		findByIdAction,
 		findByUidAction,
 		findAllAction,
+		getUserGroupsAction,
 	},
 };
 

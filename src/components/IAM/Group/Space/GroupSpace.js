@@ -78,6 +78,7 @@ const GroupSpace = () => {
 			)
 				.unwrap()
 				.then((groups) => {
+					console.log(groups);
 					groups.data.forEach((group) => {
 						dispatch(
 							IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
@@ -87,6 +88,7 @@ const GroupSpace = () => {
 						)
 							.unwrap()
 							.then((member) => {
+								console.log(member);
 								dispatch(
 									IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
 										{id: group.id, range: 'elements=0-1'},

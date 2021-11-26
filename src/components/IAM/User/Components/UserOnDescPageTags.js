@@ -1,9 +1,9 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../../Table/Table';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import {
 	NormalButton,
@@ -17,6 +17,7 @@ import styled from 'styled-components';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {TitleBarButtons} from '../../../../styles/components/iam/iam';
+import IAM_USER_TAG from '../../../../reducers/api/IAM/User/Tag/tags';
 
 const _TableSpace = styled(TableTitle)`
 	margin-top: 30px;
@@ -24,22 +25,9 @@ const _TableSpace = styled(TableTitle)`
 `;
 
 const UserOnDescPageTags = ({userUid}) => {
-	const {users} = useSelector(IAM_USER.selector);
-	const user = useMemo(() => users.find((v) => v.userUid === userUid), [
-		users,
-		userUid,
-	]);
-	const [data, setData] = useState(
-		[],
-		// user.tags.map((v) => {
-		// 	return {
-		// 		...v,
-		// 		id: v.name,
-		// 		numberOfPermissions: v.permissions.length,
-		// [DRAGGABLE_KEY] v.userUid,
-		// 	};
-		// }) || [],
-	);
+	const dispatch = useDispatch();
+	const [user, setUser] = useState(null);
+	const [data, setData] = useState([]);
 
 	const [select, setSelect] = useState({});
 	const onClickAddRow = useCallback(() => {
@@ -54,13 +42,24 @@ const UserOnDescPageTags = ({userUid}) => {
 				name: '',
 				value: '',
 				permissions: [],
+				[DRAGGABLE_KEY]: `${tableKeys.users.summary.tabs.tags.basic} ${data.length}`,
 			},
 		]);
 	}, [data]);
 
 	const onClickSaveRow = useCallback(() => {
-		console.log(data);
-	}, [data]);
+		if (data[0]) {
+			data.forEach((v) => {
+				dispatch(
+					IAM_USER_TAG.asyncAction.createAction({
+						userUid,
+						name: v.name,
+						value: v.value,
+					}),
+				);
+			});
+		}
+	}, [data, dispatch, userUid]);
 
 	const onClickDeleteRow = useCallback(() => {
 		if (select[tableKeys.users.summary.tabs.tags.basic][0]) {
@@ -69,6 +68,29 @@ const UserOnDescPageTags = ({userUid}) => {
 			alert('선택된 값이 없습니다.');
 		}
 	}, [select]);
+
+	useEffect(() => {
+		if (!user) {
+			dispatch(
+				IAM_USER.asyncAction.findByUidAction({
+					userUid,
+				}),
+			)
+				.unwrap()
+				.then((user) => {
+					setUser(user);
+					setData(
+						user.tags
+							? user.tags.map((tag) => ({
+									...tag,
+									id: tag.name,
+									[DRAGGABLE_KEY]: tag.name,
+							  }))
+							: [],
+					);
+				});
+		}
+	}, [dispatch, user, userUid]);
 
 	return (
 		<TabContentContainer>

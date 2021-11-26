@@ -9,8 +9,6 @@ const createAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		// eslint-disable-next-line no-console
-		console.log(user);
 		const response = await Axios.post(
 			`/open-api/v1/iam/users/${payload.userUid}/tags`,
 			{

@@ -30,7 +30,6 @@ import {
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
-import IAM_USER_TAG from '../../../../reducers/api/IAM/User/Tag/tags';
 
 const UserSpace = () => {
 	const history = useHistory();

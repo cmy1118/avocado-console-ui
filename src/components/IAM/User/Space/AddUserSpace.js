@@ -20,6 +20,8 @@ const AddUserSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
+	console.log('ADd user  spcce');
+
 	return (
 		<AddSpaceContainer>
 			<CurrentPathBar>

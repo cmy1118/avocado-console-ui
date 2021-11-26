@@ -398,16 +398,10 @@ export const USER_SUMMARY_TAG_COLUMN = [
 	{
 		Header: 'key(태그명)',
 		accessor: 'name',
-		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} isFocus />;
-		},
 	},
 	{
 		Header: '값(태그)',
 		accessor: 'value',
-		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} />;
-		},
 	},
 	{
 		Header: '권한 수',
