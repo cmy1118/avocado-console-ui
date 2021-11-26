@@ -17,10 +17,13 @@ import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_MEMBER from '../../../reducers/api/IAM/User/Group/groupMember';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../reducers/api/IAM/User/Role/GrantRole/user';
+import {useHistory} from 'react-router-dom';
 
 const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
 	const dispatch = useDispatch();
+	const history = useHistory();
+
 	console.log(readOnlyData);
 
 	const submitUserInfo = useCallback(() => {
@@ -61,8 +64,12 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 					);
 					console.log(readOnlyData[tableKeys.users.add.tag]);
 				}
+			})
+			.then(() => {
+				history.push('/users');
+				setIsOpened(false);
 			});
-	}, [dispatch, readOnlyData]);
+	}, [dispatch, history, readOnlyData, setIsOpened]);
 
 	const groupData = useMemo(
 		() =>
