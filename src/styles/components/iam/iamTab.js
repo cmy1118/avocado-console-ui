@@ -15,6 +15,7 @@ export const CoveredByTabContent = styled.div`
 	overflow: scroll;
 	display: ${(props) => !props.isOpened && 'none'};
 `;
+
 export const TabContentContainer = styled.div`
 	width: 100%;
 `;

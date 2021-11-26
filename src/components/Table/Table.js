@@ -154,6 +154,7 @@ const Table = ({
 	return (
 		<Container>
 			<Droppable
+				key={tableKey}
 				droppableId={tableKey}
 				mode={'Virtual'}
 				renderClone={(provided, snapshot, rubric) => {

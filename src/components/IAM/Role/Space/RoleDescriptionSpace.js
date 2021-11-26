@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import qs from 'qs';
 import {useHistory, useLocation} from 'react-router-dom';
 import {
-	CurrentPathBarLink,
 	CurrentPathBar,
+	CurrentPathBarLink,
 	NextPath,
 } from '../../../../styles/components/currentPathBar';
 import RoleSummary from '../Components/RoleSummary';
@@ -13,12 +13,8 @@ import RolePolicyTab from '../Components/Tabs/RolePolicyTab';
 import RoleUserTab from '../Components/Tabs/RoleUserTab';
 import RoleGroupTab from '../Components/Tabs/RoleGroupTab';
 import {useDispatch, useSelector} from 'react-redux';
-// import RolePolicyTab from '../Components/Tabs/RolePolicyTab';
-// import RoleUserTab from '../Components/Tabs/RoleUserTab';
-// import RoleGroupTab from '../Components/Tabs/RoleGroupTab';
-// import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
-import {HoverIconButton, IconButton} from '../../../../styles/components/icons';
+import {HoverIconButton} from '../../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
 import {
 	NormalButton,
@@ -43,14 +39,12 @@ import {
 	TitleBarButtons,
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
-import {tableKeys} from '../../../../Constants/Table/keys';
-import PAGINATION from '../../../../reducers/pagination';
+import PAM_POLICY from '../../../../reducers/api/ PAM/Role/policy';
 
 const RoleDescriptionSpace = ({roleId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {search} = useLocation();
-	const {page} = useSelector(PAGINATION.selector);
 
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const role = useMemo(() => roles.find((v) => v.id === roleId), [
@@ -97,14 +91,17 @@ const RoleDescriptionSpace = ({roleId}) => {
 	}, [roleId, role, history]);
 
 	useEffect(() => {
-		if (page[tableKeys.roles.basic]) {
-			dispatch(
-				IAM_ROLES.asyncAction.getsAction({
-					range: page[tableKeys.roles.basic],
-				}),
-			);
-		}
-	}, [dispatch, page]);
+		dispatch(
+			PAM_POLICY.asyncAction.findByRoleIdAction({
+				roleId: roleId,
+			}),
+		)
+			.unwrap()
+			.then((res) => {
+				console.log(res);
+			});
+	}, [dispatch, roleId]);
+
 	return (
 		<IamContainer>
 			<CurrentPathBar>

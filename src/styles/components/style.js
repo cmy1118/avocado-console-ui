@@ -6,7 +6,8 @@ export const PositionRelativeDiv = styled.div`
 
 export const RowDiv = styled.div`
 	display: flex;
-	width: ${(props) => props.width};
+	transition: all 800ms ease-in;
+
 	height: ${(props) => props.height || 'initial'};
 	margin: ${(props) => props.margin || '0px'};
 	padding: ${(props) => props.padding || '0px'};
@@ -65,4 +66,10 @@ export const TableHeader = styled.div`
 export const PermissionName = styled.div`
 	display: flex;
 	align-items: center;
+`;
+
+export const CollapsbleContent = styled.div`
+	max-height: ${(props) => (props.height ? props.height : '0px')};
+	overflow: hidden;
+	transition: max-height 0.2s ease-out;
 `;
