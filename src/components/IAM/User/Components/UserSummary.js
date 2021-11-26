@@ -19,7 +19,7 @@ import PAGINATION from '../../../../reducers/pagination';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 
-const UserSummary = ({userUid, param, setIsOpened}) => {
+const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [user, setUser] = useState(null);
@@ -85,46 +85,48 @@ const UserSummary = ({userUid, param, setIsOpened}) => {
 	}, [dispatch, userUid]);
 
 	useEffect(() => {
-		dispatch(
-			IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
-				userUid,
-				range: initialPage,
-			}),
-		)
-			.unwrap()
-			.then((roles) => {
-				console.log(roles);
-				const arr = [];
-				roles.data.forEach((role) => {
-					dispatch(
-						IAM_ROLES.asyncAction.findByIdAction({
-							id: role.roleId,
-						}),
-					)
-						.unwrap()
-						.then((res) => {
-							dispatch(
-								IAM_USER.asyncAction.findByUidAction({
-									userUid: res.createdTag.actorTag.userUid,
-								}),
-							)
-								.unwrap()
-								.then((user) => {
-									arr.push({
-										...res,
-										grant: {
-											role: role.createdTag,
-											user: user.createdTag,
-										},
+		isSummaryOpened &&
+			dispatch(
+				IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
+					userUid,
+					range: initialPage,
+				}),
+			)
+				.unwrap()
+				.then((roles) => {
+					console.log(roles);
+					const arr = [];
+					roles.data.forEach((role) => {
+						dispatch(
+							IAM_ROLES.asyncAction.findByIdAction({
+								id: role.roleId,
+							}),
+						)
+							.unwrap()
+							.then((res) => {
+								dispatch(
+									IAM_USER.asyncAction.findByUidAction({
+										userUid:
+											res.createdTag.actorTag.userUid,
+									}),
+								)
+									.unwrap()
+									.then((user) => {
+										arr.push({
+											...res,
+											grant: {
+												role: role.createdTag,
+												user: user.createdTag,
+											},
+										});
+										if (arr.length === roles.data.length) {
+											setRoles(arr);
+										}
 									});
-									if (arr.length === roles.data.length) {
-										setRoles(arr);
-									}
-								});
-						});
+							});
+					});
 				});
-			});
-	}, [dispatch, initialPage, userUid]);
+	}, [dispatch, initialPage, isSummaryOpened, userUid]);
 
 	useEffect(() => {
 		if (user && user.groups) {
@@ -187,7 +189,7 @@ const UserSummary = ({userUid, param, setIsOpened}) => {
 					}),
 			);
 		}
-	}, [dispatch, initialPage, user]);
+	}, [dispatch, initialPage, isSummaryOpened, user]);
 
 	return (
 		<SummaryTablesContainer>
@@ -234,5 +236,6 @@ UserSummary.propTypes = {
 	userUid: PropTypes.string.isRequired,
 	param: PropTypes.string.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
+	isSummaryOpened: PropTypes.bool.isRequired,
 };
 export default UserSummary;

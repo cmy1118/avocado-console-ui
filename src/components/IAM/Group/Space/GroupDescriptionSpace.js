@@ -168,6 +168,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 
 				<CoveredByTabContent isOpened={isSummaryOpened}>
 					<GroupSummary
+						isSummaryOpened={isSummaryOpened}
 						groupId={groupId}
 						param={'groups'}
 						setIsOpened={setIsSummaryOpened}

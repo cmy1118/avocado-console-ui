@@ -19,6 +19,7 @@ import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import PAGINATION from '../../../../reducers/pagination';
+import * as _ from 'lodash';
 
 const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -32,14 +33,16 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	const includedData = useMemo(() => {
 		return includedRoles
-			? includedRoles.map((v) => ({
-					...v,
-					// numberOfUsers: v.users?.length,
-					createdTime: v.createdTime,
-					[DRAGGABLE_KEY]: v.id,
-			  }))
+			? _.uniqBy(includedRoles.concat(excluedeRoles), 'id')
+					.filter((v) => includedDataIds?.includes(v.id))
+					.map((v) => ({
+						...v,
+						// numberOfUsers: v.users?.length,
+						createdTime: v.createdTime,
+						[DRAGGABLE_KEY]: v.id,
+					}))
 			: [];
-	}, [includedRoles]);
+	}, [excluedeRoles, includedDataIds, includedRoles]);
 
 	const excludedData = useMemo(() => {
 		return excluedeRoles
@@ -56,27 +59,44 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	const onClickAddRolesToUser = useCallback(
 		(data) => {
-			dispatch(
-				IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
-					roleIds: data,
-					userUid: userUid,
-				}),
-			);
+			data &&
+				dispatch(
+					IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
+						roleIds: data,
+						userUid: userUid,
+					}),
+				);
+			// dispatch(
+			// 	IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
+			// 		userUid: userUid,
+			// 		range: page[tableKeys.users.summary.tabs.roles.include],
+			// 	}),
+			// );
+			setIncludedDataIds(includedDataIds.concat(data));
 		},
-		[dispatch, userUid],
+		[dispatch, includedDataIds, userUid],
 	);
 
-	//사용자 롤추가
 	const onClickDeleteRolesFromUser = useCallback(
 		(data) => {
-			dispatch(
-				IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
-					roleId: data,
-					userUid: userUid,
-				}),
+			data &&
+				dispatch(
+					IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
+						roleId: data,
+						userUid: userUid,
+					}),
+				);
+			// dispatch(
+			// 	IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
+			// 		userUid: userUid,
+			// 		range: page[tableKeys.users.summary.tabs.roles.exclude],
+			// 	}),
+			// );
+			setIncludedDataIds(
+				includedDataIds.filter((v) => !data.includes(v)),
 			);
 		},
-		[dispatch, userUid],
+		[dispatch, includedDataIds, userUid],
 	);
 
 	const getExcludedGroupData = useCallback((roles) => {
@@ -163,7 +183,13 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				이 사용자의 권한: {includedData.length}{' '}
 				<TransparentButton
 					margin='0px 0px 0px 5px'
-					onClick={onClickDeleteRolesFromUser}
+					onClick={() =>
+						onClickDeleteRolesFromUser(
+							select[
+								tableKeys.users.summary.tabs.roles.include
+							]?.map((v) => v.id),
+						)
+					}
 				>
 					삭제
 				</TransparentButton>
@@ -199,7 +225,14 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					>
 						<NormalButton
 							margin='0px 0px 0px 5px'
-							onClick={onClickAddRolesToUser}
+							onClick={() =>
+								onClickAddRolesToUser(
+									select[
+										tableKeys.users.summary.tabs.roles
+											.exclude
+									]?.map((v) => v.id),
+								)
+							}
 						>
 							권한 추가
 						</NormalButton>

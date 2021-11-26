@@ -39,7 +39,7 @@ const revokeAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 				},
 				params: {
-					roleId: payload.roleId,
+					roleId: [...payload.roleId],
 				},
 				baseURL: baseUrl.openApi,
 			},
