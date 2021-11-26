@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Table from '../../../Table/Table';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
@@ -11,7 +11,6 @@ import {
 } from '../../../../styles/components/buttons';
 import {TableTitle} from '../../../../styles/components/table';
 import TableOptionText from '../../../Table/Options/TableOptionText';
-import {dummyPermission} from '../../../../utils/dummyData';
 import TableContainer from '../../../Table/TableContainer';
 import styled from 'styled-components';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
@@ -24,7 +23,7 @@ const _TableSpace = styled(TableTitle)`
 	height: 30px;
 `;
 
-const UserOnDescPageTags = ({userUid}) => {
+const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const [user, setUser] = useState(null);
 	const [data, setData] = useState([]);
@@ -63,14 +62,30 @@ const UserOnDescPageTags = ({userUid}) => {
 
 	const onClickDeleteRow = useCallback(() => {
 		if (select[tableKeys.users.summary.tabs.tags.basic][0]) {
-			console.log(select[tableKeys.users.summary.tabs.tags.basic]);
+			select[tableKeys.users.summary.tabs.tags.basic].forEach((tag) => {
+				dispatch(
+					IAM_USER_TAG.asyncAction.deleteAction({
+						userUid,
+						name: tag.name,
+					}),
+				);
+			});
+			setData(
+				data.filter(
+					(v) =>
+						!select[tableKeys.users.summary.tabs.tags.basic]
+							.map((x) => x.name)
+							.includes(v.name),
+				),
+			);
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
-	}, [select]);
+	}, [data, dispatch, select, userUid]);
 
 	useEffect(() => {
-		if (!user) {
+		console.log(user);
+		if (!user && !isSummaryOpened) {
 			dispatch(
 				IAM_USER.asyncAction.findByUidAction({
 					userUid,
@@ -90,7 +105,7 @@ const UserOnDescPageTags = ({userUid}) => {
 					);
 				});
 		}
-	}, [dispatch, user, userUid]);
+	}, [dispatch, isSummaryOpened, user, userUid]);
 
 	return (
 		<TabContentContainer>
@@ -219,6 +234,7 @@ const UserOnDescPageTags = ({userUid}) => {
 
 UserOnDescPageTags.propTypes = {
 	userUid: PropTypes.string,
+	isSummaryOpened: PropTypes.bool,
 };
 
 export default UserOnDescPageTags;

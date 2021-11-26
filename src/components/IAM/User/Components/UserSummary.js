@@ -82,9 +82,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				}),
 			)
 				.unwrap()
-				.then((res) =>
-					setUser({...res, groups: res.groups ? res.groups : []}),
-				);
+				.then((res) => setUser({...res}));
 	}, [dispatch, isSummaryOpened, userUid]);
 
 	useEffect(() => {
@@ -191,6 +189,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	}, [dispatch, initialPage, isSummaryOpened, userUid]);
 
 	useEffect(() => {
+		console.log(user);
 		if (user && user.groups) {
 			const arr = [];
 			dispatch(

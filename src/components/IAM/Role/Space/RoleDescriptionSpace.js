@@ -39,7 +39,6 @@ import {
 	TitleBarButtons,
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
-import PAM_POLICY from '../../../../reducers/api/ PAM/Role/policy';
 
 const RoleDescriptionSpace = ({roleId}) => {
 	const dispatch = useDispatch();

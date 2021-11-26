@@ -46,6 +46,7 @@ const UserGroupsTab = ({
 	const includedData = useMemo(() => {
 		return (
 			_.uniqBy(includedGroups.concat(excluedeGroups), 'id')
+				.sort()
 				.filter((v) => includedDataIds?.includes(v.id))
 				.map((v) => ({
 					...v,

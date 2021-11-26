@@ -13,7 +13,6 @@ const TableTextBox = ({cell, isFocus}) => {
 	const ref = useRef(null);
 
 	const [isOpened, setIsOpened] = useState(cell.value === '');
-	console.log(isOpened);
 	const onChange = (e) => {
 		setValue(e.target.value);
 	};
