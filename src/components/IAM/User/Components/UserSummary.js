@@ -17,6 +17,7 @@ import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/G
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
+import IAM_USER_TAG from '../../../../reducers/api/IAM/User/Tag/tags';
 
 const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -25,8 +26,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	const {initialPage} = useSelector(PAGINATION.selector);
 	const [groups, setGroups] = useState([]);
 	const [roles, setRoles] = useState([]);
-	console.log(groups);
-	console.log(roles);
+	const [tags, setTags] = useState([]);
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
@@ -51,12 +51,12 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				userGroupType: v.userGroupType.name,
 				parentGroup: v.parentGroup.name ? v.parentGroup.name : '없음',
 				createdTime: v.createdTag.createdTime,
+				numberOfRoles: v.roles ? v.roles.length : 0,
 				[DRAGGABLE_KEY]: v.id,
 			}));
 	}, [groups, user]);
 
 	const roleData = useMemo(() => {
-		console.log(roles);
 		return roles.map((v) => ({
 			...v,
 			roleName: v.role.name,
@@ -67,13 +67,12 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	}, [roles]);
 
 	const tagData = useMemo(() => {
-		return [];
-		// return user.tags.map((v, i) => ({
-		// 	...v,
-		// 	id: v.name,
-		// 	numberOfPermissions: v.permissions.length,
-		// }));
-	}, []);
+		return tags.map((tag) => ({
+			...tag,
+			id: tag.name,
+			[DRAGGABLE_KEY]: tag.name,
+		}));
+	}, [tags]);
 
 	useEffect(() => {
 		isSummaryOpened &&
@@ -98,9 +97,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 			)
 				.unwrap()
 				.then((roles) => {
-					console.log(roles);
 					roles.data.forEach((role) => {
-						console.log(role);
 						dispatch(
 							IAM_USER.asyncAction.findByUidAction({
 								userUid: role.createdTag.actorTag.userUid,
@@ -126,7 +123,6 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 													},
 												};
 										});
-										console.log(roles);
 										setRoles([
 											{
 												role: {
@@ -197,65 +193,92 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	useEffect(() => {
 		if (user && user.groups) {
 			const arr = [];
-			user.groups.forEach((v) =>
-				dispatch(
-					IAM_USER_GROUP.asyncAction.findByIdAction({
-						id: v.id,
-					}),
-				)
-					.unwrap()
-					.then((group) => {
-						console.log(group);
+			dispatch(
+				IAM_USER.asyncAction.getUserGroupsAction({
+					userUid: user.userUid,
+					range: `elements=0-50`,
+				}),
+			)
+				.unwrap()
+				.then((groups) => {
+					groups.data.forEach((group) => {
 						dispatch(
-							IAM_USER.asyncAction.findByUidAction({
-								userUid: group.createdTag.actorTag.userUid,
+							IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
+								id: group.id,
+								range: `elements=0-1`,
 							}),
 						)
 							.unwrap()
-							.then((grantUser) => {
-								arr.push({
-									...group,
-									grantUser: {
-										userUid: grantUser.userUid,
-										id: grantUser.id,
-										name: grantUser.name,
-									},
-								});
-								if (user.groups.length === arr.length) {
-									if (arr[0]) {
-										const arr2 = [];
-										arr.forEach((v) => {
-											dispatch(
-												IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
-													{
-														id: v.id,
-														range: initialPage,
-													},
-												),
-											)
-												.unwrap()
-												.then((role) => {
-													arr2.push({
-														...v,
-														numberOfRoles: !role.data
-															? 0
-															: role.data.length,
-													});
-													if (
-														arr.length ===
-														arr2.length
-													) {
-														setGroups(arr2);
-													}
-												});
-										});
-									}
+							.then((roles) => {
+								arr.push({...group, roles: roles.data});
+								if (arr.length === groups.data.length) {
+									setGroups(arr);
 								}
 							});
-					}),
-			);
+					});
+				});
+			// dispatch(
+			// 	IAM_USER.asyncAction.findByUidAction({
+			// 		userUid: group.createdTag.actorTag.userUid,
+			// 	}),
+			// )
+			// 	.unwrap()
+			// 	.then((grantUser) => {
+			// 		arr.push({
+			// 			...group,
+			// 			grantUser: {
+			// 				userUid: grantUser.userUid,
+			// 				id: grantUser.id,
+			// 				name: grantUser.name,
+			// 			},
+			// 		});
+			// 		if (user.groups.length === arr.length) {
+			// 			if (arr[0]) {
+			// 				const arr2 = [];
+			// 				arr.forEach((v) => {
+			// 					dispatch(
+			// 						IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
+			// 							{
+			// 								id: v.id,
+			// 								range: initialPage,
+			// 							},
+			// 						),
+			// 					)
+			// 						.unwrap()
+			// 						.then((role) => {
+			// 							arr2.push({
+			// 								...v,
+			// 								numberOfRoles: !role.data
+			// 									? 0
+			// 									: role.data.length,
+			// 							});
+			// 							if (
+			// 								arr.length === arr2.length
+			// 							) {
+			// 								setGroups(arr2);
+			// 							}
+			// 						});
+			// 				});
+			// 			}
+			// 		}
+			// 	});
 		}
 	}, [dispatch, initialPage, user]);
+
+	useEffect(() => {
+		if (user && user.tags) {
+			dispatch(
+				IAM_USER_TAG.asyncAction.getsAction({
+					userUid: user.userUid,
+					range: `elements=0-10`,
+				}),
+			)
+				.unwrap()
+				.then((tag) => {
+					setTags(tag.data);
+				});
+		}
+	}, [dispatch, user]);
 
 	return (
 		<SummaryTablesContainer>
