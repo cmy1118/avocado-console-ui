@@ -150,6 +150,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 				</div>
 				<CoveredByTabContent isOpened={isSummaryOpened}>
 					<RoleSummary
+						isSummaryOpened={isSummaryOpened}
 						Id={roleId}
 						param={'roles'}
 						setIsOpened={setIsSummaryOpened}
