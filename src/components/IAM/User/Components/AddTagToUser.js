@@ -20,8 +20,7 @@ import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const AddTagToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
-	const {user} = useSelector(CURRENT_TARGET.selector);
-	const [data, setData] = useState(user.tags);
+	const [data, setData] = useState([]);
 	const [select, setSelect] = useState({});
 
 	const tagData = useMemo(() => {
@@ -30,7 +29,9 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 				...v,
 				id: v.name,
 				numberOfPermissions: v.permissions.length,
-				[DRAGGABLE_KEY]: v.name,
+				[DRAGGABLE_KEY]: v.name
+					? v.name
+					: `${tableKeys.users.add.tag} ${data.length}`,
 			};
 		});
 	}, [data]);
@@ -38,9 +39,11 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 	const onClickAddRow = useCallback(() => {
 		console.log(data);
 		const lastValues = data.slice().pop();
-		if (lastValues.name === '' || lastValues.value === '') {
-			alert('입력하지 않은 값이 있습니다.');
-			return;
+		if (lastValues) {
+			if (lastValues.name === '' || lastValues.value === '') {
+				alert('입력하지 않은 값이 있습니다.');
+				return;
+			}
 		}
 		setData([
 			...data,
@@ -54,11 +57,18 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 
 	const onClickDeleteRow = useCallback(() => {
 		if (select[tableKeys.users.add.tag][0]) {
-			console.log('api 처리', select[tableKeys.users.add.tag]);
+			setData(
+				data.filter(
+					(v) =>
+						!select[tableKeys.users.add.tag]
+							.map((x) => x.name)
+							.includes(v.name),
+				),
+			);
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
-	}, [select]);
+	}, [data, select]);
 
 	useEffect(() => {
 		dispatch(

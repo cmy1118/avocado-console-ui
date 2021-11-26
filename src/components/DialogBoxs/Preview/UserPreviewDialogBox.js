@@ -18,6 +18,7 @@ import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_MEMBER from '../../../reducers/api/IAM/User/Group/groupMember';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../reducers/api/IAM/User/Role/GrantRole/user';
 import {useHistory} from 'react-router-dom';
+import IAM_USER_TAG from '../../../reducers/api/IAM/User/Tag/tags';
 
 const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
@@ -62,7 +63,15 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 							userUid,
 						}),
 					);
-					console.log(readOnlyData[tableKeys.users.add.tag]);
+					readOnlyData[tableKeys.users.add.tag].forEach((tag) => {
+						dispatch(
+							IAM_USER_TAG.asyncAction.createAction({
+								userUid: userUid,
+								name: tag.name,
+								value: tag.value,
+							}),
+						);
+					});
 				}
 			})
 			.then(() => {

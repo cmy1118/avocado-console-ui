@@ -6,6 +6,7 @@ import {
 	expiredConverter,
 	groupsConverter,
 	statusConverter,
+	tagsConverter,
 	totalNumberConverter,
 } from '../../../../utils/tableDataConverter';
 import Table from '../../../Table/Table';
@@ -29,17 +30,19 @@ import {
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
+import IAM_USER_TAG from '../../../../reducers/api/IAM/User/Tag/tags';
 
 const UserSpace = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
-	const {users} = useSelector(IAM_USER.selector);
+	const [users, setUsers] = useState([]);
 	const [total, setTotal] = useState(0);
 	const {page} = useSelector(PAGINATION.selector);
 	const [select, setSelect] = useState({});
 
 	const userData = useMemo(() => {
+		console.log(users);
 		return (
 			users?.map((v) => ({
 				...v,
@@ -47,6 +50,7 @@ const UserSpace = () => {
 				status: v.status.code,
 				createdTime: v.createdTag.createdTime,
 				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
+				tags: tagsConverter(v.tags),
 				[DRAGGABLE_KEY]: v.userUid,
 			})) || []
 		);
@@ -77,9 +81,11 @@ const UserSpace = () => {
 			)
 				.unwrap()
 				.then((users) => {
+					console.log(users);
 					setTotal(
 						totalNumberConverter(users.headers['content-range']),
 					);
+					setUsers(users.data);
 				});
 		}
 	}, [dispatch, page]);
