@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
-import {dummyPolicyOnUser} from '../../../../utils/dummyData';
 
 import TableContainer from '../../../Table/TableContainer';
 import Table from '../../../Table/Table';
@@ -17,7 +16,6 @@ import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
-import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 
 const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {

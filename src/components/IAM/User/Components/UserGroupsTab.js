@@ -78,7 +78,7 @@ const UserGroupsTab = ({
 		);
 	}, [excluedeGroups, includedDataIds]);
 	//삭제
-	const onClickDeleteRolesFromUser = useCallback(
+	const onClickDeleteGroupFromUser = useCallback(
 		(data) => {
 			data.forEach((v) => {
 				dispatch(
@@ -88,8 +88,11 @@ const UserGroupsTab = ({
 					}),
 				);
 			});
+			setIncludedDataIds(
+				includedDataIds.filter((v) => !data.includes(v)),
+			);
 		},
-		[dispatch, userUid],
+		[dispatch, includedDataIds, userUid],
 	);
 
 	const onClickAddGroupToUser = useCallback(
@@ -102,8 +105,9 @@ const UserGroupsTab = ({
 					}),
 				);
 			});
+			setIncludedDataIds(includedDataIds.concat(data));
 		},
-		[dispatch, userUid],
+		[dispatch, includedDataIds, userUid],
 	);
 
 	const getExcludedGroupData = useCallback(
@@ -237,6 +241,7 @@ const UserGroupsTab = ({
 				});
 		}
 	}, [user, dispatch, userUid, getIncludedGroupsData, page, isSummaryOpened]);
+
 	useEffect(() => {
 		if (!isSummaryOpened && groups[0]) {
 			getExcludedGroupData(groups);
@@ -253,14 +258,14 @@ const UserGroupsTab = ({
 				excludedData={excludedData}
 				includedData={includedData}
 				joinFunction={onClickAddGroupToUser}
-				disjointFunction={onClickDeleteRolesFromUser}
+				disjointFunction={onClickDeleteGroupFromUser}
 			>
 				<TableTitle>
 					이 사용자의 그룹: {includedData.length}{' '}
 					<TransparentButton
 						margin='0px 0px 0px 5px'
 						onClick={() =>
-							onClickDeleteRolesFromUser(
+							onClickDeleteGroupFromUser(
 								select[
 									tableKeys.users.summary.tabs.groups.include
 								].map((v) => v.id),

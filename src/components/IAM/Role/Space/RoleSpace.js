@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {tableKeys, DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
@@ -22,7 +22,6 @@ import {
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const RoleSpace = () => {
 	const dispatch = useDispatch();
@@ -35,10 +34,12 @@ const RoleSpace = () => {
 				...v,
 				roleType: v.type,
 				numberOfPermissions: v.policies?.length,
-				[DRAGGABLE_KEY]: v.roleId,
+				[DRAGGABLE_KEY]: v.id,
 			})) || []
 		);
 	}, [roles]);
+
+	console.log(roles);
 
 	useEffect(() => {
 		if (page[tableKeys.roles.basic]) {

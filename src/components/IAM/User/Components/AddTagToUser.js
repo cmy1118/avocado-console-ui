@@ -30,7 +30,7 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 				...v,
 				id: v.name,
 				numberOfPermissions: v.permissions.length,
-				[DRAGGABLE_KEY]: v.id,
+				[DRAGGABLE_KEY]: v.name,
 			};
 		});
 	}, [data]);

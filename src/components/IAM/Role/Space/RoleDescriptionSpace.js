@@ -13,12 +13,8 @@ import RolePolicyTab from '../Components/Tabs/RolePolicyTab';
 import RoleUserTab from '../Components/Tabs/RoleUserTab';
 import RoleGroupTab from '../Components/Tabs/RoleGroupTab';
 import {useDispatch, useSelector} from 'react-redux';
-// import RolePolicyTab from '../Components/Tabs/RolePolicyTab';
-// import RoleUserTab from '../Components/Tabs/RoleUserTab';
-// import RoleGroupTab from '../Components/Tabs/RoleGroupTab';
-// import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
-import {HoverIconButton, IconButton} from '../../../../styles/components/icons';
+import {HoverIconButton} from '../../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
 import {
 	NormalButton,

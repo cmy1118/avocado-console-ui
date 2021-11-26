@@ -238,16 +238,8 @@ const Table = ({
 								prepareRow(row);
 								return (
 									<Draggable
-										key={
-											// row.original.userUid
-											// 	? row.original.userUid
-											// 	: row.original.id
-											row.original[DRAGGABLE_KEY]
-										}
+										key={row.original[DRAGGABLE_KEY]}
 										draggableId={
-											// row.original.userUid
-											// 	? row.original.userUid
-											// 	: row.original.id
 											row.original[DRAGGABLE_KEY]
 										}
 										isDragDisabled={!isDraggable}
@@ -273,11 +265,6 @@ const Table = ({
 															Object.keys(
 																selectedRowIds,
 															).includes(
-																// row.original.userUid
-																// 	? row.original
-																// 			.userUid
-																// 	: row.original
-																// 			.id,
 																row.original[
 																	DRAGGABLE_KEY
 																],
@@ -286,21 +273,14 @@ const Table = ({
 													 ${index % 2 === 0 ? 'even' : 'odd'}
 													`}
 														id={
-															// row.original.userUid
-															// 	? row.original
-															// 			.userUid
-															// 	: row.original.id
 															row.original[
 																DRAGGABLE_KEY
 															]
 														}
 														key={
-															row.original.userUid
-																? row.original
-																		.userUid
-																: row.original
-																		.id
-															// row.original.keyId
+															row.original[
+																DRAGGABLE_KEY
+															]
 														}
 													>
 														{row.cells.map(

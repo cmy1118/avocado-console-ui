@@ -24,8 +24,8 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold}) => {
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
-	const excludedData = useMemo(() => dummyPermission.slice(0, 2), []);
-	const includedData = useMemo(() => dummyPermission.slice(2), []);
+	const excludedData = useMemo(() => [], []);
+	const includedData = useMemo(() => [], []);
 
 	return (
 		<TabContentContainer>
