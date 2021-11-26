@@ -41,40 +41,39 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 	]);
 
 	const includedData = useMemo(() => {
-		return groups
-			.filter((v) => role.groups.includes(v.id))
-			.map((v, i) => ({
-				...v,
-				type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
-					.name,
-				numberOfPermissions: v.roles.length,
-				parentGroup: parentGroupConverter(
-					groups.find((val) => val.id === v.parentId)?.name,
-				),
-				grantDate: dummyDates[i],
-				grantUser: dummyUsers[i],
-				[DRAGGABLE_KEY]: v.id,
-			}));
-	}, [groupTypes, groups, role]);
+		return [];
+		// return groups
+		// 	.filter((v) => role.groups.includes(v.id))
+		// 	.map((v, i) => ({
+		// 		...v,
+		// 		type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
+		// 			.name,
+		// 		numberOfPermissions: v.roles.length,
+		// 		parentGroup: parentGroupConverter(
+		// 			groups.find((val) => val.id === v.parentId)?.name,
+		// 		),
+		// 		grantDate: dummyDates[i],
+		// 		grantUser: dummyUsers[i],
+		// 		[DRAGGABLE_KEY]: v.id,
+		// 	}));
+	}, []);
 
-	const excludedData = useMemo(
-		() =>
-			groups
-				.filter((v) => !role.groups.includes(v.id))
-				.map((v, i) => ({
-					...v,
-					type: groupTypes.find(
-						(val) => val.id === v.clientGroupTypeId,
-					).name,
-					numberOfPermissions: v.roles.length,
-					parentGroup: parentGroupConverter(
-						groups.find((val) => val.id === v.parentId)?.name,
-					),
-					grantDate: dummyDates[dummyDates.length - i - 1],
-					[DRAGGABLE_KEY]: v.id,
-				})),
-		[groupTypes, groups, role],
-	);
+	const excludedData = useMemo(() => {
+		return [];
+		// groups
+		// 	.filter((v) => !role.groups.includes(v.id))
+		// 	.map((v, i) => ({
+		// 		...v,
+		// 		type: groupTypes.find((val) => val.id === v.clientGroupTypeId)
+		// 			.name,
+		// 		numberOfPermissions: v.roles.length,
+		// 		parentGroup: parentGroupConverter(
+		// 			groups.find((val) => val.id === v.parentId)?.name,
+		// 		),
+		// 		grantDate: dummyDates[dummyDates.length - i - 1],
+		// 		[DRAGGABLE_KEY]: v.id,
+		// 	}));
+	}, []);
 
 	return (
 		<TabContentContainer>

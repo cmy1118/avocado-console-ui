@@ -25,14 +25,19 @@ import {
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
+import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 
 const GroupSpace = () => {
 	const [select, setSelect] = useState({});
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const [groups, setGroups] = useState([]);
 	const {page} = useSelector(PAGINATION.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
+
+	console.log(groups);
 
 	const data = useMemo(() => {
 		// groups ?
@@ -41,6 +46,8 @@ const GroupSpace = () => {
 			name: v.name,
 			userGroupType: v.userGroupType.name,
 			parentGroup: v.parentGroup.name ? v.parentGroup.name : '없음',
+			createdTime: v.createdTag.createdTime,
+			roles: v.numberOfRoles === 0 ? '없음' : '정의됨',
 			[DRAGGABLE_KEY]: v.id,
 		}));
 	}, [groups]);
@@ -62,12 +69,50 @@ const GroupSpace = () => {
 	}, [dispatch, select]);
 
 	useEffect(() => {
+		const arr = [];
 		page[tableKeys.groups.basic] &&
 			dispatch(
 				IAM_USER_GROUP.asyncAction.findAllAction({
 					range: page[tableKeys.groups.basic],
 				}),
-			);
+			)
+				.unwrap()
+				.then((groups) => {
+					console.log(groups);
+					groups.data.forEach((group) => {
+						dispatch(
+							IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
+								groupId: group.id,
+								range: 'elements=0-1',
+							}),
+						)
+							.unwrap()
+							.then((member) => {
+								console.log(member);
+								dispatch(
+									IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
+										{id: group.id, range: 'elements=0-1'},
+									),
+								)
+									.unwrap()
+									.then((roles) => {
+										console.log(roles);
+										arr.push({
+											...group,
+											numberOfRoles: totalNumberConverter(
+												roles.headers['content-range'],
+											),
+											numberOfUsers: totalNumberConverter(
+												member.headers['content-range'],
+											),
+										});
+										if (groups.data.length === arr.length) {
+											setGroups(arr);
+										}
+									});
+							});
+					});
+				});
 	}, [dispatch, page]);
 
 	return (

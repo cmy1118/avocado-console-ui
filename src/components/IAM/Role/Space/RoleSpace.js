@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {tableKeys, DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
@@ -22,31 +22,48 @@ import {
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const RoleSpace = () => {
 	const dispatch = useDispatch();
-	const {roles} = useSelector(IAM_ROLES.selector);
+	// const {roles} = useSelector(IAM_ROLES.selector);
 	const {page} = useSelector(PAGINATION.selector);
 	const [select, setSelect] = useState({});
+	const [roles, setRoles] = useState([]);
 	const data = useMemo(() => {
 		return (
 			roles?.map((v) => ({
 				...v,
 				roleType: v.type,
 				numberOfPermissions: v.policies?.length,
-				[DRAGGABLE_KEY]: v.roleId,
+				[DRAGGABLE_KEY]: v.id,
 			})) || []
 		);
 	}, [roles]);
 
+	console.log(roles);
+
 	useEffect(() => {
+		const arr = [];
 		if (page[tableKeys.roles.basic]) {
 			dispatch(
 				IAM_ROLES.asyncAction.getsAction({
 					range: page[tableKeys.roles.basic],
 				}),
-			);
+			)
+				.unwrap()
+				.then((res) => {
+					res.data.map((v) => {
+						arr.push({
+							id: v.id,
+							name: v.name,
+							description: v.description,
+							createdTime: v.createdTag.createdTime,
+							type: v.maxGrants === '1' ? 'Private' : 'Public',
+						});
+					});
+
+					setRoles(arr);
+				});
 		}
 	}, [dispatch, page]);
 

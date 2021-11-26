@@ -8,16 +8,15 @@ const grantAction = createAsyncThunk(
 	`${NAME}/GRANT`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
+		console.log(user);
 		// eslint-disable-next-line no-console
 		const response = await Axios.post(
 			`/open-api/v1/iam/users/${payload.userUid}/roles`,
+			[...payload.roleIds],
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
-				},
-				params: {
-					roleld: payload.roleld,
 				},
 				baseURL: baseUrl.openApi,
 			},
@@ -32,7 +31,7 @@ const revokeAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
-		const response = await Axios.put(
+		const response = await Axios.delete(
 			`/open-api/v1/iam/users/${payload.userUid}/roles`,
 			{
 				headers: {
@@ -40,7 +39,7 @@ const revokeAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 				},
 				params: {
-					roleld: payload.roleld,
+					roleId: [...payload.roleId],
 				},
 				baseURL: baseUrl.openApi,
 			},
@@ -53,8 +52,6 @@ const revokeAction = createAsyncThunk(
 const getsAction = createAsyncThunk(
 	`${NAME}/GETS`,
 	async (payload, {getState}) => {
-		console.log('payload.userUid:', payload.userUid);
-		console.log('payload.range:', payload.range);
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
 		const response = await Axios.get(
@@ -69,7 +66,7 @@ const getsAction = createAsyncThunk(
 			},
 		);
 		console.log('IAM_ROLES_GRANT_ROLE_USER_getsAction', response.data);
-		return response.data || [];
+		return {data: response.data || [], headers: response.headers};
 	},
 );
 
@@ -95,7 +92,7 @@ const getEventsAction = createAsyncThunk(
 				baseURL: baseUrl.openApi,
 			},
 		);
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 
@@ -132,7 +129,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[getsAction.fulfilled]: (state, action) => {
-			state.userRoles = action.payload;
+			state.userRoles = action.payload.data;
 			state.loading = false;
 		},
 		[getsAction.rejected]: (state, action) => {

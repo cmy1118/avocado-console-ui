@@ -29,7 +29,7 @@ export const USER_COLUMN = [
 		disableChangeVisible: true,
 	},
 	{
-		accessor: 'groupIds',
+		accessor: 'groups',
 		Header: '그룹',
 		disableFilters: true,
 	},
@@ -316,29 +316,29 @@ export const USER_SUMMARY_AUTH_COLUMN = [
 export const USER_SUMMARY_PERMISSION_COLUMNS = [
 	{
 		Header: '권한',
-		accessor: 'name',
+		accessor: 'permission',
 	},
 	{
 		Header: '권한 상세',
 		accessor: 'description',
 		width: 200,
-		Cell: function Component(v) {
-			return (
-				<div>
-					{v.value.split('\n').map((v, i) => {
-						return (
-							<RowDiv
-								alignItems={'center'}
-								height={'30px'}
-								key={i}
-							>
-								{v}
-							</RowDiv>
-						);
-					})}
-				</div>
-			);
-		},
+		// Cell: function Component(v) {
+		// 	return (
+		// 		<div>
+		// 			{v.value.split('\n').map((v, i) => {
+		// 				return (
+		// 					<RowDiv
+		// 						alignItems={'center'}
+		// 						height={'30px'}
+		// 						key={i}
+		// 					>
+		// 						{v}
+		// 					</RowDiv>
+		// 				);
+		// 			})}
+		// 		</div>
+		// 	);
+		// },
 	},
 	{
 		Header: '정책 명',
@@ -398,16 +398,10 @@ export const USER_SUMMARY_TAG_COLUMN = [
 	{
 		Header: 'key(태그명)',
 		accessor: 'name',
-		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} isFocus />;
-		},
 	},
 	{
 		Header: '값(태그)',
 		accessor: 'value',
-		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} />;
-		},
 	},
 	{
 		Header: '권한 수',
@@ -428,7 +422,6 @@ export const USER_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 		},
 	},
 	{Header: '역할 유형', accessor: 'type'},
-	{Header: '역할 아이디', accessor: 'id'},
 	{Header: '설명', accessor: 'description', width: 400},
 	{
 		Header: '사용자 수',
@@ -441,9 +434,6 @@ export const USER_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 ];
 
 export const USER_SUMMARY_TABS_ROLES_INCLUDE_COLUMN = [
-	//임시추가
-	// {Header: '역할 아이디', accessor: 'rold_info'},
-
 	{
 		Header: '역할 이름',
 		accessor: 'name',

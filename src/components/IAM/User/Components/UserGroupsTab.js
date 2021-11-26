@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import Table from '../../../Table/Table';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import {TableTitle} from '../../../../styles/components/table';
 import {
@@ -20,9 +20,9 @@ import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {parentGroupConverter} from '../../../../utils/tableDataConverter';
+import * as _ from 'lodash';
 
 const UserGroupsTab = ({
 	userUid,
@@ -40,13 +40,13 @@ const UserGroupsTab = ({
 	const [select, setSelect] = useState({});
 
 	const [includedDataIds, setIncludedDataIds] = useState(
-		user?.groupIds || [],
+		user?.groups?.map((v) => v.id) || [],
 	);
 
 	const includedData = useMemo(() => {
 		return (
-			includedGroups
-				.filter((v) => includedDataIds.includes(v.id))
+			_.uniqBy(includedGroups.concat(excluedeGroups), 'id')
+				.filter((v) => includedDataIds?.includes(v.id))
 				.map((v) => ({
 					...v,
 					name: v.name,
@@ -56,16 +56,16 @@ const UserGroupsTab = ({
 					[DRAGGABLE_KEY]: v.id,
 				})) || []
 		);
-	}, [includedGroups, includedDataIds]);
+	}, [includedGroups, excluedeGroups, includedDataIds]);
 
 	const excludedData = useMemo(() => {
 		const types = excluedeGroups
-			.filter((v) => includedDataIds.includes(v.id))
+			.filter((v) => includedDataIds?.includes(v.id))
 			.map((v) => v.userGroupType.name);
 
 		return (
 			excluedeGroups
-				.filter((v) => !includedDataIds.includes(v.id))
+				.filter((v) => !includedDataIds?.includes(v.id))
 				.filter((v) => !types.includes(v.userGroupType.name))
 				.map((v) => ({
 					...v,
@@ -78,7 +78,7 @@ const UserGroupsTab = ({
 		);
 	}, [excluedeGroups, includedDataIds]);
 	//삭제
-	const onClickDeleteRolesFromUser = useCallback(
+	const onClickDeleteGroupFromUser = useCallback(
 		(data) => {
 			data.forEach((v) => {
 				dispatch(
@@ -88,8 +88,11 @@ const UserGroupsTab = ({
 					}),
 				);
 			});
+			setIncludedDataIds(
+				includedDataIds.filter((v) => !data.includes(v)),
+			);
 		},
-		[dispatch, userUid],
+		[dispatch, includedDataIds, userUid],
 	);
 
 	const onClickAddGroupToUser = useCallback(
@@ -102,8 +105,9 @@ const UserGroupsTab = ({
 					}),
 				);
 			});
+			setIncludedDataIds(includedDataIds.concat(data));
 		},
-		[dispatch, userUid],
+		[dispatch, includedDataIds, userUid],
 	);
 
 	const getExcludedGroupData = useCallback(
@@ -122,7 +126,7 @@ const UserGroupsTab = ({
 					.then((roles) => {
 						arr.push({
 							...group,
-							numberOfRoles: !roles ? 0 : roles.length,
+							numberOfRoles: !roles.data ? 0 : roles.data.length,
 						});
 						if (arr.length === groups.length) {
 							setExcluedeGroups(arr);
@@ -135,17 +139,15 @@ const UserGroupsTab = ({
 
 	const getIncludedGroupsData = useCallback(
 		(user) => {
-			console.log(user.groupIds);
 			const arr = [];
-			user.groupIds.forEach((v) =>
+			user.groups?.forEach((v) =>
 				dispatch(
 					IAM_USER_GROUP.asyncAction.findByIdAction({
-						id: v,
+						id: v.id,
 					}),
 				)
 					.unwrap()
 					.then((group) => {
-						console.log(group);
 						dispatch(
 							IAM_USER.asyncAction.findByUidAction({
 								userUid: group.createdTag.actorTag.userUid,
@@ -161,7 +163,7 @@ const UserGroupsTab = ({
 										name: grantUser.name,
 									},
 								});
-								if (user.groupIds.length === arr.length) {
+								if (user.groups.length === arr.length) {
 									if (arr[0]) {
 										const arr2 = [];
 										arr.forEach((v) => {
@@ -183,9 +185,9 @@ const UserGroupsTab = ({
 												.then((role) => {
 													arr2.push({
 														...v,
-														numberOfRoles: !role
+														numberOfRoles: !role.data
 															? 0
-															: role.length,
+															: role.data.length,
 													});
 													if (
 														arr.length ===
@@ -219,7 +221,11 @@ const UserGroupsTab = ({
 	}, [dispatch, isSummaryOpened, page, user]);
 
 	useEffect(() => {
-		if (!user && page[tableKeys.users.summary.tabs.groups.include]) {
+		if (
+			!user &&
+			page[tableKeys.users.summary.tabs.groups.include] &&
+			!isSummaryOpened
+		) {
 			dispatch(
 				IAM_USER.asyncAction.findByUidAction({
 					userUid: userUid,
@@ -228,17 +234,19 @@ const UserGroupsTab = ({
 				.unwrap()
 				.then((res) => {
 					setUser(res);
-					setIncludedDataIds(res.groupIds);
+					setIncludedDataIds(
+						res.groups ? res.groups.map((v) => v.id) : [],
+					);
 					getIncludedGroupsData(res);
 				});
 		}
-	}, [user, dispatch, userUid, getIncludedGroupsData, page]);
+	}, [user, dispatch, userUid, getIncludedGroupsData, page, isSummaryOpened]);
 
 	useEffect(() => {
-		if (groups[0]) {
+		if (!isSummaryOpened && groups[0]) {
 			getExcludedGroupData(groups);
 		}
-	}, [getExcludedGroupData, groups]);
+	}, [getExcludedGroupData, groups, isSummaryOpened]);
 
 	return (
 		<TabContentContainer>
@@ -250,14 +258,14 @@ const UserGroupsTab = ({
 				excludedData={excludedData}
 				includedData={includedData}
 				joinFunction={onClickAddGroupToUser}
-				disjointFunction={onClickDeleteRolesFromUser}
+				disjointFunction={onClickDeleteGroupFromUser}
 			>
 				<TableTitle>
 					이 사용자의 그룹: {includedData.length}{' '}
 					<TransparentButton
 						margin='0px 0px 0px 5px'
 						onClick={() =>
-							onClickDeleteRolesFromUser(
+							onClickDeleteGroupFromUser(
 								select[
 									tableKeys.users.summary.tabs.groups.include
 								].map((v) => v.id),

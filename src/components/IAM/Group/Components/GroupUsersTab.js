@@ -21,13 +21,24 @@ import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import {usePrevState} from '../../../../hooks/usePrevState';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
+import PAGINATION from '../../../../reducers/pagination';
+import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 
-const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
+const GroupUsersTab = ({
+	groupId,
+	space,
+	isFold,
+	setIsFold,
+	isSummaryOpened,
+}) => {
 	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const {members} = useSelector(IAM_USER_GROUP_MEMBER.selector);
+	const {page} = useSelector(PAGINATION.selector);
 	const {users} = useSelector(IAM_USER.selector);
 	const [select, setSelect] = useState({});
+	const [otherMembers, setOtherMembers] = useState(0);
+	const [members, setMembers] = useState([]);
+
 	const group = useMemo(() => groups.find((v) => v.id === groupId), [
 		groups,
 		groupId,
@@ -37,8 +48,6 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 		members.map((v) => v.userUid) || [],
 	);
 
-	console.log(members);
-
 	const prevIncludedDataIds = usePrevState(includedDataIds);
 	const prevSelect = usePrevState(select);
 
@@ -46,22 +55,23 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 	// console.log(members);
 
 	const includedData = useMemo(() => {
-		return users
+		console.log(includedDataIds);
+		return members
 			.filter((v) => includedDataIds.includes(v.userUid))
 			.map((v) => ({
 				...v,
-				numberOfGroups: v.groupIds ? v.groupIds.length : 0,
+				numberOfGroups: v.groups ? v.groups.length : 0,
 				createdTime: v.createdTag.createdTime,
 				[DRAGGABLE_KEY]: v.userUid,
 			}));
-	}, [includedDataIds, users]);
+	}, [includedDataIds, members]);
 
 	const excludedData = useMemo(() => {
 		return users
 			.filter((v) => !includedDataIds.includes(v.userUid))
 			.map((v) => ({
 				...v,
-				numberOfGroups: v.groupIds ? v.groupIds.length : 0,
+				numberOfGroups: v.groups ? v.groups.length : 0,
 				createdTime: v.createdTag.createdTime,
 				[DRAGGABLE_KEY]: v.userUid,
 			}));
@@ -94,31 +104,56 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 	);
 
 	useEffect(() => {
-		dispatch(
-			IAM_USER.asyncAction.findAllAction({
-				range: 'elements=0-50',
-			}),
-		);
-	}, [dispatch]);
+		if (!isSummaryOpened) {
+			dispatch(
+				IAM_USER.asyncAction.findAllAction({
+					range: 'elements=0-50',
+				}),
+			)
+				.unwrap()
+				.then((groups) => {
+					setOtherMembers(
+						totalNumberConverter(groups.headers['content-range']) -
+							includedDataIds.length,
+					);
+				});
+		}
+	}, [dispatch, includedDataIds, isSummaryOpened, page]);
 
 	useEffect(() => {
-		dispatch(
-			IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
-				groupId: groupId,
-				range: 'elements=0-50',
-			}),
-		);
-	}, [dispatch, groupId]);
-
-	// useEffect(() => {
-	// 	console.log('✅ prevIncludedDataIds:', prevIncludedDataIds);
-	// 	console.log('✅ includedDataIds:', includedDataIds);
-	// }, [includedDataIds]);
-	//
-	// useEffect(() => {
-	// 	console.log('🅾️ prevSelect:', prevSelect);
-	// 	console.log('🅾️ select:', select);
-	// }, [select]);
+		if (
+			!isSummaryOpened &&
+			page[tableKeys.groups.summary.tabs.users.include]
+		) {
+			dispatch(
+				IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
+					groupId: groupId,
+					range: page[tableKeys.groups.summary.tabs.users.include],
+				}),
+			)
+				.unwrap()
+				.then((members) => {
+					const arr = [];
+					members.data.forEach((member) => {
+						dispatch(
+							IAM_USER.asyncAction.findByUidAction({
+								userUid: member.userUid,
+							}),
+						)
+							.unwrap()
+							.then((user) => {
+								arr.push(user);
+								if (arr.length === members.data.length) {
+									setMembers(arr);
+									setIncludedDataIds(
+										arr.map((v) => v.userUid),
+									);
+								}
+							});
+					});
+				});
+		}
+	}, [page, dispatch, groupId, isSummaryOpened]);
 
 	return (
 		<TabContentContainer>
@@ -161,9 +196,7 @@ const GroupUsersTab = ({groupId, space, isFold, setIsFold}) => {
 				</TableContainer>
 				<FoldableContainer>
 					<TableFold
-						title={
-							<>이 그룹의 다른 사용자 : {excludedData.length}</>
-						}
+						title={<>이 그룹의 다른 사용자 : {otherMembers}</>}
 						space={'GroupUsersTab'}
 						isFold={isFold}
 						setIsFold={setIsFold}
@@ -214,6 +247,7 @@ GroupUsersTab.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
+	isSummaryOpened: PropTypes.bool,
 };
 
 export default GroupUsersTab;

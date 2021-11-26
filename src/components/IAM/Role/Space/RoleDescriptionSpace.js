@@ -13,12 +13,8 @@ import RolePolicyTab from '../Components/Tabs/RolePolicyTab';
 import RoleUserTab from '../Components/Tabs/RoleUserTab';
 import RoleGroupTab from '../Components/Tabs/RoleGroupTab';
 import {useDispatch, useSelector} from 'react-redux';
-// import RolePolicyTab from '../Components/Tabs/RolePolicyTab';
-// import RoleUserTab from '../Components/Tabs/RoleUserTab';
-// import RoleGroupTab from '../Components/Tabs/RoleGroupTab';
-// import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
-import {HoverIconButton, IconButton} from '../../../../styles/components/icons';
+import {HoverIconButton} from '../../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
 import {
 	NormalButton,
@@ -52,18 +48,19 @@ const RoleDescriptionSpace = ({roleId}) => {
 	const {search} = useLocation();
 	const {page} = useSelector(PAGINATION.selector);
 
-	const {roles} = useSelector(IAM_ROLES.selector);
-	const role = useMemo(() => roles.find((v) => v.id === roleId), [
-		roles,
-		roleId,
-	]);
-
+	// const {roles} = useSelector(IAM_ROLES.selector);
+	// const role = useMemo(() => roles.find((v) => v.id === roleId), [
+	// 	roles,
+	// 	roleId,
+	// ]);
+	const [role, setRole] = useState(null);
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
 	// const onClickFoldSummary = useCallback(() => {
 	// 	setIsSummaryOpened(!isSummaryOpened);
 	// }, [isSummaryOpened]);
+	console.log('role:', role);
 
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
@@ -93,18 +90,32 @@ const RoleDescriptionSpace = ({roleId}) => {
 		if (roleId && !role) {
 			history.push('/404');
 		}
-		history.push(`${roleId}`);
+		history.push(`/roles/${roleId}`);
 	}, [roleId, role, history]);
 
 	useEffect(() => {
-		if (page[tableKeys.roles.basic]) {
-			dispatch(
-				IAM_ROLES.asyncAction.getsAction({
-					range: page[tableKeys.roles.basic],
-				}),
-			);
-		}
-	}, [dispatch, page]);
+		const arr = [];
+		dispatch(
+			IAM_ROLES.asyncAction.findByIdAction({
+				id: roleId,
+			}),
+		)
+			.unwrap()
+			.then((res) => {
+				setRole(res);
+			});
+	}, [dispatch, page, roleId]);
+
+	// arr.push({
+	// 	id: role.id,
+	// 	name: role.name,
+	// 	description: role.description,
+	// 	createdTime: role.createdTag.createdTime,
+	// 	type: role.maxGrants === '1' ? 'Private' : 'Public',
+	// });
+
+	// });
+
 	return (
 		<IamContainer>
 			<CurrentPathBar>
@@ -142,18 +153,22 @@ const RoleDescriptionSpace = ({roleId}) => {
 
 					<SummaryList>
 						<LiText>역할 이름 : {role?.name}</LiText>
-						<LiText>역할 유형 : {role?.type}</LiText>
-						<LiText>역할 설명 : {role?.description}</LiText>
-						<LiText>생성 일시 : {role?.createdTime}</LiText>
 						<LiText>
-							마지막 작업 일시 : 2021.09.21. 16:05:18{' '}
+							역할 유형 :{' '}
+							{role?.maxGrants === '1' ? 'Private' : 'Public'}
 						</LiText>
-						<LiText>마지막 활동 : 사용자 접근정책 변경</LiText>
-						<LiText>마지막 활동 사용자 : 김영우 (kyoung634)</LiText>
+						<LiText>역할 설명 : {role?.description}</LiText>
+						<LiText>
+							생성 일시 : {role?.createdTag.createdTime}
+						</LiText>
+						<LiText>마지막 작업 일시 : null</LiText>
+						<LiText>마지막 활동 : null</LiText>
+						<LiText>마지막 활동 사용자 : null</LiText>
 					</SummaryList>
 				</div>
 				<CoveredByTabContent isOpened={isSummaryOpened}>
 					<RoleSummary
+						isSummaryOpened={isSummaryOpened}
 						Id={roleId}
 						param={'roles'}
 						setIsOpened={setIsSummaryOpened}

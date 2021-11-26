@@ -103,6 +103,8 @@ const UserDescriptionSpace = ({userUid}) => {
 			});
 	}, [history, isSummaryOpened, userUid]);
 
+	console.log('user description');
+
 	return (
 		<IamContainer>
 			<CurrentPathBar>
@@ -169,6 +171,7 @@ const UserDescriptionSpace = ({userUid}) => {
 
 				<CoveredByTabContent isOpened={isSummaryOpened}>
 					<UserSummary
+						isSummaryOpened={isSummaryOpened}
 						userUid={userUid}
 						param={'users'}
 						setIsOpened={setIsSummaryOpened}

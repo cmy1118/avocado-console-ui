@@ -30,7 +30,7 @@ const createAction = createAsyncThunk(
 				baseURL: baseUrl.openApi,
 			},
 		);
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 //todo : this function requires uid, name and password
@@ -101,6 +101,7 @@ const findByIdAction = createAsyncThunk(
 );
 
 //todo : this function requires uid
+//사용자 등록 정보를 UID 기반으로 조회
 const findByUidAction = createAsyncThunk(
 	`${NAME}/FIND_BY_UID`,
 	async (payload, {getState}) => {
@@ -144,7 +145,34 @@ const findAllAction = createAsyncThunk(
 			baseURL: baseUrl.openApi,
 		});
 		console.log(response);
-		return response.data;
+		return {data: response.data, headers: response.headers};
+	},
+);
+
+//todo : this function requires companyId, first range and last range
+const getUserGroupsAction = createAsyncThunk(
+	`${NAME}/GET_INCLUDE_GROUPS`,
+	async (payload, {getState}) => {
+		const {user} = getState().AUTH_USER;
+
+		console.log(user);
+
+		const response = await Axios.get(
+			`/open-api/v1/iam/users/${payload.userUid}/user-groups`,
+			{
+				params: {
+					groupTypeId: payload.groupTypeId,
+					includeGroup: payload.isIncludeGroup,
+				},
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
+					Range: payload.range,
+				},
+				baseURL: baseUrl.openApi,
+			},
+		);
+		console.log(response);
+		return {data: response.data, headers: response.headers};
 	},
 );
 
@@ -218,10 +246,20 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findAllAction.fulfilled]: (state, action) => {
-			state.users = action.payload;
+			state.users = action.payload.data;
 			state.loading = false;
 		},
 		[findAllAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
+		[getUserGroupsAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[getUserGroupsAction.fulfilled]: (state) => {
+			state.loading = false;
+		},
+		[getUserGroupsAction.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
 		},
@@ -251,6 +289,7 @@ const IAM_USER = {
 		findByIdAction,
 		findByUidAction,
 		findAllAction,
+		getUserGroupsAction,
 	},
 };
 

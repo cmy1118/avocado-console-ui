@@ -24,6 +24,8 @@ import PAM_ROLES from './api/ PAM/Role/roles';
 import PAM_ROLE_SET from './api/ PAM/Role/roleSet';
 import PAM_ROLE_USER from './api/ PAM/Role/user';
 import PAM_ROLE_USER_GROUP from './api/ PAM/Role/userGroup';
+import IAM_USER_POLICY from './api/IAM/User/Policy/policy';
+import IAM_USER_TAG from './api/IAM/User/Tag/tags';
 
 const userFilter = createFilter(AUTH_USER.name, ['companyId', 'user']);
 const iamUserFilter = createFilter(IAM_USER.name, ['users']);
@@ -40,6 +42,7 @@ const iamGroupFilter = createFilter(IAM_USER_GROUP.name, ['groups']);
 const iamGroupTypeFilter = createFilter(IAM_USER_GROUP_TYPE.name, [
 	'groupTypes',
 ]);
+const iamPolicyTypeFilter = createFilter(IAM_USER_POLICY.name, ['groupTypes']);
 
 const persistConfig = {
 	key: 'root',
@@ -52,6 +55,7 @@ const persistConfig = {
 		IAM_ROLES.name,
 		IAM_ROLES_GRANT_ROLE_USER.name,
 		IAM_ROLES_GRANT_ROLE_GROUP.name,
+		IAM_USER_POLICY.name,
 	],
 	transforms: [
 		userFilter,
@@ -61,6 +65,7 @@ const persistConfig = {
 		iamRolesFilter,
 		iamRolesGrantRoleUserFilter,
 		iamRolesGrantRoleGroupFilter,
+		iamPolicyTypeFilter,
 	],
 };
 
@@ -80,6 +85,8 @@ const rootReducer = combineReducers({
 	[IAM_ROLES.name]: IAM_ROLES.reducer,
 	[IAM_ROLES_GRANT_ROLE_USER.name]: IAM_ROLES_GRANT_ROLE_USER.reducer,
 	[IAM_ROLES_GRANT_ROLE_GROUP.name]: IAM_ROLES_GRANT_ROLE_GROUP.reducer,
+	[IAM_USER_POLICY.name]: IAM_USER_POLICY.reducer,
+	[IAM_USER_TAG.name]: IAM_USER_TAG.reducer,
 	/******************************************/
 
 	/******************************************/

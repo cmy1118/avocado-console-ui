@@ -103,7 +103,7 @@ const getAllRolesAction = createAsyncThunk(
 			},
 			baseURL: baseUrl.openApi,
 		});
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 
@@ -128,7 +128,7 @@ const getEventsAction = createAsyncThunk(
 			},
 			baseURL: baseUrl.openApi,
 		});
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 

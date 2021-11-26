@@ -6,6 +6,8 @@ import {
 	expiredConverter,
 	groupsConverter,
 	statusConverter,
+	tagsConverter,
+	totalNumberConverter,
 } from '../../../../utils/tableDataConverter';
 import Table from '../../../Table/Table';
 import {tableColumns} from '../../../../Constants/Table/columns';
@@ -33,18 +35,21 @@ const UserSpace = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
-	const {users} = useSelector(IAM_USER.selector);
+	const [users, setUsers] = useState([]);
+	const [total, setTotal] = useState(0);
 	const {page} = useSelector(PAGINATION.selector);
 	const [select, setSelect] = useState({});
 
 	const userData = useMemo(() => {
+		console.log(users);
 		return (
 			users?.map((v) => ({
 				...v,
-				groupIds: groupsConverter(v.groupIds || []),
+				groups: groupsConverter(v.groups || []),
 				status: v.status.code,
 				createdTime: v.createdTag.createdTime,
 				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
+				tags: tagsConverter(v.tags),
 				[DRAGGABLE_KEY]: v.userUid,
 			})) || []
 		);
@@ -72,7 +77,15 @@ const UserSpace = () => {
 				IAM_USER.asyncAction.findAllAction({
 					range: page[tableKeys.users.basic],
 				}),
-			);
+			)
+				.unwrap()
+				.then((users) => {
+					console.log(users);
+					setTotal(
+						totalNumberConverter(users.headers['content-range']),
+					);
+					setUsers(users.data);
+				});
 		}
 	}, [dispatch, page]);
 
@@ -85,7 +98,7 @@ const UserSpace = () => {
 			</CurrentPathBar>
 
 			<TitleBar>
-				<div>사용자 : {users.length}</div>
+				<div>사용자 : {total}</div>
 				<TitleBarButtons>
 					<NormalButton onClick={onClickLinkToAddUserPage}>
 						사용자 생성

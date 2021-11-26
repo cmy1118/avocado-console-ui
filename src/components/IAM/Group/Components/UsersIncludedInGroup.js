@@ -37,8 +37,8 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 				.filter((x) => !includedDataIds.includes(x.userUid))
 				.map((v) => ({
 					...v,
-					groupIds: groupsConverter(v.groupIds || []),
-					numberOfGroups: v.groupIds ? v.groupIds.length : 0,
+					groupIds: groupsConverter(v.groups || []),
+					numberOfGroups: v.groups ? v.groups.length : 0,
 					status: v.status.code,
 					createdTime: v.createdTag.createdTime,
 					passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
@@ -54,7 +54,7 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 				.map((v) => ({
 					...v,
 					id: v.id,
-					groupIds: groupsConverter(v.groupIds || []),
+					groupIds: groupsConverter(v.groups || []),
 					status: v.status.code,
 					createdTime: v.createdTag.createdTime,
 					passwordExpiryTime: expiredConverter(v.passwordExpiryTime),

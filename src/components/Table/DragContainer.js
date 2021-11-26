@@ -39,7 +39,7 @@ const DragContainer = ({
 	const onDropCheckMaxNumber = useCallback(
 		(selected, current, tableKey) => {
 			const max = 10;
-			if (selected.length + current.length > max) {
+			if (selected?.length + current?.length > max) {
 				dispatch(
 					DIALOG_BOX.action.openAlert({
 						key: checkDropTypeAlertMessage(tableKey),
@@ -162,7 +162,9 @@ const DragContainer = ({
 				console.log('data:', data);
 				if (destination.droppableId === includedKey) {
 					joinFunction && joinFunction(selectedItems);
-					setData([...data, ...selectedItems]);
+					data
+						? setData([...data, ...selectedItems])
+						: setData([...selectedItems]);
 				} else {
 					disjointFunction && disjointFunction(selectedItems);
 					setData(data.filter((v) => !selectedItems.includes(v)));

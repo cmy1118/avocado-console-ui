@@ -20,11 +20,21 @@ import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
-	const {roles} = useSelector(IAM_ROLES.selector);
 	const {page} = useSelector(PAGINATION.selector);
 
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [select, setSelect] = useState({});
+	const [roles, setRoles] = useState([]);
+	console.log('roles', roles);
+	const includedData = useMemo(() => {
+		return roles
+			?.filter((v) => includedDataIds.includes(v.id))
+			.map((v) => ({
+				...v,
+				type: roleTypeConverter(v.companyId),
+				[DRAGGABLE_KEY]: v.id,
+			}));
+	}, [includedDataIds, roles]);
 
 	const excludedData = useMemo(() => {
 		// return [];
@@ -33,19 +43,9 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
-				[DRAGGABLE_KEY]: v.roleId,
+				createdTime: v.createdTag.createdTime,
+				[DRAGGABLE_KEY]: v.id,
 				// numberOfUsers: v.users.length,
-			}));
-	}, [includedDataIds, roles]);
-
-	const includedData = useMemo(() => {
-		// return [];
-		return roles
-			?.filter((v) => includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-				[DRAGGABLE_KEY]: v.roleId,
 			}));
 	}, [includedDataIds, roles]);
 
@@ -61,12 +61,20 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 
 	//Role 정보 조회
 	useEffect(() => {
-		if (page[tableKeys.roles.basic]) {
+		const arr = [];
+		if (page[tableKeys.users.add.roles.exclude]) {
 			dispatch(
 				IAM_ROLES.asyncAction.getsAction({
-					range: page[tableKeys.roles.basic],
+					range: page[tableKeys.users.add.roles.exclude],
 				}),
-			);
+			)
+				.unwrap()
+				.then((res) => {
+					// res : 사용자에게 부여된 role 정보
+					res.data.map((v) => arr.push(v.id));
+					console.log('res', res);
+					setRoles(res.data);
+				});
 		}
 	}, [dispatch, page]);
 

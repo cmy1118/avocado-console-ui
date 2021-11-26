@@ -18,7 +18,7 @@ import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
-const GroupSummary = ({groupId, param, setIsOpened}) => {
+const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
@@ -31,17 +31,16 @@ const GroupSummary = ({groupId, param, setIsOpened}) => {
 			...v,
 			id: v.id,
 			name: v.name,
-			groupsLength: v.groupIds ? v.groupIds.length : 0,
+			groupsLength: v.groups ? v.groups.length : 0,
 			status: v.status.code,
 			createdTime: v.createdTag.createdTime,
 			// grantUser: groupUserMembers.find((x) => x.userUid === v.userUid)
 			// 	?.grantedTag.userUid,
 			[DRAGGABLE_KEY]: v.userUid,
-
 		}));
 	}, [groupUserMembers]);
 
-	const roleData = useMemo(() => dummyPolicyOnGroup, []);
+	const roleData = useMemo(() => [], []);
 
 	const tagData = useMemo(() => {
 		return [];
@@ -66,32 +65,38 @@ const GroupSummary = ({groupId, param, setIsOpened}) => {
 	);
 
 	useEffect(() => {
-		dispatch(
-			IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
-				groupId: groupId,
-				range: 'elements=0-50', // todo : 상세 페이지는 페이지네이션이 없음 => how?
-			}),
-		)
-			.unwrap()
-			.then((v) => v.map((x) => x.userUid))
-			.then(async (uids) => {
-				const arr = [];
-				for await (let value of uids) {
-					dispatch(
-						IAM_USER.asyncAction.findByUidAction({
-							userUid: value,
-						}),
-					)
-						.unwrap()
-						.then((data) => {
-							console.log(data);
-							arr.push(data);
-							if (arr.length === uids.length)
-								setGroupUserMembers(arr);
-						});
-				}
-			});
-	}, [dispatch, groupId]);
+		isSummaryOpened &&
+			dispatch(
+				IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
+					groupId: groupId,
+					range: 'elements=0-50', // todo : 상세 페이지는 페이지네이션이 없음 => how?
+				}),
+			)
+				.unwrap()
+				.then((member) => {
+					console.log(member.data);
+					return member.data.map((x) => x.userUid);
+				})
+				.then((uids) => {
+					const arr = [];
+					console.log(uids);
+					if (!uids) return;
+					uids.forEach((uid) => {
+						dispatch(
+							IAM_USER.asyncAction.findByUidAction({
+								userUid: uid,
+							}),
+						)
+							.unwrap()
+							.then((data) => {
+								console.log(data);
+								arr.push(data);
+								if (arr.length === uids.length)
+									setGroupUserMembers(arr);
+							});
+					});
+				});
+	}, [dispatch, groupId, isSummaryOpened]);
 
 	return (
 		<SummaryTablesContainer>
@@ -139,5 +144,6 @@ GroupSummary.propTypes = {
 	groupId: PropTypes.string.isRequired,
 	param: PropTypes.string.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
+	isSummaryOpened: PropTypes.bool.isRequired,
 };
 export default GroupSummary;

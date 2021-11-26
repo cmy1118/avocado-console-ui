@@ -61,8 +61,8 @@ export const expiredConverter = (date) => {
 
 export const groupsConverter = (data) => {
 	if (data.length === 0) return '없음';
-	if (data.length === 1) return data[0];
-	return `${data[0]} 외 ${data.length - 1}`;
+	if (data.length === 1) return data[0].name;
+	return `${data[0].name} 외 ${data.length - 1}`;
 };
 
 export const rolesConverter = (data) => {
@@ -71,9 +71,9 @@ export const rolesConverter = (data) => {
 };
 
 export const tagsConverter = (data) => {
-	if (data.length === 0) return '없음';
-	if (data.length === 1) return data[0].value;
-	return `${data[0].value} 외 ${data.length - 1}`;
+	if (!data) return '없음';
+	if (data.length === 1) return data[0].name;
+	return `${data[0].name} 외 ${data.length - 1}`;
 };
 
 export const roleTypeConverter = (companyId) => {
@@ -84,4 +84,9 @@ export const roleTypeConverter = (companyId) => {
 export const parentGroupConverter = (parent) => {
 	if (parent) return parent;
 	return '없음';
+};
+
+export const totalNumberConverter = (range) => {
+	if (!range) return 0;
+	return parseInt(range.split('/')[1]);
 };

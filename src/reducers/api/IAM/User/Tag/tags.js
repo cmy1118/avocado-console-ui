@@ -1,22 +1,19 @@
-import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {Axios, baseUrl} from '../../../../../api/constants';
+import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
+import {baseUrl, Axios} from '../../../../../api/constants';
 
-const NAME = 'IAM_USER_GROUP';
+const NAME = 'IAM_USER_TAG';
 
 //todo : this function requires id, companyId, name, password, email, telephone and mobile
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		// eslint-disable-next-line no-console
-		console.log(user);
+
 		const response = await Axios.post(
-			`/open-api/v1/iam/user-groups`,
+			`/open-api/v1/iam/users/${payload.userUid}/tags`,
 			{
 				name: payload.name,
-				userGroupTypeId: payload.userGroupTypeId,
-				parentId: payload.parentId,
-				members: payload.members || [],
+				value: payload.value,
 			},
 			{
 				headers: {
@@ -26,7 +23,7 @@ const createAction = createAsyncThunk(
 				baseURL: baseUrl.openApi,
 			},
 		);
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 //todo : this function requires uid, name and password
@@ -36,12 +33,9 @@ const updateAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 
 		const response = await Axios.put(
-			`/open-api/v1/iam/user-groups/${payload.id}`,
+			`/open-api/v1/iam/users/${payload.userUid}/tags/${payload.name}`,
 			{
-				name: payload.name,
-				userGroupTypeId: payload.userGroupTypeId,
-				members: payload.members, // uid
-				targetParentId: payload.targetParentId,
+				value: payload.value,
 			},
 			{
 				headers: {
@@ -62,7 +56,7 @@ const deleteAction = createAsyncThunk(
 		const {user} = getState().AUTH_USER;
 
 		const response = await Axios.delete(
-			`/open-api/v1/iam/user-groups/${payload.id}`,
+			`/open-api/v1/iam/users/${payload.userUid}/tags/${payload.name}`,
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
@@ -75,44 +69,16 @@ const deleteAction = createAsyncThunk(
 	},
 );
 
-//todo : this function requires id
-const findByIdAction = createAsyncThunk(
-	`${NAME}/FIND_BY_ID`,
+const getsAction = createAsyncThunk(
+	`${NAME}/GETS`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-
-		const response = await Axios.get(
-			`/open-api/v1/iam/user-groups/${payload.id}`,
-			{
-				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseUrl.openApi,
-			},
-		);
-		return response.data;
-	},
-);
-
-//todo : this function requires uid
-const findAllAction = createAsyncThunk(
-	`${NAME}/FIND_ALL`,
-	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
-
-		const response = await Axios.get(`/open-api/v1/iam/user-groups`, {
+		const response = await Axios.get(`/open-api/v1/iam/users/tags`, {
 			params: {
-				name: payload.name,
-				groupTypeId: payload.groupTypeId,
-				parentId: payload.parentId,
-				keyword: payload.keyword,
-				id: payload.ids,
-				createdTime: payload.createdTime,
+				userUid: payload.userUid,
 			},
 			headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,
-				'Content-Type': 'application/json',
 				Range: payload.range,
 			},
 			baseURL: baseUrl.openApi,
@@ -124,8 +90,7 @@ const findAllAction = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
-		group: null,
-		groups: [],
+		tags: [],
 		loading: false,
 		error: null,
 	},
@@ -164,26 +129,14 @@ const slice = createSlice({
 			state.loading = false;
 		},
 
-		[findByIdAction.pending]: (state) => {
+		[getsAction.pending]: (state) => {
 			state.loading = true;
 		},
-		[findByIdAction.fulfilled]: (state, action) => {
-			state.group = action.payload;
+		[getsAction.fulfilled]: (state, action) => {
+			state.tags = action.payload.data;
 			state.loading = false;
 		},
-		[findByIdAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-
-		[findAllAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[findAllAction.fulfilled]: (state, action) => {
-			state.groups = action.payload.data;
-			state.loading = false;
-		},
-		[findAllAction.rejected]: (state, action) => {
+		[getsAction.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
 		},
@@ -191,15 +144,16 @@ const slice = createSlice({
 });
 
 const selectAllState = createSelector(
-	(state) => state.groups,
-	(state) => state.group,
-	(groups, group) => {
-		return {groups, group};
+	(state) => state.tags,
+	(state) => state.error,
+	(state) => state.loading,
+	(tags, error, loading) => {
+		return {tags, error, loading};
 	},
 );
 
 // NAME 의 value 값으로 변수명 선언
-const IAM_USER_GROUP = {
+const IAM_USER_TAG = {
 	name: slice.name,
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
@@ -208,9 +162,8 @@ const IAM_USER_GROUP = {
 		createAction,
 		updateAction,
 		deleteAction,
-		findByIdAction,
-		findAllAction,
+		getsAction,
 	},
 };
 
-export default IAM_USER_GROUP;
+export default IAM_USER_TAG;

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -11,8 +11,9 @@ const _Input = styled.input`
 const TableTextBox = ({cell, isFocus}) => {
 	const [value, setValue] = useState(cell.value);
 	const ref = useRef(null);
-	const [isOpened, setIsOpened] = useState(!value);
 
+	const [isOpened, setIsOpened] = useState(cell.value === '');
+	console.log(isOpened);
 	const onChange = (e) => {
 		setValue(e.target.value);
 	};
@@ -22,14 +23,14 @@ const TableTextBox = ({cell, isFocus}) => {
 	};
 
 	useEffect(() => {
-		isFocus && !value && ref.current.focus();
+		isFocus && !value && ref.current?.focus();
 	}, [isFocus, value]);
 
 	useEffect(() => {
 		setValue(cell.value);
 	}, [cell.value]);
 	//
-	return (
+	return isOpened ? (
 		<_Input
 			autoFocus
 			ref={ref}
@@ -38,6 +39,8 @@ const TableTextBox = ({cell, isFocus}) => {
 			onChange={onChange}
 			onBlur={onBlur}
 		/>
+	) : (
+		<div onClick={() => setIsOpened(true)}>{cell.value}</div>
 	);
 };
 

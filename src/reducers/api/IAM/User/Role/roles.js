@@ -78,7 +78,6 @@ const findByIdAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 		// eslint-disable-next-line no-console
-		console.log(user);
 		const response = await Axios.get(
 			`/open-api/v1/iam/roles/${payload.id}`,
 			{
@@ -110,7 +109,7 @@ const getsAction = createAsyncThunk(
 			baseURL: baseUrl.openApi,
 		});
 		console.log('ROLE_getsAction:', response.data);
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 
@@ -132,13 +131,14 @@ const getEventsAction = createAsyncThunk(
 			},
 			baseURL: baseUrl.openApi,
 		});
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 
 const slice = createSlice({
 	name: NAME,
 	initialState: {
+		role: null,
 		roles: [],
 		loading: false,
 		error: null,
@@ -175,21 +175,22 @@ const slice = createSlice({
 		// 	state.error = action.payload;
 		// 	state.loading = false;
 		// },
-		// [findByIdAction.pending]: (state) => {
-		// 	state.loading = true;
-		// },
-		// [findByIdAction.fulfilled]: (state, action) => {
-		// 	state.loading = false;
-		// },
-		// [findByIdAction.rejected]: (state, action) => {
-		// 	state.error = action.payload;
-		// 	state.loading = false;
-		// },
+		[findByIdAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[findByIdAction.fulfilled]: (state, action) => {
+			state.role = action.payload;
+			state.loading = false;
+		},
+		[findByIdAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
 		[getsAction.pending]: (state) => {
 			state.loading = true;
 		},
 		[getsAction.fulfilled]: (state, action) => {
-			state.roles = action.payload;
+			state.roles = action.payload.data;
 			state.loading = false;
 		},
 		[getsAction.rejected]: (state, action) => {
