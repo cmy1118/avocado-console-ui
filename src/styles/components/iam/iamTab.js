@@ -4,6 +4,7 @@ export const TabContainer = styled.div`
 	display: flex;
 	flex: ${(props) => props.isOpened && '1 1 auto'};
 	flex-direction: column;
+	transition: all 0.2s ease-out;
 `;
 export const TabContentSpace = styled.div`
 	flex: 1 1 auto;
@@ -11,9 +12,9 @@ export const TabContentSpace = styled.div`
 	overflow: scroll;
 `;
 export const CoveredByTabContent = styled.div`
-	flex: 1;
 	overflow: scroll;
-	display: ${(props) => !props.isOpened && 'none'};
+	flex: ${(props) => (props.isOpened ? '1' : '0')};
+	transition: all 0.2s ease-out;
 `;
 
 export const TabContentContainer = styled.div`
