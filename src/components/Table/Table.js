@@ -14,7 +14,7 @@ const Tds = styled(RowDiv)`
 	min-width: ${(props) => props.width};
 `;
 
-const Container = styled.div`
+const _Container = styled.div`
 	flex: 1 1 auto;
 	width: 0;
 `;
@@ -152,9 +152,8 @@ const Table = ({
 	}, [selectedRowIds, setSelect, selectedDropButton, selectedFlatRows]);
 
 	return (
-		<Container>
+		<_Container>
 			<Droppable
-				key={tableKey}
 				droppableId={tableKey}
 				mode={'Virtual'}
 				renderClone={(provided, snapshot, rubric) => {
@@ -242,16 +241,8 @@ const Table = ({
 								prepareRow(row);
 								return (
 									<Draggable
-										key={
-											// row.original.userUid
-											// 	? row.original.userUid
-											// 	: row.original.id
-											row.original[DRAGGABLE_KEY]
-										}
+										key={row.original[DRAGGABLE_KEY]}
 										draggableId={
-											// row.original.userUid
-											// 	? row.original.userUid
-											// 	: row.original.id
 											row.original[DRAGGABLE_KEY]
 										}
 										isDragDisabled={!isDraggable}
@@ -368,7 +359,7 @@ const Table = ({
 					</div>
 				)}
 			</Droppable>
-		</Container>
+		</_Container>
 	);
 };
 
