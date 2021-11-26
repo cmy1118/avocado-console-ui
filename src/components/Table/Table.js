@@ -14,7 +14,7 @@ const Tds = styled(RowDiv)`
 	min-width: ${(props) => props.width};
 `;
 
-const Container = styled.div`
+const _Container = styled.div`
 	flex: 1 1 auto;
 	width: 0;
 `;
@@ -153,7 +153,7 @@ const Table = ({
 	}, [selectedRowIds, setSelect, selectedDropButton, selectedFlatRows]);
 
 	return (
-		<Container>
+		<_Container>
 			<Droppable
 				droppableId={tableKey}
 				mode={'Virtual'}
@@ -348,7 +348,7 @@ const Table = ({
 					</div>
 				)}
 			</Droppable>
-		</Container>
+		</_Container>
 	);
 };
 

@@ -17,6 +17,7 @@ import {
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
+import {CollapsbleContent} from '../../../../styles/components/style';
 
 const AddTagToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -99,19 +100,18 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 					</TransparentButton>
 				</TitleBarButtons>
 			</TableFold>
-			{isFold[space] && (
-				<>
-					<TableOptionText data={'tags'} />
-					<TableContainer
-						tableKey={tableKeys.users.add.tag}
-						data={tagData}
-						setData={setData}
-						columns={tableColumns[tableKeys.users.add.tag]}
-					>
-						<Table setSelect={setSelect} />
-					</TableContainer>
-				</>
-			)}
+
+			<CollapsbleContent height={isFold[space] ? '358px' : '0px'}>
+				<TableOptionText data={'tags'} />
+				<TableContainer
+					tableKey={tableKeys.users.add.tag}
+					data={tagData}
+					setData={setData}
+					columns={tableColumns[tableKeys.users.add.tag]}
+				>
+					<Table setSelect={setSelect} />
+				</TableContainer>
+			</CollapsbleContent>
 		</FoldableContainer>
 	);
 };

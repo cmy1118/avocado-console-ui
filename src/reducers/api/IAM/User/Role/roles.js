@@ -7,8 +7,7 @@ const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		// eslint-disable-next-line no-console
-		console.log(user);
+
 		const response = await Axios.post(
 			`/open-api/v1/iam/roles`,
 			{
@@ -33,8 +32,7 @@ const updateAction = createAsyncThunk(
 	`${NAME}/UPDATE`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		// eslint-disable-next-line no-console
-		console.log(user);
+
 		const response = await Axios.put(
 			`/open-api/v1/iam/roles/${payload.id}`,
 			{
@@ -58,8 +56,6 @@ const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		// eslint-disable-next-line no-console
-		console.log(user);
 		const response = await Axios.delete(
 			`/open-api/v1/iam/roles/${payload.id}`,
 			{
@@ -77,7 +73,6 @@ const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		// eslint-disable-next-line no-console
 		const response = await Axios.get(
 			`/open-api/v1/iam/roles/${payload.id}`,
 			{
@@ -117,8 +112,6 @@ const getEventsAction = createAsyncThunk(
 	`${NAME}/GETS`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		// eslint-disable-next-line no-console
-		console.log(user);
 		const response = await Axios.get(`/open-api/v1/iam/roles/events`, {
 			headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,

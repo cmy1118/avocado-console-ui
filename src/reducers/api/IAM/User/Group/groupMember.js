@@ -8,8 +8,7 @@ const joinAction = createAsyncThunk(
 	`${NAME}/JOIN`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		// eslint-disable-next-line no-console
-		console.log(user);
+
 		const response = await Axios.put(
 			`/open-api/v1/iam/user-group-sets/${payload.groupId}`,
 			[...payload.userUid],

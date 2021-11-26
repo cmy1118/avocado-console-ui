@@ -5,7 +5,6 @@ import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import {
 	expiredConverter,
 	groupsConverter,
-	statusConverter,
 	tagsConverter,
 	totalNumberConverter,
 } from '../../../../utils/tableDataConverter';
@@ -15,7 +14,7 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../styles/components/buttons';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {
 	CurrentPathBar,
 	CurrentPathBarLink,
@@ -29,7 +28,6 @@ import {
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const UserSpace = () => {
 	const history = useHistory();
@@ -123,5 +121,5 @@ const UserSpace = () => {
 		</IamContainer>
 	);
 };
-UserSpace.propTypes = {};
+
 export default UserSpace;

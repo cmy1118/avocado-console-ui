@@ -9,7 +9,12 @@ import {tableColumns} from '../../../../Constants/Table/columns';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import TableFold from '../../../Table/Options/TableFold';
 import PropTypes from 'prop-types';
-import {ColDiv, RowDiv, TableHeader} from '../../../../styles/components/style';
+import {
+	ColDiv,
+	CollapsbleContent,
+	RowDiv,
+	TableHeader,
+} from '../../../../styles/components/style';
 import DragContainer from '../../../Table/DragContainer';
 import TableContainer from '../../../Table/TableContainer';
 import TableOptionsBar from '../../../Table/TableOptionsBar';
@@ -86,66 +91,60 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 				isFold={isFold}
 				setIsFold={setIsFold}
 			/>
-			{isFold[space] && (
-				<>
-					<TableOptionText data={'roles'} />
 
-					<DragContainer
-						selected={select}
-						data={includedDataIds}
-						setData={setIncludedDataIds}
-						includedKey={tableKeys.users.add.roles.include}
-						excludedData={excludedData}
-						includedData={includedData}
-					>
-						<RowDiv>
+			<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
+				<TableOptionText data={'roles'} />
+				<DragContainer
+					selected={select}
+					data={includedDataIds}
+					setData={setIncludedDataIds}
+					includedKey={tableKeys.users.add.roles.include}
+					excludedData={excludedData}
+					includedData={includedData}
+				>
+					<RowDiv>
+						<TableContainer
+							data={excludedData}
+							tableKey={tableKeys.users.add.roles.exclude}
+							columns={
+								tableColumns[tableKeys.users.add.roles.exclude]
+							}
+						>
+							<TableOptionsBar />
+							<Table setSelect={setSelect} isDraggable />
+						</TableContainer>
+						<RowDiv alignItems={'center'}>
+							<DropButton
+								leftTableKey={tableKeys.users.add.roles.exclude}
+								RightTableKey={
+									tableKeys.users.add.roles.include
+								}
+								select={select}
+								dataLeft={excludedData}
+								dataRight={includedData}
+								rightDataIds={includedDataIds}
+								setRightDataIds={setIncludedDataIds}
+							/>
+						</RowDiv>
+						<ColDiv>
+							<TableHeader>
+								추가 Roles: {includedDataIds.length}건
+							</TableHeader>
 							<TableContainer
-								data={excludedData}
-								tableKey={tableKeys.users.add.roles.exclude}
+								data={includedData}
+								tableKey={tableKeys.users.add.roles.include}
 								columns={
 									tableColumns[
-										tableKeys.users.add.roles.exclude
+										tableKeys.users.add.roles.include
 									]
 								}
 							>
-								<TableOptionsBar />
 								<Table setSelect={setSelect} isDraggable />
 							</TableContainer>
-							<RowDiv alignItems={'center'}>
-								<DropButton
-									leftTableKey={
-										tableKeys.users.add.roles.exclude
-									}
-									RightTableKey={
-										tableKeys.users.add.roles.include
-									}
-									select={select}
-									dataLeft={excludedData}
-									dataRight={includedData}
-									rightDataIds={includedDataIds}
-									setRightDataIds={setIncludedDataIds}
-								/>
-							</RowDiv>
-							<ColDiv>
-								<TableHeader>
-									추가 Roles: {includedDataIds.length}건
-								</TableHeader>
-								<TableContainer
-									data={includedData}
-									tableKey={tableKeys.users.add.roles.include}
-									columns={
-										tableColumns[
-											tableKeys.users.add.roles.include
-										]
-									}
-								>
-									<Table setSelect={setSelect} isDraggable />
-								</TableContainer>
-							</ColDiv>
-						</RowDiv>
-					</DragContainer>
-				</>
-			)}
+						</ColDiv>
+					</RowDiv>
+				</DragContainer>
+			</CollapsbleContent>
 		</FoldableContainer>
 	);
 };

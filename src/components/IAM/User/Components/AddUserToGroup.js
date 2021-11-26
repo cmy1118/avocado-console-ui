@@ -1,4 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
+import styled from 'styled-components';
 import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
@@ -6,7 +7,12 @@ import DropButton from '../../../Table/DropButton';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../../reducers/currentTarget';
-import {ColDiv, RowDiv, TableHeader} from '../../../../styles/components/style';
+import {
+	ColDiv,
+	CollapsbleContent,
+	RowDiv,
+	TableHeader,
+} from '../../../../styles/components/style';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
 import TableFold from '../../../Table/Options/TableFold';
@@ -142,69 +148,62 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 				isFold={isFold}
 				setIsFold={setIsFold}
 			/>
-			{isFold[space] ? (
-				<>
-					<TableOptionText data={'groups'} />
-					<DragContainer
-						selected={select}
-						data={includedDataIds}
-						setData={setIncludedDataIds}
-						includedKey={tableKeys.users.add.groups.include}
-						excludedData={excludedData}
-						includedData={includedData}
-					>
-						<RowDiv>
+
+			<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
+				<TableOptionText data={'groups'} />
+				<DragContainer
+					selected={select}
+					data={includedDataIds}
+					setData={setIncludedDataIds}
+					includedKey={tableKeys.users.add.groups.include}
+					excludedData={excludedData}
+					includedData={includedData}
+				>
+					<RowDiv>
+						<TableContainer
+							tableKey={tableKeys.users.add.groups.exclude}
+							columns={
+								tableColumns[tableKeys.users.add.groups.exclude]
+							}
+							data={excludedData}
+						>
+							<TableOptionsBar />
+							<Table setSelect={setSelect} isDraggable />
+						</TableContainer>
+						<RowDiv alignItems={'center'}>
+							<DropButton
+								leftTableKey={
+									tableKeys.users.add.groups.exclude
+								}
+								RightTableKey={
+									tableKeys.users.add.groups.include
+								}
+								select={select}
+								dataLeft={excludedData}
+								dataRight={includedData}
+								rightDataIds={includedDataIds}
+								setRightDataIds={setIncludedDataIds}
+							/>
+						</RowDiv>
+						<ColDiv>
+							<TableHeader>
+								추가 그룹: {includedDataIds.length}건
+							</TableHeader>
 							<TableContainer
-								tableKey={tableKeys.users.add.groups.exclude}
+								tableKey={tableKeys.users.add.groups.include}
 								columns={
 									tableColumns[
-										tableKeys.users.add.groups.exclude
+										tableKeys.users.add.groups.include
 									]
 								}
-								data={excludedData}
+								data={includedData}
 							>
-								<TableOptionsBar />
 								<Table setSelect={setSelect} isDraggable />
 							</TableContainer>
-							<RowDiv alignItems={'center'}>
-								<DropButton
-									leftTableKey={
-										tableKeys.users.add.groups.exclude
-									}
-									RightTableKey={
-										tableKeys.users.add.groups.include
-									}
-									select={select}
-									dataLeft={excludedData}
-									dataRight={includedData}
-									rightDataIds={includedDataIds}
-									setRightDataIds={setIncludedDataIds}
-								/>
-							</RowDiv>
-							<ColDiv>
-								<TableHeader>
-									추가 그룹: {includedDataIds.length}건
-								</TableHeader>
-								<TableContainer
-									tableKey={
-										tableKeys.users.add.groups.include
-									}
-									columns={
-										tableColumns[
-											tableKeys.users.add.groups.include
-										]
-									}
-									data={includedData}
-								>
-									<Table setSelect={setSelect} isDraggable />
-								</TableContainer>
-							</ColDiv>
-						</RowDiv>
-					</DragContainer>
-				</>
-			) : (
-				''
-			)}
+						</ColDiv>
+					</RowDiv>
+				</DragContainer>
+			</CollapsbleContent>
 		</FoldableContainer>
 	);
 };

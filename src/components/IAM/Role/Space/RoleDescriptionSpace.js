@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import qs from 'qs';
 import {useHistory, useLocation} from 'react-router-dom';
 import {
-	CurrentPathBarLink,
 	CurrentPathBar,
+	CurrentPathBarLink,
 	NextPath,
 } from '../../../../styles/components/currentPathBar';
 import RoleSummary from '../Components/RoleSummary';
@@ -39,14 +39,12 @@ import {
 	TitleBarButtons,
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
-import {tableKeys} from '../../../../Constants/Table/keys';
-import PAGINATION from '../../../../reducers/pagination';
+import PAM_POLICY from '../../../../reducers/api/ PAM/Role/policy';
 
 const RoleDescriptionSpace = ({roleId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {search} = useLocation();
-	const {page} = useSelector(PAGINATION.selector);
 
 	// const {roles} = useSelector(IAM_ROLES.selector);
 	// const role = useMemo(() => roles.find((v) => v.id === roleId), [
@@ -104,7 +102,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 			.then((res) => {
 				setRole(res);
 			});
-	}, [dispatch, page, roleId]);
+	}, [dispatch, roleId]);
 
 	// arr.push({
 	// 	id: role.id,

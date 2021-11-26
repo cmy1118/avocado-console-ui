@@ -17,7 +17,9 @@ const TableFold = ({children, title, space, isFold, setIsFold}) => {
 	}, [isFold, setIsFold, space]);
 	return (
 		<div>
-			<TableTitle className={isFold[space] ? 'fold' : 'fold close'}>
+			<TableTitle
+				className={isFold[space] ? 'fold-title' : 'fold-title close'}
+			>
 				<>
 					<_TableFoldTitle>
 						<HoverIconButton
