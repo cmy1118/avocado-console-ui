@@ -96,7 +96,7 @@ const getEventsAction = createAsyncThunk(
 	},
 );
 
-//사용자 등록 정보를 역할 ID를 기반으로 조회한다.
+//사용자 그룹 정보를 역할 ID를 기반으로 조회한다.
 const findUserGroupsById = createAsyncThunk(
 	`${NAME}/FIND_USER_GROUPS_BY_ID`,
 	async (payload, {getState}) => {
@@ -169,6 +169,7 @@ const IAM_ROLES_GRANT_ROLE_GROUP = {
 		revokeAction,
 		getsAction,
 		getEventsAction,
+		findUserGroupsById,
 	},
 };
 
