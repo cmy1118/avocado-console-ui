@@ -33,7 +33,7 @@ const _NavItem = styled.div`
 	height: 34px;
 	padding: 7px 11px 7px 16px;
 	display: flex;
-	border-left: 2px solid;
+	border-left: 3px solid;
 	border-color: ${(props) => (props.selected ? '#4ca6a8' : '#ffffff')};
 	background: ${(props) => (props.selected ? '#e4f3f4' : '#ffffff')};
 `;
@@ -89,7 +89,7 @@ export const ResourceItem = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	height: 34px;
-	border-left: 2px solid;
+	border-left: 3px solid;
 	padding: 7px 28px 7px 16px;
 	padding-left: ${(props) => props?.left};
 	border-color: ${(props) => (props.selected ? '#4ca6a8' : '#ffffff')};
