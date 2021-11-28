@@ -33,6 +33,18 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 		roleId,
 	]);
 
+	const includedData = useMemo(() => {
+		// users
+		// 	.filter((v) => !role.users.includes(v.userUid))
+		// 	.map((v, i) => ({
+		// 		...v,
+		// 		numberOfGroups: v.groups.length,
+		// 		grantUser: dummyUsers[dummyUsers.length - i - 1],
+		// 		[DRAGGABLE_KEY]: v.userUid,
+		// 	})),
+		return [];
+	}, []);
+
 	const excludedData = useMemo(() => {
 		return [];
 		// return users
@@ -45,17 +57,6 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 		// 	}));
 	}, []);
 
-	const includedData = useMemo(() => {
-		// users
-		// 	.filter((v) => !role.users.includes(v.userUid))
-		// 	.map((v, i) => ({
-		// 		...v,
-		// 		numberOfGroups: v.groups.length,
-		// 		grantUser: dummyUsers[dummyUsers.length - i - 1],
-		// 		[DRAGGABLE_KEY]: v.userUid,
-		// 	})),
-		return [];
-	}, []);
 
 	return (
 		<TabContentContainer>

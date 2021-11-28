@@ -1,8 +1,8 @@
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {parentGroupConverter} from '../../../../utils/tableDataConverter';
 import {
 	dummyDates,
@@ -24,6 +24,7 @@ import {
 } from '../../../../styles/components/iam/descriptionPage';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
+	const dispatch = useDispatch();
 	const history = useHistory();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
@@ -73,6 +74,17 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				[DRAGGABLE_KEY]: v.id,
 			}));
 	}, [role, groups, groupTypes]);
+
+	useEffect(() => {
+		isSummaryOpened &&
+		dispatch(
+			IAM_USER.asyncAction.findByUidAction({
+				userUid: userUid,
+			}),
+		)
+			.unwrap()
+			.then((res) => setUser({...res}));
+	}, [dispatch, isSummaryOpened, userUid]);
 
 	return (
 		<SummaryTablesContainer>

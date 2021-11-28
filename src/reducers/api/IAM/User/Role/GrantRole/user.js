@@ -96,9 +96,29 @@ const getEventsAction = createAsyncThunk(
 	},
 );
 
+//사용자 등록 정보를 역할 ID를 기반으로 조회한다.
+const findUsersByIdAction = createAsyncThunk(
+	`${NAME}/FIND_USER_BY_ID`,
+	async (payload, {getState}) => {
+		const {user} = getState().AUTH_USER;
+		const response = await Axios.get(
+			`/open-api/v1/iam/roles/${payload.id}/users`,
+			{
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
+				},
+				baseURL: baseUrl.openApi,
+			},
+		);
+		return response.data;
+	},
+);
+
 const slice = createSlice({
 	name: NAME,
 	initialState: {
+		//userList : 사용자 등록 정보를 역할 ID를 기반으로 조회한 .
+		userList:[],
 		userRoles: [],
 		loading: false,
 		error: null,
@@ -136,15 +156,27 @@ const slice = createSlice({
 			state.error = action.payload;
 			state.loading = false;
 		},
+		[findUsersByIdAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[findUsersByIdAction.fulfilled]: (state, action) => {
+			state.userList = action.payload.data;
+			state.loading = false;
+		},
+		[findUsersByIdAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
 	},
 });
 
 const selectAllState = createSelector(
 	(state) => state.userRoles,
+	(state) => state.userList,
 	(state) => state.error,
 	(state) => state.loading,
-	(userRoles, error, loading) => {
-		return {userRoles, error, loading};
+	(userRoles, userList,error, loading) => {
+		return {userRoles,userList, error, loading};
 	},
 );
 
@@ -158,6 +190,7 @@ const IAM_ROLES_GRANT_ROLE_USER = {
 		revokeAction,
 		getsAction,
 		getEventsAction,
+		findUsersByIdAction,
 	},
 };
 
