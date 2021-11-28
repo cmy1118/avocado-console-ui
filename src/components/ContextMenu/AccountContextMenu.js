@@ -34,7 +34,7 @@ const AccountContextMenu = () => {
 			<ComboBox
 				innerRef={formRef}
 				name='account'
-				header={<HoverIconButton>{userIcon}</HoverIconButton>}
+				header={<HoverIconButton color={'#D7D7D7'}>{userIcon}</HoverIconButton>}
 				type='drop'
 				options={contextMenuOptions}
 			/>

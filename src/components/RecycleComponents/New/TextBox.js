@@ -21,6 +21,12 @@ const Input = styled(Field)`
 	background: transparent;
 	box-sizing: border-box;
 	outline: none;
+	  &::-webkit-input-placeholder{
+	    	color: ${(props) => (props.placeholderTextColor ? '#D7D7D7' : '')};
+
+	  };
+
+
 `;
 
 const SubContainer = styled.div`
@@ -41,10 +47,10 @@ const SubContainer = styled.div`
 	box-sizing: border-box;
 	border-radius: 4px;
 	border: solid 1px;
-	border-color: ${(props) => (props.error ? '#d45959' : '#e3e5e5')};
+	border-color: ${(props) => (props.borderColor? props.borderColor: (props.error ? '#d45959' : '#e3e5e5'))};
 	height: 34px;
 	width: ${(props) => props.width || '394px'};
-	background-color: ${(props) => props.background || '#fff'};
+	background: ${(props) => props.background || '#ffffff'};
 `;
 
 const TextBox = ({...props}) => {
@@ -64,6 +70,7 @@ const TextBox = ({...props}) => {
 			error={touched[field.name] && errors[field.name]}
 		>
 			<SubContainer
+				borderColor={props.borderColor}
 				error={touched[field.name] && errors[field.name]}
 				background={props.background}
 				width={props.width}
@@ -91,6 +98,9 @@ TextBox.propTypes = {
 	front: PropTypes.object,
 	back: PropTypes.object,
 	width: PropTypes.string,
+	borderColor: PropTypes.string,
+	placeholderTextColor: PropTypes.string,
+	textColor: PropTypes.string,
 	background: PropTypes.string,
 	direction: PropTypes.oneOf(['row', 'col']),
 };
