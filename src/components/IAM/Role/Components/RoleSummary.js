@@ -20,38 +20,38 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const permissionData = useMemo(() => [], []);
 
 	const userData = useMemo(() => {
-		// return [];
-		return user?.map((v, i) => ({
-				...v,
-				status:v.status.code,
-				groupType: v.userGroupType.name,
-				createdTime:v.createdTag.createdTime,
-				// grantDate: v.request-time,
-				grantUser: 'null',
-				//부여 사용자
-				[DRAGGABLE_KEY]: v.userUid,
-			}));
+		return [];
+		// return user?.map((v, i) => ({
+		// 		...v,
+		// 		status:v.status.code,
+		// 		groupType: v.userGroupType.name,
+		// 		createdTime:v.createdTag.createdTime,
+		// 		// grantDate: v.request-time,
+		// 		grantUser: 'null',
+		// 		//부여 사용자
+		// 		[DRAGGABLE_KEY]: v.userUid,
+		// 	}));
 	}, [user]);
 
 
 	const groupData = useMemo(() => {
-		// return [];
-		return group?.map((v, i) => ({
-				...v,
-				//권한수
-				//numberOfPermissions: v.roles.length,
-
-				groupType: v.userGroupType.name,
-
-				//상위그룹 어떻게 오는지 ?
-				parentGroup: parentGroupConverter(v.parentGroup.name),
-				createdTime:v.createdTag.createdTime,
-
-			    //부여 일시??
-				grantDate: 'null',
-				grantUser: 'null',
-				[DRAGGABLE_KEY]: v.id,
-			}));
+		return [];
+		// return group?.map((v, i) => ({
+		// 		...v,
+		// 		//권한수
+		// 		//numberOfPermissions: v.roles.length,
+		//
+		// 		groupType: v.userGroupType.name,
+		//
+		// 		//상위그룹 어떻게 오는지 ?
+		// 		parentGroup: parentGroupConverter(v.parentGroup.name),
+		// 		createdTime:v.createdTag.createdTime,
+		//
+		// 	    //부여 일시??
+		// 		grantDate: 'null',
+		// 		grantUser: 'null',
+		// 		[DRAGGABLE_KEY]: v.id,
+		// 	}));
 	}, [group]);
 
 	const onClickChangeTab = useCallback(
