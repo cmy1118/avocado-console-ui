@@ -54,6 +54,19 @@ export const moreVertIcon = (
 		more_vert
 	</span>
 );
+
+export const securityIcon = (<span className="material-icons">
+		security
+		</span>);
+export const roleIcon = (<span className="material-icons">
+assignment_ind
+</span>);
+export const groupsIcon = (<span className="material-icons">
+people
+</span>);
+export const policyIcon = (<span className="material-icons">
+article
+</span>);
 export const folderIcon = <span className='material-icons'>folder</span>;
 export const dashboardIcon = <span className='material-icons'>dashboard</span>;
 
