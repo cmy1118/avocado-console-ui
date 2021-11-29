@@ -90,3 +90,11 @@ export const totalNumberConverter = (range) => {
 	if (!range) return 0;
 	return parseInt(range.split('/')[1]);
 };
+
+export const descriptionConverter = (desc) => {
+	if (Array.isArray(desc))
+		return desc.map((item) => {
+			return `${Object.keys(item)[0]}: ${Object.values(item)[0]}`;
+		})[0];
+	else return '';
+};

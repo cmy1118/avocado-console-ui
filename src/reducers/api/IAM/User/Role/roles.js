@@ -128,6 +128,27 @@ const getEventsAction = createAsyncThunk(
 	},
 );
 
+const findTemplatesAction = createAsyncThunk(
+	`${NAME}/FIND_TEMPLATES`,
+	async (payload, {getState}) => {
+		const {user} = getState().AUTH_USER;
+		const response = await Axios.get(
+			`/open-api/v1/iam/roles/${payload.roleId}/policy-templates`,
+			{
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
+					Range: payload.range,
+				},
+				params: {
+					include: payload.isInclude,
+				},
+				baseURL: baseUrl.openApi,
+			},
+		);
+		return {data: response.data, headers: response.headers};
+	},
+);
+
 const slice = createSlice({
 	name: NAME,
 	initialState: {
@@ -225,6 +246,7 @@ const IAM_ROLES = {
 		findByIdAction,
 		// getsAction,
 		getEventsAction,
+		findTemplatesAction,
 	},
 };
 

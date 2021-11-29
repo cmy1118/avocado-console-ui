@@ -1,8 +1,8 @@
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {parentGroupConverter} from '../../../../utils/tableDataConverter';
 import {
 	dummyDates,
@@ -22,15 +22,21 @@ import {
 	SummaryTablesContainer,
 	SummaryTableTitle,
 } from '../../../../styles/components/iam/descriptionPage';
+import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 
-const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
+const RoleSummary = ({roleId, param, setIsOpened, isSummaryOpened}) => {
 	const history = useHistory();
+	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const {users} = useSelector(IAM_USER.selector);
 
-	const role = useMemo(() => roles.find((v) => v.id === Id), [roles]);
+	const role = useMemo(() => roles.find((v) => v.id === roleId), [
+		roleId,
+		roles,
+	]);
 
 	const permissionData = useMemo(() => [], []);
 
@@ -49,11 +55,11 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 		(v) => () => {
 			setIsOpened(false);
 			history.push({
-				pathname: `/${param}/${Id}`,
+				pathname: `/${param}/${roleId}`,
 				search: `tabs=${v}`,
 			});
 		},
-		[setIsOpened, history, param, Id],
+		[setIsOpened, history, param, roleId],
 	);
 
 	const groupData = useMemo(() => {
@@ -73,6 +79,43 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				[DRAGGABLE_KEY]: v.id,
 			}));
 	}, [role, groups, groupTypes]);
+
+	useEffect(() => {
+		dispatch(
+			IAM_ROLES.asyncAction.findTemplatesAction({
+				roleId,
+				range: `elements=0-50`,
+			}),
+		)
+			.unwrap()
+			.then((templates) => {
+				console.log(templates);
+			});
+	}, [dispatch, roleId]);
+
+	useEffect(() => {
+		dispatch(
+			IAM_ROLES_GRANT_ROLE_USER.asyncAction.findUsersAction({
+				roleId,
+			}),
+		)
+			.unwrap()
+			.then((users) => {
+				console.log('users ::', users);
+			});
+	}, [dispatch, roleId]);
+
+	useEffect(() => {
+		dispatch(
+			IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.findGroupsAction({
+				roleId,
+			}),
+		)
+			.unwrap()
+			.then((groups) => {
+				console.log('groups ::', groups);
+			});
+	}, [dispatch, roleId]);
 
 	return (
 		<SummaryTablesContainer>
@@ -117,7 +160,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 };
 
 RoleSummary.propTypes = {
-	Id: PropTypes.string.isRequired,
+	roleId: PropTypes.string.isRequired,
 	param: PropTypes.string.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 	isSummaryOpened: PropTypes.bool.isRequired,

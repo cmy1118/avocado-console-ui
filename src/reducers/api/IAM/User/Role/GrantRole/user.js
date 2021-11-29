@@ -96,6 +96,25 @@ const getEventsAction = createAsyncThunk(
 	},
 );
 
+const findUsersAction = createAsyncThunk(
+	`${NAME}/FIND_USERS`,
+	async (payload, {getState}) => {
+		const {user} = getState().AUTH_USER;
+		// eslint-disable-next-line no-console
+		const response = await Axios.get(
+			`/open-api/v1/iam/roles/${payload.roleId}/users`,
+			{
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
+					'Content-Type': 'application/json',
+				},
+				baseURL: baseUrl.openApi,
+			},
+		);
+		return response.data;
+	},
+);
+
 const slice = createSlice({
 	name: NAME,
 	initialState: {
@@ -158,6 +177,7 @@ const IAM_ROLES_GRANT_ROLE_USER = {
 		revokeAction,
 		getsAction,
 		getEventsAction,
+		findUsersAction,
 	},
 };
 
