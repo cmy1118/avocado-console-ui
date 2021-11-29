@@ -121,67 +121,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 													},
 												};
 										});
-										setRoles([
-											{
-												role: {
-													id: 'KR-2020-0001:0000003',
-													name: 'template-name',
-													maxGrants: 0,
-													createdTag: {
-														createdTime:
-															'2021-11-25T11:06:01.689+09:00',
-														actorTag: {
-															applicationCode: {
-																code:
-																	'open-api',
-																description:
-																	'Open API Server',
-															},
-															clientId: 'client',
-															requestId:
-																'440e54a2-0b43-4f06-bd6b-f60f7bdd18ec',
-															userUid:
-																'KR-2020-0001:0000001',
-														},
-													},
-												},
-												policyTemplateDetails: [
-													{
-														templateId:
-															'KR-2020-0001:202111:0127',
-														templateName:
-															'template-name',
-														applicationCode:
-															'OPEN_API',
-														policyParameter: {
-															policyType:
-																'AccountExpired',
-															expiryDays: 5,
-														},
-													},
-												],
-												grant: {
-													createdTag: {
-														createdTime:
-															'2021-11-20T00:06:44.5+09:00',
-														actorTag: {
-															applicationCode: {
-																code:
-																	'open-api',
-																description:
-																	'Open API Server',
-															},
-															clientId: 'client',
-															requestId:
-																'3cffca66-9ebf-471c-8cfa-9392abc9b4a6',
-															userUid:
-																'KR-2020-0001:0000001',
-														},
-													},
-													user: grantUser,
-												},
-											},
-										]);
+										setRoles([]);
 									});
 							});
 					});
