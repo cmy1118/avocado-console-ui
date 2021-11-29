@@ -82,6 +82,7 @@ const clientAuthAction = createAsyncThunk(
 				Authorization:
 					'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
 				CompanyId: payload.companyId,
+				ApplicationCode: 'console-ui',
 			},
 			baseUrl: baseURL.auth,
 		});
@@ -123,6 +124,7 @@ const altAuthVerificationAction = createAsyncThunk(
 	`${NAME}/alternativeAuth`,
 	async (payload, {getState}) => {
 		const authState = getState()[NAME];
+
 		const response = await Axios.post(
 			'/oauth2/v1/alternative/verify',
 			null,
@@ -133,10 +135,11 @@ const altAuthVerificationAction = createAsyncThunk(
 					)[0],
 				},
 				headers: {
-					'Content-Type': contentType,
+					'Content-Type': contentType.URL_ENCODED,
 					Authorization: `Bearer ${authState.clientAuth.access_token}`,
 					AlternativeAuthN: `google ${authState.alternativeAuth.access_token}`,
 					CompanyId: authState.companyId,
+					ApplicationCode: 'console-ui',
 				},
 				baseUrl: baseURL.auth,
 			},
