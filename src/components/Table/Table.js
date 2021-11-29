@@ -331,13 +331,16 @@ const Table = ({
 															},
 														)}
 													</div>
-													{Object.keys(
-														expanded,
-													).includes(
-														row.original[DRAGGABLE_KEY],
-													) && (
-														<InnerTableContainer />
-													)}
+													{expanded &&
+														Object.keys(
+															expanded,
+														).includes(
+															row.original[
+																DRAGGABLE_KEY
+															],
+														) && (
+															<InnerTableContainer />
+														)}
 												</>
 											);
 										}}
