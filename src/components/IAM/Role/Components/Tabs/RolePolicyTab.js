@@ -19,6 +19,7 @@ import {
 	FoldableContainer,
 	TitleBarButtons,
 } from '../../../../../styles/components/iam/iam';
+import {CollapsbleContent} from '../../../../../styles/components/style';
 
 const RolePolicyTab = ({roleId, space, isFold, setIsFold}) => {
 	const [select, setSelect] = useState({});
@@ -69,27 +70,24 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold}) => {
 							</NormalButton>
 						</TitleBarButtons>
 					</TableFold>
-					{isFold[space] && (
-						<>
-							<TableOptionText data={'policies'} />
-							<TableContainer
-								data={includedData}
-								tableKey={
+					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
+						<TableOptionText data={'policies'} />
+						<TableContainer
+							data={includedData}
+							tableKey={
+								tableKeys.roles.summary.tabs.permissions.exclude
+							}
+							columns={
+								tableColumns[
 									tableKeys.roles.summary.tabs.permissions
 										.exclude
-								}
-								columns={
-									tableColumns[
-										tableKeys.roles.summary.tabs.permissions
-											.exclude
-									]
-								}
-							>
-								<TableOptionsBar />
-								<Table setSelect={setSelect} isDraggable />
-							</TableContainer>
-						</>
-					)}
+								]
+							}
+						>
+							<TableOptionsBar />
+							<Table setSelect={setSelect} isDraggable />
+						</TableContainer>
+					</CollapsbleContent>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>

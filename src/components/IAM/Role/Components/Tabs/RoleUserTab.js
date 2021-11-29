@@ -20,6 +20,7 @@ import TableOptionText from '../../../../Table/Options/TableOptionText';
 import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../../styles/components/iam/iam';
 import {DRAGGABLE_KEY} from '../../../../../Constants/Table/keys';
+import {CollapsbleContent} from '../../../../../styles/components/style';
 
 const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 	const {roles} = useSelector(IAM_ROLES.selector);
@@ -96,27 +97,24 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 							그룹 추가
 						</NormalButton>
 					</TableFold>
-					{isFold[space] && (
-						<>
-							<TableOptionText data={'usersRoles'} />
+					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
+						<TableOptionText data={'usersRoles'} />
 
-							<TableContainer
-								data={excludedData}
-								tableKey={
+						<TableContainer
+							data={excludedData}
+							tableKey={
+								tableKeys.roles.summary.tabs.users.exclude
+							}
+							columns={
+								tableColumns[
 									tableKeys.roles.summary.tabs.users.exclude
-								}
-								columns={
-									tableColumns[
-										tableKeys.roles.summary.tabs.users
-											.exclude
-									]
-								}
-							>
-								<TableOptionsBar />
-								<Table setSelect={setSelect} isDraggable />
-							</TableContainer>
-						</>
-					)}
+								]
+							}
+						>
+							<TableOptionsBar />
+							<Table setSelect={setSelect} isDraggable />
+						</TableContainer>
+					</CollapsbleContent>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>

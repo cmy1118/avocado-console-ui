@@ -17,6 +17,7 @@ const loginAction = createAsyncThunk(`${NAME}/LOGIN`, async (payload) => {
 			'Content-Type': contentType,
 			Authorization: authorization.LOGIN,
 			CompanyId: payload.companyId,
+			ApplicationCode: 'console-ui',
 		},
 		baseURL: baseUrl.auth,
 	});
