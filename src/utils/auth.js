@@ -1,6 +1,11 @@
 import base64 from 'base-64';
 
 export const account = {
+	NETAND: {
+		companyId: 'KR-2020-0001',
+		username: 'user',
+		password: '123456789',
+	},
 	KT: {companyId: 'KR-2020-0002', username: 'ktkim', password: 'kt20200002'},
 	SAMSUNG: {
 		companyId: 'KR-2020-0003',
@@ -10,11 +15,15 @@ export const account = {
 };
 
 export const authorization = {
-	LOGIN: 'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
-	LOGOUT: 'Bearer ',
+	BASIC: 'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
+	BEARER: 'Bearer ',
 };
 
-export const contentType = 'application/x-www-form-urlencoded';
+export const contentType = {
+	URL_ENCODED: 'application/x-www-form-urlencoded',
+	JSON: 'application/json',
+	JSON_UTF: 'application/json; charset=UTF-8',
+};
 
 export const grantType = {
 	CLIENT_CREDENTIALS: 'client_credentials',

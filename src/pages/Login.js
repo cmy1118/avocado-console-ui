@@ -1,14 +1,12 @@
 import React, {useEffect} from 'react';
-import PropTypes from 'prop-types';
-import {useSelector} from 'react-redux';
 
 import AUTH_USER from '../reducers/api/Auth/authUser';
 import {useHistory} from 'react-router-dom';
-import {account} from '../utils/auth';
 import LoginForm from '../components/Form/LoginForm';
 import {consoleManagement} from '../icons/icons';
 import styled from 'styled-components';
-import background from '../images/backgound/bg-img-1@2x.png';
+import background from '../images/background/bg-img-1@2x.png';
+import {useSelector} from 'react-redux';
 
 const _Container = styled.div`
 	background-image: url(${background});
@@ -56,24 +54,15 @@ const _Logo = styled.div`
 	right: 20px;
 `;
 
-const Login = ({match}) => {
+const Login = () => {
 	const history = useHistory();
-	const {user} = useSelector(AUTH_USER.selector);
+	const {isLoggedIn} = useSelector(AUTH_USER.selector);
 
 	useEffect(() => {
-		if (user) {
+		if (isLoggedIn) {
 			history.push('/');
 		}
-	}, [history, user]);
-
-	// useEffect(() => {
-	// 	if (
-	// 		match.params.companyId !== account.KT.companyId &&
-	// 		match.params.companyId !== account.SAMSUNG.companyId
-	// 	) {
-	// 		history.push('/404');
-	// 	}
-	// }, [history, match.params.companyId]);
+	}, [history, isLoggedIn]);
 
 	return (
 		<_Container>
@@ -93,13 +82,13 @@ const Login = ({match}) => {
 	);
 };
 
-Login.propTypes = {
-	match: PropTypes.shape({
-		path: PropTypes.string.isRequired,
-		params: PropTypes.shape({
-			companyId: PropTypes.string,
-		}),
-	}),
-};
+// Login.propTypes = {
+// 	match: PropTypes.shape({
+// 		path: PropTypes.string.isRequired,
+// 		params: PropTypes.shape({
+// 			companyId: PropTypes.string,
+// 		}),
+// 	}),
+// };
 
 export default Login;

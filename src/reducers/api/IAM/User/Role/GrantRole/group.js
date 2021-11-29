@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseUrl} from '../../../../../../api/constants';
+import {Axios, baseURL} from '../../../../../../api/constants';
 
 const NAME = 'IAM_ROLES_GRANT_ROLE_GROUP';
 
@@ -19,7 +19,7 @@ const grantAction = createAsyncThunk(
 				params: {
 					roleld: payload.roleld,
 				},
-				baseURL: baseUrl.openApi,
+				baseUrl: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -42,7 +42,7 @@ const revokeAction = createAsyncThunk(
 				params: {
 					roleld: payload.roleld,
 				},
-				baseURL: baseUrl.openApi,
+				baseUrl: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -63,7 +63,7 @@ const getsAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 					Range: payload.range,
 				},
-				baseURL: baseUrl.openApi,
+				baseUrl: baseURL.openApi,
 			},
 		);
 		return {data: response.data, headers: response.headers};
@@ -89,7 +89,7 @@ const getEventsAction = createAsyncThunk(
 					Range: payload.range,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseUrl: baseURL.openApi,
 			},
 		);
 		return {data: response.data, headers: response.headers};

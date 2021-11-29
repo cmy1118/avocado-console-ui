@@ -8,7 +8,6 @@ import naverButton from '../../images/auth/naver_btn.png';
 import kakaoButton from '../../images/auth/kakao_btn.png';
 
 import {useHistory, useParams} from 'react-router-dom';
-import AUTH_USER from '../../reducers/api/Auth/authUser';
 
 import {
 	LogInContainer,
@@ -21,6 +20,7 @@ import TextBox from '../RecycleComponents/New/TextBox';
 import {RowDiv} from '../../styles/components/style';
 import CheckBox from '../RecycleComponents/New/CheckBox';
 import {Google} from '../../utils/auth';
+import AUTH_USER from '../../reducers/api/Auth/authUser';
 
 const _CheckBoxContainer = styled.div`
 	display: flex;
@@ -68,9 +68,8 @@ const _AlternativeAuthButton = styled.button`
 
 const LoginForm = () => {
 	const dispatch = useDispatch();
-	const history = useHistory();
 	const {companyId} = useParams();
-	const {user} = useSelector(AUTH_USER.selector);
+
 	const [rememberMe, setRememberMe] = useState(
 		localStorage.getItem('rememberMe'),
 	);
@@ -79,29 +78,31 @@ const LoginForm = () => {
 
 	const onSubmitLogin = useCallback(
 		(v) => {
-			console.log(v.id, v.password);
-
 			if (!v.id || !v.password) return;
+
 			dispatch(
 				AUTH_USER.asyncAction.authPolicyVerificationAction({
 					username: v.id,
 					password: v.password,
 					companyId: companyId,
 				}),
-			).then((val) => {
-				if (
-					val?.payload?.policyParameter?.policies[0]?.type ===
-					'IdAndPassword'
-				) {
-					dispatch(
-						AUTH_USER.asyncAction.userAuthAction({
-							username: v.id,
-							password: v.password,
-							companyId: companyId,
-						}),
-					);
-				}
-			});
+			)
+				.unwrap()
+				.then((val) => {
+					console.log(val?.policyParameter?.policies);
+					if (
+						val?.policyParameter?.policies[0]?.type ===
+						'IdAndPassword'
+					) {
+						dispatch(
+							AUTH_USER.asyncAction.userAuthAction({
+								username: v.id,
+								password: v.password,
+								companyId: companyId,
+							}),
+						);
+					}
+				});
 
 			if (rememberMe) {
 				localStorage.setItem('rememberMe', true);
@@ -124,12 +125,6 @@ const LoginForm = () => {
 		localStorage.setItem('companyId', companyId);
 		location.href = Google.location;
 	}, []);
-
-	useEffect(() => {
-		if (user) {
-			history.push('/');
-		}
-	}, [history, user]);
 
 	return (
 		<LogInContainer>

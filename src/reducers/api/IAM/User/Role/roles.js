@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseUrl} from '../../../../../api/constants';
+import {Axios, baseURL} from '../../../../../api/constants';
 
 const NAME = 'IAM_ROLES';
 
@@ -21,7 +21,7 @@ const createAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -36,16 +36,30 @@ const updateAction = createAsyncThunk(
 		const response = await Axios.put(
 			`/open-api/v1/iam/roles/${payload.id}`,
 			{
-				name: payload.name,
-				description: payload.description,
-				maxGrants: payload.maxGrants, //최대 승인 수 0 : 제한없음 N: 부여 가능 수
+				id: 'role3',
+				name: 'userAuth-role',
+				description: '일반 User에게 부여 하는 역할',
+				type: 'Public',
+				users: ['user3', 'user8', 'user9', 'user10'],
+				groups: ['group4'],
+				companyId: null,
+				policies: [
+					'policy1',
+					'policy2',
+					'policy3',
+					'policy4',
+					'policy5',
+					'policy6',
+					'policy7',
+				],
+				creationDate: '2019.07.22 16:26:12',
 			},
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -62,7 +76,7 @@ const deleteAction = createAsyncThunk(
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -79,7 +93,7 @@ const findByIdAction = createAsyncThunk(
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -101,7 +115,7 @@ const getsAction = createAsyncThunk(
 				Range: payload.range,
 			},
 
-			baseURL: baseUrl.openApi,
+			baseURL: baseURL.openApi,
 		});
 		console.log('ROLE_getsAction:', response.data);
 		return {data: response.data, headers: response.headers};
@@ -122,7 +136,7 @@ const getEventsAction = createAsyncThunk(
 				toTime: payload.toTime,
 				roleld: payload.roleld,
 			},
-			baseURL: baseUrl.openApi,
+			baseURL: baseURL.openApi,
 		});
 		return {data: response.data, headers: response.headers};
 	},

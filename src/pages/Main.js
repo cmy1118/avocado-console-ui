@@ -1,7 +1,9 @@
-import React from 'react';
 import Approal_grey from '../images/dashboard/service_app_gray@2x.png';
 import {useSelector} from 'react-redux';
 import AUTH_USER from '../reducers/api/Auth/authUser';
+
+import React, {useCallback} from 'react';
+
 import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import ContentsButton from '../components/Dasnboard/contentsButton';
@@ -131,11 +133,14 @@ const _contentsTitle = styled.div`
 const _contentsItem = styled.div`
 	display: flex;
 `;
-const _side = styled.div``;
 
 const Main = () => {
 	const history = useHistory();
 	const {companyId} = useSelector(AUTH_USER.selector);
+
+	const onClickMove = useCallback(() => {
+		history.push('/iam');
+	}, [history]);
 
 	return (
 		// <_Container>
@@ -152,7 +157,6 @@ const Main = () => {
 		// </_Container>
 
 		<_Container>
-			<_side></_side>
 			<_contentsContainer>
 				<_contents>
 					<_contentsTitle>Avocado 기능</_contentsTitle>
@@ -206,7 +210,6 @@ const Main = () => {
 					</_contentsItem>
 				</_contents>
 			</_contentsContainer>
-			<_side></_side>
 		</_Container>
 	);
 };

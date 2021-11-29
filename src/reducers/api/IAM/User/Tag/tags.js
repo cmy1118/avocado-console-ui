@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {baseUrl, Axios} from '../../../../../api/constants';
+import {baseURL, Axios} from '../../../../../api/constants';
 
 const NAME = 'IAM_USER_TAG';
 
@@ -20,7 +20,7 @@ const createAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return {data: response.data, headers: response.headers};
@@ -42,7 +42,7 @@ const updateAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -62,7 +62,7 @@ const deleteAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -81,7 +81,7 @@ const getsAction = createAsyncThunk(
 				Authorization: `${user.token_type} ${user.access_token}`,
 				Range: payload.range,
 			},
-			baseURL: baseUrl.openApi,
+			baseURL: baseURL.openApi,
 		});
 		return {data: response.data, headers: response.headers};
 	},

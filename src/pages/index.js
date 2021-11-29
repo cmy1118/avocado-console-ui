@@ -5,4 +5,5 @@ export {default as Group} from './Group';
 export {default as Role} from './Role';
 export {default as Policy} from './Policy';
 export {default as Login} from './Login';
+export {default as AltAuthRedirect} from './AltAuthRedirect';
 export {default as NotFound} from './NotFound';

@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {baseUrl, Axios} from '../../../api/constants';
+import {baseURL, Axios} from '../../../api/constants';
 import {
 	authorization,
 	contentType,
@@ -13,19 +13,20 @@ import base64 from 'base-64';
 const NAME = 'AUTH_USER';
 
 const authPolicyVerificationAction = createAsyncThunk(
-	`${NAME}/AUTH_POLICY_VERIFICATION`,
+	`${NAME}/authPolicyVerification`,
 	async (payload) => {
 		const response = await Axios.post('/oauth2/v1/verify/user', null, {
 			headers: {
-				'Content-Type': contentType,
+				'Content-Type': contentType.URL_ENCODED,
 				Authorization:
 					'Basic ' +
 					base64.encode(`${payload.username}:${payload.password}`),
 				CompanyId: payload.companyId,
 				ApplicationCode: 'console-ui',
 			},
-			baseURL: baseUrl.auth,
+			baseURL: baseURL.auth,
 		});
+
 		return response.data;
 	},
 );
@@ -41,12 +42,13 @@ const userAuthAction = createAsyncThunk(
 				password: payload.password,
 			},
 			headers: {
-				'Content-Type': contentType,
-				Authorization: authorization.LOGIN,
+				'Content-Type': contentType.URL_ENCODED,
+				Authorization:
+					'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
 				CompanyId: payload.companyId,
 				ApplicationCode: 'console-ui',
 			},
-			baseURL: baseUrl.auth,
+			baseUrl: baseURL.auth,
 		});
 		return response.data;
 	},
@@ -59,10 +61,10 @@ const logoutAction = createAsyncThunk(
 
 		const response = await Axios.post(`/oauth2/v1/revoke`, null, {
 			headers: {
-				'Content-Type': contentType,
+				'Content-Type': contentType.URL_ENCODED,
 				Authorization: authorization.LOGOUT + token,
 			},
-			baseURL: baseUrl.auth,
+			baseUrl: baseURL.auth,
 		});
 		return response.data;
 	},
@@ -76,12 +78,12 @@ const clientAuthAction = createAsyncThunk(
 				grant_type: grantType.CLIENT_CREDENTIALS,
 			},
 			headers: {
-				'Content-Type': contentType,
+				'Content-Type': contentType.URL_ENCODED,
 				Authorization:
 					'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
 				CompanyId: payload.companyId,
 			},
-			baseURL: baseUrl.auth,
+			baseUrl: baseURL.auth,
 		});
 		return response.data;
 	},
@@ -136,7 +138,7 @@ const altAuthVerificationAction = createAsyncThunk(
 					AlternativeAuthN: `google ${authState.alternativeAuth.access_token}`,
 					CompanyId: authState.companyId,
 				},
-				baseURL: baseUrl.auth,
+				baseUrl: baseURL.auth,
 			},
 		);
 		return response.data;
@@ -147,6 +149,7 @@ const slice = createSlice({
 	name: NAME,
 	initialState: {
 		companyId: '',
+		isLoggedIn: false,
 		user: null,
 		alternativeAuth: null,
 		clientAuth: null,
@@ -169,6 +172,7 @@ const slice = createSlice({
 		[userAuthAction.pending]: (state, action) => {
 			state.loading = true;
 			state.companyId = action.meta.arg.companyId;
+			state.isLoggedIn = true;
 		},
 		[userAuthAction.fulfilled]: (state, action) => {
 			state.loading = false;
@@ -185,11 +189,13 @@ const slice = createSlice({
 		[logoutAction.fulfilled]: (state) => {
 			state.loading = false;
 			state.user = null;
+			state.isLoggedIn = false;
 		},
 		[logoutAction.rejected]: (state, action) => {
 			state.loading = false;
 			state.user = null;
 			state.error = action.error;
+			state.isLoggedIn = false;
 		},
 
 		[clientAuthAction.pending]: (state, action) => {
@@ -235,12 +241,31 @@ const slice = createSlice({
 });
 
 const selectAllState = createSelector(
+	(state) => state.isLoggedIn,
 	(state) => state.companyId,
 	(state) => state.user,
+	(state) => state.clientAuth,
+	(state) => state.alternativeAuth,
 	(state) => state.error,
 	(state) => state.loading,
-	(companyId, user, clientAuth, alternativeAuth, error, loading) => {
-		return {companyId, user, clientAuth, alternativeAuth, error, loading};
+	(
+		isLoggedIn,
+		companyId,
+		user,
+		clientAuth,
+		alternativeAuth,
+		error,
+		loading,
+	) => {
+		return {
+			isLoggedIn,
+			companyId,
+			user,
+			clientAuth,
+			alternativeAuth,
+			error,
+			loading,
+		};
 	},
 );
 

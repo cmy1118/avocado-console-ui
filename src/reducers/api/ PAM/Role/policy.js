@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {baseUrl, Axios} from '../../../../api/constants';
+import {Axios, baseURL} from '../../../../api/constants';
 
 const NAME = 'PAM_POLICY';
 
@@ -14,7 +14,7 @@ const findByRoleIdAction = createAsyncThunk(
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;

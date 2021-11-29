@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
-import {baseUrl, Axios} from '../../../../../api/constants';
+
+import {Axios, baseURL} from '../../../../../api/constants';
 
 const NAME = 'IAM_USER_TREE';
 
@@ -29,7 +29,7 @@ const createAction = createAsyncThunk(
 					Authorization: `${client.token_type} ${client.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;

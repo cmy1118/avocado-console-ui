@@ -67,7 +67,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 		if (isSummaryOpened) {
 			history.push({
 				pathname: `/groups/${groupId}`,
-				search: 'tabs=user',
+				search: 'tabs=userAuth',
 			});
 		} else {
 			history.push({
