@@ -107,7 +107,7 @@ const findUserGroupsById = createAsyncThunk(
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -117,7 +117,7 @@ const findUserGroupsById = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
-		groupList:[],
+		groupList: [],
 		roles: [],
 		loading: false,
 		error: null,
@@ -154,8 +154,8 @@ const selectAllState = createSelector(
 	(state) => state.groupList,
 	(state) => state.error,
 	(state) => state.loading,
-	(roles, groupList,error, loading) => {
-		return {roles, groupList,error, loading};
+	(roles, groupList, error, loading) => {
+		return {roles, groupList, error, loading};
 	},
 );
 

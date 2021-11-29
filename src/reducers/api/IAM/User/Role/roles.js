@@ -157,7 +157,7 @@ const findTemplatesAction = createAsyncThunk(
 				params: {
 					incluide: payload.include,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return {data: response.data, headers: response.headers};

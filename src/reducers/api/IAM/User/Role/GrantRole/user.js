@@ -1,5 +1,9 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {
+	Axios,
+	baseURL as baseUrl,
+	baseURL,
+} from '../../../../../../api/constants';
 
 const NAME = 'IAM_ROLES_GRANT_ROLE_USER';
 
@@ -107,7 +111,7 @@ const findUsersByIdAction = createAsyncThunk(
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -118,7 +122,7 @@ const slice = createSlice({
 	name: NAME,
 	initialState: {
 		//userList : 사용자 등록 정보를 역할 ID를 기반으로 조회한 .
-		userList:[],
+		userList: [],
 		userRoles: [],
 		loading: false,
 		error: null,
@@ -175,8 +179,8 @@ const selectAllState = createSelector(
 	(state) => state.userList,
 	(state) => state.error,
 	(state) => state.loading,
-	(userRoles, userList,error, loading) => {
-		return {userRoles,userList, error, loading};
+	(userRoles, userList, error, loading) => {
+		return {userRoles, userList, error, loading};
 	},
 );
 
