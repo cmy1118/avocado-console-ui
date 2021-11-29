@@ -20,6 +20,7 @@ import {
 	groupsConverter,
 	tagsConverter,
 } from '../../../../utils/tableDataConverter';
+import IAM_USER_GROUP from "../../../../reducers/api/IAM/User/Group/group";
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 
 	const userData = useMemo(() => {
 		// return [];
-		console.log(user);
+		console.log('userData:',user);
 		return (
 			user?.map((v) => ({
 				...v,
@@ -45,23 +46,17 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	}, [user]);
 
 	const groupData = useMemo(() => {
-		return [];
-		// return group?.map((v, i) => ({
-		// 		...v,
-		// 		//권한수
-		// 		//numberOfPermissions: v.roles.length,
-		//
-		// 		groupType: v.userGroupType.name,
-		//
-		// 		//상위그룹 어떻게 오는지 ?
-		// 		parentGroup: parentGroupConverter(v.parentGroup.name),
-		// 		createdTime:v.createdTag.createdTime,
-		//
-		// 	    //부여 일시??
-		// 		grantDate: 'null',
-		// 		grantUser: 'null',
-		// 		[DRAGGABLE_KEY]: v.id,
-		// 	}));
+		// return [];
+		return (group?.map((v) => ({
+				...v,
+				groupType: v.userGroupType.name,
+				parentGroup: v.parentGroup.name ? v.parentGroup.name : '없음',
+				createdTime:v.createdTag.createdTime,
+				grantDate: 'null',
+				grantUser: 'null',
+				[DRAGGABLE_KEY]: v.id,
+			})) || []
+		);
 	}, [group]);
 
 	const onClickChangeTab = useCallback(
@@ -119,6 +114,8 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 
 	//이 역할의 사용자 그룹.
 	useEffect(() => {
+		console.log('\t//이 역할의 사용자 그룹.\n')
+		const arr = [];
 		isSummaryOpened &&
 			dispatch(
 				IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.findUserGroupsById({
@@ -126,7 +123,22 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				}),
 			)
 				.unwrap()
-				.then((res) => setGroup(res));
+				.then((groups) =>
+					groups.map((id) => {
+						console.log('이 역할의 그룹 id:', id);
+						dispatch(
+							IAM_USER_GROUP.asyncAction.findByIdAction({
+								id: id,
+							}),
+						)
+							.unwrap()
+							.then((res) => {
+								arr.push(res);
+								console.log(' 그룹 정보:', res);
+								setGroup(arr);
+							});
+					}),
+				);
 	}, [Id, dispatch, isSummaryOpened, setGroup]);
 
 	return (
@@ -145,7 +157,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 			</TableContainer>
 
 			<SummaryTableTitle onClick={onClickChangeTab('user')}>
-				이 역할의 사용자 : {userData?.length}
+				이 역할의 사용자 : {user?.length}
 			</SummaryTableTitle>
 			<TableContainer
 				mode={'readOnly'}
