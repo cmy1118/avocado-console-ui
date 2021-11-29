@@ -50,7 +50,6 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					.filter((v) => !includedDataIds?.includes(v.id))
 					.map((v) => ({
 						...v,
-						createdTime: v.createdTag.createdTime,
 						// numberOfUsers: v.users?.length,
 						[DRAGGABLE_KEY]: v.id,
 					}))
@@ -148,10 +147,17 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 			)
 				.unwrap()
 				.then((res) => {
-					res.data.map((v) => arr.push(v.roleId));
+					res.data.map((v) =>
+						arr.push({
+							id: v.id,
+							name: v.name,
+							description: v.description,
+							createdTime: v.createdTag.createdTime,
+							type: v.maxGrants === '1' ? 'Private' : 'Public',
+						}),
+					);
 					// setIncludedDataIds(arr);
-					setRoles(res.data);
-					console.log('role', roles);
+					setRoles(arr);
 				});
 		}
 	}, [dispatch, isSummaryOpened, page]);
