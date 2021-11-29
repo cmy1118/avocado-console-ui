@@ -28,7 +28,7 @@ const TableTextBox = ({cell, isFocus}) => {
 	useEffect(() => {
 		setValue(cell.value);
 	}, [cell.value]);
-	//
+
 	return isOpened ? (
 		<_Input
 			autoFocus

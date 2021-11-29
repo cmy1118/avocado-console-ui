@@ -77,7 +77,7 @@ const findRolesByIdsAction = createAsyncThunk(
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
-					'Content-Type': 'application/json',
+					// 'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
 			},

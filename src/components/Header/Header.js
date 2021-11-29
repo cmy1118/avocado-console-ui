@@ -15,7 +15,7 @@ const _Container = styled.div`
 	border-bottom: 1px #e3e5e5 solid;
 	padding: 0px 16px;
 	align-items: center;
-	 box-shadow: 0 3px 9px 0 rgba(0, 0, 0, 0.2);
+	box-shadow: 0 3px 9px 0 rgba(0, 0, 0, 0.2);
 `;
 
 const _Title = styled.div`
@@ -23,7 +23,6 @@ const _Title = styled.div`
 `;
 
 const _Logo = styled.div``;
-
 
 const Header = () => {
 	const ref = useRef(null);
@@ -41,13 +40,16 @@ const Header = () => {
 				initialValues={{search: ''}}
 			>
 				<TextBox
-					placeholderTextColor={'#D7D7D7'}
-					borderColor={'#0B6365'}
+					placeholdertextcolor={'#D7D7D7'}
+					bordercolor={'#0B6365'}
 					placeholder={'제품 및 리소스 검색'}
-					background={
-					'#0B6365'}
+					background={'#0B6365'}
 					front={
-						<Icon color={'#D7D7D7'} size={'sm'} margin_right={'0px'}>
+						<Icon
+							color={'#D7D7D7'}
+							size={'sm'}
+							margin_right={'0px'}
+						>
 							{searchIcon}
 						</Icon>
 					}

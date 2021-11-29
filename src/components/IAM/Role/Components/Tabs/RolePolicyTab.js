@@ -5,7 +5,7 @@ import {
 	TransparentButton,
 } from '../../../../../styles/components/buttons';
 import Table from '../../../../Table/Table';
-import {tableKeys} from '../../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
 import {dummyPermission} from '../../../../../utils/dummyData';
 import TableContainer from '../../../../Table/TableContainer';
@@ -24,6 +24,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import PAGINATION from '../../../../../reducers/pagination';
 import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
 import PAM_POLICY from '../../../../../reducers/api/ PAM/Role/policy';
+import PAM_ROLES from '../../../../../reducers/api/ PAM/Role/roles';
 
 const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -31,18 +32,79 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
-	const [inPolicy, setInPolicy] = useState(null);
-	const [exPolicy, setExPolicy] = useState(null);
+	const [inPolicy, setInPolicy] = useState([]);
+	const [exPolicy, setExPolicy] = useState([]);
 
-	const excludedData = useMemo(() => [], []);
-	const includedData = useMemo(() => [], []);
+	const excludedData = useMemo(() => {
+		return (
+			exPolicy?.map((v) => ({
+				id: v.id,
+				name: v.name,
+				// type: v.attributes[0].policyType,
+				// description: '',
+				// numberOfRoles: 0,
+				createdTime: v.createdTime,
+				[DRAGGABLE_KEY]: v.id,
+				attributes: v.attributes,
+			})) || []
+		);
+	}, [exPolicy]);
+
+	const includedData = useMemo(() => {
+		return (
+			inPolicy?.map((v) => ({
+				id: v.id,
+				name: v.name,
+				// type: v.attributes[0].policyType,
+				// description: '',
+				// numberOfRoles: 0,
+				createdTime: v.createdTime,
+				[DRAGGABLE_KEY]: v.id,
+			})) || []
+		);
+	}, [inPolicy]);
 
 	//역할에 포함 정책 템플릿을 조회한다.
 	useEffect(() => {
 		if (!isSummaryOpened) {
 			dispatch(
-				PAM_POLICY.asyncAction.findByRoleIdAction({roleId: roleId}),
-			);
+				IAM_ROLES.asyncAction.findTemplatesAction({
+					roleId: roleId,
+					range: 'elements=0-50',
+					include: true,
+				}),
+			)
+				.unwrap()
+				.then((res) => {
+					console.log(res.data);
+					setInPolicy(res.data);
+				});
+
+			dispatch(
+				IAM_ROLES.asyncAction.findTemplatesAction({
+					roleId: roleId,
+					range: 'elements=0-50',
+					include: false,
+				}),
+			)
+				.unwrap()
+				.then((res) => {
+					console.log(res.data);
+					setExPolicy(res.data);
+				});
+			// dispatch(IAM_ROLES.asyncAction.findByIdAction({id: roleId}))
+			// 	.unwrap()
+			// 	.then((res) => {
+			// 		console.log(res);
+			// 	});
+			// dispatch(PAM_ROLES.asyncAction.findRolesByIdsAction({id: roleId}))
+			// 	.unwrap()
+			// 	.then((res) => {
+			// 		console.log(res);
+			// 	});
+			// dispatch(
+			// 	PAM_POLICY.asyncAction.findByRoleIdAction({roleId: roleId}),
+			// );
 			// dispatch(
 			// 	IAM_ROLES.asyncAction.findTemplatesAction({
 			// 		range:
