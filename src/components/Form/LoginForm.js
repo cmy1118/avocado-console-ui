@@ -20,6 +20,7 @@ import Form from '../RecycleComponents/New/Form';
 import TextBox from '../RecycleComponents/New/TextBox';
 import {RowDiv} from '../../styles/components/style';
 import CheckBox from '../RecycleComponents/New/CheckBox';
+import {Google} from '../../utils/auth';
 
 const _CheckBoxContainer = styled.div`
 	display: flex;
@@ -93,7 +94,7 @@ const LoginForm = () => {
 					'IdAndPassword'
 				) {
 					dispatch(
-						AUTH_USER.asyncAction.loginAction({
+						AUTH_USER.asyncAction.userAuthAction({
 							username: v.id,
 							password: v.password,
 							companyId: companyId,
@@ -118,6 +119,11 @@ const LoginForm = () => {
 	const onClickRememberPassword = useCallback(() => {
 		setRememberMe(!rememberMe);
 	}, [rememberMe]);
+
+	const onClickGoogleAltAuth = useCallback(() => {
+		localStorage.setItem('companyId', companyId);
+		location.href = Google.location;
+	}, []);
 
 	useEffect(() => {
 		if (user) {
@@ -191,7 +197,7 @@ const LoginForm = () => {
 				</_AlternativeAuthButton>
 			</_AlternativeAuthContainer>
 			<_AlternativeAuthContainer>
-				<_AlternativeAuthButton>
+				<_AlternativeAuthButton onClick={onClickGoogleAltAuth}>
 					<img src={googleButton} alt='googleButton' />
 				</_AlternativeAuthButton>
 				<_AlternativeAuthButton>

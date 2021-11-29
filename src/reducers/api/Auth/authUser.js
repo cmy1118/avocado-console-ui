@@ -1,7 +1,13 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
 import {baseUrl, Axios} from '../../../api/constants';
-import {authorization, contentType, grantType} from '../../../utils/auth';
+import {
+	authorization,
+	contentType,
+	getParameter,
+	Google,
+	grantType,
+} from '../../../utils/auth';
 import base64 from 'base-64';
 
 const NAME = 'AUTH_USER';
@@ -24,24 +30,27 @@ const authPolicyVerificationAction = createAsyncThunk(
 	},
 );
 
-const loginAction = createAsyncThunk(`${NAME}/LOGIN`, async (payload) => {
-	console.log(payload);
-	const response = await Axios.post(`/oauth2/v1/token`, null, {
-		params: {
-			grant_type: grantType.PASSWORD,
-			username: payload.username,
-			password: payload.password,
-		},
-		headers: {
-			'Content-Type': contentType,
-			Authorization: authorization.LOGIN,
-			CompanyId: payload.companyId,
-			ApplicationCode: 'console-ui',
-		},
-		baseURL: baseUrl.auth,
-	});
-	return response.data;
-});
+const userAuthAction = createAsyncThunk(
+	`${NAME}/USER_AUTH`,
+	async (payload) => {
+		console.log(payload);
+		const response = await Axios.post(`/oauth2/v1/token`, null, {
+			params: {
+				grant_type: grantType.PASSWORD,
+				username: payload.username,
+				password: payload.password,
+			},
+			headers: {
+				'Content-Type': contentType,
+				Authorization: authorization.LOGIN,
+				CompanyId: payload.companyId,
+				ApplicationCode: 'console-ui',
+			},
+			baseURL: baseUrl.auth,
+		});
+		return response.data;
+	},
+);
 
 const logoutAction = createAsyncThunk(
 	`${NAME}/LOGOUT`,
@@ -59,11 +68,88 @@ const logoutAction = createAsyncThunk(
 	},
 );
 
+const clientAuthAction = createAsyncThunk(
+	`${NAME}/clientAuth`,
+	async (payload) => {
+		const response = await Axios.post('/oauth2/v1/token', null, {
+			params: {
+				grant_type: grantType.CLIENT_CREDENTIALS,
+			},
+			headers: {
+				'Content-Type': contentType,
+				Authorization:
+					'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
+				CompanyId: payload.companyId,
+			},
+			baseURL: baseUrl.auth,
+		});
+		return response.data;
+	},
+);
+
+const GoogleAuthAction = createAsyncThunk(`${NAME}/GoogleAuth`, async () => {
+	const response = await Axios.post(
+		'https://accounts.google.com/o/oauth2/token',
+		null,
+		{
+			params: {
+				code: decodeURIComponent(getParameter('code')),
+				grant_type: grantType.AUTHORIZATION_CODE,
+				redirect_uri: Google.redirectUri,
+				client_id: Google.clientId,
+				client_secret: Google.clientSecret,
+			},
+			headers: {
+				'Content-Type': contentType,
+			},
+		},
+	);
+
+	const user = await Axios.get(
+		'https://www.googleapis.com/oauth2/v1/userinfo',
+		{
+			params: {
+				alt: 'json',
+				access_token: response.data.access_token,
+			},
+		},
+	);
+	return {...response.data, email: user.data.email};
+});
+
+const altAuthVerificationAction = createAsyncThunk(
+	`${NAME}/alternativeAuth`,
+	async (payload, {getState}) => {
+		const authState = getState()[NAME];
+		const response = await Axios.post(
+			'/oauth2/v1/alternative/verify',
+			null,
+			{
+				params: {
+					username: authState.alternativeAuth.email.match(
+						/^.+(?=@)/,
+					)[0],
+				},
+				headers: {
+					'Content-Type': contentType,
+					Authorization: `Bearer ${authState.clientAuth.access_token}`,
+					AlternativeAuthN: `google ${authState.alternativeAuth.access_token}`,
+					CompanyId: authState.companyId,
+				},
+				baseURL: baseUrl.auth,
+			},
+		);
+		return response.data;
+	},
+);
+
 const slice = createSlice({
 	name: NAME,
 	initialState: {
 		companyId: '',
 		user: null,
+		alternativeAuth: null,
+		clientAuth: null,
 		loading: false,
 		error: null,
 	},
@@ -79,18 +165,20 @@ const slice = createSlice({
 		[authPolicyVerificationAction.rejected]: (state) => {
 			state.loading = false;
 		},
-		[loginAction.pending]: (state, action) => {
+
+		[userAuthAction.pending]: (state, action) => {
 			state.loading = true;
 			state.companyId = action.meta.arg.companyId;
 		},
-		[loginAction.fulfilled]: (state, action) => {
+		[userAuthAction.fulfilled]: (state, action) => {
 			state.loading = false;
 			state.user = action.payload;
 		},
-		[loginAction.rejected]: (state, action) => {
+		[userAuthAction.rejected]: (state, action) => {
 			state.loading = false;
 			state.error = action.error;
 		},
+
 		[logoutAction.pending]: (state) => {
 			state.loading = true;
 		},
@@ -103,6 +191,46 @@ const slice = createSlice({
 			state.user = null;
 			state.error = action.error;
 		},
+
+		[clientAuthAction.pending]: (state, action) => {
+			state.loading = true;
+			state.companyId = action.meta.arg.companyId;
+		},
+		[clientAuthAction.fulfilled]: (state, action) => {
+			state.loading = false;
+			state.clientAuth = action.payload;
+		},
+		[clientAuthAction.rejected]: (state, action) => {
+			state.loading = false;
+			state.error = action.error;
+		},
+
+		[GoogleAuthAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[GoogleAuthAction.fulfilled]: (state, action) => {
+			state.loading = false;
+			state.alternativeAuth = action.payload;
+		},
+		[GoogleAuthAction.rejected]: (state, action) => {
+			state.loading = false;
+			state.error = action.error;
+		},
+
+		[altAuthVerificationAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[altAuthVerificationAction.fulfilled]: (state, action) => {
+			state.loading = false;
+			//TODO: authAuth, clientAuth 지워줘야 할까?? 경하님께 물어보기
+			// state.clientAuth = null;
+			state.user = action.payload;
+			state.isLoggedIn = true;
+		},
+		[altAuthVerificationAction.rejected]: (state, action) => {
+			state.loading = false;
+			state.error = action.error;
+		},
 	},
 });
 
@@ -111,8 +239,8 @@ const selectAllState = createSelector(
 	(state) => state.user,
 	(state) => state.error,
 	(state) => state.loading,
-	(companyId, user, error, loading) => {
-		return {companyId, user, error, loading};
+	(companyId, user, clientAuth, alternativeAuth, error, loading) => {
+		return {companyId, user, clientAuth, alternativeAuth, error, loading};
 	},
 );
 
@@ -122,7 +250,14 @@ const AUTH_USER = {
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
 	action: slice.actions,
-	asyncAction: {authPolicyVerificationAction, loginAction, logoutAction},
+	asyncAction: {
+		authPolicyVerificationAction,
+		userAuthAction,
+		logoutAction,
+		clientAuthAction,
+		GoogleAuthAction,
+		altAuthVerificationAction,
+	},
 };
 
 export default AUTH_USER;

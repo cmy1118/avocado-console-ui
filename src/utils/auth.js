@@ -22,3 +22,33 @@ export const grantType = {
 	REFRESH_TOKEN: 'refresh_token',
 	AUTHORIZATION_CODE: 'authorization_code',
 };
+
+export const Google = {
+	clientId:
+		'819744979674-dastdmj1j5k8coluu2vofclsi3kvo90h.apps.googleusercontent.com',
+	clientSecret: 'LEVTqM7nBsyLPuSEbT-mPffx',
+	redirectUri:
+		window.location.protocol +
+		'//' +
+		window.location.host +
+		'/altauthredirect',
+	location:
+		'https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=819744979674-dastdmj1j5k8coluu2vofclsi3kvo90h.apps.googleusercontent.com&redirect_uri=' +
+		window.location.protocol +
+		'//' +
+		window.location.host +
+		'/altauthredirect&scope=email%20profile&state=myState&access_type=offline&prompt=consent',
+};
+
+export const getParameter = (name) => {
+	const list = location.search.substring(1).split('&');
+	for (let i = 0; i < list.length; i++) {
+		const data = list[i].split('=');
+		if (data.length === 2) {
+			if (data[0] === name) {
+				return data[1];
+			}
+		}
+	}
+	return null;
+};
