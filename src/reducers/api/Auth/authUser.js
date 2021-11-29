@@ -2,8 +2,28 @@ import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
 import {baseUrl, Axios} from '../../../api/constants';
 import {authorization, contentType, grantType} from '../../../utils/auth';
+import base64 from 'base-64';
 
 const NAME = 'AUTH_USER';
+
+const authPolicyVerificationAction = createAsyncThunk(
+	`${NAME}/AUTH_POLICY_VERIFICATION`,
+	async (payload) => {
+		console.log(payload);
+		const response = await Axios.post('/oauth2/v1/verify/user', null, {
+			headers: {
+				'Content-Type': contentType,
+				Authorization:
+					'Basic ' +
+					base64.encode(`${payload.username}:${payload.password}`),
+				CompanyId: payload.companyId,
+				ApplicationCode: 'console-ui',
+			},
+			baseURL: baseUrl.auth,
+		});
+		return response.data;
+	},
+);
 
 const loginAction = createAsyncThunk(`${NAME}/LOGIN`, async (payload) => {
 	console.log(payload);
@@ -17,6 +37,7 @@ const loginAction = createAsyncThunk(`${NAME}/LOGIN`, async (payload) => {
 			'Content-Type': contentType,
 			Authorization: authorization.LOGIN,
 			CompanyId: payload.companyId,
+			ApplicationCode: 'console-ui',
 		},
 		baseURL: baseUrl.auth,
 	});
@@ -49,6 +70,11 @@ const slice = createSlice({
 	},
 	reducers: {},
 	extraReducers: {
+		[authPolicyVerificationAction.pending]: (state, action) => {},
+		[authPolicyVerificationAction.fulfilled]: (state, action) => {
+			console.log(action.payload);
+		},
+		[authPolicyVerificationAction.rejected]: (state, action) => {},
 		[loginAction.pending]: (state, action) => {
 			state.loading = true;
 			state.companyId = action.meta.arg.companyId;
@@ -92,10 +118,7 @@ const AUTH_USER = {
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
 	action: slice.actions,
-	asyncAction: {
-		loginAction,
-		logoutAction,
-	},
+	asyncAction: {authPolicyVerificationAction, loginAction, logoutAction},
 };
 
 export default AUTH_USER;

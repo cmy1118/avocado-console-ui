@@ -163,6 +163,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 						<LiText>마지막 활동 사용자 : null</LiText>
 					</SummaryList>
 				</div>
+
 				<CoveredByTabContent isOpened={isSummaryOpened}>
 					<RoleSummary
 						isSummaryOpened={isSummaryOpened}

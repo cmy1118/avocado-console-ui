@@ -26,6 +26,7 @@ import {
 } from '../../../../../styles/components/iam/iam';
 // } from '../../../../../styles/components/iam/iam';
 import {DRAGGABLE_KEY} from '../../../../../Constants/Table/keys';
+import {CollapsbleContent} from '../../../../../styles/components/style';
 
 const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 	const {roles} = useSelector(IAM_ROLES.selector);
@@ -117,26 +118,23 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 							</NormalButton>
 						</TitleBarButtons>
 					</TableFold>
-					{isFold[space] && (
-						<>
-							<TableOptionText data={'groups'} />
-							<TableContainer
-								data={excludedData}
-								tableKey={
+					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
+						<TableOptionText data={'groups'} />
+						<TableContainer
+							data={excludedData}
+							tableKey={
+								tableKeys.roles.summary.tabs.groups.exclude
+							}
+							columns={
+								tableColumns[
 									tableKeys.roles.summary.tabs.groups.exclude
-								}
-								columns={
-									tableColumns[
-										tableKeys.roles.summary.tabs.groups
-											.exclude
-									]
-								}
-							>
-								<TableOptionsBar />
-								<Table setSelect={setSelect} isDraggable />
-							</TableContainer>
-						</>
-					)}
+								]
+							}
+						>
+							<TableOptionsBar />
+							<Table setSelect={setSelect} isDraggable />
+						</TableContainer>
+					</CollapsbleContent>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>

@@ -79,7 +79,13 @@ const LoginForm = () => {
 	const onSubmitLogin = useCallback(
 		(v) => {
 			if (!v.id || !v.password) return;
-
+			dispatch(
+				AUTH_USER.asyncAction.authPolicyVerificationAction({
+					username: v.id,
+					password: v.password,
+					companyId: companyId,
+				}),
+			);
 			dispatch(
 				AUTH_USER.asyncAction.loginAction({
 					username: v.id,

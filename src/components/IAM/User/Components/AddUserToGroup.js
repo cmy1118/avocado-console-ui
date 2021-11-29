@@ -35,8 +35,6 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const {page} = useSelector(PAGINATION.selector);
 
-	console.log(groups);
-
 	const includedData = useMemo(() => {
 		return (
 			groups

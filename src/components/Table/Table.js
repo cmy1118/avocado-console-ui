@@ -41,6 +41,7 @@ const Table = ({
 	prepareRow,
 	page,
 	mode,
+	expanded,
 }) => {
 	const [position, setPosition] = useState({x: 0, y: 0});
 
@@ -194,7 +195,11 @@ const Table = ({
 								{headerGroup.headers.map((column, i) => {
 									return (
 										<Tds
-											className={'th'}
+											className={
+												column.id === 'selection'
+													? 'th table-check-box'
+													: 'th'
+											}
 											width={
 												column.id === 'selection'
 													? '40px'
@@ -287,7 +292,12 @@ const Table = ({
 																return (
 																	<Tds
 																		className={
-																			'td'
+																			cell
+																				.column
+																				.id ===
+																			'selection'
+																				? 'td table-check-box'
+																				: 'td'
 																		}
 																		width={
 																			cell
@@ -321,14 +331,13 @@ const Table = ({
 															},
 														)}
 													</div>
-													{/*{expanded &&*/}
-													{/*	Object.keys(*/}
-													{/*		expanded,*/}
-													{/*	).includes(*/}
-													{/*		row.original.id,*/}
-													{/*	) && (*/}
-													{/*		<InnerTableContainer />*/}
-													{/*	)}*/}
+													{Object.keys(
+														expanded,
+													).includes(
+														row.original[DRAGGABLE_KEY],
+													) && (
+														<InnerTableContainer />
+													)}
 												</>
 											);
 										}}
@@ -357,6 +366,7 @@ Table.propTypes = {
 	page: PropTypes.array,
 	selectedFlatRows: PropTypes.array,
 	selectedRowIds: PropTypes.object,
+	expanded: PropTypes.object,
 };
 
 export default Table;

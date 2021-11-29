@@ -23,6 +23,7 @@ import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/group
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {parentGroupConverter} from '../../../../utils/tableDataConverter';
 import * as _ from 'lodash';
+import {CollapsbleContent} from '../../../../styles/components/style';
 
 const UserGroupsTab = ({
 	userUid,
@@ -310,26 +311,23 @@ const UserGroupsTab = ({
 							그룹 추가
 						</NormalButton>
 					</TableFold>
-					{isFold[space] && (
-						<>
-							<TableOptionText data={'groups'} />
-							<TableContainer
-								data={excludedData}
-								tableKey={
+					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
+						<TableOptionText data={'groups'} />
+						<TableContainer
+							data={excludedData}
+							tableKey={
+								tableKeys.users.summary.tabs.groups.exclude
+							}
+							columns={
+								tableColumns[
 									tableKeys.users.summary.tabs.groups.exclude
-								}
-								columns={
-									tableColumns[
-										tableKeys.users.summary.tabs.groups
-											.exclude
-									]
-								}
-							>
-								<TableOptionsBar />
-								<Table setSelect={setSelect} isDraggable />
-							</TableContainer>
-						</>
-					)}
+								]
+							}
+						>
+							<TableOptionsBar />
+							<Table setSelect={setSelect} isDraggable />
+						</TableContainer>
+					</CollapsbleContent>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>

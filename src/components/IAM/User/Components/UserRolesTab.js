@@ -20,6 +20,7 @@ import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import PAGINATION from '../../../../reducers/pagination';
 import * as _ from 'lodash';
+import {CollapsbleContent} from '../../../../styles/components/style';
 
 const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -232,27 +233,24 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 							권한 추가
 						</NormalButton>
 					</TableFold>
-					{isFold[space] && (
-						<>
-							<TableOptionText data={'roles'} />
+					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
+						<TableOptionText data={'roles'} />
 
-							<TableContainer
-								data={excludedData}
-								tableKey={
+						<TableContainer
+							data={excludedData}
+							tableKey={
+								tableKeys.users.summary.tabs.roles.exclude
+							}
+							columns={
+								tableColumns[
 									tableKeys.users.summary.tabs.roles.exclude
-								}
-								columns={
-									tableColumns[
-										tableKeys.users.summary.tabs.roles
-											.exclude
-									]
-								}
-							>
-								<TableOptionsBar />
-								<Table setSelect={setSelect} isDraggable />
-							</TableContainer>
-						</>
-					)}
+								]
+							}
+						>
+							<TableOptionsBar />
+							<Table setSelect={setSelect} isDraggable />
+						</TableContainer>
+					</CollapsbleContent>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>
