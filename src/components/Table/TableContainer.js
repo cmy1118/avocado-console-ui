@@ -192,7 +192,7 @@ const TableContainer = ({
 		getToggleHideAllColumnsProps,
 		setHiddenColumns,
 		setGlobalFilter,
-		state: {pageIndex, selectedRowIds, pageSize, filters, expanded},
+		state: {pageIndex, selectedRowIds, pageSize, filters},
 	} = useTable(
 		{
 			data,
@@ -272,7 +272,6 @@ const TableContainer = ({
 							pageSize,
 							filters,
 							mode,
-							expanded,
 						})}
 					</NormalTable>
 				) : (

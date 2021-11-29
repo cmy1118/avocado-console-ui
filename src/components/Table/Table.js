@@ -41,7 +41,6 @@ const Table = ({
 	prepareRow,
 	page,
 	mode,
-	expanded,
 }) => {
 	const [position, setPosition] = useState({x: 0, y: 0});
 
@@ -331,14 +330,14 @@ const Table = ({
 															},
 														)}
 													</div>
-													{expanded &&
-														Object.keys(
-															expanded,
-														).includes(
-															row.original.id,
-														) && (
-															<InnerTableContainer />
-														)}
+													{/*{expanded &&*/}
+													{/*	Object.keys(*/}
+													{/*		expanded,*/}
+													{/*	).includes(*/}
+													{/*		row.original.id,*/}
+													{/*	) && (*/}
+													{/*		<InnerTableContainer />*/}
+													{/*	)}*/}
 												</>
 											);
 										}}
@@ -367,7 +366,6 @@ Table.propTypes = {
 	page: PropTypes.array,
 	selectedFlatRows: PropTypes.array,
 	selectedRowIds: PropTypes.object,
-	expanded: PropTypes.object,
 };
 
 export default Table;
