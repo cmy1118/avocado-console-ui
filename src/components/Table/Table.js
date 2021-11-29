@@ -194,11 +194,7 @@ const Table = ({
 								{headerGroup.headers.map((column, i) => {
 									return (
 										<Tds
-											className={
-												column.id === 'selection'
-													? 'th table-check-box'
-													: 'th'
-											}
+											className={'th'}
 											width={
 												column.id === 'selection'
 													? '40px'
@@ -291,12 +287,7 @@ const Table = ({
 																return (
 																	<Tds
 																		className={
-																			cell
-																				.column
-																				.id ===
-																			'selection'
-																				? 'td table-check-box'
-																				: 'td'
+																			'td'
 																		}
 																		width={
 																			cell

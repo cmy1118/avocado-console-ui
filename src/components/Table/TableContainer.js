@@ -52,18 +52,6 @@ const NormalTable = styled.div`
 		.tr {
 			display: flex;
 			justify-content: space-between;
-			.td,
-			.th {
-				flex: 1;
-			}
-			.table-check-box {
-				flex: 0;
-			}
-
-			.th:first-child,
-			.td:first-of-type {
-				margin-left: ${(props) => props.mode === 'inner' && '80px'};
-			}
 		}
 
 		.head {
