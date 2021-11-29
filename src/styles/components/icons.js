@@ -100,6 +100,7 @@ export const IconButton = styled(Icon)`
 `;
 export const HoverIconButton = styled(Icon)`
 	cursor: pointer;
+	background: ${(props) => props.background? props.background : 'transparent'};
 	&:hover {
 		color: ${(props) => props?.hover_color || '#556367'};
 		svg {

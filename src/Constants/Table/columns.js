@@ -52,7 +52,7 @@ import {
 } from '../../utils/TableColumns/roles';
 
 export const tableColumns = Object.freeze({
-	// user
+	// userAuth
 	USER: USER_COLUMN, // 기본
 	USER_ADD_GROUPS_INCLUDE: USER_ADD_GROUPS_INCLUDE_COLUMN, //submit 되는 테이블 => include
 	USER_ADD_GROUPS_EXCLUDE: USER_ADD_GROUPS_EXCLUDE_COLUMN,

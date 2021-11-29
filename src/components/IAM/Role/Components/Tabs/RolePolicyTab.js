@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
 	NormalButton,
@@ -19,14 +19,58 @@ import {
 	FoldableContainer,
 	TitleBarButtons,
 } from '../../../../../styles/components/iam/iam';
-import {CollapsbleContent} from '../../../../../styles/components/style';
+import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
+import {useDispatch, useSelector} from 'react-redux';
+import PAGINATION from '../../../../../reducers/pagination';
+import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
 
-const RolePolicyTab = ({roleId, space, isFold, setIsFold}) => {
+const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
+	const dispatch = useDispatch();
+	const {page} = useSelector(PAGINATION.selector);
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
+	const [inPolicy, setInPolicy] = useState(null);
+	const [exPolicy, setExPolicy] = useState(null);
+
 	const excludedData = useMemo(() => [], []);
 	const includedData = useMemo(() => [], []);
+
+	//역할에 포함 정책 템플릿을 조회한다.
+	useEffect(() => {
+		if (
+			!isSummaryOpened &&
+			page[tableKeys.users.summary.tabs.groups.include]
+		) {
+			dispatch(
+				IAM_ROLES.asyncAction.findTemplatesAction({
+					range:
+						page[tableKeys.roles.summary.tabs.permissions.include],
+					include: true,
+				}),
+			)
+				.unwrap()
+				.then((res) => setInPolicy(res));
+		}
+	}, [dispatch, isSummaryOpened, page]);
+
+	//역할에 미포함 정책 템플릿을 조회한다.
+	useEffect(() => {
+		if (
+			!isSummaryOpened &&
+			page[tableKeys.users.summary.tabs.groups.include]
+		) {
+			dispatch(
+				IAM_ROLES.asyncAction.findTemplatesAction({
+					range:
+						page[tableKeys.roles.summary.tabs.permissions.include],
+					include: false,
+				}),
+			)
+				.unwrap()
+				.then((res) => setExPolicy(res));
+		}
+	}, [dispatch, isSummaryOpened, page]);
 
 	return (
 		<TabContentContainer>
@@ -70,24 +114,27 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold}) => {
 							</NormalButton>
 						</TitleBarButtons>
 					</TableFold>
-					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
-						<TableOptionText data={'policies'} />
-						<TableContainer
-							data={includedData}
-							tableKey={
-								tableKeys.roles.summary.tabs.permissions.exclude
-							}
-							columns={
-								tableColumns[
+					{isFold[space] && (
+						<>
+							<TableOptionText data={'policies'} />
+							<TableContainer
+								data={includedData}
+								tableKey={
 									tableKeys.roles.summary.tabs.permissions
 										.exclude
-								]
-							}
-						>
-							<TableOptionsBar />
-							<Table setSelect={setSelect} isDraggable />
-						</TableContainer>
-					</CollapsbleContent>
+								}
+								columns={
+									tableColumns[
+										tableKeys.roles.summary.tabs.permissions
+											.exclude
+									]
+								}
+							>
+								<TableOptionsBar />
+								<Table setSelect={setSelect} isDraggable />
+							</TableContainer>
+						</>
+					)}
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>
@@ -99,6 +146,7 @@ RolePolicyTab.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
+	isSummaryOpened: PropTypes.bool,
 };
 
 export default RolePolicyTab;

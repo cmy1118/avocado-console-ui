@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {baseUrl, Axios} from '../../../../api/constants';
+import {baseURL, Axios} from '../../../../api/constants';
 
 const NAME = 'PAM_ROLE_USER_GROUP';
 
@@ -18,7 +18,7 @@ const createAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -36,7 +36,7 @@ const deleteAction = createAsyncThunk(
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -55,7 +55,7 @@ const findRoleByIdAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					Range: payload.range,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 
@@ -85,7 +85,7 @@ const getEventsAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					Range: payload.range,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return {data: response.data, headers: response.headers};

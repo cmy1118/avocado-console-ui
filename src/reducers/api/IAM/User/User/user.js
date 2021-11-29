@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
-import {baseUrl, Axios} from '../../../../../api/constants';
+
+import {baseURL, Axios} from '../../../../../api/constants';
 
 const NAME = 'IAM_USER';
 
@@ -9,6 +9,7 @@ const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
+
 		const response = await Axios.post(
 			`/open-api/v1/iam/users`,
 			{
@@ -24,7 +25,7 @@ const createAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return {data: response.data, headers: response.headers};
@@ -50,7 +51,7 @@ const updateAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -70,7 +71,7 @@ const deleteAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -90,7 +91,7 @@ const findByIdAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -111,7 +112,7 @@ const findByUidAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -139,7 +140,7 @@ const findAllAction = createAsyncThunk(
 				Authorization: `${user.token_type} ${user.access_token}`,
 				Range: payload.range,
 			},
-			baseURL: baseUrl.openApi,
+			baseURL: baseURL.openApi,
 		});
 		console.log(response);
 		return {data: response.data, headers: response.headers};
@@ -165,7 +166,7 @@ const getUserGroupsAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					Range: payload.range,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		console.log(response);

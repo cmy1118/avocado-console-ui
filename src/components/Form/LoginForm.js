@@ -8,7 +8,6 @@ import naverButton from '../../images/auth/naver_btn.png';
 import kakaoButton from '../../images/auth/kakao_btn.png';
 
 import {useHistory, useParams} from 'react-router-dom';
-import AUTH_USER from '../../reducers/api/Auth/authUser';
 
 import {
 	LogInContainer,
@@ -20,6 +19,8 @@ import Form from '../RecycleComponents/New/Form';
 import TextBox from '../RecycleComponents/New/TextBox';
 import {RowDiv} from '../../styles/components/style';
 import CheckBox from '../RecycleComponents/New/CheckBox';
+import {Google} from '../../utils/auth';
+import AUTH_USER from '../../reducers/api/Auth/authUser';
 
 const _CheckBoxContainer = styled.div`
 	display: flex;
@@ -67,9 +68,8 @@ const _AlternativeAuthButton = styled.button`
 
 const LoginForm = () => {
 	const dispatch = useDispatch();
-	const history = useHistory();
 	const {companyId} = useParams();
-	const {user} = useSelector(AUTH_USER.selector);
+
 	const [rememberMe, setRememberMe] = useState(
 		localStorage.getItem('rememberMe'),
 	);
@@ -79,21 +79,31 @@ const LoginForm = () => {
 	const onSubmitLogin = useCallback(
 		(v) => {
 			if (!v.id || !v.password) return;
+
 			dispatch(
 				AUTH_USER.asyncAction.authPolicyVerificationAction({
 					username: v.id,
 					password: v.password,
 					companyId: companyId,
 				}),
-			);
-			dispatch(
-				AUTH_USER.asyncAction.loginAction({
-					username: v.id,
-					password: v.password,
-					companyId: companyId,
-				}),
-			);
-			console.log(rememberMe);
+			)
+				.unwrap()
+				.then((val) => {
+					console.log(val?.policyParameter?.policies);
+					if (
+						val?.policyParameter?.policies[0]?.type ===
+						'IdAndPassword'
+					) {
+						dispatch(
+							AUTH_USER.asyncAction.userAuthAction({
+								username: v.id,
+								password: v.password,
+								companyId: companyId,
+							}),
+						);
+					}
+				});
+
 			if (rememberMe) {
 				localStorage.setItem('rememberMe', true);
 				localStorage.setItem('id', v.id);
@@ -111,11 +121,10 @@ const LoginForm = () => {
 		setRememberMe(!rememberMe);
 	}, [rememberMe]);
 
-	useEffect(() => {
-		if (user) {
-			history.push('/');
-		}
-	}, [history, user]);
+	const onClickGoogleAltAuth = useCallback(() => {
+		localStorage.setItem('companyId', companyId);
+		location.href = Google.location;
+	}, []);
 
 	return (
 		<LogInContainer>
@@ -183,7 +192,7 @@ const LoginForm = () => {
 				</_AlternativeAuthButton>
 			</_AlternativeAuthContainer>
 			<_AlternativeAuthContainer>
-				<_AlternativeAuthButton>
+				<_AlternativeAuthButton onClick={onClickGoogleAltAuth}>
 					<img src={googleButton} alt='googleButton' />
 				</_AlternativeAuthButton>
 				<_AlternativeAuthButton>

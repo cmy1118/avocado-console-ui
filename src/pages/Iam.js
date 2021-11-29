@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styled from 'styled-components';
-import dashboard from '../images/backgound/dashboard@2x.png';
+import dashboard from '../images/background/dashboard@2x.png';
 
 const _MainSpace = styled.div`
 	background: #f0f3f6;

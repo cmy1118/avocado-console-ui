@@ -1,8 +1,7 @@
 import {combineReducers} from '@reduxjs/toolkit';
 import storageSession from 'redux-persist/lib/storage/session';
 import createFilter from 'redux-persist-transform-filter';
-
-import AUTH_USER from './api/Auth/authUser';
+import {persistReducer} from 'redux-persist';
 
 import IAM_USER from './api/IAM/User/User/user';
 import IAM_USER_GROUP_TYPE from './api/IAM/User/Group/groupType';
@@ -17,7 +16,6 @@ import CURRENT_TARGET from './currentTarget';
 import RRM_RESOURCE from './api/RRM/Resource/resource';
 import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
 import IAM_ROLES from './api/IAM/User/Role/roles';
-import {persistReducer} from 'redux-persist';
 import IAM_ROLES_GRANT_ROLE_GROUP from './api/IAM/User/Role/GrantRole/group';
 import IAM_ROLES_GRANT_ROLE_USER from './api/IAM/User/Role/GrantRole/user';
 import PAM_ROLES from './api/ PAM/Role/roles';
@@ -26,8 +24,13 @@ import PAM_ROLE_USER from './api/ PAM/Role/user';
 import PAM_ROLE_USER_GROUP from './api/ PAM/Role/userGroup';
 import IAM_USER_POLICY from './api/IAM/User/Policy/policy';
 import IAM_USER_TAG from './api/IAM/User/Tag/tags';
+import AUTH_USER from './api/Auth/authUser';
 
-const userFilter = createFilter(AUTH_USER.name, ['companyId', 'user']);
+const authUserFilter = createFilter(AUTH_USER.name, [
+	'companyId',
+	'user',
+	'isLoggedIn',
+]);
 const iamUserFilter = createFilter(IAM_USER.name, ['users']);
 const iamRolesFilter = createFilter(IAM_ROLES.name, ['roles']);
 const iamRolesGrantRoleUserFilter = createFilter(
@@ -47,6 +50,7 @@ const iamPolicyTypeFilter = createFilter(IAM_USER_POLICY.name, ['groupTypes']);
 const persistConfig = {
 	key: 'root',
 	storage: storageSession,
+
 	whitelist: [
 		AUTH_USER.name,
 		IAM_USER.name,
@@ -58,7 +62,7 @@ const persistConfig = {
 		IAM_USER_POLICY.name,
 	],
 	transforms: [
-		userFilter,
+		authUserFilter,
 		iamUserFilter,
 		iamGroupFilter,
 		iamGroupTypeFilter,
@@ -73,7 +77,6 @@ const rootReducer = combineReducers({
 	[SETTING.name]: SETTING.reducer,
 	[PAGINATION.name]: PAGINATION.reducer,
 	[IAM_CLIENT.name]: IAM_CLIENT.reducer,
-
 	[AUTH_USER.name]: AUTH_USER.reducer,
 	/******************************************/
 	/* seob : IAM - User reducers
@@ -107,7 +110,6 @@ const rootReducer = combineReducers({
     /******************************************/
 	[CURRENT_TARGET.name]: CURRENT_TARGET.reducer,
 	/******************************************/
-
 	[DIALOG_BOX.name]: DIALOG_BOX.reducer,
 });
 

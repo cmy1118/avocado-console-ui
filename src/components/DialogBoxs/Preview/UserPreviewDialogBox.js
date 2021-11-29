@@ -25,8 +25,6 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
-	console.log(readOnlyData);
-
 	const submitUserInfo = useCallback(() => {
 		console.log(readOnlyData);
 		// 나머지 그룹, 역할, 태그 맵핑은 이후에 처리..

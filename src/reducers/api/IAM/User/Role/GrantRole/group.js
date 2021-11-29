@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseUrl} from '../../../../../../api/constants';
+import {Axios, baseURL} from '../../../../../../api/constants';
 
 const NAME = 'IAM_ROLES_GRANT_ROLE_GROUP';
 
@@ -19,7 +19,7 @@ const grantAction = createAsyncThunk(
 				params: {
 					roleld: payload.roleld,
 				},
-				baseURL: baseUrl.openApi,
+				baseUrl: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -42,7 +42,7 @@ const revokeAction = createAsyncThunk(
 				params: {
 					roleld: payload.roleld,
 				},
-				baseURL: baseUrl.openApi,
+				baseUrl: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -63,7 +63,7 @@ const getsAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 					Range: payload.range,
 				},
-				baseURL: baseUrl.openApi,
+				baseUrl: baseURL.openApi,
 			},
 		);
 		return {data: response.data, headers: response.headers};
@@ -89,26 +89,25 @@ const getEventsAction = createAsyncThunk(
 					Range: payload.range,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseUrl: baseURL.openApi,
 			},
 		);
 		return {data: response.data, headers: response.headers};
 	},
 );
 
-const findGroupsAction = createAsyncThunk(
-	`${NAME}/FIND_GROUPS`,
+//사용자 그룹 정보를 역할 ID를 기반으로 조회한다.
+const findUserGroupsById = createAsyncThunk(
+	`${NAME}/FIND_USER_GROUPS_BY_ID`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		// eslint-disable-next-line no-console
 		const response = await Axios.get(
-			`/open-api/v1/iam/roles/${payload.roleId}/user-groups`,
+			`/open-api/v1/iam/roles/${payload.id}/user-groups`,
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
-					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -118,6 +117,7 @@ const findGroupsAction = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
+		groupList: [],
 		roles: [],
 		loading: false,
 		error: null,
@@ -135,15 +135,27 @@ const slice = createSlice({
 			state.error = action.payload;
 			state.loading = false;
 		},
+		[findUserGroupsById.pending]: (state) => {
+			state.loading = true;
+		},
+		[findUserGroupsById.fulfilled]: (state, action) => {
+			state.groupList = action.payload;
+			state.loading = false;
+		},
+		[findUserGroupsById.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
 	},
 });
 
 const selectAllState = createSelector(
 	(state) => state.roles,
+	(state) => state.groupList,
 	(state) => state.error,
 	(state) => state.loading,
-	(roles, error, loading) => {
-		return {roles, error, loading};
+	(roles, groupList, error, loading) => {
+		return {roles, groupList, error, loading};
 	},
 );
 
@@ -157,7 +169,7 @@ const IAM_ROLES_GRANT_ROLE_GROUP = {
 		revokeAction,
 		getsAction,
 		getEventsAction,
-		findGroupsAction,
+		findUserGroupsById,
 	},
 };
 

@@ -1,5 +1,9 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseUrl} from '../../../../../../api/constants';
+import {
+	Axios,
+	baseURL as baseUrl,
+	baseURL,
+} from '../../../../../../api/constants';
 
 const NAME = 'IAM_ROLES_GRANT_ROLE_USER';
 
@@ -18,7 +22,7 @@ const grantAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -41,7 +45,7 @@ const revokeAction = createAsyncThunk(
 				params: {
 					roleId: [...payload.roleId],
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -62,7 +66,7 @@ const getsAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 					Range: payload.range,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		console.log('IAM_ROLES_GRANT_ROLE_USER_getsAction', response.data);
@@ -89,26 +93,25 @@ const getEventsAction = createAsyncThunk(
 					Range: payload.range,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return {data: response.data, headers: response.headers};
 	},
 );
 
-const findUsersAction = createAsyncThunk(
-	`${NAME}/FIND_USERS`,
+//사용자 등록 정보를 역할 ID를 기반으로 조회한다.
+const findUsersByIdAction = createAsyncThunk(
+	`${NAME}/FIND_USER_BY_ID`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		// eslint-disable-next-line no-console
 		const response = await Axios.get(
-			`/open-api/v1/iam/roles/${payload.roleId}/users`,
+			`/open-api/v1/iam/roles/${payload.id}/users`,
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
-					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -118,6 +121,8 @@ const findUsersAction = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
+		//userList : 사용자 등록 정보를 역할 ID를 기반으로 조회한 .
+		userList: [],
 		userRoles: [],
 		loading: false,
 		error: null,
@@ -155,15 +160,27 @@ const slice = createSlice({
 			state.error = action.payload;
 			state.loading = false;
 		},
+		[findUsersByIdAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[findUsersByIdAction.fulfilled]: (state, action) => {
+			state.userList = action.payload.data;
+			state.loading = false;
+		},
+		[findUsersByIdAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
 	},
 });
 
 const selectAllState = createSelector(
 	(state) => state.userRoles,
+	(state) => state.userList,
 	(state) => state.error,
 	(state) => state.loading,
-	(userRoles, error, loading) => {
-		return {userRoles, error, loading};
+	(userRoles, userList, error, loading) => {
+		return {userRoles, userList, error, loading};
 	},
 );
 
@@ -177,7 +194,7 @@ const IAM_ROLES_GRANT_ROLE_USER = {
 		revokeAction,
 		getsAction,
 		getEventsAction,
-		findUsersAction,
+		findUsersByIdAction,
 	},
 };
 

@@ -9,7 +9,8 @@ import {ErrorMessageText} from '../../../styles/components/text';
 
 const _Container = styled.div`
 	position: relative;
-	background: #fff;
+	// background: #fff;
+	background: transparent;
 	cursor: pointer;
 	.focus {
 		border-color: #4ca6a8;

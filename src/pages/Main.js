@@ -1,7 +1,9 @@
-import React from 'react';
 import Approal_grey from '../images/dashboard/service_app_gray@2x.png';
 import {useSelector} from 'react-redux';
 import AUTH_USER from '../reducers/api/Auth/authUser';
+
+import React, {useCallback} from 'react';
+
 import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import ContentsButton from '../components/Dasnboard/contentsButton';
@@ -22,7 +24,7 @@ import RRM_red from '../images/dashboard/service_rrm_red@2x.png';
 
 const utils = [
 	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green, url: 'iam'},
-	{title: 'PAM', text: '특권 접근 관리', img: PAM_green, href: 'ssh://'},
+	{title: 'Bastion', text: '서버 보안 접근', img: PAM_green, href: 'ssh://'},
 	{
 		title: 'Web Terminal ',
 		text: '웹터미널',
@@ -37,6 +39,8 @@ const utils = [
 	// 	url: 'iam',
 	// },
 	{title: 'RRM', text: '원격 자원 관리', img: RRM_green, url: 'iam'},
+	{title: 'PAM', text: '특권 접근 관리', img: PAM_green, url: 'iam'},
+
 ];
 const favorite = [
 	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_grey, url: 'iam'},
@@ -59,7 +63,8 @@ const service = [
 		img: Approal_red,
 		url: 'iam',
 	},
-];
+	{title: 'Bastion', text: '서버 보안 접근', img: PAM_red, href: 'ssh://'},
+]
 
 const _Container = styled.div`
 	display: grid;
@@ -131,11 +136,14 @@ const _contentsTitle = styled.div`
 const _contentsItem = styled.div`
 	display: flex;
 `;
-const _side = styled.div``;
 
 const Main = () => {
 	const history = useHistory();
 	const {companyId} = useSelector(AUTH_USER.selector);
+
+	const onClickMove = useCallback(() => {
+		history.push('/iam');
+	}, [history]);
 
 	return (
 		// <_Container>
@@ -152,7 +160,6 @@ const Main = () => {
 		// </_Container>
 
 		<_Container>
-			<_side></_side>
 			<_contentsContainer>
 				<_contents>
 					<_contentsTitle>Avocado 기능</_contentsTitle>
@@ -206,7 +213,6 @@ const Main = () => {
 					</_contentsItem>
 				</_contents>
 			</_contentsContainer>
-			<_side></_side>
 		</_Container>
 	);
 };

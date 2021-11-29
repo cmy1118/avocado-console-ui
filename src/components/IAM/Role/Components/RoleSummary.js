@@ -1,8 +1,5 @@
-import {useDispatch, useSelector} from 'react-redux';
-import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
-import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
-import React, {useCallback, useEffect, useMemo} from 'react';
+import {useDispatch} from 'react-redux';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {parentGroupConverter} from '../../../../utils/tableDataConverter';
 import {
 	dummyDates,
@@ -10,7 +7,7 @@ import {
 	dummyUsers,
 } from '../../../../utils/dummyData';
 import Table from '../../../Table/Table';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import PropTypes from 'prop-types';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
@@ -18,109 +15,97 @@ import TableContainer from '../../../Table/TableContainer';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 import {useHistory} from 'react-router-dom';
-import {
-	SummaryTablesContainer,
-	SummaryTableTitle,
-} from '../../../../styles/components/iam/descriptionPage';
-import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
-import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import {SummaryTablesContainer, SummaryTableTitle,} from '../../../../styles/components/iam/descriptionPage';
+import IAM_ROLES_GRANT_ROLE_GROUP from "../../../../reducers/api/IAM/User/Role/GrantRole/group";
+import IAM_ROLES_GRANT_ROLE_USER from "../../../../reducers/api/IAM/User/Role/GrantRole/user";
 
-const RoleSummary = ({roleId, param, setIsOpened, isSummaryOpened}) => {
-	const history = useHistory();
+const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
-	const {roles} = useSelector(IAM_ROLES.selector);
-	const {users} = useSelector(IAM_USER.selector);
-
-	const role = useMemo(() => roles.find((v) => v.id === roleId), [
-		roleId,
-		roles,
-	]);
-
+	const history = useHistory();
+	const [group, setGroup] = useState(null);
+	const [user, setUser] = useState(null);
 	const permissionData = useMemo(() => [], []);
 
 	const userData = useMemo(() => {
-		return users
-			?.filter((v) => role.users?.includes(v.userUid))
-			.map((v, i) => ({
-				...v,
-				numberOfGroups: v.groups.length,
-				grantDate: dummyDates[i],
-				grantUser: dummyUsers[i],
-				[DRAGGABLE_KEY]: v.userUid,
-			}));
-	}, [users, role]);
+		return [];
+		// return user?.map((v, i) => ({
+		// 		...v,
+		// 		status:v.status.code,
+		// 		groupType: v.userGroupType.name,
+		// 		createdTime:v.createdTag.createdTime,
+		// 		// grantDate: v.request-time,
+		// 		grantUser: 'null',
+		// 		//부여 사용자
+		// 		[DRAGGABLE_KEY]: v.userUid,
+		// 	}));
+	}, [user]);
+
+
+	const groupData = useMemo(() => {
+		return [];
+		// return group?.map((v, i) => ({
+		// 		...v,
+		// 		//권한수
+		// 		//numberOfPermissions: v.roles.length,
+		//
+		// 		groupType: v.userGroupType.name,
+		//
+		// 		//상위그룹 어떻게 오는지 ?
+		// 		parentGroup: parentGroupConverter(v.parentGroup.name),
+		// 		createdTime:v.createdTag.createdTime,
+		//
+		// 	    //부여 일시??
+		// 		grantDate: 'null',
+		// 		grantUser: 'null',
+		// 		[DRAGGABLE_KEY]: v.id,
+		// 	}));
+	}, [group]);
+
 	const onClickChangeTab = useCallback(
 		(v) => () => {
 			setIsOpened(false);
 			history.push({
-				pathname: `/${param}/${roleId}`,
+				pathname: `/${param}/${Id}`,
 				search: `tabs=${v}`,
 			});
 		},
-		[setIsOpened, history, param, roleId],
+		[setIsOpened, history, param, Id],
 	);
 
-	const groupData = useMemo(() => {
-		return groups
-			?.filter((v) => role.groups?.includes(v.id))
-			.map((v, i) => ({
-				...v,
-				clientGroupType: groupTypes.find(
-					(val) => val.id === v.clientGroupTypeId,
-				).name,
-				numberOfPermissions: v.roles.length,
-				parentGroup: parentGroupConverter(
-					groups.find((val) => val.id === v.parentId)?.name,
-				),
-				grantDate: dummyDates[dummyDates.length - i - 1],
-				grantUser: dummyUsers[dummyUsers.length - i - 1],
-				[DRAGGABLE_KEY]: v.id,
-			}));
-	}, [role, groups, groupTypes]);
-
+	//권한 To 유섭님
 	useEffect(() => {
+
+	}, []);
+
+	//이 역할의 사용자
+	useEffect(() => {
+		isSummaryOpened &&
 		dispatch(
-			IAM_ROLES.asyncAction.findTemplatesAction({
-				roleId,
-				range: `elements=0-50`,
+			IAM_ROLES_GRANT_ROLE_USER.asyncAction.findUsersByIdAction({
+				id: Id,
 			}),
 		)
 			.unwrap()
-			.then((templates) => {
-				console.log(templates);
-			});
-	}, [dispatch, roleId]);
+			.then((res) => setUser(res));
+	}, [Id, dispatch, isSummaryOpened, setUser]);
 
+	//이 역할의 사용자 그룹.
 	useEffect(() => {
+		isSummaryOpened &&
 		dispatch(
-			IAM_ROLES_GRANT_ROLE_USER.asyncAction.findUsersAction({
-				roleId,
+			IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.findUserGroupsById({
+				id: Id,
 			}),
 		)
 			.unwrap()
-			.then((users) => {
-				console.log('users ::', users);
-			});
-	}, [dispatch, roleId]);
+			.then((res) => setGroup(res));
+	}, [Id,dispatch,isSummaryOpened,setGroup]);
 
-	useEffect(() => {
-		dispatch(
-			IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.findGroupsAction({
-				roleId,
-			}),
-		)
-			.unwrap()
-			.then((groups) => {
-				console.log('groups ::', groups);
-			});
-	}, [dispatch, roleId]);
 
 	return (
 		<SummaryTablesContainer>
 			<SummaryTableTitle onClick={onClickChangeTab('role')}>
-				권한 : {permissionData.length}
+				권한 : {permissionData?.length}
 			</SummaryTableTitle>
 
 			<TableContainer
@@ -133,7 +118,7 @@ const RoleSummary = ({roleId, param, setIsOpened, isSummaryOpened}) => {
 			</TableContainer>
 
 			<SummaryTableTitle onClick={onClickChangeTab('user')}>
-				이 역할의 사용자 : {userData.length}
+				이 역할의 사용자 : {userData?.length}
 			</SummaryTableTitle>
 			<TableContainer
 				mode={'readOnly'}
@@ -145,7 +130,7 @@ const RoleSummary = ({roleId, param, setIsOpened, isSummaryOpened}) => {
 			</TableContainer>
 
 			<SummaryTableTitle onClick={onClickChangeTab('group')}>
-				이 역할의 사용자 그룹 : {groupData.length}
+				이 역할의 사용자 그룹 : {groupData?.length}
 			</SummaryTableTitle>
 			<TableContainer
 				mode={'readOnly'}
@@ -160,7 +145,7 @@ const RoleSummary = ({roleId, param, setIsOpened, isSummaryOpened}) => {
 };
 
 RoleSummary.propTypes = {
-	roleId: PropTypes.string.isRequired,
+	Id: PropTypes.string.isRequired,
 	param: PropTypes.string.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 	isSummaryOpened: PropTypes.bool.isRequired,

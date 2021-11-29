@@ -1,5 +1,6 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {Axios, baseUrl} from '../../../../../api/constants';
+
+import {Axios, baseURL} from '../../../../../api/constants';
 
 const NAME = 'IAM_USER_GROUP_MEMBER';
 
@@ -17,7 +18,7 @@ const joinAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -39,7 +40,7 @@ const disjointAction = createAsyncThunk(
 				params: {
 					userUid: payload.userUid,
 				},
-				baseURL: baseUrl.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -59,7 +60,7 @@ const findAllAction = createAsyncThunk(
 				'Content-Type': 'application/json',
 				Range: payload.range,
 			},
-			baseURL: baseUrl.openApi,
+			baseURL: baseURL.openApi,
 		});
 		console.log('response:::', response);
 		return {data: response.data, headers: response.headers};

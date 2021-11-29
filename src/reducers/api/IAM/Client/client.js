@@ -1,6 +1,6 @@
 import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import axios from 'axios';
-import {baseUrl, Axios} from '../../../../api/constants';
+
+import {baseURL, Axios} from '../../../../api/constants';
 
 const NAME = 'IAM_CLIENT';
 
@@ -19,7 +19,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 				Authorization: `Bearer ${payload.access_token}`,
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseUrl.openApi,
+			baseURL: baseURL.openApi,
 		},
 	);
 	return response.data;
@@ -38,7 +38,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 				Authorization: `Bearer ${payload.access_token}`,
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseUrl.openApi,
+			baseURL: baseURL.openApi,
 		},
 	);
 	return response.data;
@@ -50,7 +50,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 		headers: {
 			Authorization: `Bearer ${payload.access_token}`,
 		},
-		baseURL: baseUrl.openApi,
+		baseURL: baseURL.openApi,
 	});
 	return response.data;
 });
@@ -63,7 +63,7 @@ const findByIdAction = createAsyncThunk(
 			headers: {
 				Authorization: `Bearer ${payload.access_token}`,
 			},
-			baseURL: baseUrl.openApi,
+			baseURL: baseURL.openApi,
 		});
 		return response.data;
 	},
@@ -79,7 +79,7 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 			Authorization: `Bearer ${payload.access_token}`,
 			Range: `elements=${payload.first}-${payload.last}`,
 		},
-		baseURL: baseUrl.openApi,
+		baseURL: baseURL.openApi,
 	});
 	return {
 		...response.data,

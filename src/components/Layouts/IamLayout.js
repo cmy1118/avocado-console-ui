@@ -1,7 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useHistory} from 'react-router-dom';
-import {useSelector} from 'react-redux';
-import AUTH_USER from '../../reducers/api/Auth/authUser';
 
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -10,6 +7,8 @@ import IamNav from '../Nav/IamNav';
 import Header from '../Header/Header';
 import {DragDropContext} from 'react-beautiful-dnd';
 import Footer from '../Footer/Footer';
+import {useSelector} from 'react-redux';
+import AUTH_USER from '../../reducers/api/Auth/authUser';
 
 const _Container = styled.div`
 	display: flex;
@@ -44,15 +43,7 @@ const _MainSpace = styled.div`
 `;
 
 const IamLayout = ({children}) => {
-	const history = useHistory();
-	const {user, companyId} = useSelector(AUTH_USER.selector);
 	const [isNavOpened, setIsNavOpened] = useState(true);
-
-	useEffect(() => {
-		if (!user) {
-			history.push('/login/' + companyId);
-		}
-	}, [user, companyId, history]);
 
 	return (
 		<DragDropContext>
