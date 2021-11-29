@@ -109,7 +109,7 @@ const getsAction = createAsyncThunk(
 );
 
 const getEventsAction = createAsyncThunk(
-	`${NAME}/GETS`,
+	`${NAME}/GET_EVENTS`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 		const response = await Axios.get(`/open-api/v1/iam/roles/events`, {
@@ -128,9 +128,32 @@ const getEventsAction = createAsyncThunk(
 	},
 );
 
+//역할에 미포함/포함된 정책 템플릿을 조회한다.
+const findTemplatesAction = createAsyncThunk(
+	`${NAME}/FIND_TEMPLATES`,
+	async (payload, {getState}) => {
+		const {user} = getState().AUTH_USER;
+		const response = await Axios.get(
+			`/open-api/v1/iam/roles/${payload.roleId}/policy-templates`,
+			{
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
+					Range: payload.range,
+				},
+				params: {
+					incluide: payload.include,
+				},
+				baseURL: baseUrl.openApi,
+			},
+		);
+		return {data: response.data, headers: response.headers};
+	},
+);
+
 const slice = createSlice({
 	name: NAME,
 	initialState: {
+		policy: [],
 		role: null,
 		roles: [],
 		loading: false,
@@ -200,6 +223,17 @@ const slice = createSlice({
 		// 	state.error = action.payload;
 		// 	state.loading = false;
 		// },
+		[findTemplatesAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[findTemplatesAction.fulfilled]: (state, action) => {
+			state.policy = action.payload.data;
+			state.loading = false;
+		},
+		[findTemplatesAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
 	},
 });
 
@@ -207,8 +241,8 @@ const selectAllState = createSelector(
 	(state) => state.roles,
 	(state) => state.error,
 	(state) => state.loading,
-	(roles, error, loading) => {
-		return {roles, error, loading};
+	(policy, role, roles, error, loading) => {
+		return {policy, role, roles, error, loading};
 	},
 );
 
@@ -225,6 +259,7 @@ const IAM_ROLES = {
 		findByIdAction,
 		// getsAction,
 		getEventsAction,
+		findTemplatesAction,
 	},
 };
 

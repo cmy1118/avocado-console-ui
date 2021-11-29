@@ -25,7 +25,7 @@ const _iconCOntents = styled.div`
 	left: 50%;
 	transform: translate(120%, -620%);
 `;
-const _textContents = styled.div`ㅜ
+const _textContents = styled.div`
 	position: absolute;
 	top: 50%;
 	left: 50%;
