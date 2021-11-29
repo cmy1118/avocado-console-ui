@@ -1,20 +1,17 @@
 import {useDispatch} from 'react-redux';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {parentGroupConverter} from '../../../../utils/tableDataConverter';
 import Table from '../../../Table/Table';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
+import {tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import PropTypes from 'prop-types';
 import TableContainer from '../../../Table/TableContainer';
 
 import {useHistory} from 'react-router-dom';
-import {
-	SummaryTablesContainer,
-	SummaryTableTitle,
-} from '../../../../styles/components/iam/descriptionPage';
+import {SummaryTablesContainer, SummaryTableTitle,} from '../../../../styles/components/iam/descriptionPage';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
+import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -36,6 +33,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 		// 		[DRAGGABLE_KEY]: v.userUid,
 		// 	}));
 	}, [user]);
+
 
 	const groupData = useMemo(() => {
 		return [];
@@ -69,7 +67,18 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	);
 
 	//권한 To 유섭님
-	useEffect(() => {}, []);
+	useEffect(() => {
+		dispatch(
+			IAM_GRANT_POLICY_BY_ROLE.asyncAction.getsAction({
+				roleId: Id,
+				range: `elements=0-50`,
+			}),
+		)
+			.unwrap()
+			.then((policys) => {
+				console.log(policys.data);
+			});
+	}, [Id, dispatch]);
 
 	//이 역할의 사용자
 	useEffect(() => {
@@ -111,6 +120,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				.unwrap()
 				.then((res) => setGroup(res));
 	}, [Id, dispatch, isSummaryOpened, setGroup]);
+
 
 	return (
 		<SummaryTablesContainer>

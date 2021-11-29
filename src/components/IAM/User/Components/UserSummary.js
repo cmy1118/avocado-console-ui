@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 
@@ -18,6 +17,7 @@ import PAGINATION from '../../../../reducers/pagination';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 import IAM_USER_TAG from '../../../../reducers/api/IAM/User/Tag/tags';
+import {descriptionConverter} from '../../../../utils/tableDataConverter';
 
 const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -40,6 +40,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	);
 
 	const groupData = useMemo(() => {
+		console.log(groups);
 		return groups
 			.filter((v) =>
 				user?.groups
@@ -51,18 +52,28 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				userGroupType: v.userGroupType.name,
 				parentGroup: v.parentGroup.name ? v.parentGroup.name : '없음',
 				createdTime: v.createdTag.createdTime,
+				grantDate: v.grantUser?.createdTag?.createdTime,
+				grantUser: v.grantUser,
 				numberOfRoles: v.roles ? v.roles.length : 0,
+
 				[DRAGGABLE_KEY]: v.id,
 			}));
 	}, [groups, user]);
 
 	const roleData = useMemo(() => {
-		return roles.map((v) => ({
+		return roles.map((v, i) => ({
 			...v,
+			permission: v.template.detail.policyType,
+			policyName: v.template.templateName,
+			authTarget: '사용자',
+			description: descriptionConverter(
+				v.template.detail.attribute.policies,
+			),
 			roleName: v.role.name,
-			grantDate: v.grant.createdTag?.createdTime,
-			grantUser: v.grant.user,
-			[DRAGGABLE_KEY]: v.role.id,
+			grantDate: v.grantUser?.createdTag?.createdTime,
+			grantUser: v.grantUser,
+			id: v.role.id + '/' + i,
+			[DRAGGABLE_KEY]: v.role.id + '/' + i,
 		}));
 	}, [roles]);
 
@@ -95,7 +106,9 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 			)
 				.unwrap()
 				.then((roles) => {
+					console.log(roles);
 					roles.data.forEach((role) => {
+						console.log(role);
 						dispatch(
 							IAM_USER.asyncAction.findByUidAction({
 								userUid: role.createdTag.actorTag.userUid,
@@ -110,18 +123,38 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 								)
 									.unwrap()
 									.then((policys) => {
-										const roles = policys.map((policy) => {
-											if (policy.role.id === role.roleId)
-												return {
-													...policy,
-													grant: {
-														createdTag:
-															role.createdTag,
-														user: grantUser,
-													},
-												};
+										const arr = [];
+
+										policys.forEach((policy) => {
+											policy.policyTemplates.forEach(
+												(template) => {
+													template.details.forEach(
+														(detail) => {
+															arr.push({
+																role:
+																	policy.role,
+																template: {
+																	templateId:
+																		template.templateId,
+																	templateName:
+																		template.templateName,
+																	createdTag:
+																		template.createdTag,
+																	detail,
+																},
+																grantUser: {
+																	...grantUser,
+																	createdTag:
+																		role.createdTag,
+																},
+															});
+														},
+													);
+												},
+											);
 										});
-										setRoles([]);
+										console.log(arr);
+										setRoles(arr);
 									});
 							});
 					});
@@ -142,65 +175,34 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				.then((groups) => {
 					groups.data.forEach((group) => {
 						dispatch(
-							IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
-								id: group.id,
-								range: `elements=0-1`,
+							IAM_USER.asyncAction.findByUidAction({
+								userUid: group.createdTag.actorTag.userUid,
 							}),
 						)
 							.unwrap()
-							.then((roles) => {
-								arr.push({...group, roles: roles.data});
-								if (arr.length === groups.data.length) {
-									setGroups(arr);
-								}
+							.then((grantUser) => {
+								dispatch(
+									IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
+										{
+											id: group.id,
+											range: `elements=0-1`,
+										},
+									),
+								)
+									.unwrap()
+									.then((roles) => {
+										arr.push({
+											...group,
+											roles: roles.data,
+											grantUser,
+										});
+										if (arr.length === groups.data.length) {
+											setGroups(arr);
+										}
+									});
 							});
 					});
 				});
-			// dispatch(
-			// 	IAM_USER.asyncAction.findByUidAction({
-			// 		userUid: group.createdTag.actorTag.userUid,
-			// 	}),
-			// )
-			// 	.unwrap()
-			// 	.then((grantUser) => {
-			// 		arr.push({
-			// 			...group,
-			// 			grantUser: {
-			// 				userUid: grantUser.userUid,
-			// 				id: grantUser.id,
-			// 				name: grantUser.name,
-			// 			},
-			// 		});
-			// 		if (user.groups.length === arr.length) {
-			// 			if (arr[0]) {
-			// 				const arr2 = [];
-			// 				arr.forEach((v) => {
-			// 					dispatch(
-			// 						IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
-			// 							{
-			// 								id: v.id,
-			// 								range: initialPage,
-			// 							},
-			// 						),
-			// 					)
-			// 						.unwrap()
-			// 						.then((role) => {
-			// 							arr2.push({
-			// 								...v,
-			// 								numberOfRoles: !role.data
-			// 									? 0
-			// 									: role.data.length,
-			// 							});
-			// 							if (
-			// 								arr.length === arr2.length
-			// 							) {
-			// 								setGroups(arr2);
-			// 							}
-			// 						});
-			// 				});
-			// 			}
-			// 		}
-			// 	});
 		}
 	}, [dispatch, initialPage, user]);
 

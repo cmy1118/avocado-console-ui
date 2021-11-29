@@ -45,11 +45,10 @@ const Table = ({
 }) => {
 	const [position, setPosition] = useState({x: 0, y: 0});
 
-	const getColumnWidth = (data, accessor, headerText) => {
+	const getColumnWidth = (data, accessor, headerText, id) => {
 		const cellLength = Math.max(
 			...data.map((row) => {
 				let value = '';
-
 				if (typeof accessor === 'string') {
 					value = _.get(row, accessor);
 				} else {
@@ -62,9 +61,13 @@ const Table = ({
 						});
 						value = maxValue;
 					}
+					if (typeof value === 'object' && id === 'grantUser') {
+						value = `${row.grantUser.name}(${row.grantUser.id})`;
+					}
 				}
 
 				if (typeof value === 'number') return value.toString().length;
+
 				return (value || '').length;
 			}),
 			headerText.length,
@@ -210,6 +213,7 @@ const Table = ({
 															),
 															column.accessor,
 															column.Header,
+															column.id,
 													  )
 											}
 											key={i}
@@ -318,6 +322,9 @@ const Table = ({
 																						cell
 																							.column
 																							.Header,
+																						cell
+																							.column
+																							.id,
 																				  )
 																		}
 																		key={i}

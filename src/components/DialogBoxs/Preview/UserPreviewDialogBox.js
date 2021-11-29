@@ -82,11 +82,15 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 		() =>
 			readOnlyData[tableKeys.users.add.groups.exclude]?.map((v) => ({
 				...v,
+				roles: rolesConverter(v.numberOfRoles),
+				createdTime: v.createdTag.createdTime,
 				[DRAGGABLE_KEY]: v.id,
 				// roles: rolesConverter(v.roles),
 			})),
 		[readOnlyData],
 	);
+
+	console.log(readOnlyData[tableKeys.users.add.roles.exclude]);
 
 	const roleData = useMemo(
 		() =>
