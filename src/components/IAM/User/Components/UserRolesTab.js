@@ -25,7 +25,7 @@ import {CollapsbleContent} from '../../../../styles/components/style';
 const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
-	const {roles} = useSelector(IAM_ROLES.selector);
+	const [roles, setRoles] = useState([]);
 	const {userRoles} = useSelector(IAM_ROLES_GRANT_ROLE_USER.selector);
 	const [includedRoles, setIncludedRoles] = useState([]);
 	const [excluedeRoles, setExcluedeRoles] = useState([]);
@@ -44,7 +44,6 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					}))
 			: [];
 	}, [excluedeRoles, includedDataIds, includedRoles]);
-
 	const excludedData = useMemo(() => {
 		return excluedeRoles
 			? excluedeRoles
@@ -95,7 +94,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 		[dispatch, includedDataIds, userUid],
 	);
 
-	const getExcludedGroupData = useCallback((roles) => {
+	const getExcludedRolespData = useCallback((roles) => {
 		const arr = [];
 		roles.forEach((role) => {
 			arr.push({
@@ -137,6 +136,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	);
 
 	useEffect(() => {
+		const arr = [];
 		if (
 			!isSummaryOpened &&
 			page[tableKeys.users.summary.tabs.roles.include]
@@ -145,7 +145,14 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				IAM_ROLES.asyncAction.getsAction({
 					range: page[tableKeys.users.summary.tabs.roles.include],
 				}),
-			);
+			)
+				.unwrap()
+				.then((res) => {
+					res.data.map((v) => arr.push(v.roleId));
+					// setIncludedDataIds(arr);
+					setRoles(res.data);
+					console.log('role', roles);
+				});
 		}
 	}, [dispatch, isSummaryOpened, page]);
 
@@ -169,10 +176,10 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	}, [dispatch, getIncludedRolesData, page, userUid]);
 
 	useEffect(() => {
-		if (roles[0]) {
-			getExcludedGroupData(roles);
+		if (roles && roles[0]) {
+			getExcludedRolespData(roles);
 		}
-	}, [getExcludedGroupData, roles]);
+	}, [getExcludedRolespData, roles]);
 	return (
 		<TabContentContainer>
 			<TableTitle>
