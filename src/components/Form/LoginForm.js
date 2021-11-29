@@ -78,6 +78,8 @@ const LoginForm = () => {
 
 	const onSubmitLogin = useCallback(
 		(v) => {
+			console.log(v.id, v.password);
+
 			if (!v.id || !v.password) return;
 			dispatch(
 				AUTH_USER.asyncAction.authPolicyVerificationAction({
@@ -85,15 +87,21 @@ const LoginForm = () => {
 					password: v.password,
 					companyId: companyId,
 				}),
-			);
-			dispatch(
-				AUTH_USER.asyncAction.loginAction({
-					username: v.id,
-					password: v.password,
-					companyId: companyId,
-				}),
-			);
-			console.log(rememberMe);
+			).then((val) => {
+				if (
+					val?.payload?.policyParameter?.policies[0]?.type ===
+					'IdAndPassword'
+				) {
+					dispatch(
+						AUTH_USER.asyncAction.loginAction({
+							username: v.id,
+							password: v.password,
+							companyId: companyId,
+						}),
+					);
+				}
+			});
+
 			if (rememberMe) {
 				localStorage.setItem('rememberMe', true);
 				localStorage.setItem('id', v.id);
