@@ -1,17 +1,16 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, {useCallback, useRef, useState} from 'react';
+import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
+import {useParams} from 'react-router-dom';
 
 import appleButton from '../../images/auth/apple_btn.png';
 import googleButton from '../../images/auth/google_btn.png';
 import naverButton from '../../images/auth/naver_btn.png';
 import kakaoButton from '../../images/auth/kakao_btn.png';
 
-import {useHistory, useParams} from 'react-router-dom';
-
 import {
-	LogInContainer,
 	LogInButton,
+	LogInContainer,
 	LogInTitle,
 	LogInTitleSpan,
 } from '../../styles/components/login';
