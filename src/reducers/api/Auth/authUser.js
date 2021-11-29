@@ -9,7 +9,6 @@ const NAME = 'AUTH_USER';
 const authPolicyVerificationAction = createAsyncThunk(
 	`${NAME}/AUTH_POLICY_VERIFICATION`,
 	async (payload) => {
-		console.log(payload);
 		const response = await Axios.post('/oauth2/v1/verify/user', null, {
 			headers: {
 				'Content-Type': contentType,
@@ -70,11 +69,16 @@ const slice = createSlice({
 	},
 	reducers: {},
 	extraReducers: {
-		[authPolicyVerificationAction.pending]: (state, action) => {},
-		[authPolicyVerificationAction.fulfilled]: (state, action) => {
-			console.log(action.payload);
+		[authPolicyVerificationAction.pending]: (state, action) => {
+			state.loading = true;
+			state.companyId = action.meta.arg.companyId;
 		},
-		[authPolicyVerificationAction.rejected]: (state, action) => {},
+		[authPolicyVerificationAction.fulfilled]: (state) => {
+			state.loading = false;
+		},
+		[authPolicyVerificationAction.rejected]: (state) => {
+			state.loading = false;
+		},
 		[loginAction.pending]: (state, action) => {
 			state.loading = true;
 			state.companyId = action.meta.arg.companyId;
