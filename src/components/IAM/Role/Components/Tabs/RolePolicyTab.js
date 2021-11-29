@@ -23,6 +23,7 @@ import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
 import {useDispatch, useSelector} from 'react-redux';
 import PAGINATION from '../../../../../reducers/pagination';
 import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
+import PAM_POLICY from '../../../../../reducers/api/ PAM/Role/policy';
 
 const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -38,21 +39,21 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	//역할에 포함 정책 템플릿을 조회한다.
 	useEffect(() => {
-		if (
-			!isSummaryOpened &&
-			page[tableKeys.users.summary.tabs.groups.include]
-		) {
+		if (!isSummaryOpened) {
 			dispatch(
-				IAM_ROLES.asyncAction.findTemplatesAction({
-					range:
-						page[tableKeys.roles.summary.tabs.permissions.include],
-					include: true,
-				}),
-			)
-				.unwrap()
-				.then((res) => setInPolicy(res));
+				PAM_POLICY.asyncAction.findByRoleIdAction({roleId: roleId}),
+			);
+			// dispatch(
+			// 	IAM_ROLES.asyncAction.findTemplatesAction({
+			// 		range:
+			// 			page[tableKeys.roles.summary.tabs.permissions.include],
+			// 		include: true,
+			// 	}),
+			// )
+			// 	.unwrap()
+			// 	.then((res) => setInPolicy(res));
 		}
-	}, [dispatch, isSummaryOpened, page]);
+	}, [dispatch, roleId, isSummaryOpened, page]);
 
 	//역할에 미포함 정책 템플릿을 조회한다.
 	useEffect(() => {

@@ -17,6 +17,7 @@ const findByRoleIdAction = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
+		console.log(response.data);
 		return response.data;
 	},
 );
