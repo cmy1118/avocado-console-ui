@@ -1,23 +1,19 @@
 import {useDispatch} from 'react-redux';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {parentGroupConverter} from '../../../../utils/tableDataConverter';
-import {
-	dummyDates,
-	dummyPolicyOnRole,
-	dummyUsers,
-} from '../../../../utils/dummyData';
 import Table from '../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import PropTypes from 'prop-types';
-import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import TableContainer from '../../../Table/TableContainer';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 import {useHistory} from 'react-router-dom';
-import {SummaryTablesContainer, SummaryTableTitle,} from '../../../../styles/components/iam/descriptionPage';
-import IAM_ROLES_GRANT_ROLE_GROUP from "../../../../reducers/api/IAM/User/Role/GrantRole/group";
-import IAM_ROLES_GRANT_ROLE_USER from "../../../../reducers/api/IAM/User/Role/GrantRole/user";
+import {
+	SummaryTablesContainer,
+	SummaryTableTitle,
+} from '../../../../styles/components/iam/descriptionPage';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
+import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -39,7 +35,6 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 		// 		[DRAGGABLE_KEY]: v.userUid,
 		// 	}));
 	}, [user]);
-
 
 	const groupData = useMemo(() => {
 		return [];
@@ -74,33 +69,41 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 
 	//권한 To 유섭님
 	useEffect(() => {
-
-	}, []);
+		dispatch(
+			IAM_GRANT_POLICY_BY_ROLE.asyncAction.getsAction({
+				roleId: Id,
+				range: `elements=0-50`,
+			}),
+		)
+			.unwrap()
+			.then((policys) => {
+				console.log(policys.data);
+			});
+	}, [Id, dispatch]);
 
 	//이 역할의 사용자
 	useEffect(() => {
 		isSummaryOpened &&
-		dispatch(
-			IAM_ROLES_GRANT_ROLE_USER.asyncAction.findUsersByIdAction({
-				id: Id,
-			}),
-		)
-			.unwrap()
-			.then((res) => setUser(res));
+			dispatch(
+				IAM_ROLES_GRANT_ROLE_USER.asyncAction.findUsersByIdAction({
+					id: Id,
+				}),
+			)
+				.unwrap()
+				.then((res) => setUser(res));
 	}, [Id, dispatch, isSummaryOpened, setUser]);
 
 	//이 역할의 사용자 그룹.
 	useEffect(() => {
 		isSummaryOpened &&
-		dispatch(
-			IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.findUserGroupsById({
-				id: Id,
-			}),
-		)
-			.unwrap()
-			.then((res) => setGroup(res));
-	}, [Id,dispatch,isSummaryOpened,setGroup]);
-
+			dispatch(
+				IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.findUserGroupsById({
+					id: Id,
+				}),
+			)
+				.unwrap()
+				.then((res) => setGroup(res));
+	}, [Id, dispatch, isSummaryOpened, setGroup]);
 
 	return (
 		<SummaryTablesContainer>

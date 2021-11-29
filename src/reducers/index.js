@@ -25,6 +25,8 @@ import PAM_ROLE_USER_GROUP from './api/ PAM/Role/userGroup';
 import IAM_USER_POLICY from './api/IAM/User/Policy/policy';
 import IAM_USER_TAG from './api/IAM/User/Tag/tags';
 import AUTH_USER from './api/Auth/authUser';
+import IAM_GRANT_POLICY_BY_ROLE from './api/IAM/User/Policy/GrantPolicy/role';
+import IAM_GRANT_POLICY_BY_USER from './api/IAM/User/Policy/GrantPolicy/user';
 
 const authUserFilter = createFilter(AUTH_USER.name, [
 	'companyId',
@@ -90,6 +92,8 @@ const rootReducer = combineReducers({
 	[IAM_ROLES_GRANT_ROLE_GROUP.name]: IAM_ROLES_GRANT_ROLE_GROUP.reducer,
 	[IAM_USER_POLICY.name]: IAM_USER_POLICY.reducer,
 	[IAM_USER_TAG.name]: IAM_USER_TAG.reducer,
+	[IAM_GRANT_POLICY_BY_ROLE.name]: IAM_GRANT_POLICY_BY_ROLE.reducer,
+	[IAM_GRANT_POLICY_BY_USER.name]: IAM_GRANT_POLICY_BY_USER.reducer,
 	/******************************************/
 
 	/******************************************/
