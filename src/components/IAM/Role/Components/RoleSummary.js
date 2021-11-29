@@ -14,13 +14,29 @@ import {
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
+import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/User/Policy/policyTemplate';
+import {descriptionConverter} from '../../../../utils/tableDataConverter';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [group, setGroup] = useState(null);
 	const [user, setUser] = useState(null);
-	const permissionData = useMemo(() => [], []);
+	const [permissions, setPermissions] = useState(null);
+	const permissionData = useMemo(() => {
+		// console.log(JSON.parse(permissions[0].attributes));
+		return (
+			permissions?.map((v) => ({
+				...v,
+				name: JSON.parse(v.attributes).policyType,
+				description: descriptionConverter(
+					JSON.parse(v.attributes).policies,
+				),
+				policyName: v.name,
+				[DRAGGABLE_KEY]: v.id,
+			})) || []
+		);
+	}, [permissions]);
 
 	const userData = useMemo(() => {
 		return [];
@@ -76,8 +92,23 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 			}),
 		)
 			.unwrap()
-			.then((policys) => {
-				console.log(policys.data);
+			.then((policies) => {
+				const arr = [];
+				policies.data.forEach((policy) => {
+					dispatch(
+						IAM_POLICY_TEMPLATE.asyncAction.findByIdAction({
+							templateId: policy.templateId,
+						}),
+					)
+						.unwrap()
+						.then((res) => {
+							arr.push({...policy, template: res.data});
+							if (arr.length === policies.data.length) {
+								console.log(arr);
+								// setPermissions(arr);
+							}
+						});
+				});
 			});
 	}, [Id, dispatch]);
 
