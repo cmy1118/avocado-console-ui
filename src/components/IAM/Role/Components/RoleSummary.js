@@ -1,17 +1,25 @@
 import {useDispatch} from 'react-redux';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../../Table/Table';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import PropTypes from 'prop-types';
 import TableContainer from '../../../Table/TableContainer';
 
 import {useHistory} from 'react-router-dom';
-import {SummaryTablesContainer, SummaryTableTitle,} from '../../../../styles/components/iam/descriptionPage';
+import {
+	SummaryTablesContainer,
+	SummaryTableTitle,
+} from '../../../../styles/components/iam/descriptionPage';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
+import {
+	expiredConverter,
+	groupsConverter,
+	tagsConverter,
+} from '../../../../utils/tableDataConverter';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -21,19 +29,20 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const permissionData = useMemo(() => [], []);
 
 	const userData = useMemo(() => {
-		return [];
-		// return user?.map((v, i) => ({
-		// 		...v,
-		// 		status:v.status.code,
-		// 		groupType: v.userGroupType.name,
-		// 		createdTime:v.createdTag.createdTime,
-		// 		// grantDate: v.request-time,
-		// 		grantUser: 'null',
-		// 		//부여 사용자
-		// 		[DRAGGABLE_KEY]: v.userUid,
-		// 	}));
+		// return [];
+		console.log(user);
+		return (
+			user?.map((v) => ({
+				...v,
+				numberOfGroups: v.groups.length,
+				status: v.status.code,
+				createdTime: v.createdTag.createdTime,
+				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
+				// tags: tagsConverter(v.tags),
+				[DRAGGABLE_KEY]: v.userUid,
+			})) || []
+		);
 	}, [user]);
-
 
 	const groupData = useMemo(() => {
 		return [];
@@ -100,13 +109,12 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 						)
 							.unwrap()
 							.then((res) => {
+								arr.push(res);
 								console.log(' 사용자 정보:', res);
+								setUser(arr);
 							});
-						console.log('arr:', arr);
 					}),
 				);
-		console.log('arr', arr);
-		setUser(arr);
 	}, [Id, dispatch, isSummaryOpened, setUser]);
 
 	//이 역할의 사용자 그룹.
@@ -120,7 +128,6 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				.unwrap()
 				.then((res) => setGroup(res));
 	}, [Id, dispatch, isSummaryOpened, setGroup]);
-
 
 	return (
 		<SummaryTablesContainer>
