@@ -96,9 +96,28 @@ const getEventsAction = createAsyncThunk(
 	},
 );
 
+//사용자 그룹 정보를 역할 ID를 기반으로 조회한다.
+const findUserGroupsById = createAsyncThunk(
+	`${NAME}/FIND_USER_GROUPS_BY_ID`,
+	async (payload, {getState}) => {
+		const {user} = getState().AUTH_USER;
+		const response = await Axios.get(
+			`/open-api/v1/iam/roles/${payload.id}/user-groups`,
+			{
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
+				},
+				baseURL: baseUrl.openApi,
+			},
+		);
+		return response.data;
+	},
+);
+
 const slice = createSlice({
 	name: NAME,
 	initialState: {
+		groupList:[],
 		roles: [],
 		loading: false,
 		error: null,
@@ -116,15 +135,27 @@ const slice = createSlice({
 			state.error = action.payload;
 			state.loading = false;
 		},
+		[findUserGroupsById.pending]: (state) => {
+			state.loading = true;
+		},
+		[findUserGroupsById.fulfilled]: (state, action) => {
+			state.groupList = action.payload;
+			state.loading = false;
+		},
+		[findUserGroupsById.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
 	},
 });
 
 const selectAllState = createSelector(
 	(state) => state.roles,
+	(state) => state.groupList,
 	(state) => state.error,
 	(state) => state.loading,
-	(roles, error, loading) => {
-		return {roles, error, loading};
+	(roles, groupList,error, loading) => {
+		return {roles, groupList,error, loading};
 	},
 );
 
@@ -138,6 +169,7 @@ const IAM_ROLES_GRANT_ROLE_GROUP = {
 		revokeAction,
 		getsAction,
 		getEventsAction,
+		findUserGroupsById,
 	},
 };
 

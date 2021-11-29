@@ -189,6 +189,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 								space={'RolePolicyTab'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
+								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
 						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===

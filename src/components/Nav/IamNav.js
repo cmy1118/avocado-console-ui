@@ -9,8 +9,8 @@ import {
 	burgerMenuIcon,
 	dashboardIcon,
 	fileIcon,
-	folderIcon,
-	moreVertIcon,
+	folderIcon, groupsIcon,
+	moreVertIcon, policyIcon, roleIcon, securityIcon, userIcon,
 } from '../../icons/icons';
 import PropTypes from 'prop-types';
 import qs from 'qs';
@@ -33,7 +33,7 @@ const _NavItem = styled.div`
 	height: 34px;
 	padding: 7px 11px 7px 16px;
 	display: flex;
-	border-left: 2px solid;
+	border-left: 3px solid;
 	border-color: ${(props) => (props.selected ? '#4ca6a8' : '#ffffff')};
 	background: ${(props) => (props.selected ? '#e4f3f4' : '#ffffff')};
 `;
@@ -89,7 +89,7 @@ export const ResourceItem = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	height: 34px;
-	border-left: 2px solid;
+	border-left: 3px solid;
 	padding: 7px 28px 7px 16px;
 	padding-left: ${(props) => props?.left};
 	border-color: ${(props) => (props.selected ? '#4ca6a8' : '#ffffff')};
@@ -165,7 +165,7 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 				</NavItem>
 				<_NavItem>
 					<Icon margin={'0px'} size={'sm'}>
-						{folderIcon}
+						{securityIcon}
 					</Icon>
 					<ResourceItemTitle
 						left={(leftSize * 2 + 10).toString() + 'px'}
@@ -196,7 +196,7 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 											: 0
 									}
 								>
-									{fileIcon}
+									{userIcon}
 								</Icon>
 								<ResourceItemText
 									left={(leftSize * 2 + 6).toString() + 'px'}
@@ -219,7 +219,7 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 											: 0
 									}
 								>
-									{fileIcon}
+									{groupsIcon}
 								</Icon>
 								<ResourceItemText
 									left={(leftSize * 2 + 6).toString() + 'px'}
@@ -243,7 +243,7 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 											: 0
 									}
 								>
-									{fileIcon}
+									{roleIcon}
 								</Icon>
 								<ResourceItemText
 									left={(leftSize * 2 + 6).toString() + 'px'}
@@ -266,7 +266,7 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 											: 0
 									}
 								>
-									{fileIcon}
+									{policyIcon}
 								</Icon>
 								<ResourceItemText
 									left={(leftSize * 2 + 6).toString() + 'px'}

@@ -24,7 +24,7 @@ import RRM_red from '../images/dashboard/service_rrm_red@2x.png';
 
 const utils = [
 	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green, url: 'iam'},
-	{title: 'PAM', text: '특권 접근 관리', img: PAM_green, href: 'ssh://'},
+	{title: 'Bastion', text: '서버 보안 접근', img: PAM_green, href: 'ssh://'},
 	{
 		title: 'Web Terminal ',
 		text: '웹터미널',
@@ -39,6 +39,8 @@ const utils = [
 	// 	url: 'iam',
 	// },
 	{title: 'RRM', text: '원격 자원 관리', img: RRM_green, url: 'iam'},
+	{title: 'PAM', text: '특권 접근 관리', img: PAM_green, url: 'iam'},
+
 ];
 const favorite = [
 	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_grey, url: 'iam'},
@@ -61,7 +63,8 @@ const service = [
 		img: Approal_red,
 		url: 'iam',
 	},
-];
+	{title: 'Bastion', text: '서버 보안 접근', img: PAM_red, href: 'ssh://'},
+]
 
 const _Container = styled.div`
 	display: grid;
