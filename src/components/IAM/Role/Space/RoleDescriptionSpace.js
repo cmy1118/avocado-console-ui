@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import {useHistory, useLocation} from 'react-router-dom';
@@ -12,7 +12,7 @@ import TabBar from '../../TabBar';
 import RolePolicyTab from '../Components/Tabs/RolePolicyTab';
 import RoleUserTab from '../Components/Tabs/RoleUserTab';
 import RoleGroupTab from '../Components/Tabs/RoleGroupTab';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import {HoverIconButton} from '../../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';

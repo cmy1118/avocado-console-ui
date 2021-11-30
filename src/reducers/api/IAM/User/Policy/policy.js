@@ -23,6 +23,29 @@ const getsAction = createAsyncThunk(
 	},
 );
 
+const grantGetsAction = createAsyncThunk(
+	`${NAME}/GRANT_GETS`,
+	async (payload, {getState}) => {
+		const {user} = getState().AUTH_USER;
+		const response = await Axios.get(
+			'/open-api/v1/iam/roles/policy-templates',
+			{
+				params: {
+					roleId: payload.roleId,
+				},
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
+					'Content-Type': 'application/json',
+					Range: 'elements=0-50',
+				},
+				baseURL: baseURL.openApi,
+			},
+		);
+		console.log(response);
+		return response.data || [];
+	},
+);
+
 const slice = createSlice({
 	name: NAME,
 	initialState: {
@@ -39,7 +62,17 @@ const slice = createSlice({
 			state.policy = action.payload;
 			state.loading = false;
 		},
-		[getsAction.rejected]: (state, action) => {
+		[grantGetsAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
+		[getsAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[grantGetsAction.fulfilled]: (state) => {
+			state.loading = false;
+		},
+		[grantGetsAction.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
 		},
@@ -62,6 +95,7 @@ const IAM_USER_POLICY = {
 	action: slice.actions,
 	asyncAction: {
 		getsAction,
+		grantGetsAction,
 	},
 };
 

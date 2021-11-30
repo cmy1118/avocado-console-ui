@@ -147,6 +147,7 @@ const findTemplatesAction = createAsyncThunk(
 	`${NAME}/FIND_TEMPLATES`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
+		console.log(payload);
 		const response = await Axios.get(
 			`/open-api/v1/iam/roles/${payload.roleId}/policy-templates`,
 			{
@@ -155,11 +156,12 @@ const findTemplatesAction = createAsyncThunk(
 					Range: payload.range,
 				},
 				params: {
-					incluide: payload.include,
+					includea: payload.include,
 				},
 				baseURL: baseURL.openApi,
 			},
 		);
+		console.log(response.data);
 		return {data: response.data, headers: response.headers};
 	},
 );

@@ -24,7 +24,6 @@ const BodyContainer = styled.div`
 	overflow-y: scroll;
 	overflow-x: hidden;
 	min-height: 40px;
-	// width: fit-content;
 `;
 
 const Table = ({
@@ -346,7 +345,16 @@ const Table = ({
 																DRAGGABLE_KEY
 															],
 														) && (
-															<InnerTableContainer />
+															<InnerTableContainer
+																policyId={
+																	row.original
+																		.id
+																}
+																attributes={
+																	row.original
+																		.attributes
+																}
+															/>
 														)}
 												</>
 											);

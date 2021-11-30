@@ -88,6 +88,7 @@ const LoginForm = () => {
 			)
 				.unwrap()
 				.then((val) => {
+					console.log(val);
 					console.log(val?.policyParameter?.policies);
 					if (
 						val?.policyParameter?.policies[0]?.type ===

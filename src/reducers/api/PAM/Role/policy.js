@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import {Axios, baseURL} from '../../../../api/constants';
+import {contentType} from '../../../../utils/auth';
 
 const NAME = 'PAM_POLICY';
 
@@ -17,6 +18,28 @@ const findByRoleIdAction = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
+		console.log(response.data);
+		return response.data;
+	},
+);
+
+const FindByIdPermissionAction = createAsyncThunk(
+	`${NAME}/FindByIdPermission`,
+	async (payload, {getState}) => {
+		const {user} = getState().AUTH_USER;
+		console.log(payload);
+		const response = await Axios.get(
+			`/open-api/v1/pam/roles/${payload.policyId}/permissions`,
+			{
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
+					'Content-Type': contentType.JSON,
+					Range: payload.range,
+				},
+				baseURL: baseURL.openApi,
+			},
+		);
+		console.log(response.data);
 		return response.data;
 	},
 );
@@ -35,6 +58,16 @@ const slice = createSlice({
 			state.loading = false;
 		},
 		[findByRoleIdAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
+		[FindByIdPermissionAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[FindByIdPermissionAction.fulfilled]: (state) => {
+			state.loading = false;
+		},
+		[FindByIdPermissionAction.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
 		},
@@ -57,6 +90,7 @@ const PAM_POLICY = {
 	action: slice.actions,
 	asyncAction: {
 		findByRoleIdAction,
+		FindByIdPermissionAction,
 	},
 };
 

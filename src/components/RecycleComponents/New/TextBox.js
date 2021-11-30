@@ -22,7 +22,11 @@ const Input = styled(Field)`
 	box-sizing: border-box;
 	outline: none;
 	&::-webkit-input-placeholder {
+<<<<<<< HEAD
 		color: ${(props) => (props.placeholder_text_color ? '#D7D7D7' : '')};
+=======
+		color: ${(props) => (props.placeholdertextcolor ? '#D7D7D7' : '')};
+>>>>>>> permi/yeo
 	}
 `;
 
