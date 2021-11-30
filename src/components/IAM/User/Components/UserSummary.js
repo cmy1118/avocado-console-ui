@@ -60,12 +60,13 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	}, [groups, user]);
 
 	const roleData = useMemo(() => {
+		console.log(roles);
 		return roles.map((v, i) => ({
 			...v,
 			permission: v.template.detail.policyType,
 			policyName: v.template.templateName,
 			authTarget: '사용자',
-			description: v.template.detail.attributeName,
+			description: `${v.template.detail.policyType} : ${v.template.detail.attributeName}`,
 			roleName: v.role.name,
 			grantDate: v.grantUser?.createdTag?.createdTime,
 			grantUser: v.grantUser,

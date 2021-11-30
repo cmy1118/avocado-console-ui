@@ -18,6 +18,8 @@ import {expiredConverter} from '../../../../utils/tableDataConverter';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/User/Policy/policyTemplate';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
+import * as _ from 'lodash';
+import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -29,12 +31,15 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 		console.log(permissions);
 		return (
 			permissions?.map((v) => ({
-				...v,
-				description: v.attributeName,
-				type: v.attributes[0].policyType,
-				policyName: v.name,
+				name: v.policy.details[0].policyType,
+				description: `${v.policy.details[0].policyType} : ${v.policy.details[0].attributeName}`,
+				policyName: v.policy.templateName,
+				roleName: v.role.name,
 				grantUser: v.user,
-				[DRAGGABLE_KEY]: v.id,
+				type: v.policy.details[0].policyType,
+				id: v.role.id + v.policy.templateId,
+				createdTime: v.policy.createdTag.createdTime,
+				[DRAGGABLE_KEY]: v.role.id + v.policy.templateId,
 			})) || []
 		);
 	}, [permissions]);
@@ -84,42 +89,46 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 
 	//권한 To 유섭님
 	useEffect(() => {
+		const policiesBox = [];
+
 		dispatch(
-			IAM_GRANT_POLICY_BY_ROLE.asyncAction.getsAction({
-				roleId: Id,
-				range: `elements=0-50`,
+			IAM_ROLES.asyncAction.findByIdAction({
+				id: Id,
 			}),
 		)
 			.unwrap()
-			.then((policies) => {
-				const arr = [];
-				if (!policies.data) {
-					setPermissions([]);
-					return;
-				}
-				policies.data.forEach((policy) => {
-					dispatch(
-						IAM_USER.asyncAction.findByUidAction({
-							userUid: policy.createdTag.actorTag.userUid,
-						}),
-					)
-						.unwrap()
-						.then((user) => {
+			.then((role) => {
+				dispatch(
+					IAM_GRANT_POLICY_BY_ROLE.asyncAction.getsAction({
+						roleId: Id,
+						range: `elements=0-50`,
+					}),
+				)
+					.unwrap()
+					.then((policies) => {
+						if (!policies.data) {
+							setPermissions([]);
+							return;
+						}
+						policies.data.forEach((policy) => {
 							dispatch(
-								IAM_POLICY_TEMPLATE.asyncAction.findByIdAction({
-									templateId: policy.templateId,
+								IAM_USER.asyncAction.findByUidAction({
+									userUid: policy.createdTag.actorTag.userUid,
 								}),
 							)
 								.unwrap()
-								.then((res) => {
-									arr.push({...policy, user, ...res.data});
-									if (arr.length === policies.data.length) {
-										console.log(arr);
-										setPermissions(arr);
+								.then((user) => {
+									policiesBox.push({user, role, policy});
+									if (
+										policiesBox.length ===
+										policies.data.length
+									) {
+										console.log(policiesBox);
+										setPermissions(policiesBox);
 									}
 								});
 						});
-				});
+					});
 			});
 	}, [Id, dispatch]);
 

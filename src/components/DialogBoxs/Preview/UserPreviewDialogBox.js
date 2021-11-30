@@ -94,9 +94,9 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 		console.log(permissions);
 		return (
 			permissions?.map((v) => ({
-				name: v.policy.templateName,
-				description: v.policy.details[0].attributeName,
-				policyName: v.policy.details[0].policyType,
+				name: v.policy.details[0].policyType,
+				description: `${v.policy.details[0].policyType} : ${v.policy.details[0].attributeName}`,
+				policyName: v.policy.templateName,
 				roleName: v.role.name,
 				grantUser: v.user,
 				id: v.role.id + v.policy.templateId,
@@ -130,6 +130,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 				)
 					.unwrap()
 					.then((policies) => {
+						if (!policies.data) return;
 						policies.data.forEach((policy) => {
 							dispatch(
 								IAM_USER.asyncAction.findByUidAction({
@@ -147,13 +148,16 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 											  }))
 											: [],
 									);
+
 									if (
 										policiesBox.length ===
 										readOnlyData[
 											tableKeys.users.add.roles.exclude
-										].length
+										].length *
+											policies.data.length
 									) {
 										const arr = _.flatten(policiesBox);
+										console.log(arr);
 										setPermissions(arr);
 									}
 								});
