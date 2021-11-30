@@ -62,7 +62,8 @@ const pamPolicyNmberOfRoles = {
 const attributePolicyType = {
 	IdentityVerification: '본인 인증 확인',
 	MFA: 'MFA(다중인증)',
-	AccountExpired: '계정 만료',
+	AccountExpired: '계정 만료일',
+	SignInFailBlocking: '잠금 해제일',
 };
 
 const calculatettribute = (attribute) => {
@@ -90,7 +91,7 @@ const calculatettribute = (attribute) => {
 			});
 		} else if (v.policyType === 'AccountExpired') {
 			const tempVal = JSON.parse(v.attributeName);
-			temp[`${tempVal.policyType}`] = tempVal.expiryDays;
+			temp[`${tempVal.policyType}`] = tempVal.expiryDays + '일전';
 			columns.push({
 				Header:
 					attributePolicyType[`${tempVal.policyType}`] ||
@@ -99,7 +100,8 @@ const calculatettribute = (attribute) => {
 			});
 		} else if (v.policyType === 'SignInFailBlocking') {
 			const tempVal = JSON.parse(v.attributeName);
-			temp[`${tempVal.policyType}`] = tempVal.failedCountInitDays;
+			temp[`${tempVal.policyType}`] =
+				tempVal.failedCountInitDays + '일전';
 			columns.push({
 				Header:
 					attributePolicyType[`${tempVal.policyType}`] ||
