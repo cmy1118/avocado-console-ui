@@ -14,10 +14,7 @@ import {
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
-import {
-	descriptionConverter,
-	expiredConverter,
-} from '../../../../utils/tableDataConverter';
+import {expiredConverter} from '../../../../utils/tableDataConverter';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/User/Policy/policyTemplate';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
@@ -33,7 +30,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 		return (
 			permissions?.map((v) => ({
 				...v,
-				description: descriptionConverter(v.attributes[0].policies),
+				description: v.attributeName,
 				type: v.attributes[0].policyType,
 				policyName: v.name,
 				grantUser: v.user,

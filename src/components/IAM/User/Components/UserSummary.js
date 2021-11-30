@@ -17,7 +17,6 @@ import PAGINATION from '../../../../reducers/pagination';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 import IAM_USER_TAG from '../../../../reducers/api/IAM/User/Tag/tags';
-import {descriptionConverter} from '../../../../utils/tableDataConverter';
 
 const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -66,9 +65,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 			permission: v.template.detail.policyType,
 			policyName: v.template.templateName,
 			authTarget: '사용자',
-			description: descriptionConverter(
-				v.template.detail.attribute.policies,
-			),
+			description: v.template.detail.attributeName,
 			roleName: v.role.name,
 			grantDate: v.grantUser?.createdTag?.createdTime,
 			grantUser: v.grantUser,

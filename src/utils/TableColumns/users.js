@@ -214,23 +214,23 @@ export const USER_ADD_PERMISSTIOMS_COLUMN = [
 	{
 		Header: '권한 상세',
 		accessor: 'description',
-		Cell: function Component(v) {
-			return (
-				<div>
-					{v.value.split('\n').map((v, i) => {
-						return (
-							<RowDiv
-								alignItems={'center'}
-								height={'30px'}
-								key={i}
-							>
-								{v}
-							</RowDiv>
-						);
-					})}
-				</div>
-			);
-		},
+		// Cell: function Component(v) {
+		// 	return (
+		// 		<div>
+		// 			{v.value.split('\n').map((v, i) => {
+		// 				return (
+		// 					<RowDiv
+		// 						alignItems={'center'}
+		// 						height={'30px'}
+		// 						key={i}
+		// 					>
+		// 						{v}
+		// 					</RowDiv>
+		// 				);
+		// 			})}
+		// 		</div>
+		// 	);
+		// },
 	},
 
 	{
@@ -242,8 +242,18 @@ export const USER_ADD_PERMISSTIOMS_COLUMN = [
 		accessor: 'roleName',
 	},
 	{
-		accessor: 'grantTarget',
+		accessor: 'grantUser',
 		Header: '부여 사용자',
+		type: 'users',
+		Cell: function Component(cell) {
+			return (
+				<TableLink
+					cell={cell}
+					text={cell.value?.name + '(' + cell.value?.id + ')'}
+				/>
+			);
+			// <div>{cell.value?.name + '(' + cell.value?.id + ')'}</div>;
+		},
 	},
 ];
 export const USER_SUMMARY_GROUP_COLUMN = [
