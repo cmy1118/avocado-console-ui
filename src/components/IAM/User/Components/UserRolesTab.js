@@ -51,7 +51,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					.map((v) => ({
 						...v,
 						// numberOfUsers: v.users?.length,
-
+						createdTime: v.createdTime,
 						[DRAGGABLE_KEY]: v.id,
 					}))
 			: [];
@@ -99,6 +99,9 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 		roles.forEach((role) => {
 			arr.push({
 				...role,
+				id: role.id,
+				name: role.name,
+				description: role.description,
 				type: role.maxGrants === '1' ? 'Private' : 'Public',
 			});
 			if (arr.length === roles.length) {
@@ -122,6 +125,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 						arr.push({
 							id: role.id,
 							name: role.name,
+							numberOfUsers: role.grantedCount,
 							description: role.description,
 							createdTime: role.createdTag.createdTime,
 							type: role.maxGrants === '1' ? 'Private' : 'Public',
@@ -159,7 +163,9 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 						}),
 					);
 					// setIncludedDataIds(arr);
-					setRoles(arr);
+					if(arr.length === res.data.length) {
+						setRoles(arr);
+					}
 				});
 		}
 	}, [dispatch, isSummaryOpened, page]);
@@ -176,9 +182,13 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				.unwrap()
 				.then((res) => {
 					// res : 사용자에게 부여된 role 정보
-					res.data.map((v) => arr.push(v.roleId));
-					setIncludedDataIds(arr);
-					getIncludedRolesData(res.data);
+					res.data.map((v) => {arr.push(v.roleId)
+					if(res.data.length === arr.length){
+						setIncludedDataIds(arr);
+						getIncludedRolesData(res.data);
+					}
+					});
+
 				});
 		}
 	}, [dispatch, getIncludedRolesData, page, userUid]);
