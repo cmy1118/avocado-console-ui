@@ -91,10 +91,11 @@ const UserSpace = () => {
 					)
 						.unwrap()
 						.then((sessions) => {
+							console.log(sessions);
 							setUsers(
 								users.data.map((user) => ({
 									...user,
-									session: sessions.find(
+									session: sessions.data.find(
 										(session) =>
 											user.userUid === session.userUid,
 									),

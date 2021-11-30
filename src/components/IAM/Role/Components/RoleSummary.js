@@ -154,7 +154,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 					}
 					dispatch(
 						PAM_SESSION.asyncAction.findSessionAction({
-							userUids: users.map((v) => v.userUid),
+							userUids: users,
 						}),
 					)
 						.unwrap()
@@ -173,12 +173,12 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 										arr.push({
 											...res,
 											grantUser: res,
-											sesstion: sesstions.find(
-												(x) => x.userUid === id,
+											sesstion: sesstions.data.find(
+												(x) =>
+													x.userUid === res.userUid,
 											),
 										});
 										if (users.length === arr.length) {
-											arr.push(res);
 											console.log(' 사용자 정보:', res);
 											setUser(arr);
 										}
