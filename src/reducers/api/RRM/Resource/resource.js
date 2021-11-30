@@ -84,18 +84,44 @@ const deleteAction = createAsyncThunk(
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+		const {user} = getState().AUTH_USER;
 
 		const response = await Axios.get(
-			`/open/api/v1/remote/resources/${payload.id}`,
+			`/open-api/v1/rrm/remote-resources/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
+					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
 			},
 		);
+		return response.data;
+	},
+);
+
+const findAllAccountAction = createAsyncThunk(
+	`${NAME}/findAllAccount`,
+	async (payload, {getState}) => {
+		const {user} = getState().AUTH_USER;
+		console.log(payload);
+		const response = await Axios.get(
+			`/open-api/v1/pam/remote-resources/users`,
+			{
+				params: {
+					resourceId: payload.resourceId,
+					// userId: 'root',
+					credentialType: 'Password',
+				},
+				headers: {
+					Authorization: `${user.token_type} ${user.access_token}`,
+					'Content-Type': 'application/json',
+					Range: 'elements=0-50',
+				},
+				baseURL: baseURL.openApi,
+			},
+		);
+		console.log(response);
 		return response.data;
 	},
 );
@@ -219,6 +245,17 @@ const slice = createSlice({
 			state.loading = false;
 		},
 
+		[findAllAccountAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[findAllAccountAction.fulfilled]: (state) => {
+			state.loading = false;
+		},
+		[findAllAccountAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
+
 		[findAllBasicAction.pending]: (state) => {
 			state.loading = true;
 		},
@@ -282,6 +319,7 @@ const RRM_RESOURCE = {
 		findAllBasicAction,
 		findAllServicePortAction,
 		findAllTagAction,
+		findAllAccountAction,
 	},
 };
 

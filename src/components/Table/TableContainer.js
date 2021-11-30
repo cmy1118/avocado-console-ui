@@ -120,7 +120,7 @@ const TableContainer = ({
 
 	const updateMyData = (rowIndex, columnId, value) => {
 		// We also turn on the flag to not reset the page
-		if (mode === 'readOnly') return;
+		if (mode === 'readOnly' || mode === 'inner') return;
 		setSkipPageReset(true);
 		setData((old) =>
 			old.map((row, index) => {
@@ -236,7 +236,6 @@ const TableContainer = ({
 				]);
 		},
 	);
-
 	return (
 		<Container>
 			{React.Children.map(children, (child) => {

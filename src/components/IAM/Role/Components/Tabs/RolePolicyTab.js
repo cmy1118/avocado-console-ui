@@ -7,7 +7,6 @@ import {
 import Table from '../../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
-import {dummyPermission} from '../../../../../utils/dummyData';
 import TableContainer from '../../../../Table/TableContainer';
 import DragContainer from '../../../../Table/DragContainer';
 import TableOptionsBar from '../../../../Table/TableOptionsBar';
@@ -19,126 +18,208 @@ import {
 	FoldableContainer,
 	TitleBarButtons,
 } from '../../../../../styles/components/iam/iam';
-import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
-import {useDispatch, useSelector} from 'react-redux';
-import PAGINATION from '../../../../../reducers/pagination';
+import {useDispatch} from 'react-redux';
 import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
-import PAM_POLICY from '../../../../../reducers/api/ PAM/Role/policy';
 import PAM_ROLES from '../../../../../reducers/api/ PAM/Role/roles';
+
+const policyType = {
+	'KR-2020-0005:202111:0001': '사용자 인증',
+	'KR-2020-0005:202111:0002': '사용자 인증',
+	'KR-2020-0005:202111:0003': '사용자 인증',
+	'KR-2020-0005:202111:0004': '본인 인증',
+};
+const policyDescription = {
+	'KR-2020-0005:202111:0001': '기본 인증 정책',
+	'KR-2020-0005:202111:0002': '대체 인증 정책',
+	'KR-2020-0005:202111:0003': 'MFA 인증 정책',
+	'KR-2020-0005:202111:0004': '본인 여부를 확인하기 위한 인증 정책',
+};
+const policyNmberOfRoles = {
+	'KR-2020-0005:202111:0001': 3,
+	'KR-2020-0005:202111:0002': 4,
+	'KR-2020-0005:202111:0003': 2,
+	'KR-2020-0005:202111:0004': 3,
+};
+
+const policyCreationTime = {
+	'KR-2020-0005:202111:0001': '2021-11-26T19:13:16.446+09:00',
+	'KR-2020-0005:202111:0002': '2021-11-26T19:13:21.266+09:00',
+	'KR-2020-0005:202111:0003': '2021-11-26T19:14:01.500+09:00',
+	'KR-2020-0005:202111:0004': '2021-11-26T19:14:13.335+09:00',
+};
+
+const pamPolicyType = {
+	'KR-2020-0005:00000000002': '권한 관리',
+};
+const pamPolicyDescription = {
+	'KR-2020-0005:00000000002': '리소스 접근을 위한 권한',
+};
+const pamPolicyNmberOfRoles = {
+	'KR-2020-0005:00000000002': 4,
+};
+
+const attributePolicyType = {
+	IdentityVerification: '본인 인증 확인',
+	MFA: 'MFA(다중인증)',
+	AccountExpired: '계정 만료',
+};
+
+const calculatettribute = (attribute) => {
+	let columns = new Array();
+	let data = new Array();
+	let temp = {id: 0};
+
+	attribute.map((v) => {
+		console.log(v);
+		if (v.policyType === 'AlternativeAuthN') {
+			if (v.attributeName === 'IdAndPassword') {
+				temp.AltType = v.attributeName;
+				temp.AlternativeAuthN = '사용하지 않음';
+			} else {
+				temp.AltType = '사용하지 않음';
+				temp.AlternativeAuthN = v.attributeName;
+			}
+			columns.push({
+				Header: '인증 유형',
+				accessor: 'AltType',
+			});
+			columns.push({
+				Header: '대체인증',
+				accessor: 'AlternativeAuthN',
+			});
+		} else {
+			temp[`${v.policyType}`] = v.attributeName;
+			columns.push({
+				Header: attributePolicyType[`${v.policyType}`] || v.policyType,
+				accessor: v.policyType,
+			});
+		}
+	});
+	data.push(temp);
+	return {columns: columns, data: data};
+};
 
 const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
-	const {page} = useSelector(PAGINATION.selector);
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
-	const [inPolicy, setInPolicy] = useState([]);
-	const [exPolicy, setExPolicy] = useState([]);
-
-	const excludedData = useMemo(() => {
-		return (
-			exPolicy?.map((v) => ({
-				id: v.id,
-				name: v.name,
-				// type: v.attributes[0].policyType,
-				// description: '',
-				// numberOfRoles: 0,
-				createdTime: v.createdTime,
-				[DRAGGABLE_KEY]: v.id,
-				attributes: v.attributes,
-			})) || []
-		);
-	}, [exPolicy]);
+	const [inPolicy, setInPolicy] = useState(null);
+	const [exPolicy, setExPolicy] = useState(null);
 
 	const includedData = useMemo(() => {
 		return (
 			inPolicy?.map((v) => ({
 				id: v.id,
 				name: v.name,
-				// type: v.attributes[0].policyType,
-				// description: '',
-				// numberOfRoles: 0,
-				createdTime: v.createdTime,
+				type: policyType[v.id] || pamPolicyType[v.id],
+				description:
+					policyDescription[v.id] || pamPolicyDescription[v.id],
+				numberOfRoles:
+					policyNmberOfRoles[v.id] || pamPolicyNmberOfRoles[v.id],
+				createdTime:
+					policyCreationTime[v.id] || pamPolicyNmberOfRoles[v.id],
 				[DRAGGABLE_KEY]: v.id,
+				attributes: v.attributes
+					? calculatettribute(v.attributes)
+					: null,
 			})) || []
 		);
 	}, [inPolicy]);
 
+	const excludedData = useMemo(() => {
+		return (
+			exPolicy?.map((v) => ({
+				id: v.id,
+				name: v.name,
+				type: policyType[v.id] || pamPolicyType[v.id],
+				description:
+					policyDescription[v.id] || pamPolicyDescription[v.id],
+				numberOfRoles:
+					policyNmberOfRoles[v.id] || pamPolicyNmberOfRoles[v.id],
+				createdTime:
+					policyCreationTime[v.id] || pamPolicyNmberOfRoles[v.id],
+				[DRAGGABLE_KEY]: v.id,
+				attributes: v.attributes
+					? calculatettribute(v.attributes)
+					: null,
+			})) || []
+		);
+	}, [exPolicy]);
+
 	//역할에 포함 정책 템플릿을 조회한다.
 	useEffect(() => {
 		if (!isSummaryOpened) {
-			dispatch(
-				IAM_ROLES.asyncAction.findTemplatesAction({
-					roleId: roleId,
-					range: 'elements=0-50',
-					include: true,
-				}),
-			)
-				.unwrap()
-				.then((res) => {
-					console.log(res.data);
-					setInPolicy(res.data);
-				});
+			// iamList();
+			let inPolicies = [];
 
 			dispatch(
 				IAM_ROLES.asyncAction.findTemplatesAction({
 					roleId: roleId,
 					range: 'elements=0-50',
-					include: false,
+					include: 't',
 				}),
 			)
 				.unwrap()
 				.then((res) => {
 					console.log(res.data);
-					setExPolicy(res.data);
+					inPolicies.push.apply(inPolicies, res.data);
+				})
+				.then(() => {
+					dispatch(
+						PAM_ROLES.asyncAction.getAllRolesAction({
+							id: roleId,
+							range: 'elements=0-50',
+						}),
+					)
+						.unwrap()
+						.then((r) => {
+							inPolicies.push.apply(inPolicies, r.data);
+						})
+						.then(() => {
+							console.log('setInPolicy', inPolicies);
+							setInPolicy(inPolicies);
+						});
+				})
+				.then(() => {
+					dispatch(
+						IAM_ROLES.asyncAction.findTemplatesAction({
+							roleId: roleId,
+							range: 'elements=0-50',
+							include: 'f',
+						}),
+					)
+						.unwrap()
+						.then((res) => {
+							console.log('setExPolicy', res.data);
+							setExPolicy(res.data);
+						});
 				});
-			// dispatch(IAM_ROLES.asyncAction.findByIdAction({id: roleId}))
-			// 	.unwrap()
-			// 	.then((res) => {
-			// 		console.log(res);
-			// 	});
-			// dispatch(PAM_ROLES.asyncAction.findRolesByIdsAction({id: roleId}))
-			// 	.unwrap()
-			// 	.then((res) => {
-			// 		console.log(res);
-			// 	});
-			// dispatch(
-			// 	PAM_POLICY.asyncAction.findByRoleIdAction({roleId: roleId}),
-			// );
-			// dispatch(
-			// 	IAM_ROLES.asyncAction.findTemplatesAction({
-			// 		range:
-			// 			page[tableKeys.roles.summary.tabs.permissions.include],
-			// 		include: true,
-			// 	}),
-			// )
-			// 	.unwrap()
-			// 	.then((res) => setInPolicy(res));
 		}
-	}, [dispatch, roleId, isSummaryOpened, page]);
+	}, [dispatch, roleId, isSummaryOpened, setInPolicy, setExPolicy]);
 
 	//역할에 미포함 정책 템플릿을 조회한다.
-	useEffect(() => {
-		if (
-			!isSummaryOpened &&
-			page[tableKeys.users.summary.tabs.groups.include]
-		) {
-			dispatch(
-				IAM_ROLES.asyncAction.findTemplatesAction({
-					range:
-						page[tableKeys.roles.summary.tabs.permissions.include],
-					include: false,
-				}),
-			)
-				.unwrap()
-				.then((res) => setExPolicy(res));
-		}
-	}, [dispatch, isSummaryOpened, page]);
+	// useEffect(() => {
+	// 	if (!isSummaryOpened) {
+	// 		dispatch(
+	// 			IAM_ROLES.asyncAction.findTemplatesAction({
+	// 				roleId: roleId,
+	// 				range: 'elements=0-50',
+	// 				include: 'false',
+	// 			}),
+	// 		)
+	// 			.unwrap()
+	// 			.then((res) => {
+	// 				console.log(res.data);
+	// 				setExPolicy(res.data);
+	// 			});
+	// 	}
+	// }, [dispatch, isSummaryOpened, setExPolicy]);
 
 	return (
 		<TabContentContainer>
 			<TableTitle>
-				이 역할의 정책: {excludedData.length}
+				이 역할의 정책: {includedData.length}
 				<TransparentButton margin={'0px 0px 0px 5px'}>
 					연결 해제
 				</TransparentButton>
@@ -152,7 +233,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 				includedData={includedData}
 			>
 				<TableContainer
-					data={excludedData}
+					data={includedData}
 					tableKey={tableKeys.roles.summary.tabs.permissions.include}
 					columns={
 						tableColumns[
@@ -165,7 +246,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 				</TableContainer>
 				<FoldableContainer>
 					<TableFold
-						title={<>이 역할의 다른 정책: {includedData.length}</>}
+						title={<>이 역할의 다른 정책: {excludedData.length}</>}
 						space={'RolePolicyTab'}
 						isFold={isFold}
 						setIsFold={setIsFold}
@@ -181,7 +262,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 						<>
 							<TableOptionText data={'policies'} />
 							<TableContainer
-								data={includedData}
+								data={excludedData}
 								tableKey={
 									tableKeys.roles.summary.tabs.permissions
 										.exclude

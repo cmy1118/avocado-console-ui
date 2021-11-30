@@ -95,7 +95,7 @@ const getAllRolesAction = createAsyncThunk(
 		const response = await Axios.get(`/open-api/v1/pam/roles`, {
 			params: {
 				name: payload.name || null,
-				ids: payload.ids || null,
+				id: payload.id || null,
 			},
 			headers: {
 				Authorization: `${user.token_type} ${user.access_token}`,
