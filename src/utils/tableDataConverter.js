@@ -91,7 +91,7 @@ export const totalNumberConverter = (range) => {
 	return parseInt(range.split('/')[1]);
 };
 
-const descKeys = (key) => {
+export const descKeys = (key) => {
 	switch (key) {
 		case 'type':
 			return '인증유형';
@@ -115,7 +115,7 @@ const descKeys = (key) => {
 	}
 };
 
-const descValues = (value) => {
+export const descValues = (value) => {
 	switch (value) {
 		case 'IdAndPassword':
 			return '아이디 패스워드';

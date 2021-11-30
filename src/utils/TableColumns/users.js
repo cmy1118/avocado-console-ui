@@ -47,17 +47,17 @@ export const USER_COLUMN = [
 		Header: '인증유형',
 		filter: 'equals',
 		Filter: SelectionOption,
-		Cell: function Component(v) {
-			return <div>{authTypeConverter(v.value)}</div>;
-		},
+		// Cell: function Component(v) {
+		// 	return <div>{authTypeConverter(v.value)}</div>;
+		// },
 	},
 	{
 		accessor: 'MFA',
 		Header: 'MFA',
 		filter: 'equals',
-		Cell: function Component(v) {
-			return <div>{mfaConverter(v.value)}</div>;
-		},
+		// Cell: function Component(v) {
+		// 	return <div>{mfaConverter(v.value)}</div>;
+		// },
 		Filter: SelectionOption,
 	},
 	{

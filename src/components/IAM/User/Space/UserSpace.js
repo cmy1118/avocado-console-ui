@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import {
+	descValues,
 	expiredConverter,
 	groupsConverter,
 	tagsConverter,
@@ -29,6 +30,8 @@ import {
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import PAM_SESSION from '../../../../reducers/api/PAM/session';
+import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
+import * as _ from 'lodash';
 
 const UserSpace = () => {
 	const history = useHistory();
@@ -43,14 +46,29 @@ const UserSpace = () => {
 		console.log(users);
 		return (
 			users?.map((v) => ({
-				...v,
-				groups: groupsConverter(v.groups || []),
-				status: v.status.code,
-				createdTime: v.createdTag.createdTime,
-				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
-				tags: tagsConverter(v.tags),
+				...v.user,
+				groups: groupsConverter(v.user.groups || []),
+				status: v.user.status.code,
+				createdTime: v.user.createdTag.createdTime,
+				passwordExpiryTime: expiredConverter(v.user.passwordExpiryTime),
+				tags: tagsConverter(v.user.tags),
+				authType:
+					v.policies.find((v) => v.policyType === 'AlternativeAuthN')
+						?.attributeName === 'IdAndPassword'
+						? 'ID/PWD'
+						: '대체인증',
+				MFA: v.policies.find((v) => v.policyType === 'MFA')
+					? `${
+							v.policies.find((v) => v.policyType === 'MFA')
+								?.attributeName
+					  } (${descValues(
+							v.policies.find(
+								(v) => v.policyType === 'IdentityVerification',
+							)?.attributeName,
+					  )})`
+					: '없음',
 				lastConsoleLogin: v.session.lastConsoleLoginTime,
-				[DRAGGABLE_KEY]: v.userUid,
+				[DRAGGABLE_KEY]: v.user.userUid,
 			})) || []
 		);
 	}, [users]);
@@ -72,6 +90,7 @@ const UserSpace = () => {
 	}, [dispatch, select]);
 
 	useEffect(() => {
+		const arr = [];
 		if (page[tableKeys.users.basic]) {
 			dispatch(
 				IAM_USER.asyncAction.findAllAction({
@@ -91,16 +110,52 @@ const UserSpace = () => {
 					)
 						.unwrap()
 						.then((sessions) => {
-							console.log(sessions);
-							setUsers(
-								users.data.map((user) => ({
-									...user,
-									session: sessions.data.find(
-										(session) =>
-											user.userUid === session.userUid,
-									),
-								})),
-							);
+							users.data.forEach((sessionUser) => {
+								dispatch(
+									IAM_USER_POLICY.asyncAction.getsAction({
+										userUid: sessionUser.userUid,
+									}),
+								)
+									.unwrap()
+									.then((policy) => {
+										arr.push({
+											user: sessionUser,
+											session: sessions.data.find(
+												(session) =>
+													sessionUser.userUid ===
+													session.userUid,
+											),
+											policies: _.uniqBy(
+												_.flatten(
+													_.flatten(
+														policy.map(
+															(v) =>
+																v.policyTemplates,
+														),
+													).map((x) => x.details),
+												),
+												'policyType',
+											),
+										});
+										if (arr.length === users.data.length) {
+											console.log(arr);
+											setUsers(arr);
+										}
+										// setUsers(
+										// 	users.data.map((user) => ({
+										// 		session: sessions.data.find(
+										// 			(session) =>
+										// 				user.userUid ===
+										// 				session.userUid,
+										// 		),
+										// 		policies:
+										// 			user.userUid ===
+										// 				sessionUser.userUid &&
+										// 			'',
+										// 	})),
+										// );
+									});
+							});
 						});
 				});
 		}
