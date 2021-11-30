@@ -66,7 +66,7 @@ const ModalTableContainer = ({
 					onClick={onSubmitCreateUser}
 					type={'submit'}
 				>
-					Save
+					저장
 				</NormalButton>
 				<TransparentButton
 					type={'button'}
@@ -74,7 +74,7 @@ const ModalTableContainer = ({
 					margin={'0px 0px 0px 8px'}
 					onClick={onClickCloseDialogBox}
 				>
-					Cancel
+					취소
 				</TransparentButton>
 			</DialogBoxFooter>
 		</_DialogBox>
