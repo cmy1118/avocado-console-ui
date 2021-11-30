@@ -1,3 +1,20 @@
+export const dummyDatesLastInfo = [
+	{
+		lastTime: '2021-06-01T13:04:42.59+09:00',
+		lastActiv: '사용자 접근 정책 변경',
+		lastUser: 'jinwoo',
+	},
+	{
+		lastTime: '2021-10-20T01:06:42.59+09:00',
+		lastActiv: '권한 접근 정책 변경',
+		lastUser: 'myhee',
+	},
+	{
+		lastTime: '2021-11-11T11:22:42.59+09:00',
+		lastActiv: '권한 접근 정책 추가',
+		lastUser: 'user',
+	},
+];
 export const dummyDates = [
 	'2021.10.11 14:10:21',
 	'2021.09.20 11:26:02',
@@ -412,3 +429,8 @@ export const dummyPolicyOnDialogBox = [
 		grantTarget: '태그(type)',
 	},
 ];
+
+export const getRandomNum = (min, max) => {
+	console.log(parseInt(Math.random() * (max - min) + min));
+	return parseInt(Math.random() * (max - min) + min);
+};

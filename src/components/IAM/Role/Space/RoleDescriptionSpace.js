@@ -39,6 +39,7 @@ import {
 	TitleBarButtons,
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
+import {dummyDatesLastInfo, getRandomNum} from '../../../../utils/dummyData';
 
 const RoleDescriptionSpace = ({roleId}) => {
 	const dispatch = useDispatch();
@@ -157,9 +158,30 @@ const RoleDescriptionSpace = ({roleId}) => {
 						<LiText>
 							생성 일시 : {role?.createdTag.createdTime}
 						</LiText>
-						<LiText>마지막 작업 일시 : null</LiText>
-						<LiText>마지막 활동 : null</LiText>
-						<LiText>마지막 활동 사용자 : null</LiText>
+						<LiText>
+							마지막 작업 일시 :{' '}
+							{
+								dummyDatesLastInfo[
+									getRandomNum(0, dummyDatesLastInfo.length)
+								].lastTime
+							}
+						</LiText>
+						<LiText>
+							마지막 활동 :{' '}
+							{
+								dummyDatesLastInfo[
+									getRandomNum(0, dummyDatesLastInfo.length)
+								].lastActiv
+							}
+						</LiText>
+						<LiText>
+							마지막 활동 사용자 :{' '}
+							{
+								dummyDatesLastInfo[
+									getRandomNum(0, dummyDatesLastInfo.length)
+								].lastUser
+							}
+						</LiText>
 					</SummaryList>
 				</div>
 
