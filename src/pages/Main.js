@@ -93,6 +93,8 @@ const _contentsItem = styled.div`
 	display: flex;
 `;
 
+const _side = styled.div``;
+
 const Main = () => {
 	const history = useHistory();
 	const {companyId} = useSelector(AUTH_USER.selector);
@@ -173,6 +175,7 @@ const Main = () => {
 		// </_Container>
 
 		<_Container>
+			<_side></_side>
 			<_contentsContainer>
 				<_contents>
 					<_contentsTitle>Avocado 기능</_contentsTitle>
@@ -226,6 +229,7 @@ const Main = () => {
 					</_contentsItem>
 				</_contents>
 			</_contentsContainer>
+			<_side></_side>
 		</_Container>
 	);
 };
