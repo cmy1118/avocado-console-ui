@@ -48,6 +48,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 			.map((v) => ({
 				...v,
 				type: roleTypeConverter(v.companyId),
+				numberOfUsers: v.grantedCount,
 				createdTime: v.createdTag.createdTime,
 				[DRAGGABLE_KEY]: v.id,
 				// numberOfUsers: v.users.length,

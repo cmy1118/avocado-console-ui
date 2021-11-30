@@ -57,7 +57,6 @@ const RoleDescriptionSpace = ({roleId}) => {
 	// const onClickFoldSummary = useCallback(() => {
 	// 	setIsSummaryOpened(!isSummaryOpened);
 	// }, [isSummaryOpened]);
-	console.log('role:', role);
 
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);

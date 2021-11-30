@@ -17,6 +17,7 @@ import PAGINATION from '../../../../reducers/pagination';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 import IAM_USER_TAG from '../../../../reducers/api/IAM/User/Tag/tags';
+import {descriptionConverter} from '../../../../utils/tableDataConverter';
 
 const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -60,7 +61,6 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	}, [groups, user]);
 
 	const roleData = useMemo(() => {
-		console.log(roles);
 		return roles.map((v, i) => ({
 			...v,
 			permission: v.template.detail.policyType,
