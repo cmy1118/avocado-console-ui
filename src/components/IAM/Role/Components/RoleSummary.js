@@ -50,7 +50,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 		return (
 			user?.map((v, i) => ({
 				...v,
-				id: v.userUid,
+				id: v.id,
 				numberOfGroups: v.groups.length,
 				status: v.status.code,
 				createdTime: v.createdTag.createdTime,
