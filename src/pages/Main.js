@@ -27,12 +27,11 @@ const _Container = styled.div`
 	place-items: center;
 	height: 955px;
 	grid-template-rows: 100%;
-	grid-template-columns: 15% 80% 15%;
+	grid-template-columns: 10% 80% 10%;
 	height: 100%;
 	background: #f8f9fa;
 	width: 100%;
 	grid-auto-rows: 40px;
-
 	overflow-y: auto;
 	&::-webkit-scrollbar {
 		display: none;
@@ -66,6 +65,8 @@ const _contentsContainer = styled.div`
 	// align-items: start;
 	// justify-content: center;
 	// overflow: hidden;
+	justify-content: center;
+	align-content: center;
 	width: 100%;
 	height: 100%;
 `;
