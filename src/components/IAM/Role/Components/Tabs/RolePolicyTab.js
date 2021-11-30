@@ -88,6 +88,24 @@ const calculatettribute = (attribute) => {
 				Header: '대체인증',
 				accessor: 'AlternativeAuthN',
 			});
+		} else if (v.policyType === 'AccountExpired') {
+			const tempVal = JSON.parse(v.attributeName);
+			temp[`${tempVal.policyType}`] = tempVal.expiryDays;
+			columns.push({
+				Header:
+					attributePolicyType[`${tempVal.policyType}`] ||
+					tempVal.policyType,
+				accessor: tempVal.policyType,
+			});
+		} else if (v.policyType === 'SignInFailBlocking') {
+			const tempVal = JSON.parse(v.attributeName);
+			temp[`${tempVal.policyType}`] = tempVal.failedCountInitDays;
+			columns.push({
+				Header:
+					attributePolicyType[`${tempVal.policyType}`] ||
+					tempVal.policyType,
+				accessor: tempVal.policyType,
+			});
 		} else {
 			temp[`${v.policyType}`] = v.attributeName;
 			columns.push({
