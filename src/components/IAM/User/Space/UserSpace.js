@@ -49,6 +49,7 @@ const UserSpace = () => {
 				createdTime: v.createdTag.createdTime,
 				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
 				tags: tagsConverter(v.tags),
+				lastConsoleLogin: v.session.lastConsoleLoginTime,
 				[DRAGGABLE_KEY]: v.userUid,
 			})) || []
 		);
@@ -83,16 +84,24 @@ const UserSpace = () => {
 					setTotal(
 						totalNumberConverter(users.headers['content-range']),
 					);
-					setUsers(users.data);
-					// dispatch(
-					// 	PAM_SESSION.asyncAction.findSessionAction({
-					// 		userUids: users.data.map((v) => v.userUid),
-					// 	}),
-					// )
-					// 	.unwrap()
-					// 	.then((users) => {
-					// 		console.log(users);
-					// 	});
+					dispatch(
+						PAM_SESSION.asyncAction.findSessionAction({
+							userUids: users.data.map((v) => v.userUid),
+						}),
+					)
+						.unwrap()
+						.then((sessions) => {
+							console.log(sessions);
+							setUsers(
+								users.data.map((user) => ({
+									...user,
+									session: sessions.data.find(
+										(session) =>
+											user.userUid === session.userUid,
+									),
+								})),
+							);
+						});
 				});
 		}
 	}, [dispatch, page]);

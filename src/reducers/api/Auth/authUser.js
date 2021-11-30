@@ -48,7 +48,7 @@ const userAuthAction = createAsyncThunk(
 				CompanyId: payload.companyId,
 				ApplicationCode: 'console-ui',
 			},
-			baseUrl: baseURL.auth,
+			baseURL: baseURL.auth,
 		});
 		return response.data;
 	},
@@ -64,7 +64,7 @@ const logoutAction = createAsyncThunk(
 				'Content-Type': contentType.URL_ENCODED,
 				Authorization: authorization.LOGOUT + token,
 			},
-			baseUrl: baseURL.auth,
+			baseURL: baseURL.auth,
 		});
 		return response.data;
 	},
@@ -84,7 +84,7 @@ const clientAuthAction = createAsyncThunk(
 				CompanyId: payload.companyId,
 				ApplicationCode: 'console-ui',
 			},
-			baseUrl: baseURL.auth,
+			baseURL: baseURL.auth,
 		});
 		return response.data;
 	},
@@ -141,7 +141,7 @@ const altAuthVerificationAction = createAsyncThunk(
 					CompanyId: authState.companyId,
 					ApplicationCode: 'console-ui',
 				},
-				baseUrl: baseURL.auth,
+				baseURL: baseURL.auth,
 			},
 		);
 		return response.data;

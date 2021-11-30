@@ -19,7 +19,7 @@ const grantAction = createAsyncThunk(
 				params: {
 					roleld: payload.roleld,
 				},
-				baseUrl: baseURL.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -42,7 +42,7 @@ const revokeAction = createAsyncThunk(
 				params: {
 					roleld: payload.roleld,
 				},
-				baseUrl: baseURL.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -63,7 +63,7 @@ const getsAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 					Range: payload.range,
 				},
-				baseUrl: baseURL.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return {data: response.data, headers: response.headers};
@@ -89,7 +89,7 @@ const getEventsAction = createAsyncThunk(
 					Range: payload.range,
 					'Content-Type': 'application/json',
 				},
-				baseUrl: baseURL.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return {data: response.data, headers: response.headers};

@@ -19,6 +19,7 @@ import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/User/Policy/policyTemplate';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
+import PAM_SESSION from '../../../../reducers/api/PAM/session';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -56,6 +57,8 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
 				grantDate: v.grantUser?.createdTag?.createdTime,
 				grantUser: v.grantUser,
+				lastConsoleLogin: v.sesstion.lastConsoleLoginTime,
+
 				// tags: tagsConverter(v.tags),
 				[DRAGGABLE_KEY]: v.userUid,
 			})) || []
@@ -149,25 +152,39 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 						setUser(users);
 						return;
 					}
-					users.map((id) => {
-						console.log('이 역할의 사용자 id:', id);
-						dispatch(
-							IAM_USER.asyncAction.findByUidAction({
-								userUid: id,
-							}),
-						)
-							.unwrap()
-							.then((res) => {
-								arr.push({
-									...res,
-									grantUser: res,
-								});
-								if (users.length === arr.length) {
-									console.log(' 사용자 정보:', res);
-									setUser(arr);
-								}
+					dispatch(
+						PAM_SESSION.asyncAction.findSessionAction({
+							userUids: users,
+						}),
+					)
+						.unwrap()
+						.then((sesstions) => {
+							console.log(sesstions);
+
+							users.map((id) => {
+								console.log('이 역할의 사용자 id:', id);
+								dispatch(
+									IAM_USER.asyncAction.findByUidAction({
+										userUid: id,
+									}),
+								)
+									.unwrap()
+									.then((res) => {
+										arr.push({
+											...res,
+											grantUser: res,
+											sesstion: sesstions.data.find(
+												(x) =>
+													x.userUid === res.userUid,
+											),
+										});
+										if (users.length === arr.length) {
+											console.log(' 사용자 정보:', res);
+											setUser(arr);
+										}
+									});
 							});
-					});
+						});
 				});
 	}, [Id, dispatch, isSummaryOpened, setUser]);
 
