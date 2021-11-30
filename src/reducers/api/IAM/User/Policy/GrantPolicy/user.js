@@ -11,12 +11,13 @@ const grantAction = createAsyncThunk(
 		// eslint-disable-next-line no-console
 		const response = await Axios.post(
 			`/open-api/v1/iam/roles/${payload.userUid}/policy-templates`,
+			{},
 			{
 				headers: {
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseUrl: baseURL.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -39,7 +40,7 @@ const revokeAction = createAsyncThunk(
 				params: {
 					templateId: payload.templateId,
 				},
-				baseUrl: baseURL.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -63,7 +64,7 @@ const getsAction = createAsyncThunk(
 				params: {
 					userUid: payload.userUid,
 				},
-				baseUrl: baseURL.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return {data: response.data, headers: response.headers};

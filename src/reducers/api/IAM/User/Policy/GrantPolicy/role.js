@@ -16,7 +16,7 @@ const grantAction = createAsyncThunk(
 					Authorization: `${user.token_type} ${user.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseUrl: baseURL.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -39,7 +39,7 @@ const revokeAction = createAsyncThunk(
 				params: {
 					templateId: payload.templateId,
 				},
-				baseUrl: baseURL.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return response.data;
@@ -63,7 +63,7 @@ const getsAction = createAsyncThunk(
 				params: {
 					roleId: payload.roleId,
 				},
-				baseUrl: baseURL.openApi,
+				baseURL: baseURL.openApi,
 			},
 		);
 		return {data: response.data, headers: response.headers};

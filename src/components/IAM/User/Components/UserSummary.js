@@ -15,9 +15,11 @@ import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
-import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 import IAM_USER_TAG from '../../../../reducers/api/IAM/User/Tag/tags';
 import {descriptionConverter} from '../../../../utils/tableDataConverter';
+import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
+import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
+import * as _ from 'lodash';
 
 const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -62,20 +64,20 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 
 	const roleData = useMemo(() => {
 		console.log(roles);
-		return roles.map((v, i) => ({
-			...v,
-			permission: v.template.detail.policyType,
-			policyName: v.template.templateName,
-			authTarget: '사용자',
-			description: `${
-				v.template.detail.policyType
-			} : ${descriptionConverter(v.template.detail.attribute.policies)}`,
-			roleName: v.role.name,
-			grantDate: v.grantUser?.createdTag?.createdTime,
-			grantUser: v.grantUser,
-			id: v.role.id + '/' + i,
-			[DRAGGABLE_KEY]: v.role.id + '/' + i,
-		}));
+		return roles
+			.filter((v) => v.policy)
+			.map((v, i) => ({
+				...v,
+				permission: v.policy?.details[0].policyType,
+				policyName: v.policy?.templateName,
+				authTarget: '사용자',
+				description: `${descriptionConverter(v.policy?.details)}`,
+				roleName: v.role.name,
+				grantDate: v.grantUser?.createdTag?.createdTime,
+				grantUser: v.grantUser,
+				id: v.role.id + '/' + i,
+				[DRAGGABLE_KEY]: v.role.id + '/' + i,
+			}));
 	}, [roles]);
 
 	const tagData = useMemo(() => {
@@ -98,6 +100,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	}, [dispatch, isSummaryOpened, userUid]);
 
 	useEffect(() => {
+		const templatesArr = [];
 		isSummaryOpened &&
 			dispatch(
 				IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
@@ -111,38 +114,53 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 					roles.data.forEach((role) => {
 						console.log(role);
 						dispatch(
-							IAM_USER.asyncAction.findByUidAction({
-								userUid: role.createdTag.actorTag.userUid,
+							IAM_ROLES.asyncAction.findByIdAction({
+								id: role.roleId,
 							}),
 						)
 							.unwrap()
-							.then((grantUser) => {
+							.then((detailRole) => {
+								console.log(detailRole);
 								dispatch(
-									IAM_USER_POLICY.asyncAction.getsAction({
-										userUid: role.targetId,
+									IAM_USER.asyncAction.findByUidAction({
+										userUid:
+											detailRole.createdTag.actorTag
+												.userUid,
 									}),
 								)
 									.unwrap()
-									.then((policys) => {
-										const arr = [];
-
-										policys.forEach((policy) => {
-											policy.policyTemplates.forEach(
-												(template) => {
-													template.details.forEach(
-														(detail) => {
+									.then((grantUser) => {
+										dispatch(
+											IAM_GRANT_POLICY_BY_ROLE.asyncAction.getsAction(
+												{
+													roleId: detailRole.id,
+													range: `elements=0-50`,
+												},
+											),
+										)
+											.unwrap()
+											.then((policies) => {
+												console.log(
+													'policies ::',
+													policies,
+												);
+												const arr = [];
+												if (!policies.data) {
+													arr.push({
+														role: detailRole,
+														grantUser: {
+															...grantUser,
+															createdTag:
+																role.createdTag,
+														},
+													});
+												} else {
+													policies.data.forEach(
+														(policy) => {
+															console.log(policy);
 															arr.push({
-																role:
-																	policy.role,
-																template: {
-																	templateId:
-																		template.templateId,
-																	templateName:
-																		template.templateName,
-																	createdTag:
-																		template.createdTag,
-																	detail,
-																},
+																role: detailRole,
+																policy: policy,
 																grantUser: {
 																	...grantUser,
 																	createdTag:
@@ -151,11 +169,18 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 															});
 														},
 													);
-												},
-											);
-										});
-										console.log(arr);
-										setRoles(arr);
+												}
+												templatesArr.push(arr);
+												if (
+													templatesArr.length ===
+													roles.data.length
+												) {
+													console.log(templatesArr);
+													setRoles(
+														_.flatten(templatesArr),
+													);
+												}
+											});
 									});
 							});
 					});
