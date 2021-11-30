@@ -37,16 +37,10 @@ export const Google = {
 		'819744979674-dastdmj1j5k8coluu2vofclsi3kvo90h.apps.googleusercontent.com',
 	clientSecret: 'LEVTqM7nBsyLPuSEbT-mPffx',
 	redirectUri:
-		window.location.protocol +
-		'//' +
-		window.location.host +
-		'/altauthredirect',
+		'http://ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com:3002/altauthredirect',
 	location:
 		'https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=819744979674-dastdmj1j5k8coluu2vofclsi3kvo90h.apps.googleusercontent.com&redirect_uri=' +
-		window.location.protocol +
-		'//' +
-		window.location.host +
-		'/altauthredirect&scope=email%20profile&state=myState&access_type=offline&prompt=consent',
+		'http://ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com:3002/altauthredirect&scope=email%20profile&state=myState&access_type=offline&prompt=consent',
 };
 
 export const getParameter = (name) => {
