@@ -13,21 +13,34 @@ import {
 } from '../../../../styles/components/iam/descriptionPage';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
-import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
 import {
+	descriptionConverter,
 	expiredConverter,
-	groupsConverter,
-	tagsConverter,
 } from '../../../../utils/tableDataConverter';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
+import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/User/Policy/policyTemplate';
+import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [group, setGroup] = useState([]);
 	const [user, setUser] = useState([]);
-	const permissionData = useMemo(() => [], []);
+	const [permissions, setPermissions] = useState(null);
+	const permissionData = useMemo(() => {
+		console.log(permissions);
+		return (
+			permissions?.map((v) => ({
+				...v,
+				description: descriptionConverter(v.attributes[0].policies),
+				type: v.attributes[0].policyType,
+				policyName: v.name,
+				grantUser: v.user,
+				[DRAGGABLE_KEY]: v.id,
+			})) || []
+		);
+	}, [permissions]);
 
 	const userData = useMemo(() => {
 		// return [];
@@ -81,8 +94,35 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 			}),
 		)
 			.unwrap()
-			.then((policys) => {
-				console.log(policys.data);
+			.then((policies) => {
+				const arr = [];
+				if (!policies.data) {
+					setPermissions([]);
+					return;
+				}
+				policies.data.forEach((policy) => {
+					dispatch(
+						IAM_USER.asyncAction.findByUidAction({
+							userUid: policy.createdTag.actorTag.userUid,
+						}),
+					)
+						.unwrap()
+						.then((user) => {
+							dispatch(
+								IAM_POLICY_TEMPLATE.asyncAction.findByIdAction({
+									templateId: policy.templateId,
+								}),
+							)
+								.unwrap()
+								.then((res) => {
+									arr.push({...policy, user, ...res.data});
+									if (arr.length === policies.data.length) {
+										console.log(arr);
+										setPermissions(arr);
+									}
+								});
+						});
+				});
 			});
 	}, [Id, dispatch]);
 
