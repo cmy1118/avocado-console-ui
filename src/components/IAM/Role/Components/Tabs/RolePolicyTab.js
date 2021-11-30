@@ -68,7 +68,7 @@ const attributePolicyType = {
 const calculatettribute = (attribute) => {
 	let columns = new Array();
 	let data = new Array();
-	let temp = {id: 0};
+	let temp = {id: 0, [DRAGGABLE_KEY]: 0};
 
 	attribute.map((v) => {
 		// console.log(v);

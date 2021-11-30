@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
 import PAM_POLICY from '../../reducers/api/PAM/Role/policy';
 import RRM_RESOURCE from '../../reducers/api/RRM/Resource/resource';
+import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
 
 const InnerTableContainer = ({policyId, attributes}) => {
 	const dispatch = useDispatch();
@@ -68,7 +69,7 @@ const InnerTableContainer = ({policyId, attributes}) => {
 							.unwrap()
 							.then((r) => {
 								tempDataObject.id = r.id;
-								tempDataObject.keyId = r.id;
+								tempDataObject[DRAGGABLE_KEY] = r.id;
 								tempDataObject.resource =
 									r.name +
 									' (' +
