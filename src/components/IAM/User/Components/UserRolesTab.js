@@ -51,6 +51,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					.map((v) => ({
 						...v,
 						// numberOfUsers: v.users?.length,
+
 						[DRAGGABLE_KEY]: v.id,
 					}))
 			: [];
@@ -152,6 +153,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 							id: v.id,
 							name: v.name,
 							description: v.description,
+							numberOfUsers: v.grantedCount,
 							createdTime: v.createdTag.createdTime,
 							type: v.maxGrants === '1' ? 'Private' : 'Public',
 						}),

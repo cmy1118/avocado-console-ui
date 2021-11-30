@@ -29,7 +29,6 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const [user, setUser] = useState([]);
 	const [permissions, setPermissions] = useState(null);
 	const permissionData = useMemo(() => {
-		console.log(permissions);
 		return (
 			permissions?.map((v) => ({
 				...v,
@@ -53,6 +52,8 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				status: v.status.code,
 				createdTime: v.createdTag.createdTime,
 				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
+				grantDate: v.grantUser?.createdTag?.createdTime,
+				grantUser: v.grantUser,
 				// tags: tagsConverter(v.tags),
 				[DRAGGABLE_KEY]: v.userUid,
 			})) || []
@@ -67,8 +68,9 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				groupType: v.userGroupType.name,
 				parentGroup: v.parentGroup.name ? v.parentGroup.name : '없음',
 				createdTime: v.createdTag.createdTime,
-				grantDate: 'null',
-				grantUser: 'null',
+				numberOfRoles: v.roles ? v.roles.length : 0,
+				grantDate: v.grantUser?.createdTag?.createdTime,
+				grantUser: v.grantUser,
 				[DRAGGABLE_KEY]: v.id,
 			})) || []
 		);
@@ -117,7 +119,6 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 								.then((res) => {
 									arr.push({...policy, user, ...res.data});
 									if (arr.length === policies.data.length) {
-										console.log(arr);
 										setPermissions(arr);
 									}
 								});
@@ -150,8 +151,11 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 						)
 							.unwrap()
 							.then((res) => {
+								arr.push({
+									...res,
+									grantUser: res,
+								});
 								if (users.length === arr.length) {
-									arr.push(res);
 									console.log(' 사용자 정보:', res);
 									setUser(arr);
 								}
@@ -180,11 +184,46 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 							}),
 						)
 							.unwrap()
-							.then((res) => {
-								arr.push(res);
-								console.log(' 그룹 정보:', res);
-								setGroup(arr);
+							.then((group) => {
+								dispatch(
+									IAM_USER.asyncAction.findByUidAction({
+										userUid:
+											group.createdTag.actorTag.userUid,
+									}),
+								)
+									.unwrap()
+									.then((user) => {
+										dispatch(
+											IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
+												{
+													id: group.id,
+													range: `elements=0-50`,
+												},
+											),
+										)
+											.unwrap()
+											.then((roles) => {
+												console.log('roles:', roles);
+												arr.push({
+													...group,
+													grantUser: user,
+													roles: roles.data,
+												});
+												console.log(
+													' 그룹 정보:',
+													group,
+												);
+												console.log(' arr:', arr);
+												setGroup(arr);
+											});
+									});
 							});
+						// .unwrap()
+						// .then((res) => {
+						// 	arr.push(res);
+						// 	console.log(' 그룹 정보:', res);
+						// 	setGroup(arr);
+						// });
 					}),
 				);
 	}, [Id, dispatch, isSummaryOpened, setGroup]);

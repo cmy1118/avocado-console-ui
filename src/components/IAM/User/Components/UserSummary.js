@@ -67,7 +67,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 			policyName: v.template.templateName,
 			authTarget: '사용자',
 			description: descriptionConverter(
-				v.template.detail.attribute.policies,
+				v.template.detail.attribute?.policies,
 			),
 			roleName: v.role.name,
 			grantDate: v.grantUser?.createdTag?.createdTime,
