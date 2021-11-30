@@ -22,51 +22,6 @@ import PAM_red from '../images/dashboard/service_pam_red@2x.png';
 import Approal_red from '../images/dashboard/service_app_red@2x.png';
 import RRM_red from '../images/dashboard/service_rrm_red@2x.png';
 
-const utils = [
-	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green, url: 'iam'},
-	{title: 'Bastion', text: '서버 보안 접근', img: PAM_green, href: 'ssh://'},
-	{title: '장비 접속', text: '장비 접속', img: PAM_green, href: 'telnet://'},
-	{
-		title: 'Web Terminal ',
-		text: '웹터미널',
-		img: Approal_green,
-		href:
-			'http://ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com:3002/webterm/login/KR-2020-0001',
-	},
-
-	// {
-	// 	title: 'Approal',
-	// 	text: '승인 워크플로우 관리',
-	// 	img: Approal_green,
-	// 	url: 'iam',
-	// },
-	{title: 'RRM', text: '원격 자원 관리', img: RRM_green, url: 'iam'},
-	{title: 'PAM', text: '특권 접근 관리', img: PAM_green, url: 'iam'},
-];
-const favorite = [
-	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_grey, url: 'iam'},
-	{title: 'PAM', text: '특권 접근 관리', img: PAM_grey, url: 'iam'},
-	{
-		title: 'Approal',
-		text: '승인 워크플로우 관리',
-		img: Approal_grey,
-		url: 'iam',
-	},
-	// {title: 'RRM', text: '원격 자원 관리', img: RRM_grey, url: 'iam'},
-];
-const service = [
-	{title: 'IAM', text: '신원 및 접근 관리', img: IAM_red, url: 'iam'},
-	{title: 'PAM', text: '특권 접근 관리', img: PAM_red, url: 'iam'},
-	{title: 'RRM', text: '원격 자원 관리', img: RRM_red, url: 'iam'},
-	{
-		title: 'Approal',
-		text: '승인 워크플로우 관리',
-		img: Approal_red,
-		url: 'iam',
-	},
-	{title: 'Bastion', text: '서버 보안 접근', img: PAM_red, href: 'ssh://'},
-];
-
 const _Container = styled.div`
 	display: grid;
 	place-items: center;
@@ -141,7 +96,64 @@ const _contentsItem = styled.div`
 const Main = () => {
 	const history = useHistory();
 	const {companyId} = useSelector(AUTH_USER.selector);
+	const utils = [
+		{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green, url: 'iam'},
+		{
+			title: 'Bastion',
+			text: '서버 보안 접근',
+			img: PAM_green,
+			href: 'ssh://',
+		},
+		{
+			title: '장비 접속',
+			text: '장비 접속',
+			img: PAM_green,
+			href: 'telnet://',
+		},
+		{
+			title: 'Web Terminal ',
+			text: '웹터미널',
+			img: Approal_green,
+			href: `http://ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com:3002/webterm/login/${companyId}`,
+		},
 
+		// {
+		// 	title: 'Approal',
+		// 	text: '승인 워크플로우 관리',
+		// 	img: Approal_green,
+		// 	url: 'iam',
+		// },
+		{title: 'RRM', text: '원격 자원 관리', img: RRM_green, url: 'iam'},
+		{title: 'PAM', text: '특권 접근 관리', img: PAM_green, url: 'iam'},
+	];
+	const favorite = [
+		{title: 'IAM', text: '신원 및 접근 관리', img: IAM_grey, url: 'iam'},
+		{title: 'PAM', text: '특권 접근 관리', img: PAM_grey, url: 'iam'},
+		{
+			title: 'Approal',
+			text: '승인 워크플로우 관리',
+			img: Approal_grey,
+			url: 'iam',
+		},
+		// {title: 'RRM', text: '원격 자원 관리', img: RRM_grey, url: 'iam'},
+	];
+	const service = [
+		{title: 'IAM', text: '신원 및 접근 관리', img: IAM_red, url: 'iam'},
+		{title: 'PAM', text: '특권 접근 관리', img: PAM_red, url: 'iam'},
+		{title: 'RRM', text: '원격 자원 관리', img: RRM_red, url: 'iam'},
+		{
+			title: 'Approal',
+			text: '승인 워크플로우 관리',
+			img: Approal_red,
+			url: 'iam',
+		},
+		{
+			title: 'Bastion',
+			text: '서버 보안 접근',
+			img: PAM_red,
+			href: 'ssh://',
+		},
+	];
 	const onClickMove = useCallback(() => {
 		history.push('/iam');
 	}, [history]);
