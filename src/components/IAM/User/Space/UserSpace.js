@@ -83,15 +83,16 @@ const UserSpace = () => {
 					setTotal(
 						totalNumberConverter(users.headers['content-range']),
 					);
-					dispatch(
-						PAM_SESSION.asyncAction.findSessionAction({
-							userUids: users.data.map((v) => v.userUid),
-						}),
-					)
-						.unwrap()
-						.then((users) => {
-							console.log(users);
-						});
+					setUsers(users.data);
+					// dispatch(
+					// 	PAM_SESSION.asyncAction.findSessionAction({
+					// 		userUids: users.data.map((v) => v.userUid),
+					// 	}),
+					// )
+					// 	.unwrap()
+					// 	.then((users) => {
+					// 		console.log(users);
+					// 	});
 				});
 		}
 	}, [dispatch, page]);
