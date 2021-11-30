@@ -49,6 +49,7 @@ const UserSpace = () => {
 				createdTime: v.createdTag.createdTime,
 				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
 				tags: tagsConverter(v.tags),
+				lastConsoleLogin: v.session.lastConsoleLoginTime,
 				[DRAGGABLE_KEY]: v.userUid,
 			})) || []
 		);
@@ -89,8 +90,16 @@ const UserSpace = () => {
 						}),
 					)
 						.unwrap()
-						.then((users) => {
-							console.log(users);
+						.then((sessions) => {
+							setUsers(
+								users.data.map((user) => ({
+									...user,
+									session: sessions.find(
+										(session) =>
+											user.userUid === session.userUid,
+									),
+								})),
+							);
 						});
 				});
 		}
