@@ -8,7 +8,7 @@ import Table from '../../../../Table/Table';
 import {tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
 import {useSelector} from 'react-redux';
-import IAM_ROLES from '../../../../../reducers/api/ PAM/Role/roles';
+import IAM_ROLES from '../../../../../reducers/api/PAM/Role/roles';
 import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
 import {dummyUsers} from '../../../../../utils/dummyData';
 import TableContainer from '../../../../Table/TableContainer';
@@ -57,7 +57,6 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 		// 		[DRAGGABLE_KEY]: v.userUid,
 		// 	}));
 	}, []);
-
 
 	return (
 		<TabContentContainer>

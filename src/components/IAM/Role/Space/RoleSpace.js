@@ -34,7 +34,7 @@ const RoleSpace = () => {
 			roles?.map((v) => ({
 				...v,
 				roleType: v.type,
-				numberOfPermissions: v.policies?.length,
+				numberOfPermissions: v.numberOfPermissions,
 				[DRAGGABLE_KEY]: v.id,
 			})) || []
 		);
@@ -58,6 +58,7 @@ const RoleSpace = () => {
 							name: v.name,
 							description: v.description,
 							createdTime: v.createdTag.createdTime,
+							numberOfPermissions: v.grantedCount,
 							type: v.maxGrants === '1' ? 'Private' : 'Public',
 						});
 					});

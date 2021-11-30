@@ -18,16 +18,17 @@ import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
 import IAM_ROLES from './api/IAM/User/Role/roles';
 import IAM_ROLES_GRANT_ROLE_GROUP from './api/IAM/User/Role/GrantRole/group';
 import IAM_ROLES_GRANT_ROLE_USER from './api/IAM/User/Role/GrantRole/user';
-import PAM_ROLES from './api/ PAM/Role/roles';
-import PAM_ROLE_SET from './api/ PAM/Role/roleSet';
-import PAM_ROLE_USER from './api/ PAM/Role/user';
-import PAM_ROLE_USER_GROUP from './api/ PAM/Role/userGroup';
+import PAM_ROLES from './api/PAM/Role/roles';
+import PAM_ROLE_SET from './api/PAM/Role/roleSet';
+import PAM_ROLE_USER from './api/PAM/Role/user';
+import PAM_ROLE_USER_GROUP from './api/PAM/Role/userGroup';
 import IAM_USER_POLICY from './api/IAM/User/Policy/policy';
 import IAM_USER_TAG from './api/IAM/User/Tag/tags';
 import AUTH_USER from './api/Auth/authUser';
 import IAM_GRANT_POLICY_BY_ROLE from './api/IAM/User/Policy/GrantPolicy/role';
 import IAM_GRANT_POLICY_BY_USER from './api/IAM/User/Policy/GrantPolicy/user';
 import IAM_POLICY_TEMPLATE from './api/IAM/User/Policy/policyTemplate';
+import PAM_SESSION from './api/PAM/session';
 
 const authUserFilter = createFilter(AUTH_USER.name, [
 	'companyId',
@@ -105,6 +106,7 @@ const rootReducer = combineReducers({
 	[PAM_ROLE_SET.name]: PAM_ROLE_SET.reducer,
 	[PAM_ROLE_USER.name]: PAM_ROLE_USER.reducer,
 	[PAM_ROLE_USER_GROUP.name]: PAM_ROLE_USER_GROUP.reducer,
+	[PAM_SESSION.name]: PAM_SESSION.reducer,
 
 	/******************************************/
 	/* seob : RRM reducers

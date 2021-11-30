@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import ModalTableContainer from '../../RecycleComponents/ModalTableContainer';
 import {DRAGGABLE_KEY, tableKeys} from '../../../Constants/Table/keys';
 import Table from '../../Table/Table';
@@ -7,23 +7,23 @@ import {useDispatch, useSelector} from 'react-redux';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
 import {LiText} from '../../../styles/components/text';
-import {dummyPolicyOnDialogBox} from '../../../utils/dummyData';
 import TableContainer from '../../Table/TableContainer';
 import {rolesConverter} from '../../../utils/tableDataConverter';
 import {SummaryList} from '../../../styles/components/iam/descriptionPage';
 import {TitleBar} from '../../../styles/components/iam/iam';
 import {AddPageDialogBoxTitle} from '../../../styles/components/iam/addPage';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
-import IAM_USER_GROUP from '../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_MEMBER from '../../../reducers/api/IAM/User/Group/groupMember';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../reducers/api/IAM/User/Role/GrantRole/user';
 import {useHistory} from 'react-router-dom';
 import IAM_USER_TAG from '../../../reducers/api/IAM/User/Tag/tags';
-
+import IAM_GRANT_POLICY_BY_ROLE from '../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
+import * as _ from 'lodash';
 const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const [permissions, setPermissions] = useState(null);
 
 	const submitUserInfo = useCallback(() => {
 		console.log(readOnlyData);
@@ -90,18 +90,22 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 		[readOnlyData],
 	);
 
-	console.log(readOnlyData[tableKeys.users.add.roles.exclude]);
+	const roleData = useMemo(() => {
+		console.log(permissions);
+		return (
+			permissions?.map((v) => ({
+				name: v.policy.details[0].policyType,
+				description: `${v.policy.details[0].policyType} : ${v.policy.details[0].attributeName}`,
+				policyName: v.policy.templateName,
+				roleName: v.role.name,
+				grantUser: v.user,
+				id: v.role.id + v.policy.templateId,
+				[DRAGGABLE_KEY]: v.role.id + v.policy.templateId,
 
-	const roleData = useMemo(
-		() =>
-			readOnlyData[tableKeys.users.add.roles.exclude]?.map((v) => ({
-				...v,
-				[DRAGGABLE_KEY]: v.id,
-
-				// roles: rolesConverter(v.roles),
-			})),
-		[readOnlyData],
-	);
+				// grantTarget:
+			})) || []
+		);
+	}, [permissions]);
 
 	const tagData = useMemo(
 		() =>
@@ -113,6 +117,55 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 			})),
 		[readOnlyData],
 	);
+
+	useEffect(() => {
+		if (readOnlyData[tableKeys.users.add.roles.exclude] && isOpened) {
+			const policiesBox = [];
+			readOnlyData[tableKeys.users.add.roles.exclude].forEach((role) => {
+				dispatch(
+					IAM_GRANT_POLICY_BY_ROLE.asyncAction.getsAction({
+						roleId: role.id,
+						range: `elements=0-50`,
+					}),
+				)
+					.unwrap()
+					.then((policies) => {
+						if (!policies.data) return;
+						policies.data.forEach((policy) => {
+							dispatch(
+								IAM_USER.asyncAction.findByUidAction({
+									userUid: policy.createdTag.actorTag.userUid,
+								}),
+							)
+								.unwrap()
+								.then((user) => {
+									policiesBox.push(
+										policies.data
+											? policies.data.map((policy) => ({
+													user,
+													role,
+													policy,
+											  }))
+											: [],
+									);
+
+									if (
+										policiesBox.length ===
+										readOnlyData[
+											tableKeys.users.add.roles.exclude
+										].length *
+											policies.data.length
+									) {
+										const arr = _.flatten(policiesBox);
+										console.log(arr);
+										setPermissions(arr);
+									}
+								});
+						});
+					});
+			});
+		}
+	}, [dispatch, isOpened, readOnlyData]);
 
 	return readOnlyData['user'] ? (
 		<ModalTableContainer
@@ -145,9 +198,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 				<Table />
 			</TableContainer>
 
-			<AddPageDialogBoxTitle>
-				{/*권한 : {dummyPolicyOnDialogBox.length}*/}
-			</AddPageDialogBoxTitle>
+			<AddPageDialogBoxTitle>권한 : {''}</AddPageDialogBoxTitle>
 			<TableContainer
 				mode={'readOnly'}
 				tableKey={tableKeys.users.add.permissions}
