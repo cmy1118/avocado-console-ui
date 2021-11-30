@@ -28,6 +28,7 @@ import {
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
+import PAM_SESSION from '../../../../reducers/api/PAM/session';
 
 const UserSpace = () => {
 	const history = useHistory();
@@ -82,7 +83,15 @@ const UserSpace = () => {
 					setTotal(
 						totalNumberConverter(users.headers['content-range']),
 					);
-					setUsers(users.data);
+					dispatch(
+						PAM_SESSION.asyncAction.findSessionAction({
+							userUids: users.data.map((v) => v.userUid),
+						}),
+					)
+						.unwrap()
+						.then((users) => {
+							console.log(users);
+						});
 				});
 		}
 	}, [dispatch, page]);

@@ -1,9 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {
-	Axios,
-	baseURL as baseUrl,
-	baseURL,
-} from '../../../../../../api/constants';
+import {Axios, baseURL} from '../../../../../../api/constants';
 
 const NAME = 'IAM_ROLES_GRANT_ROLE_USER';
 
