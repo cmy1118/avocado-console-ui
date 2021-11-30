@@ -20,21 +20,22 @@ import {
 	groupsConverter,
 	tagsConverter,
 } from '../../../../utils/tableDataConverter';
-import IAM_USER_GROUP from "../../../../reducers/api/IAM/User/Group/group";
+import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const [group, setGroup] = useState(null);
-	const [user, setUser] = useState(null);
+	const [group, setGroup] = useState([]);
+	const [user, setUser] = useState([]);
 	const permissionData = useMemo(() => [], []);
 
 	const userData = useMemo(() => {
 		// return [];
-		console.log('userData:',user);
+		console.log('userData:', user);
 		return (
-			user?.map((v) => ({
+			user?.map((v, i) => ({
 				...v,
+				id: v.userUid,
 				numberOfGroups: v.groups.length,
 				status: v.status.code,
 				createdTime: v.createdTag.createdTime,
@@ -47,11 +48,12 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 
 	const groupData = useMemo(() => {
 		// return [];
-		return (group?.map((v) => ({
+		return (
+			group?.map((v) => ({
 				...v,
 				groupType: v.userGroupType.name,
 				parentGroup: v.parentGroup.name ? v.parentGroup.name : '없음',
-				createdTime:v.createdTag.createdTime,
+				createdTime: v.createdTag.createdTime,
 				grantDate: 'null',
 				grantUser: 'null',
 				[DRAGGABLE_KEY]: v.id,
@@ -94,7 +96,11 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				}),
 			)
 				.unwrap()
-				.then((users) =>
+				.then((users) => {
+					if (!users[0]) {
+						setUser(users);
+						return;
+					}
 					users.map((id) => {
 						console.log('이 역할의 사용자 id:', id);
 						dispatch(
@@ -104,17 +110,19 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 						)
 							.unwrap()
 							.then((res) => {
-								arr.push(res);
-								console.log(' 사용자 정보:', res);
-								setUser(arr);
+								if (users.length === arr.length) {
+									arr.push(res);
+									console.log(' 사용자 정보:', res);
+									setUser(arr);
+								}
 							});
-					}),
-				);
+					});
+				});
 	}, [Id, dispatch, isSummaryOpened, setUser]);
 
 	//이 역할의 사용자 그룹.
 	useEffect(() => {
-		console.log('\t//이 역할의 사용자 그룹.\n')
+		console.log('\t//이 역할의 사용자 그룹.\n');
 		const arr = [];
 		isSummaryOpened &&
 			dispatch(
