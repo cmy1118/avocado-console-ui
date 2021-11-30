@@ -18,7 +18,7 @@ import {expiredConverter} from '../../../../utils/tableDataConverter';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/User/Policy/policyTemplate';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import IAM_ROLES from "../../../../reducers/api/IAM/User/Role/roles";
+import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -163,7 +163,6 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 									grantUser: res,
 								});
 								if (users.length === arr.length) {
-									arr.push(res);
 									console.log(' 사용자 정보:', res);
 									setUser(arr);
 								}
