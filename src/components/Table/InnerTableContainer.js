@@ -12,7 +12,6 @@ const InnerTableContainer = ({policyId, attributes}) => {
 
 	const [pamData, setPamData] = useState([]);
 
-	console.log(attributes);
 	const columns = useMemo(() => {
 		return attributes
 			? attributes.columns

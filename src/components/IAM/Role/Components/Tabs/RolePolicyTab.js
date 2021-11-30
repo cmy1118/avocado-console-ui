@@ -71,7 +71,7 @@ const calculatettribute = (attribute) => {
 	let temp = {id: 0};
 
 	attribute.map((v) => {
-		console.log(v);
+		// console.log(v);
 		if (v.policyType === 'AlternativeAuthN') {
 			if (v.attributeName === 'IdAndPassword') {
 				temp.AltType = v.attributeName;
@@ -181,7 +181,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 			)
 				.unwrap()
 				.then((res) => {
-					console.log(res.data);
+					// console.log(res.data);
 					inPolicies.push.apply(inPolicies, res.data);
 				})
 				.then(() => {
@@ -196,7 +196,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 							inPolicies.push.apply(inPolicies, r.data);
 						})
 						.then(() => {
-							console.log('setInPolicy', inPolicies);
+							// console.log('setInPolicy', inPolicies);
 							setInPolicy(inPolicies);
 						});
 				})
@@ -210,30 +210,12 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 					)
 						.unwrap()
 						.then((res) => {
-							console.log('setExPolicy', res.data);
+							// console.log('setExPolicy', res.data);
 							setExPolicy(res.data);
 						});
 				});
 		}
 	}, [dispatch, roleId, isSummaryOpened, setInPolicy, setExPolicy]);
-
-	//역할에 미포함 정책 템플릿을 조회한다.
-	// useEffect(() => {
-	// 	if (!isSummaryOpened) {
-	// 		dispatch(
-	// 			IAM_ROLES.asyncAction.findTemplatesAction({
-	// 				roleId: roleId,
-	// 				range: 'elements=0-50',
-	// 				include: 'false',
-	// 			}),
-	// 		)
-	// 			.unwrap()
-	// 			.then((res) => {
-	// 				console.log(res.data);
-	// 				setExPolicy(res.data);
-	// 			});
-	// 	}
-	// }, [dispatch, isSummaryOpened, setExPolicy]);
 
 	return (
 		<TabContentContainer>
