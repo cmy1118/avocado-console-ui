@@ -16,6 +16,7 @@ import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/Gr
 import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
 import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/User/Policy/policyTemplate';
 import {descriptionConverter} from '../../../../utils/tableDataConverter';
+import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -24,15 +25,14 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const [user, setUser] = useState(null);
 	const [permissions, setPermissions] = useState(null);
 	const permissionData = useMemo(() => {
-		// console.log(JSON.parse(permissions[0].attributes));
+		console.log(permissions);
 		return (
 			permissions?.map((v) => ({
 				...v,
-				name: JSON.parse(v.attributes).policyType,
-				description: descriptionConverter(
-					JSON.parse(v.attributes).policies,
-				),
+				description: descriptionConverter(v.attributes[0].policies),
+				type: v.attributes[0].policyType,
 				policyName: v.name,
+				grantUser: v.user,
 				[DRAGGABLE_KEY]: v.id,
 			})) || []
 		);
@@ -94,19 +94,31 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 			.unwrap()
 			.then((policies) => {
 				const arr = [];
+				if (!policies.data) {
+					setPermissions([]);
+					return;
+				}
 				policies.data.forEach((policy) => {
 					dispatch(
-						IAM_POLICY_TEMPLATE.asyncAction.findByIdAction({
-							templateId: policy.templateId,
+						IAM_USER.asyncAction.findByUidAction({
+							userUid: policy.createdTag.actorTag.userUid,
 						}),
 					)
 						.unwrap()
-						.then((res) => {
-							arr.push({...policy, template: res.data});
-							if (arr.length === policies.data.length) {
-								console.log(arr);
-								// setPermissions(arr);
-							}
+						.then((user) => {
+							dispatch(
+								IAM_POLICY_TEMPLATE.asyncAction.findByIdAction({
+									templateId: policy.templateId,
+								}),
+							)
+								.unwrap()
+								.then((res) => {
+									arr.push({...policy, user, ...res.data});
+									if (arr.length === policies.data.length) {
+										console.log(arr);
+										setPermissions(arr);
+									}
+								});
 						});
 				});
 			});
