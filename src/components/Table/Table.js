@@ -67,8 +67,32 @@ const Table = ({
 				}
 
 				if (typeof value === 'number') return value.toString().length;
-
-				return (value || '').length;
+				if (
+					isNaN(
+						(value || '').length -
+							Math.ceil(
+								value
+									?.toString()
+									.split('')
+									.map((char) => char)
+									.filter((v) => v.match(/[a-z0-9]/i))
+									.length / 2,
+							),
+					)
+				)
+					return 1;
+				else {
+					return (
+						(value || '').length -
+						Math.ceil(
+							value
+								?.toString()
+								.split('')
+								.map((char) => char)
+								.filter((v) => v.match(/[a-z0-9]/i)).length / 2,
+						)
+					);
+				}
 			}),
 			headerText.length,
 		);

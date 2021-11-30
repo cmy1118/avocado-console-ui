@@ -92,9 +92,15 @@ export const totalNumberConverter = (range) => {
 };
 
 export const descriptionConverter = (desc) => {
-	if (Array.isArray(desc))
+	if (Array.isArray(desc)) {
 		return desc.map((item) => {
 			return `${Object.keys(item)[0]}: ${Object.values(item)[0]}`;
 		})[0];
-	else return '';
+	} else {
+		if (typeof desc === 'object') {
+			console.log(desc);
+			console.log(JSON.stringify(desc));
+			return JSON.stringify(desc);
+		}
+	}
 };
