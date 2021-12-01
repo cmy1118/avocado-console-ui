@@ -84,6 +84,7 @@ const TableColumnFilterContextMenu = ({
 		>
 			<_CheckboxContainer>
 				<CheckBox
+					margin={'inherit'}
 					onClick={onClickSetCheck(filteredList)}
 					label={'모두 선택'}
 					indeterminate={
@@ -102,6 +103,7 @@ const TableColumnFilterContextMenu = ({
 					key={column.id}
 				>
 					<CheckBox
+						margin={'inherit'}
 						label={column.Header}
 						checked={check.includes(column.id)}
 						readOnly
