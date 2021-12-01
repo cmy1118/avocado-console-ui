@@ -118,7 +118,7 @@ export const descKeys = (key) => {
 export const descValues = (value) => {
 	switch (value) {
 		case 'IdAndPassword':
-			return '아이디 패스워드';
+			return 'ID/PWD';
 
 		case 'MAIL':
 			return 'Email';
@@ -128,6 +128,9 @@ export const descValues = (value) => {
 
 		case 'SignInFailBlocking':
 			return '잠금 해제정책';
+
+		case 'AlternativeAuthN':
+			return '대체인증';
 
 		default:
 			return typeof value === 'number' ? `${value} 일전` : value;
@@ -176,12 +179,12 @@ export const descriptionConverter = (details) => {
 				str =
 					str +
 					// `${key}:${value}`;
-					`${descKeys(key)}:${descValues(value)}`;
+					`${descKeys(key)} : ${descValues(value)}`;
 			else
 				str =
 					str +
 					// `\n${key}:${value}`;
-					`\n${descKeys(key)}:${descValues(value)}`;
+					`\n${descKeys(key)} : ${descValues(value)}`;
 		}
 	}
 	console.log(str);

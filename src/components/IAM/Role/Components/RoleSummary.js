@@ -14,7 +14,11 @@ import {
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
-import {expiredConverter} from '../../../../utils/tableDataConverter';
+import {
+	descriptionConverter,
+	descValues,
+	expiredConverter,
+} from '../../../../utils/tableDataConverter';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/User/Policy/policyTemplate';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
@@ -31,12 +35,12 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 		console.log(permissions);
 		return (
 			permissions?.map((v) => ({
-				name: v.policy.details[0].policyType,
-				description: `${v.policy.details[0].policyType} : ${v.policy.details[0].attributeName}`,
+				name: descValues(v.policy.details[0].policyType),
+				description: ` ${descriptionConverter(v.policy.details)}`,
 				policyName: v.policy.templateName,
 				roleName: v.role.name,
 				grantUser: v.user,
-				type: v.policy.details[0].policyType,
+				type: descValues(v.policy.details[0].policyType),
 				id: v.role.id + v.policy.templateId,
 				createdTime: v.policy.createdTag.createdTime,
 				[DRAGGABLE_KEY]: v.role.id + v.policy.templateId,

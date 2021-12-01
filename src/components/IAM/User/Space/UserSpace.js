@@ -54,9 +54,9 @@ const UserSpace = () => {
 				tags: tagsConverter(v.user.tags),
 				authType:
 					v.policies.find((v) => v.policyType === 'AlternativeAuthN')
-						?.attributeName === 'IdAndPassword'
-						? 'ID/PWD'
-						: '대체인증',
+						?.attributeName === 'Google'
+						? '대체인증'
+						: 'ID/PWD',
 				MFA: v.policies.find((v) => v.policyType === 'MFA')
 					? `${
 							v.policies.find((v) => v.policyType === 'MFA')

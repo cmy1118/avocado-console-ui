@@ -41,6 +41,7 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 				name: '',
 				value: '',
 				permissions: [],
+				numberOfPermissions: 0,
 				[DRAGGABLE_KEY]: `${tableKeys.users.summary.tabs.tags.basic} ${data.length}`,
 			},
 		]);
@@ -99,6 +100,7 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 							? user.tags.map((tag) => ({
 									...tag,
 									id: tag.name,
+									numberOfPermissions: 0,
 									[DRAGGABLE_KEY]: tag.name,
 							  }))
 							: [],

@@ -16,7 +16,10 @@ import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/G
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_USER_TAG from '../../../../reducers/api/IAM/User/Tag/tags';
-import {descriptionConverter} from '../../../../utils/tableDataConverter';
+import {
+	descriptionConverter,
+	descValues,
+} from '../../../../utils/tableDataConverter';
 import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import * as _ from 'lodash';
@@ -68,7 +71,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 			.filter((v) => v.policy)
 			.map((v, i) => ({
 				...v,
-				permission: v.policy?.details[0].policyType,
+				permission: descValues(v.policy?.details[0].policyType),
 				policyName: v.policy?.templateName,
 				authTarget: '사용자',
 				description: `${descriptionConverter(v.policy?.details)}`,
@@ -84,6 +87,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 		return tags.map((tag) => ({
 			...tag,
 			id: tag.name,
+			numberOfPermissions: 0,
 			[DRAGGABLE_KEY]: tag.name,
 		}));
 	}, [tags]);
