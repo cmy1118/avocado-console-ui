@@ -65,7 +65,8 @@ const _contentsContainer = styled.div`
 	// align-items: start;
 	// justify-content: center;
 	// overflow: hidden;
-	justify-content: center;
+	justify-items: center;
+	justify-content: end;
 	align-content: center;
 	width: 100%;
 	height: 100%;
@@ -93,8 +94,6 @@ const _contentsTitle = styled.div`
 const _contentsItem = styled.div`
 	display: flex;
 `;
-
-const _side = styled.div``;
 
 const Main = () => {
 	const history = useHistory();
@@ -176,7 +175,6 @@ const Main = () => {
 		// </_Container>
 
 		<_Container>
-			<_side></_side>
 			<_contentsContainer>
 				<_contents>
 					<_contentsTitle>Avocado 기능</_contentsTitle>
@@ -230,7 +228,6 @@ const Main = () => {
 					</_contentsItem>
 				</_contents>
 			</_contentsContainer>
-			<_side></_side>
 		</_Container>
 	);
 };
