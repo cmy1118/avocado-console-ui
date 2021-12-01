@@ -23,15 +23,20 @@ import Approal_red from '../images/dashboard/service_app_red@2x.png';
 import RRM_red from '../images/dashboard/service_rrm_red@2x.png';
 
 const _Container = styled.div`
-	display: grid;
-	place-items: center;
-	height: 955px;
-	grid-template-rows: 100%;
-	grid-template-columns: 15% 80% 15%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	// place-items: center;
+	// height: 955px;
+	// grid-template-rows: 100%;
+	// grid-template-columns: 15% 80% 15%;
 	height: 100%;
 	background: #f8f9fa;
-	width: 100%;
-	grid-auto-rows: 40px;
+	// width: 100%;
+	width: 1500px
+	margin: 0 auto;
+	// grid-auto-rows: 40px;
 
 	overflow-y: auto;
 	&::-webkit-scrollbar {
@@ -61,12 +66,14 @@ const _Container = styled.div`
 // ************************** 이미지를 삽입 했을때 [e]**************************
 
 const _contentsContainer = styled.div`
+	width: 1500px
+	margin: 0 auto;
 	padding: 55px 0px;
 	// display: flex;
 	// align-items: start;
 	// justify-content: center;
 	// overflow: hidden;
-	width: 100%;
+	// width: 100%;
 	height: 100%;
 `;
 
