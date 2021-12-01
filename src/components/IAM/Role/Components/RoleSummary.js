@@ -51,7 +51,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 			user?.map((v, i) => ({
 				...v,
 				id: v.id,
-				numberOfGroups: v.groups.length,
+				numberOfGroups: v.groups?.length || 0,
 				status: v.status.code,
 				createdTime: v.createdTag.createdTime,
 				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
