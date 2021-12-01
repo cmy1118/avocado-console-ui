@@ -214,23 +214,23 @@ export const USER_ADD_PERMISSTIOMS_COLUMN = [
 	{
 		Header: '권한 상세',
 		accessor: 'description',
-		// Cell: function Component(v) {
-		// 	return (
-		// 		<div>
-		// 			{v.value.split('\n').map((v, i) => {
-		// 				return (
-		// 					<RowDiv
-		// 						alignItems={'center'}
-		// 						height={'30px'}
-		// 						key={i}
-		// 					>
-		// 						{v}
-		// 					</RowDiv>
-		// 				);
-		// 			})}
-		// 		</div>
-		// 	);
-		// },
+		Cell: function Component(v) {
+			return (
+				<div>
+					{v.value.split('\n').map((v, i) => {
+						return (
+							<RowDiv
+								alignItems={'center'}
+								height={'30px'}
+								key={i}
+							>
+								{v}
+							</RowDiv>
+						);
+					})}
+				</div>
+			);
+		},
 	},
 
 	{

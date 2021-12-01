@@ -103,16 +103,6 @@ const RoleDescriptionSpace = ({roleId}) => {
 			});
 	}, [dispatch, roleId]);
 
-	// arr.push({
-	// 	id: role.id,
-	// 	name: role.name,
-	// 	description: role.description,
-	// 	createdTime: role.createdTag.createdTime,
-	// 	type: role.maxGrants === '1' ? 'Private' : 'Public',
-	// });
-
-	// });
-
 	return (
 		<IamContainer>
 			<CurrentPathBar>

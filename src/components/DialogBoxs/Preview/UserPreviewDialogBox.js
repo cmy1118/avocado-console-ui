@@ -8,7 +8,11 @@ import CURRENT_TARGET from '../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
 import {LiText} from '../../../styles/components/text';
 import TableContainer from '../../Table/TableContainer';
-import {rolesConverter} from '../../../utils/tableDataConverter';
+import {
+	descriptionConverter,
+	descValues,
+	rolesConverter,
+} from '../../../utils/tableDataConverter';
 import {SummaryList} from '../../../styles/components/iam/descriptionPage';
 import {TitleBar} from '../../../styles/components/iam/iam';
 import {AddPageDialogBoxTitle} from '../../../styles/components/iam/addPage';
@@ -94,8 +98,8 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 		console.log(permissions);
 		return (
 			permissions?.map((v) => ({
-				name: v.policy.details[0].policyType,
-				description: `${v.policy.details[0].policyType} : ${v.policy.details[0].attributeName}`,
+				name: descValues(v.policy.details[0].policyType),
+				description: `${descriptionConverter(v.policy.details)}`,
 				policyName: v.policy.templateName,
 				roleName: v.role.name,
 				grantUser: v.user,
