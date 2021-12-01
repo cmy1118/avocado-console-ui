@@ -110,7 +110,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 			)
 				.unwrap()
 				.then((roles) => {
-					console.log(roles);
+					if (!roles.data[0]) setRoles([]);
 					roles.data.forEach((role) => {
 						console.log(role);
 						dispatch(
