@@ -22,6 +22,7 @@ import {useDispatch} from 'react-redux';
 import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
 import PAM_ROLES from '../../../../../reducers/api/PAM/Role/roles';
 import {CollapsbleContent} from '../../../../../styles/components/style';
+import {descValues} from '../../../../../utils/tableDataConverter';
 
 const policyType = {
 	'KR-2020-0005:202111:0001': '사용자 인증',
@@ -162,7 +163,7 @@ const calculatettribute = (attribute) => {
 		// console.log(v);
 		if (v.policyType === 'AlternativeAuthN') {
 			if (v.attributeName === 'IdAndPassword') {
-				temp.AltType = v.attributeName;
+				temp.AltType = descValues(v.attributeName);
 				temp.AlternativeAuthN = '사용하지 않음';
 			} else {
 				temp.AltType = '사용하지 않음';
