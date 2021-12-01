@@ -88,6 +88,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 						policyName: 'resource-permission',
 						createdTime: '2021-11-26T19:13:21.266+09:00',
 						// grantUser: {value: {name: '김진우', id: 'jinwoo'}},
+						grantUser: '김진우(jinwoo)',
 						[DRAGGABLE_KEY]: 'default',
 					},
 				];
@@ -108,6 +109,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 						policyName: 'resource-permission',
 						createdTime: '2021-11-26T19:13:21.266+09:00',
 						// grantUser: {value: {name: '김영희', id: 'myhee'}},
+						grantUser: '김영희(myhee)',
 						[DRAGGABLE_KEY]: 'default',
 					},
 				];
