@@ -162,28 +162,14 @@ const RoleDescriptionSpace = ({roleId}) => {
 							생성 일시 : {role?.createdTag.createdTime}
 						</LiText>
 						<LiText>
-							마지막 작업 일시 :{' '}
-							{
-								dummyDatesLastInfo[
-									getRandomNum(0, dummyDatesLastInfo.length)
-								].lastTime
-							}
+							마지막 작업 일시 : {dummyDatesLastInfo[0].lastTime}
 						</LiText>
 						<LiText>
-							마지막 활동 :{' '}
-							{
-								dummyDatesLastInfo[
-									getRandomNum(0, dummyDatesLastInfo.length)
-								].lastActiv
-							}
+							마지막 활동 : {dummyDatesLastInfo[0].lastActiv}
 						</LiText>
 						<LiText>
 							마지막 활동 사용자 :{' '}
-							{
-								dummyDatesLastInfo[
-									getRandomNum(0, dummyDatesLastInfo.length)
-								].lastUser
-							}
+							{dummyDatesLastInfo[0].lastUser}
 						</LiText>
 					</SummaryList>
 				</div>
