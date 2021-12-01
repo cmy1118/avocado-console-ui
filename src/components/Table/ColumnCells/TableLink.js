@@ -15,6 +15,7 @@ const _Link = styled(Link)`
 `;
 
 const TableLink = ({cell, text}) => {
+	console.log('cell', cell.value);
 	const location = useLocation();
 	const [value, setValue] = useState(cell.value);
 	//****************************************************************//
