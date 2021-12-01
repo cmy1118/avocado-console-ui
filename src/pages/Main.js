@@ -66,8 +66,6 @@ const _Container = styled.div`
 // ************************** 이미지를 삽입 했을때 [e]**************************
 
 const _contentsContainer = styled.div`
-	width: 1500px
-	margin: 0 auto;
 	padding: 55px 0px;
 	// display: flex;
 	// align-items: start;
