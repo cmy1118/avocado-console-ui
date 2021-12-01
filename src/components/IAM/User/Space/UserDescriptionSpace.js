@@ -112,7 +112,10 @@ const UserDescriptionSpace = ({userUid}) => {
 				<NextPath>{' > '}</NextPath>
 				<CurrentPathBarLink to='/users'>사용자</CurrentPathBarLink>
 				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to={`/users/${userUid}`}>
+				<CurrentPathBarLink
+					onClick={() => setIsSummaryOpened(true)}
+					to={`/users/${userUid}`}
+				>
 					{user?.name}
 				</CurrentPathBarLink>
 			</CurrentPathBar>

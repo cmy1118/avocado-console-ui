@@ -30,7 +30,6 @@ const TableLink = ({cell, text}) => {
 	const dataType = cell.column?.type;
 	const data = cell.row.original;
 	const paramId = data.userUid ? data.userUid : data.id;
-
 	return grantUserId ? (
 		<_Link to={{pathname: `/${dataType}/${grantUserId}`}}>{text}</_Link>
 	) : dataType ? (

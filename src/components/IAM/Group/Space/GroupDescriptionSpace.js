@@ -125,7 +125,10 @@ const GroupDescriptionSpace = ({groupId}) => {
 					사용자 그룹
 				</CurrentPathBarLink>
 				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to={`/groups/${groupId}`}>
+				<CurrentPathBarLink
+					onClick={() => setIsSummaryOpened(true)}
+					to={`/groups/${groupId}`}
+				>
 					{group?.name}
 				</CurrentPathBarLink>
 			</CurrentPathBar>

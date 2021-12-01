@@ -120,7 +120,10 @@ const RoleDescriptionSpace = ({roleId}) => {
 				<NextPath>{' > '}</NextPath>
 				<CurrentPathBarLink to='/roles'>역할</CurrentPathBarLink>
 				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to={`/roles/${roleId}`}>
+				<CurrentPathBarLink
+					onClick={() => setIsSummaryOpened(true)}
+					to={`/roles/${roleId}`}
+				>
 					{role?.name}
 				</CurrentPathBarLink>
 			</CurrentPathBar>
