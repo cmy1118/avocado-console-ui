@@ -23,10 +23,13 @@ import {
 import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import * as _ from 'lodash';
+import AUTH_USER from '../../../../reducers/api/Auth/authUser';
 
 const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const {companyId} = useSelector(AUTH_USER.selector);
+
 	const [user, setUser] = useState(null);
 	const {initialPage} = useSelector(PAGINATION.selector);
 	const [groups, setGroups] = useState([]);
@@ -66,8 +69,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	}, [groups, user]);
 
 	const roleData = useMemo(() => {
-		console.log(roles);
-		return roles
+		const temp = roles
 			.filter((v) => v.policy)
 			.map((v, i) => ({
 				...v,
@@ -81,7 +83,45 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				id: v.role.id + '/' + i,
 				[DRAGGABLE_KEY]: v.role.id + '/' + i,
 			}));
-	}, [roles]);
+
+		if (companyId === 'KR-2020-0005') {
+			return [
+				...temp,
+				{
+					id: 'default',
+					permission: '접근 자원',
+					description:
+						'avocado-pam-server (ec2-13-124-198-15.ap-northeast-2.compute.amazonaws.com) / SSH / root\navocado-pam-connector (ec2-15-164-22-197.ap-northeast-2.compute.amazonaws.com) / SSH / root\nRabbitMQ (ec2-13-209-99-140.ap-northeast-2.compute.amazonaws.com) / SSH / root\navocado-console-ui (ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com) / SSH / root',
+					type: '접근자원',
+					roleName: 'resource-policy',
+					policyName: 'resource-permission',
+					authTarget: '자원',
+					grantDate: '2021-11-26T19:13:21.266+09:00',
+					// grantUser: {value: {name: '김진우', id: 'jinwoo'}},
+					[DRAGGABLE_KEY]: 'default',
+				},
+			];
+		}
+
+		if (companyId === 'KR-2020-0006') {
+			return [
+				...temp,
+				{
+					id: 'default',
+					permission: '접근 자원',
+					description:
+						'key-server (ec2-13-124-198-15.ap-northeast-2.compute.amazonaws.com) / SSH / root\napp-dev-server (ec2-15-164-22-197.ap-northeast-2.compute.amazonaws.com) / SSH / root\nui-server (ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com) / SSH / root\nMessage Queue (ec2-13-209-99-140.ap-northeast-2.compute.amazonaws.com) / SSH / root',
+					type: '접근자원',
+					roleName: 'resource-policy',
+					policyName: 'resource-permission',
+					authTarget: '자원',
+					grantDate: '2021-11-26T19:13:21.266+09:00',
+					// grantUser: {value: {name: '김영희', id: 'myhee'}},
+					[DRAGGABLE_KEY]: 'default',
+				},
+			];
+		}
+	}, [roles, companyId]);
 
 	const tagData = useMemo(() => {
 		return tags.map((tag) => ({

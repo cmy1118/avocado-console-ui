@@ -74,7 +74,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 			}));
 
 			if (
-				Id === 'KR-2020-0006:00000000002' &&
+				Id === 'KR-2020-0005:00000000002' &&
 				companyId === 'KR-2020-0005'
 			) {
 				return [
@@ -126,7 +126,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				[DRAGGABLE_KEY]: v.role.id + v.policy.templateId,
 			})) || []
 		);
-	}, [permissions]);
+	}, [permissions, Id, companyId]);
 
 	const userData = useMemo(() => {
 		// return [];
