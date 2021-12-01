@@ -192,24 +192,24 @@ const RoleDescriptionSpace = ({roleId}) => {
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'user' && (
-							<RoleUserTab
-								roleId={roleId}
-								space={'RoleUserTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'group' && (
-							<RoleGroupTab
-								roleId={roleId}
-								space={'RoleGroupTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-							/>
-						)}
+						{/*{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===*/}
+						{/*	'user' && (*/}
+						{/*	<RoleUserTab*/}
+						{/*		roleId={roleId}*/}
+						{/*		space={'RoleUserTab'}*/}
+						{/*		isFold={isTableFold}*/}
+						{/*		setIsFold={setIsTableFold}*/}
+						{/*	/>*/}
+						{/*)}*/}
+						{/*{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===*/}
+						{/*	'group' && (*/}
+						{/*	<RoleGroupTab*/}
+						{/*		roleId={roleId}*/}
+						{/*		space={'RoleGroupTab'}*/}
+						{/*		isFold={isTableFold}*/}
+						{/*		setIsFold={setIsTableFold}*/}
+						{/*	/>*/}
+						{/*)}*/}
 					</TabContentSpace>
 				</TabContainer>
 			</DescriptionPageContainer>
