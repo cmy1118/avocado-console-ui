@@ -96,7 +96,14 @@ export const ROLE_SUMMARY_PERMISSION_COLUMN = [
 	},
 ];
 export const ROLE_SUMMARY_USER_COLUMN = [
-	{accessor: 'id', Header: '사용자 계정'},
+	{
+		accessor: 'id',
+		Header: '사용자 계정',
+		type: 'users',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell} />;
+		},
+	},
 	{accessor: 'name', Header: '사용자 이름'},
 	{accessor: 'numberOfGroups', Header: '그룹 수'},
 	{
@@ -125,7 +132,14 @@ export const ROLE_SUMMARY_USER_COLUMN = [
 	},
 ];
 export const ROLE_SUMMARY_GROUP_COLUMN = [
-	{accessor: 'name', Header: '그룹 이름'},
+	{
+		accessor: 'name',
+		Header: '그룹 이름',
+		type: 'groups',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell} />;
+		},
+	},
 	{accessor: 'groupType', Header: '그룹 유형'},
 	{accessor: 'numberOfRoles', Header: '권한 수'},
 	{accessor: 'parentGroup', Header: '상위 그룹'},
