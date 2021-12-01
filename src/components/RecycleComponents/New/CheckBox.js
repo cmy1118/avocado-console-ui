@@ -9,7 +9,7 @@ import {
 
 const _Container = styled.div`
 	z-index: 0;
-	margin: auto;
+	margin: ${(props) => props.margin || 'auto'};
 	display: flex !important;
 	align-items: center;
 	width: ${(props) => props.label === '' && '15px'};
@@ -45,6 +45,7 @@ const CheckBox = ({
 }) => {
 	return (
 		<_Container
+			margin={props.margin}
 			opacity={disabled.toString()}
 			label={label}
 			className='pretty p-svg p-curve p-plain p-toggle p-thick'
@@ -76,6 +77,7 @@ const CheckBox = ({
 
 CheckBox.propTypes = {
 	// options
+	margin: PropTypes.string,
 	label: PropTypes.string,
 	indeterminate: PropTypes.bool,
 	checked: PropTypes.bool,
