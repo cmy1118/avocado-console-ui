@@ -79,6 +79,7 @@ const SearchOptionsContextMenu = ({
 					onClick={onClickSelectFilter(column.id)}
 				>
 					<CheckBox
+						margin={'inherit'}
 						label={column.Header}
 						checked={tempSelectedOptions.includes(column.id)}
 						readOnly
