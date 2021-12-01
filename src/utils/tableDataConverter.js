@@ -97,7 +97,7 @@ export const descKeys = (key) => {
 			return '인증유형';
 
 		case 'AlternativeAuthN':
-			return '대체인증수단';
+			return '인증수단';
 
 		case 'IdentityVerification':
 			return '본인확인인증';
@@ -130,7 +130,7 @@ export const descValues = (value) => {
 			return '잠금 해제정책';
 
 		case 'AlternativeAuthN':
-			return '대체인증';
+			return '인증';
 
 		default:
 			return typeof value === 'number' ? `${value} 일전` : value;
@@ -148,9 +148,8 @@ export const descriptionConverter = (details) => {
 						tempObj[key] = value;
 					}
 				});
-				tempObj[detail.attribute.policyType] = Object.values(
-					tempObj,
-				)[0];
+				tempObj[detail.attribute.policyType] =
+					Object.values(tempObj)[0];
 			} else {
 				tempObj[detail.attribute.policyType] = Object.keys(
 					detail.attribute.policies,
