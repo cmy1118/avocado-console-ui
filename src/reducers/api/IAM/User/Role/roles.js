@@ -103,7 +103,7 @@ const getsAction = createAsyncThunk(
 	`${NAME}/GETS`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		console.log('payload.range:', payload.range);
+
 		const response = await Axios.get(`/open-api/v1/iam/roles`, {
 			params: {
 				keyword: payload.keyword,
@@ -117,7 +117,7 @@ const getsAction = createAsyncThunk(
 
 			baseURL: baseURL.openApi,
 		});
-		console.log('ROLE_getsAction:', response.data);
+		//	console.log('ROLE_getsAction:', response.data);
 		return {data: response.data, headers: response.headers};
 	},
 );
@@ -147,7 +147,7 @@ const findTemplatesAction = createAsyncThunk(
 	`${NAME}/FIND_TEMPLATES`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		console.log(payload);
+
 		const response = await Axios.get(
 			`/open-api/v1/iam/roles/${payload.roleId}/policy-templates`,
 			{
@@ -161,7 +161,7 @@ const findTemplatesAction = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
-		console.log(response.data);
+		//	console.log(response.data);
 		return {data: response.data, headers: response.headers};
 	},
 );

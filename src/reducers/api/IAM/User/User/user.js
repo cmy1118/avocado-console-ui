@@ -125,8 +125,6 @@ const findAllAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
 
-		console.log(user);
-
 		const response = await Axios.get(`/open-api/v1/iam/users`, {
 			params: {
 				keyword: payload.keyword,
@@ -142,7 +140,7 @@ const findAllAction = createAsyncThunk(
 			},
 			baseURL: baseURL.openApi,
 		});
-		console.log(response);
+		//	console.log(response);
 		return {data: response.data, headers: response.headers};
 	},
 );
@@ -152,8 +150,6 @@ const getUserGroupsAction = createAsyncThunk(
 	`${NAME}/GET_INCLUDE_GROUPS`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-
-		console.log(user);
 
 		const response = await Axios.get(
 			`/open-api/v1/iam/users/${payload.userUid}/user-groups`,
@@ -169,7 +165,7 @@ const getUserGroupsAction = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
-		console.log(response);
+		//	console.log(response);
 		return {data: response.data, headers: response.headers};
 	},
 );

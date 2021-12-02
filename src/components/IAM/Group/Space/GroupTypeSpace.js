@@ -38,8 +38,6 @@ const GroupTypeSpace = () => {
 		})),
 	);
 
-	console.log(data);
-
 	const onClickAddGroups = useCallback(() => {
 		history.push('/groups/add');
 	}, [history]);
@@ -60,7 +58,7 @@ const GroupTypeSpace = () => {
 
 	const onClickSaveGroupTypes = useCallback(() => {
 		data.forEach((v) => {
-			console.log(v);
+			//	console.log(v);
 			if (v.new) {
 				dispatch(
 					IAM_USER_GROUP_TYPE.asyncAction.createAction({
@@ -87,7 +85,7 @@ const GroupTypeSpace = () => {
 	}, [data, dispatch, initialGroupTypes]);
 
 	const onClickDeleteGroupTypes = useCallback(() => {
-		console.log(select);
+		//	console.log(select);
 		if (select[tableKeys.groups.type][0]) {
 			select[tableKeys.groups.type].forEach((v) => {
 				dispatch(

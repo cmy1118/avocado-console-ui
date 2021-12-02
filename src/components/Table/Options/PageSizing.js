@@ -21,7 +21,7 @@ const PageSizing = ({pageSize, setPageSize}) => {
 		<Form
 			initialValues={{page: `${pageSize}행`}}
 			onSubmit={(data) => {
-				console.log(data);
+				//		console.log(data);
 				setPageSize(data.page);
 			}}
 			innerRef={formRef}

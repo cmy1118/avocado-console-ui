@@ -18,7 +18,6 @@ import {
 } from '../../../../styles/components/iam/iam';
 import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
-
 const AddTagToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
@@ -40,8 +39,8 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		console.log(select[tableKeys.groups.add.tag]);
-		console.log('삭제 처리 필요');
+		//	console.log(select[tableKeys.groups.add.tag]);
+		//	console.log('삭제 처리 필요');
 	}, [select]);
 
 	const tagData = useMemo(() => {

@@ -121,20 +121,20 @@ const DragContainer = ({
 				// v.userUid ? v.userUid : v.id,
 			);
 
-			console.log('result.draggableId', result.draggableId);
+			//	console.log('result.draggableId', result.draggableId);
 			if (items) {
 				if (items.includes(result.draggableId)) {
-					console.log('포함');
+					//		console.log('포함');
 					setSelectedItems(items);
 				} else {
-					console.log('미포함');
+					//	console.log('미포함');
 					setSelectedItems([...items, result.draggableId]);
 				}
 			} else {
 				setSelectedItems([result.draggableId]);
 			}
 
-			console.log(result);
+			//	console.log(result);
 		},
 		[selected],
 	);
@@ -148,7 +148,7 @@ const DragContainer = ({
 
 			if (destination.droppableId !== source.droppableId) {
 				if (destination.droppableId === includedKey) {
-					console.log('check');
+					//		console.log('check');
 					if (onDropCheckMaxNumber(selectedItems, data, includedKey))
 						return;
 					if (
@@ -158,8 +158,8 @@ const DragContainer = ({
 					}
 				}
 
-				console.log('selectedItems :: ', selectedItems);
-				console.log('data:', data);
+				//	console.log('selectedItems :: ', selectedItems);
+				//	console.log('data:', data);
 				if (destination.droppableId === includedKey) {
 					joinFunction && joinFunction(selectedItems);
 					data

@@ -24,7 +24,7 @@ const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 	const {page} = useSelector(PAGINATION.selector);
 	const [groupUserMembers, setGroupUserMembers] = useState([]);
 
-	console.log(groupUserMembers);
+	//console.log(groupUserMembers);
 
 	const userData = useMemo(() => {
 		return groupUserMembers.map((v) => ({
@@ -74,12 +74,12 @@ const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 			)
 				.unwrap()
 				.then((member) => {
-					console.log(member.data);
+					//	console.log(member.data);
 					return member.data.map((x) => x.userUid);
 				})
 				.then((uids) => {
 					const arr = [];
-					console.log(uids);
+					//	console.log(uids);
 					if (!uids) return;
 					uids.forEach((uid) => {
 						dispatch(

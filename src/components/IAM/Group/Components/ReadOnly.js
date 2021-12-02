@@ -14,8 +14,8 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
 	const submitUserInfo = useCallback(() => {
-		console.log(readOnlyData);
-		console.log('api 작업..');
+		//	console.log(readOnlyData);
+		//	console.log('api 작업..');
 	}, [readOnlyData]);
 
 	return readOnlyData['group'] ? (
