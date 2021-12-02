@@ -101,6 +101,19 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 					grantUser: '김진우(jinwoo)',
 					[DRAGGABLE_KEY]: 'default',
 				},
+				{
+					id: 'default2',
+					permission: '명령어',
+					description:
+						'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 0회\n 정책 : 세션차단\n초기화 : 10초',
+					type: '명령어 제어',
+					roleName: 'resource-policy',
+					policyName: 'commandControl-policy',
+					authTarget: '사용자',
+					grantDate: '2021-11-26T19:13:21.266+09:00',
+					grantUser: '김진우(jinwoo)',
+					[DRAGGABLE_KEY]: 'default2',
+				},
 			];
 		}
 
@@ -117,9 +130,22 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 					policyName: 'resource-permission',
 					authTarget: '사용자',
 					grantDate: '2021-11-26T19:13:21.266+09:00',
-					// grantUser: {value: {name: '김영희', id: 'myhee'}},
-					grantUser: '김영희(myhee)',
+
+					grantUser: '김미희(myhee)',
 					[DRAGGABLE_KEY]: 'default',
+				},
+				{
+					id: 'default2',
+					permission: '명령어',
+					description:
+						'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 0회\n 정책 : 세션차단\n초기화 : 10초',
+					type: '명령어 제어',
+					roleName: 'resource-policy',
+					policyName: 'commandControl-policy',
+					authTarget: '사용자',
+					grantDate: '2021-11-26T19:13:21.266+09:00',
+					grantUser: '김미희(myhee)',
+					[DRAGGABLE_KEY]: 'default2',
 				},
 			];
 		}
