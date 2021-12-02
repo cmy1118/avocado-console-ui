@@ -26,30 +26,6 @@ import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import PAM_SESSION from '../../../../reducers/api/PAM/session';
 import AUTH_USER from '../../../../reducers/api/Auth/authUser';
 
-const object = {
-	id: 'default',
-	name: '접근 자원',
-	description:
-		'avocado-pam-server (ec2-13-124-198-15.ap-northeast-2.compute.amazonaws.com) / SSH / root\navocado-pam-connector (ec2-15-164-22-197.ap-northeast-2.compute.amazonaws.com) / SSH / root\nRabbitMQ (ec2-13-209-99-140.ap-northeast-2.compute.amazonaws.com) / SSH / root\navocado-console-ui (ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com) / SSH / root',
-	type: '접근자원',
-	policyName: 'resource-permission',
-	createdTime: '2021-11-26T19:13:21.266+09:00',
-	grantUser: {value: {name: '김진우', id: 'jinwoo'}},
-	[DRAGGABLE_KEY]: 'default',
-};
-
-const object2 = {
-	id: 'default',
-	name: '접근 자원',
-	description:
-		'key-server (ec2-13-124-198-15.ap-northeast-2.compute.amazonaws.com) / SSH / root\napp-dev-server (ec2-15-164-22-197.ap-northeast-2.compute.amazonaws.com) / SSH / root\nui-server (ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com) / SSH / root\nMessage Queue (ec2-13-209-99-140.ap-northeast-2.compute.amazonaws.com) / SSH / root',
-	type: '접근자원',
-	policyName: 'resource-permission',
-	createdTime: '2021-11-26T19:13:21.266+09:00',
-	grantUser: {value: {name: '김영희', id: 'myhee'}},
-	[DRAGGABLE_KEY]: 'default',
-};
-
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
