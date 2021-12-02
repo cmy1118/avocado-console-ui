@@ -63,8 +63,8 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 						type: '접근자원',
 						policyName: 'resource-permission',
 						createdTime: '2021-11-26T19:13:21.266+09:00',
-						// grantUser: {value: {name: '김진우', id: 'jinwoo'}},
-						grantUser: '김진우(jinwoo)',
+						grantUser: {value: {name: '김진우', id: 'jinwoo'}},
+						// grantUser: '김진우(jinwoo)',
 						[DRAGGABLE_KEY]: 'default',
 					},
 				];

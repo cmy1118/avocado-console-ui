@@ -95,11 +95,14 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	);
 
 	const roleData = useMemo(() => {
-		console.log(permissions);
 		return (
 			permissions?.map((v) => ({
-				name: descValues(v.policy.details[0].policyType),
-				description: `${descriptionConverter(v.policy.details)}`,
+				name: v.policy.details
+					? descValues(v.policy?.details[0]?.policyType)
+					: v.policy.name,
+				description: v.policy.details
+					? `${descriptionConverter(v.policy.details)}`
+					: v.policy.description,
 				policyName: v.policy.templateName,
 				roleName: v.role.name,
 				grantUser: v.user,
@@ -134,38 +137,148 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 				)
 					.unwrap()
 					.then((policies) => {
-						if (!policies.data) return;
-						policies.data.forEach((policy) => {
-							dispatch(
-								IAM_USER.asyncAction.findByUidAction({
-									userUid: policy.createdTag.actorTag.userUid,
-								}),
-							)
-								.unwrap()
-								.then((user) => {
-									policiesBox.push(
-										policies.data
-											? policies.data.map((policy) => ({
-													user,
-													role,
-													policy,
-											  }))
-											: [],
-									);
+						if (!policies.data) {
+							if (
+								readOnlyData[tableKeys.users.add.roles.exclude]
+									.map((v) => v.id)
+									.includes('KR-2020-0005:00000000002')
+							) {
+								policiesBox.push([
+									{
+										user: {
+											userUid: 'KR-2020-0005:0000001',
+											id: 'jinwoo',
+											name: '김진우',
+											email: 'jinwoo@kt.com',
+											status: {
+												code: 0,
+												name: 'Actived',
+											},
+											createdTag: {
+												createdTime:
+													'2021-11-26T18:24:27.421+09:00',
+												actorTag: {
+													applicationCode: {
+														code: 'open-api',
+														description:
+															'Open API Server',
+													},
+													clientId: 'client',
+													requestId:
+														'41f1b730-8b8e-4185-9386-8456b707ad65',
+													userUid:
+														'KR-2020-0005:0000001',
+												},
+											},
+										},
+										role: {
+											name: 'resource-policy',
+											id: 'KR-2020-0005:00000000002',
+										},
+										policy: {
+											templateId: 'default',
 
-									if (
-										policiesBox.length ===
-										readOnlyData[
-											tableKeys.users.add.roles.exclude
-										].length *
-											policies.data.length
-									) {
-										const arr = _.flatten(policiesBox);
-										console.log(arr);
-										setPermissions(arr);
-									}
-								});
-						});
+											id: 'default',
+											name: '접근 자원',
+											description:
+												'avocado-pam-server (ec2-13-124-198-15.ap-northeast-2.compute.amazonaws.com) / SSH / root\navocado-pam-connector (ec2-15-164-22-197.ap-northeast-2.compute.amazonaws.com) / SSH / root\nRabbitMQ (ec2-13-209-99-140.ap-northeast-2.compute.amazonaws.com) / SSH / root\navocado-console-ui (ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com) / SSH / root',
+											type: '접근자원',
+											templateName: 'resource-permission',
+											createdTime:
+												'2021-11-26T19:13:21.266+09:00',
+										},
+									},
+								]);
+							} else if (
+								readOnlyData[tableKeys.users.add.roles.exclude]
+									.map((v) => v.id)
+									.includes('KR-2020-0006:00000000002')
+							) {
+								policiesBox.push([
+									{
+										user: {
+											userUid: 'KR-2020-0006:0000001',
+											id: 'myhee',
+											name: '김영희',
+											email: 'myhee@sk.com',
+											status: {
+												code: 0,
+												name: 'Actived',
+											},
+											createdTag: {
+												createdTime:
+													'2021-11-26T18:24:27.421+09:00',
+												actorTag: {
+													applicationCode: {
+														code: 'open-api',
+														description:
+															'Open API Server',
+													},
+													clientId: 'client',
+													requestId:
+														'41f1b730-8b8e-4185-9386-8456b707ad65',
+													userUid:
+														'KR-2020-0005:0000001',
+												},
+											},
+										},
+										role: {
+											name: 'resource-policy',
+											id: 'KR-2020-0006:00000000002',
+										},
+										policy: {
+											templateId: 'default',
+
+											id: 'default',
+											name: '접근 자원',
+											description:
+												'key-server (ec2-13-124-198-15.ap-northeast-2.compute.amazonaws.com) / SSH / root\napp-dev-server (ec2-15-164-22-197.ap-northeast-2.compute.amazonaws.com) / SSH / root\nui-server (ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com) / SSH / root\nMessage Queue (ec2-13-209-99-140.ap-northeast-2.compute.amazonaws.com) / SSH / root',
+											type: '접근자원',
+											templateName: 'resource-permission',
+											createdTime:
+												'2021-11-26T19:13:21.266+09:00',
+										},
+									},
+								]);
+							}
+						} else {
+							policies.data.forEach((policy) => {
+								dispatch(
+									IAM_USER.asyncAction.findByUidAction({
+										userUid:
+											policy.createdTag.actorTag.userUid,
+									}),
+								)
+									.unwrap()
+									.then((user) => {
+										policiesBox.push(
+											policies.data
+												? policies.data.map(
+														(policy) => ({
+															user,
+															role,
+															policy,
+														}),
+												  )
+												: [],
+										);
+
+										if (
+											policiesBox.length ===
+											readOnlyData[
+												tableKeys.users.add.roles
+													.exclude
+											].length *
+												policies.data.length
+										) {
+											console.log(policiesBox);
+											const arr = _.flatten(policiesBox);
+											console.log(arr);
+											setPermissions(arr);
+										}
+									});
+							});
+						}
 					});
 			});
 		}
