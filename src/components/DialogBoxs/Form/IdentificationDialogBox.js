@@ -34,7 +34,7 @@ const IdentificationDialogBox = ({isOpened, setIsOpened}) => {
 
 	const onSubmitForm = useCallback(() => {
 		setIsOpened(false);
-		console.log('인증 완료 api 받아서 패스워드 변경 폼 open 처리');
+		//		console.log('인증 완료 api 받아서 패스워드 변경 폼 open 처리');
 	}, [description, name]);
 
 	return (

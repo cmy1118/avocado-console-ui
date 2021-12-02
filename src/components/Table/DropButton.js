@@ -79,8 +79,8 @@ const DropButton = ({
 					return v.type;
 				});
 			}
-			console.log(predata);
-			console.log(preDataType);
+			// console.log(predata);
+			// console.log(preDataType);
 			const CheckDataType =
 				selectdata[leftTablekey] &&
 				selectdata[leftTablekey].map((v) => v.type);

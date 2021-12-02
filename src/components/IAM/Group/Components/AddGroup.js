@@ -45,7 +45,7 @@ const AddGroup = ({values, groupMembers, setValues}) => {
 
 	const onSubmitCreateGroup = useCallback(
 		(data) => {
-			console.log(data);
+			//	console.log(data);
 			dispatch(
 				IAM_USER_GROUP.asyncAction.createAction({
 					userGroupTypeId: data.type,

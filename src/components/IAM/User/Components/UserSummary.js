@@ -48,7 +48,6 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	);
 
 	const groupData = useMemo(() => {
-		console.log(groups);
 		return groups
 			.filter((v) =>
 				user?.groups
@@ -69,6 +68,8 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	}, [groups, user]);
 
 	const roleData = useMemo(() => {
+		console.log('ROELE', roles);
+
 		const temp = roles
 			.filter((v) => v.policy)
 			.map((v, i) => ({
@@ -84,7 +85,10 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				[DRAGGABLE_KEY]: v.role.id + '/' + i,
 			}));
 
-		if (companyId === 'KR-2020-0005') {
+		if (
+			companyId === 'KR-2020-0005' &&
+			roles.filter((v) => v.role.name === 'resource-policy').length > 0
+		) {
 			return [
 				...temp,
 				{
@@ -95,16 +99,32 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 					type: '접근자원',
 					roleName: 'resource-policy',
 					policyName: 'resource-permission',
-					authTarget: '자원',
+					authTarget: '사용자',
 					grantDate: '2021-11-26T19:13:21.266+09:00',
 					// grantUser: {value: {name: '김진우', id: 'jinwoo'}},
 					grantUser: '김진우(jinwoo)',
 					[DRAGGABLE_KEY]: 'default',
 				},
+				{
+					id: 'default2',
+					permission: '명령어',
+					description:
+						'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 0회\n 정책 : 세션차단\n초기화 : 10초',
+					type: '명령어 제어',
+					roleName: 'resource-policy',
+					policyName: 'commandControl-policy',
+					authTarget: '사용자',
+					grantDate: '2021-11-26T19:13:21.266+09:00',
+					grantUser: '김진우(jinwoo)',
+					[DRAGGABLE_KEY]: 'default2',
+				},
 			];
 		}
 
-		if (companyId === 'KR-2020-0006') {
+		if (
+			companyId === 'KR-2020-0006' &&
+			roles.filter((v) => v.role.name === 'resource-policy').length > 0
+		) {
 			return [
 				...temp,
 				{
@@ -115,14 +135,28 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 					type: '접근자원',
 					roleName: 'resource-policy',
 					policyName: 'resource-permission',
-					authTarget: '자원',
+					authTarget: '사용자',
 					grantDate: '2021-11-26T19:13:21.266+09:00',
-					// grantUser: {value: {name: '김영희', id: 'myhee'}},
-					grantUser: '김영희(myhee)',
+
+					grantUser: '김미희(myhee)',
 					[DRAGGABLE_KEY]: 'default',
+				},
+				{
+					id: 'default2',
+					permission: '명령어',
+					description:
+						'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 0회\n 정책 : 세션차단\n초기화 : 10초',
+					type: '명령어 제어',
+					roleName: 'resource-policy',
+					policyName: 'commandControl-policy',
+					authTarget: '사용자',
+					grantDate: '2021-11-26T19:13:21.266+09:00',
+					grantUser: '김미희(myhee)',
+					[DRAGGABLE_KEY]: 'default2',
 				},
 			];
 		}
+		return temp;
 	}, [roles, companyId]);
 
 	const tagData = useMemo(() => {

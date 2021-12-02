@@ -18,7 +18,7 @@ const findByRoleIdAction = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
-		console.log(response.data);
+
 		return response.data;
 	},
 );
@@ -27,7 +27,7 @@ const FindByIdPermissionAction = createAsyncThunk(
 	`${NAME}/FindByIdPermission`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		console.log(payload);
+		// console.log(payload);
 		const response = await Axios.get(
 			`/open-api/v1/pam/roles/${payload.policyId}/permissions`,
 			{
@@ -39,7 +39,7 @@ const FindByIdPermissionAction = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
-		console.log(response.data);
+
 		return response.data;
 	},
 );

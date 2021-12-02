@@ -37,8 +37,6 @@ const GroupSpace = () => {
 	const {page} = useSelector(PAGINATION.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
-	console.log(groups);
-
 	const data = useMemo(() => {
 		// groups ?
 		return groups.map((v) => ({
@@ -78,7 +76,7 @@ const GroupSpace = () => {
 			)
 				.unwrap()
 				.then((groups) => {
-					console.log(groups);
+					//		console.log(groups);
 					groups.data.forEach((group) => {
 						dispatch(
 							IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
@@ -88,7 +86,7 @@ const GroupSpace = () => {
 						)
 							.unwrap()
 							.then((member) => {
-								console.log(member);
+								//			console.log(member);
 								dispatch(
 									IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
 										{id: group.id, range: 'elements=0-1'},
@@ -96,7 +94,7 @@ const GroupSpace = () => {
 								)
 									.unwrap()
 									.then((roles) => {
-										console.log(roles);
+										//					console.log(roles);
 										arr.push({
 											...group,
 											numberOfRoles: totalNumberConverter(
