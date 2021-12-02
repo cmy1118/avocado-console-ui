@@ -36,7 +36,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 			IAM_USER.asyncAction.createAction({
 				id: readOnlyData['user'].id,
 				name: readOnlyData['user'].name,
-				password: 'Netand141)', // 비밀번호는 생성 규칙에 따라 랜덤생성이며 사용자 이메일로 발송. 현재는 임의값.
+				password: '12345', // 비밀번호는 생성 규칙에 따라 랜덤생성이며 사용자 이메일로 발송. 현재는 임의값.
 				email: readOnlyData['user'].email,
 				telephone: readOnlyData['user'].telephone,
 				mobile: readOnlyData['user'].mobile,
