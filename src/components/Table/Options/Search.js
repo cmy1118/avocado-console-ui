@@ -37,9 +37,9 @@ const placeholders = {
 function Search({tableKey, setGlobalFilter}) {
 	const ref = useRef(null);
 	const handleSubmit = (data) => {
-		console.log('api');
-		console.log('tableKey', tableKey);
-		console.log('data', data);
+		// console.log('api');
+		// console.log('tableKey', tableKey);
+		// console.log('data', data);
 		setGlobalFilter(data['search']);
 	};
 

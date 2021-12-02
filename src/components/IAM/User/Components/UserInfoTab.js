@@ -25,7 +25,7 @@ const UserInfoTab = ({user, userUid}) => {
 	const [isChangePasswordOpened, setIsChangePasswordOpened] = useState(false);
 
 	const onClickSaveChangedInfo = useCallback((data) => {
-		console.log('api 처리 : ', data);
+		//console.log('api 처리 : ', data);
 		setIsChangePasswordOpened(false);
 	}, []);
 

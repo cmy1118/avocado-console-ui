@@ -30,7 +30,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	const [permissions, setPermissions] = useState(null);
 
 	const submitUserInfo = useCallback(() => {
-		console.log(readOnlyData);
+		//	console.log(readOnlyData);
 		// 나머지 그룹, 역할, 태그 맵핑은 이후에 처리..
 		dispatch(
 			IAM_USER.asyncAction.createAction({
@@ -95,7 +95,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	);
 
 	const roleData = useMemo(() => {
-		console.log(permissions);
+		//	console.log(permissions);
 		return (
 			permissions?.map((v) => ({
 				name: descValues(v.policy.details[0].policyType),
@@ -161,7 +161,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 											policies.data.length
 									) {
 										const arr = _.flatten(policiesBox);
-										console.log(arr);
+										//				console.log(arr);
 										setPermissions(arr);
 									}
 								});

@@ -38,7 +38,7 @@ const GroupOnDescPageTags = ({groupId}) => {
 	const [select, setSelect] = useState({});
 	const onClickAddRow = useCallback(() => {
 		const lastValues = data.slice().pop();
-		console.log(lastValues);
+		//	console.log(lastValues);
 		if (lastValues.name === '' || lastValues.value === '') {
 			alert('입력하지 않은 값이 있습니다.');
 			return;
@@ -54,15 +54,15 @@ const GroupOnDescPageTags = ({groupId}) => {
 	}, [data]);
 
 	const onClickSaveRow = useCallback(() => {
-		console.log(data);
+		//	console.log(data);
 	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
 		if (select[tableKeys.groups.summary.tabs.tags.basic][0]) {
-			console.log(
-				'api 처리',
-				select[tableKeys.groups.summary.tabs.tags.basic],
-			);
+			// console.log(
+			// 	'api 처리',
+			// 	select[tableKeys.groups.summary.tabs.tags.basic],
+			// );
 		} else {
 			alert('선택된 값이 없습니다.');
 		}

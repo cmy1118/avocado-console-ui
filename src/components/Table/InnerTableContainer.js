@@ -129,7 +129,7 @@ const InnerTableContainer = ({policyId, attributes}) => {
 											tempData.push(tempDataObject);
 										})
 										.then(() => {
-											console.log(tempData);
+											//						console.log(tempData);
 											setPamData([...tempData]);
 										});
 								});

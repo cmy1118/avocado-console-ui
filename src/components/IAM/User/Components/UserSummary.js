@@ -48,7 +48,6 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	);
 
 	const groupData = useMemo(() => {
-		console.log(groups);
 		return groups
 			.filter((v) =>
 				user?.groups
@@ -69,6 +68,8 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	}, [groups, user]);
 
 	const roleData = useMemo(() => {
+		console.log('ROELE', roles);
+
 		const temp = roles
 			.filter((v) => v.policy)
 			.map((v, i) => ({
@@ -84,7 +85,10 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				[DRAGGABLE_KEY]: v.role.id + '/' + i,
 			}));
 
-		if (companyId === 'KR-2020-0005') {
+		if (
+			companyId === 'KR-2020-0005' &&
+			roles.filter((v) => v.role.name === 'resource-policy').length > 0
+		) {
 			return [
 				...temp,
 				{
@@ -117,7 +121,10 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 			];
 		}
 
-		if (companyId === 'KR-2020-0006') {
+		if (
+			companyId === 'KR-2020-0006' &&
+			roles.filter((v) => v.role.name === 'resource-policy').length > 0
+		) {
 			return [
 				...temp,
 				{
@@ -149,6 +156,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				},
 			];
 		}
+		return temp;
 	}, [roles, companyId]);
 
 	const tagData = useMemo(() => {

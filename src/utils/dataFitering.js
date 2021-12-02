@@ -12,7 +12,7 @@ export function checkArrayIsUniqueHasDuplicates(arr, value) {
 //두배열 특정값 교집합 체크
 export function checkArraysIsUniqueHasDuplicates(arrA, arrB, value) {
 	if (arrA && arrB) {
-		console.log(arrA.filter((v) => arrB.includes(v)).includes(value));
+		//	console.log(arrA.filter((v) => arrB.includes(v)).includes(value));
 		return arrA.filter((v) => arrB.includes(v)).includes(value);
 	} else {
 		return true;

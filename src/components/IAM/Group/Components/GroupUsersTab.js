@@ -55,7 +55,7 @@ const GroupUsersTab = ({
 	// console.log(members);
 
 	const includedData = useMemo(() => {
-		console.log(includedDataIds);
+		//	console.log(includedDataIds);
 		return members
 			.filter((v) => includedDataIds.includes(v.userUid))
 			.map((v) => ({
@@ -79,7 +79,7 @@ const GroupUsersTab = ({
 
 	const onClickDeleteUsersFromGroup = useCallback(
 		(data) => {
-			console.log(data);
+			//	console.log(data);
 			dispatch(
 				IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
 					groupId: groupId,
@@ -92,7 +92,7 @@ const GroupUsersTab = ({
 
 	const onClickAddUsersToGroup = useCallback(
 		(data) => {
-			console.log(data);
+			//	console.log(data);
 			dispatch(
 				IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
 					groupId: groupId,

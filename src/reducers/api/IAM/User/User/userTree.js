@@ -10,7 +10,7 @@ const createAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
 		// eslint-disable-next-line no-console
-		console.log(client);
+		//	console.log(client);
 		const response = await Axios.get(
 			`/open-api/v1/iam/user-trees`,
 			{

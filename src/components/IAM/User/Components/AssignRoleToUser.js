@@ -30,7 +30,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [select, setSelect] = useState({});
 	const [roles, setRoles] = useState([]);
-	console.log('roles', roles);
+
 	const includedData = useMemo(() => {
 		return roles
 			?.filter((v) => includedDataIds.includes(v.id))

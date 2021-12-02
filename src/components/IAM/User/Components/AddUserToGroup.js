@@ -66,9 +66,6 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 		);
 	}, [groups, includedDataIds]);
 
-	console.log('excludedData ::', excludedData);
-	console.log('includedData ::', includedData);
-
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
@@ -89,7 +86,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 				.unwrap()
 				.then((groups) => {
 					groups.data.forEach((group) => {
-						console.log(group);
+						//			console.log(group);
 						dispatch(
 							IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
 								groupId: group.id,
@@ -108,7 +105,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 								)
 									.unwrap()
 									.then((roles) => {
-										console.log(roles);
+										//		console.log(roles);
 										arr.push({
 											...group,
 											numberOfRoles: totalNumberConverter(

@@ -104,7 +104,7 @@ const findAllAccountAction = createAsyncThunk(
 	`${NAME}/findAllAccount`,
 	async (payload, {getState}) => {
 		const {user} = getState().AUTH_USER;
-		console.log(payload);
+		//	console.log(payload);
 		const response = await Axios.get(
 			`/open-api/v1/pam/remote-resources/users`,
 			{
@@ -121,7 +121,7 @@ const findAllAccountAction = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
-		console.log(response);
+		// console.log(response);
 		return response.data;
 	},
 );
@@ -237,7 +237,7 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[findByIdAction.fulfilled]: (state, action) => {
-			console.log(action.payload);
+			// console.log(action.payload);
 			state.loading = false;
 		},
 		[findByIdAction.rejected]: (state, action) => {

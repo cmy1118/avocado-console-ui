@@ -79,7 +79,7 @@ const slice = createSlice({
 		// tags
 		addTagDataOnAddUser: (state) => {
 			const lastData = state.user.tags.slice().pop();
-			console.log({...lastData});
+			// console.log({...lastData});
 			let isExistEmptyValue = false;
 			Object.keys(lastData).forEach((v) => {
 				// 권한, 권한 수는 policy가 완료되면 수정이 필요. 우선은 빈 값 체크에서 제외.
@@ -89,7 +89,7 @@ const slice = createSlice({
 			});
 
 			if (isExistEmptyValue) {
-				console.log('빈 값이 존재합니다.');
+				// console.log('빈 값이 존재합니다.');
 			} else {
 				const newData = {
 					name: '',

@@ -6,7 +6,7 @@ import AUTH_USER from '../reducers/api/Auth/authUser';
 
 const PrivateRouteWithLayout = ({layout, component, ...rest}) => {
 	const {isLoggedIn, companyId} = useSelector(AUTH_USER.selector);
-	console.log(isLoggedIn);
+
 	return (
 		<Route
 			{...rest}
