@@ -18,11 +18,12 @@ import {
 	FoldableContainer,
 	TitleBarButtons,
 } from '../../../../../styles/components/iam/iam';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
 import PAM_ROLES from '../../../../../reducers/api/PAM/Role/roles';
 import {CollapsbleContent} from '../../../../../styles/components/style';
 import {descValues} from '../../../../../utils/tableDataConverter';
+import AUTH_USER from '../../../../../reducers/api/Auth/authUser';
 
 const policyType = {
 	'KR-2020-0005:202111:0001': '사용자 인증',
@@ -103,6 +104,7 @@ const pamPolicyType = {
 	'KR-2020-0006:00000000004': '권한 관리',
 	'KR-2020-0006:00000000005': '권한 관리',
 	'KR-2020-0006:00000000006': '권한 관리',
+	tempId: '명령어 제어',
 };
 const pamPolicyDescription = {
 	'KR-2020-0005:00000000001': '리소스 접근을 위한 권한',
@@ -117,20 +119,22 @@ const pamPolicyDescription = {
 	'KR-2020-0006:00000000004': '리소스 접근을 위한 권한',
 	'KR-2020-0006:00000000005': '리소스 접근을 위한 권한',
 	'KR-2020-0006:00000000006': '리소스 접근을 위한 권한',
+	tempId: '명령어 제어 기본 정책',
 };
 const pamPolicyNmberOfRoles = {
-	'KR-2020-0005:00000000001': 5,
-	'KR-2020-0005:00000000002': 5,
-	'KR-2020-0005:00000000003': 5,
-	'KR-2020-0005:00000000004': 5,
-	'KR-2020-0005:00000000005': 5,
-	'KR-2020-0005:00000000006': 5,
-	'KR-2020-0006:00000000001': 5,
-	'KR-2020-0006:00000000002': 5,
-	'KR-2020-0006:00000000003': 5,
-	'KR-2020-0006:00000000004': 5,
-	'KR-2020-0006:00000000005': 5,
-	'KR-2020-0006:00000000006': 5,
+	'KR-2020-0005:00000000001': 1,
+	'KR-2020-0005:00000000002': 1,
+	'KR-2020-0005:00000000003': 1,
+	'KR-2020-0005:00000000004': 1,
+	'KR-2020-0005:00000000005': 1,
+	'KR-2020-0005:00000000006': 1,
+	'KR-2020-0006:00000000001': 1,
+	'KR-2020-0006:00000000002': 1,
+	'KR-2020-0006:00000000003': 1,
+	'KR-2020-0006:00000000004': 1,
+	'KR-2020-0006:00000000005': 1,
+	'KR-2020-0006:00000000006': 1,
+	tempId: 1,
 };
 const pamPolicyCreationTime = {
 	'KR-2020-0005:00000000001': '2021-11-26T20:15:21.634+09:00',
@@ -145,6 +149,7 @@ const pamPolicyCreationTime = {
 	'KR-2020-0006:00000000004': '2021-11-26T20:15:21.634+09:00',
 	'KR-2020-0006:00000000005': '2021-11-26T20:15:21.634+09:00',
 	'KR-2020-0006:00000000006': '2021-11-26T20:15:21.634+09:00',
+	tempId: '2021-11-26T20:15:21.638+09:00',
 };
 
 const attributePolicyType = {
@@ -160,7 +165,6 @@ const calculatettribute = (attribute) => {
 	let temp = {id: 0, [DRAGGABLE_KEY]: 0};
 
 	attribute.map((v) => {
-		// console.log(v);
 		if (v.policyType === 'AlternativeAuthN') {
 			if (v.attributeName === 'IdAndPassword') {
 				temp.AltType = descValues(v.attributeName);
@@ -211,6 +215,7 @@ const calculatettribute = (attribute) => {
 const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const [select, setSelect] = useState({});
+	const {companyId} = useSelector(AUTH_USER.selector);
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
 	const [inPolicy, setInPolicy] = useState(null);
@@ -283,7 +288,23 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 					)
 						.unwrap()
 						.then((r) => {
-							inPolicies.push.apply(inPolicies, r.data);
+							if (r.data.length > 0) {
+								inPolicies.push.apply(inPolicies, r.data);
+								if (companyId === 'KR-2020-0005') {
+									inPolicies.push({
+										id: 'tempId',
+										[DRAGGABLE_KEY]: 'tempId',
+										name: 'commandContorl-policy',
+									});
+								}
+								if (companyId === 'KR-2020-0006') {
+									inPolicies.push({
+										id: 'tempId',
+										[DRAGGABLE_KEY]: 'tempId',
+										name: 'commandContorl-policy',
+									});
+								}
+							}
 						})
 						.then(() => {
 							console.log('setInPolicy', inPolicies);
@@ -300,12 +321,18 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 					)
 						.unwrap()
 						.then((res) => {
-							// console.log('setExPolicy', res.data);
 							setExPolicy(res.data);
 						});
 				});
 		}
-	}, [dispatch, roleId, isSummaryOpened, setInPolicy, setExPolicy]);
+	}, [
+		dispatch,
+		roleId,
+		isSummaryOpened,
+		setInPolicy,
+		setExPolicy,
+		companyId,
+	]);
 
 	return (
 		<TabContentContainer>

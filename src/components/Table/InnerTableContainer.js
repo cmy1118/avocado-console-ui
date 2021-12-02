@@ -32,6 +32,29 @@ const InnerTableContainer = ({policyId, attributes}) => {
 			  ];
 	}, [attributes]);
 
+	const columns2 = useMemo(() => {
+		return attributes
+			? attributes.columns
+			: [
+					{
+						Header: '제어 유형',
+						accessor: 'type',
+					},
+					{
+						Header: '명령어',
+						accessor: 'command',
+					},
+					{
+						Header: '위반 정책',
+						accessor: 'violentPolicy',
+					},
+					{
+						Header: '초기화',
+						accessor: 'reset',
+					},
+			  ];
+	}, [attributes]);
+
 	const data = useMemo(() => {
 		return attributes ? attributes.data : [...pamData];
 	}, [attributes, pamData]);
@@ -39,67 +62,80 @@ const InnerTableContainer = ({policyId, attributes}) => {
 	useEffect(() => {
 		if (!attributes) {
 			let tempData = [];
+			if (policyId === 'tempId') {
+				setPamData([
+					{
+						id: 'control-type',
+						[DRAGGABLE_KEY]: 'control-type',
+						type: 'Black',
+						command: 'kill',
+						violentPolicy: '위반 횟수: 0회\n정책: 세션차단',
+						reset: '10(초)',
+					},
+				]);
+			} else {
+				dispatch(
+					PAM_POLICY.asyncAction.FindByIdPermissionAction({
+						policyId: policyId,
+						range: 'elements=0-50',
+					}),
+				)
+					.unwrap()
+					.then((res) => {
+						res.map((v) => {
+							let tempArray = v.split(':');
+							let resourceId = '';
+							let tempDataObject = new Object();
 
-			dispatch(
-				PAM_POLICY.asyncAction.FindByIdPermissionAction({
-					policyId: policyId,
-					range: 'elements=0-50',
-				}),
-			)
-				.unwrap()
-				.then((res) => {
-					res.map((v) => {
-						let tempArray = v.split(':');
-						let resourceId = '';
-						let tempDataObject = new Object();
+							tempArray.pop();
+							tempArray.pop();
 
-						tempArray.pop();
-						tempArray.pop();
-
-						tempArray.map((v, i) => {
-							resourceId += v;
-							if (i !== tempArray.length - 1) resourceId += ':';
-						});
-
-						dispatch(
-							RRM_RESOURCE.asyncAction.findByIdAction({
-								id: resourceId,
-							}),
-						)
-							.unwrap()
-							.then((r) => {
-								tempDataObject.id = r.id;
-								tempDataObject[DRAGGABLE_KEY] = r.id;
-								tempDataObject.resource =
-									r.name +
-									' (' +
-									r.servicePorts[0].address +
-									')';
-								tempDataObject.protocol =
-									r.servicePorts[0].name;
-
-								dispatch(
-									RRM_RESOURCE.asyncAction.findAllAccountAction(
-										{
-											resourceId: resourceId,
-										},
-									),
-								)
-									.unwrap()
-									.then((val) => {
-										tempDataObject.account =
-											val[0].accountId.userId;
-									})
-									.then(() => {
-										tempData.push(tempDataObject);
-									})
-									.then(() => {
-										console.log(tempData);
-										setPamData([...tempData]);
-									});
+							tempArray.map((v, i) => {
+								resourceId += v;
+								if (i !== tempArray.length - 1)
+									resourceId += ':';
 							});
+
+							dispatch(
+								RRM_RESOURCE.asyncAction.findByIdAction({
+									id: resourceId,
+								}),
+							)
+								.unwrap()
+								.then((r) => {
+									tempDataObject.id = r.id;
+									tempDataObject[DRAGGABLE_KEY] = r.id;
+									tempDataObject.resource =
+										r.name +
+										' (' +
+										r.servicePorts[0].address +
+										')';
+									tempDataObject.protocol =
+										r.servicePorts[0].name;
+
+									dispatch(
+										RRM_RESOURCE.asyncAction.findAllAccountAction(
+											{
+												resourceId: resourceId,
+											},
+										),
+									)
+										.unwrap()
+										.then((val) => {
+											tempDataObject.account =
+												val[0].accountId.userId;
+										})
+										.then(() => {
+											tempData.push(tempDataObject);
+										})
+										.then(() => {
+											console.log(tempData);
+											setPamData([...tempData]);
+										});
+								});
+						});
 					});
-				});
+			}
 		}
 	}, [attributes, dispatch, policyId, setPamData]);
 
@@ -108,7 +144,7 @@ const InnerTableContainer = ({policyId, attributes}) => {
 			<TableContainer
 				mode={'inner'}
 				tableKey={'innerTable'}
-				columns={columns}
+				columns={policyId === 'tempId' ? columns2 : columns}
 				data={data}
 			>
 				<Table />
