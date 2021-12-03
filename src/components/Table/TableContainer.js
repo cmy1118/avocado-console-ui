@@ -240,6 +240,7 @@ const TableContainer = ({
 		<Container>
 			{React.Children.map(children, (child) => {
 				// return child.type.name === 'Table' ? (
+				console.log(child);
 				return (
 					<NormalTable
 						mode={mode}
