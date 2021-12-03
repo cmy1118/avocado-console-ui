@@ -1,15 +1,25 @@
 import React, {useEffect} from 'react';
-
+import background_Kt from '../images/background/bg-img-1@2x.png';
+import background_Sk from '../images/background/bg-img-2@2x.png';
 import AUTH_USER from '../reducers/api/Auth/authUser';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import LoginForm from '../components/Form/LoginForm';
 import {consoleManagement} from '../icons/icons';
 import styled from 'styled-components';
-import background from '../images/background/bg-img-1@2x.png';
+// import background from '../images/background/bg-img-1@2x.png';
+
 import {useSelector} from 'react-redux';
+import qs from 'qs';
+
+//Company
+const Kt = 'KR-2020-0005';
+const Sk = 'KR-2020-0006';
 
 const _Container = styled.div`
-	background-image: url(${background});
+	background-image: ${(props) =>
+		props.company === Kt
+			? `url(${background_Kt})`
+			: `url(${background_Sk})`};
 	object-fit: contain;
 	height: 100%;
 	width: 100%;
@@ -57,6 +67,8 @@ const _Logo = styled.div`
 const Login = () => {
 	const history = useHistory();
 	const {isLoggedIn} = useSelector(AUTH_USER.selector);
+	const URL = qs.parse(location).pathname;
+	const companyId = URL?.substring(URL.lastIndexOf('/') + 1);
 
 	useEffect(() => {
 		if (isLoggedIn) {
@@ -65,7 +77,7 @@ const Login = () => {
 	}, [history, isLoggedIn]);
 
 	return (
-		<_Container>
+		<_Container company={companyId}>
 			<_HeaderContainer>
 				<_LogoContainer>
 					<_Logo>{consoleManagement}</_Logo>

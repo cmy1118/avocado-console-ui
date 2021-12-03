@@ -21,6 +21,7 @@ import IAM_red from '../images/dashboard/service_iam_red@2x.png';
 import PAM_red from '../images/dashboard/service_pam_red@2x.png';
 import Approal_red from '../images/dashboard/service_app_red@2x.png';
 import RRM_red from '../images/dashboard/service_rrm_red@2x.png';
+import {device} from '../styles/responsive/settings';
 
 const _Container = styled.div`
 	display: flex;
@@ -67,12 +68,12 @@ const _Container = styled.div`
 
 const _contentsContainer = styled.div`
 	padding: 55px 0px;
-	// display: flex;
-	// align-items: start;
-	// justify-content: center;
-	// overflow: hidden;
-	// width: 100%;
+
 	height: 100%;
+	margin: 0 auto;
+	// @media ${device.laptopL} {
+	// 	width: 100%;
+	// }
 `;
 
 const _contents = styled.div`
