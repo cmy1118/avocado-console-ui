@@ -92,7 +92,7 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 									]
 								}
 							>
-								<TableOptionsBar />
+								<TableOptionsBar isOptionBar />
 								<Table setSelect={setSelect} isDraggable />
 							</TableContainer>
 							<RowDiv alignItems={'center'}>

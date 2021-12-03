@@ -151,7 +151,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 							}
 							data={excludedData}
 						>
-							<TableOptionsBar />
+							<TableOptionsBar isOptionBar />
 							<Table setSelect={setSelect} isDraggable />
 						</TableContainer>
 						<RowDiv alignItems={'center'}>

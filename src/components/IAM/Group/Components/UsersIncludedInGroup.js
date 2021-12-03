@@ -114,7 +114,7 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 									]
 								}
 							>
-								<TableOptionsBar />
+								<TableOptionsBar isOptionBar />
 								<Table setSelect={setSelect} isDraggable />
 							</TableContainer>
 							<RowDiv alignItems={'center'}>

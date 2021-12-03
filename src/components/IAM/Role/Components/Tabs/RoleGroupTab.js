@@ -36,10 +36,10 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
-	const role = useMemo(() => roles.find((v) => v.id === roleId), [
-		roles,
-		roleId,
-	]);
+	const role = useMemo(
+		() => roles.find((v) => v.id === roleId),
+		[roles, roleId],
+	);
 
 	const includedData = useMemo(() => {
 		return [];
@@ -101,7 +101,7 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 						]
 					}
 				>
-					<TableOptionsBar />
+					<TableOptionsBar isOptionBar />
 					<Table setSelect={setSelect} isDraggable />
 				</TableContainer>
 				<FoldableContainer>
@@ -131,7 +131,7 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 								]
 							}
 						>
-							<TableOptionsBar />
+							<TableOptionsBar isOptionBar />
 							<Table setSelect={setSelect} isDraggable />
 						</TableContainer>
 					</CollapsbleContent>

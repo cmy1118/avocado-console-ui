@@ -359,7 +359,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 						]
 					}
 				>
-					<TableOptionsBar />
+					<TableOptionsBar isOptionBar />
 					<Table setSelect={setSelect} isDraggable />
 				</TableContainer>
 				<FoldableContainer>
@@ -390,7 +390,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 								]
 							}
 						>
-							<TableOptionsBar />
+							<TableOptionsBar isOptionBar />
 							<Table setSelect={setSelect} isDraggable />
 						</TableContainer>
 					</CollapsbleContent>

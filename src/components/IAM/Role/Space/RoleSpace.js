@@ -91,7 +91,7 @@ const RoleSpace = () => {
 				columns={tableColumns[tableKeys.roles.basic]}
 				data={data}
 			>
-				<TableOptionsBar isSearchFilterable />
+				<TableOptionsBar isSearchFilterable isOptionBar />
 				<Table setSelect={setSelect} />
 			</TableContainer>
 		</IamContainer>
