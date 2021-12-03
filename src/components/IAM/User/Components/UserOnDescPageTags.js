@@ -62,6 +62,7 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 	}, [data, dispatch, userUid]);
 
 	const onClickDeleteRow = useCallback(() => {
+		console.log(select);
 		if (select[tableKeys.users.summary.tabs.tags.basic][0]) {
 			select[tableKeys.users.summary.tabs.tags.basic].forEach((tag) => {
 				dispatch(
@@ -181,7 +182,7 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 						}
 					>
 						<TableOptionsBar isOptionBar />
-						<Table setSelect={setSelect} />
+						<Table />
 					</TableContainer>
 
 					<_TableSpace>

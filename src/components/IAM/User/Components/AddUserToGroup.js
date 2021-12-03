@@ -126,7 +126,6 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 
 	return (
 		<FoldableContainer>
-			![](../../../../../../Desktop/kt.png)![](../../../../../../Desktop/sk.png)
 			<TableFold
 				title={'그룹에 사용자에 추가'}
 				space={space}
