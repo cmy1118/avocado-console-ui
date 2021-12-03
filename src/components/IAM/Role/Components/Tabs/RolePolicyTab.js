@@ -24,6 +24,7 @@ import PAM_ROLES from '../../../../../reducers/api/PAM/Role/roles';
 import {CollapsbleContent} from '../../../../../styles/components/style';
 import {descValues} from '../../../../../utils/tableDataConverter';
 import AUTH_USER from '../../../../../reducers/api/Auth/authUser';
+import {account} from '../../../../../utils/auth';
 
 const policyType = {
 	'KR-2020-0005:202111:0001': '사용자 인증',
@@ -290,14 +291,14 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 						.then((r) => {
 							if (r.data.length > 0) {
 								inPolicies.push.apply(inPolicies, r.data);
-								if (companyId === 'KR-2020-0005') {
+								if (companyId === account.KT.companyId) {
 									inPolicies.push({
 										id: 'tempId',
 										[DRAGGABLE_KEY]: 'tempId',
 										name: 'commandContorl-policy',
 									});
 								}
-								if (companyId === 'KR-2020-0006') {
+								if (companyId === account.SK.companyId) {
 									inPolicies.push({
 										id: 'tempId',
 										[DRAGGABLE_KEY]: 'tempId',

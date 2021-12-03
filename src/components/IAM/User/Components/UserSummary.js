@@ -24,6 +24,7 @@ import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/G
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import * as _ from 'lodash';
 import AUTH_USER from '../../../../reducers/api/Auth/authUser';
+import {account} from '../../../../utils/auth';
 
 const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -86,7 +87,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 			}));
 
 		if (
-			companyId === 'KR-2020-0005' &&
+			companyId === account.KT.companyId &&
 			roles.filter((v) => v.role.name === 'resource-policy').length > 0
 		) {
 			return [
@@ -122,7 +123,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 		}
 
 		if (
-			companyId === 'KR-2020-0006' &&
+			companyId === account.SK.companyId &&
 			roles.filter((v) => v.role.name === 'resource-policy').length > 0
 		) {
 			return [

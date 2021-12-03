@@ -24,6 +24,7 @@ import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import PAM_SESSION from '../../../../reducers/api/PAM/session';
 import AUTH_USER from '../../../../reducers/api/Auth/authUser';
+import {account} from '../../../../utils/auth';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -50,7 +51,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 
 			if (
 				Id === 'KR-2020-0005:00000000002' &&
-				companyId === 'KR-2020-0005'
+				companyId === account.KT.companyId
 			) {
 				return [
 					...temp,
@@ -81,7 +82,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 
 			if (
 				Id === 'KR-2020-0006:00000000002' &&
-				companyId === 'KR-2020-0006'
+				companyId === account.SK.companyId
 			) {
 				return [
 					...temp,
