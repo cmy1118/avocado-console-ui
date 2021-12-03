@@ -239,7 +239,8 @@ const TableContainer = ({
 	return (
 		<Container>
 			{React.Children.map(children, (child) => {
-				return child.type.name === 'Table' ? (
+				// return child.type.name === 'Table' ? (
+				return (
 					<NormalTable
 						mode={mode}
 						isDraggable={child.props?.isDraggable}
@@ -273,38 +274,39 @@ const TableContainer = ({
 							expanded,
 						})}
 					</NormalTable>
-				) : (
-					<OptionContainer>
-						{React.cloneElement(child, {
-							data,
-							columns,
-							tableKey,
-							getTableProps,
-							headerGroups,
-							prepareRow,
-							page,
-							selectedFlatRows,
-							allColumns,
-							canPreviousPage,
-							canNextPage,
-							setGlobalFilter,
-							pageOptions,
-							gotoPage,
-							nextPage,
-							previousPage,
-							setPageSize,
-							setAllFilters,
-							getToggleHideAllColumnsProps,
-							setHiddenColumns,
-							pageIndex,
-							selectedRowIds,
-							pageSize,
-							filters,
-							mode,
-							expanded,
-						})}
-					</OptionContainer>
 				);
+				// ) : (
+				// 	<OptionContainer>
+				// 		{React.cloneElement(child, {
+				// 			data,
+				// 			columns,
+				// 			tableKey,
+				// 			getTableProps,
+				// 			headerGroups,
+				// 			prepareRow,
+				// 			page,
+				// 			selectedFlatRows,
+				// 			allColumns,
+				// 			canPreviousPage,
+				// 			canNextPage,
+				// 			setGlobalFilter,
+				// 			pageOptions,
+				// 			gotoPage,
+				// 			nextPage,
+				// 			previousPage,
+				// 			setPageSize,
+				// 			setAllFilters,
+				// 			getToggleHideAllColumnsProps,
+				// 			setHiddenColumns,
+				// 			pageIndex,
+				// 			selectedRowIds,
+				// 			pageSize,
+				// 			filters,
+				// 			mode,
+				// 			expanded,
+				// 		})}
+				// 	</OptionContainer>
+				// );
 			})}
 		</Container>
 	);
