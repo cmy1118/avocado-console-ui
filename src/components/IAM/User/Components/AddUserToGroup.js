@@ -126,13 +126,13 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 
 	return (
 		<FoldableContainer>
+			![](../../../../../../Desktop/kt.png)![](../../../../../../Desktop/sk.png)
 			<TableFold
 				title={'그룹에 사용자에 추가'}
 				space={space}
 				isFold={isFold}
 				setIsFold={setIsFold}
 			/>
-
 			<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
 				<TableOptionText data={'groups'} />
 				<DragContainer

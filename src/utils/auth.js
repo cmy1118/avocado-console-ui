@@ -6,11 +6,11 @@ export const account = {
 		username: 'user',
 		password: '123456789',
 	},
-	KT: {companyId: 'KR-2020-0002', username: 'ktkim', password: 'kt20200002'},
-	SAMSUNG: {
-		companyId: 'KR-2020-0003',
-		username: 'sslee',
-		password: 'SS20200003',
+	KT: {companyId: 'KR-2020-0005', username: 'jinwoo', password: '123456789'},
+	SK: {
+		companyId: 'KR-2020-0006',
+		username: 'myhee',
+		password: '123456789',
 	},
 };
 
