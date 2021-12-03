@@ -69,7 +69,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 						id: 'default2',
 						name: '명령어',
 						description:
-							'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 0회\n 정책 : 세션차단\n초기화 : 10초',
+							'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 1회\n 정책 : 세션차단\n초기화 : 10초',
 						type: '명령어 제어',
 						policyName: 'commandControl-policy',
 						createdTime: '2021-11-26T19:13:21.266+09:00',
@@ -101,7 +101,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 						id: 'default2',
 						name: '명령어',
 						description:
-							'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 0회\n 정책 : 세션차단\n초기화 : 10초',
+							'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 1회\n 정책 : 세션차단\n초기화 : 10초',
 						type: '명령어 제어',
 						policyName: 'commandControl-policy',
 						createdTime: '2021-11-26T19:13:21.266+09:00',

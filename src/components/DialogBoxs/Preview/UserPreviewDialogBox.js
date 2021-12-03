@@ -232,7 +232,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 												id: 'default',
 												name: '명령어',
 												description:
-													'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 0회\n 정책 : 세션차단\n초기화 : 10초',
+													'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 1회\n 정책 : 세션차단\n초기화 : 10초',
 												type: '명령어 제어',
 												templateName:
 													'commandControl-policy',
@@ -345,7 +345,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 												id: 'default',
 												name: '명령어',
 												description:
-													'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 0회\n 정책 : 세션차단\n초기화 : 10초',
+													'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 1회\n 정책 : 세션차단\n초기화 : 10초',
 												type: '명령어 제어',
 												templateName:
 													'commandControl-policy',
@@ -417,8 +417,9 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 													1
 											) {
 												console.log(policiesBox);
-												const arr =
-													_.flatten(policiesBox);
+												const arr = _.flatten(
+													policiesBox,
+												);
 												console.log(arr);
 												setPermissions(arr);
 											}
@@ -431,8 +432,9 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 												].length
 											) {
 												console.log(policiesBox);
-												const arr =
-													_.flatten(policiesBox);
+												const arr = _.flatten(
+													policiesBox,
+												);
 												console.log(arr);
 												setPermissions(arr);
 											}

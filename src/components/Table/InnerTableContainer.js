@@ -69,7 +69,7 @@ const InnerTableContainer = ({policyId, attributes}) => {
 						[DRAGGABLE_KEY]: 'control-type',
 						type: 'Black',
 						command: 'kill',
-						violentPolicy: '위반 횟수: 0회\n정책: 세션차단',
+						violentPolicy: '위반 횟수: 1회\n정책: 세션차단',
 						reset: '10(초)',
 					},
 				]);
