@@ -18,15 +18,12 @@ const Container = styled(ColDiv)`
 	display: flex;
 `;
 
-const OptionContainer = styled.div`
-	margin: 0px 16px;
-`;
-
 const NormalTable = styled.div`
 	margin: ${(props) => (props.mode === 'inner' ? '0px' : ' 0px 16px 16px')};
 	display: flex;
 	min-width: 380px;
-	min-height: ${(props) => props.mode === 'normal' && '240px'};
+	min-height: ${(props) =>
+		props.mode === 'normal' && !props.isSearchFilterable && '240px'};
 	height: ${(props) => props.mode === 'normal' && '0'};
 	flex: 1 1 auto;
 
@@ -244,6 +241,7 @@ const TableContainer = ({
 				return (
 					<NormalTable
 						mode={mode}
+						isSearchFilterable={child.props.isSearchFilterable}
 						isDraggable={child.props?.isDraggable}
 					>
 						{React.cloneElement(child, {
@@ -276,38 +274,6 @@ const TableContainer = ({
 						})}
 					</NormalTable>
 				);
-				// ) : (
-				// 	<OptionContainer>
-				// 		{React.cloneElement(child, {
-				// 			data,
-				// 			columns,
-				// 			tableKey,
-				// 			getTableProps,
-				// 			headerGroups,
-				// 			prepareRow,
-				// 			page,
-				// 			selectedFlatRows,
-				// 			allColumns,
-				// 			canPreviousPage,
-				// 			canNextPage,
-				// 			setGlobalFilter,
-				// 			pageOptions,
-				// 			gotoPage,
-				// 			nextPage,
-				// 			previousPage,
-				// 			setPageSize,
-				// 			setAllFilters,
-				// 			getToggleHideAllColumnsProps,
-				// 			setHiddenColumns,
-				// 			pageIndex,
-				// 			selectedRowIds,
-				// 			pageSize,
-				// 			filters,
-				// 			mode,
-				// 			expanded,
-				// 		})}
-				// 	</OptionContainer>
-				// );
 			})}
 		</Container>
 	);
