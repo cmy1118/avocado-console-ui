@@ -39,10 +39,10 @@ const GroupUsersTab = ({
 	const [otherMembers, setOtherMembers] = useState(0);
 	const [members, setMembers] = useState([]);
 
-	const group = useMemo(() => groups.find((v) => v.id === groupId), [
-		groups,
-		groupId,
-	]);
+	const group = useMemo(
+		() => groups.find((v) => v.id === groupId),
+		[groups, groupId],
+	);
 
 	const [includedDataIds, setIncludedDataIds] = useState(
 		members.map((v) => v.userUid) || [],
@@ -191,7 +191,7 @@ const GroupUsersTab = ({
 						]
 					}
 				>
-					<TableOptionsBar />
+					<TableOptionsBar isOptionBar />
 					<Table setSelect={setSelect} isDraggable />
 				</TableContainer>
 				<FoldableContainer>
@@ -231,7 +231,7 @@ const GroupUsersTab = ({
 									]
 								}
 							>
-								<TableOptionsBar />
+								<TableOptionsBar isOptionBar />
 								<Table setSelect={setSelect} isDraggable />
 							</TableContainer>
 						</>

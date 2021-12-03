@@ -180,7 +180,7 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 							]
 						}
 					>
-						<TableOptionsBar />
+						<TableOptionsBar isOptionBar />
 						<Table setSelect={setSelect} />
 					</TableContainer>
 
@@ -225,7 +225,7 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 							]
 						}
 					>
-						<TableOptionsBar />
+						<TableOptionsBar isOptionBar />
 						<Table />
 					</TableContainer>
 				</div>

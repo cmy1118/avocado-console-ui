@@ -18,17 +18,15 @@ const Container = styled(ColDiv)`
 	display: flex;
 `;
 
-const OptionContainer = styled.div`
-	margin: 0px 16px;
-`;
-
 const NormalTable = styled.div`
-	margin: ${(props) => (props.mode === 'inner' ? '0px' : ' 0px 16px 16px')};
+	margin: ${(props) => (props.mode === 'inner' ? '0px' : ' 0px 16px')};
 	display: flex;
 	min-width: 380px;
-	min-height: ${(props) => props.mode === 'normal' && '240px'};
+	min-height: ${(props) =>
+		props.isOptionBar ? '62px' : props.mode === 'normal' && '240px'};
 	height: ${(props) => props.mode === 'normal' && '0'};
-	flex: 1 1 auto;
+	flex: ${(props) =>
+		props.mode === 'normal' && !props.isOptionBar && '1 1 auto'};
 
 	.table {
 		width: 100%;
@@ -239,9 +237,12 @@ const TableContainer = ({
 	return (
 		<Container>
 			{React.Children.map(children, (child) => {
-				return child.type.name === 'Table' ? (
+				// return child.type.name === 'Table' ? (
+				console.log(child);
+				return (
 					<NormalTable
 						mode={mode}
+						isOptionBar={child.props.isOptionBar}
 						isDraggable={child.props?.isDraggable}
 					>
 						{React.cloneElement(child, {
@@ -273,37 +274,6 @@ const TableContainer = ({
 							expanded,
 						})}
 					</NormalTable>
-				) : (
-					<OptionContainer>
-						{React.cloneElement(child, {
-							data,
-							columns,
-							tableKey,
-							getTableProps,
-							headerGroups,
-							prepareRow,
-							page,
-							selectedFlatRows,
-							allColumns,
-							canPreviousPage,
-							canNextPage,
-							setGlobalFilter,
-							pageOptions,
-							gotoPage,
-							nextPage,
-							previousPage,
-							setPageSize,
-							setAllFilters,
-							getToggleHideAllColumnsProps,
-							setHiddenColumns,
-							pageIndex,
-							selectedRowIds,
-							pageSize,
-							filters,
-							mode,
-							expanded,
-						})}
-					</OptionContainer>
 				);
 			})}
 		</Container>

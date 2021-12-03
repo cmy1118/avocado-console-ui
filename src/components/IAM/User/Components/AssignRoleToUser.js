@@ -111,7 +111,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 								tableColumns[tableKeys.users.add.roles.exclude]
 							}
 						>
-							<TableOptionsBar />
+							<TableOptionsBar isOptionBar />
 							<Table setSelect={setSelect} isDraggable />
 						</TableContainer>
 						<RowDiv alignItems={'center'}>

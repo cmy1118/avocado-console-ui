@@ -80,6 +80,7 @@ const TableOptionsBar = ({
 	setHiddenColumns,
 	headerGroups,
 	isSearchFilterable = false,
+	isOptionBar = true,
 }) => {
 	const [selectedSearchFilters, setSelectedSearchFilters] = useState([]);
 
@@ -278,6 +279,7 @@ TableOptionsBar.propTypes = {
 	setGlobalFilter: PropTypes.func,
 	getToggleHideAllColumnsProps: PropTypes.func,
 	setHiddenColumns: PropTypes.func,
+	isOptionBar: PropTypes.bool,
 };
 
 export default TableOptionsBar;

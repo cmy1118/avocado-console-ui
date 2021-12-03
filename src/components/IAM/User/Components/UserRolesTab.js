@@ -163,7 +163,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 						}),
 					);
 					// setIncludedDataIds(arr);
-					if(arr.length === res.data.length) {
+					if (arr.length === res.data.length) {
 						setRoles(arr);
 					}
 				});
@@ -182,13 +182,13 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				.unwrap()
 				.then((res) => {
 					// res : 사용자에게 부여된 role 정보
-					res.data.map((v) => {arr.push(v.roleId)
-					if(res.data.length === arr.length){
-						setIncludedDataIds(arr);
-						getIncludedRolesData(res.data);
-					}
+					res.data.map((v) => {
+						arr.push(v.roleId);
+						if (res.data.length === arr.length) {
+							setIncludedDataIds(arr);
+							getIncludedRolesData(res.data);
+						}
 					});
-
 				});
 		}
 	}, [dispatch, getIncludedRolesData, page, userUid]);
@@ -232,7 +232,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 						tableColumns[tableKeys.users.summary.tabs.roles.include]
 					}
 				>
-					<TableOptionsBar />
+					<TableOptionsBar isOptionBar />
 					<Table setSelect={setSelect} isDraggable />
 				</TableContainer>
 				<FoldableContainer>
@@ -272,7 +272,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 								]
 							}
 						>
-							<TableOptionsBar />
+							<TableOptionsBar isOptionBar />
 							<Table setSelect={setSelect} isDraggable />
 						</TableContainer>
 					</CollapsbleContent>

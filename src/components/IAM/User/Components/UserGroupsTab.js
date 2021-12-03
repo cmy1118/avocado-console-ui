@@ -172,13 +172,11 @@ const UserGroupsTab = ({
 												IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
 													{
 														id: v.id,
-														range:
-															page[
-																tableKeys.users
-																	.summary
-																	.tabs.groups
-																	.include
-															],
+														range: page[
+															tableKeys.users
+																.summary.tabs
+																.groups.include
+														],
 													},
 												),
 											)
@@ -186,9 +184,11 @@ const UserGroupsTab = ({
 												.then((role) => {
 													arr2.push({
 														...v,
-														numberOfRoles: !role.data
-															? 0
-															: role.data.length,
+														numberOfRoles:
+															!role.data
+																? 0
+																: role.data
+																		.length,
 													});
 													if (
 														arr.length ===
@@ -285,7 +285,7 @@ const UserGroupsTab = ({
 						]
 					}
 				>
-					<TableOptionsBar />
+					<TableOptionsBar isOptionBar />
 					<Table setSelect={setSelect} isDraggable />
 				</TableContainer>
 				<FoldableContainer>
@@ -324,7 +324,7 @@ const UserGroupsTab = ({
 								]
 							}
 						>
-							<TableOptionsBar />
+							<TableOptionsBar isOptionBar />
 							<Table setSelect={setSelect} isDraggable />
 						</TableContainer>
 					</CollapsbleContent>
