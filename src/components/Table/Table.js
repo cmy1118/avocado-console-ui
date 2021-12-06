@@ -128,8 +128,10 @@ const Table = ({
 	setSelect,
 	isDraggable,
 	mode = 'normal',
-	tableOptions = {},
-	isSearchFilterable,
+	isPaginable = false,
+	isSearchable = false,
+	isSearchFilterable = false,
+	isColumnFilterable = false,
 }) => {
 	const [skipPageReset, setSkipPageReset] = useState(false);
 
@@ -394,8 +396,11 @@ const Table = ({
 
 	return (
 		<_Container>
-			{tableOptions.show && (
+			{(isPaginable || isSearchable) && (
 				<TableOptionsBar
+					isSearchable={isSearchable}
+					isColumnFilterable={isColumnFilterable}
+					isSearchFilterable={isSearchFilterable}
 					tableKey={tableKey}
 					columns={columns}
 					setAllFilters={setAllFilters}
@@ -414,7 +419,6 @@ const Table = ({
 					getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
 					setHiddenColumns={setHiddenColumns}
 					headerGroups={headerGroups}
-					isSearchFilterable={isSearchFilterable}
 				/>
 			)}
 			<TableStyledContainer mode={mode}>
@@ -662,7 +666,9 @@ Table.propTypes = {
 	selectedRowIds: PropTypes.object,
 	tableOptions: PropTypes.object,
 	expanded: PropTypes.object,
-	isShowOptionBar: PropTypes.bool,
+	isPaginable: PropTypes.bool,
+	isSearchable: PropTypes.bool,
+	isColumnFilterable: PropTypes.bool,
 	isSearchFilterable: PropTypes.bool,
 	mode: PropTypes.oneOf(['normal', 'readOnly', 'inner']),
 	isDraggable: PropTypes.bool,

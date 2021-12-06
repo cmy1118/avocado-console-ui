@@ -30,6 +30,7 @@ import PAGINATION from '../../../../reducers/pagination';
 import PAM_SESSION from '../../../../reducers/api/PAM/session';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 import * as _ from 'lodash';
+import {RowDiv} from '../../../../styles/components/style';
 
 const UserSpace = () => {
 	const history = useHistory();
@@ -168,25 +169,30 @@ const UserSpace = () => {
 			</CurrentPathBar>
 
 			<TitleBar>
-				<div>사용자 : {total}</div>
-				<TitleBarButtons>
-					<NormalButton onClick={onClickLinkToAddUserPage}>
-						사용자 생성
-					</NormalButton>
-					<TransparentButton
-						margin={'0px 0px 0px 5px'}
-						onClick={onClickDeleteUsers}
-					>
-						삭제
-					</TransparentButton>
-				</TitleBarButtons>
+				<RowDiv width={'100%'} justifyContent={'space-between'}>
+					<div>사용자 : {total}</div>
+					<TitleBarButtons>
+						<NormalButton onClick={onClickLinkToAddUserPage}>
+							사용자 생성
+						</NormalButton>
+						<TransparentButton
+							margin={'0px 0px 0px 5px'}
+							onClick={onClickDeleteUsers}
+						>
+							삭제
+						</TransparentButton>
+					</TitleBarButtons>
+				</RowDiv>
 			</TitleBar>
 
 			<Table
 				tableKey={tableKeys.users.basic}
 				columns={tableColumns[tableKeys.users.basic]}
 				data={userData}
-				tableOptions={{show: true}}
+				isPaginable
+				isSearchable
+				isSearchFilterable
+				isColumnFilterable
 			/>
 		</IamContainer>
 	);

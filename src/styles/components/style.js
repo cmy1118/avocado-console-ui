@@ -6,6 +6,7 @@ export const PositionRelativeDiv = styled.div`
 
 export const RowDiv = styled.div`
 	display: flex;
+	width: ${(props) => props.width || 'initial'};
 	height: ${(props) => props.height || 'initial'};
 	margin: ${(props) => props.margin || '0px'};
 	padding: ${(props) => props.padding || '0px'};

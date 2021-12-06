@@ -189,6 +189,10 @@ const GroupUsersTab = ({
 							tableKeys.groups.summary.tabs.users.include
 						]
 					}
+					isPaginable
+					isSearchable
+					isSearchFilterable
+					isColumnFilterable
 				/>
 				<FoldableContainer>
 					<TableFold
@@ -228,6 +232,10 @@ const GroupUsersTab = ({
 											.exclude
 									]
 								}
+								isPaginable
+								isSearchable
+								isSearchFilterable
+								isColumnFilterable
 							/>
 						</>
 					)}

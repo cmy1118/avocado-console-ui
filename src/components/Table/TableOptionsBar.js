@@ -79,7 +79,9 @@ const TableOptionsBar = ({
 	getToggleHideAllColumnsProps,
 	setHiddenColumns,
 	headerGroups,
-	isSearchFilterable = false,
+	isSearchable,
+	isSearchFilterable,
+	isColumnFilterable,
 }) => {
 	const [selectedSearchFilters, setSelectedSearchFilters] = useState([]);
 
@@ -119,10 +121,12 @@ const TableOptionsBar = ({
 		<_Container>
 			<RowDiv justifyContent={'space-between'} margin={'0px 16px'}>
 				<_OptionContainer>
-					<Search
-						tableKey={tableKey}
-						setGlobalFilter={setGlobalFilter}
-					/>
+					{isSearchable && (
+						<Search
+							tableKey={tableKey}
+							setGlobalFilter={setGlobalFilter}
+						/>
+					)}
 					{isSearchFilterable && (
 						<div>
 							<_FilterButton
@@ -172,29 +176,35 @@ const TableOptionsBar = ({
 						tableKey={tableKey}
 					/>
 					<PageSizing pageSize={pageSize} setPageSize={setPageSize} />
-					<div>
-						<IconButton
-							onClick={onClickOpenSelectColumnsContextMenu}
-							size={'sm'}
-						>
-							{ListIcon}
-						</IconButton>
-						<PositionRelativeDiv>
-							<TableColumnFilterContextMenu
-								isOpened={isColumnFilterContextMenuOpened}
-								setIsOpened={setIsColumnFilterContextMenuOpened}
-								allColumns={allColumns}
-								getToggleHideAllColumnsProps={
-									getToggleHideAllColumnsProps
-								}
-								setHiddenColumns={setHiddenColumns}
-								selectedOptions={selectedSearchFilters}
-								setSelectedOptions={setSelectedSearchFilters}
-								filters={filters}
-								setAllFilters={setAllFilters}
-							/>
-						</PositionRelativeDiv>
-					</div>
+					{isColumnFilterable && (
+						<div>
+							<IconButton
+								onClick={onClickOpenSelectColumnsContextMenu}
+								size={'sm'}
+							>
+								{ListIcon}
+							</IconButton>
+							<PositionRelativeDiv>
+								<TableColumnFilterContextMenu
+									isOpened={isColumnFilterContextMenuOpened}
+									setIsOpened={
+										setIsColumnFilterContextMenuOpened
+									}
+									allColumns={allColumns}
+									getToggleHideAllColumnsProps={
+										getToggleHideAllColumnsProps
+									}
+									setHiddenColumns={setHiddenColumns}
+									selectedOptions={selectedSearchFilters}
+									setSelectedOptions={
+										setSelectedSearchFilters
+									}
+									filters={filters}
+									setAllFilters={setAllFilters}
+								/>
+							</PositionRelativeDiv>
+						</div>
+					)}
 				</_OptionContainer>
 			</RowDiv>
 			{selectedSearchFilters[0] &&
@@ -254,8 +264,6 @@ TableOptionsBar.propTypes = {
 	tableKey: PropTypes.string,
 	columns: PropTypes.array,
 	headerGroups: PropTypes.array,
-	isSearchable: PropTypes.bool,
-	isSearchFilterable: PropTypes.bool,
 	selectedSearchFilters: PropTypes.array,
 	setSelectedSearchFilters: PropTypes.func,
 	isRefreshable: PropTypes.bool,
@@ -278,7 +286,9 @@ TableOptionsBar.propTypes = {
 	setGlobalFilter: PropTypes.func,
 	getToggleHideAllColumnsProps: PropTypes.func,
 	setHiddenColumns: PropTypes.func,
-	isOptionBar: PropTypes.bool,
+	tableOptions: PropTypes.object,
+	isSearchable: PropTypes.bool,
+	isSearchFilterable: PropTypes.bool,
 };
 
 export default TableOptionsBar;

@@ -109,6 +109,10 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 							columns={
 								tableColumns[tableKeys.users.add.roles.exclude]
 							}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
 						/>
 						<RowDiv alignItems={'center'}>
 							<DropButton

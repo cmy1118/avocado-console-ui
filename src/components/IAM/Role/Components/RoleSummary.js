@@ -349,6 +349,10 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				data={userData}
 				tableKey={tableKeys.roles.summary.user}
 				columns={tableColumns[tableKeys.roles.summary.user]}
+				isPaginable
+				isSearchable
+				isSearchFilterable
+				isColumnFilterable
 			/>
 
 			<SummaryTableTitle onClick={onClickChangeTab('group')}>
@@ -359,6 +363,10 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				data={groupData}
 				tableKey={tableKeys.roles.summary.group}
 				columns={tableColumns[tableKeys.roles.summary.group]}
+				isPaginable
+				isSearchable
+				isSearchFilterable
+				isColumnFilterable
 			/>
 		</SummaryTablesContainer>
 	);

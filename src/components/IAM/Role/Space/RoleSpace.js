@@ -89,7 +89,10 @@ const RoleSpace = () => {
 				tableKey={tableKeys.roles.basic}
 				columns={tableColumns[tableKeys.roles.basic]}
 				data={data}
-				tableOptions={{show: true}}
+				isPaginable
+				isSearchable
+				isSearchFilterable
+				isColumnFilterable
 			/>
 		</IamContainer>
 	);

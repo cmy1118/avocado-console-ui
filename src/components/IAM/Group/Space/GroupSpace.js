@@ -140,7 +140,10 @@ const GroupSpace = () => {
 				tableKey={tableKeys.groups.basic}
 				columns={tableColumns[tableKeys.groups.basic]}
 				data={data}
-				tableOptions={{show: true}}
+				isPaginable
+				isSearchable
+				isSearchFilterable
+				isColumnFilterable
 			/>
 		</IamContainer>
 	);

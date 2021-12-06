@@ -359,6 +359,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 							tableKeys.roles.summary.tabs.permissions.include
 						]
 					}
+					tableOptions={{show: true}}
 				/>
 				<FoldableContainer>
 					<TableFold

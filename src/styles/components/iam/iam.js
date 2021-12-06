@@ -5,6 +5,7 @@ export const IamContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 `;
+
 export const TitleBar = styled.div`
 	border: none;
 	align-items: center;

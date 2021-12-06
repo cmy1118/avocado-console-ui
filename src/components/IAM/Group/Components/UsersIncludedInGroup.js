@@ -112,6 +112,10 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 										tableKeys.groups.add.users.exclude
 									]
 								}
+								isPaginable
+								isSearchable
+								isSearchFilterable
+								isColumnFilterable
 							/>
 							<RowDiv alignItems={'center'}>
 								<DropButton
