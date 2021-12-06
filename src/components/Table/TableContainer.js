@@ -1,5 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import PropTypes from 'prop-types';
+import Table from './Table';
 import {
 	useExpanded,
 	useFilters,
@@ -12,100 +13,18 @@ import {
 import TableCheckbox from './Options/TableCheckbox';
 import {ColDiv} from '../../styles/components/style';
 import styled from 'styled-components';
+import * as _ from 'lodash';
 
 const Container = styled(ColDiv)`
 	flex: 1;
 	display: flex;
 `;
 
-const NormalTable = styled.div`
-	margin: ${(props) => (props.mode === 'inner' ? '0px' : ' 0px 16px')};
-	display: flex;
-	min-width: 380px;
-	min-height: ${(props) =>
-		props.isOptionBar ? '62px' : props.mode === 'normal' && '240px'};
-	height: ${(props) => props.mode === 'normal' && '0'};
-	flex: ${(props) =>
-		props.mode === 'normal' && !props.isOptionBar && '1 1 auto'};
-
-	.table {
-		width: 100%;
-		overflow-x: scroll;
-		height: ${(props) => (props.isDraggable ? '240px' : '100%')};
-		display: grid;
-		grid-template-rows: 40px;
-		border-spacing: 0;
-		border-bottom: ${(props) =>
-			props.mode === 'inner' ? 'none' : '1px solid #e3e5e5'};
-		border-left: ${(props) =>
-			props.mode === 'inner' && '2px solid #4ca6a8'};
-		font-size: 13px;
-		font-weight: normal;
-		font-stretch: normal;
-		font-style: normal;
-		line-height: normal;
-		letter-spacing: 0.13px;
-		text-align: left;
-		color: #212121;
-		.tr {
-			display: flex;
-			justify-content: space-between;
-			.td,
-			.th {
-				flex: 1;
-			}
-			.table-check-box {
-				flex: 0;
-			}
-			.th:first-child,
-			.td:first-of-type {
-				margin-left: ${(props) => props.mode === 'inner' && '80px'};
-			}
-		}
-
-		.head {
-			color: ${(props) => props.mode === 'inner' && '#0a6f71'};
-			height: 40px;
-			background: #f8f9fa;
-			border-top: ${(props) =>
-				props.mode === 'inner' ? 'none' : '1px solid #e3e5e5'};
-			border-bottom: 1px solid #e3e5e5;
-			font-weight: 500;
-		}
-		.body {
-			background: ${(props) =>
-				props.mode === 'inner' ? '#f8f9fa' : '#fff'};
-			border-bottom: 1px solid #e3e5e5;
-		}
-		.odd {
-			background: ${(props) => props.mode === 'readOnly' && '#f8f9fa'};
-		}
-
-		.selected {
-			background: rgba(228, 243, 244, 0.7);
-		}
-
-		.th,
-		.td {
-			display: flex;
-			margin-right: 12px;
-			height: ${(props) => (props.mode === 'normal' ? '40px' : '')};
-			min-height: 40px;
-			white-space: nowrap;
-			text-align: left;
-			text-overflow: ellipsis;
-			:first-child {
-				padding-left: ${(props) => props.mode === 'readOnly' && '16px'};
-			}
-		}
-	}
-`;
-
 const TableContainer = ({
 	data,
-	setData,
 	columns,
 	tableKey,
+	setData,
 	mode = 'normal',
 	children,
 }) => {
@@ -115,6 +34,63 @@ const TableContainer = ({
 		if (v.userUid) return v.userUid;
 		return v.id;
 	}, []);
+
+	const getColumnWidth = (data, accessor, headerText, id) => {
+		const cellLength = Math.max(
+			...data.map((row) => {
+				let value = '';
+				if (typeof accessor === 'string') {
+					value = _.get(row, accessor);
+				} else {
+					value = accessor(row);
+					if (typeof value === 'string' && value.includes('\n')) {
+						let maxValue = '';
+						const temp = value;
+						temp.split('\n').forEach((v) => {
+							if (v.length > maxValue.length) maxValue = v;
+						});
+						value = maxValue;
+					}
+					if (typeof value === 'object' && id === 'grantUser') {
+						value = `${row.grantUser.name}(${row.grantUser.id})`;
+					}
+				}
+
+				if (typeof value === 'number') return value.toString().length;
+				if (
+					isNaN(
+						(value || '').length -
+							Math.ceil(
+								value
+									?.toString()
+									.split('')
+									.map((char) => char)
+									.filter((v) => v.match(/[a-z0-9]/i))
+									.length / 2,
+							),
+					)
+				)
+					return 1;
+				else {
+					return (
+						(value || '').length -
+						Math.ceil(
+							value
+								?.toString()
+								.split('')
+								.map((char) => char)
+								.filter((v) => v.match(/[a-z0-9]/i)).length / 2,
+						)
+					);
+				}
+			}),
+			headerText.length,
+		);
+
+		const magicSpacing = 10;
+
+		return cellLength * magicSpacing + 24 + 'px';
+	};
 
 	const updateMyData = (rowIndex, columnId, value) => {
 		// We also turn on the flag to not reset the page
@@ -236,44 +212,38 @@ const TableContainer = ({
 	);
 	return (
 		<Container>
-			{React.Children.map(children, (child) => {
-				return (
-					<NormalTable
-						mode={mode}
-						isOptionBar={child.props.isOptionBar}
-						isDraggable={child.props?.isDraggable}
-					>
-						{React.cloneElement(child, {
-							data,
-							columns,
-							tableKey,
-							getTableProps,
-							headerGroups,
-							prepareRow,
-							page,
-							selectedFlatRows,
-							allColumns,
-							canPreviousPage,
-							canNextPage,
-							setGlobalFilter,
-							pageOptions,
-							gotoPage,
-							nextPage,
-							previousPage,
-							setPageSize,
-							setAllFilters,
-							getToggleHideAllColumnsProps,
-							setHiddenColumns,
-							pageIndex,
-							selectedRowIds,
-							pageSize,
-							filters,
-							mode,
-							expanded,
-						})}
-					</NormalTable>
-				);
-			})}
+			{/*// mode={mode}*/}
+			{/*// isOptionBar={child.props.isOptionBar}*/}
+			{/*// isDraggable={child.props?.isDraggable}*/}
+			<Table
+				data={data}
+				columns={columns}
+				tableKey={tableKey}
+				getColumnWidth
+				getTableProps
+				headerGroups
+				prepareRow
+				page
+				selectedFlatRows
+				allColumns
+				canPreviousPage
+				canNextPage
+				setGlobalFilter
+				pageOptions
+				gotoPage
+				nextPage
+				previousPage
+				setPageSize
+				setAllFilters
+				getToggleHideAllColumnsProps
+				setHiddenColumns
+				pageIndex
+				selectedRowIds
+				pageSize
+				filters
+				mode
+				expanded
+			/>
 		</Container>
 	);
 };
