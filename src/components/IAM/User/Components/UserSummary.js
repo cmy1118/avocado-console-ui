@@ -3,8 +3,6 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
-
-import TableContainer from '../../../Table/TableContainer';
 import Table from '../../../Table/Table';
 import {useHistory} from 'react-router-dom';
 import {
@@ -333,38 +331,32 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 			<SummaryTableTitle onClick={onClickChangeTab('group')}>
 				그룹 : {groupData.length}
 			</SummaryTableTitle>
-			<TableContainer
+			<Table
 				mode={'readOnly'}
 				data={groupData}
 				tableKey={tableKeys.users.summary.group}
 				columns={tableColumns[tableKeys.users.summary.group]}
-			>
-				<Table />
-			</TableContainer>
+			/>
 
 			<SummaryTableTitle onClick={onClickChangeTab('role')}>
 				권한 : {roleData.length}
 			</SummaryTableTitle>
-			<TableContainer
+			<Table
 				mode={'readOnly'}
 				data={roleData}
 				tableKey={tableKeys.users.summary.permission}
 				columns={tableColumns[tableKeys.users.summary.permission]}
-			>
-				<Table />
-			</TableContainer>
+			/>
 
 			<SummaryTableTitle onClick={onClickChangeTab('tag')}>
 				태그 : {tagData.length}
 			</SummaryTableTitle>
-			<TableContainer
+			<Table
 				mode={'readOnly'}
 				data={tagData}
 				tableKey={tableKeys.users.summary.tag}
 				columns={tableColumns[tableKeys.users.summary.tag]}
-			>
-				<Table />
-			</TableContainer>
+			/>
 		</SummaryTablesContainer>
 	);
 };

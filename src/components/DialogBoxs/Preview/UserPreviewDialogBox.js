@@ -7,7 +7,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import CURRENT_TARGET from '../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
 import {LiText} from '../../../styles/components/text';
-import TableContainer from '../../Table/TableContainer';
 import {
 	descriptionConverter,
 	descValues,
@@ -469,36 +468,30 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 				그룹 :{' '}
 				{readOnlyData[tableKeys.users.add.groups.exclude]?.length}
 			</AddPageDialogBoxTitle>
-			<TableContainer
+			<Table
 				mode={'readOnly'}
 				tableKey={tableKeys.users.add.groups.exclude}
 				data={groupData}
 				columns={tableColumns[tableKeys.users.add.groups.exclude]}
-			>
-				<Table />
-			</TableContainer>
+			/>
 
 			<AddPageDialogBoxTitle>권한 : {''}</AddPageDialogBoxTitle>
-			<TableContainer
+			<Table
 				mode={'readOnly'}
 				tableKey={tableKeys.users.add.permissions}
 				data={roleData}
 				columns={tableColumns[tableKeys.users.add.permissions]}
-			>
-				<Table />
-			</TableContainer>
+			/>
 
 			<AddPageDialogBoxTitle>
 				태그 : {readOnlyData[tableKeys.users.add.tag].length}
 			</AddPageDialogBoxTitle>
-			<TableContainer
+			<Table
 				mode={'readOnly'}
 				tableKey={tableKeys.users.add.tag}
 				data={tagData}
 				columns={tableColumns[tableKeys.users.add.tag]}
-			>
-				<Table />
-			</TableContainer>
+			/>
 		</ModalTableContainer>
 	) : (
 		<div />

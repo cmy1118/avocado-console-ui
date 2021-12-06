@@ -5,26 +5,23 @@ import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import Table from '../../../Table/Table';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../styles/components/buttons';
 import {
-	CurrentPathBarLink,
 	CurrentPathBar,
+	CurrentPathBarLink,
 	NextPath,
 } from '../../../../styles/components/currentPathBar';
-import TableContainer from '../../../Table/TableContainer';
-import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {
 	IamContainer,
 	TitleBar,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
@@ -138,14 +135,13 @@ const GroupSpace = () => {
 				</TitleBarButtons>
 			</TitleBar>
 
-			<TableContainer
+			<Table
+				setSelect={setSelect}
 				tableKey={tableKeys.groups.basic}
 				columns={tableColumns[tableKeys.groups.basic]}
 				data={data}
-			>
-				<TableOptionsBar isSearchFilterable isOptionBar />
-				<Table setSelect={setSelect} />
-			</TableContainer>
+				tableOptions={{show: true}}
+			/>
 		</IamContainer>
 	);
 };

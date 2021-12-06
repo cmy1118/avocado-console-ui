@@ -4,7 +4,6 @@ import Table from '../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import PropTypes from 'prop-types';
-import TableContainer from '../../../Table/TableContainer';
 
 import {useHistory} from 'react-router-dom';
 import {
@@ -335,38 +334,32 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				권한 : {permissionData?.length}
 			</SummaryTableTitle>
 
-			<TableContainer
+			<Table
 				mode={'readOnly'}
 				data={permissionData}
 				tableKey={tableKeys.roles.summary.permission}
 				columns={tableColumns[tableKeys.roles.summary.permission]}
-			>
-				<Table />
-			</TableContainer>
+			/>
 
 			<SummaryTableTitle onClick={onClickChangeTab('user')}>
 				이 역할의 사용자 : {user?.length}
 			</SummaryTableTitle>
-			<TableContainer
+			<Table
 				mode={'readOnly'}
 				data={userData}
 				tableKey={tableKeys.roles.summary.user}
 				columns={tableColumns[tableKeys.roles.summary.user]}
-			>
-				<Table />
-			</TableContainer>
+			/>
 
 			<SummaryTableTitle onClick={onClickChangeTab('group')}>
 				이 역할의 사용자 그룹 : {groupData?.length}
 			</SummaryTableTitle>
-			<TableContainer
+			<Table
 				mode={'readOnly'}
 				data={groupData}
 				tableKey={tableKeys.roles.summary.group}
 				columns={tableColumns[tableKeys.roles.summary.group]}
-			>
-				<Table />
-			</TableContainer>
+			/>
 		</SummaryTablesContainer>
 	);
 };

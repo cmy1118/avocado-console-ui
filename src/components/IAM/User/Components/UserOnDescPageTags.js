@@ -11,9 +11,7 @@ import {
 } from '../../../../styles/components/buttons';
 import {TableTitle} from '../../../../styles/components/table';
 import TableOptionText from '../../../Table/Options/TableOptionText';
-import TableContainer from '../../../Table/TableContainer';
 import styled from 'styled-components';
-import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {TitleBarButtons} from '../../../../styles/components/iam/iam';
 import IAM_USER_TAG from '../../../../reducers/api/IAM/User/Tag/tags';
@@ -131,15 +129,13 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 			</TableTitle>
 			<TableOptionText data={'tags'} />
 
-			<TableContainer
-				height={'200px'}
+			<Table
+				setSelect={setSelect}
 				tableKey={tableKeys.users.summary.tabs.tags.basic}
 				data={data}
 				setData={setData}
 				columns={tableColumns[tableKeys.users.summary.tabs.tags.basic]}
-			>
-				<Table setSelect={setSelect} />
-			</TableContainer>
+			/>
 
 			{select[tableKeys.users.summary.tabs.tags.basic]?.length === 1 && (
 				<div>
@@ -160,30 +156,19 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 						</TransparentButton>
 					</_TableSpace>
 
-					<TableContainer
+					<Table
 						tableKey={
 							tableKeys.users.summary.tabs.tags.permissions
 								.include
 						}
-						height={'200px'}
-						data={
-							[]
-							// dummyPermission.filter((v) =>
-							// select[
-							// 	tableKeys.users.summary.tabs.tags.basic
-							// ][0].permissions.includes(v.id),
-							// )
-						}
+						data={[]}
 						columns={
 							tableColumns[
 								tableKeys.users.summary.tabs.tags.permissions
 									.include
 							]
 						}
-					>
-						<TableOptionsBar isOptionBar />
-						<Table />
-					</TableContainer>
+					/>
 
 					<_TableSpace>
 						태그 [
@@ -205,30 +190,19 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 						</TitleBarButtons>
 					</_TableSpace>
 
-					<TableContainer
+					<Table
 						tableKey={
 							tableKeys.users.summary.tabs.tags.permissions
 								.exclude
 						}
-						data={
-							[]
-							// dummyPermission.filter(
-							// (v) =>
-							// 	!select[
-							// 		tableKeys.users.summary.tabs.tags.basic
-							// 	][0].permissions.includes(v.id),
-							// )
-						}
+						data={[]}
 						columns={
 							tableColumns[
 								tableKeys.users.summary.tabs.tags.permissions
 									.exclude
 							]
 						}
-					>
-						<TableOptionsBar isOptionBar />
-						<Table />
-					</TableContainer>
+					/>
 				</div>
 			)}
 		</TabContentContainer>

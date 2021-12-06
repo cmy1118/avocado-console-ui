@@ -3,23 +3,20 @@ import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import DropButton from '../../../Table/DropButton';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../../reducers/currentTarget';
 import {ColDiv, RowDiv, TableHeader} from '../../../../styles/components/style';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
 import TableFold from '../../../Table/Options/TableFold';
-import TableContainer from '../../../Table/TableContainer';
 import DragContainer from '../../../Table/DragContainer';
-import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import {
 	expiredConverter,
 	groupsConverter,
 } from '../../../../utils/tableDataConverter';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -105,7 +102,9 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 						includedData={includedData}
 					>
 						<RowDiv>
-							<TableContainer
+							<Table
+								setSelect={setSelect}
+								isDraggable
 								data={excludedData}
 								tableKey={tableKeys.groups.add.users.exclude}
 								columns={
@@ -113,10 +112,7 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 										tableKeys.groups.add.users.exclude
 									]
 								}
-							>
-								<TableOptionsBar isOptionBar />
-								<Table setSelect={setSelect} isDraggable />
-							</TableContainer>
+							/>
 							<RowDiv alignItems={'center'}>
 								<DropButton
 									leftTableKey={
@@ -136,7 +132,9 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 								<TableHeader>
 									추가 사용자: {includedDataIds.length}건
 								</TableHeader>
-								<TableContainer
+								<Table
+									setSelect={setSelect}
+									isDraggable
 									data={includedData}
 									tableKey={
 										tableKeys.groups.add.users.include
@@ -146,9 +144,7 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 											tableKeys.groups.add.users.include
 										]
 									}
-								>
-									<Table setSelect={setSelect} isDraggable />
-								</TableContainer>
+								/>
 							</ColDiv>
 						</RowDiv>
 					</DragContainer>

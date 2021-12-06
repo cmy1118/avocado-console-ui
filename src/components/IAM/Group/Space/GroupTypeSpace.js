@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {useHistory} from 'react-router-dom';
@@ -12,12 +12,11 @@ import {
 	TransparentButton,
 } from '../../../../styles/components/buttons';
 import {
-	CurrentPathBarLink,
 	CurrentPathBar,
+	CurrentPathBarLink,
 	NextPath,
 } from '../../../../styles/components/currentPathBar';
 import TableOptionText from '../../../Table/Options/TableOptionText';
-import TableContainer from '../../../Table/TableContainer';
 import {
 	IamContainer,
 	TitleBar,
@@ -155,14 +154,13 @@ const GroupTypeSpace = () => {
 			</TitleBar>
 
 			<TableOptionText data={'groupsType'} />
-			<TableContainer
+			<Table
+				setSelect={setSelect}
 				tableKey={tableKeys.groups.type}
 				columns={tableColumns[tableKeys.groups.type]}
 				data={data}
 				setData={setData}
-			>
-				<Table setSelect={setSelect} />
-			</TableContainer>
+			/>
 		</IamContainer>
 	);
 };

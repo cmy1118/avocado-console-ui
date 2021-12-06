@@ -3,7 +3,7 @@ import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_ROLES from '../../../../reducers/api/PAM/Role/roles';
 import {roleTypeConverter} from '../../../../utils/tableDataConverter';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../../reducers/currentTarget';
 import DropButton from '../../../Table/DropButton';
@@ -12,10 +12,7 @@ import TableOptionText from '../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
 import TableFold from '../../../Table/Options/TableFold';
 import DragContainer from '../../../Table/DragContainer';
-import TableContainer from '../../../Table/TableContainer';
-import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -83,7 +80,9 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 						includedData={includedData}
 					>
 						<RowDiv>
-							<TableContainer
+							<Table
+								setSelect={setSelect}
+								isDraggable
 								data={excludedData}
 								tableKey={tableKeys.groups.add.roles.exclude}
 								columns={
@@ -91,10 +90,7 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 										tableKeys.groups.add.roles.exclude
 									]
 								}
-							>
-								<TableOptionsBar isOptionBar />
-								<Table setSelect={setSelect} isDraggable />
-							</TableContainer>
+							/>
 							<RowDiv alignItems={'center'}>
 								<DropButton
 									leftTableKey={
@@ -113,7 +109,9 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 								<TableHeader>
 									추가 Roles: {includedDataIds.length}건
 								</TableHeader>
-								<TableContainer
+								<Table
+									setSelect={setSelect}
+									isDraggable
 									data={includedData}
 									tableKey={
 										tableKeys.groups.add.roles.include
@@ -123,9 +121,7 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 											tableKeys.groups.add.roles.include
 										]
 									}
-								>
-									<Table setSelect={setSelect} isDraggable />
-								</TableContainer>
+								/>
 							</ColDiv>
 						</RowDiv>
 					</DragContainer>

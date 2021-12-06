@@ -12,9 +12,7 @@ import {
 import {TableTitle} from '../../../../styles/components/table';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import TableFold from '../../../Table/Options/TableFold';
-import TableContainer from '../../../Table/TableContainer';
 import DragContainer from '../../../Table/DragContainer';
-import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
@@ -225,16 +223,15 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				joinFunction={onClickAddRolesToUser}
 				disjointFunction={onClickDeleteRolesFromUser}
 			>
-				<TableContainer
+				<Table
+					setSelect={setSelect}
+					isDraggable
 					data={includedData}
 					tableKey={tableKeys.users.summary.tabs.roles.include}
 					columns={
 						tableColumns[tableKeys.users.summary.tabs.roles.include]
 					}
-				>
-					<TableOptionsBar isOptionBar />
-					<Table setSelect={setSelect} isDraggable />
-				</TableContainer>
+				/>
 				<FoldableContainer>
 					<TableFold
 						title={
@@ -261,7 +258,9 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
 						<TableOptionText data={'roles'} />
 
-						<TableContainer
+						<Table
+							setSelect={setSelect}
+							isDraggable
 							data={excludedData}
 							tableKey={
 								tableKeys.users.summary.tabs.roles.exclude
@@ -271,10 +270,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 									tableKeys.users.summary.tabs.roles.exclude
 								]
 							}
-						>
-							<TableOptionsBar isOptionBar />
-							<Table setSelect={setSelect} isDraggable />
-						</TableContainer>
+						/>
 					</CollapsbleContent>
 				</FoldableContainer>
 			</DragContainer>

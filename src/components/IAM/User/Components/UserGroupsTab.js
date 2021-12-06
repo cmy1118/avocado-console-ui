@@ -13,9 +13,7 @@ import {
 } from '../../../../styles/components/buttons';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import TableFold from '../../../Table/Options/TableFold';
-import TableContainer from '../../../Table/TableContainer';
 import DragContainer from '../../../Table/DragContainer';
-import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
@@ -172,11 +170,13 @@ const UserGroupsTab = ({
 												IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
 													{
 														id: v.id,
-														range: page[
-															tableKeys.users
-																.summary.tabs
-																.groups.include
-														],
+														range:
+															page[
+																tableKeys.users
+																	.summary
+																	.tabs.groups
+																	.include
+															],
 													},
 												),
 											)
@@ -184,11 +184,9 @@ const UserGroupsTab = ({
 												.then((role) => {
 													arr2.push({
 														...v,
-														numberOfRoles:
-															!role.data
-																? 0
-																: role.data
-																		.length,
+														numberOfRoles: !role.data
+															? 0
+															: role.data.length,
 													});
 													if (
 														arr.length ===
@@ -276,7 +274,9 @@ const UserGroupsTab = ({
 						삭제
 					</TransparentButton>
 				</TableTitle>
-				<TableContainer
+				<Table
+					setSelect={setSelect}
+					isDraggable
 					data={includedData}
 					tableKey={tableKeys.users.summary.tabs.groups.include}
 					columns={
@@ -284,10 +284,7 @@ const UserGroupsTab = ({
 							tableKeys.users.summary.tabs.groups.include
 						]
 					}
-				>
-					<TableOptionsBar isOptionBar />
-					<Table setSelect={setSelect} isDraggable />
-				</TableContainer>
+				/>
 				<FoldableContainer>
 					<TableFold
 						title={
@@ -313,7 +310,9 @@ const UserGroupsTab = ({
 					</TableFold>
 					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
 						<TableOptionText data={'groups'} />
-						<TableContainer
+						<Table
+							setSelect={setSelect}
+							isDraggable
 							data={excludedData}
 							tableKey={
 								tableKeys.users.summary.tabs.groups.exclude
@@ -323,10 +322,7 @@ const UserGroupsTab = ({
 									tableKeys.users.summary.tabs.groups.exclude
 								]
 							}
-						>
-							<TableOptionsBar isOptionBar />
-							<Table setSelect={setSelect} isDraggable />
-						</TableContainer>
+						/>
 					</CollapsbleContent>
 				</FoldableContainer>
 			</DragContainer>

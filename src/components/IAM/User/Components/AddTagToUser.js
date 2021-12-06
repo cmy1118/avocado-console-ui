@@ -1,8 +1,8 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../../Table/Table';
 import CURRENT_TARGET from '../../../../reducers/currentTarget';
-import {useDispatch, useSelector} from 'react-redux';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {useDispatch} from 'react-redux';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import {
 	NormalButton,
@@ -11,12 +11,10 @@ import {
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
 import TableFold from '../../../Table/Options/TableFold';
-import TableContainer from '../../../Table/TableContainer';
 import {
 	FoldableContainer,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 import {CollapsbleContent} from '../../../../styles/components/style';
 
 const AddTagToUser = ({space, isFold, setIsFold}) => {
@@ -103,14 +101,13 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 
 			<CollapsbleContent height={isFold[space] ? '358px' : '0px'}>
 				<TableOptionText data={'tags'} />
-				<TableContainer
+				<Table
+					setSelect={setSelect}
 					tableKey={tableKeys.users.add.tag}
 					data={tagData}
 					setData={setData}
 					columns={tableColumns[tableKeys.users.add.tag]}
-				>
-					<Table setSelect={setSelect} />
-				</TableContainer>
+				/>
 			</CollapsbleContent>
 		</FoldableContainer>
 	);

@@ -7,9 +7,7 @@ import {
 import Table from '../../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
-import TableContainer from '../../../../Table/TableContainer';
 import DragContainer from '../../../../Table/DragContainer';
-import TableOptionsBar from '../../../../Table/TableOptionsBar';
 import {TableTitle} from '../../../../../styles/components/table';
 import TableFold from '../../../../Table/Options/TableFold';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
@@ -351,7 +349,9 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 				excludedData={excludedData}
 				includedData={includedData}
 			>
-				<TableContainer
+				<Table
+					setSelect={setSelect}
+					isDraggable
 					data={includedData}
 					tableKey={tableKeys.roles.summary.tabs.permissions.include}
 					columns={
@@ -359,10 +359,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 							tableKeys.roles.summary.tabs.permissions.include
 						]
 					}
-				>
-					<TableOptionsBar isOptionBar />
-					<Table setSelect={setSelect} isDraggable />
-				</TableContainer>
+				/>
 				<FoldableContainer>
 					<TableFold
 						title={<>이 역할의 다른 정책: {excludedData.length}</>}
@@ -379,7 +376,9 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 					</TableFold>
 					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
 						<TableOptionText data={'policies'} />
-						<TableContainer
+						<Table
+							setSelect={setSelect}
+							isDraggable
 							data={excludedData}
 							tableKey={
 								tableKeys.roles.summary.tabs.permissions.exclude
@@ -390,10 +389,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 										.exclude
 								]
 							}
-						>
-							<TableOptionsBar isOptionBar />
-							<Table setSelect={setSelect} isDraggable />
-						</TableContainer>
+						/>
 					</CollapsbleContent>
 				</FoldableContainer>
 			</DragContainer>

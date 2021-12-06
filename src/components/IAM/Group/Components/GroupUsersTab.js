@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Table from '../../../Table/Table';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import {TableTitle} from '../../../../styles/components/table';
 import {
@@ -13,14 +13,11 @@ import {
 } from '../../../../styles/components/buttons';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import TableFold from '../../../Table/Options/TableFold';
-import TableContainer from '../../../Table/TableContainer';
 import DragContainer from '../../../Table/DragContainer';
-import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import {usePrevState} from '../../../../hooks/usePrevState';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 import PAGINATION from '../../../../reducers/pagination';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 
@@ -39,10 +36,10 @@ const GroupUsersTab = ({
 	const [otherMembers, setOtherMembers] = useState(0);
 	const [members, setMembers] = useState([]);
 
-	const group = useMemo(
-		() => groups.find((v) => v.id === groupId),
-		[groups, groupId],
-	);
+	const group = useMemo(() => groups.find((v) => v.id === groupId), [
+		groups,
+		groupId,
+	]);
 
 	const [includedDataIds, setIncludedDataIds] = useState(
 		members.map((v) => v.userUid) || [],
@@ -182,7 +179,9 @@ const GroupUsersTab = ({
 						사용자 삭제
 					</TransparentButton>
 				</TableTitle>
-				<TableContainer
+				<Table
+					setSelect={setSelect}
+					isDraggable
 					data={includedData}
 					tableKey={tableKeys.groups.summary.tabs.users.include}
 					columns={
@@ -190,10 +189,7 @@ const GroupUsersTab = ({
 							tableKeys.groups.summary.tabs.users.include
 						]
 					}
-				>
-					<TableOptionsBar isOptionBar />
-					<Table setSelect={setSelect} isDraggable />
-				</TableContainer>
+				/>
 				<FoldableContainer>
 					<TableFold
 						title={<>이 그룹의 다른 사용자 : {otherMembers}</>}
@@ -219,7 +215,9 @@ const GroupUsersTab = ({
 						<>
 							<TableOptionText data={'usersGroups'} />
 
-							<TableContainer
+							<Table
+								setSelect={setSelect}
+								isDraggable
 								data={excludedData}
 								tableKey={
 									tableKeys.groups.summary.tabs.users.exclude
@@ -230,10 +228,7 @@ const GroupUsersTab = ({
 											.exclude
 									]
 								}
-							>
-								<TableOptionsBar isOptionBar />
-								<Table setSelect={setSelect} isDraggable />
-							</TableContainer>
+							/>
 						</>
 					)}
 				</FoldableContainer>

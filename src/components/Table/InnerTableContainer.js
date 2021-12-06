@@ -1,6 +1,4 @@
 import React, {useEffect, useMemo, useState} from 'react';
-
-import TableContainer from './TableContainer';
 import Table from './Table';
 import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
@@ -140,16 +138,12 @@ const InnerTableContainer = ({policyId, attributes}) => {
 	}, [attributes, dispatch, policyId, setPamData]);
 
 	return (
-		<div>
-			<TableContainer
-				mode={'inner'}
-				tableKey={'innerTable'}
-				columns={policyId === 'tempId' ? columns2 : columns}
-				data={data}
-			>
-				<Table />
-			</TableContainer>
-		</div>
+		<Table
+			mode={'inner'}
+			tableKey={'innerTable'}
+			columns={policyId === 'tempId' ? columns2 : columns}
+			data={data}
+		/>
 	);
 };
 

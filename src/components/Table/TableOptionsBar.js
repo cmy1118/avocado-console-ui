@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
 
 import SearchOptionsContextMenu from '../ContextMenu/SearchOptionsContextMenu';
@@ -80,7 +80,6 @@ const TableOptionsBar = ({
 	setHiddenColumns,
 	headerGroups,
 	isSearchFilterable = false,
-	isOptionBar = true,
 }) => {
 	const [selectedSearchFilters, setSelectedSearchFilters] = useState([]);
 
@@ -118,7 +117,7 @@ const TableOptionsBar = ({
 
 	return (
 		<_Container>
-			<RowDiv justifyContent={'space-between'}>
+			<RowDiv justifyContent={'space-between'} margin={'0px 16px'}>
 				<_OptionContainer>
 					<Search
 						tableKey={tableKey}

@@ -10,16 +10,12 @@ import {tableColumns} from '../../../../../Constants/Table/columns';
 import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../../../reducers/api/PAM/Role/roles';
 import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
-import {dummyUsers} from '../../../../../utils/dummyData';
-import TableContainer from '../../../../Table/TableContainer';
 import DragContainer from '../../../../Table/DragContainer';
-import TableOptionsBar from '../../../../Table/TableOptionsBar';
 import {TableTitle} from '../../../../../styles/components/table';
 import TableFold from '../../../../Table/Options/TableFold';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../../styles/components/iam/iam';
-import {DRAGGABLE_KEY} from '../../../../../Constants/Table/keys';
 import {CollapsbleContent} from '../../../../../styles/components/style';
 
 const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
@@ -29,10 +25,10 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
-	const role = useMemo(
-		() => roles.find((v) => v.id === roleId),
-		[roles, roleId],
-	);
+	const role = useMemo(() => roles.find((v) => v.id === roleId), [
+		roles,
+		roleId,
+	]);
 
 	const includedData = useMemo(() => {
 		// users
@@ -74,16 +70,15 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 				excludedData={excludedData}
 				includedData={includedData}
 			>
-				<TableContainer
+				<Table
+					setSelect={setSelect}
+					isDraggable
 					data={includedData}
 					tableKey={tableKeys.roles.summary.tabs.users.include}
 					columns={
 						tableColumns[tableKeys.roles.summary.tabs.users.include]
 					}
-				>
-					<TableOptionsBar isOptionBar />
-					<Table setSelect={setSelect} isDraggable />
-				</TableContainer>
+				/>
 				<FoldableContainer>
 					<TableFold
 						title={
@@ -100,7 +95,9 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
 						<TableOptionText data={'usersRoles'} />
 
-						<TableContainer
+						<Table
+							setSelect={setSelect}
+							isDraggable
 							data={excludedData}
 							tableKey={
 								tableKeys.roles.summary.tabs.users.exclude
@@ -110,10 +107,7 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 									tableKeys.roles.summary.tabs.users.exclude
 								]
 							}
-						>
-							<TableOptionsBar isOptionBar />
-							<Table setSelect={setSelect} isDraggable />
-						</TableContainer>
+						/>
 					</CollapsbleContent>
 				</FoldableContainer>
 			</DragContainer>

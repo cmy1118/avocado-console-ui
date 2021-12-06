@@ -1,10 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import styled from 'styled-components';
 import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import DropButton from '../../../Table/DropButton';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../../reducers/currentTarget';
 import {
@@ -17,12 +16,9 @@ import TableOptionText from '../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
 import TableFold from '../../../Table/Options/TableFold';
 import DragContainer from '../../../Table/DragContainer';
-import TableContainer from '../../../Table/TableContainer';
-import TableOptionsBar from '../../../Table/TableOptionsBar';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
@@ -143,16 +139,15 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 					includedData={includedData}
 				>
 					<RowDiv>
-						<TableContainer
+						<Table
+							setSelect={setSelect}
+							isDraggable
 							tableKey={tableKeys.users.add.groups.exclude}
 							columns={
 								tableColumns[tableKeys.users.add.groups.exclude]
 							}
 							data={excludedData}
-						>
-							<TableOptionsBar isOptionBar />
-							<Table setSelect={setSelect} isDraggable />
-						</TableContainer>
+						/>
 						<RowDiv alignItems={'center'}>
 							<DropButton
 								leftTableKey={
@@ -172,7 +167,9 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 							<TableHeader>
 								추가 그룹: {includedDataIds.length}건
 							</TableHeader>
-							<TableContainer
+							<Table
+								setSelect={setSelect}
+								isDraggable
 								tableKey={tableKeys.users.add.groups.include}
 								columns={
 									tableColumns[
@@ -180,9 +177,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 									]
 								}
 								data={includedData}
-							>
-								<Table setSelect={setSelect} isDraggable />
-							</TableContainer>
+							/>
 						</ColDiv>
 					</RowDiv>
 				</DragContainer>

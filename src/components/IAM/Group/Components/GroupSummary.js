@@ -4,11 +4,8 @@ import PropTypes from 'prop-types';
 import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
-import {dummyPolicyOnGroup} from '../../../../utils/dummyData';
-import TableContainer from '../../../Table/TableContainer';
 import {useHistory} from 'react-router-dom';
 import {
 	SummaryTablesContainer,
@@ -16,7 +13,6 @@ import {
 } from '../../../../styles/components/iam/descriptionPage';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 	const history = useHistory();
@@ -104,38 +100,32 @@ const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 				사용자 : {userData.length}
 			</SummaryTableTitle>
 
-			<TableContainer
+			<Table
 				mode={'readOnly'}
 				data={userData}
 				tableKey={tableKeys.groups.summary.user}
 				columns={tableColumns[tableKeys.groups.summary.user]}
-			>
-				<Table />
-			</TableContainer>
+			/>
 
 			<SummaryTableTitle onClick={onClickChangeTab('role')}>
 				권한 : {roleData.length}
 			</SummaryTableTitle>
-			<TableContainer
+			<Table
 				mode={'readOnly'}
 				data={roleData}
 				tableKey={tableKeys.groups.summary.permission}
 				columns={tableColumns[tableKeys.groups.summary.permission]}
-			>
-				<Table />
-			</TableContainer>
+			/>
 
 			<SummaryTableTitle onClick={onClickChangeTab('tag')}>
 				태그 : {tagData.length}
 			</SummaryTableTitle>
-			<TableContainer
+			<Table
 				mode={'readOnly'}
 				data={tagData}
 				tableKey={tableKeys.groups.summary.tag}
 				columns={tableColumns[tableKeys.groups.summary.tag]}
-			>
-				<Table />
-			</TableContainer>
+			/>
 		</SummaryTablesContainer>
 	);
 };

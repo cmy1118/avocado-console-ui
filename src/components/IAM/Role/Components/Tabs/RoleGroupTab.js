@@ -2,30 +2,25 @@ import React, {useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
 import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
-import {dummyDates, dummyUsers} from '../../../../../utils/dummyData';
 import {
 	NormalBorderButton,
 	NormalButton,
 } from '../../../../../styles/components/buttons';
 import Table from '../../../../Table/Table';
+// } from '../../../../../styles/components/iam/iam';
 import {tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
 import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../../../reducers/api/IAM/User/Group/groupType';
 import DragContainer from '../../../../Table/DragContainer';
-import TableContainer from '../../../../Table/TableContainer';
-import TableOptionsBar from '../../../../Table/TableOptionsBar';
 import {TableTitle} from '../../../../../styles/components/table';
 import TableFold from '../../../../Table/Options/TableFold';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
-import {parentGroupConverter} from '../../../../../utils/tableDataConverter';
 import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
 import {
 	FoldableContainer,
 	TitleBarButtons,
 } from '../../../../../styles/components/iam/iam';
-// } from '../../../../../styles/components/iam/iam';
-import {DRAGGABLE_KEY} from '../../../../../Constants/Table/keys';
 import {CollapsbleContent} from '../../../../../styles/components/style';
 
 const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
@@ -36,10 +31,10 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
-	const role = useMemo(
-		() => roles.find((v) => v.id === roleId),
-		[roles, roleId],
-	);
+	const role = useMemo(() => roles.find((v) => v.id === roleId), [
+		roles,
+		roleId,
+	]);
 
 	const includedData = useMemo(() => {
 		return [];
@@ -92,7 +87,9 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 				excludedData={excludedData}
 				includedData={includedData}
 			>
-				<TableContainer
+				<Table
+					setSelect={setSelect}
+					isDraggable
 					data={includedData}
 					tableKey={tableKeys.roles.summary.tabs.groups.include}
 					columns={
@@ -100,10 +97,7 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 							tableKeys.roles.summary.tabs.groups.include
 						]
 					}
-				>
-					<TableOptionsBar isOptionBar />
-					<Table setSelect={setSelect} isDraggable />
-				</TableContainer>
+				/>
 				<FoldableContainer>
 					<TableFold
 						title={<>이 역할의 다른 그룹 : {excludedData.length}</>}
@@ -120,7 +114,9 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 					</TableFold>
 					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
 						<TableOptionText data={'groups'} />
-						<TableContainer
+						<Table
+							setSelect={setSelect}
+							isDraggable
 							data={excludedData}
 							tableKey={
 								tableKeys.roles.summary.tabs.groups.exclude
@@ -130,10 +126,7 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 									tableKeys.roles.summary.tabs.groups.exclude
 								]
 							}
-						>
-							<TableOptionsBar isOptionBar />
-							<Table setSelect={setSelect} isDraggable />
-						</TableContainer>
+						/>
 					</CollapsbleContent>
 				</FoldableContainer>
 			</DragContainer>

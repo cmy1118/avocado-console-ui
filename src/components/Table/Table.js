@@ -9,16 +9,24 @@ import * as _ from 'lodash';
 import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
 import InnerTableContainer from './InnerTableContainer';
 import TableOptionsBar from './TableOptionsBar';
+import {
+	useExpanded,
+	useFilters,
+	useGlobalFilter,
+	usePagination,
+	useRowSelect,
+	useSortBy,
+	useTable,
+} from 'react-table';
+import TableCheckbox from './Options/TableCheckbox';
 
 const TableStyledContainer = styled.div`
 	margin: ${(props) => (props.mode === 'inner' ? '0px' : ' 0px 16px')};
 	display: flex;
 	min-width: 380px;
-	min-height: ${(props) =>
-		props.isOptionBar ? '62px' : props.mode === 'normal' && '240px'};
+	min-height: ${(props) => props.mode === 'normal' && '240px'};
 	height: ${(props) => props.mode === 'normal' && '0'};
-	flex: ${(props) =>
-		props.mode === 'normal' && !props.isOptionBar && '1 1 auto'};
+	flex: ${(props) => props.mode === 'normal' && '1 1 auto'};
 
 	.table {
 		width: 100%;
@@ -99,8 +107,10 @@ const Tds = styled(RowDiv)`
 `;
 
 const _Container = styled.div`
+	display: flex;
+	flex-direction: column;
 	flex: 1 1 auto;
-	width: 0;
+	// width: 0;
 `;
 
 const BodyContainer = styled.div`
@@ -111,23 +121,198 @@ const BodyContainer = styled.div`
 `;
 
 const Table = ({
+	data,
+	columns,
 	tableKey,
-	selectedFlatRows,
-	selectedRowIds,
-	isSortable = false,
-	isSelectable = false,
 	setData,
-	getColumnWidth,
 	setSelect,
-	isDraggable = false,
-	getTableProps,
-	headerGroups,
-	prepareRow,
-	page,
-	mode,
-	expanded,
-	isShowOptionBar,
+	isDraggable,
+	mode = 'normal',
+	tableOptions = {},
+	isSearchFilterable,
 }) => {
+	const [skipPageReset, setSkipPageReset] = useState(false);
+
+	const getColumnWidth = (data, accessor, headerText, id) => {
+		const cellLength = Math.max(
+			...data.map((row) => {
+				let value = '';
+				if (typeof accessor === 'string') {
+					value = _.get(row, accessor);
+				} else {
+					value = accessor(row);
+					if (typeof value === 'string' && value.includes('\n')) {
+						let maxValue = '';
+						const temp = value;
+						temp.split('\n').forEach((v) => {
+							if (v.length > maxValue.length) maxValue = v;
+						});
+						value = maxValue;
+					}
+					if (typeof value === 'object' && id === 'grantUser') {
+						value = `${row.grantUser.name}(${row.grantUser.id})`;
+					}
+				}
+
+				if (typeof value === 'number') return value.toString().length;
+				if (
+					isNaN(
+						(value || '').length -
+							Math.ceil(
+								value
+									?.toString()
+									.split('')
+									.map((char) => char)
+									.filter((v) => v.match(/[a-z0-9]/i))
+									.length / 2,
+							),
+					)
+				)
+					return 1;
+				else {
+					return (
+						(value || '').length -
+						Math.ceil(
+							value
+								?.toString()
+								.split('')
+								.map((char) => char)
+								.filter((v) => v.match(/[a-z0-9]/i)).length / 2,
+						)
+					);
+				}
+			}),
+			headerText.length,
+		);
+
+		const magicSpacing = 10;
+
+		return cellLength * magicSpacing + 24 + 'px';
+	};
+
+	const updateMyData = (rowIndex, columnId, value) => {
+		// We also turn on the flag to not reset the page
+		if (mode === 'readOnly' || mode === 'inner') return;
+		setSkipPageReset(true);
+		setData((old) =>
+			old.map((row, index) => {
+				if (index === rowIndex) {
+					return {
+						...old[rowIndex],
+						[columnId]: value,
+					};
+				}
+				return row;
+			}),
+		);
+	};
+
+	function dateBetweenFilterFn(rows, id, filterValues) {
+		let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;
+		let ed = filterValues[1] ? new Date(filterValues[1]) : undefined;
+
+		if (ed || sd) {
+			return rows.filter((r) => {
+				let time = new Date(r.values[id]);
+
+				if (ed && sd) {
+					return time >= sd && time <= ed;
+				} else if (sd) {
+					return time >= sd;
+				} else if (ed) {
+					return time <= ed;
+				}
+			});
+		} else {
+			return rows;
+		}
+	}
+
+	const filterTypes = React.useMemo(
+		() => ({
+			dateBetween: dateBetweenFilterFn,
+			text: (rows, id, filterValue) => {
+				return rows.filter((row) => {
+					const rowValue = row.values[id];
+					return rowValue !== undefined
+						? String(rowValue)
+								.toLowerCase()
+								.startsWith(String(filterValue).toLowerCase())
+						: true;
+				});
+			},
+		}),
+		[],
+	);
+
+	const getRowId = useCallback((v) => {
+		if (v.userUid) return v.userUid;
+		return v.id;
+	}, []);
+
+	const {
+		getTableProps,
+		headerGroups,
+		prepareRow,
+		page,
+		selectedFlatRows,
+		allColumns,
+		canPreviousPage,
+		canNextPage,
+		pageOptions,
+		gotoPage,
+		nextPage,
+		previousPage,
+		setPageSize,
+		setAllFilters,
+		getToggleHideAllColumnsProps,
+		setHiddenColumns,
+		setGlobalFilter,
+		state: {pageIndex, selectedRowIds, pageSize, filters, expanded},
+	} = useTable(
+		{
+			data,
+			columns,
+			initialState: {pageSize: 50},
+			getRowId,
+			filterTypes,
+			autoResetPage: !skipPageReset,
+			updateMyData,
+		},
+		useGlobalFilter,
+		useFilters,
+		useGlobalFilter,
+		useSortBy,
+		useExpanded,
+		usePagination,
+		useRowSelect,
+		(hooks) => {
+			mode === 'normal' &&
+				hooks.visibleColumns.push((columns) => [
+					{
+						id: 'selection',
+						// eslint-disable-next-line react/prop-types,react/display-name
+						Header: ({getToggleAllPageRowsSelectedProps}) => (
+							<TableCheckbox
+								{...getToggleAllPageRowsSelectedProps()}
+								tablekey={tableKey}
+							/>
+						),
+						// eslint-disable-next-line react/prop-types,react/display-name
+						Cell: ({row}) => (
+							<TableCheckbox
+								// eslint-disable-next-line react/prop-types,react/display-name
+								{...row.getToggleRowSelectedProps()}
+								tablekey={tableKey}
+							/>
+						),
+						width: 40,
+						disableChangeVisible: true,
+					},
+					...columns,
+				]);
+		},
+	);
 	const [position, setPosition] = useState({x: 0, y: 0});
 
 	const getItemStyle = (isDragging, draggableStyle, style) => ({
@@ -209,8 +394,30 @@ const Table = ({
 
 	return (
 		<_Container>
-			{isShowOptionBar && <TableOptionsBar tableKey={tableKey} />}
-			<TableStyledContainer>
+			{tableOptions.show && (
+				<TableOptionsBar
+					tableKey={tableKey}
+					columns={columns}
+					setAllFilters={setAllFilters}
+					filters={filters}
+					gotoPage={gotoPage}
+					canPreviousPage={canPreviousPage}
+					previousPage={previousPage}
+					nextPage={nextPage}
+					canNextPage={canNextPage}
+					pageIndex={pageIndex}
+					pageOptions={pageOptions}
+					setGlobalFilter={setGlobalFilter}
+					pageSize={pageSize}
+					setPageSize={setPageSize}
+					allColumns={allColumns}
+					getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
+					setHiddenColumns={setHiddenColumns}
+					headerGroups={headerGroups}
+					isSearchFilterable={isSearchFilterable}
+				/>
+			)}
+			<TableStyledContainer mode={mode}>
 				<Droppable
 					droppableId={tableKey}
 					mode={'Virtual'}
@@ -242,7 +449,7 @@ const Table = ({
 					{(provided) => (
 						<div
 							className={`${tableKey} table`}
-							//{...getTableProps()}
+							{...getTableProps()}
 							ref={provided.innerRef}
 							{...provided.droppableProps}
 						>
@@ -438,22 +645,27 @@ const Table = ({
 };
 
 Table.propTypes = {
-	tableKey: PropTypes.string,
+	tableKey: PropTypes.string.isRequired,
+	data: PropTypes.array.isRequired,
+	columns: PropTypes.array.isRequired,
 	isSortable: PropTypes.bool,
-	mode: PropTypes.string,
 	isSelectable: PropTypes.bool,
 	setData: PropTypes.func,
 	setSelect: PropTypes.func,
-	isDraggable: PropTypes.bool,
 	getTableProps: PropTypes.func,
 	getColumnWidth: PropTypes.func,
 	headerGroups: PropTypes.array,
 	prepareRow: PropTypes.func,
+	setAllFilters: PropTypes.func,
 	page: PropTypes.array,
 	selectedFlatRows: PropTypes.array,
 	selectedRowIds: PropTypes.object,
+	tableOptions: PropTypes.object,
 	expanded: PropTypes.object,
 	isShowOptionBar: PropTypes.bool,
+	isSearchFilterable: PropTypes.bool,
+	mode: PropTypes.oneOf(['normal', 'readOnly', 'inner']),
+	isDraggable: PropTypes.bool,
 };
 
 export default Table;

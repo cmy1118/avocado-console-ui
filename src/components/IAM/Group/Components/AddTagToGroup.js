@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../../Table/Table';
 import {tableColumns} from '../../../../Constants/Table/columns';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import CURRENT_TARGET from '../../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
 import {
@@ -11,12 +11,10 @@ import {
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
 import TableFold from '../../../Table/Options/TableFold';
-import TableContainer from '../../../Table/TableContainer';
 import {
 	FoldableContainer,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const AddTagToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
@@ -87,14 +85,13 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 			{isFold[space] && (
 				<>
 					<TableOptionText data={'tags'} />
-					<TableContainer
+					<Table
+						setSelect={setSelect}
 						tableKey={tableKeys.groups.add.tag}
 						data={tagData}
 						setData={setData}
 						columns={tableColumns[tableKeys.groups.add.tag]}
-					>
-						<Table setSelect={setSelect} />
-					</TableContainer>
+					/>
 				</>
 			)}
 		</FoldableContainer>

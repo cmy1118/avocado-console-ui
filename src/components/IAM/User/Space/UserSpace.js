@@ -21,8 +21,6 @@ import {
 	CurrentPathBarLink,
 	NextPath,
 } from '../../../../styles/components/currentPathBar';
-import TableOptionsBar from '../../../Table/TableOptionsBar';
-import TableContainer from '../../../Table/TableContainer';
 import {
 	IamContainer,
 	TitleBar,
@@ -184,14 +182,12 @@ const UserSpace = () => {
 				</TitleBarButtons>
 			</TitleBar>
 
-			<TableContainer
+			<Table
 				tableKey={tableKeys.users.basic}
 				columns={tableColumns[tableKeys.users.basic]}
 				data={userData}
-			>
-				<TableOptionsBar isSearchFilterable isOptionBar />
-				<Table setSelect={setSelect} />
-			</TableContainer>
+				tableOptions={{show: true}}
+			/>
 		</IamContainer>
 	);
 };

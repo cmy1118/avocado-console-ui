@@ -4,17 +4,15 @@ import {useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import {tableColumns} from '../../../../Constants/Table/columns';
-import {tableKeys} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {TableTitle} from '../../../../styles/components/table';
 import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../styles/components/buttons';
 import TableOptionText from '../../../Table/Options/TableOptionText';
-import TableContainer from '../../../Table/TableContainer';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {TitleBarButtons} from '../../../../styles/components/iam/iam';
-import {DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
 
 const GroupOnDescPageTags = ({groupId}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -88,14 +86,13 @@ const GroupOnDescPageTags = ({groupId}) => {
 				</TitleBarButtons>
 			</TableTitle>
 			<TableOptionText data={'tags'} />
-			<TableContainer
+			<Table
+				setSelect={setSelect}
 				tableKey={tableKeys.groups.summary.tabs.tags.basic}
 				data={data}
 				columns={tableColumns[tableKeys.groups.summary.tabs.tags.basic]}
 				setData={setData}
-			>
-				<Table setSelect={setSelect} />
-			</TableContainer>
+			/>
 		</TabContentContainer>
 	);
 };

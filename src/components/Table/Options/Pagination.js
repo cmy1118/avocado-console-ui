@@ -23,7 +23,6 @@ const Container = styled.div`
 	padding: 0px 2px;
 	border-left: 1px solid #e3e5e5;
 	border-right: 1px solid #e3e5e5;
-	// white-space: nowrap;
 `;
 
 const Pagination = ({

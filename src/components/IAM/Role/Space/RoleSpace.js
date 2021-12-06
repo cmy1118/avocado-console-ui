@@ -1,11 +1,10 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {tableKeys, DRAGGABLE_KEY} from '../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
 
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
-import TableContainer from '../../../Table/TableContainer';
 import {
 	CurrentPathBar,
 	CurrentPathBarLink,
@@ -15,7 +14,6 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../styles/components/buttons';
-import TableOptionsBar from '../../../Table/TableOptionsBar';
 import {
 	IamContainer,
 	TitleBar,
@@ -86,14 +84,13 @@ const RoleSpace = () => {
 				</TitleBarButtons>
 			</TitleBar>
 
-			<TableContainer
+			<Table
+				setSelect={setSelect}
 				tableKey={tableKeys.roles.basic}
 				columns={tableColumns[tableKeys.roles.basic]}
 				data={data}
-			>
-				<TableOptionsBar isSearchFilterable isOptionBar />
-				<Table setSelect={setSelect} />
-			</TableContainer>
+				tableOptions={{show: true}}
+			/>
 		</IamContainer>
 	);
 };
