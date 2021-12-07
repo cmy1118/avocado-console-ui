@@ -110,34 +110,44 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	const getIncludedRolesData = useCallback(
 		(userRoles) => {
-			const userRolesId = userRoles.map((v) => v.roleId);
 			const arr = [];
-			userRolesId.forEach((v) =>
-				dispatch(
-					IAM_ROLES.asyncAction.findByIdAction({
-						id: v,
-					}),
-				)
-					.unwrap()
-					.then((role) => {
-						arr.push({
-							id: role.id,
-							name: role.name,
-							numberOfUsers: role.grantedCount,
-							description: role.description,
-							createdTime: role.createdTag.createdTime,
-							type: role.maxGrants === '1' ? 'Private' : 'Public',
-						});
-						if (userRoles.length === arr.length) {
-							setIncludedRoles(arr);
-						}
-					}),
-			);
+			const userRolesId = userRoles.map((v) => v.roleId);
+
+			userRoles.map((v) => {
+				arr.push(v.roleId);
+				if (userRoles.length === arr.length) {
+					setIncludedDataIds(arr);
+					userRolesId.forEach((v) =>
+						dispatch(
+							IAM_ROLES.asyncAction.findByIdAction({
+								id: v,
+							}),
+						)
+							.unwrap()
+							.then((role) => {
+								arr.push({
+									id: role.id,
+									name: role.name,
+									numberOfUsers: role.grantedCount,
+									description: role.description,
+									createdTime: role.createdTag.createdTime,
+									type:
+										role.maxGrants === '1'
+											? 'Private'
+											: 'Public',
+								});
+								if (userRoles.length === arr.length) {
+									setIncludedRoles(arr);
+								}
+							}),
+					);
+				}
+			});
 		},
 		[dispatch],
 	);
 
-	useEffect(() => {
+	const GetUserExcludeRolesApi = useCallback(() => {
 		const arr = [];
 		if (
 			!isSummaryOpened &&
@@ -150,6 +160,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 			)
 				.unwrap()
 				.then((res) => {
+					console.log('res:', res);
 					res.data.map((v) =>
 						arr.push({
 							id: v.id,
@@ -160,7 +171,6 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 							type: v.maxGrants === '1' ? 'Private' : 'Public',
 						}),
 					);
-					// setIncludedDataIds(arr);
 					if (arr.length === res.data.length) {
 						setRoles(arr);
 					}
@@ -168,8 +178,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 		}
 	}, [dispatch, isSummaryOpened, page]);
 
-	useEffect(() => {
-		const arr = [];
+	const GetUserIncludeRolesApi = useCallback(() => {
 		if (page[tableKeys.users.summary.tabs.roles.include]) {
 			dispatch(
 				IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
@@ -179,17 +188,17 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 			)
 				.unwrap()
 				.then((res) => {
-					// res : 사용자에게 부여된 role 정보
-					res.data.map((v) => {
-						arr.push(v.roleId);
-						if (res.data.length === arr.length) {
-							setIncludedDataIds(arr);
-							getIncludedRolesData(res.data);
-						}
-					});
+					res.data.length
+						? getIncludedRolesData(res.data)
+						: setIncludedRoles([]);
 				});
 		}
 	}, [dispatch, getIncludedRolesData, page, userUid]);
+
+	useEffect(() => {
+		GetUserExcludeRolesApi();
+		GetUserIncludeRolesApi();
+	}, [GetUserExcludeRolesApi, GetUserIncludeRolesApi, page]);
 
 	useEffect(() => {
 		if (roles && roles[0]) {

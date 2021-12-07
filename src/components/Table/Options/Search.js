@@ -37,10 +37,12 @@ const placeholders = {
 function Search({tableKey, setGlobalFilter, setSearch}) {
 	const ref = useRef(null);
 	const handleSubmit = (data) => {
-		//  setGlobalFilter  : React Table String Search 방법
-		// setGlobalFilter(data['search']);
-		console.log("data['search']:", data['search'].trim());
+		//Api 검색
+		console.log("data['search'].trim():", data['search'].trim());
 		setSearch(data['search'].trim());
+		//setGlobalFilter  : React Table String Search 방법
+		//상세 Tab 검색시 사용
+		// setGlobalFilter(data['search'].trim());
 	};
 
 	return (

@@ -37,7 +37,8 @@ const UserGroupsTab = ({
 	const [includedGroups, setIncludedGroups] = useState([]);
 	const [excluedeGroups, setExcluedeGroups] = useState([]);
 	const [select, setSelect] = useState({});
-
+	const [search, setSearch] = useState('');
+	const [total, setTotal] = useState(0);
 	const [includedDataIds, setIncludedDataIds] = useState(
 		user?.groups?.map((v) => v.id) || [],
 	);
@@ -205,7 +206,7 @@ const UserGroupsTab = ({
 		[dispatch, page],
 	);
 
-	useEffect(() => {
+	const GetUserExcludeGroupsApi = useCallback(() => {
 		if (
 			!isSummaryOpened &&
 			page[tableKeys.users.summary.tabs.groups.include] &&
@@ -219,7 +220,7 @@ const UserGroupsTab = ({
 		}
 	}, [dispatch, isSummaryOpened, page, user]);
 
-	useEffect(() => {
+	const GetUserIncludeGroupsApi = useCallback(() => {
 		if (
 			!user &&
 			page[tableKeys.users.summary.tabs.groups.include] &&
@@ -236,10 +237,15 @@ const UserGroupsTab = ({
 					setIncludedDataIds(
 						res.groups ? res.groups.map((v) => v.id) : [],
 					);
-					getIncludedGroupsData(res);
+					res ? getIncludedGroupsData(res) : setIncludedGroups([]);
 				});
 		}
-	}, [user, dispatch, userUid, getIncludedGroupsData, page, isSummaryOpened]);
+	}, [dispatch, getIncludedGroupsData, isSummaryOpened, page, user, userUid]);
+
+	useEffect(() => {
+		GetUserExcludeGroupsApi();
+		GetUserIncludeGroupsApi();
+	}, [page, GetUserIncludeGroupsApi, GetUserExcludeGroupsApi]);
 
 	useEffect(() => {
 		if (!isSummaryOpened && groups[0]) {
@@ -288,6 +294,7 @@ const UserGroupsTab = ({
 					isSearchable
 					isSearchFilterable
 					isColumnFilterable
+					setSearch={setSearch}
 				/>
 				<FoldableContainer>
 					<TableFold
