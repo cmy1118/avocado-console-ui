@@ -233,6 +233,7 @@ const UserGroupsTab = ({
 			)
 				.unwrap()
 				.then((res) => {
+					console.log('res:', res);
 					setUser(res);
 					setIncludedDataIds(
 						res.groups ? res.groups.map((v) => v.id) : [],

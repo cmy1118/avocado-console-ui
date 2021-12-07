@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
@@ -29,6 +29,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
+	const [search, setSearch] = useState('');
 	const {page} = useSelector(PAGINATION.selector);
 
 	const includedData = useMemo(() => {
@@ -71,8 +72,47 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 		);
 	}, [dispatch, includedData]);
 
-	useEffect(() => {
-		const arr = [];
+	const getUsersGroupDetailApi = useCallback(
+		(res) => {
+			const arr = [];
+			res.data.forEach((group) => {
+				dispatch(
+					IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
+						groupId: group.id,
+						range: 'elements=0-1',
+					}),
+				)
+					.unwrap()
+					.then((member) => {
+						dispatch(
+							IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
+								id: group.id,
+								range: 'elements=0-1',
+							}),
+						)
+							.unwrap()
+							.then((roles) => {
+								//		console.log(roles);
+								arr.push({
+									...group,
+									numberOfRoles: totalNumberConverter(
+										roles.headers['content-range'],
+									),
+									numberOfUsers: totalNumberConverter(
+										member.headers['content-range'],
+									),
+								});
+								if (res.data.length === arr.length) {
+									setGroups(arr);
+								}
+							});
+					});
+			});
+		},
+		[dispatch],
+	);
+
+	const getUsersGroupApi = useCallback(() => {
 		page[tableKeys.users.add.groups.exclude] &&
 			dispatch(
 				IAM_USER_GROUP.asyncAction.findAllAction({
@@ -80,45 +120,16 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 				}),
 			)
 				.unwrap()
-				.then((groups) => {
-					groups.data.forEach((group) => {
-						//			console.log(group);
-						dispatch(
-							IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
-								groupId: group.id,
-								range: 'elements=0-1',
-							}),
-						)
-							.unwrap()
-							.then((member) => {
-								dispatch(
-									IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
-										{
-											id: group.id,
-											range: 'elements=0-1',
-										},
-									),
-								)
-									.unwrap()
-									.then((roles) => {
-										//		console.log(roles);
-										arr.push({
-											...group,
-											numberOfRoles: totalNumberConverter(
-												roles.headers['content-range'],
-											),
-											numberOfUsers: totalNumberConverter(
-												member.headers['content-range'],
-											),
-										});
-										if (groups.data.length === arr.length) {
-											setGroups(arr);
-										}
-									});
-							});
-					});
+				.then((res) => {
+					res.data.length
+						? getUsersGroupDetailApi(res)
+						: setGroups([]);
 				});
-	}, [dispatch, page]);
+	}, [dispatch, getUsersGroupDetailApi, page]);
+
+	useEffect(() => {
+		getUsersGroupApi();
+	}, [getUsersGroupApi, page]);
 
 	return (
 		<FoldableContainer>
@@ -151,6 +162,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 							isSearchable
 							isSearchFilterable
 							isColumnFilterable
+							setSearch={setSearch}
 						/>
 						<RowDiv alignItems={'center'}>
 							<DropButton

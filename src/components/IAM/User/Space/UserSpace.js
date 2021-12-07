@@ -89,7 +89,7 @@ const UserSpace = () => {
 		}
 	}, [dispatch, select]);
 
-	const getDetailApi = useCallback(
+	const getUsersDetailApi = useCallback(
 		(res) => {
 			const arr = [];
 			dispatch(
@@ -135,7 +135,7 @@ const UserSpace = () => {
 		[dispatch],
 	);
 
-	const getDataApi = useCallback(
+	const getUsersApi = useCallback(
 		(search) => {
 			if (page[tableKeys.users.basic]) {
 				dispatch(
@@ -151,16 +151,16 @@ const UserSpace = () => {
 						setTotal(
 							totalNumberConverter(res.headers['content-range']),
 						);
-						res.data.length ? getDetailApi(res) : setUsers([]);
+						res.data.length ? getUsersDetailApi(res) : setUsers([]);
 					});
 			}
 		},
-		[search, dispatch, getDetailApi, page],
+		[dispatch, getUsersDetailApi, page],
 	);
 
 	useEffect(() => {
-		getDataApi(search);
-	}, [getDataApi, page, search]);
+		getUsersApi(search);
+	}, [getUsersApi, page, search]);
 
 	return (
 		<IamContainer>

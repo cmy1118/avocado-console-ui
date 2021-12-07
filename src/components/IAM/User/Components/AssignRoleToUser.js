@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
@@ -23,7 +23,6 @@ import CURRENT_TARGET from '../../../../reducers/currentTarget';
 const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
-
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [select, setSelect] = useState({});
 	const [roles, setRoles] = useState([]);
@@ -62,9 +61,15 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 		);
 	}, [includedData, dispatch]);
 
-	//Role 정보 조회
-	useEffect(() => {
+	const getUsersRoleDetailApi = useCallback((res) => {
 		const arr = [];
+		res.data.map((v) => arr.push(v.id));
+		if (res.data.length === arr.length) {
+			setRoles(res.data);
+		}
+	}, []);
+
+	const getUsersRoleApi = useCallback(() => {
 		if (page[tableKeys.users.add.roles.exclude]) {
 			dispatch(
 				IAM_ROLES.asyncAction.getsAction({
@@ -73,13 +78,14 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 			)
 				.unwrap()
 				.then((res) => {
-					// res : 사용자에게 부여된 role 정보
-					res.data.map((v) => arr.push(v.id));
-					console.log('res', res);
-					setRoles(res.data);
+					res.data.length ? getUsersRoleDetailApi(res) : setRoles([]);
 				});
 		}
-	}, [dispatch, page]);
+	}, [dispatch, getUsersRoleDetailApi, page]);
+
+	useEffect(() => {
+		getUsersRoleApi();
+	}, [getUsersRoleApi, page]);
 
 	return (
 		<FoldableContainer>
