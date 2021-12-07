@@ -39,6 +39,7 @@ const UserSpace = () => {
 	const [users, setUsers] = useState([]);
 	const [total, setTotal] = useState(0);
 	const {page} = useSelector(PAGINATION.selector);
+	const [search, setSearch] = useState('');
 	const [select, setSelect] = useState({});
 
 	const userData = useMemo(() => {
@@ -88,77 +89,76 @@ const UserSpace = () => {
 		}
 	}, [dispatch, select]);
 
-	useEffect(() => {
-		const arr = [];
-		if (page[tableKeys.users.basic]) {
+	const getDetailApi = useCallback(
+		(res) => {
+			const arr = [];
 			dispatch(
-				IAM_USER.asyncAction.findAllAction({
-					range: page[tableKeys.users.basic],
+				PAM_SESSION.asyncAction.findSessionAction({
+					userUids: res.data.map((v) => v.userUid),
 				}),
 			)
 				.unwrap()
-				.then((users) => {
-					console.log(users);
-					setTotal(
-						totalNumberConverter(users.headers['content-range']),
-					);
-					dispatch(
-						PAM_SESSION.asyncAction.findSessionAction({
-							userUids: users.data.map((v) => v.userUid),
-						}),
-					)
-						.unwrap()
-						.then((sessions) => {
-							users.data.forEach((sessionUser) => {
-								dispatch(
-									IAM_USER_POLICY.asyncAction.getsAction({
-										userUid: sessionUser.userUid,
-									}),
-								)
-									.unwrap()
-									.then((policy) => {
-										arr.push({
-											user: sessionUser,
-											session: sessions.data.find(
-												(session) =>
-													sessionUser.userUid ===
-													session.userUid,
-											),
-											policies: _.uniqBy(
-												_.flatten(
-													_.flatten(
-														policy.map(
-															(v) =>
-																v.policyTemplates,
-														),
-													).map((x) => x.details),
+				.then((sessions) => {
+					res.data.forEach((sessionUser) => {
+						dispatch(
+							IAM_USER_POLICY.asyncAction.getsAction({
+								userUid: sessionUser.userUid,
+							}),
+						)
+							.unwrap()
+							.then((policy) => {
+								arr.push({
+									user: sessionUser,
+									session: sessions.data.find(
+										(session) =>
+											sessionUser.userUid ===
+											session.userUid,
+									),
+									policies: _.uniqBy(
+										_.flatten(
+											_.flatten(
+												policy.map(
+													(v) => v.policyTemplates,
 												),
-												'policyType',
-											),
-										});
-										if (arr.length === users.data.length) {
-											console.log(arr);
-											setUsers(arr);
-										}
-										// setUsers(
-										// 	users.data.map((user) => ({
-										// 		session: sessions.data.find(
-										// 			(session) =>
-										// 				user.userUid ===
-										// 				session.userUid,
-										// 		),
-										// 		policies:
-										// 			user.userUid ===
-										// 				sessionUser.userUid &&
-										// 			'',
-										// 	})),
-										// );
-									});
+											).map((x) => x.details),
+										),
+										'policyType',
+									),
+								});
+								if (arr.length === res.data.length) {
+									setUsers(arr);
+								}
 							});
-						});
+					});
 				});
-		}
-	}, [dispatch, page]);
+		},
+		[dispatch],
+	);
+
+	const getDataApi = useCallback(
+		(search) => {
+			if (page[tableKeys.users.basic]) {
+				dispatch(
+					IAM_USER.asyncAction.findAllAction({
+						range: page[tableKeys.users.basic],
+						keyword: search ? search : '',
+					}),
+				)
+					.unwrap()
+					.then((res) => {
+						setTotal(
+							totalNumberConverter(res.headers['content-range']),
+						);
+						res.data.length ? getDetailApi(res) : setUsers([]);
+					});
+			}
+		},
+		[dispatch, getDetailApi, page],
+	);
+
+	useEffect(() => {
+		getDataApi(search);
+	}, [getDataApi, page, search]);
 
 	return (
 		<IamContainer>
@@ -193,6 +193,7 @@ const UserSpace = () => {
 				isSearchable
 				isSearchFilterable
 				isColumnFilterable
+				setSearch={setSearch}
 			/>
 		</IamContainer>
 	);

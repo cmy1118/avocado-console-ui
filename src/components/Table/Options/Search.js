@@ -16,7 +16,7 @@ const placeholders = {
 	[tableKeys.users.summary.tabs.roles.exclude]: '역할 이름, 설명',
 	[tableKeys.users.summary.tabs.tags.permissions.include]: '정책 이름, 설명',
 	[tableKeys.users.summary.tabs.tags.permissions.exclude]: '정책 이름, 설명',
-	[tableKeys.groups.basic]: '그룹 이름, 그룹 유형 권한',
+	[tableKeys.groups.basic]: '그룹 이름, 그룹 유형, 권한',
 	[tableKeys.groups.add.users.exclude]: '사용자 계정, 사용자 이름',
 	[tableKeys.groups.add.roles.exclude]: '역할 이름, 설명',
 	[tableKeys.groups.summary.tabs.users.include]: '사용자 계정, 사용자 이름',
@@ -25,7 +25,7 @@ const placeholders = {
 	[tableKeys.groups.summary.tabs.roles.exclude]: '역할 이름, 설명',
 	[tableKeys.groups.summary.tabs.tags.permissions.include]: '정책 이름, 설명',
 	[tableKeys.groups.summary.tabs.tags.permissions.exclude]: '정책 이름, 설명',
-	[tableKeys.roles.basic]: '그룹 이름, 그룹 유형 권한',
+	[tableKeys.roles.basic]: '그룹 이름, 그룹 유형, 권한',
 	[tableKeys.roles.summary.tabs.permissions.include]: '정책 이름, 설명',
 	[tableKeys.roles.summary.tabs.permissions.exclude]: '정책 이름, 설명',
 	[tableKeys.roles.summary.tabs.users.include]: '사용자 계정, 사용자 이름',
@@ -34,13 +34,13 @@ const placeholders = {
 	[tableKeys.roles.summary.tabs.groups.exclude]: '그룹 이름, 그룹 유형',
 };
 
-function Search({tableKey, setGlobalFilter}) {
+function Search({tableKey, setGlobalFilter, setSearch}) {
 	const ref = useRef(null);
 	const handleSubmit = (data) => {
-		// console.log('api');
-		// console.log('tableKey', tableKey);
-		// console.log('data', data);
-		setGlobalFilter(data['search']);
+		//  setGlobalFilter  : React Table String Search 방법
+		// setGlobalFilter(data['search']);
+		console.log("data['search']:", data['search'].trim());
+		setSearch(data['search'].trim());
 	};
 
 	return (
@@ -64,5 +64,6 @@ function Search({tableKey, setGlobalFilter}) {
 Search.propTypes = {
 	tableKey: PropTypes.string,
 	setGlobalFilter: PropTypes.func,
+	setSearch: PropTypes.func,
 };
 export default Search;

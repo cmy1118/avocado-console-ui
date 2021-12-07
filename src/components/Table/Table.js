@@ -132,6 +132,7 @@ const Table = ({
 	isSearchable = false,
 	isSearchFilterable = false,
 	isColumnFilterable = false,
+	setSearch,
 }) => {
 	const [skipPageReset, setSkipPageReset] = useState(false);
 
@@ -419,6 +420,7 @@ const Table = ({
 					getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
 					setHiddenColumns={setHiddenColumns}
 					headerGroups={headerGroups}
+					setSearch={setSearch}
 				/>
 			)}
 			<TableStyledContainer mode={mode}>
@@ -656,6 +658,7 @@ Table.propTypes = {
 	isSelectable: PropTypes.bool,
 	setData: PropTypes.func,
 	setSelect: PropTypes.func,
+	setSearch: PropTypes.func,
 	getTableProps: PropTypes.func,
 	getColumnWidth: PropTypes.func,
 	headerGroups: PropTypes.array,

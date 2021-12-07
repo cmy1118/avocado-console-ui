@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import Table from '../../../Table/Table';
@@ -20,6 +20,8 @@ import {
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
+import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
+import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 
 const RoleSpace = () => {
 	const dispatch = useDispatch();
@@ -27,6 +29,9 @@ const RoleSpace = () => {
 	const {page} = useSelector(PAGINATION.selector);
 	const [select, setSelect] = useState({});
 	const [roles, setRoles] = useState([]);
+	const [total, setTotal] = useState(0);
+	const [search, setSearch] = useState('');
+
 	const data = useMemo(() => {
 		return (
 			roles?.map((v) => ({
@@ -38,33 +43,46 @@ const RoleSpace = () => {
 		);
 	}, [roles]);
 
-	console.log(roles);
+	const getDetailApi = useCallback((res) => {
+		const arr = [];
+		res.data.map((v) => {
+			arr.push({
+				id: v.id,
+				name: v.name,
+				description: v.description,
+				createdTime: v.createdTag.createdTime,
+				numberOfPermissions: v.grantedCount,
+				type: v.maxGrants === '1' ? 'Private' : 'Public',
+			});
+		});
+		setRoles(arr);
+	}, []);
+
+	const getDataApi = useCallback(
+		(search) => {
+			const arr = [];
+			if (page[tableKeys.roles.basic]) {
+				dispatch(
+					IAM_ROLES.asyncAction.getsAction({
+						range: page[tableKeys.roles.basic],
+						keyword: search ? search : '',
+					}),
+				)
+					.unwrap()
+					.then((res) => {
+						setTotal(
+							totalNumberConverter(res.headers['content-range']),
+						);
+						res.data.length ? getDetailApi(res) : setRoles([]);
+					});
+			}
+		},
+		[dispatch, getDetailApi, page],
+	);
 
 	useEffect(() => {
-		const arr = [];
-		if (page[tableKeys.roles.basic]) {
-			dispatch(
-				IAM_ROLES.asyncAction.getsAction({
-					range: page[tableKeys.roles.basic],
-				}),
-			)
-				.unwrap()
-				.then((res) => {
-					res.data.map((v) => {
-						arr.push({
-							id: v.id,
-							name: v.name,
-							description: v.description,
-							createdTime: v.createdTag.createdTime,
-							numberOfPermissions: v.grantedCount,
-							type: v.maxGrants === '1' ? 'Private' : 'Public',
-						});
-					});
-
-					setRoles(arr);
-				});
-		}
-	}, [dispatch, page]);
+		getDataApi(search);
+	}, [getDataApi, page, search]);
 
 	return (
 		<IamContainer>
@@ -75,7 +93,7 @@ const RoleSpace = () => {
 			</CurrentPathBar>
 
 			<TitleBar>
-				<div>역할 : {roles?.length}</div>
+				<div>역할 : {total}</div>
 				<TitleBarButtons>
 					<NormalButton>역할 만들기</NormalButton>
 					<TransparentButton margin={'0px 0px 0px 5px'}>
@@ -93,6 +111,7 @@ const RoleSpace = () => {
 				isSearchable
 				isSearchFilterable
 				isColumnFilterable
+				setSearch={setSearch}
 			/>
 		</IamContainer>
 	);

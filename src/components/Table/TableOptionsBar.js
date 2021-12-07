@@ -82,6 +82,7 @@ const TableOptionsBar = ({
 	isSearchable,
 	isSearchFilterable,
 	isColumnFilterable,
+	setSearch,
 }) => {
 	const [selectedSearchFilters, setSelectedSearchFilters] = useState([]);
 
@@ -123,6 +124,7 @@ const TableOptionsBar = ({
 				<_OptionContainer>
 					{isSearchable && (
 						<Search
+							setSearch={setSearch}
 							tableKey={tableKey}
 							setGlobalFilter={setGlobalFilter}
 						/>
@@ -289,6 +291,7 @@ TableOptionsBar.propTypes = {
 	tableOptions: PropTypes.object,
 	isSearchable: PropTypes.bool,
 	isSearchFilterable: PropTypes.bool,
+	setSearch: PropTypes.func,
 };
 
 export default TableOptionsBar;

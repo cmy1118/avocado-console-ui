@@ -32,6 +32,8 @@ const GroupSpace = () => {
 	const history = useHistory();
 	const [groups, setGroups] = useState([]);
 	const {page} = useSelector(PAGINATION.selector);
+	const [search, setSearch] = useState('');
+	const [total, setTotal] = useState(0);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
 	const data = useMemo(() => {
@@ -110,6 +112,71 @@ const GroupSpace = () => {
 				});
 	}, [dispatch, page]);
 
+	const getDetailApi = useCallback(
+		(res) => {
+			const arr = [];
+			res.data.forEach((group) => {
+				dispatch(
+					IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
+						groupId: group.id,
+						range: 'elements=0-1',
+					}),
+				)
+					.unwrap()
+					.then((member) => {
+						//			console.log(member);
+						dispatch(
+							IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
+								id: group.id,
+								range: 'elements=0-1',
+							}),
+						)
+							.unwrap()
+							.then((roles) => {
+								//					console.log(roles);
+								arr.push({
+									...group,
+									numberOfRoles: totalNumberConverter(
+										roles.headers['content-range'],
+									),
+									numberOfUsers: totalNumberConverter(
+										member.headers['content-range'],
+									),
+								});
+								if (res.data.length === arr.length) {
+									setGroups(arr);
+								}
+							});
+					});
+			});
+		},
+		[dispatch],
+	);
+	const getDataApi = useCallback(
+		(search) => {
+			if (page[tableKeys.groups.basic]) {
+				dispatch(
+					IAM_USER_GROUP.asyncAction.findAllAction({
+						range: page[tableKeys.groups.basic],
+						keyword: search ? search : '',
+					}),
+				)
+					.unwrap()
+					.then((res) => {
+						setTotal(
+							totalNumberConverter(res.headers['content-range']),
+						);
+						res.data.length ? getDetailApi(res) : setGroups([]);
+					});
+			}
+		},
+		[dispatch, getDetailApi, page],
+	);
+
+	useEffect(() => {
+		getDataApi(search);
+	}, [getDataApi, page, search]);
+
 	return (
 		<IamContainer>
 			<CurrentPathBar>
@@ -121,7 +188,7 @@ const GroupSpace = () => {
 			</CurrentPathBar>
 
 			<TitleBar>
-				<div>사용자 그룹 : {groups.length} </div>
+				<div>사용자 그룹 : {total} </div>
 				<TitleBarButtons>
 					<NormalButton onClick={onCLickLinkToAddGroup}>
 						그룹 생성
@@ -144,6 +211,7 @@ const GroupSpace = () => {
 				isSearchable
 				isSearchFilterable
 				isColumnFilterable
+				setSearch={setSearch}
 			/>
 		</IamContainer>
 	);
