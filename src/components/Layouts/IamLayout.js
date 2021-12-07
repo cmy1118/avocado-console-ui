@@ -8,7 +8,7 @@ import Header from '../Header/Header';
 import {DragDropContext} from 'react-beautiful-dnd';
 import Footer from '../Footer/Footer';
 import {useSelector} from 'react-redux';
-import AUTH_USER from '../../reducers/api/Auth/authUser';
+import AUTH from '../../reducers/api/Auth/auth';
 
 const _Container = styled.div`
 	display: flex;

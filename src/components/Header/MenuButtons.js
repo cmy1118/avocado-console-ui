@@ -3,12 +3,12 @@ import {HoverIconButton} from '../../styles/components/icons';
 import {helpIcon, notificationIcon, settingIcon} from '../../icons/icons';
 import styled from 'styled-components';
 import {useSelector} from 'react-redux';
-import AUTH_USER from '../../reducers/api/Auth/authUser';
+import AUTH from '../../reducers/api/Auth/auth';
 
 import AccountContextMenu from '../ContextMenu/AccountContextMenu';
 
 const _Container = styled.div`
-align-items: center;
+	align-items: center;
 	display: flex;
 `;
 
@@ -19,9 +19,9 @@ const _UserContainer = styled.div`
 `;
 
 const _UserId = styled.div`
-  line-height: 1.54;
-  letter-spacing: 0.25px;
-	color:#D7D7D7;
+	line-height: 1.54;
+	letter-spacing: 0.25px;
+	color: #d7d7d7;
 	display: flex;
 	font-size: 14px;
 	padding-right: 8px;
@@ -29,17 +29,16 @@ const _UserId = styled.div`
 `;
 
 const _Settings = styled.div`
-background-color: #3f7e81;
+	background-color: #3f7e81;
 	display: flex;
 	padding-left: 8px;
 `;
 const _AccountContextMenu = styled(AccountContextMenu)`
-background :#3f7e81;
-
-`
+	background: #3f7e81;
+`;
 
 const MenuButtons = () => {
-	const {user} = useSelector(AUTH_USER.selector);
+	const {userAuth} = useSelector(AUTH.selector);
 
 	// const onClickCloseAside = useCallback(() => {
 	// 	document.querySelector('.aside-bar').classList.toggle('close');
@@ -49,11 +48,15 @@ const MenuButtons = () => {
 		<_Container>
 			<_UserContainer>
 				<AccountContextMenu />
-				<_UserId>{user?.user_id}</_UserId>
+				<_UserId>{userAuth?.user_id}</_UserId>
 			</_UserContainer>
 			<_Settings>
-				<HoverIconButton color={'#D7D7D7'} >{notificationIcon}</HoverIconButton>
-				<HoverIconButton color={'#D7D7D7'}>{settingIcon}</HoverIconButton>
+				<HoverIconButton color={'#D7D7D7'}>
+					{notificationIcon}
+				</HoverIconButton>
+				<HoverIconButton color={'#D7D7D7'}>
+					{settingIcon}
+				</HoverIconButton>
 				<HoverIconButton color={'#D7D7D7'}>{helpIcon}</HoverIconButton>
 			</_Settings>
 			{/*<HoverIconButton onClick={onClickCloseAside}>Q</HoverIconButton>*/}

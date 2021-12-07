@@ -4,7 +4,7 @@ import Form from '../RecycleComponents/New/Form';
 import {userIcon} from '../../icons/icons';
 import {HoverIconButton} from '../../styles/components/icons';
 import {useDispatch} from 'react-redux';
-import AUTH_USER from '../../reducers/api/Auth/authUser';
+import AUTH from '../../reducers/api/Auth/auth';
 
 const options = {logout: {value: 'logout', label: 'logout'}};
 
@@ -19,7 +19,7 @@ const AccountContextMenu = () => {
 	const onClickAccountAction = useCallback(
 		(v) => {
 			if (v.account === options.logout.value) {
-				dispatch(AUTH_USER.asyncAction.logoutAction());
+				dispatch(AUTH.asyncAction.logoutAction());
 			}
 		},
 		[dispatch],
@@ -34,7 +34,11 @@ const AccountContextMenu = () => {
 			<ComboBox
 				innerRef={formRef}
 				name='account'
-				header={<HoverIconButton color={'#D7D7D7'}>{userIcon}</HoverIconButton>}
+				header={
+					<HoverIconButton color={'#D7D7D7'}>
+						{userIcon}
+					</HoverIconButton>
+				}
 				type='drop'
 				options={contextMenuOptions}
 			/>

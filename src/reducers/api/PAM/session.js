@@ -6,14 +6,14 @@ const NAME = 'PAM_SESSION';
 const findSessionAction = createAsyncThunk(
 	`${NAME}/FIND_SESSION`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(`/open-api/v1/pam/sessions`, {
 			params: {
 				userUids: payload.userUids,
 			},
 			headers: {
-				Authorization: `${user.token_type} ${user.access_token}`,
+				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				Range: payload.range,
 			},
 			baseURL: baseURL.openApi,

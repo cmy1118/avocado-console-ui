@@ -7,13 +7,13 @@ const NAME = 'IAM_USER_POLICY';
 const getsAction = createAsyncThunk(
 	`${NAME}/GETS`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
-		// eslint-disable-next-line no-console
+		const {userAuth} = getState().AUTH;
+
 		const response = await Axios.get(
 			`/open-api/v1/iam/users/${payload.userUid}/policy`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -26,7 +26,7 @@ const getsAction = createAsyncThunk(
 const grantGetsAction = createAsyncThunk(
 	`${NAME}/GRANT_GETS`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 		const response = await Axios.get(
 			'/open-api/v1/iam/roles/policy-templates',
 			{
@@ -34,7 +34,7 @@ const grantGetsAction = createAsyncThunk(
 					roleId: payload.roleId,
 				},
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 					Range: 'elements=0-50',
 				},

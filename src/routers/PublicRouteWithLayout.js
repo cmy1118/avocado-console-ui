@@ -2,10 +2,10 @@ import {useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Redirect, Route} from 'react-router-dom';
 import React from 'react';
-import AUTH_USER from '../reducers/api/Auth/authUser';
+import AUTH from '../reducers/api/Auth/auth';
 
 const PublicRouteWithLayout = ({layout, component, ...rest}) => {
-	const {isLoggedIn} = useSelector(AUTH_USER.selector);
+	const {isLoggedIn} = useSelector(AUTH.selector);
 
 	return (
 		<Route

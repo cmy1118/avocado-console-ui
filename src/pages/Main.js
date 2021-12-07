@@ -1,6 +1,6 @@
 import Approal_grey from '../images/dashboard/service_app_gray@2x.png';
 import {useSelector} from 'react-redux';
-import AUTH_USER from '../reducers/api/Auth/authUser';
+import AUTH from '../reducers/api/Auth/auth';
 
 import React, {useCallback} from 'react';
 
@@ -101,7 +101,7 @@ const _contentsItem = styled.div`
 
 const Main = () => {
 	const history = useHistory();
-	const {companyId} = useSelector(AUTH_USER.selector);
+	const {companyId} = useSelector(AUTH.selector);
 	const utils = [
 		{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green, url: 'iam'},
 		{

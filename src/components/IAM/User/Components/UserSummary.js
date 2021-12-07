@@ -21,13 +21,13 @@ import {
 import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import * as _ from 'lodash';
-import AUTH_USER from '../../../../reducers/api/Auth/authUser';
+import AUTH from '../../../../reducers/api/Auth/auth';
 import {account} from '../../../../utils/auth';
 
 const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const {companyId} = useSelector(AUTH_USER.selector);
+	const {companyId} = useSelector(AUTH.selector);
 
 	const [user, setUser] = useState(null);
 	const {initialPage} = useSelector(PAGINATION.selector);

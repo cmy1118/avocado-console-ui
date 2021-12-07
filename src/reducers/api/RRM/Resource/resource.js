@@ -84,13 +84,13 @@ const deleteAction = createAsyncThunk(
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH_USER;
 
 		const response = await Axios.get(
 			`/open-api/v1/rrm/remote-resources/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -103,7 +103,7 @@ const findByIdAction = createAsyncThunk(
 const findAllAccountAction = createAsyncThunk(
 	`${NAME}/findAllAccount`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH_USER;
 		//	console.log(payload);
 		const response = await Axios.get(
 			`/open-api/v1/pam/remote-resources/users`,
@@ -114,7 +114,7 @@ const findAllAccountAction = createAsyncThunk(
 					credentialType: 'Password',
 				},
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 					Range: 'elements=0-50',
 				},

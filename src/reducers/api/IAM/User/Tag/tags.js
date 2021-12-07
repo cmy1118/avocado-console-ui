@@ -7,7 +7,7 @@ const NAME = 'IAM_USER_TAG';
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.post(
 			`/open-api/v1/iam/users/${payload.userUid}/tags`,
@@ -17,7 +17,7 @@ const createAction = createAsyncThunk(
 			},
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -30,7 +30,7 @@ const createAction = createAsyncThunk(
 const updateAction = createAsyncThunk(
 	`${NAME}/UPDATE`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.put(
 			`/open-api/v1/iam/users/${payload.userUid}/tags/${payload.name}`,
@@ -39,7 +39,7 @@ const updateAction = createAsyncThunk(
 			},
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -53,13 +53,13 @@ const updateAction = createAsyncThunk(
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.delete(
 			`/open-api/v1/iam/users/${payload.userUid}/tags/${payload.name}`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -72,13 +72,13 @@ const deleteAction = createAsyncThunk(
 const getsAction = createAsyncThunk(
 	`${NAME}/GETS`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 		const response = await Axios.get(`/open-api/v1/iam/users/tags`, {
 			params: {
 				userUid: payload.userUid,
 			},
 			headers: {
-				Authorization: `${user.token_type} ${user.access_token}`,
+				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				Range: payload.range,
 			},
 			baseURL: baseURL.openApi,

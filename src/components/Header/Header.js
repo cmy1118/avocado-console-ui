@@ -10,7 +10,7 @@ import {account} from '../../utils/auth';
 import kt from '../../images/logo/kt.png';
 import sk from '../../images/logo/sk.png';
 import {useSelector} from 'react-redux';
-import AUTH_USER from '../../reducers/api/Auth/authUser';
+import AUTH from '../../reducers/api/Auth/auth';
 
 const _Container = styled.div`
 	background: #3f7e81;
@@ -52,7 +52,7 @@ const _LogoText = styled.span`
 
 const Header = () => {
 	const ref = useRef(null);
-	const {companyId} = useSelector(AUTH_USER.selector);
+	const {companyId} = useSelector(AUTH.selector);
 
 	return (
 		<_Container>

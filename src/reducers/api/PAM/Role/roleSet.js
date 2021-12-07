@@ -6,7 +6,7 @@ const NAME = 'PAM_ROLE_SET';
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.post(
 			`/open-api/v1/pam/roles/${payload.id}/role-sets`,
@@ -15,7 +15,7 @@ const createAction = createAsyncThunk(
 					parrentRoleId: payload.parrentRoleId,
 				},
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -28,13 +28,13 @@ const createAction = createAsyncThunk(
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.delete(
 			` /open-api/v1/pam/roles/${payload.id}/role-sets`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				},
 				baseURL: baseURL.openApi,
 			},
@@ -46,13 +46,13 @@ const deleteAction = createAsyncThunk(
 const findRoleSetByIdAction = createAsyncThunk(
 	`${NAME}/FIND_ROLE_SET_BY_ID`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(
 			`open-api/v1/pam/roles/${payload.id}/role-sets`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					Range: payload.range,
 				},
 				baseURL: baseURL.openApi,
@@ -66,7 +66,7 @@ const getAllRoleSetsAction = createAsyncThunk(
 	`${NAME}/GET_ALL_ROLE_SETS`,
 	async (payload, {getState}) => {
 		//로그인 처리
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(`/open-api/v1/pam/roles/role-sets`, {
 			params: {
@@ -74,7 +74,7 @@ const getAllRoleSetsAction = createAsyncThunk(
 				name: payload.name,
 			},
 			headers: {
-				Authorization: `${user.token_type} ${user.access_token}`,
+				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				Range: payload.range,
 			},
 			baseURL: baseURL.openApi,
@@ -86,7 +86,7 @@ const getAllRoleSetsAction = createAsyncThunk(
 const getEventsAction = createAsyncThunk(
 	`${NAME}/GET_EVENTS`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(
 			`/open-api/v1/pam/roles/role-sets/events`,
@@ -101,7 +101,7 @@ const getEventsAction = createAsyncThunk(
 					userUid: payload.userUid,
 				},
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					Range: payload.range,
 					'Content-Type': 'application/json',
 				},

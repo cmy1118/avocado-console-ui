@@ -24,15 +24,15 @@ import PAM_ROLE_USER from './api/PAM/Role/user';
 import PAM_ROLE_USER_GROUP from './api/PAM/Role/userGroup';
 import IAM_USER_POLICY from './api/IAM/User/Policy/policy';
 import IAM_USER_TAG from './api/IAM/User/Tag/tags';
-import AUTH_USER from './api/Auth/authUser';
+import AUTH from './api/Auth/auth';
 import IAM_GRANT_POLICY_BY_ROLE from './api/IAM/User/Policy/GrantPolicy/role';
 import IAM_GRANT_POLICY_BY_USER from './api/IAM/User/Policy/GrantPolicy/user';
 import IAM_POLICY_TEMPLATE from './api/IAM/User/Policy/policyTemplate';
 import PAM_SESSION from './api/PAM/session';
 
-const authUserFilter = createFilter(AUTH_USER.name, [
+const authFilter = createFilter(AUTH.name, [
 	'companyId',
-	'user',
+	'userAuth',
 	'isLoggedIn',
 ]);
 const iamUserFilter = createFilter(IAM_USER.name, ['users']);
@@ -56,7 +56,7 @@ const persistConfig = {
 	storage: storageSession,
 
 	whitelist: [
-		AUTH_USER.name,
+		AUTH.name,
 		IAM_USER.name,
 		IAM_USER_GROUP.name,
 		IAM_USER_GROUP_TYPE.name,
@@ -66,7 +66,7 @@ const persistConfig = {
 		IAM_USER_POLICY.name,
 	],
 	transforms: [
-		authUserFilter,
+		authFilter,
 		iamUserFilter,
 		iamGroupFilter,
 		iamGroupTypeFilter,
@@ -81,7 +81,7 @@ const rootReducer = combineReducers({
 	[SETTING.name]: SETTING.reducer,
 	[PAGINATION.name]: PAGINATION.reducer,
 	[IAM_CLIENT.name]: IAM_CLIENT.reducer,
-	[AUTH_USER.name]: AUTH_USER.reducer,
+	[AUTH.name]: AUTH.reducer,
 	/******************************************/
 	/* seob : IAM - User reducers
     /******************************************/

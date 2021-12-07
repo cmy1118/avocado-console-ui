@@ -6,7 +6,7 @@ const NAME = 'PAM_ROLES';
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
 		const response = await Axios.post(
 			`/open-api/v1/pam/roles`,
@@ -15,7 +15,7 @@ const createAction = createAsyncThunk(
 			},
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -28,7 +28,7 @@ const createAction = createAsyncThunk(
 const updateAction = createAsyncThunk(
 	`${NAME}/UPDATE`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.put(
 			`/open-api/v1/pam/role/${payload.id}`,
@@ -38,7 +38,7 @@ const updateAction = createAsyncThunk(
 			},
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -51,13 +51,13 @@ const updateAction = createAsyncThunk(
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.delete(
 			`/open-api/v1/pam/role/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -70,13 +70,13 @@ const deleteAction = createAsyncThunk(
 const findRolesByIdsAction = createAsyncThunk(
 	`${NAME}/FIND_ROLES_BY_ID`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(
 			`/open-api/v1/pam/roles/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					// 'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -90,7 +90,7 @@ const getAllRolesAction = createAsyncThunk(
 	`${NAME}/GET_ALL_ROLES`,
 	async (payload, {getState}) => {
 		//로그인 처리
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH_USER;
 
 		const response = await Axios.get(`/open-api/v1/pam/roles`, {
 			params: {
@@ -98,7 +98,7 @@ const getAllRolesAction = createAsyncThunk(
 				id: payload.id || null,
 			},
 			headers: {
-				Authorization: `${user.token_type} ${user.access_token}`,
+				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				Range: payload.range,
 			},
 			baseURL: baseURL.openApi,
@@ -110,7 +110,7 @@ const getAllRolesAction = createAsyncThunk(
 const getEventsAction = createAsyncThunk(
 	`${NAME}/GET_EVENTS`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH_USER;
 
 		const response = await Axios.get(`/open-api/v1/pam/roles/events`, {
 			params: {
@@ -123,7 +123,7 @@ const getEventsAction = createAsyncThunk(
 				uid: payload.uid,
 			},
 			headers: {
-				Authorization: `${user.token_type} ${user.access_token}`,
+				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				Range: payload.range,
 			},
 			baseURL: baseURL.openApi,
