@@ -34,6 +34,7 @@ const GroupUsersTab = ({
 	const {users} = useSelector(IAM_USER.selector);
 	const [select, setSelect] = useState({});
 	const [otherMembers, setOtherMembers] = useState(0);
+	const [search, setSearch] = useState('');
 	const [members, setMembers] = useState([]);
 
 	const group = useMemo(() => groups.find((v) => v.id === groupId), [
@@ -102,6 +103,7 @@ const GroupUsersTab = ({
 
 	useEffect(() => {
 		if (!isSummaryOpened) {
+			console.log('dispatch A');
 			dispatch(
 				IAM_USER.asyncAction.findAllAction({
 					range: 'elements=0-50',
@@ -122,6 +124,7 @@ const GroupUsersTab = ({
 			!isSummaryOpened &&
 			page[tableKeys.groups.summary.tabs.users.include]
 		) {
+			console.log('dispatch B');
 			dispatch(
 				IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
 					groupId: groupId,
@@ -193,6 +196,7 @@ const GroupUsersTab = ({
 					isSearchable
 					isSearchFilterable
 					isColumnFilterable
+					setSearch={setSearch}
 				/>
 				<FoldableContainer>
 					<TableFold
@@ -236,6 +240,7 @@ const GroupUsersTab = ({
 								isSearchable
 								isSearchFilterable
 								isColumnFilterable
+								setSearch={setSearch}
 							/>
 						</>
 					)}
