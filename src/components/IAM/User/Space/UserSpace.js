@@ -146,6 +146,8 @@ const UserSpace = () => {
 				)
 					.unwrap()
 					.then((res) => {
+						console.log('search:', search);
+						console.log('res:', res);
 						setTotal(
 							totalNumberConverter(res.headers['content-range']),
 						);
@@ -153,7 +155,7 @@ const UserSpace = () => {
 					});
 			}
 		},
-		[dispatch, getDetailApi, page],
+		[search, dispatch, getDetailApi, page],
 	);
 
 	useEffect(() => {
