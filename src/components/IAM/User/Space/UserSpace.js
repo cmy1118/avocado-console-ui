@@ -146,12 +146,15 @@ const UserSpace = () => {
 				)
 					.unwrap()
 					.then((res) => {
-						console.log('search:', search);
-						console.log('res:', res);
 						setTotal(
 							totalNumberConverter(res.headers['content-range']),
 						);
 						res.data.length ? getUsersDetailApi(res) : setUsers([]);
+					})
+					.catch((error) => {
+						console.error('error:', error);
+						setTotal(totalNumberConverter(0));
+						setUsers([]);
 					});
 			}
 		},

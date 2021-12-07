@@ -167,6 +167,11 @@ const GroupSpace = () => {
 							totalNumberConverter(res.headers['content-range']),
 						);
 						res.data.length ? getDetailApi(res) : setGroups([]);
+					})
+					.catch((error) => {
+						console.error('error:', error);
+						setTotal(totalNumberConverter(0));
+						setGroups([]);
 					});
 			}
 		},

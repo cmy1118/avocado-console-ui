@@ -74,6 +74,11 @@ const RoleSpace = () => {
 							totalNumberConverter(res.headers['content-range']),
 						);
 						res.data.length ? getDetailApi(res) : setRoles([]);
+					})
+					.catch((error) => {
+						console.error('error:', error);
+						setTotal(totalNumberConverter(0));
+						setRoles([]);
 					});
 			}
 		},
