@@ -140,7 +140,7 @@ const UserSpace = () => {
 				dispatch(
 					IAM_USER.asyncAction.findAllAction({
 						range: page[tableKeys.users.basic],
-						keyword: search ? search : '',
+						...(search && {keyword: search}),
 					}),
 				)
 					.unwrap()
