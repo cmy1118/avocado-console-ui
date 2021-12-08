@@ -37,8 +37,7 @@ const UserSpace = () => {
 	const dispatch = useDispatch();
 
 	const [users, setUsers] = useState([]);
-	const [total, setTotal] = useState(0);
-	const {page} = useSelector(PAGINATION.selector);
+	const {page, total} = useSelector(PAGINATION.selector);
 	const [search, setSearch] = useState('');
 	const [select, setSelect] = useState({});
 
@@ -146,14 +145,24 @@ const UserSpace = () => {
 				)
 					.unwrap()
 					.then((res) => {
-						setTotal(
-							totalNumberConverter(res.headers['content-range']),
+						dispatch(
+							PAGINATION.action.setTotal({
+								tableKey: tableKeys.users.basic,
+								element: totalNumberConverter(
+									res.headers['content-range'],
+								),
+							}),
 						);
 						res.data.length ? getUsersDetailApi(res) : setUsers([]);
 					})
 					.catch((error) => {
 						console.error('error:', error);
-						setTotal(totalNumberConverter(0));
+						dispatch(
+							PAGINATION.action.setTotal({
+								tableKey: tableKeys.users.basic,
+								element: 0,
+							}),
+						);
 						setUsers([]);
 					});
 			}
@@ -175,7 +184,7 @@ const UserSpace = () => {
 
 			<TitleBar>
 				<RowDiv width={'100%'} justifyContent={'space-between'}>
-					<div>사용자 : {total}</div>
+					<div>사용자 : {total[tableKeys.users.basic] || 0}</div>
 					<TitleBarButtons>
 						<NormalButton onClick={onClickLinkToAddUserPage}>
 							사용자 생성
