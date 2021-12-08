@@ -22,7 +22,7 @@ import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import PAM_SESSION from '../../../../reducers/api/PAM/session';
-import AUTH_USER from '../../../../reducers/api/Auth/authUser';
+import AUTH from '../../../../reducers/api/Auth/auth';
 import {account} from '../../../../utils/auth';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
@@ -31,7 +31,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const [group, setGroup] = useState([]);
 	const [user, setUser] = useState([]);
 	const [permissions, setPermissions] = useState(null);
-	const {companyId} = useSelector(AUTH_USER.selector);
+	const {companyId} = useSelector(AUTH.selector);
 
 	const permissionData = useMemo(() => {
 		console.log(permissions);

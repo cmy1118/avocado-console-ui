@@ -8,7 +8,7 @@ const NAME = 'IAM_USER';
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.post(
 			`/open-api/v1/iam/users`,
@@ -22,7 +22,7 @@ const createAction = createAsyncThunk(
 			},
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -35,7 +35,7 @@ const createAction = createAsyncThunk(
 const updateAction = createAsyncThunk(
 	`${NAME}/UPDATE`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.put(
 			`/open-api/v1/iam/users/${payload.userUid}`,
@@ -48,7 +48,7 @@ const updateAction = createAsyncThunk(
 			},
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -62,13 +62,13 @@ const updateAction = createAsyncThunk(
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.delete(
 			`/open-api/v1/iam/users/${payload.userUid}`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -82,13 +82,13 @@ const deleteAction = createAsyncThunk(
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(
 			`/open-api/v1/iam/user-ids/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -103,13 +103,13 @@ const findByIdAction = createAsyncThunk(
 const findByUidAction = createAsyncThunk(
 	`${NAME}/FIND_BY_UID`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(
 			`/open-api/v1/iam/users/${payload.userUid}`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -123,7 +123,7 @@ const findByUidAction = createAsyncThunk(
 const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(`/open-api/v1/iam/users`, {
 			params: {
@@ -135,7 +135,7 @@ const findAllAction = createAsyncThunk(
 				createdTime: payload.createdTime,
 			},
 			headers: {
-				Authorization: `${user.token_type} ${user.access_token}`,
+				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				Range: payload.range,
 			},
 			baseURL: baseURL.openApi,
@@ -149,7 +149,7 @@ const findAllAction = createAsyncThunk(
 const getUserGroupsAction = createAsyncThunk(
 	`${NAME}/GET_INCLUDE_GROUPS`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(
 			`/open-api/v1/iam/users/${payload.userUid}/user-groups`,
@@ -159,13 +159,12 @@ const getUserGroupsAction = createAsyncThunk(
 					includeGroup: payload.isIncludeGroup,
 				},
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					Range: payload.range,
 				},
 				baseURL: baseURL.openApi,
 			},
 		);
-		//	console.log(response);
 		return {data: response.data, headers: response.headers};
 	},
 );

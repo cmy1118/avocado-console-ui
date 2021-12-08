@@ -19,7 +19,7 @@ import TextBox from '../RecycleComponents/New/TextBox';
 import {RowDiv} from '../../styles/components/style';
 import CheckBox from '../RecycleComponents/New/CheckBox';
 import {Google} from '../../utils/auth';
-import AUTH_USER from '../../reducers/api/Auth/authUser';
+import AUTH from '../../reducers/api/Auth/auth';
 
 const _CheckBoxContainer = styled.div`
 	display: flex;
@@ -80,7 +80,7 @@ const LoginForm = () => {
 			if (!v.id || !v.password) return;
 
 			dispatch(
-				AUTH_USER.asyncAction.authPolicyVerificationAction({
+				AUTH.asyncAction.authPolicyVerificationAction({
 					username: v.id,
 					password: v.password,
 					companyId: companyId,
@@ -88,20 +88,18 @@ const LoginForm = () => {
 			)
 				.unwrap()
 				.then((val) => {
-					//		console.log(val);
-					//		console.log(val?.policyParameter?.policies);
 					if (
 						val?.policyParameter?.policies[0]?.type ===
 						'IdAndPassword'
 					) {
 						dispatch(
-							AUTH_USER.asyncAction.userAuthAction({
+							AUTH.asyncAction.userAuthAction({
 								username: v.id,
 								password: v.password,
 								companyId: companyId,
 							}),
 						);
-					}
+					} //TODO: 대체인증
 				});
 
 			if (rememberMe) {

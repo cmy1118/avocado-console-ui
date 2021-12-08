@@ -7,13 +7,13 @@ const NAME = 'IAM_ROLES_GRANT_ROLE_GROUP';
 const grantAction = createAsyncThunk(
 	`${NAME}/GRANT`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
 		const response = await Axios.post(
 			`/open-api/v1/iam/user-groups//${payload.id}/roles`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				params: {
@@ -30,13 +30,13 @@ const grantAction = createAsyncThunk(
 const revokeAction = createAsyncThunk(
 	`${NAME}/REVOKE `,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
 		const response = await Axios.put(
 			`/open-api/v1/iam/user-groups//${payload.id}/roles`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				params: {
@@ -53,13 +53,13 @@ const revokeAction = createAsyncThunk(
 const getsAction = createAsyncThunk(
 	`${NAME}/GETS`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
 		const response = await Axios.get(
 			`/open-api/v1/iam/user-groups/${payload.id}/roles`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 					Range: payload.range,
 				},
@@ -74,7 +74,7 @@ const getsAction = createAsyncThunk(
 const getEventsAction = createAsyncThunk(
 	`${NAME}/GET_EVENTS`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
 		const response = await Axios.get(
 			`//open-api/v1/iam/user-groups//${payload.id}/roles/events`,
@@ -85,7 +85,7 @@ const getEventsAction = createAsyncThunk(
 					roleId: payload.roleId,
 				},
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					Range: payload.range,
 					'Content-Type': 'application/json',
 				},
@@ -100,12 +100,12 @@ const getEventsAction = createAsyncThunk(
 const findUserGroupsById = createAsyncThunk(
 	`${NAME}/FIND_USER_GROUPS_BY_ID`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 		const response = await Axios.get(
 			`/open-api/v1/iam/roles/${payload.id}/user-groups`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				},
 				baseURL: baseURL.openApi,
 			},

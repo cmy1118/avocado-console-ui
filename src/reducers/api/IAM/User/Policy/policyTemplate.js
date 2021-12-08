@@ -9,13 +9,13 @@ const NAME = 'IAM_POLICY_TEMPLATE';
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
 		const response = await Axios.get(
 			`/open-api/v1/iam/policy-templates/${payload.templateId}`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,

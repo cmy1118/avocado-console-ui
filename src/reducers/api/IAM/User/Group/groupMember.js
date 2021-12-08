@@ -8,14 +8,14 @@ const NAME = 'IAM_USER_GROUP_MEMBER';
 const joinAction = createAsyncThunk(
 	`${NAME}/JOIN`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.put(
 			`/open-api/v1/iam/user-group-sets/${payload.groupId}`,
 			[...payload.userUid],
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -28,13 +28,13 @@ const joinAction = createAsyncThunk(
 const disjointAction = createAsyncThunk(
 	`${NAME}/DISJOINT`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.delete(
 			`/open-api/v1/iam/user-group-sets/${payload.groupId}`,
 			{
 				headers: {
-					Authorization: `${user.token_type} ${user.access_token}`,
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				params: {
@@ -51,12 +51,12 @@ const disjointAction = createAsyncThunk(
 const findAllAction = createAsyncThunk(
 	`${NAME}/FINDALL`,
 	async (payload, {getState}) => {
-		const {user} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(`/open-api/v1/iam/user-group-sets`, {
 			params: {groupId: payload.groupId},
 			headers: {
-				Authorization: `${user.token_type} ${user.access_token}`,
+				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				'Content-Type': 'application/json',
 				Range: payload.range,
 			},

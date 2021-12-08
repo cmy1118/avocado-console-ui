@@ -21,7 +21,7 @@ import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
 import PAM_ROLES from '../../../../../reducers/api/PAM/Role/roles';
 import {CollapsbleContent} from '../../../../../styles/components/style';
 import {descValues} from '../../../../../utils/tableDataConverter';
-import AUTH_USER from '../../../../../reducers/api/Auth/authUser';
+import AUTH from '../../../../../reducers/api/Auth/auth';
 import {account} from '../../../../../utils/auth';
 
 const policyType = {
@@ -214,7 +214,7 @@ const calculatettribute = (attribute) => {
 const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const [select, setSelect] = useState({});
-	const {companyId} = useSelector(AUTH_USER.selector);
+	const {companyId} = useSelector(AUTH.selector);
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
 	const [inPolicy, setInPolicy] = useState(null);

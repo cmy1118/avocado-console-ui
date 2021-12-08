@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import background from '../images/background/bg-img-1@2x.png';
 import {useDispatch, useSelector} from 'react-redux';
-import AUTH_USER from '../reducers/api/Auth/authUser';
+import AUTH from '../reducers/api/Auth/auth';
 
 const _Container = styled.div`
 	width: 100%;
@@ -20,21 +20,21 @@ const _Container = styled.div`
 
 const AltAuthRedirect = () => {
 	const dispatch = useDispatch();
-	const {clientAuth, alternativeAuth} = useSelector(AUTH_USER.selector);
+	const {clientAuth, alternativeAuth} = useSelector(AUTH.selector);
 
 	useEffect(() => {
 		if (clientAuth && alternativeAuth) {
-			dispatch(AUTH_USER.asyncAction.altAuthVerificationAction());
+			dispatch(AUTH.asyncAction.altAuthVerificationAction());
 		}
 	}, [clientAuth, alternativeAuth, dispatch]);
 
 	useEffect(() => {
 		dispatch(
-			AUTH_USER.asyncAction.clientAuthAction({
+			AUTH.asyncAction.clientAuthAction({
 				companyId: localStorage.getItem('companyId'),
 			}),
 		);
-		dispatch(AUTH_USER.asyncAction.GoogleAuthAction());
+		dispatch(AUTH.asyncAction.GoogleAuthAction());
 	}, [dispatch]);
 
 	return <_Container></_Container>;

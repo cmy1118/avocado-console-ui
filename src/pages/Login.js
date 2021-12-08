@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import background_Kt from '../images/background/bg-img-1@2x.png';
 import background_Sk from '../images/background/bg-img-2@2x.png';
-import AUTH_USER from '../reducers/api/Auth/authUser';
+import AUTH from '../reducers/api/Auth/auth';
 import {useHistory} from 'react-router-dom';
 import LoginForm from '../components/Form/LoginForm';
 import {consoleManagement} from '../icons/icons';
@@ -69,7 +69,7 @@ const _LogoImage = styled.img`
 
 const Login = () => {
 	const history = useHistory();
-	const {isLoggedIn} = useSelector(AUTH_USER.selector);
+	const {isLoggedIn} = useSelector(AUTH.selector);
 	const URL = qs.parse(location).pathname;
 	const companyId = URL?.substring(URL.lastIndexOf('/') + 1);
 
