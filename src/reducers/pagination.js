@@ -5,10 +5,15 @@ const slice = createSlice({
 	initialState: {
 		page: {},
 		initialPage: 'elements=0-100',
+		total: {},
 	},
 	reducers: {
 		setPage: (state, {payload}) => {
 			state.page[payload.tableKey] = payload.element;
+		},
+
+		setTotal: (state, {payload}) => {
+			state.total[payload.tableKey] = payload.element;
 		},
 	},
 });
@@ -16,10 +21,12 @@ const slice = createSlice({
 const selectAllState = createSelector(
 	(state) => state.page,
 	(state) => state.initialPage,
-	(page, initialPage) => {
+	(state) => state.total,
+	(page, initialPage, total) => {
 		return {
 			page,
 			initialPage,
+			total,
 		};
 	},
 );

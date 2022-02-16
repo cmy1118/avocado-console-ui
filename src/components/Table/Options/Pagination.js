@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import PAGINATION from '../../../reducers/pagination';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Button = styled.button`
 	border: none;
@@ -26,39 +26,66 @@ const Container = styled.div`
 `;
 
 const Pagination = ({
-	gotoPage,
 	canPreviousPage,
 	previousPage,
 	nextPage,
 	canNextPage,
-	pageCount,
-	pageOptions,
 	pageSize,
 	tableKey,
 }) => {
 	const dispatch = useDispatch();
+	const {total} = useSelector(PAGINATION.selector);
+	const [page, setPage] = useState([]);
+	const [currentPage, setCurrentPage] = useState(0);
+
+	const onClickGoToPage = useCallback(
+		(v) => {
+			console.log(v + 1);
+			setCurrentPage(v);
+			dispatch(
+				PAGINATION.action.setPage({
+					tableKey,
+					element: `elements=${pageSize * v}-${
+						pageSize * (v + 1) - 1
+					}`,
+				}),
+			);
+		},
+		[dispatch, pageSize, tableKey],
+	);
+
+	useEffect(() => {
+		console.log(Math.ceil(total[tableKey] / pageSize));
+		if (Math.ceil(total[tableKey] / pageSize)) {
+			setPage(
+				[...Array(Math.ceil(total[tableKey] / pageSize))].map(
+					(v, i) => i,
+				),
+			);
+		}
+	}, [pageSize, tableKey, total]);
 
 	useEffect(() => {
 		dispatch(
 			PAGINATION.action.setPage({
 				tableKey,
-				element: `elements=${pageSize * pageCount}-${
-					pageSize * (pageCount + 1)
+				element: `elements=${pageSize * currentPage}-${
+					pageSize * (currentPage + 1) - 1
 				}`,
 			}),
 		);
-	}, [dispatch, pageCount, pageSize, tableKey]);
+	}, [currentPage, dispatch, pageSize, tableKey]);
 
 	return (
 		<Container className='pagination'>
 			<Button onClick={() => previousPage()} disabled={!canPreviousPage}>
 				{'<'}
 			</Button>
-			{pageOptions.map((v) => {
+			{page.map((v) => {
 				return (
 					<Button
-						onClick={() => gotoPage(v)}
-						current={v === pageCount}
+						onClick={() => onClickGoToPage(v)}
+						current={v === currentPage}
 						key={v}
 					>
 						{v + 1}
@@ -78,9 +105,7 @@ Pagination.propTypes = {
 	previousPage: PropTypes.func.isRequired,
 	nextPage: PropTypes.func.isRequired,
 	canNextPage: PropTypes.bool.isRequired,
-	pageCount: PropTypes.number.isRequired,
 	pageSize: PropTypes.number.isRequired,
-	pageOptions: PropTypes.array.isRequired,
 	tableKey: PropTypes.string.isRequired,
 };
 
