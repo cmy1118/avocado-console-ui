@@ -9,8 +9,13 @@ import {
 	burgerMenuIcon,
 	dashboardIcon,
 	fileIcon,
-	folderIcon, groupsIcon,
-	moreVertIcon, policyIcon, roleIcon, securityIcon, userIcon,
+	folderIcon,
+	groupsIcon,
+	moreVertIcon,
+	policyIcon,
+	roleIcon,
+	securityIcon,
+	userIcon,
 } from '../../icons/icons';
 import PropTypes from 'prop-types';
 import qs from 'qs';
@@ -127,11 +132,11 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 	}, [isUnfolded]);
 
 	const onClickDeveloping = useCallback(() => {
-		dispatch(
-			DIALOG_BOX.action.openAlert({
-				key: confirmAlertMessages.developing.key,
-			}),
-		);
+		// dispatch(
+		// 	DIALOG_BOX.action.openAlert({
+		// 		key: confirmAlertMessages.developing.key,
+		// 	}),
+		// );
 	}, []);
 
 	return isOpened ? (
@@ -252,7 +257,7 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 								</ResourceItemText>
 							</ResourceItem>
 						</NavItem>
-						<NavItemTemp onClick={onClickDeveloping}>
+						<NavItem to='/policies'>
 							<ResourceItem
 								left={(leftSize * 11 + 8).toString() + 'px'}
 								selected={pathname.includes('policies') ? 1 : 0}
@@ -274,7 +279,7 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 									정책
 								</ResourceItemText>
 							</ResourceItem>
-						</NavItemTemp>
+						</NavItem>
 					</NavItemList>
 				)}
 			</_NavContents>
