@@ -19,6 +19,9 @@ import TextBox from '../../../RecycleComponents/New/TextBox';
 import * as yup from 'yup';
 import ComboBox from '../../../RecycleComponents/New/ComboBox';
 
+/**************************************************
+ * ambacc244 - 새로운 정책 추가를 위한 기본 정보을 입력받는 컴포넌트
+ **************************************************/
 const AddPolicy = () => {
 	const history = useHistory();
 	const formRef = useRef(null);
@@ -34,8 +37,14 @@ const AddPolicy = () => {
 			.required('정책 설명은 필수 입력 값입니다.'),
 	};
 
+	/**************************************************
+	 * ambacc244 - 정책 추가 취소
+	 **************************************************/
 	const onClickCancelAddPolicy = useCallback(() => {}, []);
 
+	/**************************************************
+	 * ambacc244 - 정책 추가
+	 **************************************************/
 	const onSubmitPolicyData = useCallback(() => {}, []);
 
 	return (

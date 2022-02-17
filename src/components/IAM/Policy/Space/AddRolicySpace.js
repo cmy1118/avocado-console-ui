@@ -6,6 +6,9 @@ import AddPolicy from '../Components/AddPolicy';
 import {AddPageContainer} from '../../../../styles/components/iam/addPage';
 import AddPolicyDescription from '../Components/PolicyDescription';
 
+/**************************************************
+ * ambacc244 - 새로운 정책을 추가를 위한 정보를 조합하는 컴포넌트
+ **************************************************/
 const AddRolicySpace = () => {
 	return (
 		<IamContainer>
