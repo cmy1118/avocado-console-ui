@@ -2,6 +2,9 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {CurrentPathBar} from '../../../../styles/components/currentPathBar';
 import {IamContainer} from '../../../../styles/components/iam/iam';
+import AddPolicy from '../Components/AddPolicy';
+import {AddPageContainer} from '../../../../styles/components/iam/addPage';
+import AddPolicyDescription from '../Components/PolicyDescription';
 
 const AddRolicySpace = () => {
 	return (
@@ -14,7 +17,10 @@ const AddRolicySpace = () => {
 				<Link to='/policies/add'>정책 추가</Link>
 			</CurrentPathBar>
 
-			<div>Add Rolicy Space</div>
+			<AddPageContainer>
+				<AddPolicy />
+				<AddPolicyDescription />
+			</AddPageContainer>
 		</IamContainer>
 	);
 };
