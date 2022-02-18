@@ -18,6 +18,17 @@ import {RowDiv} from '../../../../styles/components/style';
 import TextBox from '../../../RecycleComponents/New/TextBox';
 import * as yup from 'yup';
 import ComboBox from '../../../RecycleComponents/New/ComboBox';
+import WritePolicy from './WritePolicy';
+
+/**************************************************
+ * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
+ ***************************************************/
+const contents = {
+	writePolicy: {
+		title: '정책 작성',
+		description: '정책 유형에 해당되는 탬플릿 5개까지만 추가 가능합니다.',
+	},
+};
 
 const AddPolicy = () => {
 	const history = useHistory();
@@ -102,6 +113,10 @@ const AddPolicy = () => {
 					</RowDiv>
 				</Form>
 			</AddPageContent>
+			<WritePolicy
+				title={contents.writePolicy.title}
+				description={contents.writePolicy.description}
+			/>
 		</>
 	);
 };
