@@ -31,6 +31,8 @@ const contents = {
 	roleManagement: '역할 관리 권한',
 };
 
+// memo (seob): 우선 여기에 각각의 컴포넌트를 component에 넣으면 되는데
+//  제가 작성한 템플릿 생성방식이 문제가 되거나 수정 보완할 방향이 있다면 같이 협의하면 좋겠습니다.
 // api 통신으로 응답받은 템플릿 리스트를 해당되는 컴포넌트와 연결해서 관리
 // 사용방식 또는 api response에 따라서 수정 예정
 const templateResponse = [
