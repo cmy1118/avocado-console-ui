@@ -43,6 +43,7 @@ const CheckBox = ({
 	checked = false,
 	...props
 }) => {
+	console.log('CheckBox:', checked);
 	return (
 		<_Container
 			margin={props.margin}

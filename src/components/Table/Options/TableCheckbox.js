@@ -2,13 +2,17 @@ import React, {forwardRef, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import CheckBox from '../../RecycleComponents/New/CheckBox';
 
-const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
+const TableCheckbox = forwardRef(({indeterminate, row, ...rest}, ref) => {
 	const checkboxes = document.querySelectorAll(
 		`.${rest.tablekey}[type='checkbox']`,
 	);
 
 	const handleClick = useCallback(
 		(e) => {
+			console.log('📌checkBox Click-row:', row);
+			// console.log('📌checkBox Click-rest:', rest);
+			console.log('📌checkBox Click-e:', e.target);
+			console.log('📌checkBox Click-indeterminate:', indeterminate);
 			if (e.target.isBetween) {
 				delete e.target.isBetween;
 				return;
@@ -118,12 +122,12 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 			});
 			e.target.lastChecked = true;
 		},
-		[checkboxes],
+		[checkboxes, rest, row],
 	);
 
 	return (
 		<CheckBox
-			className={`${rest.tablekey}`}
+			className={`${rest.id}`}
 			indeterminate={indeterminate}
 			onClick={handleClick}
 			{...rest}
@@ -134,6 +138,7 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 
 TableCheckbox.propTypes = {
 	indeterminate: PropTypes.bool,
+	row: PropTypes.object,
 };
 
 TableCheckbox.displayName = 'TableCheckbox';

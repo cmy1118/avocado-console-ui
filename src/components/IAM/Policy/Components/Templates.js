@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import UserAccessTemplate from './Templets/UserAccessTemplate';
 import UserSessionTemplate from './Templets/UserSessionTemplate';
 import styled from 'styled-components';
+import UserManagement from './Templets/UserManagement';
 
 const Container = styled.div`
 	display: flex;
@@ -69,7 +70,7 @@ const templateResponse = [
 	{
 		title: contents.templates.userManagement,
 		description: 'userManagement description',
-		component: '',
+		component: UserManagement,
 	},
 	{
 		title: contents.templates.policyManagement,
