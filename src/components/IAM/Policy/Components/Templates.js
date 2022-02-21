@@ -40,6 +40,13 @@ const contents = {
 //  제가 작성한 템플릿 생성방식이 문제가 되거나 수정 보완할 방향이 있다면 같이 협의하면 좋겠습니다.
 // api 통신으로 응답받은 템플릿 리스트를 해당되는 컴포넌트와 연결해서 관리
 // 사용방식 또는 api response에 따라서 수정 예정
+/**************************************************
+ * seob - 템플릿 리스트 아이템의 객체 배열 변수
+ *
+ * title: 템플릿 이름
+ * description: 마우스 호버시 템플릿 상세설명
+ * component: 템플릿 컴포넌트
+ ***************************************************/
 const templateResponse = [
 	{
 		title: contents.templates.userAuth,
@@ -85,6 +92,8 @@ const templateResponse = [
 
 /**************************************************
  * seob - 정책 템플릿 리스트 컴포넌트
+ *
+ * setTemplateList: 템플릿 리스트 set 함수
  ***************************************************/
 const TemplateList = ({setTemplateList}) => {
 	// 각 템플릿별 설명
@@ -127,10 +136,14 @@ TemplateList.propTypes = {
 	setTemplateList: PropTypes.func,
 };
 
+/**************************************************
+ * seob - 정책 작성 페이지의 템플릿 리스트
+ *
+ * isOpened: 추가할 템플릿 리스트 사이드의 open 상태
+ ***************************************************/
 const Templates = ({isOpened}) => {
+	// 정책 작성 페이지에 추가된 템플릿 리스트
 	const [templateList, setTemplateList] = useState([]);
-
-	console.log(templateList);
 
 	return (
 		<>

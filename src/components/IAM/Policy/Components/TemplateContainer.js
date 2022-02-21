@@ -17,15 +17,29 @@ const Body = styled.div`
 	padding: 8px;
 `;
 
+/**************************************************
+ * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
+ ***************************************************/
 const contents = {
 	isFold: '열기',
 	isUnfold: '닫기',
 	delete: '삭제',
 };
 
+/**************************************************
+ * seob - 템플릿 리스트 개별 아이템의 컨테이너 (foldable 기능, 템플릿 리스트에서 아이템 제거 기능)
+ *
+ * template: 템플릿
+ * setTemplateList: 템플릿 리스트 set 함수
+ * render: 각각의 템플릿 컴포넌트 렌더 프로퍼티
+ ***************************************************/
 const TemplatesChild = ({template, setTemplateList, render}) => {
+	// fold 상태
 	const [isOpened, setIsOpened] = useState(true);
 
+	/**************************************************
+	 * seob - templateList에서 현재 템플릿을 제거하는 함수
+	 ***************************************************/
 	const deleteTemplate = () => {
 		setTemplateList((prev) => prev.filter((item) => item !== template));
 	};
