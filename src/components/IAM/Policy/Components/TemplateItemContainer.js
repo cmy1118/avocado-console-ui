@@ -9,7 +9,8 @@ const Container = styled.div`
 const Title = styled.div`
 	padding-right: 8px;
 	margin-right: 8px;
-	border-right: 1px solid black;
+	// border-right: 1px solid black;
+	font-weight: bold;
 	width: 200px;
 	display: flex;
 	justify-content: center;
@@ -17,6 +18,10 @@ const Title = styled.div`
 
 const Description = styled.div`
 	display: block;
+	color: #757575;
+	margin: 0 10px;
+	font-size: 12px;
+	align-items: center;
 `;
 const Content = styled.div``;
 
