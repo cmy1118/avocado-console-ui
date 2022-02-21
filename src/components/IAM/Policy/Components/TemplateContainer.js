@@ -1,17 +1,41 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import {arrowDownIcon, arrowRightIcon} from '../../../../icons/icons';
+import {HoverIconButton} from '../../../../styles/components/icons';
+import {TransparentButton} from '../../../../styles/components/buttons';
 
 const Container = styled.div`
-	padding: 8px;
-	margin: 4px;
-	border: solid black 1px;
+	.fold-title {
+		border-bottom: 2px transparent dotted;
+	}
+
+	.fold-title.close {
+		border-bottom: 2px #e3e5e5 dotted;
+	}
+`;
+
+const Title = styled.div`
+	display: flex;
+	align-items: center;
 `;
 
 const Header = styled.div`
+	box-sizing: border-box;
+	padding: 0px 16px;
+	height: 54px;
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
+	font-size: 16px;
+	font-weight: 500;
+	font-stretch: normal;
+	font-style: normal;
+	letter-spacing: 0.1px;
+	text-align: left;
+	color: #212121;
 `;
+
 const Body = styled.div`
 	display: ${(props) => (props.isOpened ? 'block' : 'none')};
 	padding: 8px;
@@ -46,15 +70,26 @@ const TemplateContainer = ({template, setTemplateList, render}) => {
 
 	return (
 		<Container>
-			<Header>
-				<div>
-					<button onClick={() => setIsOpened(!isOpened)}>
-						{isOpened ? contents.isUnfold : contents.isFold}
-					</button>
+			<Header className={isOpened ? 'fold-title' : 'fold-title close'}>
+				<Title>
+					<HoverIconButton
+						color={'font'}
+						size={'m'}
+						margin={'0px'}
+						onClick={() => setIsOpened(!isOpened)}
+					>
+						{isOpened ? arrowDownIcon : arrowRightIcon}
+					</HoverIconButton>
 					<span>{template.title}</span>
-				</div>
+				</Title>
 				<div>
-					<button onClick={deleteTemplate}>{contents.delete}</button>
+					<TransparentButton
+						type={'button'}
+						margin='0px 0px 0px 5px'
+						onClick={deleteTemplate}
+					>
+						{contents.delete}
+					</TransparentButton>
 				</div>
 			</Header>
 			<Body isOpened={isOpened}>{render()}</Body>

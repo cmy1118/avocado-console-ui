@@ -10,10 +10,13 @@ const Title = styled.div`
 	padding-right: 8px;
 	margin-right: 8px;
 	border-right: 1px solid black;
+	width: 200px;
+	display: flex;
+	justify-content: center;
 `;
 
 const Description = styled.div`
-	display: inline-block;
+	display: block;
 `;
 const Content = styled.div``;
 
