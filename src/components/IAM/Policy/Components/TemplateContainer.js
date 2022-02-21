@@ -13,6 +13,7 @@ const Header = styled.div`
 	justify-content: space-between;
 `;
 const Body = styled.div`
+	display: ${(props) => (props.isOpened ? 'block' : 'none')};
 	padding: 8px;
 `;
 
@@ -42,7 +43,7 @@ const TemplatesChild = ({template, setTemplateList, render}) => {
 					<button onClick={deleteTemplate}>{contents.delete}</button>
 				</div>
 			</Header>
-			{isOpened && <Body>{render()}</Body>}
+			<Body isOpened={isOpened}>{render()}</Body>
 		</Container>
 	);
 };

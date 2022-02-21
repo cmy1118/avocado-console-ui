@@ -11,6 +11,8 @@ const Container = styled.div`
 	flex: 1;
 `;
 
+const Title = styled.div``;
+
 const TemplateListContainer = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -21,14 +23,17 @@ const TemplateListContainer = styled.div`
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
  ***************************************************/
 const contents = {
-	userAuth: '사용자 인증',
-	userAccountProcess: '사용자 계정 처리',
-	userAccess: '사용자 접근 정책',
-	userSession: '사용자 세션 정책',
-	userAccountPattern: '사용자 계정 패턴',
-	userManagement: '사용자 관리 권한',
-	policyManagement: '정책 관리 권한',
-	roleManagement: '역할 관리 권한',
+	title: 'IAM 템플릿 선택',
+	templates: {
+		userAuth: '사용자 인증',
+		userAccountProcess: '사용자 계정 처리',
+		userAccess: '사용자 접근 정책',
+		userSession: '사용자 세션 정책',
+		userAccountPattern: '사용자 계정 패턴',
+		userManagement: '사용자 관리 권한',
+		policyManagement: '정책 관리 권한',
+		roleManagement: '역할 관리 권한',
+	},
 };
 
 // memo (seob): 우선 여기에 각각의 컴포넌트를 component에 넣으면 되는데
@@ -37,42 +42,42 @@ const contents = {
 // 사용방식 또는 api response에 따라서 수정 예정
 const templateResponse = [
 	{
-		title: contents.userAuth,
+		title: contents.templates.userAuth,
 		description: 'userAuth description',
 		component: '',
 	},
 	{
-		title: contents.userAccountProcess,
+		title: contents.templates.userAccountProcess,
 		description: 'userAccountProcess description',
 		component: '',
 	},
 	{
-		title: contents.userAccess,
+		title: contents.templates.userAccess,
 		description: 'userAccess description',
 		component: UserAccessTemplate,
 	},
 	{
-		title: contents.userSession,
+		title: contents.templates.userSession,
 		description: 'userSession description',
 		component: UserSessionTemplate,
 	},
 	{
-		title: contents.userAccountPattern,
+		title: contents.templates.userAccountPattern,
 		description: 'userAccountPattern description',
 		component: '',
 	},
 	{
-		title: contents.userManagement,
+		title: contents.templates.userManagement,
 		description: 'userManagement description',
 		component: '',
 	},
 	{
-		title: contents.policyManagement,
+		title: contents.templates.policyManagement,
 		description: 'policyManagement description',
 		component: '',
 	},
 	{
-		title: contents.roleManagement,
+		title: contents.templates.roleManagement,
 		description: 'roleManagement description',
 		component: '',
 	},
@@ -88,15 +93,18 @@ const TemplateList = ({setTemplateList}) => {
 	const addTemplate = ({template}) => () => {
 		// 현재 템플릿에 컴포넌트가 빈 값 인경우 return
 		if (template.component === '') return;
-		setTemplateList(
-			(prev) =>
+		setTemplateList((prev) => {
+			if (!prev.includes(template))
 				// 기존 리스트에 추가하려는 템플릿이 존재하지 않으면 추가
-				!prev.includes(template) && [...prev, template],
-		);
+				return [...prev, template];
+			// 기존 리스트에 추가하려는 템플릿이 존재하면 그대로
+			else return prev;
+		});
 	};
 
 	return (
 		<TemplateListContainer>
+			<Title>{contents.title}</Title>
 			<ul>
 				{templateResponse.map((template) => (
 					<li
