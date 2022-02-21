@@ -2,6 +2,13 @@ import React, {useState} from 'react';
 import Templates from './Templates';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import {NormalButton} from '../../../../styles/components/buttons';
+import {
+	TitleBar,
+	TitleBarButtons,
+	TitleBarText,
+} from '../../../../styles/components/iam/iam';
+import {TextBoxDescription} from '../../../../styles/components/iam/addPage';
 
 const Container = styled.div``;
 
@@ -39,22 +46,22 @@ const WritePolicy = ({title, description}) => {
 
 	return (
 		<Container>
-			<Header>
-				<Title>
-					<h3>{title}</h3>
-					<h5>{description}</h5>
-				</Title>
-				<div>
-					<button
+			<TitleBar>
+				<TitleBarText>
+					{title}
+					<TextBoxDescription>{description}</TextBoxDescription>
+				</TitleBarText>
+				<TitleBarButtons>
+					<NormalButton
 						onClick={() => console.log(contents.openManagedPolicy)}
 					>
 						{contents.openManagedPolicy}
-					</button>
-					<button onClick={() => setIsOpened(true)}>
+					</NormalButton>
+					<NormalButton onClick={() => setIsOpened(true)}>
 						{contents.add}
-					</button>
-				</div>
-			</Header>
+					</NormalButton>
+				</TitleBarButtons>
+			</TitleBar>
 			<Body>
 				<Templates isOpened={isOpened} />
 			</Body>
