@@ -19,7 +19,7 @@ const UserAuthTemplate = ({isFold, setIsFold}) => {
 			{isFold['UserAuth'] && (
 				<div>
 					<div>
-						<div>단말기 인증</div>ㅔ
+						<div>단말기 인증</div>
 						<div>
 							<div>사용 여부 : </div>
 							<div>
