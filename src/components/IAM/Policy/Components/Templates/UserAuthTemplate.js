@@ -2,6 +2,7 @@ import React from 'react';
 import TemplateItemContainer from '../TemplateItemContainer';
 import TemplateElement from '../TemplateElement';
 import CheckBox from '../../../../RecycleComponents/New/CheckBox';
+import RadioButton from '../../../../RecycleComponents/New/RadioButton';
 
 const userAuth = {
 	title: '사용자 인증',
@@ -143,7 +144,7 @@ const UserAuthTemplate = () => {
 										.title
 								}
 								render={() => {
-									return <div>123</div>;
+									return <div></div>;
 								}}
 							/>
 							<TemplateElement
