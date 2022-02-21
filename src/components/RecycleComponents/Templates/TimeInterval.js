@@ -1,20 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+const Container = styled.div`
+	display: flex;
+	align-items: center;
+`;
+
+const Input = styled.input`
+	width: 20px;
+`;
+
+const CheckBoxContainer = styled.div`
+	display: flex;
+	align-items: center;
+	margin-right: 8px;
+`;
 
 const TimeInterval = ({title}) => {
 	return (
-		<div>
-			<div>
+		<Container>
+			<CheckBoxContainer>
 				<input type='checkbox' />
-				<p>월</p>
-			</div>
+				<p>{title}</p>
+			</CheckBoxContainer>
 			<div>
-				<input type='text' /> :
-				<input type='text' /> ~
-				<input type='text' /> :
-				<input type='text' />
+				<Input type='text' /> :
+				<Input type='text' /> ~
+				<Input type='text' /> :
+				<Input type='text' />
 			</div>
-		</div>
+		</Container>
 	);
 };
 
