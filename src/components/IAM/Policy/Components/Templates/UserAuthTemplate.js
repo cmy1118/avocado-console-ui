@@ -4,7 +4,7 @@ import {FoldableContainer} from '../../../../../styles/components/iam/iam';
 import TableFold from '../../../../Table/Options/TableFold';
 import CheckBox from '../../../../RecycleComponents/New/CheckBox';
 
-const text = {
+const userAuth = {
 	title: '사용자 인증',
 	contents: {
 		deviceAuth: {
@@ -15,7 +15,7 @@ const text = {
 					title: '사용 여부',
 					options: {use: '사용함', nonuse: '사용 안함'},
 				},
-				controlApplication: {
+				application: {
 					title: '제어 어플리케이션',
 					options: {
 						managementConsole: 'Management Console',
@@ -35,31 +35,31 @@ const text = {
 					title: '사용 여부',
 					options: {use: '사용함', nonuse: '사용 안함'},
 				},
-				additionalCertification1: {
+				additionalAuth1: {
 					title: '1차 추가 인증',
-					certification: {use: '인증 함', nonuse: '인증 안함'},
+					auth: {use: '인증 함', nonuse: '인증 안함'},
 					required: {required: '필수', optional: '선택', no: '없음'},
-					checkBoxOptions: {
+					authMethod: {
 						mail: '인증번호(Mail)',
 						sms: '인증번호(SMS)',
 						kakao: '인증번호(Kakao)',
 					},
 				},
-				additionalCertification2: {
-					title: '1차 추가 인증',
-					certification: {use: '인증 함', nonuse: '인증 안함'},
+				additionalAuth2: {
+					title: '2차 추가 인증',
+					auth: {use: '인증 함', nonuse: '인증 안함'},
 					required: {required: '필수', optional: '선택', no: '없음'},
-					checkBoxOptions: {
+					authMethod: {
 						mail: '인증번호(Mail)',
 						sms: '인증번호(SMS)',
 						kakao: '인증번호(Kakao)',
 					},
 				},
-				additionalCertification3: {
-					title: '1차 추가 인증',
-					certification: {use: '인증 함', nonuse: '인증 안함'},
+				additionalAuth3: {
+					title: '3차 추가 인증',
+					auth: {use: '인증 함', nonuse: '인증 안함'},
 					required: {required: '필수', optional: '선택', no: '없음'},
-					authmethod: {
+					authMethod: {
 						mail: '인증번호(Mail)',
 						sms: '인증번호(SMS)',
 						kakao: '인증번호(Kakao)',
@@ -87,7 +87,7 @@ const text = {
 					},
 				},
 				mfa: {
-					title: '기본 인증',
+					title: 'MFA',
 					options: {
 						no: '없음',
 						mail: '인증번호(Mail)',
@@ -108,7 +108,7 @@ const text = {
 					title: '사용 여부',
 					options: {use: '사용함', nonuse: '사용 안함'},
 				},
-				authType: {
+				authMethod: {
 					title: '확인 유형',
 					options: {
 						no: 'ID/Password',
@@ -117,9 +117,9 @@ const text = {
 						kakao: '인증번호(Kakao)',
 					},
 				},
-				mfa: {
+				waitingTime: {
 					title: '입력 대기 시간(초)',
-					sec: '초',
+					message: '초',
 				},
 			},
 		},

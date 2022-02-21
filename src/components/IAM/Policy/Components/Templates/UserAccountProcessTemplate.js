@@ -1,6 +1,6 @@
 import React from 'react';
 
-const accountStatus = {
+const UserAccountProcess = {
 	title: '사용자 계정 처리',
 	contents: {
 		loginFailure: {
