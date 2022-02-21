@@ -23,6 +23,7 @@ import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import * as _ from 'lodash';
 import AUTH from '../../../../reducers/api/Auth/auth';
 import {account} from '../../../../utils/auth';
+import {TableMode} from '../../../../Constants/Table/mode';
 
 const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -332,7 +333,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				그룹 : {groupData.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				mode={TableMode.READ_ONLY}
 				data={groupData}
 				tableKey={tableKeys.users.summary.group}
 				columns={tableColumns[tableKeys.users.summary.group]}
@@ -342,7 +343,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				권한 : {roleData.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				mode={TableMode.READ_ONLY}
 				data={roleData}
 				tableKey={tableKeys.users.summary.permission}
 				columns={tableColumns[tableKeys.users.summary.permission]}
@@ -352,7 +353,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				태그 : {tagData.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				mode={TableMode.READ_ONLY}
 				data={tagData}
 				tableKey={tableKeys.users.summary.tag}
 				columns={tableColumns[tableKeys.users.summary.tag]}

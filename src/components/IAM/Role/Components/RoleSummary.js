@@ -24,6 +24,7 @@ import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import PAM_SESSION from '../../../../reducers/api/PAM/session';
 import AUTH from '../../../../reducers/api/Auth/auth';
 import {account} from '../../../../utils/auth';
+import {TableMode} from '../../../../Constants/Table/mode';
 
 const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -335,7 +336,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 			</SummaryTableTitle>
 
 			<Table
-				mode={'readOnly'}
+				mode={TableMode.READ_ONLY}
 				data={permissionData}
 				tableKey={tableKeys.roles.summary.permission}
 				columns={tableColumns[tableKeys.roles.summary.permission]}
@@ -345,7 +346,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				이 역할의 사용자 : {user?.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				mode={TableMode.READ_ONLY}
 				data={userData}
 				tableKey={tableKeys.roles.summary.user}
 				columns={tableColumns[tableKeys.roles.summary.user]}
@@ -359,7 +360,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				이 역할의 사용자 그룹 : {groupData?.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				mode={TableMode.READ_ONLY}
 				data={groupData}
 				tableKey={tableKeys.roles.summary.group}
 				columns={tableColumns[tableKeys.roles.summary.group]}

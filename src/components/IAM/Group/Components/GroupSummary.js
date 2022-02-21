@@ -13,6 +13,7 @@ import {
 } from '../../../../styles/components/iam/descriptionPage';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
+import {TableMode} from '../../../../Constants/Table/mode';
 
 const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 	const history = useHistory();
@@ -101,7 +102,7 @@ const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 			</SummaryTableTitle>
 
 			<Table
-				mode={'readOnly'}
+				mode={TableMode.READ_ONLY}
 				data={userData}
 				tableKey={tableKeys.groups.summary.user}
 				columns={tableColumns[tableKeys.groups.summary.user]}
@@ -111,7 +112,7 @@ const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 				권한 : {roleData.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				mode={TableMode.READ_ONLY}
 				data={roleData}
 				tableKey={tableKeys.groups.summary.permission}
 				columns={tableColumns[tableKeys.groups.summary.permission]}
@@ -121,7 +122,7 @@ const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 				태그 : {tagData.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				mode={TableMode.READ_ONLY}
 				data={tagData}
 				tableKey={tableKeys.groups.summary.tag}
 				columns={tableColumns[tableKeys.groups.summary.tag]}

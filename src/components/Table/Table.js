@@ -19,14 +19,16 @@ import {
 	useTable,
 } from 'react-table';
 import TableCheckbox from './Options/TableCheckbox';
+import {TableMode} from '../../Constants/Table/mode';
 
 const TableStyledContainer = styled.div`
-	margin: ${(props) => (props.mode === 'inner' ? '0px' : ' 0px 16px')};
+	margin: ${(props) =>
+		props.mode === TableMode.INNER ? '0px' : ' 0px 16px'};
 	display: flex;
 	min-width: 380px;
-	min-height: ${(props) => props.mode === 'normal' && '240px'};
-	height: ${(props) => props.mode === 'normal' && '0'};
-	flex: ${(props) => props.mode === 'normal' && '1 1 auto'};
+	min-height: ${(props) => props.mode === TableMode.NOMAL && '240px'};
+	height: ${(props) => props.mode === TableMode.NOMAL && '0'};
+	flex: ${(props) => props.mode === TableMode.NOMAL && '1 1 auto'};
 
 	.table {
 		width: 100%;
@@ -36,9 +38,9 @@ const TableStyledContainer = styled.div`
 		grid-template-rows: 40px;
 		border-spacing: 0;
 		border-bottom: ${(props) =>
-			props.mode === 'inner' ? 'none' : '1px solid #e3e5e5'};
+			props.mode === TableMode.INNER ? 'none' : '1px solid #e3e5e5'};
 		border-left: ${(props) =>
-			props.mode === 'inner' && '2px solid #4ca6a8'};
+			props.mode === TableMode.INNER && '2px solid #4ca6a8'};
 		font-size: 13px;
 		font-weight: normal;
 		font-stretch: normal;
@@ -64,21 +66,23 @@ const TableStyledContainer = styled.div`
 		}
 
 		.head {
-			color: ${(props) => props.mode === 'inner' && '#0a6f71'};
+			color: ${(props) => props.mode === TableMode.INNER && '#0a6f71'};
 			height: 40px;
 			background: #f8f9fa;
 			border-top: ${(props) =>
-				props.mode === 'inner' ? 'none' : '1px solid #e3e5e5'};
+				props.mode === TableMode.INNER ? 'none' : '1px solid #e3e5e5'};
 			border-bottom: 1px solid #e3e5e5;
 			font-weight: 500;
 		}
 		.body {
 			background: ${(props) =>
-				props.mode === 'inner' ? '#f8f9fa' : '#fff'};
+				props.mode === TableMode.INNER ? '#f8f9fa' : '#fff'};
 			border-bottom: 1px solid #e3e5e5;
 		}
 		.odd {
-			background: ${(props) => props.mode === 'readOnly' && '#f8f9fa'};
+			background: ${(props) =>
+				props.mode === TableMode.READ_ONLY ||
+				(TableMode.CHECKBOX && '#f8f9fa')};
 		}
 
 		.selected {
@@ -89,13 +93,16 @@ const TableStyledContainer = styled.div`
 		.td {
 			display: flex;
 			margin-right: 12px;
-			height: ${(props) => (props.mode === 'normal' ? '40px' : '')};
+			height: ${(props) =>
+				props.mode === TableMode.NOMAL ? '40px' : ''};
 			min-height: 40px;
 			white-space: nowrap;
 			text-align: left;
 			text-overflow: ellipsis;
 			:first-child {
-				padding-left: ${(props) => props.mode === 'readOnly' && '16px'};
+				padding-left: ${(props) =>
+					props.mode === TableMode.READ_ONLY ||
+					('checkBox' && '16px')};
 			}
 		}
 	}
@@ -127,7 +134,7 @@ const Table = ({
 	setData,
 	setSelect,
 	isDraggable,
-	mode = 'normal',
+	mode = TableMode.NOMAL,
 	isPaginable = false,
 	isSearchable = false,
 	isSearchFilterable = false,
@@ -195,7 +202,7 @@ const Table = ({
 
 	const updateMyData = (rowIndex, columnId, value) => {
 		// We also turn on the flag to not reset the page
-		if (mode === 'readOnly' || mode === 'inner') return;
+		if (mode === TableMode.READ_ONLY || mode === TableMode.INNER) return;
 		setSkipPageReset(true);
 		setData((old) =>
 			old.map((row, index) => {
@@ -290,7 +297,7 @@ const Table = ({
 		usePagination,
 		useRowSelect,
 		(hooks) => {
-			mode === 'normal' &&
+			mode === TableMode.NOMAL &&
 				hooks.visibleColumns.push((columns) => [
 					{
 						id: 'selection',
@@ -316,6 +323,8 @@ const Table = ({
 				]);
 		},
 	);
+	console.log('🔥columns:', columns);
+	console.log('🔥getRowId:', getRowId);
 	const [position, setPosition] = useState({x: 0, y: 0});
 
 	const getItemStyle = (isDragging, draggableStyle, style) => ({
@@ -489,12 +498,16 @@ const Table = ({
 												key={i}
 												alignItems={'center'}
 												{...column.getHeaderProps(
-													mode === 'normal' &&
+													mode ===
+														(TableMode.NOMAL ||
+															TableMode.CHECKBOX) &&
 														column.getSortByToggleProps(),
 												)}
 											>
 												{column.render('Header')}
-												{mode === 'normal' &&
+												{mode ===
+													(TableMode.NOMAL ||
+														TableMode.CHECKBOX) &&
 													column.id !==
 														'selection' && (
 														<Icon margin={'0px'}>
@@ -673,7 +686,12 @@ Table.propTypes = {
 	isSearchable: PropTypes.bool,
 	isColumnFilterable: PropTypes.bool,
 	isSearchFilterable: PropTypes.bool,
-	mode: PropTypes.oneOf(['normal', 'readOnly', 'inner']),
+	mode: PropTypes.oneOf([
+		TableMode.NOMAL,
+		TableMode.READ_ONLY,
+		TableMode.INNER,
+		TableMode.CHECKBOX,
+	]),
 	isDraggable: PropTypes.bool,
 };
 

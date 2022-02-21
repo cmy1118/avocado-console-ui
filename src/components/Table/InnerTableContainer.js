@@ -5,6 +5,7 @@ import {useDispatch} from 'react-redux';
 import PAM_POLICY from '../../reducers/api/PAM/Role/policy';
 import RRM_RESOURCE from '../../reducers/api/RRM/Resource/resource';
 import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
+import {TableMode} from '../../Constants/Table/mode';
 
 const InnerTableContainer = ({policyId, attributes}) => {
 	const dispatch = useDispatch();
@@ -139,7 +140,7 @@ const InnerTableContainer = ({policyId, attributes}) => {
 
 	return (
 		<Table
-			mode={'inner'}
+			mode={TableMode.INNER}
 			tableKey={'innerTable'}
 			columns={policyId === 'tempId' ? columns2 : columns}
 			data={data}
