@@ -28,9 +28,7 @@ const TemplateElement = ({title, render}) => {
 	return (
 		<Container>
 			<Title>{title + text.message}</Title>
-			<div>
-				<Content>{render()}</Content>
-			</div>
+			<Content>{render()}</Content>
 		</Container>
 	);
 };

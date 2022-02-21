@@ -1,6 +1,7 @@
 import React from 'react';
 import TemplateItemContainer from '../TemplateItemContainer';
 import TemplateElement from '../TemplateElement';
+import CheckBox from '../../../../RecycleComponents/New/CheckBox';
 
 const userAuth = {
 	title: '사용자 인증',
@@ -134,7 +135,46 @@ const UserAuthTemplate = () => {
 				title={userAuth.contents.deviceAuth.title}
 				description={userAuth.contents.deviceAuth.description}
 				render={() => {
-					return <></>;
+					return (
+						<div>
+							<TemplateElement
+								title={
+									userAuth.contents.deviceAuth.contents.usage
+										.title
+								}
+								render={() => {
+									return <div>123</div>;
+								}}
+							/>
+							<TemplateElement
+								title={
+									userAuth.contents.deviceAuth.contents
+										.application.title
+								}
+								render={() => {
+									return (
+										<div>
+											<CheckBox
+												label={
+													userAuth.contents.deviceAuth
+														.contents.application
+														.options
+														.managementConsole
+												}
+											/>
+											<CheckBox
+												label={
+													userAuth.contents.deviceAuth
+														.contents.application
+														.options.webTerminal
+												}
+											/>
+										</div>
+									);
+								}}
+							/>
+						</div>
+					);
 				}}
 			/>
 		</div>
