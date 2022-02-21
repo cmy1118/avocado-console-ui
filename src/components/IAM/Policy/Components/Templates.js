@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import UserAccessTemplate from './Templates/UserAccessTemplate';
 import UserSessionTemplate from './Templates/UserSessionTemplate';
 import styled from 'styled-components';
+import UserAuthTemplate from './Templates/UserAuthTemplate';
 
 const Container = styled.div`
 	display: flex;
@@ -51,7 +52,7 @@ const templateResponse = [
 	{
 		title: contents.templates.userAuth,
 		description: 'userAuth description',
-		component: '',
+		component: UserAuthTemplate,
 	},
 	{
 		title: contents.templates.userAccountProcess,
