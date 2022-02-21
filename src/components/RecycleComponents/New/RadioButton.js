@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {radioIcon, unCheckedRadioIcon} from '../../icons/icons';
+import {radioIcon, unCheckedRadioIcon} from '../../../icons/icons';
 
 const _Container = styled.div`
 	z-index: 0;
