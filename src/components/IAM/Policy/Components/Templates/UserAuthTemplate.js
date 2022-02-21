@@ -1,10 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {FoldableContainer} from '../../../../../styles/components/iam/iam';
-import TableFold from '../../../../Table/Options/TableFold';
-import CheckBox from '../../../../RecycleComponents/New/CheckBox';
-import TimeInterval from '../../../../RecycleComponents/Templates/TimeInterval';
 import TemplateItemContainer from '../TemplateItemContainer';
+import TemplateElement from '../TemplateElement';
 
 const userAuth = {
 	title: '사용자 인증',
@@ -138,7 +134,7 @@ const UserAuthTemplate = () => {
 				title={userAuth.contents.deviceAuth.title}
 				description={userAuth.contents.deviceAuth.description}
 				render={() => {
-					return <div></div>;
+					return <></>;
 				}}
 			/>
 		</div>

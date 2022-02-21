@@ -19,11 +19,12 @@ const Title = styled.div`
 const Description = styled.div`
 	display: block;
 	color: #757575;
-	margin: 0 10px;
 	font-size: 12px;
 	align-items: center;
 `;
-const Content = styled.div``;
+const Content = styled.div`
+	margin-top: 10px;
+`;
 
 /**************************************************
  * seob - 템플릿 내부 항목에 대한 컨테이너
