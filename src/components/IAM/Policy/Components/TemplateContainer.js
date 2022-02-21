@@ -33,7 +33,7 @@ const contents = {
  * setTemplateList: 템플릿 리스트 set 함수
  * render: 각각의 템플릿 컴포넌트 렌더 프로퍼티
  ***************************************************/
-const TemplatesChild = ({template, setTemplateList, render}) => {
+const TemplateContainer = ({template, setTemplateList, render}) => {
 	// fold 상태
 	const [isOpened, setIsOpened] = useState(true);
 
@@ -62,10 +62,10 @@ const TemplatesChild = ({template, setTemplateList, render}) => {
 	);
 };
 
-TemplatesChild.propTypes = {
+TemplateContainer.propTypes = {
 	template: PropTypes.object,
 	setTemplateList: PropTypes.func,
 	render: PropTypes.func,
 };
 
-export default TemplatesChild;
+export default TemplateContainer;

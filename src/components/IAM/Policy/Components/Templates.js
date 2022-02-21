@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import TemplatesChild from './TemplateContainer';
+import TemplateContainer from './TemplateContainer';
 import PropTypes from 'prop-types';
 import UserAccessTemplate from './Templets/UserAccessTemplate';
 import UserSessionTemplate from './Templets/UserSessionTemplate';
@@ -149,7 +149,7 @@ const Templates = ({isOpened}) => {
 		<>
 			<Container>
 				{templateList.map((template) => (
-					<TemplatesChild
+					<TemplateContainer
 						key={template.title}
 						render={template.component}
 						setTemplateList={setTemplateList}
