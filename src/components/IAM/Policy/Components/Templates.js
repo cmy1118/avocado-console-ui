@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import TemplateContainer from './TemplateContainer';
 import PropTypes from 'prop-types';
-import UserAccessTemplate from './Templets/UserAccessTemplate';
-import UserSessionTemplate from './Templets/UserSessionTemplate';
+import UserAccessTemplate from './Templates/UserAccessTemplate';
+import UserSessionTemplate from './Templates/UserSessionTemplate';
 import styled from 'styled-components';
 
 const Container = styled.div`
