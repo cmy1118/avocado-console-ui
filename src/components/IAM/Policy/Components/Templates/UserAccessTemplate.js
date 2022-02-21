@@ -19,7 +19,11 @@ const contents = {
 	},
 	managementConsole: {
 		title: 'Management Console',
-		description: '요일별 접근 가능한 시간을 설정 합니다.',
+		description: [
+			'요일별 접근 가능한 시간을 설정 합니다.',
+			'요일별 접근 가능한 시간을 설정 합니다.',
+			'요일별 접근 가능한 시간을 설정 합니다.',
+		],
 	},
 	webTerminal: {
 		title: 'Web Terminal',
@@ -61,6 +65,15 @@ const UserAccessTemplate = () => {
 			<TemplateItemContainer
 				title={contents.managementConsole.title}
 				description={contents.managementConsole.description}
+				render={() => {
+					return Week.map(({dayOfWeek}) => (
+						<TimeInterval key={dayOfWeek} title={dayOfWeek} />
+					));
+				}}
+			/>
+			<TemplateItemContainer
+				title={contents.webTerminal.title}
+				description={contents.webTerminal.description}
 				render={() => {
 					return Week.map(({dayOfWeek}) => (
 						<TimeInterval key={dayOfWeek} title={dayOfWeek} />
