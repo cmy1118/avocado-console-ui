@@ -4,7 +4,6 @@ import TemplateElement from '../../TemplateElement';
 import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {
 	additionalAuthMethodOptions,
-	applicationOptions,
 	authUsageOptions,
 	requiredOptions,
 	usageOptions,

@@ -15,7 +15,6 @@ const deviceAuth = {
 	contents: {
 		usage: {
 			title: '사용 여부',
-			options: {use: '사용함', nonuse: '사용 안함'},
 		},
 		application: {
 			title: '제어 어플리케이션',
