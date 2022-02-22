@@ -10,6 +10,14 @@ const Container = styled.div``;
  * name: 라디오 input name
  * options: 라디오 input의 value, label의 객체 배열
  * => ex) [{label:A,value:a},{label:B,value:b}...]
+ *
+ * 사용예시)
+ * const [value, Radio] = useRadio({
+		name: radio_name,
+		options: radio_options,
+	});
+ *
+ * return <div>{Radio()}</div>
  ***************************************************/
 const useRadio = ({name, options}) => {
 	// 현재 value
