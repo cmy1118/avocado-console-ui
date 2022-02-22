@@ -85,6 +85,21 @@ export const authUsageOptions = [
 	},
 ];
 
+export const requiredOptions = [
+	{
+		value: optionValue.required.required,
+		label: optionValue.required.required,
+	},
+	{
+		value: optionValue.required.optional,
+		label: optionValue.required.optional,
+	},
+	{
+		value: optionValue.required.no,
+		label: optionValue.required.no,
+	},
+];
+
 export const additionalAuthMethodOptions = [
 	{
 		value: optionValue.additionalAuthMethod.mail,
