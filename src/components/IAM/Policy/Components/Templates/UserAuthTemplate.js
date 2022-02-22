@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import TemplateItemContainer from '../TemplateItemContainer';
 import TemplateElement from '../TemplateElement';
 import CheckBox from '../../../../RecycleComponents/New/CheckBox';
-import RadioButton from '../../../../RecycleComponents/New/RadioButton';
-import {usageOptions} from '../../../../../utils/options';
+import RadioButton from '../../../../RecycleComponents/Form/RadioButton';
+import {authUsageOptions, usageOptions} from '../../../../../utils/options';
+import ComboBox from '../../../../RecycleComponents/New/ComboBox';
 
 const userAuth = {
 	title: '사용자 인증',
@@ -207,33 +208,22 @@ const UserAuthTemplate = () => {
 									);
 								}}
 							/>
-							{/*	<TemplateElement*/}
-							{/*		title={*/}
-							{/*			userAuth.contents.deviceAuth.contents*/}
-							{/*				.application.title*/}
-							{/*		}*/}
-							{/*		render={() => {*/}
-							{/*			return (*/}
-							{/*				<div>*/}
-							{/*					<CheckBox*/}
-							{/*						label={*/}
-							{/*							userAuth.contents.deviceAuth*/}
-							{/*								.contents.application*/}
-							{/*								.options*/}
-							{/*								.managementConsole*/}
-							{/*						}*/}
-							{/*					/>*/}
-							{/*					<CheckBox*/}
-							{/*						label={*/}
-							{/*							userAuth.contents.deviceAuth*/}
-							{/*								.contents.application*/}
-							{/*								.options.webTerminal*/}
-							{/*						}*/}
-							{/*					/>*/}
-							{/*				</div>*/}
-							{/*			);*/}
-							{/*		}}*/}
-							{/*	/>*/}
+							<div>--------------</div>
+							<TemplateElement
+								title={
+									userAuth.contents.mfa.contents
+										.additionalAuth1.title
+								}
+								render={() => {
+									return (
+										<div>
+											<ComboBox
+												options={authUsageOptions}
+											/>
+										</div>
+									);
+								}}
+							/>
 						</div>
 					);
 				}}
