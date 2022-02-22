@@ -20,7 +20,7 @@ const RadioButton = ({options, value, setValue, disabled}) => {
 			{options.map((v, index) => {
 				return (
 					<_Container
-						opacity={disabled.toString()}
+						opacity={disabled ? 'true' : 'false'}
 						key={index}
 						className='pretty p-svg p-curve p-plain p-toggle p-thick'
 					>
@@ -51,7 +51,7 @@ RadioButton.propTypes = {
 	options: PropTypes.array.isRequired,
 	value: PropTypes.string.isRequired,
 	setValue: PropTypes.func.isRequired,
-	disabled: PropTypes.bool.isRequired,
+	disabled: PropTypes.bool,
 };
 
 export default RadioButton;

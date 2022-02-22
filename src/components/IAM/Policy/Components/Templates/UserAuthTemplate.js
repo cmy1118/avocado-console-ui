@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import TemplateItemContainer from '../TemplateItemContainer';
 import TemplateElement from '../TemplateElement';
 import CheckBox from '../../../../RecycleComponents/New/CheckBox';
 import RadioButton from '../../../../RecycleComponents/New/RadioButton';
+import {usageOptions} from '../../../../../utils/options';
 
 const userAuth = {
 	title: '사용자 인증',
@@ -10,19 +11,6 @@ const userAuth = {
 		deviceAuth: {
 			title: '단말기 인증',
 			description: ['단말기 인증이 필요한 애플리 케이션을 설정합니다.'],
-			contents: {
-				usage: {
-					title: '사용 여부',
-					options: {use: '사용함', nonuse: '사용 안함'},
-				},
-				application: {
-					title: '제어 어플리케이션',
-					options: {
-						managementConsole: 'Management Console',
-						webTerminal: 'WebTerminal',
-					},
-				},
-			},
 		},
 		mfa: {
 			title: 'MFA 인증',
@@ -111,7 +99,7 @@ const userAuth = {
 				authMethod: {
 					title: '확인 유형',
 					options: {
-						no: 'ID/Password',
+						idPassword: 'ID/Password',
 						mail: '인증번호(Mail)',
 						sms: '인증번호(SMS)',
 						kakao: '인증번호(Kakao)',
@@ -130,6 +118,60 @@ const userAuth = {
  * ambacc244 - 사용자 인증 템플릿 컴포넌트
  **************************************************/
 const UserAuthTemplate = () => {
+	const [applicationUsage, setApplicationUsage] = useState();
+
+	const authOptions = [
+		{
+			value: userAuth.contents.failOver.contents.basicAuth.options.no,
+			label: userAuth.contents.failOver.contents.basicAuth.options.no,
+		},
+		{
+			value: userAuth.contents.failOver.contents.basicAuth.options.mail,
+			label: userAuth.contents.failOver.contents.basicAuth.options.mail,
+		},
+		{
+			value: userAuth.contents.failOver.contents.basicAuth.options.sms,
+			label: userAuth.contents.failOver.contents.basicAuth.options.sms,
+		},
+		{
+			value: userAuth.contents.failOver.contents.basicAuth.options.kakao,
+			label: userAuth.contents.failOver.contents.basicAuth.options.kakao,
+		},
+	];
+	const authMethod = [
+		{
+			value:
+				userAuth.contents.identityVerification.contents.authMethod
+					.options.idPassword,
+			label:
+				userAuth.contents.identityVerification.contents.authMethod
+					.options.idPassword,
+		},
+		{
+			value:
+				userAuth.contents.identityVerification.contents.authMethod
+					.options.mail,
+			label:
+				userAuth.contents.identityVerification.contents.authMethod
+					.options.mail,
+		},
+		{
+			value:
+				userAuth.contents.identityVerification.contents.authMethod
+					.options.sms,
+			label:
+				userAuth.contents.identityVerification.contents.authMethod
+					.options.sms,
+		},
+		{
+			value:
+				userAuth.contents.identityVerification.contents.authMethod
+					.options.kakao,
+			label:
+				userAuth.contents.identityVerification.contents.authMethod
+					.options.kakao,
+		},
+	];
 	return (
 		<div>
 			<TemplateItemContainer
@@ -144,7 +186,13 @@ const UserAuthTemplate = () => {
 										.title
 								}
 								render={() => {
-									return <div></div>;
+									return (
+										<RadioButton
+											value={usageOptions[0].value}
+											setValue={setApplicationUsage}
+											options={usageOptions}
+										/>
+									);
 								}}
 							/>
 							<TemplateElement
@@ -174,6 +222,57 @@ const UserAuthTemplate = () => {
 									);
 								}}
 							/>
+						</div>
+					);
+				}}
+			/>
+			<TemplateItemContainer
+				title={userAuth.contents.mfa.title}
+				description={userAuth.contents.mfa.description}
+				render={() => {
+					return (
+						<div>
+							<TemplateElement
+								title={
+									userAuth.contents.mfa.contents.usage.title
+								}
+								render={() => {
+									return (
+										<RadioButton
+											value={usageOptions[0].value}
+											setValue={setApplicationUsage}
+											options={usageOptions}
+										/>
+									);
+								}}
+							/>
+							{/*	<TemplateElement*/}
+							{/*		title={*/}
+							{/*			userAuth.contents.deviceAuth.contents*/}
+							{/*				.application.title*/}
+							{/*		}*/}
+							{/*		render={() => {*/}
+							{/*			return (*/}
+							{/*				<div>*/}
+							{/*					<CheckBox*/}
+							{/*						label={*/}
+							{/*							userAuth.contents.deviceAuth*/}
+							{/*								.contents.application*/}
+							{/*								.options*/}
+							{/*								.managementConsole*/}
+							{/*						}*/}
+							{/*					/>*/}
+							{/*					<CheckBox*/}
+							{/*						label={*/}
+							{/*							userAuth.contents.deviceAuth*/}
+							{/*								.contents.application*/}
+							{/*								.options.webTerminal*/}
+							{/*						}*/}
+							{/*					/>*/}
+							{/*				</div>*/}
+							{/*			);*/}
+							{/*		}}*/}
+							{/*	/>*/}
 						</div>
 					);
 				}}
