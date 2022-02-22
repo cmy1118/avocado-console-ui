@@ -1,5 +1,7 @@
 import React from 'react';
 import LoginFailure from './UserAccountProcessTemplate/LoginFailure';
+import Dormant from './UserAccountProcessTemplate/Dormant';
+import AccountActivePeriod from './UserAccountProcessTemplate/AccountActivePeriod';
 
 const UserAccountProcess = {
 	title: '사용자 계정 처리',
@@ -185,6 +187,8 @@ const UserAccountProcessTemplate = () => {
 	return (
 		<div>
 			<LoginFailure />
+			<Dormant />
+			<AccountActivePeriod />
 		</div>
 	);
 };
