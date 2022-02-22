@@ -4,15 +4,22 @@ import Form from '../../../../../RecycleComponents/New/Form';
 import TemplateElement from '../../TemplateElement';
 import TextBox from '../../../../../RecycleComponents/New/TextBox';
 import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
-import {accountStatusOptions} from '../../../../../../utils/options';
+import {
+	accountNormalizationOptions,
+	accountStatusOptions,
+	usageOptions,
+} from '../../../../../../utils/options';
 
-const accountActivePeriod = {
-	title: '계정 사용 기간',
+const passwordValidityPeriod = {
+	title: '비밀번호 사용 기간',
 	description: [
-		' 사용자의 계정으로 애플리케이션을 접속할 수 있는 기간을 제어하는 정책을 설정합니다.',
-		'관리자 정상화 후 기간 연장합니다.',
+		'사용자의 계정의 비밀번호 사용기간을 제어하는 정책을 설정합니다.',
+		'정상화 후에는 반드시 비밀번호를 변경해햐 합니다.',
 	],
 	contents: {
+		usage: {
+			title: '사용 여부',
+		},
 		activePeriod: {
 			title: '사용 기간',
 			message: '일',
@@ -22,16 +29,18 @@ const accountActivePeriod = {
 		},
 		accountNormalization: {
 			title: '계정 정상화',
-			message: '관리자 해제',
 		},
 	},
 };
 
-const AccountActivePeriod = () => {
+const PasswordValidityPeriod = () => {
 	const formRef = useRef(null);
+	const [usage, setUsage] = useState();
 	const [accountStatus, setAccountStatus] = useState();
+	const [accountNormalization, setAccountNormalization] = useState();
 
 	const [values, setValues] = useState({
+		usage: '',
 		activePeriod: '',
 		accountStatus: '',
 		accountNormalization: '',
@@ -44,8 +53,8 @@ const AccountActivePeriod = () => {
 
 	return (
 		<TemplateItemContainer
-			title={accountActivePeriod.title}
-			description={accountActivePeriod.description}
+			title={passwordValidityPeriod.title}
+			description={passwordValidityPeriod.description}
 			render={() => {
 				return (
 					<Form
@@ -54,15 +63,28 @@ const AccountActivePeriod = () => {
 						initialValues={values}
 					>
 						<TemplateElement
+							title={passwordValidityPeriod.contents.usage.title}
+							render={() => {
+								return (
+									<RadioButton
+										value={usageOptions[0].value}
+										setValue={setUsage}
+										options={usageOptions}
+									/>
+								);
+							}}
+						/>
+						<TemplateElement
 							title={
-								accountActivePeriod.contents.activePeriod.title
+								passwordValidityPeriod.contents.activePeriod
+									.title
 							}
 							render={() => {
 								return (
 									<div>
 										<TextBox name={'activePeriod'} />
 										{
-											accountActivePeriod.contents
+											passwordValidityPeriod.contents
 												.activePeriod.message
 										}
 									</div>
@@ -71,7 +93,8 @@ const AccountActivePeriod = () => {
 						/>
 						<TemplateElement
 							title={
-								accountActivePeriod.contents.accountStatus.title
+								passwordValidityPeriod.contents.accountStatus
+									.title
 							}
 							render={() => {
 								return (
@@ -83,20 +106,20 @@ const AccountActivePeriod = () => {
 								);
 							}}
 						/>
-
 						<TemplateElement
 							title={
-								accountActivePeriod.contents
+								passwordValidityPeriod.contents
 									.accountNormalization.title
 							}
 							render={() => {
 								return (
-									<div>
-										{
-											accountActivePeriod.contents
-												.accountNormalization.message
+									<RadioButton
+										value={
+											accountNormalizationOptions[0].value
 										}
-									</div>
+										setValue={setAccountNormalization}
+										options={accountNormalizationOptions}
+									/>
 								);
 							}}
 						/>
@@ -106,4 +129,5 @@ const AccountActivePeriod = () => {
 		/>
 	);
 };
-export default AccountActivePeriod;
+
+export default PasswordValidityPeriod;

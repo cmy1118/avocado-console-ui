@@ -2,6 +2,9 @@ import React from 'react';
 import LoginFailure from './UserAccountProcessTemplate/LoginFailure';
 import Dormant from './UserAccountProcessTemplate/Dormant';
 import AccountActivePeriod from './UserAccountProcessTemplate/AccountActivePeriod';
+import PasswordValidityPeriod from './UserAccountProcessTemplate/PasswordValidityPeriod';
+import ChangeGroup from './UserAccountProcessTemplate/ChangeGroup';
+import Resignation from './UserAccountProcessTemplate/Resignation';
 
 const UserAccountProcess = {
 	title: '사용자 계정 처리',
@@ -189,6 +192,9 @@ const UserAccountProcessTemplate = () => {
 			<LoginFailure />
 			<Dormant />
 			<AccountActivePeriod />
+			<PasswordValidityPeriod />
+			<ChangeGroup />
+			<Resignation />
 		</div>
 	);
 };

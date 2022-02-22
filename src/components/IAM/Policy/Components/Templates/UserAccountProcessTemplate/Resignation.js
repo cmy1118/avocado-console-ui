@@ -2,39 +2,52 @@ import React, {useCallback, useRef, useState} from 'react';
 import TemplateItemContainer from '../../TemplateItemContainer';
 import Form from '../../../../../RecycleComponents/New/Form';
 import TemplateElement from '../../TemplateElement';
-import TextBox from '../../../../../RecycleComponents/New/TextBox';
 import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
-import {accountStatusOptions} from '../../../../../../utils/options';
+import {
+	accountNormalizationOptions,
+	accountStatusOptions,
+	gracePeriodOptions,
+	usageOptions,
+} from '../../../../../../utils/options';
+import TextBox from '../../../../../RecycleComponents/New/TextBox';
 
-const accountActivePeriod = {
-	title: '계정 사용 기간',
+const resignation = {
+	title: '퇴사(탈퇴)',
 	description: [
-		' 사용자의 계정으로 애플리케이션을 접속할 수 있는 기간을 제어하는 정책을 설정합니다.',
-		'관리자 정상화 후 기간 연장합니다.',
+		'사용자 퇴사로 인한 사용자 계정 접근을 제어하기 위한 정책을 설정합니다.',
+		'유예 기간동안은 접근 및 권한이 유지되며, 관리자에 의해 정상화가 가능합니다.',
+		'유예 기간동안은 접근 및 권한이 유지됩니다.',
 	],
 	contents: {
-		activePeriod: {
-			title: '사용 기간',
-			message: '일',
-		},
 		accountStatus: {
 			title: '계정 처리 방법',
+			options: {
+				lock: '잠금',
+				delete: '삭제',
+			},
+		},
+		gracePeriod: {
+			title: '유예 기간',
+			options: {
+				no: '없음',
+				yes: '있음',
+			},
 		},
 		accountNormalization: {
 			title: '계정 정상화',
-			message: '관리자 해제',
+			message: '관리자 정상화',
 		},
 	},
 };
 
-const AccountActivePeriod = () => {
+const Resignation = () => {
 	const formRef = useRef(null);
 	const [accountStatus, setAccountStatus] = useState();
+	const [gracePeriod, setGracePeriod] = useState();
 
 	const [values, setValues] = useState({
-		activePeriod: '',
 		accountStatus: '',
-		accountNormalization: '',
+		gracePeriod: '',
 	});
 
 	/**************************************************
@@ -44,8 +57,8 @@ const AccountActivePeriod = () => {
 
 	return (
 		<TemplateItemContainer
-			title={accountActivePeriod.title}
-			description={accountActivePeriod.description}
+			title={resignation.title}
+			description={resignation.description}
 			render={() => {
 				return (
 					<Form
@@ -54,30 +67,12 @@ const AccountActivePeriod = () => {
 						initialValues={values}
 					>
 						<TemplateElement
-							title={
-								accountActivePeriod.contents.activePeriod.title
-							}
-							render={() => {
-								return (
-									<div>
-										<TextBox name={'activePeriod'} />
-										{
-											accountActivePeriod.contents
-												.activePeriod.message
-										}
-									</div>
-								);
-							}}
-						/>
-						<TemplateElement
-							title={
-								accountActivePeriod.contents.accountStatus.title
-							}
+							title={resignation.contents.accountStatus.title}
 							render={() => {
 								return (
 									<RadioButton
 										value={accountStatusOptions[0].value}
-										setValue={setAccountStatus}
+										setValue={accountStatus}
 										options={accountStatusOptions}
 									/>
 								);
@@ -85,15 +80,26 @@ const AccountActivePeriod = () => {
 						/>
 
 						<TemplateElement
+							title={resignation.contents.gracePeriod.title}
+							render={() => {
+								return (
+									<RadioButton
+										value={gracePeriodOptions[0].value}
+										setValue={setGracePeriod}
+										options={gracePeriodOptions}
+									/>
+								);
+							}}
+						/>
+						<TemplateElement
 							title={
-								accountActivePeriod.contents
-									.accountNormalization.title
+								resignation.contents.accountNormalization.title
 							}
 							render={() => {
 								return (
 									<div>
 										{
-											accountActivePeriod.contents
+											resignation.contents
 												.accountNormalization.message
 										}
 									</div>
@@ -106,4 +112,5 @@ const AccountActivePeriod = () => {
 		/>
 	);
 };
-export default AccountActivePeriod;
+
+export default Resignation;
