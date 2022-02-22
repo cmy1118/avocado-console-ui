@@ -6,40 +6,39 @@ import TemplateElement from '../../TemplateElement';
 import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {accountStatusOptions} from '../../../../../../utils/options';
 
-const loginFailure = {
-	title: '로그인 실패',
+const dormant = {
+	title: '휴면',
 	description: [
-		'사용자 로그인 실패 횟수에 따라 계정을 처리하기 위해 정책을 설정합니다.',
+		'일정 기간동안 미접속 사용자의 계정을 처리하기 위해 정책을 설정합니다.',
 		'정상화 후 재로그인 시에 패스워드를 변경해야 합니다.',
 	],
 	contents: {
-		loginFailureCount: {
-			title: '로그인 실패 횟수',
-			message: '회',
+		inactivePeriod: {
+			title: '연속 미접속 기간',
+			message: '일',
 		},
 		accountStatus: {
 			title: '계정 처리 방법',
-		},
-		resetErrorCount: {
-			title: '오류 횟수 초기화',
-			message: '시간 후',
+			options: {
+				lock: '잠금',
+				delete: '삭제',
+			},
 		},
 		accountNormalization: {
 			title: '계정 정상화',
-			message: '시간 후',
+			message: '본인 확인 인증',
 		},
 	},
 };
 
-const LoginFailure = () => {
+const Dormant = () => {
 	const formRef = useRef(null);
 	const [accountStatus, setAccountStatus] = useState();
 
 	const [values, setValues] = useState({
-		loginFailureCount: '',
+		inactivePeriod: '',
 		accountStatus: '',
 		accountNormalization: '',
-		resetErrorCount: '',
 	});
 
 	/**************************************************
@@ -49,8 +48,8 @@ const LoginFailure = () => {
 
 	return (
 		<TemplateItemContainer
-			title={loginFailure.title}
-			description={loginFailure.description}
+			title={dormant.title}
+			description={dormant.description}
 			render={() => {
 				return (
 					<Form
@@ -59,23 +58,21 @@ const LoginFailure = () => {
 						initialValues={values}
 					>
 						<TemplateElement
-							title={
-								loginFailure.contents.loginFailureCount.title
-							}
+							title={dormant.contents.inactivePeriod.title}
 							render={() => {
 								return (
 									<div>
-										<TextBox name={'loginFailureCount'} />
+										<TextBox name={'inactivePeriod'} />
 										{
-											loginFailure.contents
-												.loginFailureCount.message
+											dormant.contents.inactivePeriod
+												.message
 										}
 									</div>
 								);
 							}}
 						/>
 						<TemplateElement
-							title={loginFailure.contents.accountStatus.title}
+							title={dormant.contents.accountStatus.title}
 							render={() => {
 								return (
 									<RadioButton
@@ -86,32 +83,14 @@ const LoginFailure = () => {
 								);
 							}}
 						/>
+
 						<TemplateElement
-							title={loginFailure.contents.resetErrorCount.title}
+							title={dormant.contents.accountNormalization.title}
 							render={() => {
 								return (
 									<div>
-										<TextBox name={'resetErrorCount'} />
 										{
-											loginFailure.contents
-												.resetErrorCount.message
-										}
-									</div>
-								);
-							}}
-						/>
-						<TemplateElement
-							title={
-								loginFailure.contents.accountNormalization.title
-							}
-							render={() => {
-								return (
-									<div>
-										<TextBox
-											name={'accountNormalization'}
-										/>
-										{
-											loginFailure.contents
+											dormant.contents
 												.accountNormalization.message
 										}
 									</div>
@@ -125,4 +104,4 @@ const LoginFailure = () => {
 	);
 };
 
-export default LoginFailure;
+export default Dormant;
