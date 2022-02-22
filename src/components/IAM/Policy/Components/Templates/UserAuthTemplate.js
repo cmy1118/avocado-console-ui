@@ -11,6 +11,19 @@ const userAuth = {
 		deviceAuth: {
 			title: '단말기 인증',
 			description: ['단말기 인증이 필요한 애플리 케이션을 설정합니다.'],
+			contents: {
+				usage: {
+					title: '사용 여부',
+					options: {use: '사용함', nonuse: '사용 안함'},
+				},
+				application: {
+					title: '제어 어플리케이션',
+					options: {
+						managementConsole: 'Management Console',
+						webTerminal: 'WebTerminal',
+					},
+				},
+			},
 		},
 		mfa: {
 			title: 'MFA 인증',
@@ -120,58 +133,6 @@ const userAuth = {
 const UserAuthTemplate = () => {
 	const [applicationUsage, setApplicationUsage] = useState();
 
-	const authOptions = [
-		{
-			value: userAuth.contents.failOver.contents.basicAuth.options.no,
-			label: userAuth.contents.failOver.contents.basicAuth.options.no,
-		},
-		{
-			value: userAuth.contents.failOver.contents.basicAuth.options.mail,
-			label: userAuth.contents.failOver.contents.basicAuth.options.mail,
-		},
-		{
-			value: userAuth.contents.failOver.contents.basicAuth.options.sms,
-			label: userAuth.contents.failOver.contents.basicAuth.options.sms,
-		},
-		{
-			value: userAuth.contents.failOver.contents.basicAuth.options.kakao,
-			label: userAuth.contents.failOver.contents.basicAuth.options.kakao,
-		},
-	];
-	const authMethod = [
-		{
-			value:
-				userAuth.contents.identityVerification.contents.authMethod
-					.options.idPassword,
-			label:
-				userAuth.contents.identityVerification.contents.authMethod
-					.options.idPassword,
-		},
-		{
-			value:
-				userAuth.contents.identityVerification.contents.authMethod
-					.options.mail,
-			label:
-				userAuth.contents.identityVerification.contents.authMethod
-					.options.mail,
-		},
-		{
-			value:
-				userAuth.contents.identityVerification.contents.authMethod
-					.options.sms,
-			label:
-				userAuth.contents.identityVerification.contents.authMethod
-					.options.sms,
-		},
-		{
-			value:
-				userAuth.contents.identityVerification.contents.authMethod
-					.options.kakao,
-			label:
-				userAuth.contents.identityVerification.contents.authMethod
-					.options.kakao,
-		},
-	];
 	return (
 		<div>
 			<TemplateItemContainer
