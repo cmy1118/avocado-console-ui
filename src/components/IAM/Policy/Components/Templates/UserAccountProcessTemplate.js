@@ -1,4 +1,5 @@
 import React from 'react';
+import LoginFailure from './UserAccountProcessTemplate/LoginFailure';
 
 const UserAccountProcess = {
 	title: '사용자 계정 처리',
@@ -181,6 +182,10 @@ const UserAccountProcess = {
  * ambacc244 - 사용자 계정 처리 컴포넌트
  **************************************************/
 const UserAccountProcessTemplate = () => {
-	return <div></div>;
+	return (
+		<div>
+			<LoginFailure />
+		</div>
+	);
 };
 export default UserAccountProcessTemplate;
