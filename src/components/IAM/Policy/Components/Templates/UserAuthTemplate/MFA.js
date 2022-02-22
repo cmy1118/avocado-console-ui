@@ -59,7 +59,7 @@ const additionalAuth = [
 const MFA = () => {
 	const formRef = useRef(null);
 
-	const [applicationUsage, setApplicationUsage] = useState();
+	const [usage, setUsage] = useState();
 
 	const [values, setValues] = useState({
 		usage: '',
@@ -96,7 +96,7 @@ const MFA = () => {
 								return (
 									<RadioButton
 										value={usageOptions[0].value}
-										setValue={setApplicationUsage}
+										setValue={setUsage}
 										options={usageOptions}
 									/>
 								);
