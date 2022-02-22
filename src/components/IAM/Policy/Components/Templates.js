@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import TemplateContainer from './TemplateContainer';
 import PropTypes from 'prop-types';
 import UserAccessTemplate from './Templates/UserAccessTemplate';
 import UserSessionTemplate from './Templates/UserSessionTemplate';
 import styled from 'styled-components';
 import UserAuthTemplate from './Templates/UserAuthTemplate';
+import UserAccountProcessTemplate from './Templates/UserAccountProcessTemplate';
 
 const Container = styled.div`
 	display: flex;
@@ -57,7 +58,7 @@ const templateResponse = [
 	{
 		title: contents.templates.userAccountProcess,
 		description: 'userAccountProcess description',
-		component: '',
+		component: UserAccountProcessTemplate,
 	},
 	{
 		title: contents.templates.userAccess,

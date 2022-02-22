@@ -23,6 +23,10 @@ const optionValue = {
 		sms: 'sms',
 		kakao: 'kakao',
 	},
+	accountStatus: {
+		lock: 'lock',
+		delete: 'delete',
+	},
 };
 
 const optionLabel = {
@@ -49,6 +53,10 @@ const optionLabel = {
 		mail: '인증번호(Mail)',
 		sms: '인증번호(SMS)',
 		kakao: '인증번호(Kakao)',
+	},
+	accountStatus: {
+		lock: '잠금',
+		delete: '삭제',
 	},
 };
 
@@ -150,5 +158,16 @@ export const identityVerificationMethodOptions = [
 	{
 		value: optionValue.identityVerificationMethod.kakao,
 		label: optionLabel.identityVerificationMethod.kakao,
+	},
+];
+
+export const accountStatusOptions = [
+	{
+		value: optionValue.accountStatus.lock,
+		label: optionLabel.accountStatus.lock,
+	},
+	{
+		value: optionValue.accountStatus.delete,
+		label: optionLabel.accountStatus.delete,
 	},
 ];
