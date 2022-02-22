@@ -10,8 +10,9 @@ const checkboxColumn = ({
 	header = null,
 	tableKey,
 	disabled = false,
+	// 자식이 선택되었는 지 유무 state
+	childCheck = false,
 }) => {
-	console.log('📛checkboxColumn-id:', id);
 	return {
 		accessor: accessor ? accessor : 'isDefault',
 		id: id ? id : 'selection',
@@ -37,6 +38,7 @@ const checkboxColumn = ({
 					row={row}
 					disabled={disabled}
 					tablekey={tableKey}
+					childCheck={childCheck}
 				/>
 			);
 		},
