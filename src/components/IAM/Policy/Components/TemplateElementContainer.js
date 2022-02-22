@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
 	display: flex;
+	padding: 8px 0px;
 `;
 
 const Title = styled.div`
@@ -30,11 +31,9 @@ const Content = styled.div``;
  *
  * title: 템플릿 내부 항목의 제목
  * description: 항목의 설명
- * render: 항목
+ * render: 항목 (함수형)
  ***************************************************/
-const TemplateItemContainer = ({title, description, render}) => {
-	console.log(description);
-
+const TemplateElementContainer = ({title, description, render}) => {
 	/**************************************************
 	 * seob - description 타입에 따라 컴포넌트를 반환하는 함수
 	 ***************************************************/
@@ -62,10 +61,10 @@ const TemplateItemContainer = ({title, description, render}) => {
 	);
 };
 
-TemplateItemContainer.propTypes = {
+TemplateElementContainer.propTypes = {
 	title: PropTypes.string,
 	description: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 	render: PropTypes.func,
 };
 
-export default TemplateItemContainer;
+export default TemplateElementContainer;

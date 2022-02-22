@@ -12,21 +12,8 @@ import {TextBoxDescription} from '../../../../styles/components/iam/addPage';
 
 const Container = styled.div``;
 
-const Header = styled.div`
-	display: flex;
-	justify-content: space-between;
-`;
 const Body = styled.div`
 	display: flex;
-`;
-
-const Title = styled.div`
-	display: flex;
-	h3,
-	h5 {
-		margin: 0px;
-		padding: 4px;
-	}
 `;
 
 /**************************************************
@@ -57,7 +44,9 @@ const WritePolicy = ({title, description}) => {
 					>
 						{contents.openManagedPolicy}
 					</NormalButton>
-					<NormalButton onClick={() => setIsOpened(true)}>
+					{/*todo : 설계에는 추가 버튼밖에 없어서 setIsOpened를 true로 전환해줬는데,
+					 			현재 닫기버튼이 없어 임시로 toggle 방식으로 수정합니다.*/}
+					<NormalButton onClick={() => setIsOpened(!isOpened)}>
 						{contents.add}
 					</NormalButton>
 				</TitleBarButtons>
