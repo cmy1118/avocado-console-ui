@@ -27,7 +27,7 @@ const text = {message: ' :'};
 const TemplateElement = ({title, render}) => {
 	return (
 		<Container>
-			<Title>{title + text.message}</Title>
+			{title && <Title>{title + text.message}</Title>}
 			<Content>{render()}</Content>
 		</Container>
 	);

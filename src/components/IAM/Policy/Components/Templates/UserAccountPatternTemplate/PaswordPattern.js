@@ -6,6 +6,7 @@ import {
 	restrictionOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
+import useTextBox from '../../../../../../hooks/useTextBox';
 
 const passwordPattern = {
 	title: '비밀번호 패턴',
@@ -48,6 +49,15 @@ const passwordPattern = {
 };
 
 const PaswordPattern = () => {
+	const [minPasswordLength, minPasswordLengthTextBox] = useTextBox({
+		name: 'minPasswordLength',
+	});
+	const [maxPasswordLength, maxPasswordLengthTextBox] = useTextBox({
+		name: 'maxPasswordLength',
+	});
+	const [consecutiveNumbers, consecutiveNumbersTextBox] = useTextBox({
+		name: 'consecutiveNumbers',
+	});
 	const [mixedLetterAndNumber, mixedLetterAndNumberRadioButton] = useRadio({
 		name: 'mixedLetterAndNumber',
 		options: usageOptions,
@@ -77,6 +87,12 @@ const PaswordPattern = () => {
 		name: 'enforcePasswordHistory',
 		options: restrictionOptions,
 	});
+	const [
+		enforcePasswordHistoryPeriod,
+		enforcePasswordHistoryPeriodTextBox,
+	] = useTextBox({
+		name: 'enforcePasswordHistoryPeriod',
+	});
 
 	return (
 		<TemplateElementContainer
@@ -85,6 +101,34 @@ const PaswordPattern = () => {
 			render={() => {
 				return (
 					<div>
+						<TemplateElement
+							title={
+								passwordPattern.contents.passwordLength.title
+							}
+							render={() => {
+								return (
+									<div>
+										{
+											passwordPattern.contents
+												.passwordLength.message.from
+										}
+										{minPasswordLengthTextBox()}
+										{
+											passwordPattern.contents
+												.passwordLength.message.to
+										}
+										{maxPasswordLengthTextBox()}
+									</div>
+								);
+							}}
+						/>
+						<TemplateElement
+							title={
+								passwordPattern.contents.consecutiveNumbers
+									.title
+							}
+							render={consecutiveNumbersTextBox}
+						/>
 						<TemplateElement
 							title={
 								passwordPattern.contents.mixedLetterAndNumber
@@ -118,7 +162,20 @@ const PaswordPattern = () => {
 								passwordPattern.contents.enforcePasswordHistory
 									.title
 							}
-							render={enforcePasswordHistoryRadioButton}
+							render={() => {
+								return (
+									<div>
+										{enforcePasswordHistoryRadioButton()}
+
+										{enforcePasswordHistoryPeriodTextBox()}
+										{
+											passwordPattern.contents
+												.enforcePasswordHistory.period
+												.message
+										}
+									</div>
+								);
+							}}
 						/>
 					</div>
 				);

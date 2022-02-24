@@ -60,7 +60,7 @@ const Resignation = () => {
 
 						<TemplateElement
 							title={resignation.contents.gracePeriod.title}
-							render={gracePeriod}
+							render={gracePeriodRadioButton}
 						/>
 						<TemplateElement
 							title={

@@ -5,6 +5,7 @@ import TemplateElement from '../../TemplateElement';
 import TextBox from '../../../../../RecycleComponents/New/TextBox';
 import {accountStatusOptions} from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
+import useTextBox from '../../../../../../hooks/useTextBox';
 
 const accountActivePeriod = {
 	title: '계정 사용 기간',
@@ -28,22 +29,13 @@ const accountActivePeriod = {
 };
 
 const AccountActivePeriod = () => {
-	const formRef = useRef(null);
+	const [activePeriod, activePeriodTextBox] = useTextBox({
+		name: 'activePeriod',
+	});
 	const [accountStatus, setAccountStatus] = useRadio({
 		name: 'accountStatus',
 		options: accountStatusOptions,
 	});
-
-	const [values, setValues] = useState({
-		activePeriod: '',
-		accountStatus: '',
-		accountNormalization: '',
-	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
 
 	return (
 		<TemplateElementContainer
@@ -51,11 +43,7 @@ const AccountActivePeriod = () => {
 			description={accountActivePeriod.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={
 								accountActivePeriod.contents.activePeriod.title
@@ -63,7 +51,7 @@ const AccountActivePeriod = () => {
 							render={() => {
 								return (
 									<div>
-										<TextBox name={'activePeriod'} />
+										{activePeriodTextBox()}
 										{
 											accountActivePeriod.contents
 												.activePeriod.message
@@ -95,7 +83,7 @@ const AccountActivePeriod = () => {
 								);
 							}}
 						/>
-					</Form>
+					</div>
 				);
 			}}
 		/>

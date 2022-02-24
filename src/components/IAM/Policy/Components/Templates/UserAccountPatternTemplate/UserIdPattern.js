@@ -1,14 +1,12 @@
-import React, {useCallback, useRef, useState} from 'react';
-
-import Form from '../../../../../RecycleComponents/New/Form';
+import React from 'react';
 import TemplateElement from '../../TemplateElement';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {
 	patternFormatOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
+import useTextBox from '../../../../../../hooks/useTextBox';
 
 const userIdPattern = {
 	title: '사용자 ID 패턴',
@@ -40,10 +38,8 @@ const UserIdPattern = () => {
 		name: 'patternFormat',
 		options: patternFormatOptions,
 	});
-
-	const [values, setValues] = useState({
-		patternFormat: '',
-		patternInput: '',
+	const [patternInput, patternInputTextBox] = useTextBox({
+		name: 'patternInput',
 	});
 
 	return (
@@ -60,6 +56,10 @@ const UserIdPattern = () => {
 						<TemplateElement
 							title={userIdPattern.contents.patternFormat.title}
 							render={patternFormatRadioButton}
+						/>
+						<TemplateElement
+							title={userIdPattern.contents.patternInput.title}
+							render={patternInputTextBox}
 						/>
 					</div>
 				);

@@ -1,14 +1,13 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 
 import TemplateElementContainer from '../../TemplateElementContainer';
-import Form from '../../../../../RecycleComponents/New/Form';
 import {
 	identityVerificationMethodOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
 import TemplateElement from '../../TemplateElement';
-import TextBox from '../../../../../RecycleComponents/New/TextBox';
 import useRadio from '../../../../../../hooks/useRadio';
+import useTextBox from '../../../../../../hooks/useTextBox';
 
 const identityVerification = {
 	title: '본인 확인 인증',
@@ -31,8 +30,6 @@ const identityVerification = {
 };
 
 const IdentityVerification = () => {
-	const formRef = useRef(null);
-
 	const [usage, usageRadioButton] = useRadio({
 		name: 'usage',
 		options: usageOptions,
@@ -41,14 +38,9 @@ const IdentityVerification = () => {
 		name: 'authMethod',
 		options: identityVerificationMethodOptions,
 	});
-	const [values, setValues] = useState({
-		waitingTime: '',
+	const [waitingTime, waitingTimeTextBox] = useTextBox({
+		name: 'waitingTime',
 	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
 
 	return (
 		<TemplateElementContainer
@@ -56,11 +48,7 @@ const IdentityVerification = () => {
 			description={identityVerification.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={identityVerification.contents.usage.title}
 							render={usageRadioButton}
@@ -78,7 +66,7 @@ const IdentityVerification = () => {
 							render={() => {
 								return (
 									<div>
-										<TextBox name={'waitingTime'} />
+										{waitingTimeTextBox()}
 										{
 											identityVerification.contents
 												.waitingTime.message
@@ -87,7 +75,7 @@ const IdentityVerification = () => {
 								);
 							}}
 						/>
-					</Form>
+					</div>
 				);
 			}}
 		/>

@@ -1,10 +1,9 @@
-import React, {useCallback, useRef, useState} from 'react';
-import Form from '../../../../../RecycleComponents/New/Form';
-import TextBox from '../../../../../RecycleComponents/New/TextBox';
+import React from 'react';
 import TemplateElement from '../../TemplateElement';
 import {accountStatusOptions} from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
+import useTextBox from '../../../../../../hooks/useTextBox';
 
 const loginFailure = {
 	title: '로그인 실패',
@@ -32,34 +31,26 @@ const loginFailure = {
 };
 
 const LoginFailure = () => {
-	const formRef = useRef(null);
+	const [loginFailureCount, loginFailureCountTextBox] = useTextBox({
+		name: 'loginFailureCount',
+	});
 	const [accountStatus, accountStatusRadioButton] = useRadio({
 		name: 'accountStatus',
 		options: accountStatusOptions,
 	});
-
-	const [values, setValues] = useState({
-		loginFailureCount: '',
-		accountNormalization: '',
-		resetErrorCount: '',
+	const [resetErrorCount, resetErrorCountTextBox] = useTextBox({
+		name: 'resetErrorCount',
 	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
-
+	const [accountNormalization, accountNormalizationTextBox] = useTextBox({
+		name: 'accountNormalization',
+	});
 	return (
 		<TemplateElementContainer
 			title={loginFailure.title}
 			description={loginFailure.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={
 								loginFailure.contents.loginFailureCount.title
@@ -67,7 +58,7 @@ const LoginFailure = () => {
 							render={() => {
 								return (
 									<div>
-										<TextBox name={'loginFailureCount'} />
+										{loginFailureCountTextBox()}
 										{
 											loginFailure.contents
 												.loginFailureCount.message
@@ -85,7 +76,7 @@ const LoginFailure = () => {
 							render={() => {
 								return (
 									<div>
-										<TextBox name={'resetErrorCount'} />
+										{resetErrorCountTextBox()}
 										{
 											loginFailure.contents
 												.resetErrorCount.message
@@ -101,9 +92,7 @@ const LoginFailure = () => {
 							render={() => {
 								return (
 									<div>
-										<TextBox
-											name={'accountNormalization'}
-										/>
+										{accountNormalizationTextBox()}
 										{
 											loginFailure.contents
 												.accountNormalization.message
@@ -112,7 +101,7 @@ const LoginFailure = () => {
 								);
 							}}
 						/>
-					</Form>
+					</div>
 				);
 			}}
 		/>

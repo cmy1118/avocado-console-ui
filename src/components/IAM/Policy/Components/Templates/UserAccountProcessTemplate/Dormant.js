@@ -1,10 +1,9 @@
-import React, {useCallback, useRef, useState} from 'react';
-import Form from '../../../../../RecycleComponents/New/Form';
+import React from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
-import TextBox from '../../../../../RecycleComponents/New/TextBox';
 import TemplateElement from '../../TemplateElement';
 import {accountStatusOptions} from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
+import useTextBox from '../../../../../../hooks/useTextBox';
 
 const dormant = {
 	title: '휴면',
@@ -32,21 +31,13 @@ const dormant = {
 };
 
 const Dormant = () => {
-	const formRef = useRef(null);
 	const [accountStatus, accountStatusRadioButton] = useRadio({
 		name: 'accountStatus',
 		options: accountStatusOptions,
 	});
-
-	const [values, setValues] = useState({
-		inactivePeriod: '',
-		accountNormalization: '',
+	const [inactivePeriod, inactivePeriodTextBox] = useTextBox({
+		name: 'inactivePeriod',
 	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
 
 	return (
 		<TemplateElementContainer
@@ -54,17 +45,13 @@ const Dormant = () => {
 			description={dormant.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={dormant.contents.inactivePeriod.title}
 							render={() => {
 								return (
 									<div>
-										<TextBox name={'inactivePeriod'} />
+										{inactivePeriodTextBox()}
 										{
 											dormant.contents.inactivePeriod
 												.message
@@ -91,7 +78,7 @@ const Dormant = () => {
 								);
 							}}
 						/>
-					</Form>
+					</div>
 				);
 			}}
 		/>

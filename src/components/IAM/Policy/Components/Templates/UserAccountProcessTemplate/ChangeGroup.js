@@ -75,9 +75,6 @@ const ChangeGroup = () => {
 		group1: '',
 		group2: '',
 		group3: '',
-		accountStatus: '',
-		groupPrivileges: '',
-		accountNormalization: '',
 	});
 
 	/**************************************************

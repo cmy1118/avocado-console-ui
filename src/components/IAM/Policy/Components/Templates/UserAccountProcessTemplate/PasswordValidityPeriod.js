@@ -1,14 +1,13 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
-import Form from '../../../../../RecycleComponents/New/Form';
 import TemplateElement from '../../TemplateElement';
-import TextBox from '../../../../../RecycleComponents/New/TextBox';
 import {
 	accountNormalizationOptions,
 	accountStatusOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
+import useTextBox from '../../../../../../hooks/useTextBox';
 
 const passwordValidityPeriod = {
 	title: '비밀번호 사용 기간',
@@ -34,10 +33,12 @@ const passwordValidityPeriod = {
 };
 
 const PasswordValidityPeriod = () => {
-	const formRef = useRef(null);
 	const [usage, usageRadioButton] = useRadio({
 		name: 'usage',
 		options: usageOptions,
+	});
+	const [activePeriod, activePeriodㅆextBox] = useTextBox({
+		name: 'activePeriod',
 	});
 	const [accountStatus, accountStatusRadioButton] = useRadio({
 		name: 'accountStatus',
@@ -48,26 +49,13 @@ const PasswordValidityPeriod = () => {
 		options: accountNormalizationOptions,
 	});
 
-	const [values, setValues] = useState({
-		activePeriod: '',
-	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
-
 	return (
 		<TemplateElementContainer
 			title={passwordValidityPeriod.title}
 			description={passwordValidityPeriod.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={passwordValidityPeriod.contents.usage.title}
 							render={usageRadioButton}
@@ -80,7 +68,7 @@ const PasswordValidityPeriod = () => {
 							render={() => {
 								return (
 									<div>
-										<TextBox name={'activePeriod'} />
+										{activePeriodㅆextBox()}
 										{
 											passwordValidityPeriod.contents
 												.activePeriod.message
@@ -103,7 +91,7 @@ const PasswordValidityPeriod = () => {
 							}
 							render={accountNormalizationRadioButton}
 						/>
-					</Form>
+					</div>
 				);
 			}}
 		/>
