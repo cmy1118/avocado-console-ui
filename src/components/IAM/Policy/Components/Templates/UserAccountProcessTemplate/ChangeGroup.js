@@ -5,10 +5,13 @@ import TemplateElement from '../../TemplateElement';
 import {
 	accountNormalization2Options,
 	accountStatus2Options,
+	authUsageOptions,
 	groupPrivilegesOptions,
+	requiredOptions,
 } from '../../../../../../utils/options';
 import ComboBox from '../../../../../RecycleComponents/New/ComboBox';
 import useRadio from '../../../../../../hooks/useRadio';
+import useComboBox from '../../../../../../hooks/useComboBox';
 
 const changeGroup = {
 	title: '본인 확인 인증',
@@ -70,11 +73,17 @@ const ChangeGroup = () => {
 		name: 'accountNormalization',
 		options: accountNormalization2Options,
 	});
-
-	const [values, setValues] = useState({
-		group1: '',
-		group2: '',
-		group3: '',
+	const [group1, group1ComboBox] = useComboBox({
+		options: tempOption,
+		width: 150,
+	});
+	const [group2, group2ComboBox] = useComboBox({
+		options: tempOption,
+		width: 150,
+	});
+	const [group3, group3ComboBox] = useComboBox({
+		options: tempOption,
+		width: 150,
 	});
 
 	/**************************************************
@@ -88,31 +97,15 @@ const ChangeGroup = () => {
 			description={changeGroup.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={changeGroup.contents.controlGroupType.title}
 							render={() => {
 								return (
 									<div>
-										<ComboBox
-											name={groupType.group1}
-											options={tempOption}
-											width={'100px'}
-										/>
-										<ComboBox
-											name={groupType.group2}
-											options={tempOption}
-											width={'100px'}
-										/>
-										<ComboBox
-											name={groupType.group3}
-											options={tempOption}
-											width={'100px'}
-										/>
+										{group1ComboBox()}
+										{group2ComboBox()}
+										{group3ComboBox()}
 									</div>
 								);
 							}}
@@ -122,19 +115,17 @@ const ChangeGroup = () => {
 							title={changeGroup.contents.accountStatus.title}
 							render={accountStatusRadioButton}
 						/>
-
 						<TemplateElement
 							title={changeGroup.contents.groupPrivileges.title}
 							render={groupPrivilegesRadioButton}
 						/>
-
 						<TemplateElement
 							title={
 								changeGroup.contents.accountNormalization.title
 							}
 							render={accountNormalizationRadioButton}
 						/>
-					</Form>
+					</div>
 				);
 			}}
 		/>
