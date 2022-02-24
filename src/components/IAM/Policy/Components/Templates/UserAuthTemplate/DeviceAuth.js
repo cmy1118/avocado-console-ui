@@ -1,13 +1,12 @@
-import React, {useState, useCallback, useRef} from 'react';
+import React from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {
 	applicationOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
 import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
-import Form from '../../../../../RecycleComponents/New/Form';
+import useRadio from '../../../../../../hooks/useRadio';
 
 const deviceAuth = {
 	title: '단말기 인증',
@@ -30,19 +29,11 @@ const deviceAuth = {
  * ambacc244 - 사용자 인증(단말기 인증) 폼
  **************************************************/
 const DeviceAuth = () => {
-	const formRef = useRef(null);
-	const [usage, setUsage] = useState();
-
-	const [values, setValues] = useState({
-		usage: '',
-		managementConsole: 'false',
-		webterminal: 'false',
+	//usage: 단말기 인증 사용 여부
+	const [usage, usageRadioButton] = useRadio({
+		name: 'usage',
+		options: usageOptions,
 	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
 
 	return (
 		<TemplateElementContainer
@@ -50,22 +41,10 @@ const DeviceAuth = () => {
 			description={deviceAuth.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={deviceAuth.contents.usage.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={usageOptions[0].value}
-										setValue={setUsage}
-										options={usageOptions}
-									/>
-								);
-							}}
+							render={usageRadioButton}
 						/>
 						<TemplateElement
 							title={deviceAuth.contents.application.title}
@@ -83,7 +62,7 @@ const DeviceAuth = () => {
 								);
 							}}
 						/>
-					</Form>
+					</div>
 				);
 			}}
 		/>

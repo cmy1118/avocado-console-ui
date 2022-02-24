@@ -1,10 +1,9 @@
-import React, {useCallback, useRef, useState} from 'react';
-import Form from '../../../../../RecycleComponents/New/Form';
-import TextBox from '../../../../../RecycleComponents/New/TextBox';
+import React from 'react';
 import TemplateElement from '../../TemplateElement';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {accountStatusOptions} from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
+import useRadio from '../../../../../../hooks/useRadio';
+import useTextBox from '../../../../../../hooks/useTextBox';
 
 const loginFailure = {
 	title: '로그인 실패',
@@ -31,33 +30,30 @@ const loginFailure = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 계정 처리(로그인 실패) 폼
+ **************************************************/
 const LoginFailure = () => {
-	const formRef = useRef(null);
-	const [accountStatus, setAccountStatus] = useState();
-
-	const [values, setValues] = useState({
-		loginFailureCount: '',
-		accountStatus: '',
-		accountNormalization: '',
-		resetErrorCount: '',
+	const [loginFailureCount, loginFailureCountTextBox] = useTextBox({
+		name: 'loginFailureCount',
 	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
-
+	const [accountStatus, accountStatusRadioButton] = useRadio({
+		name: 'accountStatus',
+		options: accountStatusOptions,
+	});
+	const [resetErrorCount, resetErrorCountTextBox] = useTextBox({
+		name: 'resetErrorCount',
+	});
+	const [accountNormalization, accountNormalizationTextBox] = useTextBox({
+		name: 'accountNormalization',
+	});
 	return (
 		<TemplateElementContainer
 			title={loginFailure.title}
 			description={loginFailure.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={
 								loginFailure.contents.loginFailureCount.title
@@ -65,7 +61,7 @@ const LoginFailure = () => {
 							render={() => {
 								return (
 									<div>
-										<TextBox name={'loginFailureCount'} />
+										{loginFailureCountTextBox()}
 										{
 											loginFailure.contents
 												.loginFailureCount.message
@@ -76,22 +72,14 @@ const LoginFailure = () => {
 						/>
 						<TemplateElement
 							title={loginFailure.contents.accountStatus.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={accountStatusOptions[0].value}
-										setValue={setAccountStatus}
-										options={accountStatusOptions}
-									/>
-								);
-							}}
+							render={accountStatusRadioButton}
 						/>
 						<TemplateElement
 							title={loginFailure.contents.resetErrorCount.title}
 							render={() => {
 								return (
 									<div>
-										<TextBox name={'resetErrorCount'} />
+										{resetErrorCountTextBox()}
 										{
 											loginFailure.contents
 												.resetErrorCount.message
@@ -107,9 +95,7 @@ const LoginFailure = () => {
 							render={() => {
 								return (
 									<div>
-										<TextBox
-											name={'accountNormalization'}
-										/>
+										{accountNormalizationTextBox()}
 										{
 											loginFailure.contents
 												.accountNormalization.message
@@ -118,7 +104,7 @@ const LoginFailure = () => {
 								);
 							}}
 						/>
-					</Form>
+					</div>
 				);
 			}}
 		/>

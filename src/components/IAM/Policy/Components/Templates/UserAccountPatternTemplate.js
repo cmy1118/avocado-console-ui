@@ -1,5 +1,6 @@
 import React from 'react';
 import UserIdPattern from './UserAccountPatternTemplate/UserIdPattern';
+import PaswordPattern from './UserAccountPatternTemplate/PaswordPattern';
 
 const userAccountPattern = {
 	title: '패턴 정책',
@@ -75,6 +76,7 @@ const UserAccountPatternTemplate = () => {
 	return (
 		<div>
 			<UserIdPattern />
+			<PaswordPattern />
 		</div>
 	);
 };

@@ -1,10 +1,9 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
-import Form from '../../../../../RecycleComponents/New/Form';
 import TemplateElement from '../../TemplateElement';
-import TextBox from '../../../../../RecycleComponents/New/TextBox';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {accountStatusOptions} from '../../../../../../utils/options';
+import useRadio from '../../../../../../hooks/useRadio';
+import useTextBox from '../../../../../../hooks/useTextBox';
 
 const accountActivePeriod = {
 	title: '계정 사용 기간',
@@ -27,20 +26,17 @@ const accountActivePeriod = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 계정 처리(계정 사용 기간) 폼
+ **************************************************/
 const AccountActivePeriod = () => {
-	const formRef = useRef(null);
-	const [accountStatus, setAccountStatus] = useState();
-
-	const [values, setValues] = useState({
-		activePeriod: '',
-		accountStatus: '',
-		accountNormalization: '',
+	const [activePeriod, activePeriodTextBox] = useTextBox({
+		name: 'activePeriod',
 	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
+	const [accountStatus, setAccountStatus] = useRadio({
+		name: 'accountStatus',
+		options: accountStatusOptions,
+	});
 
 	return (
 		<TemplateElementContainer
@@ -48,11 +44,7 @@ const AccountActivePeriod = () => {
 			description={accountActivePeriod.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={
 								accountActivePeriod.contents.activePeriod.title
@@ -60,7 +52,7 @@ const AccountActivePeriod = () => {
 							render={() => {
 								return (
 									<div>
-										<TextBox name={'activePeriod'} />
+										{activePeriodTextBox()}
 										{
 											accountActivePeriod.contents
 												.activePeriod.message
@@ -73,15 +65,7 @@ const AccountActivePeriod = () => {
 							title={
 								accountActivePeriod.contents.accountStatus.title
 							}
-							render={() => {
-								return (
-									<RadioButton
-										value={accountStatusOptions[0].value}
-										setValue={setAccountStatus}
-										options={accountStatusOptions}
-									/>
-								);
-							}}
+							render={setAccountStatus}
 						/>
 
 						<TemplateElement
@@ -100,7 +84,7 @@ const AccountActivePeriod = () => {
 								);
 							}}
 						/>
-					</Form>
+					</div>
 				);
 			}}
 		/>

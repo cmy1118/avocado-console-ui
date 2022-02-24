@@ -1,14 +1,13 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React from 'react';
 
 import TemplateElementContainer from '../../TemplateElementContainer';
-import Form from '../../../../../RecycleComponents/New/Form';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {
 	identityVerificationMethodOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
 import TemplateElement from '../../TemplateElement';
-import TextBox from '../../../../../RecycleComponents/New/TextBox';
+import useRadio from '../../../../../../hooks/useRadio';
+import useTextBox from '../../../../../../hooks/useTextBox';
 
 const identityVerification = {
 	title: '본인 확인 인증',
@@ -30,22 +29,24 @@ const identityVerification = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 인증(본인 확인 인증) 폼
+ **************************************************/
 const IdentityVerification = () => {
-	const formRef = useRef(null);
-
-	const [usage, setUsage] = useState();
-	const [authMethod, setAuthMethod] = useState();
-
-	const [values, setValues] = useState({
-		usage: '',
-		authMethod: '',
-		waitingTime: '',
+	//usage: 본인 확인 인증 사용 여부
+	const [usage, usageRadioButton] = useRadio({
+		name: 'usage',
+		options: usageOptions,
 	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
+	//authMethod: 본인 인증 확인 유형
+	const [authMethod, authMethodRadioButton] = useRadio({
+		name: 'authMethod',
+		options: identityVerificationMethodOptions,
+	});
+	//waitingTime: 입력 대기 시간
+	const [waitingTime, waitingTimeTextBox] = useTextBox({
+		name: 'waitingTime',
+	});
 
 	return (
 		<TemplateElementContainer
@@ -53,41 +54,16 @@ const IdentityVerification = () => {
 			description={identityVerification.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={identityVerification.contents.usage.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={usageOptions[0].value}
-										setValue={setUsage}
-										options={usageOptions}
-									/>
-								);
-							}}
+							render={usageRadioButton}
 						/>
 						<TemplateElement
 							title={
 								identityVerification.contents.authMethod.title
 							}
-							render={() => {
-								return (
-									<RadioButton
-										value={
-											identityVerificationMethodOptions[0]
-												.value
-										}
-										setValue={setAuthMethod}
-										options={
-											identityVerificationMethodOptions
-										}
-									/>
-								);
-							}}
+							render={authMethodRadioButton}
 						/>
 						<TemplateElement
 							title={
@@ -96,7 +72,7 @@ const IdentityVerification = () => {
 							render={() => {
 								return (
 									<div>
-										<TextBox name={'waitingTime'} />
+										{waitingTimeTextBox()}
 										{
 											identityVerification.contents
 												.waitingTime.message
@@ -105,7 +81,7 @@ const IdentityVerification = () => {
 								);
 							}}
 						/>
-					</Form>
+					</div>
 				);
 			}}
 		/>

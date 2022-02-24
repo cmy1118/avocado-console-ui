@@ -1,16 +1,15 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {
 	additionalAuthMethodOptions,
 	authUsageOptions,
 	requiredOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
-import Form from '../../../../../RecycleComponents/New/Form';
-import ComboBox from '../../../../../RecycleComponents/New/ComboBox';
 import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
+import useRadio from '../../../../../../hooks/useRadio';
+import useComboBox from '../../../../../../hooks/useComboBox';
 
 const mfa = {
 	title: 'MFA 인증',
@@ -34,49 +33,53 @@ const mfa = {
 	},
 };
 
-const additionalAuth = [
-	{
-		key: 'additionalAuth1',
-		authUsage: 'authUsage1',
-		required: 'required1',
-		authMethod: 'authMethod1',
-	},
-	{
-		key: 'additionalAuth2',
-		authUsage: 'authUsage2',
-		required: 'required2',
-		authMethod: 'authMethod2',
-	},
-	{
-		key: 'additionalAuth3',
-		authUsage: 'authUsage3',
-		required: 'required3',
-		authMethod: 'authMethod3',
-	},
-];
-
+/**************************************************
+ * ambacc244 - 사용자 인증(MFA 인증) 폼
+ **************************************************/
 const MFA = () => {
-	const formRef = useRef(null);
-
-	const [usage, setUsage] = useState();
-
-	const [values, setValues] = useState({
-		usage: '',
-		authUsage1: '',
-		required1: '',
-		authMethod1: '',
-		authUsage2: '',
-		required2: '',
-		authMethod2: '',
-		authUsage3: '',
-		required3: '',
-		authMethod3: '',
+	const [usage, usageRadioButton] = useRadio({
+		name: 'usage',
+		options: usageOptions,
+	});
+	const [authUsage1, authUsage1ComboBox] = useComboBox({
+		options: authUsageOptions,
+	});
+	const [required1, required1ComboBox] = useComboBox({
+		options: requiredOptions,
+	});
+	const [authUsage2, authUsage2ComboBox] = useComboBox({
+		options: authUsageOptions,
+	});
+	const [required2, required2ComboBox] = useComboBox({
+		options: requiredOptions,
+	});
+	const [authUsage3, authUsage3ComboBox] = useComboBox({
+		options: authUsageOptions,
+	});
+	const [required3, required3ComboBox] = useComboBox({
+		options: requiredOptions,
 	});
 
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
+	const additionalAuth = [
+		{
+			key: 'additionalAuth1',
+			authUsage: authUsage1ComboBox,
+			required: required1ComboBox,
+			authMethod: 'authMethod1',
+		},
+		{
+			key: 'additionalAuth2',
+			authUsage: authUsage2ComboBox,
+			required: required2ComboBox,
+			authMethod: 'authMethod2',
+		},
+		{
+			key: 'additionalAuth3',
+			authUsage: authUsage3ComboBox,
+			required: required3ComboBox,
+			authMethod: 'authMethod3',
+		},
+	];
 
 	return (
 		<TemplateElementContainer
@@ -84,55 +87,38 @@ const MFA = () => {
 			description={mfa.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={mfa.contents.usage.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={usageOptions[0].value}
-										setValue={setUsage}
-										options={usageOptions}
-									/>
-								);
-							}}
+							render={usageRadioButton}
 						/>
 						<div>
 							--------------------------------------------------------------
 						</div>
-						<TemplateElement
-							title={mfa.contents.additionalAuth1.title}
-							render={() => {
-								return additionalAuth.map((v) => (
-									<div key={v.key}>
-										<ComboBox
-											name={v.authUsage}
-											options={authUsageOptions}
-											width={'100px'}
-										/>
-										<ComboBox
-											name={v.required}
-											options={requiredOptions}
-											width={'100px'}
-										/>
-										{additionalAuthMethodOptions.map(
-											(val) => (
-												<CheckBox
-													key={val.value}
-													name={v.authMethod}
-													label={val.label}
-												/>
-											),
-										)}
-									</div>
-								));
-							}}
-						/>
-					</Form>
+						{additionalAuth.map((v) => (
+							<TemplateElement
+								key={v.key}
+								title={mfa.contents[v.key].title}
+								render={() => {
+									return (
+										<div>
+											{v.authUsage()}
+											{v.required()}
+											{additionalAuthMethodOptions.map(
+												(val) => (
+													<CheckBox
+														key={val.value}
+														name={v.authMethod}
+														label={val.label}
+													/>
+												),
+											)}
+										</div>
+									);
+								}}
+							/>
+						))}
+					</div>
 				);
 			}}
 		/>

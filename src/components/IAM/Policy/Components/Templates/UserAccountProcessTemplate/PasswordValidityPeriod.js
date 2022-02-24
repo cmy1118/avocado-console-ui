@@ -1,14 +1,13 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
-import Form from '../../../../../RecycleComponents/New/Form';
 import TemplateElement from '../../TemplateElement';
-import TextBox from '../../../../../RecycleComponents/New/TextBox';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {
 	accountNormalizationOptions,
 	accountStatusOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
+import useRadio from '../../../../../../hooks/useRadio';
+import useTextBox from '../../../../../../hooks/useTextBox';
 
 const passwordValidityPeriod = {
 	title: '비밀번호 사용 기간',
@@ -33,23 +32,25 @@ const passwordValidityPeriod = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 계정 처리(비밀번호 사용 기간) 폼
+ **************************************************/
 const PasswordValidityPeriod = () => {
-	const formRef = useRef(null);
-	const [usage, setUsage] = useState();
-	const [accountStatus, setAccountStatus] = useState();
-	const [accountNormalization, setAccountNormalization] = useState();
-
-	const [values, setValues] = useState({
-		usage: '',
-		activePeriod: '',
-		accountStatus: '',
-		accountNormalization: '',
+	const [usage, usageRadioButton] = useRadio({
+		name: 'usage',
+		options: usageOptions,
 	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
+	const [activePeriod, activePeriodTextBox] = useTextBox({
+		name: 'activePeriod',
+	});
+	const [accountStatus, accountStatusRadioButton] = useRadio({
+		name: 'accountStatus',
+		options: accountStatusOptions,
+	});
+	const [accountNormalization, accountNormalizationRadioButton] = useRadio({
+		name: 'accountNormalization',
+		options: accountNormalizationOptions,
+	});
 
 	return (
 		<TemplateElementContainer
@@ -57,22 +58,10 @@ const PasswordValidityPeriod = () => {
 			description={passwordValidityPeriod.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={passwordValidityPeriod.contents.usage.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={usageOptions[0].value}
-										setValue={setUsage}
-										options={usageOptions}
-									/>
-								);
-							}}
+							render={usageRadioButton}
 						/>
 						<TemplateElement
 							title={
@@ -82,7 +71,7 @@ const PasswordValidityPeriod = () => {
 							render={() => {
 								return (
 									<div>
-										<TextBox name={'activePeriod'} />
+										{activePeriodTextBox()}
 										{
 											passwordValidityPeriod.contents
 												.activePeriod.message
@@ -96,34 +85,16 @@ const PasswordValidityPeriod = () => {
 								passwordValidityPeriod.contents.accountStatus
 									.title
 							}
-							render={() => {
-								return (
-									<RadioButton
-										value={accountStatusOptions[0].value}
-										setValue={setAccountStatus}
-										options={accountStatusOptions}
-									/>
-								);
-							}}
+							render={accountStatusRadioButton}
 						/>
 						<TemplateElement
 							title={
 								passwordValidityPeriod.contents
 									.accountNormalization.title
 							}
-							render={() => {
-								return (
-									<RadioButton
-										value={
-											accountNormalizationOptions[0].value
-										}
-										setValue={setAccountNormalization}
-										options={accountNormalizationOptions}
-									/>
-								);
-							}}
+							render={accountNormalizationRadioButton}
 						/>
-					</Form>
+					</div>
 				);
 			}}
 		/>
