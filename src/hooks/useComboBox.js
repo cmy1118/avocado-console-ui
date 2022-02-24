@@ -72,27 +72,35 @@ const OptionContainer = styled.div`
  * header: 콤보박스를 선택하지 않았을 경우 default label
  * options: 콤보박스의 옵션
  * width: 콤보박스의 길이
- * 
+ * initialValue: 콤보박스 컴포넌트 초기 선택값 (option의 key값 중에서 초기 선택으로 지정할 key값을 받으면 됩니다.)
+ *
+ *
  * 사용예시) - 사용법 공유 이후 삭제하겠습니다.
  *
- *
- * 	// const [value, comboBox] = useComboBox({
-	// 	header: '테스트', // 생략가능
-	// 	options: [
-	// 		{label: '1', value: 1},
-	// 		{label: '2', value: 2},
-	// 		{label: '3', value: 3},
-	// 	],
-	//	width: 250, // 생략가능
-	// });
- // console.log('value => ', value); // 선택한 콤보박스의 value
- // return <div>{comboBox()}</div>; // 컴포넌트에 그리는 방법
+ * const [comboValue, ComboBox] = useComboBox({
+		header: '사용 여부', // 필수 아님
+		options: [ // 필수
+			{label: '사용 함', key: 'use'},
+			{label: '사용 안함', key: 'unuse'},
+		],
+		initialValue:'unuse' // 필수 아님
+	});
  * 
  ***************************************************/
-const useComboBox = ({header, options, width = 150}) => {
+const useComboBox = ({header, options, width = 150, initialValue}) => {
 	const ref = useRef(null);
 	const [isOpened, setIsOpened] = useState(false);
-	const [value, setValue] = useState(header ? null : options[0]);
+	const [value, setValue] = useState(
+		// 초기값이 존재하는 경우
+		initialValue
+			? // options에서 해당 값으로 setValue
+			  options.find((op) => op.key === initialValue)
+			: // 초기값이 존재하지 않고, header가 존제하면 선택값을 비워줌
+			header
+			? null
+			: // 초기값도, header도 없는경우 옵션의 첫번째 값을 기본값으로 설정
+			  options[0],
+	);
 
 	/**************************************************
 	 * seob - 옵션 선택 함수
@@ -107,6 +115,9 @@ const useComboBox = ({header, options, width = 150}) => {
 		disabled: !isOpened,
 	});
 
+	/**************************************************
+	 * seob - 콤보박스 UI 컴포넌트
+	 ***************************************************/
 	const comboBox = () => (
 		<_Container width={width}>
 			<IconHeader
@@ -128,6 +139,7 @@ const useComboBox = ({header, options, width = 150}) => {
 					<Icon margin={'0px'}>{arrowDownIcon}</Icon>
 				)}
 			</IconHeader>
+			{/* 콤보박스 리스트  */}
 			{isOpened && (
 				<OptionContainer ref={ref}>
 					{options.map((v, i) => {
@@ -150,7 +162,7 @@ const useComboBox = ({header, options, width = 150}) => {
 		</_Container>
 	);
 
-	return [value === null ? '' : value.value, comboBox];
+	return [value === null ? '' : value.key, comboBox];
 };
 
 useComboBox.propTypes = {

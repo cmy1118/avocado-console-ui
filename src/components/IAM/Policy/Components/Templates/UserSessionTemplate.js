@@ -3,6 +3,8 @@ import TemplateElement from '../TemplateElement';
 import TemplateElementContainer from '../TemplateElementContainer';
 import useRadio from '../../../../../hooks/useRadio';
 import useTemplateInput from '../../../../../hooks/useTemplateInput';
+import useCheckBox from '../../../../../hooks/useCheckBox';
+import useComboBox from '../../../../../hooks/useComboBox';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -33,7 +35,7 @@ const contents = {
 		title: '화면 보호기',
 		description: [
 			'화면을 잠금 유휴 시간을 설정 합니다.',
-			'' + '최대 유휴 시간은 1800초(30분)를 초과 설정할 수 없습니다.',
+			'최대 유휴 시간은 1800초(30분)를 초과 설정할 수 없습니다.',
 		],
 	},
 };
@@ -42,8 +44,24 @@ const UserSessionTemplate = () => {
 	const [value, Radio] = useRadio({
 		name: 'isUsed',
 		options: [
-			{label: '사용 함', value: true},
-			{label: '사용 안함', value: false},
+			{label: '잠금', key: 'lock'},
+			{label: '삭제', key: 'delete'},
+		],
+	});
+
+	// const [value, Radio] = useRadio({
+	// 	name: 'isUsed',
+	// 	options: [
+	// 		{label: '사용 함', key: 'use'},
+	// 		{label: '사용 안함', key: 'unuse'},
+	// 	],
+	// });
+
+	const [comboValue, ComboBox] = useComboBox({
+		header: '사용 여부',
+		options: [
+			{label: '사용 함', key: 'use'},
+			{label: '사용 안함', key: 'unuse'},
 		],
 	});
 
@@ -53,6 +71,17 @@ const UserSessionTemplate = () => {
 
 	const [idleTime, idleTimeInput] = useTemplateInput({
 		unitName: '초',
+		initialValue: 30,
+	});
+
+	const [checkedValue, CheckBox] = useCheckBox({
+		options: [
+			{label: 'A', key: 'a'},
+			{label: 'B', key: 'b'},
+			{label: 'C', key: 'c'},
+		],
+		disabled: true,
+		initialValues: ['a', 'c'],
 	});
 
 	return (
@@ -60,9 +89,10 @@ const UserSessionTemplate = () => {
 			<TemplateElementContainer
 				title={contents.sessionTimeout.title}
 				description={contents.sessionTimeout.description}
-				render={() => {
-					return <div>테이블</div>;
-				}}
+				render={
+					ComboBox
+					// return <div>테이블</div>;
+				}
 			/>
 			<TemplateElementContainer
 				title={contents.dormant.title}

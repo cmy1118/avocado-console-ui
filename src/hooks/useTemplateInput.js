@@ -1,7 +1,14 @@
 import React, {useState} from 'react';
 
-const useTemplateInput = ({unitName}) => {
-	const [value, setValue] = useState('');
+/**************************************************
+ * seob - 템플릿의 input text 양식 폼
+ *
+ * unitName: input의 단위 명 ex) ~일, ~초 ...
+ * initialValue: 초기값
+ ***************************************************/
+const useTemplateInput = ({unitName, initialValue}) => {
+	// input value
+	const [value, setValue] = useState(initialValue || '');
 
 	const templateInput = () => (
 		<label>
