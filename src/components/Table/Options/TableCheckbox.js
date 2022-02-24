@@ -1,4 +1,4 @@
-import React, {forwardRef, useCallback} from 'react';
+import React, {forwardRef, useCallback, useState} from 'react';
 import PropTypes from 'prop-types';
 import CheckBox from '../../RecycleComponents/New/CheckBox';
 
@@ -10,43 +10,50 @@ import CheckBox from '../../RecycleComponents/New/CheckBox';
  * ...rest : 나머지 props 정보
  ***************************************************************************/
 const TableCheckbox = forwardRef(
-	({indeterminate, disabled, childCheck, ...rest}, ref) => {
+	(
+		{
+			indeterminate,
+			disabled,
+			allCheck,
+			setAllCheck,
+			childCheck,
+			setChildCheck,
+			...rest
+		},
+		ref,
+	) => {
+		//check box check 관리
+
 		const tableKey = rest.tablekey;
 		//checkboxes: checkbox input 정보들을 포함한 dom 저장 변수
 		const checkboxes = document.querySelectorAll(
 			`.${rest.tablekey}[type='checkbox']`,
 		);
-		console.log('🔴childCheck:', childCheck);
 
 		/***************************************************************************
-		 * roberto - 전체석택시 가로 행 child 요소 체크 이벤트 핸들러
+		 * roberto - 전체석택시 가로 행 child 요소 체크 유무 이벤트 핸들러
 		 ***************************************************************************/
 		const isCheckedChildRowsHandler = useCallback(
 			(e) => {
-				if (!childCheck) {
-					const element = e.target.parentNode.parentNode.parentNode.querySelectorAll(
-						`input[type="checkbox"]:not(.${tableKey})`,
-					);
-					console.log('🔵e.childCheck:', e.childCheck);
-					if (!e.childCheck) {
-						element?.forEach((checkbox) => {
-							//클릭 됬을때
-							if (e.target.checked) {
-								if (!checkbox.checked) {
-									checkbox.click();
-								}
-							}
-							//클릭 안됬을때
-							if (!e.target.checked) {
-								if (checkbox.checked) {
-									checkbox.click();
-								}
-							}
-						});
+				const element = e.target.parentNode.parentNode.parentNode.querySelectorAll(
+					`input[type="checkbox"]:not(.${tableKey})`,
+				);
+				element?.forEach((checkbox) => {
+					//클릭 됬을때
+					if (allCheck) {
+						if (!checkbox.checked) {
+							checkbox.click();
+						}
 					}
-				}
+					//클릭 안됬을때
+					if (!allCheck) {
+						if (checkbox.checked) {
+							checkbox.click();
+						}
+					}
+				});
 			},
-			[childCheck, tableKey],
+			[allCheck, tableKey],
 		);
 
 		/***************************************************************************
@@ -54,7 +61,10 @@ const TableCheckbox = forwardRef(
 		 ***************************************************************************/
 		const rowClickHandler = useCallback(
 			(e) => {
-				if (!e.shiftKey) {
+				console.log('🔻🔻🔻🔻🔻🔻🔻🔻🔻');
+				console.log('🔵allCheck:', allCheck);
+
+				if (allCheck) {
 					//선택한 요소를 제외한 체크박스 가로행 체크박스들
 					const element = e.target.parentNode.parentNode.parentNode.querySelectorAll(
 						`input[type="checkbox"]:not(.${tableKey})`,
@@ -71,7 +81,7 @@ const TableCheckbox = forwardRef(
 					e.target.lastChecked = true;
 				}
 			},
-			[isCheckedChildRowsHandler, tableKey],
+			[allCheck, isCheckedChildRowsHandler, tableKey],
 		);
 
 		/***************************************************************************
@@ -183,7 +193,10 @@ const TableCheckbox = forwardRef(
 		 ***************************************************************************/
 		const handleClick = useCallback(
 			(e) => {
+				console.log('handle Cilick');
 				if (disabled) return;
+				setAllCheck(true);
+				setChildCheck(true);
 				e.stopPropagation();
 				if (!e.shiftKey) {
 					rowClickHandler(e);
@@ -202,10 +215,17 @@ const TableCheckbox = forwardRef(
 					// }
 				}
 			},
-			[disabled, rowClickHandler, shiftClickHandler],
+			[
+				disabled,
+				rowClickHandler,
+				setAllCheck,
+				setChildCheck,
+				shiftClickHandler,
+			],
 		);
 		return (
 			<CheckBox
+				checked={allCheck}
 				className={`${rest.tablekey}`}
 				indeterminate={indeterminate}
 				onClick={handleClick}
@@ -220,7 +240,10 @@ const TableCheckbox = forwardRef(
 TableCheckbox.propTypes = {
 	indeterminate: PropTypes.bool,
 	disabled: PropTypes.bool,
+	allCheck: PropTypes.bool,
+	setAllCheck: PropTypes.func,
 	childCheck: PropTypes.bool,
+	setChildCheck: PropTypes.func,
 };
 
 TableCheckbox.displayName = 'TableCheckbox';

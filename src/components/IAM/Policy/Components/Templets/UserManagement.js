@@ -1,11 +1,8 @@
 import React, {useMemo, useState} from 'react';
 import Table from '../../../../Table/Table';
-import {tableColumns} from '../../../../../Constants/Table/columns';
 import {TableMode} from '../../../../../Constants/Table/mode';
 import checkboxColumn from '../../../../Table/tableCheckboxColumn';
-import TableCheckbox from '../../../../Table/Options/TableCheckbox';
 import {tableKeys} from '../../../../../Constants/Table/keys';
-import CheckBox from '../../../../RecycleComponents/New/CheckBox';
 import TableAllCheckbox from '../../../../Table/Options/TableAllCheckbox';
 
 const constants = {
@@ -69,7 +66,10 @@ const constants = {
 
 const UserManagement = () => {
 	// 자식이 선택되었는 지 유무 state
-	const [childCheck, setChildCheck] = useState();
+
+	//전체체크 상태 state
+	const [allCheck, setAllCheck] = useState(false);
+	const [childCheck, setChildCheck] = useState(true);
 
 	const POLICY_ADD_USER_MANAGEMEN_COLUMN = useMemo(
 		() => [
@@ -83,7 +83,10 @@ const UserManagement = () => {
 			checkboxColumn({
 				header: '전체권한',
 				tableKey: tableKeys.policy.policies.userManagement,
+				allCheck: allCheck,
+				setAllCheck: setAllCheck,
 				childCheck: childCheck,
+				setChildCheck: setChildCheck,
 			}),
 			{
 				accessor: 'create',
@@ -146,7 +149,7 @@ const UserManagement = () => {
 				},
 			},
 		],
-		[],
+		[childCheck],
 	);
 	return (
 		<div>

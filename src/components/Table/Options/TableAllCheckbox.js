@@ -26,23 +26,53 @@ const TableAllCheckbox = ({
 	//checkboc check시 이벤트 헨들러
 	const handleOnClick = useCallback(
 		(e) => {
+			//자식이 하나라도 누르지 않았으면 전체 선택 해제
+			if (!e.target.checked) {
+				console.log('🟪자식클림됨 ChildCheck:false');
+				setChildCheck(false);
+			}
 			setCheck(!check);
-			setChildCheck(true);
+			// setChildCheck(true);
 			const element = e.target.parentNode.parentNode.parentNode.querySelector(
 				`.${tableKey}[type='checkbox']`,
 			);
-			console.log('전체체크 :', element);
-			console.log('전체체크 상태:', element.checked);
-			console.log('현재체크 상태:', check);
+			const allElement = e.target.parentNode.parentNode.parentNode.querySelectorAll(
+				`input[type="checkbox"]:not(.${tableKey})`,
+			);
+
+			// console.log('전체체크 :', element);
+			// console.log('전체체크 상태:', element.checked);
+			console.log('🔶자식체크 상태:', e.target.checked);
+			console.log('🔶자식체크 상태:', e.element);
+			console.log('🔶자식체크 상태:', e.target);
 
 			if (element.checked === check) {
 				element.click();
 				// setChildCheck(false);
 			}
+			console.log('🔶allElement:', allElement);
 
-			// console.log('present:', e.target.parentNode.parentNode.parentNode);
+			// if (allElement) {
+			// 	let UncheckedNum = 0;
+			// 	allElement.forEach((checkbox) => {
+			// 		//체크 되지 않은것들
+			// 		if (!checkbox.checked) {
+			// 			UncheckedNum++;
+			// 		}
+			// 		// setChildCheck(true);
+			// 	});
+			// 	console.log('🔴현재체크되지않은 child 개수 :', UncheckedNum);
+			// 	console.log('🔴부모 전체체크 상태  :', element.checked);
+			// 	if (element.checked && UncheckedNum === 1) {
+			// 		setChildCheck(false);
+			// 	} else {
+			// 		setChildCheck(true);
+			// 	}
+			// 	UncheckedNum = 0;
+			// }
+			console.log('present:', e.target.parentNode.parentNode.parentNode);
+			// setChildCheck(true);
 		},
-
 		[check, setChildCheck, tableKey],
 	);
 
