@@ -1,15 +1,11 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
-import Form from '../../../../../RecycleComponents/New/Form';
 import TemplateElement from '../../TemplateElement';
 import {
 	accountNormalization2Options,
 	accountStatus2Options,
-	authUsageOptions,
 	groupPrivilegesOptions,
-	requiredOptions,
 } from '../../../../../../utils/options';
-import ComboBox from '../../../../../RecycleComponents/New/ComboBox';
 import useRadio from '../../../../../../hooks/useRadio';
 import useComboBox from '../../../../../../hooks/useComboBox';
 
@@ -52,15 +48,7 @@ const changeGroup = {
 
 const tempOption = [{value: 'select', label: '선택'}];
 
-const groupType = {
-	group1: 'group1',
-	group2: 'group2',
-	group3: 'group3',
-};
-
 const ChangeGroup = () => {
-	const formRef = useRef(null);
-
 	const [accountStatus, accountStatusRadioButton] = useRadio({
 		name: 'accountStatus',
 		options: accountStatus2Options,
@@ -85,11 +73,6 @@ const ChangeGroup = () => {
 		options: tempOption,
 		width: 150,
 	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
 
 	return (
 		<TemplateElementContainer

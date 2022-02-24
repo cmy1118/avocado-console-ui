@@ -3,10 +3,13 @@ import TemplateElement from '../../TemplateElement';
 import React from 'react';
 import useRadio from '../../../../../../hooks/useRadio';
 import {
+	applicationOptions,
+	personalInformationRestrictionOptions,
 	restrictionOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
 import useTextBox from '../../../../../../hooks/useTextBox';
+import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
 
 const passwordPattern = {
 	title: '비밀번호 패턴',
@@ -154,7 +157,22 @@ const PaswordPattern = () => {
 								passwordPattern.contents
 									.repeatedCharacterRestriction.title
 							}
-							render={personalInformationRestrictionRadioButton}
+							render={() => {
+								return (
+									<div>
+										{personalInformationRestrictionRadioButton()}
+										{personalInformationRestrictionOptions.map(
+											(v) => (
+												<CheckBox
+													key={v.value}
+													name={v.value}
+													label={v.label}
+												/>
+											),
+										)}
+									</div>
+								);
+							}}
 						/>
 
 						<TemplateElement
@@ -166,7 +184,6 @@ const PaswordPattern = () => {
 								return (
 									<div>
 										{enforcePasswordHistoryRadioButton()}
-
 										{enforcePasswordHistoryPeriodTextBox()}
 										{
 											passwordPattern.contents

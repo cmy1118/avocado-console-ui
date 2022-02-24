@@ -1,13 +1,11 @@
-import React, {useState, useCallback, useRef} from 'react';
+import React from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {
 	applicationOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
 import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
-import Form from '../../../../../RecycleComponents/New/Form';
 import useRadio from '../../../../../../hooks/useRadio';
 
 const deviceAuth = {

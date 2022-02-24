@@ -51,6 +51,11 @@ const optionValue = {
 	},
 	patternFormat: {prefix: 'prefix', suffix: 'suffix'},
 	restriction: {yes: 'yes', no: 'no'},
+	personalInformationRestriction: {
+		email: 'email',
+		phoneNumber: 'phoneNumber',
+		consecutiveNumbersWithId: 'consecutiveNumbersWithId',
+	},
 };
 
 const optionLabel = {
@@ -106,6 +111,11 @@ const optionLabel = {
 	},
 	patternFormat: {prefix: '접두사', suffix: '접미사'},
 	restriction: {yes: '제한함', no: '제한 안함'},
+	personalInformationRestriction: {
+		email: 'Email',
+		phoneNumber: '전화번호',
+		consecutiveNumbersWithId: 'ID 동일 연속 문자 수(3)',
+	},
 };
 
 export const usageOptions = [
@@ -302,5 +312,22 @@ export const restrictionOptions = [
 	{
 		value: optionValue.restriction.no,
 		label: optionLabel.restriction.no,
+	},
+];
+
+export const personalInformationRestrictionOptions = [
+	{
+		value: optionValue.personalInformationRestriction.email,
+		label: optionLabel.personalInformationRestriction.email,
+	},
+	{
+		value: optionValue.personalInformationRestriction.phoneNumber,
+		label: optionLabel.personalInformationRestriction.phoneNumber,
+	},
+	{
+		value:
+			optionValue.personalInformationRestriction.consecutiveNumbersWithId,
+		label:
+			optionLabel.personalInformationRestriction.consecutiveNumbersWithId,
 	},
 ];
