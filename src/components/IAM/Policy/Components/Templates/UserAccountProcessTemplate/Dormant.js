@@ -3,8 +3,8 @@ import Form from '../../../../../RecycleComponents/New/Form';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TextBox from '../../../../../RecycleComponents/New/TextBox';
 import TemplateElement from '../../TemplateElement';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {accountStatusOptions} from '../../../../../../utils/options';
+import useRadio from '../../../../../../hooks/useRadio';
 
 const dormant = {
 	title: '휴면',
@@ -33,11 +33,13 @@ const dormant = {
 
 const Dormant = () => {
 	const formRef = useRef(null);
-	const [accountStatus, setAccountStatus] = useState();
+	const [accountStatus, accountStatusRadioButton] = useRadio({
+		name: 'accountStatus',
+		options: accountStatusOptions,
+	});
 
 	const [values, setValues] = useState({
 		inactivePeriod: '',
-		accountStatus: '',
 		accountNormalization: '',
 	});
 
@@ -73,15 +75,7 @@ const Dormant = () => {
 						/>
 						<TemplateElement
 							title={dormant.contents.accountStatus.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={accountStatusOptions[0].value}
-										setValue={setAccountStatus}
-										options={accountStatusOptions}
-									/>
-								);
-							}}
+							render={accountStatusRadioButton}
 						/>
 
 						<TemplateElement

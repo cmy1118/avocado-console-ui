@@ -3,8 +3,12 @@ import React, {useCallback, useRef, useState} from 'react';
 import Form from '../../../../../RecycleComponents/New/Form';
 import TemplateElement from '../../TemplateElement';
 import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
-import {usageOptions} from '../../../../../../utils/options';
+import {
+	patternFormatOptions,
+	usageOptions,
+} from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
+import useRadio from '../../../../../../hooks/useRadio';
 
 const userIdPattern = {
 	title: '사용자 ID 패턴',
@@ -28,19 +32,19 @@ const userIdPattern = {
 };
 
 const UserIdPattern = () => {
-	const formRef = useRef(null);
-	const [usage, setUsage] = useState();
+	const [usage, usageRadioButton] = useRadio({
+		name: 'usage',
+		options: usageOptions,
+	});
+	const [patternFormat, patternFormatRadioButton] = useRadio({
+		name: 'patternFormat',
+		options: patternFormatOptions,
+	});
 
 	const [values, setValues] = useState({
-		usageStatus: '',
 		patternFormat: '',
 		patternInput: '',
 	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
 
 	return (
 		<TemplateElementContainer
@@ -48,24 +52,16 @@ const UserIdPattern = () => {
 			description={userIdPattern.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={userIdPattern.contents.usage.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={usageOptions[0].value}
-										setValue={setUsage}
-										options={usageOptions}
-									/>
-								);
-							}}
+							render={usageRadioButton}
 						/>
-					</Form>
+						<TemplateElement
+							title={userIdPattern.contents.patternFormat.title}
+							render={patternFormatRadioButton}
+						/>
+					</div>
 				);
 			}}
 		/>

@@ -2,9 +2,9 @@ import React, {useCallback, useRef, useState} from 'react';
 import Form from '../../../../../RecycleComponents/New/Form';
 import TextBox from '../../../../../RecycleComponents/New/TextBox';
 import TemplateElement from '../../TemplateElement';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {accountStatusOptions} from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
+import useRadio from '../../../../../../hooks/useRadio';
 
 const loginFailure = {
 	title: '로그인 실패',
@@ -33,11 +33,13 @@ const loginFailure = {
 
 const LoginFailure = () => {
 	const formRef = useRef(null);
-	const [accountStatus, setAccountStatus] = useState();
+	const [accountStatus, accountStatusRadioButton] = useRadio({
+		name: 'accountStatus',
+		options: accountStatusOptions,
+	});
 
 	const [values, setValues] = useState({
 		loginFailureCount: '',
-		accountStatus: '',
 		accountNormalization: '',
 		resetErrorCount: '',
 	});
@@ -76,15 +78,7 @@ const LoginFailure = () => {
 						/>
 						<TemplateElement
 							title={loginFailure.contents.accountStatus.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={accountStatusOptions[0].value}
-										setValue={setAccountStatus}
-										options={accountStatusOptions}
-									/>
-								);
-							}}
+							render={accountStatusRadioButton}
 						/>
 						<TemplateElement
 							title={loginFailure.contents.resetErrorCount.title}

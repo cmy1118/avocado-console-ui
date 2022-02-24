@@ -11,6 +11,7 @@ import {
 import Form from '../../../../../RecycleComponents/New/Form';
 import ComboBox from '../../../../../RecycleComponents/New/ComboBox';
 import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
+import useRadio from '../../../../../../hooks/useRadio';
 
 const mfa = {
 	title: 'MFA 인증',
@@ -58,7 +59,10 @@ const additionalAuth = [
 const MFA = () => {
 	const formRef = useRef(null);
 
-	const [usage, setUsage] = useState();
+	const [usage, usageRadioButton] = useRadio({
+		name: 'usage',
+		options: usageOptions,
+	});
 
 	const [values, setValues] = useState({
 		usage: '',
@@ -91,15 +95,7 @@ const MFA = () => {
 					>
 						<TemplateElement
 							title={mfa.contents.usage.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={usageOptions[0].value}
-										setValue={setUsage}
-										options={usageOptions}
-									/>
-								);
-							}}
+							render={usageRadioButton}
 						/>
 						<div>
 							--------------------------------------------------------------

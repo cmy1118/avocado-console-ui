@@ -2,13 +2,13 @@ import React, {useCallback, useRef, useState} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import Form from '../../../../../RecycleComponents/New/Form';
 import TemplateElement from '../../TemplateElement';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {
 	accountNormalization2Options,
 	accountStatus2Options,
 	groupPrivilegesOptions,
 } from '../../../../../../utils/options';
 import ComboBox from '../../../../../RecycleComponents/New/ComboBox';
+import useRadio from '../../../../../../hooks/useRadio';
 
 const changeGroup = {
 	title: '본인 확인 인증',
@@ -58,9 +58,18 @@ const groupType = {
 const ChangeGroup = () => {
 	const formRef = useRef(null);
 
-	const [accountStatus, setAccountStatus] = useState();
-	const [groupPrivileges, setGroupPrivileges] = useState();
-	const [accountNormalization, setAccountNormalization] = useState();
+	const [accountStatus, accountStatusRadioButton] = useRadio({
+		name: 'accountStatus',
+		options: accountStatus2Options,
+	});
+	const [groupPrivileges, groupPrivilegesRadioButton] = useRadio({
+		name: 'groupPrivileges',
+		options: groupPrivilegesOptions,
+	});
+	const [accountNormalization, accountNormalizationRadioButton] = useRadio({
+		name: 'accountNormalization',
+		options: accountNormalization2Options,
+	});
 
 	const [values, setValues] = useState({
 		group1: '',
@@ -114,46 +123,19 @@ const ChangeGroup = () => {
 
 						<TemplateElement
 							title={changeGroup.contents.accountStatus.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={accountStatus2Options[0].value}
-										setValue={setAccountStatus}
-										options={accountStatus2Options}
-									/>
-								);
-							}}
+							render={accountStatusRadioButton}
 						/>
 
 						<TemplateElement
 							title={changeGroup.contents.groupPrivileges.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={groupPrivilegesOptions[0].value}
-										setValue={setGroupPrivileges}
-										options={groupPrivilegesOptions}
-									/>
-								);
-							}}
+							render={groupPrivilegesRadioButton}
 						/>
 
 						<TemplateElement
 							title={
 								changeGroup.contents.accountNormalization.title
 							}
-							render={() => {
-								return (
-									<RadioButton
-										value={
-											accountNormalization2Options[0]
-												.value
-										}
-										setValue={setAccountNormalization}
-										options={accountNormalization2Options}
-									/>
-								);
-							}}
+							render={accountNormalizationRadioButton}
 						/>
 					</Form>
 				);

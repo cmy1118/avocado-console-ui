@@ -3,8 +3,8 @@ import TemplateElementContainer from '../../TemplateElementContainer';
 import Form from '../../../../../RecycleComponents/New/Form';
 import TemplateElement from '../../TemplateElement';
 import TextBox from '../../../../../RecycleComponents/New/TextBox';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {accountStatusOptions} from '../../../../../../utils/options';
+import useRadio from '../../../../../../hooks/useRadio';
 
 const accountActivePeriod = {
 	title: '계정 사용 기간',
@@ -29,7 +29,10 @@ const accountActivePeriod = {
 
 const AccountActivePeriod = () => {
 	const formRef = useRef(null);
-	const [accountStatus, setAccountStatus] = useState();
+	const [accountStatus, setAccountStatus] = useRadio({
+		name: 'accountStatus',
+		options: accountStatusOptions,
+	});
 
 	const [values, setValues] = useState({
 		activePeriod: '',
@@ -73,15 +76,7 @@ const AccountActivePeriod = () => {
 							title={
 								accountActivePeriod.contents.accountStatus.title
 							}
-							render={() => {
-								return (
-									<RadioButton
-										value={accountStatusOptions[0].value}
-										setValue={setAccountStatus}
-										options={accountStatusOptions}
-									/>
-								);
-							}}
+							render={setAccountStatus}
 						/>
 
 						<TemplateElement

@@ -1,15 +1,11 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
-import Form from '../../../../../RecycleComponents/New/Form';
 import TemplateElement from '../../TemplateElement';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {
-	accountNormalizationOptions,
 	accountStatusOptions,
 	gracePeriodOptions,
-	usageOptions,
 } from '../../../../../../utils/options';
-import TextBox from '../../../../../RecycleComponents/New/TextBox';
+import useRadio from '../../../../../../hooks/useRadio';
 
 const resignation = {
 	title: '퇴사(탈퇴)',
@@ -41,19 +37,14 @@ const resignation = {
 };
 
 const Resignation = () => {
-	const formRef = useRef(null);
-	const [accountStatus, setAccountStatus] = useState();
-	const [gracePeriod, setGracePeriod] = useState();
-
-	const [values, setValues] = useState({
-		accountStatus: '',
-		gracePeriod: '',
+	const [accountStatus, accountStatusRadioButton] = useRadio({
+		name: 'accountStatus',
+		options: accountStatusOptions,
 	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
+	const [gracePeriod, gracePeriodRadioButton] = useRadio({
+		name: 'gracePeriod',
+		options: gracePeriodOptions,
+	});
 
 	return (
 		<TemplateElementContainer
@@ -61,35 +52,15 @@ const Resignation = () => {
 			description={resignation.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={resignation.contents.accountStatus.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={accountStatusOptions[0].value}
-										setValue={accountStatus}
-										options={accountStatusOptions}
-									/>
-								);
-							}}
+							render={accountStatusRadioButton}
 						/>
 
 						<TemplateElement
 							title={resignation.contents.gracePeriod.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={gracePeriodOptions[0].value}
-										setValue={setGracePeriod}
-										options={gracePeriodOptions}
-									/>
-								);
-							}}
+							render={gracePeriod}
 						/>
 						<TemplateElement
 							title={
@@ -106,7 +77,7 @@ const Resignation = () => {
 								);
 							}}
 						/>
-					</Form>
+					</div>
 				);
 			}}
 		/>

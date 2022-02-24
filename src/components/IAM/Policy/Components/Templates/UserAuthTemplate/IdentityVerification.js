@@ -2,13 +2,13 @@ import React, {useCallback, useRef, useState} from 'react';
 
 import TemplateElementContainer from '../../TemplateElementContainer';
 import Form from '../../../../../RecycleComponents/New/Form';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {
 	identityVerificationMethodOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
 import TemplateElement from '../../TemplateElement';
 import TextBox from '../../../../../RecycleComponents/New/TextBox';
+import useRadio from '../../../../../../hooks/useRadio';
 
 const identityVerification = {
 	title: '본인 확인 인증',
@@ -33,12 +33,15 @@ const identityVerification = {
 const IdentityVerification = () => {
 	const formRef = useRef(null);
 
-	const [usage, setUsage] = useState();
-	const [authMethod, setAuthMethod] = useState();
-
+	const [usage, usageRadioButton] = useRadio({
+		name: 'usage',
+		options: usageOptions,
+	});
+	const [authMethod, authMethodRadioButton] = useRadio({
+		name: 'authMethod',
+		options: identityVerificationMethodOptions,
+	});
 	const [values, setValues] = useState({
-		usage: '',
-		authMethod: '',
 		waitingTime: '',
 	});
 
@@ -60,34 +63,13 @@ const IdentityVerification = () => {
 					>
 						<TemplateElement
 							title={identityVerification.contents.usage.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={usageOptions[0].value}
-										setValue={setUsage}
-										options={usageOptions}
-									/>
-								);
-							}}
+							render={usageRadioButton}
 						/>
 						<TemplateElement
 							title={
 								identityVerification.contents.authMethod.title
 							}
-							render={() => {
-								return (
-									<RadioButton
-										value={
-											identityVerificationMethodOptions[0]
-												.value
-										}
-										setValue={setAuthMethod}
-										options={
-											identityVerificationMethodOptions
-										}
-									/>
-								);
-							}}
+							render={authMethodRadioButton}
 						/>
 						<TemplateElement
 							title={

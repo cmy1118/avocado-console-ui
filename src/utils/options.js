@@ -49,10 +49,12 @@ const optionValue = {
 		no: 'no',
 		yes: 'yes',
 	},
+	patternFormat: {prefix: 'prefix', suffix: 'suffix'},
+	restriction: {yes: 'yes', no: 'no'},
 };
 
 const optionLabel = {
-	usage: {use: '인증 함', nonuse: '인증 안함'},
+	usage: {use: '사용함', nonuse: '사용 안함'},
 	application: {
 		managementConsole: 'Management Console',
 		webTerminal: 'WebTerminal',
@@ -102,6 +104,8 @@ const optionLabel = {
 		no: '없음',
 		yes: '있음',
 	},
+	patternFormat: {prefix: '접두사', suffix: '접미사'},
+	restriction: {yes: '제한함', no: '제한 안함'},
 };
 
 export const usageOptions = [
@@ -276,5 +280,27 @@ export const gracePeriodOptions = [
 	{
 		value: optionValue.gracePeriod.no,
 		label: optionLabel.gracePeriod.no,
+	},
+];
+
+export const patternFormatOptions = [
+	{
+		value: optionValue.patternFormat.prefix,
+		label: optionLabel.patternFormat.prefix,
+	},
+	{
+		value: optionValue.patternFormat.suffix,
+		label: optionLabel.patternFormat.suffix,
+	},
+];
+
+export const restrictionOptions = [
+	{
+		value: optionValue.restriction.yes,
+		label: optionLabel.restriction.yes,
+	},
+	{
+		value: optionValue.restriction.no,
+		label: optionLabel.restriction.no,
 	},
 ];

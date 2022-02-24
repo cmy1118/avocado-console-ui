@@ -3,12 +3,12 @@ import TemplateElementContainer from '../../TemplateElementContainer';
 import Form from '../../../../../RecycleComponents/New/Form';
 import TemplateElement from '../../TemplateElement';
 import TextBox from '../../../../../RecycleComponents/New/TextBox';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {
 	accountNormalizationOptions,
 	accountStatusOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
+import useRadio from '../../../../../../hooks/useRadio';
 
 const passwordValidityPeriod = {
 	title: '비밀번호 사용 기간',
@@ -35,15 +35,21 @@ const passwordValidityPeriod = {
 
 const PasswordValidityPeriod = () => {
 	const formRef = useRef(null);
-	const [usage, setUsage] = useState();
-	const [accountStatus, setAccountStatus] = useState();
-	const [accountNormalization, setAccountNormalization] = useState();
+	const [usage, usageRadioButton] = useRadio({
+		name: 'usage',
+		options: usageOptions,
+	});
+	const [accountStatus, accountStatusRadioButton] = useRadio({
+		name: 'accountStatus',
+		options: accountStatusOptions,
+	});
+	const [accountNormalization, accountNormalizationRadioButton] = useRadio({
+		name: 'accountNormalization',
+		options: accountNormalizationOptions,
+	});
 
 	const [values, setValues] = useState({
-		usage: '',
 		activePeriod: '',
-		accountStatus: '',
-		accountNormalization: '',
 	});
 
 	/**************************************************
@@ -64,15 +70,7 @@ const PasswordValidityPeriod = () => {
 					>
 						<TemplateElement
 							title={passwordValidityPeriod.contents.usage.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={usageOptions[0].value}
-										setValue={setUsage}
-										options={usageOptions}
-									/>
-								);
-							}}
+							render={usageRadioButton}
 						/>
 						<TemplateElement
 							title={
@@ -96,32 +94,14 @@ const PasswordValidityPeriod = () => {
 								passwordValidityPeriod.contents.accountStatus
 									.title
 							}
-							render={() => {
-								return (
-									<RadioButton
-										value={accountStatusOptions[0].value}
-										setValue={setAccountStatus}
-										options={accountStatusOptions}
-									/>
-								);
-							}}
+							render={accountStatusRadioButton}
 						/>
 						<TemplateElement
 							title={
 								passwordValidityPeriod.contents
 									.accountNormalization.title
 							}
-							render={() => {
-								return (
-									<RadioButton
-										value={
-											accountNormalizationOptions[0].value
-										}
-										setValue={setAccountNormalization}
-										options={accountNormalizationOptions}
-									/>
-								);
-							}}
+							render={accountNormalizationRadioButton}
 						/>
 					</Form>
 				);

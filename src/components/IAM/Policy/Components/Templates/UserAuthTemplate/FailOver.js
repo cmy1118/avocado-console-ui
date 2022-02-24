@@ -4,6 +4,8 @@ import TemplateElement from '../../TemplateElement';
 import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {authMethodOptions, usageOptions} from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
+import useRadio from '../../../../../../hooks/useRadio';
+import useComboBox from '../../../../../../hooks/useComboBox';
 
 const failOver = {
 	title: 'Fail Over',
@@ -24,22 +26,18 @@ const failOver = {
 };
 
 const FailOver = () => {
-	const formRef = useRef(null);
-
-	const [usage, setUsage] = useState();
-	const [basicAuth, setBasicAuth] = useState();
-	const [mfa, setMfa] = useState();
-
-	const [values, setValues] = useState({
-		usage: '',
-		basicAuth: '',
-		mfa: '',
+	const [usage, usageRadioButton] = useRadio({
+		name: 'usage',
+		options: usageOptions,
 	});
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 요청시 현재 폼이 가지고 있는 정보를 함께 제출
-	 **************************************************/
-	const onSubmitForm = useCallback(() => {}, []);
+	const [basicAuth, basicAuthRadioButton] = useRadio({
+		name: 'basicAuth',
+		options: authMethodOptions,
+	});
+	const [mfa, mfaRaddioButton] = useRadio({
+		name: 'mfa',
+		options: authMethodOptions,
+	});
 
 	return (
 		<TemplateElementContainer
@@ -47,48 +45,20 @@ const FailOver = () => {
 			description={failOver.description}
 			render={() => {
 				return (
-					<Form
-						innerRef={formRef}
-						onSubmit={onSubmitForm}
-						initialValues={values}
-					>
+					<div>
 						<TemplateElement
 							title={failOver.contents.usage.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={usageOptions[0].value}
-										setValue={setUsage}
-										options={usageOptions}
-									/>
-								);
-							}}
+							render={usageRadioButton}
 						/>
 						<TemplateElement
 							title={failOver.contents.basicAuth.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={authMethodOptions[0].value}
-										setValue={setBasicAuth}
-										options={authMethodOptions}
-									/>
-								);
-							}}
+							render={basicAuthRadioButton}
 						/>
 						<TemplateElement
 							title={failOver.contents.mfa.title}
-							render={() => {
-								return (
-									<RadioButton
-										value={authMethodOptions[0].value}
-										setValue={setMfa}
-										options={authMethodOptions}
-									/>
-								);
-							}}
+							render={mfaRaddioButton}
 						/>
-					</Form>
+					</div>
 				);
 			}}
 		/>
