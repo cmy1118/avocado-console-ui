@@ -1,8 +1,6 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
-import Form from '../../../../../RecycleComponents/New/Form';
 import TemplateElement from '../../TemplateElement';
-import TextBox from '../../../../../RecycleComponents/New/TextBox';
 import {accountStatusOptions} from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
@@ -28,6 +26,9 @@ const accountActivePeriod = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 계정 처리(계정 사용 기간) 폼
+ **************************************************/
 const AccountActivePeriod = () => {
 	const [activePeriod, activePeriodTextBox] = useTextBox({
 		name: 'activePeriod',

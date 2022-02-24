@@ -29,6 +29,9 @@ const userIdPattern = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 계정 패턴(사용자 ID 패턴) 폼
+ **************************************************/
 const UserIdPattern = () => {
 	const [usage, usageRadioButton] = useRadio({
 		name: 'usage',

@@ -36,6 +36,9 @@ const resignation = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 계정 처리(퇴사/탈퇴) 폼
+ **************************************************/
 const Resignation = () => {
 	const [accountStatus, accountStatusRadioButton] = useRadio({
 		name: 'accountStatus',

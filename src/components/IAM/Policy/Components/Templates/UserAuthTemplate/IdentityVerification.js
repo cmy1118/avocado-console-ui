@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React from 'react';
 
 import TemplateElementContainer from '../../TemplateElementContainer';
 import {
@@ -29,15 +29,21 @@ const identityVerification = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 인증(본인 확인 인증) 폼
+ **************************************************/
 const IdentityVerification = () => {
+	//usage: 본인 확인 인증 사용 여부
 	const [usage, usageRadioButton] = useRadio({
 		name: 'usage',
 		options: usageOptions,
 	});
+	//authMethod: 본인 인증 확인 유형
 	const [authMethod, authMethodRadioButton] = useRadio({
 		name: 'authMethod',
 		options: identityVerificationMethodOptions,
 	});
+	//waitingTime: 입력 대기 시간
 	const [waitingTime, waitingTimeTextBox] = useTextBox({
 		name: 'waitingTime',
 	});

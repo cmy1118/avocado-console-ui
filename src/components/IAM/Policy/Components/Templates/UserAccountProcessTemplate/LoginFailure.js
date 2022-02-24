@@ -30,6 +30,9 @@ const loginFailure = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 계정 처리(로그인 실패) 폼
+ **************************************************/
 const LoginFailure = () => {
 	const [loginFailureCount, loginFailureCountTextBox] = useTextBox({
 		name: 'loginFailureCount',

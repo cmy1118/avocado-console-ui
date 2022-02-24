@@ -29,6 +29,7 @@ const deviceAuth = {
  * ambacc244 - 사용자 인증(단말기 인증) 폼
  **************************************************/
 const DeviceAuth = () => {
+	//usage: 단말기 인증 사용 여부
 	const [usage, usageRadioButton] = useRadio({
 		name: 'usage',
 		options: usageOptions,

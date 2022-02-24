@@ -3,7 +3,6 @@ import TemplateElement from '../../TemplateElement';
 import React from 'react';
 import useRadio from '../../../../../../hooks/useRadio';
 import {
-	applicationOptions,
 	personalInformationRestrictionOptions,
 	restrictionOptions,
 	usageOptions,
@@ -51,6 +50,9 @@ const passwordPattern = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 계정 패턴(비밀번호 패턴) 폼
+ **************************************************/
 const PaswordPattern = () => {
 	const [minPasswordLength, minPasswordLengthTextBox] = useTextBox({
 		name: 'minPasswordLength',

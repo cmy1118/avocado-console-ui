@@ -32,12 +32,15 @@ const passwordValidityPeriod = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 계정 처리(비밀번호 사용 기간) 폼
+ **************************************************/
 const PasswordValidityPeriod = () => {
 	const [usage, usageRadioButton] = useRadio({
 		name: 'usage',
 		options: usageOptions,
 	});
-	const [activePeriod, activePeriodㅆextBox] = useTextBox({
+	const [activePeriod, activePeriodTextBox] = useTextBox({
 		name: 'activePeriod',
 	});
 	const [accountStatus, accountStatusRadioButton] = useRadio({
@@ -68,7 +71,7 @@ const PasswordValidityPeriod = () => {
 							render={() => {
 								return (
 									<div>
-										{activePeriodㅆextBox()}
+										{activePeriodTextBox()}
 										{
 											passwordValidityPeriod.contents
 												.activePeriod.message

@@ -33,6 +33,9 @@ const mfa = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 인증(MFA 인증) 폼
+ **************************************************/
 const MFA = () => {
 	const [usage, usageRadioButton] = useRadio({
 		name: 'usage',

@@ -1,11 +1,8 @@
-import React, {useCallback, useRef, useState} from 'react';
-import Form from '../../../../../RecycleComponents/New/Form';
+import React from 'react';
 import TemplateElement from '../../TemplateElement';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 import {authMethodOptions, usageOptions} from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
-import useComboBox from '../../../../../../hooks/useComboBox';
 
 const failOver = {
 	title: 'Fail Over',
@@ -25,15 +22,21 @@ const failOver = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 인증(FailOver) 폼
+ **************************************************/
 const FailOver = () => {
+	//usage: Fail Over 사용 여부
 	const [usage, usageRadioButton] = useRadio({
 		name: 'usage',
 		options: usageOptions,
 	});
+	//basicAuth: 기본 인증 수단
 	const [basicAuth, basicAuthRadioButton] = useRadio({
 		name: 'basicAuth',
 		options: authMethodOptions,
 	});
+	//basicAuth: mfa 수단
 	const [mfa, mfaRaddioButton] = useRadio({
 		name: 'mfa',
 		options: authMethodOptions,

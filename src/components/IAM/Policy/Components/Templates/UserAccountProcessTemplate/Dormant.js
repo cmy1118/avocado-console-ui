@@ -30,6 +30,9 @@ const dormant = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - 사용자 계정 처리(휴면) 폼
+ **************************************************/
 const Dormant = () => {
 	const [accountStatus, accountStatusRadioButton] = useRadio({
 		name: 'accountStatus',

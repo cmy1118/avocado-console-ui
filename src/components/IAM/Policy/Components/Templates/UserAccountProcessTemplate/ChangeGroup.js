@@ -48,6 +48,9 @@ const changeGroup = {
 
 const tempOption = [{value: 'select', label: '선택'}];
 
+/**************************************************
+ * ambacc244 - 사용자 계정 처리(그룹 변경) 폼
+ **************************************************/
 const ChangeGroup = () => {
 	const [accountStatus, accountStatusRadioButton] = useRadio({
 		name: 'accountStatus',
