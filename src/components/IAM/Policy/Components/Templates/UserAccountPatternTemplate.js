@@ -1,4 +1,5 @@
 import React from 'react';
+import UserIdPattern from './UserAccountPatternTemplate/UserIdPattern';
 
 const userAccountPattern = {
 	title: '패턴 정책',
@@ -70,8 +71,12 @@ const userAccountPattern = {
 /**************************************************
  * ambacc244 - 사용자 계정 패턴 컴포넌트
  **************************************************/
-const userAccountPatternTemplate = () => {
-	return <div></div>;
+const UserAccountPatternTemplate = () => {
+	return (
+		<div>
+			<UserIdPattern />
+		</div>
+	);
 };
 
-export default userAccountPatternTemplate;
+export default UserAccountPatternTemplate;
