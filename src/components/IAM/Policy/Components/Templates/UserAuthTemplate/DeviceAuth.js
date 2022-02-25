@@ -7,6 +7,7 @@ import {
 } from '../../../../../../utils/options';
 import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
 import useRadio from '../../../../../../hooks/useRadio';
+import useCheckBox from '../../../../../../hooks/useCheckBox';
 
 const deviceAuth = {
 	title: '단말기 인증',
@@ -34,6 +35,9 @@ const DeviceAuth = () => {
 		name: 'usage',
 		options: usageOptions,
 	});
+	const [application, applicationCheckBox] = useCheckBox({
+		options: applicationOptions,
+	});
 
 	return (
 		<TemplateElementContainer
@@ -48,19 +52,7 @@ const DeviceAuth = () => {
 						/>
 						<TemplateElement
 							title={deviceAuth.contents.application.title}
-							render={() => {
-								return (
-									<div>
-										{applicationOptions.map((v) => (
-											<CheckBox
-												key={v.value}
-												name={v.value}
-												label={v.label}
-											/>
-										))}
-									</div>
-								);
-							}}
+							render={applicationCheckBox}
 						/>
 					</div>
 				);

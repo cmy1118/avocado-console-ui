@@ -51,7 +51,7 @@ const optionValue = {
 	},
 	patternFormat: {prefix: 'prefix', suffix: 'suffix'},
 	restriction: {yes: 'yes', no: 'no'},
-	personalInformationRestriction: {
+	personalInformationRestrictionMethod: {
 		email: 'email',
 		phoneNumber: 'phoneNumber',
 		consecutiveNumbersWithId: 'consecutiveNumbersWithId',
@@ -111,7 +111,7 @@ const optionLabel = {
 	},
 	patternFormat: {prefix: '접두사', suffix: '접미사'},
 	restriction: {yes: '제한함', no: '제한 안함'},
-	personalInformationRestriction: {
+	personalInformationRestrictionMethod: {
 		email: 'Email',
 		phoneNumber: '전화번호',
 		consecutiveNumbersWithId: 'ID 동일 연속 문자 수(3)',
@@ -120,214 +120,216 @@ const optionLabel = {
 
 export const usageOptions = [
 	{
-		value: optionValue.usage.use,
+		key: optionValue.usage.use,
 		label: optionLabel.usage.use,
 	},
 	{
-		value: optionValue.usage.nonuse,
+		key: optionValue.usage.nonuse,
 		label: optionLabel.usage.nonuse,
 	},
 ];
 
 export const applicationOptions = [
 	{
-		value: optionValue.application.managementConsole,
+		key: optionValue.application.managementConsole,
 		label: optionLabel.application.managementConsole,
 	},
 	{
-		value: optionValue.application.webTerminal,
+		key: optionValue.application.webTerminal,
 		label: optionLabel.application.webTerminal,
 	},
 ];
 
 export const authUsageOptions = [
 	{
-		value: optionValue.authUsage.use,
+		key: optionValue.authUsage.use,
 		label: optionLabel.authUsage.use,
 	},
 	{
-		value: optionValue.authUsage.nonuse,
+		key: optionValue.authUsage.nonuse,
 		label: optionLabel.authUsage.nonuse,
 	},
 ];
 
 export const requiredOptions = [
 	{
-		value: optionValue.required.required,
+		key: optionValue.required.required,
 		label: optionValue.required.required,
 	},
 	{
-		value: optionValue.required.optional,
+		key: optionValue.required.optional,
 		label: optionValue.required.optional,
 	},
 	{
-		value: optionValue.required.no,
+		key: optionValue.required.no,
 		label: optionValue.required.no,
 	},
 ];
 
 export const additionalAuthMethodOptions = [
 	{
-		value: optionValue.additionalAuthMethod.mail,
+		key: optionValue.additionalAuthMethod.mail,
 		label: optionLabel.additionalAuthMethod.mail,
 	},
 	{
-		value: optionValue.additionalAuthMethod.sms,
+		key: optionValue.additionalAuthMethod.sms,
 		label: optionLabel.additionalAuthMethod.sms,
 	},
 	{
-		value: optionValue.additionalAuthMethod.kakao,
+		key: optionValue.additionalAuthMethod.kakao,
 		label: optionLabel.additionalAuthMethod.kakao,
 	},
 ];
 
 export const authMethodOptions = [
 	{
-		value: optionValue.authMethod.no,
+		key: optionValue.authMethod.no,
 		label: optionLabel.authMethod.no,
 	},
 	{
-		value: optionValue.authMethod.mail,
+		key: optionValue.authMethod.mail,
 		label: optionLabel.authMethod.mail,
 	},
 	{
-		value: optionValue.authMethod.sms,
+		key: optionValue.authMethod.sms,
 		label: optionLabel.authMethod.sms,
 	},
 	{
-		value: optionValue.authMethod.kakao,
+		key: optionValue.authMethod.kakao,
 		label: optionLabel.authMethod.kakao,
 	},
 ];
 
 export const identityVerificationMethodOptions = [
 	{
-		value: optionValue.identityVerificationMethod.idPassword,
+		key: optionValue.identityVerificationMethod.idPassword,
 		label: optionLabel.identityVerificationMethod.idPassword,
 	},
 	{
-		value: optionValue.identityVerificationMethod.mail,
+		key: optionValue.identityVerificationMethod.mail,
 		label: optionLabel.identityVerificationMethod.mail,
 	},
 	{
-		value: optionValue.identityVerificationMethod.sms,
+		key: optionValue.identityVerificationMethod.sms,
 		label: optionLabel.identityVerificationMethod.sms,
 	},
 	{
-		value: optionValue.identityVerificationMethod.kakao,
+		key: optionValue.identityVerificationMethod.kakao,
 		label: optionLabel.identityVerificationMethod.kakao,
 	},
 ];
 
 export const accountStatusOptions = [
 	{
-		value: optionValue.accountStatus.lock,
+		key: optionValue.accountStatus.lock,
 		label: optionLabel.accountStatus.lock,
 	},
 	{
-		value: optionValue.accountStatus.delete,
+		key: optionValue.accountStatus.delete,
 		label: optionLabel.accountStatus.delete,
 	},
 ];
 
 export const accountNormalizationOptions = [
 	{
-		value: optionValue.accountNormalization.identityVerification,
+		key: optionValue.accountNormalization.identityVerification,
 		label: optionLabel.accountNormalization.identityVerification,
 	},
 	{
-		value: optionValue.accountNormalization.manager,
+		key: optionValue.accountNormalization.manager,
 		label: optionLabel.accountNormalization.manager,
 	},
 ];
 
 export const accountStatus2Options = [
 	{
-		value: optionValue.accountStatus2.lock,
+		key: optionValue.accountStatus2.lock,
 		label: optionLabel.accountStatus2.lock,
 	},
 	{
-		value: optionValue.accountStatus2.delete,
+		key: optionValue.accountStatus2.delete,
 		label: optionLabel.accountStatus2.delete,
 	},
 	{
-		value: optionValue.accountStatus2.no,
+		key: optionValue.accountStatus2.no,
 		label: optionLabel.accountStatus2.no,
 	},
 ];
 
 export const groupPrivilegesOptions = [
 	{
-		value: optionValue.groupPrivileges.revoke,
+		key: optionValue.groupPrivileges.revoke,
 		label: optionLabel.groupPrivileges.revoke,
 	},
 	{
-		value: optionValue.groupPrivileges.grant,
+		key: optionValue.groupPrivileges.grant,
 		label: optionLabel.groupPrivileges.grant,
 	},
 	{
-		value: optionValue.groupPrivileges.remain,
+		key: optionValue.groupPrivileges.remain,
 		label: optionLabel.groupPrivileges.remain,
 	},
 ];
 
 export const accountNormalization2Options = [
 	{
-		value: optionValue.accountNormalization2.revoke,
+		key: optionValue.accountNormalization2.revoke,
 		label: optionLabel.accountNormalization2.revoke,
 	},
 	{
-		value: optionValue.accountNormalization2.grant,
+		key: optionValue.accountNormalization2.grant,
 		label: optionLabel.accountNormalization2.grant,
 	},
 ];
 
 export const gracePeriodOptions = [
 	{
-		value: optionValue.gracePeriod.yes,
+		key: optionValue.gracePeriod.yes,
 		label: optionLabel.gracePeriod.yes,
 	},
 	{
-		value: optionValue.gracePeriod.no,
+		key: optionValue.gracePeriod.no,
 		label: optionLabel.gracePeriod.no,
 	},
 ];
 
 export const patternFormatOptions = [
 	{
-		value: optionValue.patternFormat.prefix,
+		key: optionValue.patternFormat.prefix,
 		label: optionLabel.patternFormat.prefix,
 	},
 	{
-		value: optionValue.patternFormat.suffix,
+		key: optionValue.patternFormat.suffix,
 		label: optionLabel.patternFormat.suffix,
 	},
 ];
 
 export const restrictionOptions = [
 	{
-		value: optionValue.restriction.yes,
+		key: optionValue.restriction.yes,
 		label: optionLabel.restriction.yes,
 	},
 	{
-		value: optionValue.restriction.no,
+		key: optionValue.restriction.no,
 		label: optionLabel.restriction.no,
 	},
 ];
 
-export const personalInformationRestrictionOptions = [
+export const personalInformationRestrictionMethodOptions = [
 	{
-		value: optionValue.personalInformationRestriction.email,
-		label: optionLabel.personalInformationRestriction.email,
+		key: optionValue.personalInformationRestrictionMethod.email,
+		label: optionLabel.personalInformationRestrictionMethod.email,
 	},
 	{
-		value: optionValue.personalInformationRestriction.phoneNumber,
-		label: optionLabel.personalInformationRestriction.phoneNumber,
+		key: optionValue.personalInformationRestrictionMethod.phoneNumber,
+		label: optionLabel.personalInformationRestrictionMethod.phoneNumber,
 	},
 	{
-		value:
-			optionValue.personalInformationRestriction.consecutiveNumbersWithId,
+		key:
+			optionValue.personalInformationRestrictionMethod
+				.consecutiveNumbersWithId,
 		label:
-			optionLabel.personalInformationRestriction.consecutiveNumbersWithId,
+			optionLabel.personalInformationRestrictionMethod
+				.consecutiveNumbersWithId,
 	},
 ];

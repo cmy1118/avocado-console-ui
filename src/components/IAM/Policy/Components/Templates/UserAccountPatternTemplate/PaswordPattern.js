@@ -3,12 +3,12 @@ import TemplateElement from '../../TemplateElement';
 import React from 'react';
 import useRadio from '../../../../../../hooks/useRadio';
 import {
-	personalInformationRestrictionOptions,
+	personalInformationRestrictionMethodOptions,
 	restrictionOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
 import useTextBox from '../../../../../../hooks/useTextBox';
-import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
+import useCheckBox from '../../../../../../hooks/useCheckBox';
 
 const passwordPattern = {
 	title: '비밀번호 패턴',
@@ -85,6 +85,12 @@ const PaswordPattern = () => {
 		name: 'personalInformationRestriction',
 		options: restrictionOptions,
 	});
+
+	const [
+		personalInformationRestrictionMethod,
+		personalInformationRestrictionMethodCheckBox,
+	] = useCheckBox({options: personalInformationRestrictionMethodOptions});
+
 	const [
 		enforcePasswordHistory,
 		enforcePasswordHistoryRadioButton,
@@ -92,6 +98,7 @@ const PaswordPattern = () => {
 		name: 'enforcePasswordHistory',
 		options: restrictionOptions,
 	});
+
 	const [
 		enforcePasswordHistoryPeriod,
 		enforcePasswordHistoryPeriodTextBox,
@@ -157,21 +164,13 @@ const PaswordPattern = () => {
 						<TemplateElement
 							title={
 								passwordPattern.contents
-									.repeatedCharacterRestriction.title
+									.personalInformationRestriction.title
 							}
 							render={() => {
 								return (
 									<div>
 										{personalInformationRestrictionRadioButton()}
-										{personalInformationRestrictionOptions.map(
-											(v) => (
-												<CheckBox
-													key={v.value}
-													name={v.value}
-													label={v.label}
-												/>
-											),
-										)}
+										{personalInformationRestrictionMethodCheckBox()}
 									</div>
 								);
 							}}

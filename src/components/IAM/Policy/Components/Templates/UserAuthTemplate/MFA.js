@@ -3,6 +3,7 @@ import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
 import {
 	additionalAuthMethodOptions,
+	applicationOptions,
 	authUsageOptions,
 	requiredOptions,
 	usageOptions,
@@ -10,6 +11,7 @@ import {
 import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
 import useRadio from '../../../../../../hooks/useRadio';
 import useComboBox from '../../../../../../hooks/useComboBox';
+import useCheckBox from '../../../../../../hooks/useCheckBox';
 
 const mfa = {
 	title: 'MFA 인증',
@@ -47,11 +49,17 @@ const MFA = () => {
 	const [required1, required1ComboBox] = useComboBox({
 		options: requiredOptions,
 	});
+	const [authMethod1, authMethod1CheckBox] = useCheckBox({
+		options: additionalAuthMethodOptions,
+	});
 	const [authUsage2, authUsage2ComboBox] = useComboBox({
 		options: authUsageOptions,
 	});
 	const [required2, required2ComboBox] = useComboBox({
 		options: requiredOptions,
+	});
+	const [authMethod2, authMethod2CheckBox] = useCheckBox({
+		options: additionalAuthMethodOptions,
 	});
 	const [authUsage3, authUsage3ComboBox] = useComboBox({
 		options: authUsageOptions,
@@ -59,25 +67,27 @@ const MFA = () => {
 	const [required3, required3ComboBox] = useComboBox({
 		options: requiredOptions,
 	});
-
+	const [authMethod3, authMethod3CheckBox] = useCheckBox({
+		options: additionalAuthMethodOptions,
+	});
 	const additionalAuth = [
 		{
 			key: 'additionalAuth1',
 			authUsage: authUsage1ComboBox,
 			required: required1ComboBox,
-			authMethod: 'authMethod1',
+			authMethod: authMethod1CheckBox,
 		},
 		{
 			key: 'additionalAuth2',
 			authUsage: authUsage2ComboBox,
 			required: required2ComboBox,
-			authMethod: 'authMethod2',
+			authMethod: authMethod2CheckBox,
 		},
 		{
 			key: 'additionalAuth3',
 			authUsage: authUsage3ComboBox,
 			required: required3ComboBox,
-			authMethod: 'authMethod3',
+			authMethod: authMethod3CheckBox,
 		},
 	];
 
@@ -104,15 +114,7 @@ const MFA = () => {
 										<div>
 											{v.authUsage()}
 											{v.required()}
-											{additionalAuthMethodOptions.map(
-												(val) => (
-													<CheckBox
-														key={val.value}
-														name={v.authMethod}
-														label={val.label}
-													/>
-												),
-											)}
+											{v.authMethod()}
 										</div>
 									);
 								}}
