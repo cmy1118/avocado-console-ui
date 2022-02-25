@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import TemplateElement from '../TemplateElement';
 import TemplateElementContainer from '../TemplateElementContainer';
 import useRadio from '../../../../../hooks/useRadio';
 import useTemplateInput from '../../../../../hooks/useTemplateInput';
-import useCheckBox from '../../../../../hooks/useCheckBox';
-import useComboBox from '../../../../../hooks/useComboBox';
+import {DRAGGABLE_KEY} from '../../../../../Constants/Table/keys';
+import Table from '../../../../Table/Table';
+import TableComboBox from '../../../../Table/ColumnCells/TableComboBox';
+import TableTextBox from '../../../../Table/ColumnCells/TableTextBox';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -41,23 +43,15 @@ const contents = {
 };
 
 const UserSessionTemplate = () => {
-	const [value, Radio] = useRadio({
-		name: 'isUsed',
+	const [screenSaverValue, screenSaverRadio] = useRadio({
+		name: 'sessionTemplate-screenSaver-radio',
 		options: [
 			{label: '잠금', key: 'lock'},
 			{label: '삭제', key: 'delete'},
 		],
 	});
 
-	// const [value, Radio] = useRadio({
-	// 	name: 'isUsed',
-	// 	options: [
-	// 		{label: '사용 함', key: 'use'},
-	// 		{label: '사용 안함', key: 'unuse'},
-	// 	],
-	// });
-
-	const [comboValue, ComboBox] = useComboBox({
+	const [dormantValue, dormantRadio] = useRadio({
 		header: '사용 여부',
 		options: [
 			{label: '사용 함', key: 'use'},
@@ -74,25 +68,88 @@ const UserSessionTemplate = () => {
 		initialValue: 30,
 	});
 
-	const [checkedValue, CheckBox] = useCheckBox({
-		options: [
-			{label: 'A', key: 'a'},
-			{label: 'B', key: 'b'},
-			{label: 'C', key: 'c'},
-		],
-		disabled: true,
-		initialValues: ['a', 'c'],
-	});
+	const [data, setData] = useState([
+		{
+			id: 1,
+			isUsed: {
+				value: 'use',
+				options: [
+					{label: '사용 함', key: 'use'},
+					{label: '사용 안함', key: 'not use'},
+				],
+			},
+			application: 'Management Console',
+			MaintenanceTime: '14400',
+			PreservationTime: '0',
+			timeout: 'timeout',
+			[DRAGGABLE_KEY]: 'sessionTemplate1',
+		},
+		{
+			id: 2,
+			isUsed: {
+				value: 'not use',
+				options: [
+					{label: '사용 함', key: 'use'},
+					{label: '사용 안함', key: 'not use'},
+				],
+			},
+			application: 'Web Terminal',
+			MaintenanceTime: '3600',
+			PreservationTime: '0',
+			timeout: 'timeout',
+			[DRAGGABLE_KEY]: 'sessionTemplate2',
+		},
+	]);
+
+	console.log('datadatadata => ', data);
+
+	const columns = [
+		{
+			Header: '사용여부',
+			accessor: 'isUsed',
+			Cell: function Component(cell) {
+				return <TableComboBox cell={cell} setData={setData} />;
+			},
+		},
+		{
+			Header: '어플리케이션',
+			accessor: 'application', //has to be changed
+		},
+		{
+			Header: '세션 유지시간(초)',
+			accessor: 'MaintenanceTime', //has to be changed
+			Cell: function Component(cell) {
+				return <TableTextBox cell={cell} />;
+			},
+		},
+		{
+			Header: '연결 보존 시간(초)',
+			accessor: 'PreservationTime', //has to be changed
+			Cell: function Component(cell) {
+				return <TableTextBox cell={cell} />;
+			},
+		},
+		{
+			Header: '타임아웃 처리',
+			accessor: 'timeout', //has to be changed
+		},
+	];
 
 	return (
 		<div>
 			<TemplateElementContainer
 				title={contents.sessionTimeout.title}
 				description={contents.sessionTimeout.description}
-				render={
-					ComboBox
-					// return <div>테이블</div>;
-				}
+				render={() => (
+					<Table
+						// setSelect={setSelect}
+						isDraggable={false}
+						data={data}
+						setData={setData}
+						tableKey={'userSessionTemplate'}
+						columns={columns}
+					/>
+				)}
 			/>
 			<TemplateElementContainer
 				title={contents.dormant.title}
@@ -106,7 +163,7 @@ const UserSessionTemplate = () => {
 							/>
 							<TemplateElement
 								title={'계정 처리 방법'}
-								render={Radio}
+								render={dormantRadio}
 							/>
 							<TemplateElement
 								title={'계정 정상화'}
@@ -124,7 +181,7 @@ const UserSessionTemplate = () => {
 						<div>
 							<TemplateElement
 								title={'사용 여부'}
-								render={Radio}
+								render={screenSaverRadio}
 							/>
 							<TemplateElement
 								title={'유휴 시간'}
