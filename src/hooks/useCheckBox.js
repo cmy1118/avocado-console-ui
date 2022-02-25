@@ -19,8 +19,6 @@ const CheckBox = styled.div`
 
 const InputContainer = styled.div`
 	line-height: 17px !important;
-	width: 15px;
-	height: 15px;
 	svg {
 		position: absolute !important;
 		top: -2.5px !important;
