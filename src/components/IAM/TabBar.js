@@ -54,22 +54,11 @@ const TabBar = ({Tabs, param, id, isOpened, setIsOpened}) => {
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
-			if (
-				(param === 'groups' && (v === 'role' || v === 'tag')) ||
-				(param === 'roles' && (v === 'user' || v === 'group'))
-			) {
-				dispatch(
-					DIALOG_BOX.action.openAlert({
-						key: confirmAlertMessages.developing.key,
-					}),
-				);
-			} else {
-				setIsOpened(false);
-				history.push({
-					pathname: `/${param}/${id}`,
-					search: `tabs=${v}`,
-				});
-			}
+			setIsOpened(false);
+			history.push({
+				pathname: `/${param}/${id}`,
+				search: `tabs=${v}`,
+			});
 		},
 		[setIsOpened, param, dispatch, history, id],
 	);

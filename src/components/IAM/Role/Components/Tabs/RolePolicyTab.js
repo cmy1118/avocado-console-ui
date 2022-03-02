@@ -211,6 +211,17 @@ const calculatettribute = (attribute) => {
 	return {columns: columns, data: data};
 };
 
+const rolePolicyTab = {
+	include: {title: '이 역할의 정책 : ', button: {delete: '연결 해제'}},
+	exclude: {
+		title: '이 역할의 다른 정책 : ',
+		button: {create: '정책 생성', add: '정책 연결'},
+	},
+};
+
+/**************************************************
+ * ambacc244 - 이 역할의 권한/정책과, 가지지 않는 권한/정책을 보여줌
+ **************************************************/
 const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const [select, setSelect] = useState({});
@@ -219,7 +230,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	const [inPolicy, setInPolicy] = useState(null);
 	const [exPolicy, setExPolicy] = useState(null);
-
+	//includedData : 이 역할이 가지는 권한/정책
 	const includedData = useMemo(() => {
 		return (
 			inPolicy?.map((v) => ({
@@ -239,7 +250,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 			})) || []
 		);
 	}, [inPolicy]);
-
+	//excludedData : 이 역할이 가지지 않는 권한/정책
 	const excludedData = useMemo(() => {
 		return (
 			exPolicy?.map((v) => ({
@@ -260,10 +271,11 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 		);
 	}, [exPolicy]);
 
-	//역할에 포함 정책 템플릿을 조회한다.
+	/**************************************************
+	 * ambacc244 - 역할이 가지는 권힌/정책을 불러옴
+	 **************************************************/
 	useEffect(() => {
 		if (!isSummaryOpened) {
-			// iamList();
 			let inPolicies = [];
 
 			dispatch(
@@ -275,7 +287,6 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 			)
 				.unwrap()
 				.then((res) => {
-					// console.log(res.data);
 					inPolicies.push.apply(inPolicies, res.data);
 				})
 				.then(() => {
@@ -306,7 +317,6 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 							}
 						})
 						.then(() => {
-							console.log('setInPolicy', inPolicies);
 							setInPolicy(inPolicies);
 						});
 				})
@@ -336,9 +346,10 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 	return (
 		<TabContentContainer>
 			<TableTitle>
-				이 역할의 정책: {includedData.length}
+				{rolePolicyTab.include.title}
+				{includedData.length}
 				<TransparentButton margin={'0px 0px 0px 5px'}>
-					연결 해제
+					{rolePolicyTab.include.button.delete}
 				</TransparentButton>
 			</TableTitle>
 			<DragContainer
@@ -363,15 +374,19 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 				/>
 				<FoldableContainer>
 					<TableFold
-						title={<>이 역할의 다른 정책: {excludedData.length}</>}
+						title={
+							rolePolicyTab.exclude.title + excludedData.length
+						}
 						space={'RolePolicyTab'}
 						isFold={isFold}
 						setIsFold={setIsFold}
 					>
 						<TitleBarButtons>
-							<NormalButton>정책 생성</NormalButton>
+							<NormalButton>
+								{rolePolicyTab.exclude.button.create}
+							</NormalButton>
 							<NormalButton margin={'0px 0px 0px 5px'}>
-								정책 연결
+								{rolePolicyTab.exclude.button.add}
 							</NormalButton>
 						</TitleBarButtons>
 					</TableFold>

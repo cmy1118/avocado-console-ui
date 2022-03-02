@@ -7,59 +7,47 @@ import {
 import Table from '../../../../Table/Table';
 import {tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
-import {useSelector} from 'react-redux';
-import IAM_ROLES from '../../../../../reducers/api/PAM/Role/roles';
-import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
 import DragContainer from '../../../../Table/DragContainer';
 import {TableTitle} from '../../../../../styles/components/table';
 import TableFold from '../../../../Table/Options/TableFold';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
-import {FoldableContainer} from '../../../../../styles/components/iam/iam';
+import {
+	FoldableContainer,
+	TitleBarButtons,
+} from '../../../../../styles/components/iam/iam';
 import {CollapsbleContent} from '../../../../../styles/components/style';
 
-const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
-	const {roles} = useSelector(IAM_ROLES.selector);
-	const {users} = useSelector(IAM_USER.selector);
+const roleUserTab = {
+	include: {title: '이 역할의 사용자 : ', button: {delete: '연결 해제'}},
+	exclude: {
+		title: '이 역할의 다른 사용자 : ',
+		button: {create: '사용자 생성', add: '사용자 연결'},
+	},
+};
 
+/**************************************************
+ * ambacc244 - 이 역할을 가지는 사용자와, 가지지 않는 사용자를 보여줌
+ **************************************************/
+const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
-
-	const role = useMemo(() => roles.find((v) => v.id === roleId), [
-		roles,
-		roleId,
-	]);
-
+	//includedData : 이 역할을 할당받은 사용자
 	const includedData = useMemo(() => {
-		// users
-		// 	.filter((v) => !role.users.includes(v.userUid))
-		// 	.map((v, i) => ({
-		// 		...v,
-		// 		numberOfGroups: v.groups.length,
-		// 		grantUser: dummyUsers[dummyUsers.length - i - 1],
-		// 		[DRAGGABLE_KEY]: v.userUid,
-		// 	})),
 		return [];
 	}, []);
-
+	//excludedData : 이 역할을 할당받지 않은 사용자
 	const excludedData = useMemo(() => {
 		return [];
-		// return users
-		// 	.filter((v) => role.users.includes(v.userUid))
-		// 	.map((v, i) => ({
-		// 		...v,
-		// 		numberOfGroups: v.groups.length,
-		// 		grantUser: dummyUsers[i],
-		// 		[DRAGGABLE_KEY]: v.userUid,
-		// 	}));
 	}, []);
 
 	return (
 		<TabContentContainer>
 			<TableTitle>
-				이 역할의 사용자: {includedData.length}
+				{roleUserTab.include.title}
+				{includedData.length}
 				<NormalBorderButton margin={'0px 0px 0px 5px'}>
-					연결 해제
+					{roleUserTab.include.button.delete}
 				</NormalBorderButton>
 			</TableTitle>
 			<DragContainer
@@ -81,16 +69,19 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 				/>
 				<FoldableContainer>
 					<TableFold
-						title={
-							<> 이 역할의 다른 사용자: {excludedData.length}</>
-						}
+						title={roleUserTab.include.title + excludedData.length}
 						space={'RoleUserTab'}
 						isFold={isFold}
 						setIsFold={setIsFold}
 					>
-						<NormalButton margin={'0px 0px 0px 5px'}>
-							그룹 추가
-						</NormalButton>
+						<TitleBarButtons>
+							<NormalButton>
+								{roleUserTab.exclude.button.create}
+							</NormalButton>
+							<NormalButton margin={'0px 0px 0px 5px'}>
+								{roleUserTab.exclude.button.add}
+							</NormalButton>
+						</TitleBarButtons>
 					</TableFold>
 					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
 						<TableOptionText data={'usersRoles'} />

@@ -189,7 +189,8 @@ export const ROLE_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
 			</PermissionName>
 		),
 	},
-	{accessor: 'type', Header: ' 유형'},
+	{accessor: 'administrationType', Header: '관리 구분'},
+	{accessor: 'type', Header: '정책 유형'},
 	{accessor: 'description', Header: '설명', width: 400},
 	{accessor: 'numberOfRoles', Header: '역할 연결 수'},
 	{accessor: 'createdTime', Header: '생성 일시'},
@@ -224,7 +225,8 @@ export const ROLE_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
 			</PermissionName>
 		),
 	},
-	{accessor: 'type', Header: ' 유형'},
+	{accessor: 'administrationType', Header: '관리 구분'},
+	{accessor: 'type', Header: '정책 유형'},
 	{accessor: 'description', Header: '설명', width: 400},
 	{accessor: 'numberOfRoles', Header: '역할 연결 수'},
 	{accessor: 'createdTime', Header: '생성 일시'},
@@ -285,7 +287,7 @@ export const ROLE_SUMMARY_TABS_GROUPS_INCLUDE_COLUMN = [
 	},
 	{accessor: 'type', Header: '그룹 유형'},
 	{accessor: 'numberOfPermissions', Header: '권한 수'},
-	{Header: '상위 그룹', accessor: 'parentGroup'},
+	{accessor: 'parentGroup', Header: '상위 그룹'},
 	{accessor: 'createdTime', Header: '생성 일시'},
 	{accessor: 'grantDate', Header: '부여 일시'},
 	{

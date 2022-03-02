@@ -39,13 +39,38 @@ import {
 } from '../../../../styles/components/iam/iam';
 import useTextArea from '../../../../hooks/useTextArea';
 import {RowDiv} from '../../../../styles/components/style';
+import RoleUserTab from '../Components/Tabs/RoleUserTab';
+import RoleGroupTab from '../Components/Tabs/RoleGroupTab';
 
+const roleDescriptionSpace = {
+	title: '요약',
+	button: {create: '역할 만들기', delete: '삭제'},
+	detail: {
+		name: '역할 이름 : ',
+		type: '역할 유형 : ',
+		description: {
+			title: '역할 설명 : ',
+			description: '최대 200자 까지 가능합니다.',
+			button: {save: '저장'},
+		},
+		grantRegulation: '부여 제한 : ',
+		createdDate: '생성 일시 : ',
+		createdUser: '생성 사용자 : ',
+		getLastActiveTime: '마지막 작업 일시 : ',
+		lastAction: '마지막 활동 : ',
+		lastActiveUser: '마지막 활동 사용자 : ',
+	},
+};
+
+/**************************************************
+ * ambacc244 - 이 역할을 상세 정보를 보여줌
+ **************************************************/
 const RoleDescriptionSpace = ({roleId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {search} = useLocation();
 	const [role, setRole] = useState(null);
-
+	//description: 역할 상세 설명
 	const [description, setDescription, descriptionTextArea] = useTextArea({
 		name: 'description',
 		regex: /^.{0,200}$/,
@@ -53,7 +78,15 @@ const RoleDescriptionSpace = ({roleId}) => {
 
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
+	const TabBarInfo = [
+		{name: '권한', href: 'role'},
+		{name: '사용자', href: 'user'},
+		{name: '사용자 그룹', href: 'group'},
+	];
 
+	/**************************************************
+	 * roberto6385 - 이 역할의 상세 설명 접고 펼치기
+	 **************************************************/
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
 		if (isSummaryOpened) {
@@ -68,28 +101,29 @@ const RoleDescriptionSpace = ({roleId}) => {
 		}
 	}, [history, isSummaryOpened, roleId]);
 
-	const TabBarInfo = [
-		{name: '권한', href: 'role'},
-		{name: '사용자', href: 'user'},
-		{name: '사용자 그룹', href: 'group'},
-	];
-
+	/**************************************************
+	 * ambacc244 - 역할 생성 페이지로 이동
+	 **************************************************/
 	const onClickLinkToAddRolePage = useCallback(() => {
 		history.push('/roles/add');
 	}, [history]);
 
 	/**************************************************
 	 * ambacc244 - 역할 상세 수정
-	 *  ***************************************************/
+	 **************************************************/
 	const onClickChangeDescription = useCallback(() => {}, []);
 
+	/**************************************************
+	 * roberto6385 - 역할이 존재하지 않으면 404 페이지로
+	 **************************************************/
 	useEffect(() => {
-		if (roleId && !role) {
-			history.push('/404');
-		}
-		history.push(`/roles/${roleId}`);
+		if (roleId && !role) history.push('/404');
+		else history.push(`/roles/${roleId}`);
 	}, [roleId, role, history]);
 
+	/**************************************************
+	 * roberto6385 - 이 역할의 정보 불러오기
+	 **************************************************/
 	useEffect(() => {
 		dispatch(
 			IAM_ROLES.asyncAction.findByIdAction({
@@ -129,52 +163,72 @@ const RoleDescriptionSpace = ({roleId}) => {
 							>
 								{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
 							</HoverIconButton>
-							요약 [ {role?.name} ]
+							{roleDescriptionSpace.title} [ {role?.name} ]
 						</TitleBarText>
 						<TitleBarButtons>
 							<NormalButton onClick={onClickLinkToAddRolePage}>
-								역할 만들기
+								{roleDescriptionSpace.button.create}
 							</NormalButton>
 							<TransparentButton margin={'0px 0px 0px 5px'}>
-								삭제
+								{roleDescriptionSpace.button.delete}
 							</TransparentButton>
 						</TitleBarButtons>
 					</TitleBar>
 
 					<SummaryList>
-						<LiText>역할 이름 : {role?.name}</LiText>
-						<LiText>역할 유형 : </LiText>
+						<LiText>
+							{roleDescriptionSpace.detail.name}
+							{role?.name}
+						</LiText>
+						<LiText>{roleDescriptionSpace.detail.type}</LiText>
 						<LiText>
 							<RowDiv>
-								역할 설명 :{' '}
+								{roleDescriptionSpace.detail.description.title}
 								<div>
 									<RowDiv>
 										{descriptionTextArea()}
 										<NormalButton
 											onClick={onClickChangeDescription}
 										>
-											저장
+											{
+												roleDescriptionSpace.detail
+													.description.button.save
+											}
 										</NormalButton>
 									</RowDiv>
-									최대 200자 까지 가능합니다.
+									{
+										roleDescriptionSpace.detail.description
+											.description
+									}
 								</div>
 							</RowDiv>
 						</LiText>
-						<LiText>부여 제한 : </LiText>
 						<LiText>
-							생성 일시 : {role?.createdTag.createdTime}
+							{roleDescriptionSpace.detail.grantRegulation}
 						</LiText>
-						<LiText>생성 사용자 :</LiText>
-						<LiText>마지막 작업 일시 :</LiText>
-						<LiText>마지막 활동 :</LiText>
-						<LiText>마지막 활동 사용자 : </LiText>
+						<LiText>
+							{roleDescriptionSpace.detail.createdDate}
+							{role?.createdTag.createdTime}
+						</LiText>
+						<LiText>
+							{roleDescriptionSpace.detail.createdUser}
+						</LiText>
+						<LiText>
+							{roleDescriptionSpace.detail.getLastActiveTime}
+						</LiText>
+						<LiText>
+							{roleDescriptionSpace.detail.lastAction}
+						</LiText>
+						<LiText>
+							{roleDescriptionSpace.detail.lastActiveUser}
+						</LiText>
 					</SummaryList>
 				</div>
 
 				<CoveredByTabContent isOpened={isSummaryOpened}>
 					<RoleSummary
 						isSummaryOpened={isSummaryOpened}
-						Id={roleId}
+						roleId={roleId}
 						param={'roles'}
 						setIsOpened={setIsSummaryOpened}
 					/>
@@ -194,6 +248,26 @@ const RoleDescriptionSpace = ({roleId}) => {
 							<RolePolicyTab
 								roleId={roleId}
 								space={'RolePolicyTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+								isSummaryOpened={isSummaryOpened}
+							/>
+						)}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'user' && (
+							<RoleUserTab
+								roleId={roleId}
+								space={'RoleUserTab'}
+								isFold={isTableFold}
+								setIsFold={setIsTableFold}
+								isSummaryOpened={isSummaryOpened}
+							/>
+						)}
+						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
+							'group' && (
+							<RoleGroupTab
+								roleId={roleId}
+								space={'RoleGroupTab'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
 								isSummaryOpened={isSummaryOpened}
