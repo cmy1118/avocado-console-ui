@@ -91,10 +91,14 @@ export const tableKeys = Object.freeze({
 				include: 'ROLE_ADD_POLICIES_INCLUDE',
 				exclude: 'ROLE_ADD_POLICIES_EXCLUDE',
 			},
-			permissions: {
-				include: 'ROLE_ADD_PERMISSIONS_INCLUDE',
-				exclude: 'ROLE_ADD_PERMISSIONS_EXCLUDE',
+			users: {
+				include: 'ROLE_ADD_USER_INCLUDE',
+				exclude: 'ROLE_ADD_USER_EXCLUDE',
 			},
+			groups:{
+				include: 'ROLE_ADD_GROUP_INCLUDE',
+				exclude: 'ROLE_ADD_GROUP_EXCLUDE',
+			}
 		},
 		summary: {
 			permission: 'ROLE_SUMMARY_PERMISSION',
