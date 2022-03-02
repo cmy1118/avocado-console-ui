@@ -22,9 +22,11 @@ import {
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
+import {useHistory} from "react-router-dom";
 
 const RoleSpace = () => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 	// const {roles} = useSelector(IAM_ROLES.selector);
 	const {page} = useSelector(PAGINATION.selector);
 	const [select, setSelect] = useState({});
@@ -42,6 +44,11 @@ const RoleSpace = () => {
 			})) || []
 		);
 	}, [roles]);
+
+	const onCLickLinkToAddRole = useCallback(() => {
+		history.push('/roles/add');
+	}, [history]);
+
 
 	const getDetailApi = useCallback((res) => {
 		const arr = [];
@@ -100,7 +107,7 @@ const RoleSpace = () => {
 			<TitleBar>
 				<div>역할 : {total}</div>
 				<TitleBarButtons>
-					<NormalButton>역할 만들기</NormalButton>
+					<NormalButton onClick={onCLickLinkToAddRole}>역할 생성</NormalButton>
 					<TransparentButton margin={'0px 0px 0px 5px'}>
 						삭제
 					</TransparentButton>

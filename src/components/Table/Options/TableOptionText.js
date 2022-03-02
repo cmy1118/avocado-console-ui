@@ -30,6 +30,10 @@ const TAGS = [
 	'태그는 사용자별 최대 10개까지만 등록 가능합니다.',
 ];
 
+const ROLE_POLICY =[
+	'유형별 5개까지만 연결 가능합니다'
+]
+
 const _TableOptionTextContainer = styled.div`
 	padding: 0px 17px 10px 17px;
 	font-size: 14px;
@@ -74,6 +78,8 @@ const TableOptionText = ({data}) => {
 				return POLIICIES;
 			case 'tags':
 				return TAGS;
+			case 'rolePolicy':
+				return ROLE_POLICY;
 			default:
 				return '';
 		}
