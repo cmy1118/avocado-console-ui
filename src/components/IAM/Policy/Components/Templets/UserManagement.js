@@ -1,9 +1,10 @@
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import Table from '../../../../Table/Table';
 import {TableMode} from '../../../../../Constants/Table/mode';
 import checkboxColumn from '../../../../Table/tableCheckboxColumn';
 import {tableKeys} from '../../../../../Constants/Table/keys';
 import TableAllCheckbox from '../../../../Table/Options/TableAllCheckbox';
+import RowCheckbox from "../../../../RecycleComponents/rowCheckbox";
 
 const constants = {
 	main: '사용자 관리 권한',
@@ -64,101 +65,25 @@ const constants = {
 	],
 };
 
+
+
 const UserManagement = () => {
-	// 자식이 선택되었는 지 유무 state
 
-	//전체체크 상태 state
-	const [allCheck, setAllCheck] = useState(false);
-	const [childCheck, setChildCheck] = useState(true);
+	const dataLists = [
+		{id : 1, data : "aaa"},
+		{id : 2, data : "bbb"},
+		{id : 3, data : "ccc"},
 
-	const POLICY_ADD_USER_MANAGEMEN_COLUMN = useMemo(
-		() => [
-			{
-				accessor: 'item',
-				Header: '항목',
-				disableFilters: true,
-				disableChangeVisible: true,
-			},
-			//checkboxColumn : 전체 선택 컴포넌트
-			checkboxColumn({
-				header: '전체권한',
-				tableKey: tableKeys.policy.policies.userManagement,
-				allCheck: allCheck,
-				setAllCheck: setAllCheck,
-				childCheck: childCheck,
-				setChildCheck: setChildCheck,
-			}),
-			{
-				accessor: 'create',
-				Header: '생성/추가',
-				disableFilters: true,
-				disableChangeVisible: true,
-				Cell: function Component(row) {
-					return (
-						<TableAllCheckbox
-							row={row}
-							tableKey={tableKeys.policy.policies.userManagement}
-							setChildCheck={setChildCheck}
-						/>
-					);
-				},
-			},
-			{
-				accessor: 'read',
-				Header: '조회',
-				disableFilters: true,
-				disableChangeVisible: true,
-				Cell: function Component(row) {
-					return (
-						<TableAllCheckbox
-							row={row}
-							tableKey={tableKeys.policy.policies.userManagement}
-							setChildCheck={setChildCheck}
-						/>
-					);
-				},
-			},
-			{
-				accessor: 'update',
-				Header: '수정',
-				disableFilters: true,
-				disableChangeVisible: true,
-				Cell: function Component(row) {
-					return (
-						<TableAllCheckbox
-							row={row}
-							tableKey={tableKeys.policy.policies.userManagement}
-							setChildCheck={setChildCheck}
-						/>
-					);
-				},
-			},
-			{
-				accessor: 'delete',
-				Header: '삭제/제외',
-				disableFilters: true,
-				disableChangeVisible: true,
-				Cell: function Component(row) {
-					return (
-						<TableAllCheckbox
-							row={row}
-							tableKey={tableKeys.policy.policies.userManagement}
-							setChildCheck={setChildCheck}
-						/>
-					);
-				},
-			},
-		],
-		[childCheck],
-	);
+	]
+
+
+
 	return (
 		<div>
-			<Table
-				tableKey={tableKeys.policy.policies.userManagement}
-				columns={POLICY_ADD_USER_MANAGEMEN_COLUMN}
-				data={constants.tempTableData}
-				mode={TableMode.CHECKBOX}
-			/>
+		 <RowCheckbox dataLists={dataLists}/>
+		 <RowCheckbox dataLists={dataLists}/>
+		 <RowCheckbox dataLists={dataLists}/>
+		 <RowCheckbox dataLists={dataLists}/>
 		</div>
 	);
 };
