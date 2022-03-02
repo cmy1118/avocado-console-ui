@@ -38,6 +38,7 @@ const AddGroupSpace = () => {
 					사용자 그룹 생성
 				</CurrentPathBarLink>
 			</CurrentPathBar>
+
 			<AddPageContainer>
 				<AddGroup
 					setIsOpened={setIsOpened}

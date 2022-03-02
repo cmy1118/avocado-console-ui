@@ -42,6 +42,132 @@ export const ROLE_COLUMN = [
 	},
 ];
 
+export const ROLE_ADD_POLICIES_EXCLUDE_COLUMN = [
+	{
+		Header: '정책 이름',
+		accessor: 'name',
+		type: 'roles',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell} />;
+		},
+	},
+	{
+		Header: '유형',
+		accessor: 'type',
+	},
+	{
+		Header: '설명',
+		accessor: 'description',
+		width: 400,
+	},
+	{
+		Header: '역할 연결 수',
+		accessor: 'numberOfUsers',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'createdTime',
+	},
+];
+
+export const ROLE_ADD_POLICIES_INCLUDE_COLUMN = [
+	{
+		Header: '정책 이름',
+		accessor: 'name',
+		type: 'roles',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell} />;
+		},
+	},
+	{
+		Header: '유형',
+		accessor: 'type',
+	},
+];
+
+export const ROLE_ADD_USER_EXCLUDE_COLUMN = [
+	{
+		Header: '사용자 계정',
+		accessor: 'id',
+		type: 'users',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell} />;
+		},
+	},
+	{
+		Header: '사용자 이름',
+		accessor: 'name',
+	},
+	{
+		Header: '그룹 수',
+		accessor: 'numberOfGroups',
+	},
+	{
+		Header: '마지막 콘솔 로그인 ',
+		accessor: 'lastConsoleLogin',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'createdTime',
+	},
+];
+
+export const ROLE_ADD_USER_INCLUDE_COLUMN = [
+	{
+		Header: '사용자 계정',
+		accessor: 'id',
+		type: 'users',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell} />;
+		},
+	},
+	{
+		Header: '사용자 이름',
+		accessor: 'name', //has to be changed
+	},
+];
+
+export const ROLE_ADD_GROUP_EXCLUDE_COLUMN = [
+	{
+		Header: '그룹명',
+		accessor: 'name',
+		type: 'groups',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell} />;
+		},
+	},
+	{
+		Header: '그룹 유형',
+		accessor: 'userGroupType',
+	},
+	{
+		Header: '사용자 수',
+		accessor: 'numberOfUsers',
+	},
+	{
+		Header: '권한',
+		accessor: 'roles',
+	},
+	{
+		Header: '생성 일시',
+		accessor: 'createdTime',
+	},
+];
+export const ROLE_ADD_GROUP_INCLUDE_COLUMN = [
+	{
+		Header: '그룹명',
+		accessor: 'name',
+		type: 'groups',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell} />;
+		},
+	},
+	{
+		Header: '그룹 유형',
+		accessor: 'userGroupType', //has to be changed
+	},
+];
+
 export const ROLE_SUMMARY_PERMISSION_COLUMN = [
 	{
 		Header: '권한',
