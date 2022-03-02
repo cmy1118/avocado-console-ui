@@ -4,6 +4,7 @@ import TemplateElement from '../../TemplateElement';
 import {accountStatusOptions} from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
+import {RowDiv} from '../../../../../../styles/components/style';
 
 const accountActivePeriod = {
 	title: '계정 사용 기간',
@@ -51,13 +52,13 @@ const AccountActivePeriod = () => {
 							}
 							render={() => {
 								return (
-									<div>
+									<RowDiv>
 										{activePeriodTextBox()}
 										{
 											accountActivePeriod.contents
 												.activePeriod.message
 										}
-									</div>
+									</RowDiv>
 								);
 							}}
 						/>
@@ -75,12 +76,12 @@ const AccountActivePeriod = () => {
 							}
 							render={() => {
 								return (
-									<div>
+									<RowDiv>
 										{
 											accountActivePeriod.contents
 												.accountNormalization.message
 										}
-									</div>
+									</RowDiv>
 								);
 							}}
 						/>

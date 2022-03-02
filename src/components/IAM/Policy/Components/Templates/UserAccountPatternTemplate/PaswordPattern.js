@@ -9,6 +9,7 @@ import {
 } from '../../../../../../utils/options';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import useCheckBox from '../../../../../../hooks/useCheckBox';
+import {RowDiv} from '../../../../../../styles/components/style';
 
 const passwordPattern = {
 	title: '비밀번호 패턴',
@@ -119,7 +120,7 @@ const PaswordPattern = () => {
 							}
 							render={() => {
 								return (
-									<div>
+									<RowDiv>
 										{
 											passwordPattern.contents
 												.passwordLength.message.from
@@ -130,7 +131,7 @@ const PaswordPattern = () => {
 												.passwordLength.message.to
 										}
 										{maxPasswordLengthTextBox()}
-									</div>
+									</RowDiv>
 								);
 							}}
 						/>
@@ -168,10 +169,10 @@ const PaswordPattern = () => {
 							}
 							render={() => {
 								return (
-									<div>
+									<RowDiv>
 										{personalInformationRestrictionRadioButton()}
 										{personalInformationRestrictionMethodCheckBox()}
-									</div>
+									</RowDiv>
 								);
 							}}
 						/>
@@ -183,7 +184,7 @@ const PaswordPattern = () => {
 							}
 							render={() => {
 								return (
-									<div>
+									<RowDiv>
 										{enforcePasswordHistoryRadioButton()}
 										{enforcePasswordHistoryPeriodTextBox()}
 										{
@@ -191,7 +192,7 @@ const PaswordPattern = () => {
 												.enforcePasswordHistory.period
 												.message
 										}
-									</div>
+									</RowDiv>
 								);
 							}}
 						/>
