@@ -8,6 +8,7 @@ import {
 } from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import useComboBox from '../../../../../../hooks/useComboBox';
+import {RowDiv} from '../../../../../../styles/components/style';
 
 const changeGroup = {
 	title: '본인 확인 인증',
@@ -88,11 +89,11 @@ const ChangeGroup = () => {
 							title={changeGroup.contents.controlGroupType.title}
 							render={() => {
 								return (
-									<div>
+									<RowDiv>
 										{group1ComboBox()}
 										{group2ComboBox()}
 										{group3ComboBox()}
-									</div>
+									</RowDiv>
 								);
 							}}
 						/>

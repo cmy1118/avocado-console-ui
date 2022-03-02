@@ -12,6 +12,7 @@ import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
 import useRadio from '../../../../../../hooks/useRadio';
 import useComboBox from '../../../../../../hooks/useComboBox';
 import useCheckBox from '../../../../../../hooks/useCheckBox';
+import {RowDiv} from '../../../../../../styles/components/style';
 
 const mfa = {
 	title: 'MFA 인증',
@@ -111,11 +112,11 @@ const MFA = () => {
 								title={mfa.contents[v.key].title}
 								render={() => {
 									return (
-										<div>
+										<RowDiv>
 											{v.authUsage()}
 											{v.required()}
 											{v.authMethod()}
-										</div>
+										</RowDiv>
 									);
 								}}
 							/>

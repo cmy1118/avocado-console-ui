@@ -4,6 +4,7 @@ import TemplateElement from '../../TemplateElement';
 import {accountStatusOptions} from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
+import {RowDiv} from '../../../../../../styles/components/style';
 
 const dormant = {
 	title: '휴면',
@@ -53,13 +54,13 @@ const Dormant = () => {
 							title={dormant.contents.inactivePeriod.title}
 							render={() => {
 								return (
-									<div>
+									<RowDiv>
 										{inactivePeriodTextBox()}
 										{
 											dormant.contents.inactivePeriod
 												.message
 										}
-									</div>
+									</RowDiv>
 								);
 							}}
 						/>
@@ -72,12 +73,12 @@ const Dormant = () => {
 							title={dormant.contents.accountNormalization.title}
 							render={() => {
 								return (
-									<div>
+									<RowDiv>
 										{
 											dormant.contents
 												.accountNormalization.message
 										}
-									</div>
+									</RowDiv>
 								);
 							}}
 						/>

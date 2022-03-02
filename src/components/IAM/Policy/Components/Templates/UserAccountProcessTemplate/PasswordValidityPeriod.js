@@ -8,6 +8,7 @@ import {
 } from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
+import {RowDiv} from '../../../../../../styles/components/style';
 
 const passwordValidityPeriod = {
 	title: '비밀번호 사용 기간',
@@ -70,13 +71,13 @@ const PasswordValidityPeriod = () => {
 							}
 							render={() => {
 								return (
-									<div>
+									<RowDiv>
 										{activePeriodTextBox()}
 										{
 											passwordValidityPeriod.contents
 												.activePeriod.message
 										}
-									</div>
+									</RowDiv>
 								);
 							}}
 						/>

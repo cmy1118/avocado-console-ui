@@ -4,6 +4,7 @@ import {accountStatusOptions} from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
+import {RowDiv} from '../../../../../../styles/components/style';
 
 const loginFailure = {
 	title: '로그인 실패',
@@ -60,13 +61,13 @@ const LoginFailure = () => {
 							}
 							render={() => {
 								return (
-									<div>
+									<RowDiv>
 										{loginFailureCountTextBox()}
 										{
 											loginFailure.contents
 												.loginFailureCount.message
 										}
-									</div>
+									</RowDiv>
 								);
 							}}
 						/>
@@ -78,13 +79,13 @@ const LoginFailure = () => {
 							title={loginFailure.contents.resetErrorCount.title}
 							render={() => {
 								return (
-									<div>
+									<RowDiv>
 										{resetErrorCountTextBox()}
 										{
 											loginFailure.contents
 												.resetErrorCount.message
 										}
-									</div>
+									</RowDiv>
 								);
 							}}
 						/>
@@ -94,13 +95,13 @@ const LoginFailure = () => {
 							}
 							render={() => {
 								return (
-									<div>
+									<RowDiv>
 										{accountNormalizationTextBox()}
 										{
 											loginFailure.contents
 												.accountNormalization.message
 										}
-									</div>
+									</RowDiv>
 								);
 							}}
 						/>
