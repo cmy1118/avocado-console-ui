@@ -679,7 +679,7 @@ Table.propTypes = {
 	isSearchable: PropTypes.bool,
 	isColumnFilterable: PropTypes.bool,
 	isSearchFilterable: PropTypes.bool,
-	mode: PropTypes.oneOf(['normal', 'readOnly', 'inner', 'disabled']),
+	mode: PropTypes.oneOf(['normal', 'readOnly', 'inner']),
 	isDraggable: PropTypes.bool,
 };
 

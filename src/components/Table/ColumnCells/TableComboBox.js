@@ -16,12 +16,15 @@ const TableComboBox = ({cell, setData}) => {
 	const options = cell.row.original[cell.column.id].options;
 	const header = cell.row.original[cell.column.id]?.header;
 
-	const initialValue = cell.row.original[cell.column.id]?.value;
-	const [comboValue, ComboBox] = useComboBox({
+	const initialValue = cell.row.original[cell.column.id]?.initialKey;
+	const [comboValue, ComboBox, setComboValue] = useComboBox({
 		...(header && {header: header}),
 		options: options,
-		initialValue: initialValue,
 	});
+
+	useEffect(() => {
+		initialValue && setComboValue(initialValue);
+	}, [initialValue, setComboValue]);
 
 	// 콤보박스 값의 변화가 있으면 새로 바뀐 값을 setData
 	useEffect(() => {

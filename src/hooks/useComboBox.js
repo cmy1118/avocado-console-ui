@@ -125,9 +125,7 @@ const useComboBox = ({header, options, width = 150}) => {
 				<HeaderOption value={header ? '' : options[0].label}>
 					{!value
 						? header
-							? header
-							: options[0].label
-						: value.label}
+						: options.find((op) => op.key === value).label}
 				</HeaderOption>
 				{/* 열림 상태에 따른 아이콘 표시 */}
 				{isOpened ? (

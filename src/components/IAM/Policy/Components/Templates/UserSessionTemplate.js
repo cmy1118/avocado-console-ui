@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import TemplateElement from '../TemplateElement';
 import TemplateElementContainer from '../TemplateElementContainer';
 import useRadio from '../../../../../hooks/useRadio';
@@ -76,7 +76,7 @@ const UserSessionTemplate = () => {
 		{
 			id: 1,
 			isUsed: {
-				value: 'use',
+				// initialKey: 'use',
 				options: [
 					{label: '사용 함', key: 'use'},
 					{label: '사용 안함', key: 'not use'},
@@ -91,7 +91,7 @@ const UserSessionTemplate = () => {
 		{
 			id: 2,
 			isUsed: {
-				value: 'not use',
+				initialKey: 'not use',
 				options: [
 					{label: '사용 함', key: 'use'},
 					{label: '사용 안함', key: 'not use'},
@@ -138,6 +138,8 @@ const UserSessionTemplate = () => {
 		},
 	];
 
+	const sessionData = useMemo(() => data, [data]);
+
 	useEffect(() => {
 		console.log('screenSaverValue => ', screenSaverValue);
 		console.log('dormantValue => ', dormantValue);
@@ -157,17 +159,17 @@ const UserSessionTemplate = () => {
 			<TemplateElementContainer
 				title={contents.sessionTimeout.title}
 				description={contents.sessionTimeout.description}
-				render={() => (
+				child={
 					<Table
 						// setSelect={setSelect}
 						isDraggable={false}
-						data={data}
+						data={sessionData}
 						setData={setData}
 						tableKey={'userSessionTemplate'}
 						columns={columns}
-						mode={'disabled'}
+						// mode={'disabled'}
 					/>
-				)}
+				}
 			/>
 			<TemplateElementContainer
 				title={contents.dormant.title}
