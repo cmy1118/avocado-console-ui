@@ -20,7 +20,6 @@ import {
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
-import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import {useHistory} from "react-router-dom";
 
