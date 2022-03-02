@@ -44,15 +44,13 @@ const WritePolicy = ({title, description}) => {
 					>
 						{contents.openManagedPolicy}
 					</NormalButton>
-					{/*todo : 설계에는 추가 버튼밖에 없어서 setIsOpened를 true로 전환해줬는데,
-					 			현재 닫기버튼이 없어 임시로 toggle 방식으로 수정합니다.*/}
-					<NormalButton onClick={() => setIsOpened(!isOpened)}>
+					<NormalButton onClick={() => setIsOpened(true)}>
 						{contents.add}
 					</NormalButton>
 				</TitleBarButtons>
 			</TitleBar>
 			<Body>
-				<Templates isOpened={isOpened} />
+				<Templates isOpened={isOpened} setIsOpened={setIsOpened} />
 			</Body>
 		</Container>
 	);

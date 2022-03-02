@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TemplateElement from '../TemplateElement';
 import TemplateElementContainer from '../TemplateElementContainer';
 import useRadio from '../../../../../hooks/useRadio';
-import useTemplateInput from '../../../../../hooks/useTemplateInput';
 import {DRAGGABLE_KEY} from '../../../../../Constants/Table/keys';
 import Table from '../../../../Table/Table';
 import TableComboBox from '../../../../Table/ColumnCells/TableComboBox';
 import TableTextBox from '../../../../Table/ColumnCells/TableTextBox';
+import {RowDiv} from '../../../../../styles/components/style';
+import useTextBox from '../../../../../hooks/useTextBox';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -43,7 +44,7 @@ const contents = {
 };
 
 const UserSessionTemplate = () => {
-	const [screenSaverValue, screenSaverRadio] = useRadio({
+	const [screenSaverValue, screenSaverRadio, setScreenSaverValue] = useRadio({
 		name: 'sessionTemplate-screenSaver-radio',
 		options: [
 			{label: '잠금', key: 'lock'},
@@ -51,7 +52,7 @@ const UserSessionTemplate = () => {
 		],
 	});
 
-	const [dormantValue, dormantRadio] = useRadio({
+	const [dormantValue, dormantRadio, setDormantValue] = useRadio({
 		header: '사용 여부',
 		options: [
 			{label: '사용 함', key: 'use'},
@@ -59,13 +60,16 @@ const UserSessionTemplate = () => {
 		],
 	});
 
-	const [unConnectedPeriod, unConnectedPeriodInput] = useTemplateInput({
-		unitName: '일',
+	const [
+		unConnectedPeriod,
+		unConnectedPeriodTextBox,
+		setUnConnectPeriod,
+	] = useTextBox({
+		name: 'unConnectPeriod',
 	});
 
-	const [idleTime, idleTimeInput] = useTemplateInput({
-		unitName: '초',
-		initialValue: 30,
+	const [idleTime, idleTimeTextBox, setIdleTime] = useTextBox({
+		name: 'idleTime',
 	});
 
 	const [data, setData] = useState([
@@ -101,8 +105,6 @@ const UserSessionTemplate = () => {
 		},
 	]);
 
-	console.log('datadatadata => ', data);
-
 	const columns = [
 		{
 			Header: '사용여부',
@@ -110,6 +112,7 @@ const UserSessionTemplate = () => {
 			Cell: function Component(cell) {
 				return <TableComboBox cell={cell} setData={setData} />;
 			},
+			width: 200,
 		},
 		{
 			Header: '어플리케이션',
@@ -135,6 +138,20 @@ const UserSessionTemplate = () => {
 		},
 	];
 
+	useEffect(() => {
+		console.log('screenSaverValue => ', screenSaverValue);
+		console.log('dormantValue => ', dormantValue);
+		console.log('unConnectedPeriod => ', unConnectedPeriod);
+		console.log('idleTime => ', idleTime);
+	}, [dormantValue, idleTime, screenSaverValue, unConnectedPeriod]);
+
+	useEffect(() => {
+		setScreenSaverValue('delete');
+		setDormantValue('unuse');
+		setUnConnectPeriod(12);
+		setIdleTime(330);
+	}, []);
+
 	return (
 		<div>
 			<TemplateElementContainer
@@ -148,6 +165,7 @@ const UserSessionTemplate = () => {
 						setData={setData}
 						tableKey={'userSessionTemplate'}
 						columns={columns}
+						mode={'disabled'}
 					/>
 				)}
 			/>
@@ -159,7 +177,12 @@ const UserSessionTemplate = () => {
 						<div>
 							<TemplateElement
 								title={'연속 미접속 기간'}
-								render={unConnectedPeriodInput}
+								render={() => (
+									<RowDiv>
+										{unConnectedPeriodTextBox()}
+										{'일'}
+									</RowDiv>
+								)}
 							/>
 							<TemplateElement
 								title={'계정 처리 방법'}
@@ -185,7 +208,12 @@ const UserSessionTemplate = () => {
 							/>
 							<TemplateElement
 								title={'유휴 시간'}
-								render={idleTimeInput}
+								render={() => (
+									<RowDiv>
+										{idleTimeTextBox()}
+										{'초'}
+									</RowDiv>
+								)}
 							/>
 						</div>
 					);
