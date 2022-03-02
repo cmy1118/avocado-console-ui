@@ -136,7 +136,7 @@ const Table = ({
 }) => {
 	const [skipPageReset, setSkipPageReset] = useState(false);
 
-	const getColumnWidth = (data, accessor, headerText, id) => {
+	const getColumnWidth = (data, accessor, headerText, id, columnWidth) => {
 		const cellLength = Math.max(
 			...data.map((row) => {
 				let value = '';
@@ -190,7 +190,9 @@ const Table = ({
 
 		const magicSpacing = 10;
 
-		return cellLength * magicSpacing + 24 + 'px';
+		return columnWidth
+			? `${columnWidth}px`
+			: cellLength * magicSpacing + 24 + 'px';
 	};
 
 	const updateMyData = (rowIndex, columnId, value) => {
@@ -484,6 +486,7 @@ const Table = ({
 																column.accessor,
 																column.Header,
 																column.id,
+																column.width,
 														  )
 												}
 												key={i}
@@ -599,6 +602,9 @@ const Table = ({
 																							cell
 																								.column
 																								.id,
+																							cell
+																								.column
+																								.width,
 																					  )
 																			}
 																			key={

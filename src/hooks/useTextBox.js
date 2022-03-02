@@ -106,7 +106,7 @@ const useTextBox = ({name = '', regex, placeholder = ''}) => {
 			</SubContainer>
 		</Container>
 	);
-	return [value, textBox];
+	return [value, textBox, setValue];
 };
 
 useTextBox.propTypes = {

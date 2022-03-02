@@ -1,4 +1,5 @@
 export const DRAGGABLE_KEY = 'keyId';
+export const INNER_TABLE = 'innerTableKey';
 export const tableKeys = Object.freeze({
 	users: {
 		basic: 'USER', // 기본
@@ -115,5 +116,7 @@ export const tableKeys = Object.freeze({
 			},
 		},
 	},
-	policyAndPermission: {}, // 아직 설계 없음. 우선 네이밍 저렇게 할게요..
+	policy: {
+		basic: 'POLICY', // 기본
+	}, // 아직 설계 없음. 우선 네이밍 저렇게 할게요..
 });

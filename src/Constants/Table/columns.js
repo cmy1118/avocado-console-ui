@@ -50,6 +50,7 @@ import {
 	ROLE_SUMMARY_TABS_USERS_EXCLUDE_COLUMN,
 	ROLE_SUMMARY_TABS_USERS_INCLUDE_COLUMN,
 } from '../../utils/TableColumns/roles';
+import {POLICY_COLUMN} from '../../utils/TableColumns/policies';
 
 export const tableColumns = Object.freeze({
 	// userAuth
@@ -112,4 +113,5 @@ export const tableColumns = Object.freeze({
 
 	// policy and permission
 	policyAndPermission: {}, // 아직 설계 없음. 우선 네이밍 저렇게 할게요..
+	POLICY: POLICY_COLUMN,
 });

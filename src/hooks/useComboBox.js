@@ -72,8 +72,6 @@ const OptionContainer = styled.div`
  * header: 콤보박스를 선택하지 않았을 경우 default label
  * options: 콤보박스의 옵션
  * width: 콤보박스의 길이
- * initialValue: 콤보박스 컴포넌트 초기 선택값 (option의 key값 중에서 초기 선택으로 지정할 key값을 받으면 됩니다.)
- *
  *
  * 사용예시) - 사용법 공유 이후 삭제하겠습니다.
  *
@@ -83,23 +81,22 @@ const OptionContainer = styled.div`
 			{label: '사용 함', key: 'use'},
 			{label: '사용 안함', key: 'unuse'},
 		],
-		initialValue:'unuse' // 필수 아님
 	});
  * 
  ***************************************************/
-const useComboBox = ({header, options, width = 150, initialValue}) => {
+const useComboBox = ({header, options, width = 150}) => {
 	const ref = useRef(null);
 	const [isOpened, setIsOpened] = useState(false);
 	const [value, setValue] = useState(
 		// 초기값이 존재하는 경우
-		initialValue
-			? // options에서 해당 값으로 setValue
-			  options.find((op) => op.key === initialValue)
-			: // 초기값이 존재하지 않고, header가 존제하면 선택값을 비워줌
-			header
+		// initialValue
+		// 	? // options에서 해당 값으로 setValue
+		// 	  options.find((op) => op.key === initialValue)
+		// 	: // 초기값이 존재하지 않고, header가 존제하면 선택값을 비워줌
+		header
 			? null
 			: // 초기값도, header도 없는경우 옵션의 첫번째 값을 기본값으로 설정
-			  options[0],
+			  options[0].key,
 	);
 
 	/**************************************************
@@ -128,9 +125,7 @@ const useComboBox = ({header, options, width = 150, initialValue}) => {
 				<HeaderOption value={header ? '' : options[0].label}>
 					{!value
 						? header
-							? header
-							: options[0].label
-						: value.label}
+						: options.find((op) => op.key === value).label}
 				</HeaderOption>
 				{/* 열림 상태에 따른 아이콘 표시 */}
 				{isOpened ? (
@@ -149,9 +144,10 @@ const useComboBox = ({header, options, width = 150, initialValue}) => {
 								key={i}
 								// 현재값 선택 여부
 								isCurrent={
-									JSON.stringify(v) === JSON.stringify(value)
+									JSON.stringify(v.key) ===
+									JSON.stringify(value)
 								}
-								value={JSON.stringify(v)}
+								value={JSON.stringify(v.key)}
 							>
 								{v.label}
 							</Option>
@@ -162,7 +158,7 @@ const useComboBox = ({header, options, width = 150, initialValue}) => {
 		</_Container>
 	);
 
-	return [value === null ? '' : value.key, comboBox];
+	return [value === null ? '' : value.key, comboBox, setValue];
 };
 
 useComboBox.propTypes = {

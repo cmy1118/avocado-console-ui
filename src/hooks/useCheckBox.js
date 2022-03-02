@@ -92,7 +92,6 @@ CheckComponent.propTypes = {
  *
  * options: 체크박스의 label 과 key값을 객체로 갖는 배열 ex) [{label:A,key:a},{label:B,key:b},...]
  * disabled: 전체 체크박스 disabled 여부
- * initialValues: 체크 항목 초기화 값 ex) ['b'] 라고 넘겨주면 label B의 체크박스가 체크됨
  *
  * 
  *  * 사용예시) - 사용법 공유 이후 삭제하겠습니다.
@@ -104,13 +103,12 @@ CheckComponent.propTypes = {
 			{label: 'C', key: 'c'},
 		],
 		disabled: true, // 필수 아님
-		initialValues: ['a', 'c'], // 필수 아님
 	});
  * 
  ***************************************************/
-const useCheckBox = ({options, disabled = false, initialValues = []}) => {
+const useCheckBox = ({options, disabled = false}) => {
 	// 체크된 아이템의 keys
-	const [checkList, setCheckList] = useState(initialValues);
+	const [checkList, setCheckList] = useState([]);
 
 	/**************************************************
 	 * seob - 체크박스 아이템 클릭시 setCheckList하는 함수
@@ -146,7 +144,7 @@ const useCheckBox = ({options, disabled = false, initialValues = []}) => {
 		);
 	};
 
-	return [checkList, renderChecks];
+	return [checkList, renderChecks, setCheckList];
 };
 
 useCheckBox.propTypes = {

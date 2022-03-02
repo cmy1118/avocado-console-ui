@@ -10,7 +10,6 @@ const Container = styled.div``;
  * name: 라디오 input name
  * options: 라디오 input의 value, label의 객체 배열
  * => ex) [{label:A,key:a},{label:B,key:b}...]
- * initialValue: 라디오 컴포넌트 초기 선택값 (option의 key값 중에서 초기 선택으로 지정할 key값을 받으면 됩니다.)
  *
  * 사용예시)
  * const [value, Radio] = useRadio({
@@ -20,9 +19,9 @@ const Container = styled.div``;
  *
  * return <div>{Radio()}</div>
  ***************************************************/
-const useRadio = ({name, options, initialValue}) => {
+const useRadio = ({name, options}) => {
 	// 현재 value
-	const [value, setValue] = useState(options[0]);
+	const [value, setValue] = useState(options[0].key);
 
 	// 라디오 컴포넌트
 	const radio = () => (
@@ -33,11 +32,12 @@ const useRadio = ({name, options, initialValue}) => {
 						type='radio'
 						name={name}
 						onChange={(e) => setValue(JSON.parse(e.target.value))}
-						value={JSON.stringify(ele)}
+						value={JSON.stringify(ele.key)}
 						checked={
-							initialValue
-								? ele.key === initialValue
-								: JSON.stringify(ele) === JSON.stringify(value)
+							// initialValue
+							// 	? ele.key === initialValue
+							// 	:
+							JSON.stringify(ele.key) === JSON.stringify(value)
 						}
 					/>
 					{ele.label}
@@ -45,7 +45,7 @@ const useRadio = ({name, options, initialValue}) => {
 			))}
 		</Container>
 	);
-	return [value, radio];
+	return [value, radio, setValue];
 };
 
 useRadio.propTypes = {

@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import TemplateElement from '../TemplateElement';
 import TemplateElementContainer from '../TemplateElementContainer';
 import useRadio from '../../../../../hooks/useRadio';
-import useTemplateInput from '../../../../../hooks/useTemplateInput';
-import useCheckBox from '../../../../../hooks/useCheckBox';
-import useComboBox from '../../../../../hooks/useComboBox';
+import {DRAGGABLE_KEY, INNER_TABLE} from '../../../../../Constants/Table/keys';
+import Table from '../../../../Table/Table';
+import TableComboBox from '../../../../Table/ColumnCells/TableComboBox';
+import TableTextBox from '../../../../Table/ColumnCells/TableTextBox';
+import {RowDiv} from '../../../../../styles/components/style';
+import useTextBox from '../../../../../hooks/useTextBox';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -41,23 +44,15 @@ const contents = {
 };
 
 const UserSessionTemplate = () => {
-	const [value, Radio] = useRadio({
-		name: 'isUsed',
+	const [screenSaverValue, screenSaverRadio, setScreenSaverValue] = useRadio({
+		name: 'sessionTemplate-screenSaver-radio',
 		options: [
 			{label: '잠금', key: 'lock'},
 			{label: '삭제', key: 'delete'},
 		],
 	});
 
-	// const [value, Radio] = useRadio({
-	// 	name: 'isUsed',
-	// 	options: [
-	// 		{label: '사용 함', key: 'use'},
-	// 		{label: '사용 안함', key: 'unuse'},
-	// 	],
-	// });
-
-	const [comboValue, ComboBox] = useComboBox({
+	const [dormantValue, dormantRadio, setDormantValue] = useRadio({
 		header: '사용 여부',
 		options: [
 			{label: '사용 함', key: 'use'},
@@ -65,33 +60,127 @@ const UserSessionTemplate = () => {
 		],
 	});
 
-	const [unConnectedPeriod, unConnectedPeriodInput] = useTemplateInput({
-		unitName: '일',
+	const [
+		unConnectedPeriod,
+		unConnectedPeriodTextBox,
+		setUnConnectPeriod,
+	] = useTextBox({
+		name: 'unConnectPeriod',
 	});
 
-	const [idleTime, idleTimeInput] = useTemplateInput({
-		unitName: '초',
-		initialValue: 30,
+	const [idleTime, idleTimeTextBox, setIdleTime] = useTextBox({
+		name: 'idleTime',
 	});
 
-	const [checkedValue, CheckBox] = useCheckBox({
-		options: [
-			{label: 'A', key: 'a'},
-			{label: 'B', key: 'b'},
-			{label: 'C', key: 'c'},
-		],
-		disabled: true,
-		initialValues: ['a', 'c'],
-	});
+	const [innerTableDatas, setInnerTableDatas] = useState(null);
+	const [innerTableColumns, setInnerTableColumns] = useState(null);
+
+	const [data, setData] = useState([
+		{
+			id: 1,
+			isUsed: {
+				// initialKey: 'use',
+				options: [
+					{label: '사용 함', key: 'use'},
+					{label: '사용 안함', key: 'not use'},
+				],
+			},
+			application: 'Management Console',
+			MaintenanceTime: '14400',
+			PreservationTime: '0',
+			timeout: 'timeout',
+
+			[DRAGGABLE_KEY]: 'sessionTemplate1',
+			// [INNER_TABLE]: {
+			// 	data: innerTableDatas,
+			// 	column: innerTableColumns,
+			// 	onOpen: (origin) => {
+			// 		console.log(origin);
+			// 	},
+			// },
+			// inner table key가 있으면, 버튼이 생기고, 버튼을 클릭했을 때, 해당 row값을 읽어와 처리하는 함수가 필요.
+		},
+		{
+			id: 2,
+			isUsed: {
+				initialKey: 'not use',
+				options: [
+					{label: '사용 함', key: 'use'},
+					{label: '사용 안함', key: 'not use'},
+				],
+			},
+			application: 'Web Terminal',
+			MaintenanceTime: '3600',
+			PreservationTime: '0',
+			timeout: 'timeout',
+			[DRAGGABLE_KEY]: 'sessionTemplate2',
+		},
+	]);
+
+	const columns = [
+		{
+			Header: '사용여부',
+			accessor: 'isUsed',
+			Cell: function Component(cell) {
+				return <TableComboBox cell={cell} setData={setData} />;
+			},
+			width: 200,
+		},
+		{
+			Header: '어플리케이션',
+			accessor: 'application', //has to be changed
+		},
+		{
+			Header: '세션 유지시간(초)',
+			accessor: 'MaintenanceTime', //has to be changed
+			Cell: function Component(cell) {
+				return <TableTextBox cell={cell} />;
+			},
+		},
+		{
+			Header: '연결 보존 시간(초)',
+			accessor: 'PreservationTime', //has to be changed
+			Cell: function Component(cell) {
+				return <TableTextBox cell={cell} />;
+			},
+		},
+		{
+			Header: '타임아웃 처리',
+			accessor: 'timeout', //has to be changed
+		},
+	];
+
+	const sessionData = useMemo(() => data, [data]);
+
+	useEffect(() => {
+		console.log('screenSaverValue => ', screenSaverValue);
+		console.log('dormantValue => ', dormantValue);
+		console.log('unConnectedPeriod => ', unConnectedPeriod);
+		console.log('idleTime => ', idleTime);
+	}, [dormantValue, idleTime, screenSaverValue, unConnectedPeriod]);
+
+	useEffect(() => {
+		setScreenSaverValue('delete');
+		setDormantValue('unuse');
+		setUnConnectPeriod(12);
+		setIdleTime(330);
+	}, []);
 
 	return (
 		<div>
 			<TemplateElementContainer
 				title={contents.sessionTimeout.title}
 				description={contents.sessionTimeout.description}
-				render={
-					ComboBox
-					// return <div>테이블</div>;
+				child={
+					<Table
+						// setSelect={setSelect}
+						isDraggable={false}
+						data={sessionData}
+						setData={setData}
+						tableKey={'userSessionTemplate'}
+						columns={columns}
+						// mode={'disabled'}
+					/>
 				}
 			/>
 			<TemplateElementContainer
@@ -102,11 +191,16 @@ const UserSessionTemplate = () => {
 						<div>
 							<TemplateElement
 								title={'연속 미접속 기간'}
-								render={unConnectedPeriodInput}
+								render={() => (
+									<RowDiv>
+										{unConnectedPeriodTextBox()}
+										{'일'}
+									</RowDiv>
+								)}
 							/>
 							<TemplateElement
 								title={'계정 처리 방법'}
-								render={Radio}
+								render={dormantRadio}
 							/>
 							<TemplateElement
 								title={'계정 정상화'}
@@ -124,11 +218,16 @@ const UserSessionTemplate = () => {
 						<div>
 							<TemplateElement
 								title={'사용 여부'}
-								render={Radio}
+								render={screenSaverRadio}
 							/>
 							<TemplateElement
 								title={'유휴 시간'}
-								render={idleTimeInput}
+								render={() => (
+									<RowDiv>
+										{idleTimeTextBox()}
+										{'초'}
+									</RowDiv>
+								)}
 							/>
 						</div>
 					);

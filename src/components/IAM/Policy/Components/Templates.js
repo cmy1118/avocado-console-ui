@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import TemplateContainer from './TemplateContainer';
 import PropTypes from 'prop-types';
 import UserAccessTemplate from './Templates/UserAccessTemplate';
@@ -97,22 +97,30 @@ const templateResponse = [
  * seob - 정책 템플릿 리스트 컴포넌트
  *
  * setTemplateList: 템플릿 리스트 set 함수
+ * setIsOpened: 추가할 템플릿 리스트 사이드의 setOpen
  ***************************************************/
-const TemplateList = ({setTemplateList}) => {
+const TemplateList = ({setTemplateList, setIsOpened}) => {
 	// 각 템플릿별 설명
 	const [templateDescription, setTemplateDescription] = useState('');
 
-	const addTemplate = ({template}) => () => {
-		// 현재 템플릿에 컴포넌트가 빈 값 인경우 return
-		if (template.component === '') return;
-		setTemplateList((prev) => {
-			if (!prev.includes(template))
-				// 기존 리스트에 추가하려는 템플릿이 존재하지 않으면 추가
-				return [...prev, template];
-			// 기존 리스트에 추가하려는 템플릿이 존재하면 그대로
-			else return prev;
-		});
-	};
+	/**************************************************
+	 * seob - 템플릿 추가 후 닫는 함수
+	 ***************************************************/
+	const addTemplate = useCallback(
+		({template}) => () => {
+			// 현재 템플릿에 컴포넌트가 빈 값 인경우 return
+			if (template.component === '') return;
+			setTemplateList((prev) => {
+				if (!prev.includes(template))
+					// 기존 리스트에 추가하려는 템플릿이 존재하지 않으면 추가
+					return [...prev, template];
+				// 기존 리스트에 추가하려는 템플릿이 존재하면 그대로
+				else return prev;
+			});
+			setIsOpened(false);
+		},
+		[setIsOpened, setTemplateList],
+	);
 
 	return (
 		<TemplateListContainer>
@@ -137,14 +145,16 @@ const TemplateList = ({setTemplateList}) => {
 
 TemplateList.propTypes = {
 	setTemplateList: PropTypes.func,
+	setIsOpened: PropTypes.func,
 };
 
 /**************************************************
  * seob - 정책 작성 페이지의 템플릿 리스트
  *
  * isOpened: 추가할 템플릿 리스트 사이드의 open 상태
+ * setIsOpened: 추가할 템플릿 리스트 사이드의 setOpen
  ***************************************************/
-const Templates = ({isOpened}) => {
+const Templates = ({isOpened, setIsOpened}) => {
 	// 정책 작성 페이지에 추가된 템플릿 리스트
 	const [templateList, setTemplateList] = useState([]);
 
@@ -160,13 +170,19 @@ const Templates = ({isOpened}) => {
 					/>
 				))}
 			</Container>
-			{isOpened && <TemplateList setTemplateList={setTemplateList} />}
+			{isOpened && (
+				<TemplateList
+					setTemplateList={setTemplateList}
+					setIsOpened={setIsOpened}
+				/>
+			)}
 		</>
 	);
 };
 
 Templates.propTypes = {
 	isOpened: PropTypes.bool,
+	setIsOpened: PropTypes.func,
 };
 
 export default Templates;
