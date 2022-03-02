@@ -68,6 +68,10 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 							tableKeys.roles.summary.tabs.groups.include
 						]
 					}
+					isPaginable
+					isSearchable
+					isSearchFilterable
+					isColumnFilterable
 				/>
 				<FoldableContainer>
 					<TableFold
@@ -99,6 +103,10 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 									tableKeys.roles.summary.tabs.groups.exclude
 								]
 							}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
 						/>
 					</CollapsbleContent>
 				</FoldableContainer>

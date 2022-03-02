@@ -370,7 +370,10 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 							tableKeys.roles.summary.tabs.permissions.include
 						]
 					}
-					tableOptions={{show: true}}
+					isPaginable
+					isSearchable
+					isSearchFilterable
+					isColumnFilterable
 				/>
 				<FoldableContainer>
 					<TableFold
@@ -405,6 +408,10 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 										.exclude
 								]
 							}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
 						/>
 					</CollapsbleContent>
 				</FoldableContainer>

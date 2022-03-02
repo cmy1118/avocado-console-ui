@@ -66,6 +66,10 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 					columns={
 						tableColumns[tableKeys.roles.summary.tabs.users.include]
 					}
+					isPaginable
+					isSearchable
+					isSearchFilterable
+					isColumnFilterable
 				/>
 				<FoldableContainer>
 					<TableFold
@@ -98,6 +102,10 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 									tableKeys.roles.summary.tabs.users.exclude
 								]
 							}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
 						/>
 					</CollapsbleContent>
 				</FoldableContainer>
