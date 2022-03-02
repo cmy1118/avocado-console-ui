@@ -47,7 +47,7 @@ const changeGroup = {
 	},
 };
 
-const tempOption = [{value: 'select', label: '선택'}];
+const tempOption = [{key: 'select', label: '선택'}];
 
 /**************************************************
  * ambacc244 - 사용자 계정 처리(그룹 변경) 폼
@@ -67,15 +67,12 @@ const ChangeGroup = () => {
 	});
 	const [group1, group1ComboBox] = useComboBox({
 		options: tempOption,
-		width: 150,
 	});
 	const [group2, group2ComboBox] = useComboBox({
 		options: tempOption,
-		width: 150,
 	});
 	const [group3, group3ComboBox] = useComboBox({
 		options: tempOption,
-		width: 150,
 	});
 
 	return (

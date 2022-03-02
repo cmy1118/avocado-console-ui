@@ -8,6 +8,7 @@ import {
 import TemplateElement from '../../TemplateElement';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
+import {RowDiv} from '../../../../../../styles/components/style';
 
 const identityVerification = {
 	title: '본인 확인 인증',
@@ -71,13 +72,13 @@ const IdentityVerification = () => {
 							}
 							render={() => {
 								return (
-									<div>
+									<RowDiv>
 										{waitingTimeTextBox()}
 										{
 											identityVerification.contents
 												.waitingTime.message
 										}
-									</div>
+									</RowDiv>
 								);
 							}}
 						/>
