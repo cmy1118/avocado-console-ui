@@ -69,6 +69,8 @@ const SubContainer = styled.div`
 		name: 'test', // 생략가능
 		regex: regex, // 생략가능
 		placeholder: 'placeholder!!', // 생략가능
+		disabled: true, // 기본값 false 생략가능
+
 	});
 
  console.log('value => ', value); // input의 value
@@ -76,7 +78,7 @@ const SubContainer = styled.div`
  return <div>{textBox()}</div>; // 컴포넌트에 그리는 방법
  *
  ***************************************************/
-const useTextBox = ({name = '', regex, placeholder = ''}) => {
+const useTextBox = ({name = '', regex, placeholder = '', disabled = false}) => {
 	const [value, setValue] = useState('');
 	const [isValid, setIsValid] = useState(false);
 	const onFocusContainer = useCallback((e) => {
@@ -102,6 +104,7 @@ const useTextBox = ({name = '', regex, placeholder = ''}) => {
 					onBlur={onBlurContainer}
 					placeholder={placeholder}
 					{...(regex && {pattern: regex})}
+					disabled={disabled}
 				/>
 			</SubContainer>
 		</Container>
@@ -113,6 +116,7 @@ useTextBox.propTypes = {
 	name: PropTypes.string,
 	regex: PropTypes.object,
 	placeholder: PropTypes.string,
+	disabled: PropTypes.bool,
 };
 
 export default useTextBox;

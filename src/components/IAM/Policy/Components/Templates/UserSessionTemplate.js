@@ -152,6 +152,7 @@ const UserSessionTemplate = () => {
 
 	const sessionData = useMemo(() => data, [data]);
 
+	// 수정된 내용 확인용 입니다.
 	useEffect(() => {
 		console.log('screenSaverValue => ', screenSaverValue);
 		console.log('dormantValue => ', dormantValue);
@@ -159,12 +160,13 @@ const UserSessionTemplate = () => {
 		console.log('idleTime => ', idleTime);
 	}, [dormantValue, idleTime, screenSaverValue, unConnectedPeriod]);
 
+	// 초기값 세팅
 	useEffect(() => {
 		setScreenSaverValue('delete');
 		setDormantValue('unuse');
 		setUnConnectPeriod(12);
 		setIdleTime(330);
-	}, []);
+	}, []); // 초기 1번만 수정하므로 deps는 빈 값 입니다.
 
 	return (
 		<div>
@@ -173,13 +175,11 @@ const UserSessionTemplate = () => {
 				description={contents.sessionTimeout.description}
 				child={
 					<Table
-						// setSelect={setSelect}
 						isDraggable={false}
 						data={sessionData}
 						setData={setData}
 						tableKey={'userSessionTemplate'}
 						columns={columns}
-						// mode={'disabled'}
 					/>
 				}
 			/>
