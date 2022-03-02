@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import TemplateElement from '../TemplateElement';
 import TemplateElementContainer from '../TemplateElementContainer';
 import useRadio from '../../../../../hooks/useRadio';
-import {DRAGGABLE_KEY} from '../../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, INNER_TABLE} from '../../../../../Constants/Table/keys';
 import Table from '../../../../Table/Table';
 import TableComboBox from '../../../../Table/ColumnCells/TableComboBox';
 import TableTextBox from '../../../../Table/ColumnCells/TableTextBox';
@@ -72,6 +72,9 @@ const UserSessionTemplate = () => {
 		name: 'idleTime',
 	});
 
+	const [innerTableDatas, setInnerTableDatas] = useState(null);
+	const [innerTableColumns, setInnerTableColumns] = useState(null);
+
 	const [data, setData] = useState([
 		{
 			id: 1,
@@ -86,7 +89,16 @@ const UserSessionTemplate = () => {
 			MaintenanceTime: '14400',
 			PreservationTime: '0',
 			timeout: 'timeout',
+
 			[DRAGGABLE_KEY]: 'sessionTemplate1',
+			// [INNER_TABLE]: {
+			// 	data: innerTableDatas,
+			// 	column: innerTableColumns,
+			// 	onOpen: (origin) => {
+			// 		console.log(origin);
+			// 	},
+			// },
+			// inner table key가 있으면, 버튼이 생기고, 버튼을 클릭했을 때, 해당 row값을 읽어와 처리하는 함수가 필요.
 		},
 		{
 			id: 2,
