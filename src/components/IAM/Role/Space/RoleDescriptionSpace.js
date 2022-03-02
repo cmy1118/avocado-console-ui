@@ -114,17 +114,10 @@ const RoleDescriptionSpace = ({roleId}) => {
 	const onClickChangeDescription = useCallback(() => {}, []);
 
 	/**************************************************
-	 * roberto6385 - 역할이 존재하지 않으면 404 페이지로
-	 **************************************************/
-	useEffect(() => {
-		if (roleId && !role) history.push('/404');
-		else history.push(`/roles/${roleId}`);
-	}, [roleId, role, history]);
-
-	/**************************************************
 	 * roberto6385 - 이 역할의 정보 불러오기
 	 **************************************************/
 	useEffect(() => {
+		//이 역할의 정보 호출
 		dispatch(
 			IAM_ROLES.asyncAction.findByIdAction({
 				id: roleId,
@@ -134,6 +127,11 @@ const RoleDescriptionSpace = ({roleId}) => {
 			.then((res) => {
 				setRole(res);
 				setDescription(res.description);
+			})
+			//역할의 id가 유효하지 않음
+			.catch((err) => {
+				console.log(err);
+				history.push('/404');
 			});
 	}, [dispatch, roleId]);
 
