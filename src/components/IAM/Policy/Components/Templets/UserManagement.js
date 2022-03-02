@@ -70,13 +70,11 @@ const constants = {
 const UserManagement = () => {
 
 	const dataLists = [
-		{id : 1, data : "aaa"},
-		{id : 2, data : "bbb"},
-		{id : 3, data : "ccc"},
-
+		{id : 1, data : "create"},
+		{id : 2, data : "read"},
+		{id : 3, data : "update"},
+		{id : 4, data : "delete"},
 	]
-
-
 
 	return (
 		<div>
