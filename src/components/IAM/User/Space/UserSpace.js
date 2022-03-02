@@ -17,11 +17,6 @@ import {
 } from '../../../../styles/components/buttons';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {
-	CurrentPathBar,
-	CurrentPathBarLink,
-	NextPath,
-} from '../../../../styles/components/currentPathBar';
-import {
 	IamContainer,
 	TitleBar,
 	TitleBarButtons,
@@ -31,6 +26,12 @@ import PAM_SESSION from '../../../../reducers/api/PAM/session';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 import * as _ from 'lodash';
 import {RowDiv} from '../../../../styles/components/style';
+import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+
+const paths = [
+	{url: '/iam', label: 'IAM'},
+	{url: '/users', label: '사용자'},
+];
 
 const UserSpace = () => {
 	const history = useHistory();
@@ -176,11 +177,7 @@ const UserSpace = () => {
 
 	return (
 		<IamContainer>
-			<CurrentPathBar>
-				<CurrentPathBarLink to='/iam'>IAM </CurrentPathBarLink>
-				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to='/users'>사용자 </CurrentPathBarLink>
-			</CurrentPathBar>
+			<CurrentPathBarTemp paths={paths} />
 
 			<TitleBar>
 				<RowDiv width={'100%'} justifyContent={'space-between'}>

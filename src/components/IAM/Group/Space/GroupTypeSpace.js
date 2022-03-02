@@ -11,17 +11,19 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../styles/components/buttons';
-import {
-	CurrentPathBar,
-	CurrentPathBarLink,
-	NextPath,
-} from '../../../../styles/components/currentPathBar';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import {
 	IamContainer,
 	TitleBar,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
+import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+
+const paths = [
+	{url: '/iam', label: 'IAM'},
+	{url: '/groups', label: '사용자 그룹'},
+	{url: '/groups/types', label: '그룹 유형 관리'},
+];
 
 const GroupTypeSpace = () => {
 	const dispatch = useDispatch();
@@ -123,17 +125,7 @@ const GroupTypeSpace = () => {
 
 	return (
 		<IamContainer>
-			<CurrentPathBar>
-				<CurrentPathBarLink to='/iam'>IAM</CurrentPathBarLink>
-				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to='/groups'>
-					사용자 그룹
-				</CurrentPathBarLink>
-				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to='/groups/types'>
-					그룹 유형 관리
-				</CurrentPathBarLink>
-			</CurrentPathBar>
+			<CurrentPathBarTemp paths={paths} />
 
 			<TitleBar>
 				<div>그룹 유형 관리</div>

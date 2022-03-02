@@ -1,12 +1,22 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {CurrentPathBar} from '../../../../styles/components/currentPathBar';
-import {AddPageContainer, AddSpaceContainer} from "../../../../styles/components/iam/addPage";
-import {FOLD_DATA} from "../../../../utils/data";
-import ConnectPolicyToRole from "../Components/ConnectPolicyToRole";
-import ConnectUserToRole from "../Components/ConnectUserToRole";
-import ConnectGroupToRole from "../Components/ConnectGroupToRole";
-import AddRole from "../Components/AddRole";
+import {
+	AddPageContainer,
+	AddSpaceContainer,
+} from '../../../../styles/components/iam/addPage';
+import {FOLD_DATA} from '../../../../utils/data';
+import ConnectPolicyToRole from '../Components/ConnectPolicyToRole';
+import ConnectUserToRole from '../Components/ConnectUserToRole';
+import ConnectGroupToRole from '../Components/ConnectGroupToRole';
+import AddRole from '../Components/AddRole';
+import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+
+const paths = [
+	{url: '/iam', label: 'IAM'},
+	{url: '/roles', label: '역할'},
+	{url: '/roles/add', label: '역할 추가'},
+];
 
 const AddRoleSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
@@ -20,13 +30,8 @@ const AddRoleSpace = () => {
 
 	return (
 		<AddSpaceContainer>
-			<CurrentPathBar>
-				<Link to='/iam'>IAM</Link>
-				<div>{' > '}</div>
-				<Link to='/roles'>역할</Link>
-				<div>{' > '}</div>
-				<Link to='/roles/add'>역할 추가</Link>
-			</CurrentPathBar>
+			<CurrentPathBarTemp paths={paths} />
+
 			<AddPageContainer>
 				<AddRole
 					setIsOpened={setIsOpened}
@@ -34,7 +39,6 @@ const AddRoleSpace = () => {
 					groupMembers={groupMembers}
 					setValues={setValues}
 				/>
-
 
 				<ConnectPolicyToRole
 					space={'RolePolicyTab'}

@@ -6,11 +6,6 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import {
-	CurrentPathBar,
-	CurrentPathBarLink,
-	NextPath,
-} from '../../../../styles/components/currentPathBar';
-import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../styles/components/buttons';
@@ -21,7 +16,13 @@ import {
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
-import {useHistory} from "react-router-dom";
+import {useHistory} from 'react-router-dom';
+import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+
+const paths = [
+	{url: '/iam', label: 'IAM'},
+	{url: '/roles', label: '역할'},
+];
 
 const RoleSpace = () => {
 	const dispatch = useDispatch();
@@ -47,7 +48,6 @@ const RoleSpace = () => {
 	const onCLickLinkToAddRole = useCallback(() => {
 		history.push('/roles/add');
 	}, [history]);
-
 
 	const getDetailApi = useCallback((res) => {
 		const arr = [];
@@ -97,16 +97,14 @@ const RoleSpace = () => {
 
 	return (
 		<IamContainer>
-			<CurrentPathBar>
-				<CurrentPathBarLink to='/iam'>IAM</CurrentPathBarLink>
-				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to='/roles'>역할</CurrentPathBarLink>
-			</CurrentPathBar>
+			<CurrentPathBarTemp paths={paths} />
 
 			<TitleBar>
 				<div>역할 : {total}</div>
 				<TitleBarButtons>
-					<NormalButton onClick={onCLickLinkToAddRole}>역할 생성</NormalButton>
+					<NormalButton onClick={onCLickLinkToAddRole}>
+						역할 생성
+					</NormalButton>
 					<TransparentButton margin={'0px 0px 0px 5px'}>
 						삭제
 					</TransparentButton>

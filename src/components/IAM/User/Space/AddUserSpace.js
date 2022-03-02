@@ -15,6 +15,13 @@ import {
 	AddSpaceContainer,
 	AddPageContainer,
 } from '../../../../styles/components/iam/addPage';
+import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+
+const paths = [
+	{url: '/iam', label: 'IAM'},
+	{url: '/users', label: '사용자'},
+	{url: '/users/add', label: '사용자 추가'},
+];
 
 const AddUserSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
@@ -22,15 +29,7 @@ const AddUserSpace = () => {
 
 	return (
 		<AddSpaceContainer>
-			<CurrentPathBar>
-				<CurrentPathBarLink to='/iam'>IAM</CurrentPathBarLink>
-				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to='/users'>사용자</CurrentPathBarLink>
-				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to='/users/add'>
-					사용자 추가
-				</CurrentPathBarLink>
-			</CurrentPathBar>
+			<CurrentPathBarTemp paths={paths} />
 
 			<AddPageContainer>
 				<AddUser setIsOpened={setIsOpened} />

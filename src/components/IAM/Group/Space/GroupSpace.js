@@ -12,11 +12,6 @@ import {
 	TransparentButton,
 } from '../../../../styles/components/buttons';
 import {
-	CurrentPathBar,
-	CurrentPathBarLink,
-	NextPath,
-} from '../../../../styles/components/currentPathBar';
-import {
 	IamContainer,
 	TitleBar,
 	TitleBarButtons,
@@ -25,6 +20,12 @@ import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
+import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+
+const paths = [
+	{url: '/iam', label: 'IAM'},
+	{url: '/groups', label: '사용자 그룹'},
+];
 
 const GroupSpace = () => {
 	const [select, setSelect] = useState({});
@@ -184,13 +185,7 @@ const GroupSpace = () => {
 
 	return (
 		<IamContainer>
-			<CurrentPathBar>
-				<CurrentPathBarLink to='/iam'>IAM</CurrentPathBarLink>
-				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to='/groups'>
-					사용자 그룹
-				</CurrentPathBarLink>
-			</CurrentPathBar>
+			<CurrentPathBarTemp paths={paths} />
 
 			<TitleBar>
 				<div>사용자 그룹 : {total} </div>

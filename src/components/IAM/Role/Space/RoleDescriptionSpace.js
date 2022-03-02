@@ -1,12 +1,7 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import {useHistory, useLocation} from 'react-router-dom';
-import {
-	CurrentPathBar,
-	CurrentPathBarLink,
-	NextPath,
-} from '../../../../styles/components/currentPathBar';
 import RoleSummary from '../Components/RoleSummary';
 import TabBar from '../../TabBar';
 import RolePolicyTab from '../Components/Tabs/RolePolicyTab';
@@ -41,6 +36,7 @@ import useTextArea from '../../../../hooks/useTextArea';
 import {RowDiv} from '../../../../styles/components/style';
 import RoleUserTab from '../Components/Tabs/RoleUserTab';
 import RoleGroupTab from '../Components/Tabs/RoleGroupTab';
+import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
 
 const roleDescriptionSpace = {
 	title: '요약',
@@ -70,6 +66,14 @@ const RoleDescriptionSpace = ({roleId}) => {
 	const history = useHistory();
 	const {search} = useLocation();
 	const [role, setRole] = useState(null);
+	const paths = useMemo(
+		() => [
+			{url: '/iam', label: 'IAM'},
+			{url: '/roles', label: '역할'},
+			{url: '/roles/' + role?.id, label: role?.name},
+		],
+		[role],
+	);
 	//description: 역할 상세 설명
 	const [description, setDescription, descriptionTextArea] = useTextArea({
 		name: 'description',
@@ -137,18 +141,19 @@ const RoleDescriptionSpace = ({roleId}) => {
 
 	return (
 		<IamContainer>
-			<CurrentPathBar>
-				<CurrentPathBarLink to='/iam'>IAM</CurrentPathBarLink>
-				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to='/roles'>역할</CurrentPathBarLink>
-				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink
-					onClick={() => setIsSummaryOpened(true)}
-					to={`/roles/${roleId}`}
-				>
-					{role?.name}
-				</CurrentPathBarLink>
-			</CurrentPathBar>
+			{/*<CurrentPathBar>*/}
+			{/*	<CurrentPathBarLink to='/iam'>IAM</CurrentPathBarLink>*/}
+			{/*	<NextPath>{' > '}</NextPath>*/}
+			{/*	<CurrentPathBarLink to='/roles'>역할</CurrentPathBarLink>*/}
+			{/*	<NextPath>{' > '}</NextPath>*/}
+			{/*	<CurrentPathBarLink*/}
+			{/*		onClick={() => setIsSummaryOpened(true)}*/}
+			{/*		to={`/roles/${roleId}`}*/}
+			{/*	>*/}
+			{/*		{role?.name}*/}
+			{/*	</CurrentPathBarLink>*/}
+			{/*</CurrentPathBar>*/}
+			<CurrentPathBarTemp paths={paths} />
 			<DescriptionPageContainer>
 				<div>
 					<TitleBar>

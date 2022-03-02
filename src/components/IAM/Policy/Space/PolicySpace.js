@@ -19,6 +19,12 @@ import PAGINATION from '../../../../reducers/pagination';
 import PAM_SESSION from '../../../../reducers/api/PAM/session';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 import * as _ from 'lodash';
+import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+
+const paths = [
+	{url: '/iam', label: 'IAM'},
+	{url: '/policies', label: '정책'},
+];
 
 const PolicySpace = () => {
 	const history = useHistory();
@@ -177,11 +183,7 @@ const PolicySpace = () => {
 
 	return (
 		<IamContainer>
-			<CurrentPathBar>
-				<Link to='/iam'>IAM</Link>
-				<div>{' > '}</div>
-				<Link to='/policies'>정책</Link>
-			</CurrentPathBar>
+			<CurrentPathBarTemp paths={paths} />
 			<TitleBar>
 				<RowDiv width={'100%'} justifyContent={'space-between'}>
 					<div>정책 : {total[tableKeys.policy.basic] || 0}</div>
