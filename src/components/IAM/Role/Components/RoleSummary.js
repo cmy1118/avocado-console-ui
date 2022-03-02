@@ -34,7 +34,6 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	const {companyId} = useSelector(AUTH.selector);
 
 	const permissionData = useMemo(() => {
-		console.log(permissions);
 		if (permissions) {
 			const temp = permissions?.map((v) => ({
 				id: v.role.id + v.policy.templateId,
@@ -244,7 +243,6 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 							console.log(sesstions);
 
 							users.map((id) => {
-								console.log('이 역할의 사용자 id:', id);
 								dispatch(
 									IAM_USER.asyncAction.findByUidAction({
 										userUid: id,
@@ -272,7 +270,6 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 
 	//이 역할의 사용자 그룹.
 	useEffect(() => {
-		console.log('\t//이 역할의 사용자 그룹.\n');
 		const arr = [];
 		isSummaryOpened &&
 			dispatch(
@@ -331,7 +328,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 	return (
 		<SummaryTablesContainer>
 			<SummaryTableTitle onClick={onClickChangeTab('role')}>
-				권한 : {permissionData?.length}
+				권한/정책 : {permissionData?.length}
 			</SummaryTableTitle>
 
 			<Table

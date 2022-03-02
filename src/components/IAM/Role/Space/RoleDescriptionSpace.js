@@ -10,8 +10,6 @@ import {
 import RoleSummary from '../Components/RoleSummary';
 import TabBar from '../../TabBar';
 import RolePolicyTab from '../Components/Tabs/RolePolicyTab';
-import RoleUserTab from '../Components/Tabs/RoleUserTab';
-import RoleGroupTab from '../Components/Tabs/RoleGroupTab';
 import {useDispatch} from 'react-redux';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import {HoverIconButton} from '../../../../styles/components/icons';
@@ -39,25 +37,22 @@ import {
 	TitleBarButtons,
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
-import {dummyDatesLastInfo, getRandomNum} from '../../../../utils/dummyData';
+import useTextArea from '../../../../hooks/useTextArea';
+import {RowDiv} from '../../../../styles/components/style';
 
 const RoleDescriptionSpace = ({roleId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {search} = useLocation();
-
-	// const {roles} = useSelector(IAM_ROLES.selector);
-	// const role = useMemo(() => roles.find((v) => v.id === roleId), [
-	// 	roles,
-	// 	roleId,
-	// ]);
 	const [role, setRole] = useState(null);
+
+	const [description, setDescription, descriptionTextArea] = useTextArea({
+		name: 'description',
+		regex: /^.{0,200}$/,
+	});
+
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
-
-	// const onClickFoldSummary = useCallback(() => {
-	// 	setIsSummaryOpened(!isSummaryOpened);
-	// }, [isSummaryOpened]);
 
 	const onClickFoldSummary = useCallback(() => {
 		setIsSummaryOpened(!isSummaryOpened);
@@ -83,6 +78,11 @@ const RoleDescriptionSpace = ({roleId}) => {
 		history.push('/roles/add');
 	}, [history]);
 
+	/**************************************************
+	 * ambacc244 - 역할 상세 수정
+	 *  ***************************************************/
+	const onClickChangeDescription = useCallback(() => {}, []);
+
 	useEffect(() => {
 		if (roleId && !role) {
 			history.push('/404');
@@ -91,7 +91,6 @@ const RoleDescriptionSpace = ({roleId}) => {
 	}, [roleId, role, history]);
 
 	useEffect(() => {
-		const arr = [];
 		dispatch(
 			IAM_ROLES.asyncAction.findByIdAction({
 				id: roleId,
@@ -100,6 +99,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 			.unwrap()
 			.then((res) => {
 				setRole(res);
+				setDescription(res.description);
 			});
 	}, [dispatch, roleId]);
 
@@ -143,24 +143,31 @@ const RoleDescriptionSpace = ({roleId}) => {
 
 					<SummaryList>
 						<LiText>역할 이름 : {role?.name}</LiText>
+						<LiText>역할 유형 : </LiText>
 						<LiText>
-							역할 유형 :{' '}
-							{role?.maxGrants === '1' ? 'Private' : 'Public'}
+							<RowDiv>
+								역할 설명 :{' '}
+								<div>
+									<RowDiv>
+										{descriptionTextArea()}
+										<NormalButton
+											onClick={onClickChangeDescription}
+										>
+											저장
+										</NormalButton>
+									</RowDiv>
+									최대 200자 까지 가능합니다.
+								</div>
+							</RowDiv>
 						</LiText>
-						<LiText>역할 설명 : {role?.description}</LiText>
+						<LiText>부여 제한 : </LiText>
 						<LiText>
 							생성 일시 : {role?.createdTag.createdTime}
 						</LiText>
-						<LiText>
-							마지막 작업 일시 : {dummyDatesLastInfo[0].lastTime}
-						</LiText>
-						<LiText>
-							마지막 활동 : {dummyDatesLastInfo[0].lastActiv}
-						</LiText>
-						<LiText>
-							마지막 활동 사용자 :{' '}
-							{dummyDatesLastInfo[0].lastUser}
-						</LiText>
+						<LiText>생성 사용자 :</LiText>
+						<LiText>마지막 작업 일시 :</LiText>
+						<LiText>마지막 활동 :</LiText>
+						<LiText>마지막 활동 사용자 : </LiText>
 					</SummaryList>
 				</div>
 
@@ -192,24 +199,6 @@ const RoleDescriptionSpace = ({roleId}) => {
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
-						{/*{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===*/}
-						{/*	'user' && (*/}
-						{/*	<RoleUserTab*/}
-						{/*		roleId={roleId}*/}
-						{/*		space={'RoleUserTab'}*/}
-						{/*		isFold={isTableFold}*/}
-						{/*		setIsFold={setIsTableFold}*/}
-						{/*	/>*/}
-						{/*)}*/}
-						{/*{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===*/}
-						{/*	'group' && (*/}
-						{/*	<RoleGroupTab*/}
-						{/*		roleId={roleId}*/}
-						{/*		space={'RoleGroupTab'}*/}
-						{/*		isFold={isTableFold}*/}
-						{/*		setIsFold={setIsTableFold}*/}
-						{/*	/>*/}
-						{/*)}*/}
 					</TabContentSpace>
 				</TabContainer>
 			</DescriptionPageContainer>

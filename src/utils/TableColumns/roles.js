@@ -69,8 +69,8 @@ export const ROLE_SUMMARY_PERMISSION_COLUMN = [
 		},
 	},
 	{
-		Header: '유형',
-		accessor: 'type',
+		Header: '템플릿 이름',
+		accessor: 'templateName',
 	},
 	{
 		Header: '정책 이름',
