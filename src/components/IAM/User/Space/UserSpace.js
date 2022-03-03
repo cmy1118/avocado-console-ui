@@ -3,7 +3,6 @@ import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import {
-	descValues,
 	expiredConverter,
 	groupsConverter,
 	tagsConverter,
@@ -23,8 +22,6 @@ import {
 } from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import PAM_SESSION from '../../../../reducers/api/PAM/session';
-import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
-import * as _ from 'lodash';
 import {RowDiv} from '../../../../styles/components/style';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 
@@ -46,29 +43,19 @@ const UserSpace = () => {
 		console.log(users);
 		return (
 			users?.map((v) => ({
-				...v.user,
-				groups: groupsConverter(v.user.groups || []),
-				status: v.user.status.code,
-				createdTime: v.user.createdTag.createdTime,
-				passwordExpiryTime: expiredConverter(v.user.passwordExpiryTime),
-				tags: tagsConverter(v.user.tags),
+				...v,
+				groups: groupsConverter(v.groups || []),
+				status: v.status.code,
+				createdTime: v.createdTag.createdTime,
+				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
+				tags: tagsConverter(v.tags),
 				authType:
-					v.policies.find((v) => v.policyType === 'AlternativeAuthN')
-						?.attributeName === 'Google'
-						? '대체인증'
-						: 'ID/PWD',
-				MFA: v.policies.find((v) => v.policyType === 'MFA')
-					? `${
-							v.policies.find((v) => v.policyType === 'MFA')
-								?.attributeName
-					  } (${descValues(
-							v.policies.find(
-								(v) => v.policyType === 'IdentityVerification',
-							)?.attributeName,
-					  )})`
-					: '없음',
-				lastConsoleLogin: v.session.lastConsoleLoginTime,
-				[DRAGGABLE_KEY]: v.user.userUid,
+					v?.attributes?.AlternativeAuthN === 'IdAndPassword'
+						? 'ID/PWD'
+						: '대체인증',
+				MFA: v?.attributes?.MFA ? v.attributes.MFA : '없음',
+				lastConsoleLogin: v.lastConsoleLogin,
+				[DRAGGABLE_KEY]: v.userUid,
 			})) || []
 		);
 	}, [users]);
@@ -90,46 +77,22 @@ const UserSpace = () => {
 	}, [dispatch, select]);
 
 	const getUsersDetailApi = useCallback(
-		(res) => {
-			const arr = [];
+		(data) => {
 			dispatch(
 				PAM_SESSION.asyncAction.findSessionAction({
-					userUids: res.data.map((v) => v.userUid),
+					userUids: data.map((v) => v.userUid),
 				}),
 			)
 				.unwrap()
 				.then((sessions) => {
-					res.data.forEach((sessionUser) => {
-						dispatch(
-							IAM_USER_POLICY.asyncAction.getsAction({
-								userUid: sessionUser.userUid,
-							}),
-						)
-							.unwrap()
-							.then((policy) => {
-								arr.push({
-									user: sessionUser,
-									session: sessions.data.find(
-										(session) =>
-											sessionUser.userUid ===
-											session.userUid,
-									),
-									policies: _.uniqBy(
-										_.flatten(
-											_.flatten(
-												policy.map(
-													(v) => v.policyTemplates,
-												),
-											).map((x) => x.details),
-										),
-										'policyType',
-									),
-								});
-								if (arr.length === res.data.length) {
-									setUsers(arr);
-								}
-							});
-					});
+					setUsers(
+						data.map((v) => ({
+							...v,
+							lastConsoleLogin: sessions.data.find(
+								(val) => v.userUid === val.userUid,
+							).lastConsoleLoginTime,
+						})),
+					);
 				});
 		},
 		[dispatch],
@@ -154,7 +117,9 @@ const UserSpace = () => {
 								),
 							}),
 						);
-						res.data.length ? getUsersDetailApi(res) : setUsers([]);
+						res.data.length
+							? getUsersDetailApi(res.data)
+							: setUsers([]);
 					})
 					.catch((error) => {
 						console.error('error:', error);
@@ -168,7 +133,7 @@ const UserSpace = () => {
 					});
 			}
 		},
-		[dispatch, getUsersDetailApi, page],
+		[dispatch, page],
 	);
 
 	useEffect(() => {

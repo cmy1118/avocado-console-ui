@@ -10,7 +10,7 @@ const getsAction = createAsyncThunk(
 		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(
-			`/open-api/v1/iam/users/${payload.userUid}/policy`,
+			`/open-api/v1/iam/users/${payload.userUid}/policies`,
 			{
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
