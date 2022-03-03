@@ -1,6 +1,4 @@
 import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
-import {CurrentPathBar} from '../../../../styles/components/currentPathBar';
 import {
 	AddPageContainer,
 	AddSpaceContainer,
@@ -10,7 +8,7 @@ import ConnectPolicyToRole from '../Components/ConnectPolicyToRole';
 import ConnectUserToRole from '../Components/ConnectUserToRole';
 import ConnectGroupToRole from '../Components/ConnectGroupToRole';
 import AddRole from '../Components/AddRole';
-import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -30,7 +28,7 @@ const AddRoleSpace = () => {
 
 	return (
 		<AddSpaceContainer>
-			<CurrentPathBarTemp paths={paths} />
+			<CurrentPathBar paths={paths} />
 
 			<AddPageContainer>
 				<AddRole

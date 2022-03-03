@@ -1,10 +1,8 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {CurrentPathBar} from '../../../../styles/components/currentPathBar';
 import {IamContainer} from '../../../../styles/components/iam/iam';
 import AddPolicy from '../Components/AddPolicy';
 import {AddPageContainer} from '../../../../styles/components/iam/addPage';
-import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -18,7 +16,7 @@ const paths = [
 const AddPolicySpace = () => {
 	return (
 		<IamContainer>
-			<CurrentPathBarTemp paths={paths} />
+			<CurrentPathBar paths={paths} />
 
 			<AddPageContainer>
 				<AddPolicy />

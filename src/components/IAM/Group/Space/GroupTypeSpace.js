@@ -17,7 +17,7 @@ import {
 	TitleBar,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
-import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -125,7 +125,7 @@ const GroupTypeSpace = () => {
 
 	return (
 		<IamContainer>
-			<CurrentPathBarTemp paths={paths} />
+			<CurrentPathBar paths={paths} />
 
 			<TitleBar>
 				<div>그룹 유형 관리</div>

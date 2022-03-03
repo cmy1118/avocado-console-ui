@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Link, useHistory} from 'react-router-dom';
-import {CurrentPathBar} from '../../../../styles/components/currentPathBar';
+import {useHistory} from 'react-router-dom';
 import {
 	IamContainer,
 	TitleBar,
@@ -19,7 +18,7 @@ import PAGINATION from '../../../../reducers/pagination';
 import PAM_SESSION from '../../../../reducers/api/PAM/session';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 import * as _ from 'lodash';
-import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -183,7 +182,7 @@ const PolicySpace = () => {
 
 	return (
 		<IamContainer>
-			<CurrentPathBarTemp paths={paths} />
+			<CurrentPathBar paths={paths} />
 			<TitleBar>
 				<RowDiv width={'100%'} justifyContent={'space-between'}>
 					<div>정책 : {total[tableKeys.policy.basic] || 0}</div>

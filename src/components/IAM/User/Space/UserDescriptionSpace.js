@@ -10,11 +10,6 @@ import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import UserOnDescPageTags from '../Components/UserOnDescPageTags';
 import UserSummary from '../Components/UserSummary';
 import UserRolesTab from '../Components/UserRolesTab';
-import {
-	CurrentPathBarLink,
-	CurrentPathBar,
-	NextPath,
-} from '../../../../styles/components/currentPathBar';
 import {HoverIconButton} from '../../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
 import TabBar from '../../TabBar';
@@ -43,6 +38,7 @@ import {
 	TitleBarButtons,
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
+import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const UserDescriptionSpace = ({userUid}) => {
 	const dispatch = useDispatch();
@@ -52,7 +48,14 @@ const UserDescriptionSpace = ({userUid}) => {
 
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
-
+	const paths = useMemo(
+		() => [
+			{url: '/iam', label: 'IAM'},
+			{url: '/users', label: '사용자'},
+			{url: '/users/' + userUid, label: user?.name},
+		],
+		[user, userUid],
+	);
 	const TabBarInfo = [
 		{name: '정보', href: 'user'},
 		{name: '그룹', href: 'group'},
@@ -103,22 +106,20 @@ const UserDescriptionSpace = ({userUid}) => {
 			});
 	}, [history, isSummaryOpened, userUid]);
 
-	console.log('user description');
+	/**************************************************
+	 * ambacc244 - current Path Bar의 현재 경로 클릭으로 탭을 닫음
+	 **************************************************/
+	useEffect(() => {
+		//현재 경로에서 탭의 정보가 없음
+		if (!qs.parse(search, {ignoreQueryPrefix: true})?.tabs) {
+			setIsSummaryOpened(true);
+		}
+	}, [search]);
 
 	return (
 		<IamContainer>
-			<CurrentPathBar>
-				<CurrentPathBarLink to='/iam'>IAM</CurrentPathBarLink>
-				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to='/users'>사용자</CurrentPathBarLink>
-				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink
-					onClick={() => setIsSummaryOpened(true)}
-					to={`/users/${userUid}`}
-				>
-					{user?.name}
-				</CurrentPathBarLink>
-			</CurrentPathBar>
+			<CurrentPathBar paths={paths} />
+
 			<DescriptionPageContainer>
 				<div>
 					<TitleBar className={'subHeader'}>
