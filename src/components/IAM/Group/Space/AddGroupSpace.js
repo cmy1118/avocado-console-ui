@@ -8,7 +8,7 @@ import {
 	AddPageContainer,
 	AddSpaceContainer,
 } from '../../../../styles/components/iam/addPage';
-import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -28,7 +28,7 @@ const AddGroupSpace = () => {
 
 	return (
 		<AddSpaceContainer>
-			<CurrentPathBarTemp paths={paths} />
+			<CurrentPathBar paths={paths} />
 
 			<AddPageContainer>
 				<AddGroup

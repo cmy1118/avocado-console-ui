@@ -5,12 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import GroupSummary from '../Components/GroupSummary';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
-import {HoverIconButton, IconButton} from '../../../../styles/components/icons';
-import {
-	CurrentPathBarLink,
-	CurrentPathBar,
-	NextPath,
-} from '../../../../styles/components/currentPathBar';
+import {HoverIconButton} from '../../../../styles/components/icons';
 import {
 	NormalButton,
 	TransparentButton,
@@ -41,6 +36,7 @@ import {
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
+import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const dispatch = useDispatch();
@@ -49,11 +45,19 @@ const GroupDescriptionSpace = ({groupId}) => {
 
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const {members} = useSelector(IAM_USER_GROUP_MEMBER.selector);
-
 	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isOpened, setIsOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 	const [group, setGroup] = useState(null);
+
+	const paths = useMemo(
+		() => [
+			{url: '/iam', label: 'IAM'},
+			{url: '/groups', label: '사용자 그룹'},
+			{url: '/groups/' + group?.id, label: group?.name},
+		],
+		[group],
+	);
 
 	const TabBarInfo = [
 		{name: '사용자', href: 'user'},
@@ -116,22 +120,20 @@ const GroupDescriptionSpace = ({groupId}) => {
 			});
 	}, [history, isSummaryOpened, groupId]);
 
+	/**************************************************
+	 * ambacc244 - current Path Bar의 현재 경로 클릭으로 탭을 닫음
+	 **************************************************/
+	useEffect(() => {
+		//현재 경로에서 탭의 정보가 없음
+		if (!qs.parse(search, {ignoreQueryPrefix: true})?.tabs) {
+			setIsSummaryOpened(true);
+		}
+	}, [search]);
+
 	return (
 		<IamContainer>
-			<CurrentPathBar>
-				<CurrentPathBarLink to='/iam'>IAM</CurrentPathBarLink>
-				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink to='/groups'>
-					사용자 그룹
-				</CurrentPathBarLink>
-				<NextPath>{' > '}</NextPath>
-				<CurrentPathBarLink
-					onClick={() => setIsSummaryOpened(true)}
-					to={`/groups/${groupId}`}
-				>
-					{group?.name}
-				</CurrentPathBarLink>
-			</CurrentPathBar>
+			<CurrentPathBar paths={paths} />
+
 			<DescriptionPageContainer>
 				<div>
 					<TitleBar>

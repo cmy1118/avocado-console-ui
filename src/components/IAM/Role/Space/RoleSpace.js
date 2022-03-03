@@ -17,7 +17,7 @@ import {
 import PAGINATION from '../../../../reducers/pagination';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import {useHistory} from 'react-router-dom';
-import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -97,7 +97,7 @@ const RoleSpace = () => {
 
 	return (
 		<IamContainer>
-			<CurrentPathBarTemp paths={paths} />
+			<CurrentPathBar paths={paths} />
 
 			<TitleBar>
 				<div>역할 : {total}</div>

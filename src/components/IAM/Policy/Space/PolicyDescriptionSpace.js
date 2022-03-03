@@ -1,19 +1,37 @@
-import React from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
-import {CurrentPathBar} from '../../../../styles/components/currentPathBar';
+import {useLocation} from 'react-router-dom';
 import {IamContainer} from '../../../../styles/components/iam/iam';
+import CurrentPathBar from '../../../Header/CurrentPathBar';
+import qs from 'qs';
 
 const PolicyDescriptionSpace = ({policyId}) => {
+	const {search} = useLocation();
+
+	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
+
+	const paths = useMemo(
+		() => [
+			{url: '/iam', label: 'IAM'},
+			{url: '/groups', label: '사용자 그룹'},
+			{url: '/groups/' + policyId, label: policyId},
+		],
+		[policyId],
+	);
+
+	/**************************************************
+	 * ambacc244 - current Path Bar의 현재 경로 클릭으로 탭을 닫음
+	 **************************************************/
+	useEffect(() => {
+		//현재 경로에서 탭의 정보가 없음
+		if (!qs.parse(search, {ignoreQueryPrefix: true})?.tabs) {
+			setIsSummaryOpened(true);
+		}
+	}, [search]);
+
 	return (
 		<IamContainer>
-			<CurrentPathBar>
-				<Link to='/iam'>IAM</Link>
-				<div>{' > '}</div>
-				<Link to='/policies'>정책</Link>
-				<div>{' > '}</div>
-				<Link to={`/policies/${policyId}`}>{policyId}</Link>
-			</CurrentPathBar>
+			<CurrentPathBar paths={paths} />
 
 			<div>Rolicy Description Space</div>
 		</IamContainer>

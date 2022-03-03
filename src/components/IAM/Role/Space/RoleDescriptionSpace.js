@@ -36,7 +36,7 @@ import useTextArea from '../../../../hooks/useTextArea';
 import {RowDiv} from '../../../../styles/components/style';
 import RoleUserTab from '../Components/Tabs/RoleUserTab';
 import RoleGroupTab from '../Components/Tabs/RoleGroupTab';
-import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const roleDescriptionSpace = {
 	title: '요약',
@@ -137,23 +137,22 @@ const RoleDescriptionSpace = ({roleId}) => {
 				console.log(err);
 				history.push('/404');
 			});
-	}, [dispatch, roleId]);
+	}, [dispatch, history, roleId, setDescription]);
+
+	/**************************************************
+	 * ambacc244 - current Path Bar의 현재 경로 클릭으로 탭을 닫음
+	 **************************************************/
+	useEffect(() => {
+		//현재 경로에서 탭의 정보가 없음
+		if (!qs.parse(search, {ignoreQueryPrefix: true})?.tabs) {
+			setIsSummaryOpened(true);
+		}
+	}, [search]);
 
 	return (
 		<IamContainer>
-			{/*<CurrentPathBar>*/}
-			{/*	<CurrentPathBarLink to='/iam'>IAM</CurrentPathBarLink>*/}
-			{/*	<NextPath>{' > '}</NextPath>*/}
-			{/*	<CurrentPathBarLink to='/roles'>역할</CurrentPathBarLink>*/}
-			{/*	<NextPath>{' > '}</NextPath>*/}
-			{/*	<CurrentPathBarLink*/}
-			{/*		onClick={() => setIsSummaryOpened(true)}*/}
-			{/*		to={`/roles/${roleId}`}*/}
-			{/*	>*/}
-			{/*		{role?.name}*/}
-			{/*	</CurrentPathBarLink>*/}
-			{/*</CurrentPathBar>*/}
-			<CurrentPathBarTemp paths={paths} />
+			<CurrentPathBar paths={paths} />
+
 			<DescriptionPageContainer>
 				<div>
 					<TitleBar>

@@ -5,17 +5,12 @@ import AssignRoleToUser from '../Components/AssignRoleToUser';
 import AddUserToGroup from '../Components/AddUserToGroup';
 import AddUser from '../Components/AddUser';
 import UserPreviewDialogBox from '../../../DialogBoxs/Preview/UserPreviewDialogBox';
-import {
-	CurrentPathBarLink,
-	CurrentPathBar,
-	NextPath,
-} from '../../../../styles/components/currentPathBar';
 import {FOLD_DATA} from '../../../../utils/data';
 import {
-	AddSpaceContainer,
 	AddPageContainer,
+	AddSpaceContainer,
 } from '../../../../styles/components/iam/addPage';
-import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -29,7 +24,7 @@ const AddUserSpace = () => {
 
 	return (
 		<AddSpaceContainer>
-			<CurrentPathBarTemp paths={paths} />
+			<CurrentPathBar paths={paths} />
 
 			<AddPageContainer>
 				<AddUser setIsOpened={setIsOpened} />

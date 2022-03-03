@@ -26,7 +26,7 @@ import PAM_SESSION from '../../../../reducers/api/PAM/session';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 import * as _ from 'lodash';
 import {RowDiv} from '../../../../styles/components/style';
-import CurrentPathBarTemp from '../../../Header/CurrentPathBarTemp';
+import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -177,7 +177,7 @@ const UserSpace = () => {
 
 	return (
 		<IamContainer>
-			<CurrentPathBarTemp paths={paths} />
+			<CurrentPathBar paths={paths} />
 
 			<TitleBar>
 				<RowDiv width={'100%'} justifyContent={'space-between'}>
