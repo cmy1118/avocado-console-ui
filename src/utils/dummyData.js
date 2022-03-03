@@ -434,3 +434,4 @@ export const getRandomNum = (min, max) => {
 	console.log(parseInt(Math.random() * (max - min) + min));
 	return parseInt(Math.random() * (max - min) + min);
 };
+

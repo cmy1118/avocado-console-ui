@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import UserAuthTemplate from './Templates/UserAuthTemplate';
 import UserAccountProcessTemplate from './Templates/UserAccountProcessTemplate';
 import UserAccountPatternTemplate from './Templates/UserAccountPatternTemplate';
-import UserManagement from './Templets/UserManagement';
+import UserManagement from './Templates/UserManagement';
 
 const Container = styled.div`
 	display: flex;

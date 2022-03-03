@@ -56,7 +56,7 @@ import {
 	ROLE_SUMMARY_TABS_USERS_EXCLUDE_COLUMN,
 	ROLE_SUMMARY_TABS_USERS_INCLUDE_COLUMN,
 } from '../../utils/TableColumns/roles';
-import UserManagement from '../../components/IAM/Policy/Components/Templets/UserManagement';
+import UserManagement from '../../components/IAM/Policy/Components/Templates/UserManagement';
 import {POLICY_ADD_USER_MANAGEMEN_COLUMN} from '../../utils/TableColumns/policies';
 import {POLICY_COLUMN} from '../../utils/TableColumns/policies';
 

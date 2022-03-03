@@ -1,4 +1,4 @@
-import UserManagement from '../../components/IAM/Policy/Components/Templets/UserManagement';
+import UserManagement from '../../components/IAM/Policy/Components/Templates/UserManagement';
 
 export const DRAGGABLE_KEY = 'keyId';
 export const tableKeys = Object.freeze({

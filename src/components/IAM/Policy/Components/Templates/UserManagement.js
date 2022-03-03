@@ -1,10 +1,13 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../../../Table/Table';
 import {TableMode} from '../../../../../Constants/Table/mode';
 import checkboxColumn from '../../../../Table/tableCheckboxColumn';
 import {tableKeys} from '../../../../../Constants/Table/keys';
 import TableAllCheckbox from '../../../../Table/Options/TableAllCheckbox';
 import RowCheckbox from "../../../../RecycleComponents/rowCheckbox";
+import IAM_USER from "../../../../../reducers/api/IAM/User/User/user";
+import {useDispatch} from "react-redux";
+import IAM_POLICY_ACTION_TEMPLATE from "../../../../../reducers/api/IAM/Policy/ActionTemplate/actionTemplate";
 
 const constants = {
 	main: '사용자 관리 권한',
@@ -68,6 +71,7 @@ const constants = {
 
 
 const UserManagement = () => {
+	const dispatch = useDispatch();
 
 	const dataLists = [
 		{id : 1, data : "create"},
@@ -75,6 +79,18 @@ const UserManagement = () => {
 		{id : 3, data : "update"},
 		{id : 4, data : "delete"},
 	]
+
+	//렌더링시 권한 템플릿 상세 정보를 조회
+	useEffect(() => {
+		const res = dispatch(
+			IAM_POLICY_ACTION_TEMPLATE.asyncAction.findAllAction({
+				range: 'elements=0-50',
+			}),
+		).unwrap()
+			.then(res =>{
+				console.log('권한 템플릿 상세 정보를 조회:',res)
+			})
+	}, [dispatch]);
 
 	return (
 		<div>
