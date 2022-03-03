@@ -2,6 +2,10 @@ import SelectionOption from '../../components/Table/Options/Search/SelectionOpti
 import {statusConverter} from '../tableDataConverter';
 import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
 import React from 'react';
+import TableCheckbox from '../../components/Table/Options/TableCheckbox';
+import checkboxColumn from '../../components/Table/tableCheckboxColumn';
+import {tableKeys} from '../../Constants/Table/keys';
+
 
 export const POLICY_COLUMN = [
 	// {
@@ -48,4 +52,17 @@ export const POLICY_COLUMN = [
 		filter: 'dateBetween',
 		Filter: CalenderOption,
 	},
+];
+
+export const POLICY_ADD_USER_MANAGEMEN_COLUMN = [
+    {
+        accessor: 'item',
+        Header: '항목',
+        disableFilters: true,
+        disableChangeVisible: true,
+    },
+    checkboxColumn({
+        header: '전체 권한',
+        // tableKey: '1',
+    }),
 ];

@@ -7,6 +7,7 @@ import {useSelector} from 'react-redux';
 import CURRENT_TARGET from '../../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
+import {TableMode} from '../../../../Constants/Table/mode';
 
 const ReadOnly = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
@@ -41,7 +42,7 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 				{readOnlyData[tableKeys.groups.add.users.exclude]?.length}
 			</div>
 			<Table
-				mode={'readOnly'}
+				mode={TableMode.READ_ONLY}
 				tableKey={tableKeys.groups.add.users.exclude}
 				columns={tableColumns[tableKeys.groups.add.users.exclude]}
 				data={readOnlyData[tableKeys.groups.add.users.exclude]}
@@ -50,7 +51,7 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 				권한 : {readOnlyData[tableKeys.groups.add.roles.include].length}
 			</div>
 			<Table
-				mode={'readOnly'}
+				mode={TableMode.READ_ONLY}
 				tableKey={tableKeys.groups.add.roles.include}
 				data={readOnlyData[tableKeys.groups.add.roles.include]}
 				columns={tableColumns[tableKeys.groups.add.roles.include]}
@@ -58,7 +59,7 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 
 			<div>태그 : {readOnlyData[tableKeys.groups.add.tag].length}</div>
 			<Table
-				mode={'readOnly'}
+				mode={TableMode.READ_ONLY}
 				tableKey={tableKeys.groups.add.tag}
 				data={readOnlyData[tableKeys.groups.add.tag]}
 				columns={tableColumns[tableKeys.groups.add.tag]}

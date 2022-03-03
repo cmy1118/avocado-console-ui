@@ -1,6 +1,10 @@
+import UserManagement from '../../components/IAM/Policy/Components/Templets/UserManagement';
+
 export const DRAGGABLE_KEY = 'keyId';
-export const INNER_TABLE = 'innerTableKey';
 export const tableKeys = Object.freeze({
+	/*******************************************************************
+	 * 사용자 테이블키
+	 *******************************************************************/
 	users: {
 		basic: 'USER', // 기본
 		add: {
@@ -43,6 +47,9 @@ export const tableKeys = Object.freeze({
 			},
 		},
 	},
+	/*******************************************************************
+	 * 그룹 테이블키
+	 *******************************************************************/
 	groups: {
 		basic: 'GROUP',
 		type: 'GROUP_TYPE',
@@ -84,6 +91,9 @@ export const tableKeys = Object.freeze({
 			},
 		},
 	},
+	/*******************************************************************
+	 * 역할 테이블키
+	 *******************************************************************/
 	roles: {
 		basic: 'ROLE',
 		add: {
@@ -120,7 +130,16 @@ export const tableKeys = Object.freeze({
 			},
 		},
 	},
+	/*******************************************************************
+	 * 정책 테이블키
+	 *******************************************************************/
 	policy: {
-		basic: 'POLICY', // 기본
-	}, // 아직 설계 없음. 우선 네이밍 저렇게 할게요..
+		basic: 'POLICY',
+		policies: {
+			userManagement: 'POLICY_ADD_USER_MANAGEMENT',
+			policyManagement: 'POLICY_ADD_POLICY_MANAGEMENT',
+			roleManagement: 'POLICY_ADD_ROLE_MANAGEMENT',
+		},
+	},
+	summary: {},
 });

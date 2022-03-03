@@ -1,29 +1,106 @@
-import React, {forwardRef, useCallback} from 'react';
+import React, {forwardRef, useCallback, useState} from 'react';
 import PropTypes from 'prop-types';
 import CheckBox from '../../RecycleComponents/New/CheckBox';
 
-const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
-	const checkboxes = document.querySelectorAll(
-		`.${rest.tablekey}[type='checkbox']`,
-	);
+/***************************************************************************
+ * ⭐ seob - Table checkbox column 을 위한 컴포넌트
+ *
+ * indeterminate: ⭐️
+ * disabled: checkbox 기능 사용 유무
+ * ...rest : 나머지 props 정보
+ ***************************************************************************/
+const TableCheckbox = forwardRef(
+	(
+		{
+			indeterminate,
+			disabled,
+			allCheck,
+			setAllCheck,
+			childCheck,
+			setChildCheck,
+			...rest
+		},
+		ref,
+	) => {
+		//check box check 관리
 
-	const handleClick = useCallback(
-		(e) => {
-			if (e.target.isBetween) {
-				delete e.target.isBetween;
-				return;
-			}
-			if (e.shiftKey) {
-				// todo : 마지막 체크값이 존재하는지 검사
+		const tableKey = rest.tablekey;
+		//checkboxes: checkbox input 정보들을 포함한 dom 저장 변수
+		const checkboxes = document.querySelectorAll(
+			`.${rest.tablekey}[type='checkbox']`,
+		);
+
+		/***************************************************************************
+		 * roberto - 전체석택시 가로 행 child 요소 체크 유무 이벤트 핸들러
+		 ***************************************************************************/
+		const isCheckedChildRowsHandler = useCallback(
+			(e) => {
+				const element = e.target.parentNode.parentNode.parentNode.querySelectorAll(
+					`input[type="checkbox"]:not(.${tableKey})`,
+				);
+				element?.forEach((checkbox) => {
+					//클릭 됬을때
+					if (allCheck) {
+						if (!checkbox.checked) {
+							checkbox.click();
+						}
+					}
+					//클릭 안됬을때
+					if (!allCheck) {
+						if (checkbox.checked) {
+							checkbox.click();
+						}
+					}
+				});
+			},
+			[allCheck, tableKey],
+		);
+
+		/***************************************************************************
+		 * roberto - 가로 행 전체 선택 이벤트 핸들러
+		 ***************************************************************************/
+		const rowClickHandler = useCallback(
+			(e) => {
+				console.log('🔻🔻🔻🔻🔻🔻🔻🔻🔻');
+				console.log('🔵allCheck:', allCheck);
+
+				if (allCheck) {
+					//선택한 요소를 제외한 체크박스 가로행 체크박스들
+					const element = e.target.parentNode.parentNode.parentNode.querySelectorAll(
+						`input[type="checkbox"]:not(.${tableKey})`,
+					);
+					console.log('🔴element:', element);
+					element?.forEach((checkbox) => {
+						isCheckedChildRowsHandler(e, checkbox);
+					});
+					// 현재 타겟의 마지막 체크 true
+					element.forEach((checkbox) => {
+						delete checkbox.lastChecked;
+						delete e.target.isBetween;
+					});
+					e.target.lastChecked = true;
+				}
+			},
+			[allCheck, isCheckedChildRowsHandler, tableKey],
+		);
+
+		/***************************************************************************
+		 * seob - shift 클릭 핸들러
+		 ***************************************************************************/
+		const shiftClickHandler = useCallback(
+			(e) => {
+				const element = e?.target.parentNode.parentNode.parentNode.querySelectorAll(
+					`input[type="checkbox"]:not(.${tableKey})`,
+				);
+				// 마지막 체크값이 존재하는지 검사
 				let isLastChecked = false;
-				console.log(checkboxes);
 				checkboxes.forEach((checkbox) => {
 					if (checkbox.lastChecked) isLastChecked = true;
 				});
 
-				// todo : 마지막 체크값이 존재하는 경우
+				//마지막 체크값이 존재하는 경우
 				if (isLastChecked) {
-					// todo : 마지막 체크값이 전체선택 체크박스인 경우 return
+					//마지막 체크값이 전체선택 체크박스인 경우 return
 					let isAllCheck = false;
 					checkboxes.forEach((checkbox) => {
 						if (
@@ -35,9 +112,9 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 					});
 					if (isAllCheck) return;
 
-					// todo : 현재 선택한 값이 마지막 체크된 체크박스가 아닌 경우들만
+					//현재 선택한 값이 마지막 체크된 체크박스가 아닌 경우들만
 					if (!e.target.lastChecked) {
-						// todo : checked ::: [ false => true ] 사이에 해당되는 친구들은 모두 true
+						//⭐checked ::: [ false => true ] 사이에 해당되는 친구들은 모두 true
 						if (e.target.checked) {
 							let isBetween = false;
 							checkboxes.forEach((checkbox) => {
@@ -99,41 +176,74 @@ const TableCheckbox = forwardRef(({indeterminate, ...rest}, ref) => {
 						}
 					}
 				}
-			} else {
-				// if (!e.target.isBetween) {
-				// 	checkboxes.forEach((checkbox) => {
-				// 		checkbox.title !==
-				// 			'Toggle All Current Page Rows Selected' &&
-				// 			checkbox.checked &&
-				// 			checkbox.click();
-				// 	});
-				// 	e.target.click();
-				// }
-			}
+				// 현재 타겟의 마지막 체크 true
+				checkboxes.forEach((checkbox) => {
+					delete checkbox.lastChecked;
+					delete e.target.isBetween;
+					isCheckedChildRowsHandler(e, checkbox);
+				});
+				e.target.lastChecked = true;
+			},
 
-			// todo : 현재 타겟의 마지막 체크 true
-			checkboxes.forEach((checkbox) => {
-				delete checkbox.lastChecked;
-				delete e.target.isBetween;
-			});
-			e.target.lastChecked = true;
-		},
-		[checkboxes],
-	);
+			[checkboxes, isCheckedChildRowsHandler, tableKey],
+		);
 
-	return (
-		<CheckBox
-			className={`${rest.tablekey}`}
-			indeterminate={indeterminate}
-			onClick={handleClick}
-			{...rest}
-			label={''}
-		/>
-	);
-});
+		/***************************************************************************
+		 * seob,roberto - checkbox click 이벤트 처리함수
+		 ***************************************************************************/
+		const handleClick = useCallback(
+			(e) => {
+				console.log('handle Cilick');
+				if (disabled) return;
+				setAllCheck(true);
+				setChildCheck(true);
+				e.stopPropagation();
+				if (!e.shiftKey) {
+					rowClickHandler(e);
+				}
+				if (e.shiftKey) {
+					shiftClickHandler(e);
+				} else {
+					// if (!e.target.isBetween) {
+					// 	checkboxes.forEach((checkbox) => {
+					// 		checkbox.title !==
+					// 			'Toggle All Current Page Rows Selected' &&
+					// 			checkbox.checked &&
+					// 			checkbox.click();
+					// 	});
+					// 	e.target.click();
+					// }
+				}
+			},
+			[
+				disabled,
+				rowClickHandler,
+				setAllCheck,
+				setChildCheck,
+				shiftClickHandler,
+			],
+		);
+		return (
+			<CheckBox
+				checked={allCheck}
+				className={`${rest.tablekey}`}
+				indeterminate={indeterminate}
+				onClick={handleClick}
+				{...rest}
+				disabled={disabled}
+				label={''}
+			/>
+		);
+	},
+);
 
 TableCheckbox.propTypes = {
 	indeterminate: PropTypes.bool,
+	disabled: PropTypes.bool,
+	allCheck: PropTypes.bool,
+	setAllCheck: PropTypes.func,
+	childCheck: PropTypes.bool,
+	setChildCheck: PropTypes.func,
 };
 
 TableCheckbox.displayName = 'TableCheckbox';

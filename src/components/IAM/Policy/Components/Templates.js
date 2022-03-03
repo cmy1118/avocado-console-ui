@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import UserAuthTemplate from './Templates/UserAuthTemplate';
 import UserAccountProcessTemplate from './Templates/UserAccountProcessTemplate';
 import UserAccountPatternTemplate from './Templates/UserAccountPatternTemplate';
+import UserManagement from './Templets/UserManagement';
 
 const Container = styled.div`
 	display: flex;
@@ -79,7 +80,7 @@ const templateResponse = [
 	{
 		title: contents.templates.userManagement,
 		description: 'userManagement description',
-		component: '',
+		component: UserManagement,
 	},
 	{
 		title: contents.templates.policyManagement,
