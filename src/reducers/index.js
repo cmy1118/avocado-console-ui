@@ -3,6 +3,8 @@ import storageSession from 'redux-persist/lib/storage/session';
 import createFilter from 'redux-persist-transform-filter';
 import {persistReducer} from 'redux-persist';
 
+import IAM_RULE_TEMPLATE from './api/IAM/Rule/template';
+
 import IAM_USER from './api/IAM/User/User/user';
 import IAM_USER_GROUP_TYPE from './api/IAM/User/Group/groupType';
 import IAM_USER_GROUP from './api/IAM/User/Group/group';
@@ -82,6 +84,11 @@ const rootReducer = combineReducers({
 	[PAGINATION.name]: PAGINATION.reducer,
 	[IAM_CLIENT.name]: IAM_CLIENT.reducer,
 	[AUTH.name]: AUTH.reducer,
+	/******************************************/
+	/* ambacc244 : IAM - Rule reducers
+    /******************************************/
+	[IAM_RULE_TEMPLATE.name]: IAM_RULE_TEMPLATE.reducer,
+	/******************************************/
 	/******************************************/
 	/* seob : IAM - User reducers
     /******************************************/
