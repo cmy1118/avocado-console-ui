@@ -171,6 +171,69 @@ const PolicySpace = () => {
 		// }
 	}, []);
 
+	const subComponentHandler = ({row, setData, setColumns, setLoading}) => {
+		console.log(row);
+
+		setLoading(false);
+
+		setData([
+			{
+				id: '테스트1',
+				a: '테스트1',
+				b: '테스트1',
+				c: '테스트1',
+				d: '테스트1',
+				e: '테스트1',
+				f: '테스트1',
+			},
+			{
+				id: '테스트2',
+				a: '테스트2',
+				b: '테스트2',
+				c: '테스트2',
+				d: '테스트2',
+				e: '테스트2',
+				f: '테스트2',
+			},
+			{
+				id: '테스트3',
+				a: '테스트3',
+				b: '테스트3',
+				c: '테스트3',
+				d: '테스트3',
+				e: '테스트3',
+				f: '테스트3',
+			},
+		]);
+		setColumns([
+			// callExpander(),
+			{
+				Header: 'AAAAAAAA',
+				accessor: 'a',
+			},
+			{
+				Header: 'BBBBBBBB',
+				accessor: 'b',
+			},
+			{
+				Header: 'CCCCCCCC',
+				accessor: 'c',
+			},
+			{
+				Header: 'DDDDDDDD',
+				accessor: 'd',
+			},
+			{
+				Header: 'EEEEEEEEEE',
+				accessor: 'e',
+			},
+			{
+				Header: 'FFFFFFFFF',
+				accessor: 'f',
+			},
+		]);
+	};
+
 	useEffect(() => {
 		getPolicyApi(search);
 	}, [getPolicyApi, page, search]);
@@ -208,6 +271,7 @@ const PolicySpace = () => {
 				isSearchFilterable
 				isColumnFilterable
 				setSearch={setSearch}
+				subComponentHandler={subComponentHandler}
 			/>
 		</IamContainer>
 	);

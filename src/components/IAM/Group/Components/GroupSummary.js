@@ -101,7 +101,7 @@ const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 			</SummaryTableTitle>
 
 			<Table
-				mode={'readOnly'}
+				readOnly
 				data={userData}
 				tableKey={tableKeys.groups.summary.user}
 				columns={tableColumns[tableKeys.groups.summary.user]}
@@ -111,7 +111,7 @@ const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 				권한 : {roleData.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				readOnly
 				data={roleData}
 				tableKey={tableKeys.groups.summary.permission}
 				columns={tableColumns[tableKeys.groups.summary.permission]}
@@ -121,7 +121,7 @@ const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 				태그 : {tagData.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				readOnly
 				data={tagData}
 				tableKey={tableKeys.groups.summary.tag}
 				columns={tableColumns[tableKeys.groups.summary.tag]}

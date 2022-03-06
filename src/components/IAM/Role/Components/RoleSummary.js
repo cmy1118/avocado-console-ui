@@ -335,7 +335,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 			</SummaryTableTitle>
 
 			<Table
-				mode={'readOnly'}
+				readOnly
 				data={permissionData}
 				tableKey={tableKeys.roles.summary.permission}
 				columns={tableColumns[tableKeys.roles.summary.permission]}
@@ -345,7 +345,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				이 역할의 사용자 : {user?.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				readOnly
 				data={userData}
 				tableKey={tableKeys.roles.summary.user}
 				columns={tableColumns[tableKeys.roles.summary.user]}
@@ -359,7 +359,7 @@ const RoleSummary = ({Id, param, setIsOpened, isSummaryOpened}) => {
 				이 역할의 사용자 그룹 : {groupData?.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				readOnly
 				data={groupData}
 				tableKey={tableKeys.roles.summary.group}
 				columns={tableColumns[tableKeys.roles.summary.group]}

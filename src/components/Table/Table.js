@@ -1,12 +1,18 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {arrowDownIcon, arrowUpIcon, dragIndicator} from '../../icons/icons';
+import {
+	arrowDownIcon,
+	arrowUpIcon,
+	dragIndicator,
+	keyboardArrowDownIcon,
+	NavigateNextIcon,
+} from '../../icons/icons';
 import {Icon} from '../../styles/components/icons';
 import {RowDiv} from '../../styles/components/style';
 import {Draggable, Droppable} from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import * as _ from 'lodash';
-import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
+import {DRAGGABLE_KEY, INNER_TABLE} from '../../Constants/Table/keys';
 import InnerTableContainer from './InnerTableContainer';
 import TableOptionsBar from './TableOptionsBar';
 import {
@@ -20,13 +26,88 @@ import {
 } from 'react-table';
 import TableCheckbox from './Options/TableCheckbox';
 
+const Styles = styled.div`
+	// padding: 1rem;
+
+	table {
+		width: 100%;
+		// table-layout: fixed;
+
+		// overflow-x: scroll;
+		// display: grid;
+		// grid-template-rows: 40px;
+
+		box-sizing: border-box;
+		border-left: ${(props) => props.inner && '3px solid #4ca6a8'};
+		height: ${(props) => (props.isDraggable ? '240px' : '100%')};
+		border-spacing: 0;
+		border-bottom: ${(props) =>
+			props.readOnly === 'inner' ? 'none' : '1px solid #e3e5e5'};
+		border-left: ${(props) =>
+			props.readOnly === 'inner' && '2px solid #4ca6a8'};
+		font-size: 13px;
+		font-weight: normal;
+		font-stretch: normal;
+		font-style: normal;
+		line-height: normal;
+		letter-spacing: 0.13px;
+		text-align: left;
+		color: #212121;
+
+		thead {
+			color: #0a6f71;
+			height: 40px;
+			background: #f8f9fa;
+			// border-bottom: 1px solid #e3e5e5;
+			font-weight: 500;
+		}
+		tbody {
+			border-bottom: 1px solid #e3e5e5;
+		}
+
+		tr {
+			:last-child {
+				td {
+					border-bottom: 0;
+				}
+			}
+			border-bottom: 1px solid #e3e5e5;
+		}
+
+		th,
+		td {
+			text-align: left;
+			box-sizing: border-box;
+			// margin: 0;
+			// padding: 0;
+			:last-child {
+				border-right: 0;
+			}
+			height: 40px;
+		}
+
+		.selected {
+			background: rgba(228, 243, 244, 0.7);
+		}
+		.expanded {
+			padding: 0px;
+			margin: 0px 16px;
+		}
+		.hello {
+			padding: 0 !important;
+			width: 40px !important;
+			text-align: center;
+		}
+	}
+`;
+
 const TableStyledContainer = styled.div`
-	margin: ${(props) => (props.mode === 'inner' ? '0px' : ' 0px 16px')};
+	margin: ${(props) => (props.readOnly ? '0px' : ' 0px 16px')};
 	display: flex;
 	min-width: 380px;
-	min-height: ${(props) => props.mode === 'normal' && '240px'};
-	height: ${(props) => props.mode === 'normal' && '0'};
-	flex: ${(props) => props.mode === 'normal' && '1 1 auto'};
+	min-height: ${(props) => !props.readOnly && '240px'};
+	height: ${(props) => !props.readOnly && '0'};
+	flex: ${(props) => !props.readOnly && '1 1 auto'};
 
 	.table {
 		width: 100%;
@@ -36,9 +117,9 @@ const TableStyledContainer = styled.div`
 		grid-template-rows: 40px;
 		border-spacing: 0;
 		border-bottom: ${(props) =>
-			props.mode === 'inner' ? 'none' : '1px solid #e3e5e5'};
+			props.readOnly === 'inner' ? 'none' : '1px solid #e3e5e5'};
 		border-left: ${(props) =>
-			props.mode === 'inner' && '2px solid #4ca6a8'};
+			props.readOnly === 'inner' && '2px solid #4ca6a8'};
 		font-size: 13px;
 		font-weight: normal;
 		font-stretch: normal;
@@ -59,43 +140,42 @@ const TableStyledContainer = styled.div`
 			}
 			.th:first-child,
 			.td:first-of-type {
-				margin-left: ${(props) => props.mode === 'inner' && '80px'};
+				margin-left: ${(props) => props.readOnly === 'inner' && '80px'};
 			}
 		}
 
 		.head {
-			color: ${(props) => props.mode === 'inner' && '#0a6f71'};
+			color: ${(props) => props.readOnly === 'inner' && '#0a6f71'};
 			height: 40px;
 			background: #f8f9fa;
 			border-top: ${(props) =>
-				props.mode === 'inner' ? 'none' : '1px solid #e3e5e5'};
+				props.readOnly === 'inner' ? 'none' : '1px solid #e3e5e5'};
 			border-bottom: 1px solid #e3e5e5;
 			font-weight: 500;
 		}
 		.body {
 			background: ${(props) =>
-				props.mode === 'inner' ? '#f8f9fa' : '#fff'};
+				props.readOnly === 'inner' ? '#f8f9fa' : '#fff'};
 			border-bottom: 1px solid #e3e5e5;
 		}
 		.odd {
-			background: ${(props) => props.mode === 'readOnly' && '#f8f9fa'};
+			background: ${(props) => props.readOnly && '#f8f9fa'};
 		}
 
 		.selected {
 			background: rgba(228, 243, 244, 0.7);
 		}
-
 		.th,
 		.td {
 			display: flex;
 			margin-right: 12px;
-			height: ${(props) => (props.mode === 'normal' ? '40px' : '')};
+			height: ${(props) => (!props.readOnly ? '40px' : '')};
 			min-height: 40px;
 			white-space: nowrap;
 			text-align: left;
 			text-overflow: ellipsis;
 			:first-child {
-				padding-left: ${(props) => props.mode === 'readOnly' && '16px'};
+				padding-left: ${(props) => props.readOnly && '16px'};
 			}
 		}
 	}
@@ -107,9 +187,9 @@ const Tds = styled(RowDiv)`
 `;
 
 const _Container = styled.div`
-	display: flex;
-	flex-direction: column;
-	flex: 1 1 auto;
+	// display: flex;
+	// flex-direction: column;
+	// flex: 1 1 auto;
 	// width: 0;
 `;
 
@@ -120,6 +200,94 @@ const BodyContainer = styled.div`
 	min-height: 40px;
 `;
 
+// This could be inlined into SubRowAsync, this this lets you reuse it across tables
+function SubRows({
+	row,
+	rowProps,
+	visibleColumns,
+	data,
+	columns,
+	loading,
+	tableKey,
+}) {
+	if (loading) {
+		return (
+			<tr>
+				<td />
+				<td colSpan={visibleColumns?.length - 1}>Loading...</td>
+			</tr>
+		);
+	}
+
+	// error handling here :)
+
+	return (
+		<Table
+			data={data}
+			columns={columns}
+			tableKey={tableKey}
+			readOnly
+			inner
+		/>
+	);
+}
+
+SubRows.propTypes = {
+	row: PropTypes.object,
+	rowProps: PropTypes.object,
+	visibleColumns: PropTypes.object,
+	data: PropTypes.array,
+	columns: PropTypes.array,
+	loading: PropTypes.bool,
+	tableKey: PropTypes.string,
+};
+
+function SubRowAsync({
+	row,
+	rowProps,
+	visibleColumns,
+	subComponentHandler,
+	tableKey,
+}) {
+	const [loading, setLoading] = useState(true);
+	const [data, setData] = useState([]);
+	const [columns, setColumns] = useState([]);
+
+	// row별 data, column을 생성한다.
+
+	useEffect(() => {
+		if (row.isExpanded) {
+			subComponentHandler({row, setData, setColumns, setLoading});
+		} else {
+			setData([]);
+			setColumns([]);
+			setLoading(true);
+		}
+	}, [row, subComponentHandler]);
+
+	return (
+		<SubRows
+			row={row}
+			rowProps={rowProps}
+			visibleColumns={visibleColumns}
+			data={data}
+			columns={columns}
+			loading={loading}
+			tableKey={tableKey}
+		/>
+	);
+}
+
+SubRowAsync.propTypes = {
+	row: PropTypes.object,
+	rowProps: PropTypes.object,
+	visibleColumns: PropTypes.object,
+	subComponentHandler: PropTypes.func,
+	tableKey: PropTypes.string,
+};
+
+const sortArr = ['expander', 'selection'];
+
 const Table = ({
 	data,
 	columns,
@@ -127,77 +295,95 @@ const Table = ({
 	setData,
 	setSelect,
 	isDraggable,
-	mode = 'normal',
+	// mode = 'normal',
+	readOnly = false,
+	isSortable = false,
 	isPaginable = false,
 	isSearchable = false,
 	isSearchFilterable = false,
 	isColumnFilterable = false,
 	setSearch,
+	subComponentHandler,
+	inner = false,
 }) => {
 	const [skipPageReset, setSkipPageReset] = useState(false);
 
-	const getColumnWidth = (data, accessor, headerText, id, columnWidth) => {
-		const cellLength = Math.max(
-			...data.map((row) => {
-				let value = '';
-				if (typeof accessor === 'string') {
-					value = _.get(row, accessor);
-				} else {
-					value = accessor(row);
-					if (typeof value === 'string' && value.includes('\n')) {
-						let maxValue = '';
-						const temp = value;
-						temp.split('\n').forEach((v) => {
-							if (v.length > maxValue.length) maxValue = v;
-						});
-						value = maxValue;
-					}
-					if (typeof value === 'object' && id === 'grantUser') {
-						value = `${row.grantUser.name}(${row.grantUser.id})`;
-					}
-				}
+	// Create a function that will render our row sub components
+	const renderRowSubComponent = useCallback(
+		({row, rowProps, visibleColumns}) => (
+			<SubRowAsync
+				row={row}
+				rowProps={rowProps}
+				visibleColumns={visibleColumns}
+				subComponentHandler={subComponentHandler}
+				tableKey={tableKey}
+			/>
+		),
+		[subComponentHandler, tableKey],
+	);
 
-				if (typeof value === 'number') return value.toString().length;
-				if (
-					isNaN(
-						(value || '').length -
-							Math.ceil(
-								value
-									?.toString()
-									.split('')
-									.map((char) => char)
-									.filter((v) => v.match(/[a-z0-9]/i))
-									.length / 2,
-							),
-					)
-				)
-					return 1;
-				else {
-					return (
-						(value || '').length -
-						Math.ceil(
-							value
-								?.toString()
-								.split('')
-								.map((char) => char)
-								.filter((v) => v.match(/[a-z0-9]/i)).length / 2,
-						)
-					);
-				}
-			}),
-			headerText.length,
-		);
-
-		const magicSpacing = 10;
-
-		return columnWidth
-			? `${columnWidth}px`
-			: cellLength * magicSpacing + 24 + 'px';
-	};
+	// const getColumnWidth = (data, accessor, headerText, id, columnWidth) => {
+	// 	const cellLength = Math.max(
+	// 		...data.map((row) => {
+	// 			let value = '';
+	// 			if (typeof accessor === 'string') {
+	// 				value = _.get(row, accessor);
+	// 			} else {
+	// 				value = accessor(row);
+	// 				if (typeof value === 'string' && value.includes('\n')) {
+	// 					let maxValue = '';
+	// 					const temp = value;
+	// 					temp.split('\n').forEach((v) => {
+	// 						if (v.length > maxValue.length) maxValue = v;
+	// 					});
+	// 					value = maxValue;
+	// 				}
+	// 				if (typeof value === 'object' && id === 'grantUser') {
+	// 					value = `${row.grantUser.name}(${row.grantUser.id})`;
+	// 				}
+	// 			}
+	//
+	// 			if (typeof value === 'number') return value.toString().length;
+	// 			if (
+	// 				isNaN(
+	// 					(value || '').length -
+	// 						Math.ceil(
+	// 							value
+	// 								?.toString()
+	// 								.split('')
+	// 								.map((char) => char)
+	// 								.filter((v) => v.match(/[a-z0-9]/i))
+	// 								.length / 2,
+	// 						),
+	// 				)
+	// 			)
+	// 				return 1;
+	// 			else {
+	// 				return (
+	// 					(value || '').length -
+	// 					Math.ceil(
+	// 						value
+	// 							?.toString()
+	// 							.split('')
+	// 							.map((char) => char)
+	// 							.filter((v) => v.match(/[a-z0-9]/i)).length / 2,
+	// 					)
+	// 				);
+	// 			}
+	// 		}),
+	// 		headerText.length,
+	// 	);
+	//
+	// 	const magicSpacing = 10;
+	//
+	// 	return columnWidth
+	// 		? `${columnWidth}px`
+	// 		: cellLength * magicSpacing + 24 + 'px';
+	// };
 
 	const updateMyData = (rowIndex, columnId, value) => {
 		// We also turn on the flag to not reset the page
-		if (mode === 'readOnly' || mode === 'inner') return;
+		if (readOnly) return;
 		setSkipPageReset(true);
 		setData((old) =>
 			old.map((row, index) => {
@@ -251,6 +437,7 @@ const Table = ({
 	);
 
 	const getRowId = useCallback((v) => {
+		if (!v) return;
 		if (v.userUid) return v.userUid;
 		return v.id;
 	}, []);
@@ -273,6 +460,7 @@ const Table = ({
 		getToggleHideAllColumnsProps,
 		setHiddenColumns,
 		setGlobalFilter,
+		visibleColumns,
 		state: {pageIndex, selectedRowIds, pageSize, filters, expanded},
 	} = useTable(
 		{
@@ -292,7 +480,30 @@ const Table = ({
 		usePagination,
 		useRowSelect,
 		(hooks) => {
-			mode === 'normal' &&
+			subComponentHandler &&
+				hooks.visibleColumns.push((columns) => [
+					{
+						id: 'expander', // It needs an ID
+						// Make an expander cell
+						Header: () => null, // No header
+						Cell: function Component(cell) {
+							// Use Cell to render an expander for each row.
+							// We can use the getToggleRowExpandedProps prop-getter
+							// to build the expander.
+							return (
+								<span {...cell.row.getToggleRowExpandedProps()}>
+									{cell.row.isExpanded
+										? keyboardArrowDownIcon
+										: NavigateNextIcon}
+								</span>
+							);
+						},
+						// width: 40,
+						// disableChangeVisible: true,
+					},
+					...columns,
+				]);
+			!readOnly &&
 				hooks.visibleColumns.push((columns) => [
 					{
 						id: 'selection',
@@ -311,8 +522,8 @@ const Table = ({
 								tablekey={tableKey}
 							/>
 						),
-						width: 40,
-						disableChangeVisible: true,
+						// width: 40,
+						// disableChangeVisible: true,
 					},
 					...columns,
 				]);
@@ -425,7 +636,7 @@ const Table = ({
 					setSearch={setSearch}
 				/>
 			)}
-			<TableStyledContainer mode={mode}>
+			<Styles readOnly={readOnly} inner={inner}>
 				<Droppable
 					droppableId={tableKey}
 					mode={'Virtual'}
@@ -455,69 +666,72 @@ const Table = ({
 					}}
 				>
 					{(provided) => (
-						<div
+						<table
 							className={`${tableKey} table`}
 							{...getTableProps()}
 							ref={provided.innerRef}
 							{...provided.droppableProps}
 						>
-							{headerGroups.map((headerGroup, i) => (
-								<div
-									className={'tr head'}
-									key={i}
-									{...headerGroup.getHeaderGroupProps()}
-								>
-									{headerGroup.headers.map((column, i) => {
-										return (
-											<Tds
-												className={
-													column.id === 'selection'
-														? 'th table-check-box'
-														: 'th'
-												}
-												width={
-													column.id === 'selection'
-														? '40px'
-														: getColumnWidth(
-																page.map(
-																	(v) =>
-																		v.original,
-																),
-																column.accessor,
-																column.Header,
+							<thead>
+								{headerGroups.map((headerGroup, i) => (
+									<tr
+										// className={'tr head'}
+										key={i}
+										{...headerGroup.getHeaderGroupProps()}
+									>
+										{headerGroup.headers.map(
+											(column, i) => {
+												return (
+													<td
+														key={i}
+														{...column.getHeaderProps(
+															isSortable &&
+																column.getSortByToggleProps(),
+														)}
+														className={
+															sortArr.includes(
 																column.id,
-																column.width,
-														  )
-												}
-												key={i}
-												alignItems={'center'}
-												{...column.getHeaderProps(
-													mode === 'normal' &&
-														column.getSortByToggleProps(),
-												)}
-											>
-												{column.render('Header')}
-												{mode === 'normal' &&
-													column.id !==
-														'selection' && (
-														<Icon margin={'0px'}>
-															{column.isSortedDesc ===
-																'ture' ||
-															column.isSortedDesc ===
-																undefined
-																? arrowDownIcon
-																: arrowUpIcon}
-														</Icon>
-													)}
-											</Tds>
-										);
-									})}
-								</div>
-							))}
-
-							<BodyContainer>
+															)
+																? 'hello'
+																: ''
+														}
+														width={column.width}
+													>
+														<span>
+															{column.render(
+																'Header',
+															)}
+														</span>
+														{isSortable &&
+															!sortArr.includes(
+																column.id,
+															) && (
+																<Icon
+																	margin={
+																		'0px'
+																	}
+																>
+																	{column.isSortedDesc ===
+																		'ture' ||
+																	column.isSortedDesc ===
+																		undefined
+																		? arrowDownIcon
+																		: arrowUpIcon}
+																</Icon>
+															)}
+													</td>
+												);
+											},
+										)}
+									</tr>
+								))}
+							</thead>
+							<tbody>
+								{/*<BodyContainer>*/}
 								{page.map((row, index) => {
 									prepareRow(row);
+									const rowProps = row.getRowProps();
+
 									return (
 										<Draggable
 											key={row.original[DRAGGABLE_KEY]}
@@ -530,33 +744,42 @@ const Table = ({
 											{(provided, snapshot) => {
 												return (
 													<>
-														<div
+														<tr
 															ref={
 																provided.innerRef
 															}
 															{...provided.dragHandleProps}
 															{...provided.draggableProps}
-															style={getItemStyle(
-																snapshot.isDragging,
-																provided
-																	.draggableProps
-																	.style,
-															)}
+															// style={getItemStyle(
+															// 	snapshot.isDragging,
+															// 	provided
+															// 		.draggableProps
+															// 		.style,
+															// )}
 															onMouseDown={
 																onMouseDownItem
 															}
-															className={`tr body ${
-																Object.keys(
-																	selectedRowIds,
-																).includes(
-																	row
-																		.original[
-																		DRAGGABLE_KEY
-																	],
-																) && 'selected'
+															className={
+																index % 2 === 0
+																	? Object.keys(
+																			selectedRowIds,
+																	  ).includes(
+																			row
+																				.original
+																				.id,
+																	  )
+																		? 'selected even'
+																		: 'even'
+																	: Object.keys(
+																			selectedRowIds,
+																	  ).includes(
+																			row
+																				.original
+																				.id,
+																	  )
+																	? 'selected odd'
+																	: 'odd'
 															}
-													 ${index % 2 === 0 ? 'even' : 'odd'}
-													`}
 															id={
 																row.original[
 																	DRAGGABLE_KEY
@@ -571,41 +794,28 @@ const Table = ({
 															{row.cells.map(
 																(cell, i) => {
 																	return (
-																		<Tds
-																			className={
-																				cell
-																					.column
-																					.id ===
-																				'selection'
-																					? 'td table-check-box'
-																					: 'td'
-																			}
+																		<td
+																			// className={
+																			// 	cell
+																			// 		.column
+																			// 		.id ===
+																			// 	'selection'
+																			// 		? 'td table-check-box'
+																			// 		: 'td'
+																			// }
 																			width={
 																				cell
 																					.column
-																					.id ===
-																				'selection'
-																					? '40px'
-																					: getColumnWidth(
-																							page.map(
-																								(
-																									v,
-																								) =>
-																									v.original,
-																							),
-																							cell
-																								.column
-																								.accessor,
-																							cell
-																								.column
-																								.Header,
-																							cell
-																								.column
-																								.id,
-																							cell
-																								.column
-																								.width,
-																					  )
+																					.width
+																			}
+																			className={
+																				sortArr.includes(
+																					cell
+																						.column
+																						.id,
+																				)
+																					? 'hello'
+																					: ''
 																			}
 																			key={
 																				i
@@ -615,43 +825,44 @@ const Table = ({
 																			{cell.render(
 																				'Cell',
 																			)}
-																		</Tds>
+																		</td>
 																	);
 																},
 															)}
-														</div>
-														{expanded &&
-															Object.keys(
-																expanded,
-															).includes(
-																row.original[
-																	DRAGGABLE_KEY
-																],
-															) && (
-																<InnerTableContainer
-																	policyId={
-																		row
-																			.original
-																			.id
+														</tr>
+
+														{row.isExpanded ? (
+															<tr
+																className={
+																	'expanded'
+																}
+															>
+																<td
+																	className={
+																		'expanded'
 																	}
-																	attributes={
-																		row
-																			.original
-																			.attributes
+																	colSpan={
+																		visibleColumns.length
 																	}
-																/>
-															)}
+																>
+																	{renderRowSubComponent(
+																		{row},
+																	)}
+																</td>
+															</tr>
+														) : null}
 													</>
 												);
 											}}
 										</Draggable>
 									);
 								})}
-							</BodyContainer>
-						</div>
+								{/*</BodyContainer>*/}
+							</tbody>
+						</table>
 					)}
 				</Droppable>
-			</TableStyledContainer>
+			</Styles>
 		</_Container>
 	);
 };
@@ -679,8 +890,11 @@ Table.propTypes = {
 	isSearchable: PropTypes.bool,
 	isColumnFilterable: PropTypes.bool,
 	isSearchFilterable: PropTypes.bool,
-	mode: PropTypes.oneOf(['normal', 'readOnly', 'inner']),
+	// mode: PropTypes.oneOf(['normal', 'readOnly', 'inner']),
+	readOnly: PropTypes.bool,
 	isDraggable: PropTypes.bool,
+	inner: PropTypes.bool,
+	subComponentHandler: PropTypes.func,
 };
 
 export default Table;

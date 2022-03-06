@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import TemplateElement from '../TemplateElement';
 import TemplateElementContainer from '../TemplateElementContainer';
 import useRadio from '../../../../../hooks/useRadio';
-import {DRAGGABLE_KEY, INNER_TABLE} from '../../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY} from '../../../../../Constants/Table/keys';
 import Table from '../../../../Table/Table';
 import TableComboBox from '../../../../Table/ColumnCells/TableComboBox';
 import TableTextBox from '../../../../Table/ColumnCells/TableTextBox';
@@ -70,95 +70,109 @@ const UserSessionTemplate = () => {
 
 	const [idleTime, idleTimeTextBox, setIdleTime] = useTextBox({
 		name: 'idleTime',
+		disabled: screenSaverValue === 'lock',
 	});
 
 	const [innerTableDatas, setInnerTableDatas] = useState(null);
 	const [innerTableColumns, setInnerTableColumns] = useState(null);
 
+	const handleOpenSubRow = ({row, isExpanded}) => {
+		console.log(row);
+		console.log(isExpanded);
+		setData((prev) =>
+			prev.map((v) => {
+				if (v.id === row.id && !isExpanded) {
+					return {
+						...v,
+						subRows: [],
+					};
+				} else if (v.id === row.id && isExpanded) {
+					delete v.subRows;
+					return {
+						...v,
+					};
+				}
+			}),
+		);
+	};
+
 	const [data, setData] = useState([
 		{
-			id: 1,
-			isUsed: {
-				// initialKey: 'use',
-				options: [
-					{label: '사용 함', key: 'use'},
-					{label: '사용 안함', key: 'not use'},
-				],
-			},
+			id: 'data0',
+			isUsed: 'use',
 			application: 'Management Console',
 			MaintenanceTime: '14400',
 			PreservationTime: '0',
 			timeout: 'timeout',
 
-			[DRAGGABLE_KEY]: 'sessionTemplate1',
-			// [INNER_TABLE]: {
-			// 	data: innerTableDatas,
-			// 	column: innerTableColumns,
-			// 	onOpen: (origin) => {
-			// 		console.log(origin);
-			// 	},
-			// },
+			[DRAGGABLE_KEY]: 'data0',
+
 			// inner table key가 있으면, 버튼이 생기고, 버튼을 클릭했을 때, 해당 row값을 읽어와 처리하는 함수가 필요.
 		},
 		{
-			id: 2,
-			isUsed: {
-				initialKey: 'not use',
-				options: [
-					{label: '사용 함', key: 'use'},
-					{label: '사용 안함', key: 'not use'},
-				],
-			},
+			id: 'data1',
+			isUsed: 'not use',
 			application: 'Web Terminal',
 			MaintenanceTime: '3600',
 			PreservationTime: '0',
 			timeout: 'timeout',
-			[DRAGGABLE_KEY]: 'sessionTemplate2',
+			[DRAGGABLE_KEY]: 'data1',
 		},
 	]);
 
-	const columns = [
-		{
-			Header: '사용여부',
-			accessor: 'isUsed',
-			Cell: function Component(cell) {
-				return <TableComboBox cell={cell} setData={setData} />;
+	const columns = useMemo(
+		() => [
+			{
+				Header: '사용여부',
+				accessor: 'isUsed',
+				Cell: function Component(cell) {
+					return (
+						<TableComboBox
+							cell={cell}
+							options={[
+								{label: '사용 함', key: 'use'},
+								{label: '사용 안함', key: 'not use'},
+							]}
+							setData={setData}
+						/>
+					);
+				},
+				width: 200,
 			},
-			width: 200,
-		},
-		{
-			Header: '어플리케이션',
-			accessor: 'application', //has to be changed
-		},
-		{
-			Header: '세션 유지시간(초)',
-			accessor: 'MaintenanceTime', //has to be changed
-			Cell: function Component(cell) {
-				return <TableTextBox cell={cell} />;
+			{
+				Header: '어플리케이션',
+				accessor: 'application', //has to be changed
 			},
-		},
-		{
-			Header: '연결 보존 시간(초)',
-			accessor: 'PreservationTime', //has to be changed
-			Cell: function Component(cell) {
-				return <TableTextBox cell={cell} />;
+			{
+				Header: '세션 유지시간(초)',
+				accessor: 'MaintenanceTime', //has to be changed
+				Cell: function Component(cell) {
+					return <TableTextBox cell={cell} />;
+				},
 			},
-		},
-		{
-			Header: '타임아웃 처리',
-			accessor: 'timeout', //has to be changed
-		},
-	];
-
-	const sessionData = useMemo(() => data, [data]);
+			{
+				Header: '연결 보존 시간(초)',
+				accessor: 'PreservationTime', //has to be changed
+				Cell: function Component(cell) {
+					return <TableTextBox cell={cell} />;
+				},
+			},
+			{
+				Header: '타임아웃 처리',
+				accessor: 'timeout', //has to be changed
+			},
+		],
+		[],
+	);
 
 	// 수정된 내용 확인용 입니다.
 	useEffect(() => {
+		console.log(data);
 		console.log('screenSaverValue => ', screenSaverValue);
 		console.log('dormantValue => ', dormantValue);
 		console.log('unConnectedPeriod => ', unConnectedPeriod);
 		console.log('idleTime => ', idleTime);
-	}, [dormantValue, idleTime, screenSaverValue, unConnectedPeriod]);
+	}, [data, dormantValue, idleTime, screenSaverValue, unConnectedPeriod]);
 
 	// 초기값 세팅
 	useEffect(() => {
@@ -173,15 +187,9 @@ const UserSessionTemplate = () => {
 			<TemplateElementContainer
 				title={contents.sessionTimeout.title}
 				description={contents.sessionTimeout.description}
-				child={
-					<Table
-						isDraggable={false}
-						data={sessionData}
-						setData={setData}
-						tableKey={'userSessionTemplate'}
-						columns={columns}
-					/>
-				}
+				render={() => (
+					<Table tableKey={'session'} data={data} columns={columns} />
+				)}
 			/>
 			<TemplateElementContainer
 				title={contents.dormant.title}

@@ -469,7 +469,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 				{readOnlyData[tableKeys.users.add.groups.exclude]?.length}
 			</AddPageDialogBoxTitle>
 			<Table
-				mode={'readOnly'}
+				readOnly
 				tableKey={tableKeys.users.add.groups.exclude}
 				data={groupData}
 				columns={tableColumns[tableKeys.users.add.groups.exclude]}
@@ -477,7 +477,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 
 			<AddPageDialogBoxTitle>권한 : {''}</AddPageDialogBoxTitle>
 			<Table
-				mode={'readOnly'}
+				readOnly
 				tableKey={tableKeys.users.add.permissions}
 				data={roleData}
 				columns={tableColumns[tableKeys.users.add.permissions]}
@@ -487,7 +487,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 				태그 : {readOnlyData[tableKeys.users.add.tag].length}
 			</AddPageDialogBoxTitle>
 			<Table
-				mode={'readOnly'}
+				readOnly
 				tableKey={tableKeys.users.add.tag}
 				data={tagData}
 				columns={tableColumns[tableKeys.users.add.tag]}

@@ -332,7 +332,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				그룹 : {groupData.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				readOnly
 				data={groupData}
 				tableKey={tableKeys.users.summary.group}
 				columns={tableColumns[tableKeys.users.summary.group]}
@@ -342,7 +342,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				권한 : {roleData.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				readOnly
 				data={roleData}
 				tableKey={tableKeys.users.summary.permission}
 				columns={tableColumns[tableKeys.users.summary.permission]}
@@ -352,7 +352,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 				태그 : {tagData.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				readOnly
 				data={tagData}
 				tableKey={tableKeys.users.summary.tag}
 				columns={tableColumns[tableKeys.users.summary.tag]}
