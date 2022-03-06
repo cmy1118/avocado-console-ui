@@ -72,32 +72,52 @@ const constants = {
 
 const UserManagement = () => {
 	const dispatch = useDispatch();
+	// const [dataLists,setDataLists] =useState([]);
 
-	const dataLists = [
-		{id : 1, data : "create"},
-		{id : 2, data : "read"},
-		{id : 3, data : "update"},
-		{id : 4, data : "delete"},
+	// const dataLists = [
+	// 	{id : 1, data : "create"},
+	// 	{id : 2, data : "read"},
+	// 	{id : 3, data : "update"},
+	// 	{id : 4, data : "delete"},
+	// ]
+
+	const dataLists =[
+		{ resource:"user",data:[{action:'create',data:2},{action:'delete',data:3}]},
+		{ resource:"group" ,data:[{id:'create',data:false},{id:'update',data:false},{id:'read',data:6}]},
+		{ resource:"member" ,data:[{id:'create',data:4},{id:'update',data:false},{id:'read',data:6}]},
+		{ resource:"group-type" ,data:[{id:'create',data:4},{id:'update',data:false},{id:'read',data:6}]},
+		{ resource:"group-tag" ,data:[{id:'create',data:4},{id:'update',data:false},{id:'read',data:6}]}
 	]
 
 	//렌더링시 권한 템플릿 상세 정보를 조회
-	useEffect(() => {
-		const res = dispatch(
-			IAM_POLICY_ACTION_TEMPLATE.asyncAction.findAllAction({
-				range: 'elements=0-50',
-			}),
-		).unwrap()
-			.then(res =>{
-				console.log('권한 템플릿 상세 정보를 조회:',res)
-			})
-	}, [dispatch]);
+	// useEffect(() => {
+	// 	const res = dispatch(
+	// 		IAM_POLICY_ACTION_TEMPLATE.asyncAction.findAllAction({
+	// 			range: 'elements=0-50',
+	// 		}),
+	// 	).unwrap()
+	// 		.then(res =>{
+	// 			console.log('권한 템플릿 상세 정보를 조회:',res);
+	// 			setDataLists(res.data);
+	//
+	// 		})
+	// }, [dispatch]);
 
 	return (
 		<div>
-		 <RowCheckbox dataLists={dataLists}/>
-		 <RowCheckbox dataLists={dataLists}/>
-		 <RowCheckbox dataLists={dataLists}/>
-		 <RowCheckbox dataLists={dataLists}/>
+			{dataLists.map((item,index)=>(
+				<RowCheckbox dataLists={item.data} key={index}/>
+			))}
+			{/*{this.state.contactData.map((contact, i) => {*/}
+			{/*	return (<ContactInfo name={contact.name}*/}
+			{/*	phone={contact.phone}*/}
+			{/*	key={i}*/}
+			{/*	/>);*/}
+			{/*})}*/}
+		 {/*<RowCheckbox dataLists={dataLists}/>*/}
+		 {/*<RowCheckbox dataLists={dataLists}/>*/}
+		 {/*<RowCheckbox dataLists={dataLists}/>*/}
+		 {/*<RowCheckbox dataLists={dataLists}/>*/}
 		</div>
 	);
 };
