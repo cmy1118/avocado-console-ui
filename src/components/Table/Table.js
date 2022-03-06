@@ -77,10 +77,11 @@ const Styles = styled.div`
 
 		th,
 		td {
+			white-space: nowrap;
 			text-align: left;
 			box-sizing: border-box;
 			// margin: 0;
-			// padding: 0;
+			padding: 0 12px;
 			:last-child {
 				border-right: 0;
 			}
