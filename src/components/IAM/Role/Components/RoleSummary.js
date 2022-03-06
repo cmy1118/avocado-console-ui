@@ -219,7 +219,7 @@ const RoleSummary = ({roleId, param, setIsOpened, isSummaryOpened}) => {
 			</SummaryTableTitle>
 
 			<Table
-				mode={'readOnly'}
+				readOnly
 				data={permissionData}
 				tableKey={tableKeys.roles.summary.permission}
 				columns={tableColumns[tableKeys.roles.summary.permission]}
@@ -230,7 +230,7 @@ const RoleSummary = ({roleId, param, setIsOpened, isSummaryOpened}) => {
 				{user?.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				readOnly
 				data={userData}
 				tableKey={tableKeys.roles.summary.user}
 				columns={tableColumns[tableKeys.roles.summary.user]}
@@ -245,7 +245,7 @@ const RoleSummary = ({roleId, param, setIsOpened, isSummaryOpened}) => {
 				{groupData?.length}
 			</SummaryTableTitle>
 			<Table
-				mode={'readOnly'}
+				readOnly
 				data={groupData}
 				tableKey={tableKeys.roles.summary.group}
 				columns={tableColumns[tableKeys.roles.summary.group]}

@@ -10,13 +10,12 @@ import useComboBox from '../../../hooks/useComboBox';
  *
  * 사용예시는 src/components/IAM/Policy/Components/Templates/UserSessionTemplate.js에 있습니다.
  ***************************************************/
-const TableComboBox = ({cell, setData}) => {
+const TableComboBox = ({cell, options, setData}) => {
 	const [prevValue, setPrevValue] = useState(null);
 	const original = cell.row.original;
-	const options = cell.row.original[cell.column.id].options;
 	const header = cell.row.original[cell.column.id]?.header;
 
-	const initialValue = cell.row.original[cell.column.id]?.initialKey;
+	const initialValue = cell.row.original[cell.column.id];
 	const [comboValue, ComboBox, setComboValue] = useComboBox({
 		...(header && {header: header}),
 		options: options,
@@ -36,10 +35,7 @@ const TableComboBox = ({cell, setData}) => {
 						? v
 						: {
 								...original,
-								[cell.column.id]: {
-									value: comboValue,
-									options: options,
-								},
+								[cell.column.id]: comboValue,
 						  },
 				),
 			);
@@ -52,6 +48,7 @@ const TableComboBox = ({cell, setData}) => {
 TableComboBox.propTypes = {
 	cell: PropTypes.object,
 	setData: PropTypes.func,
+	options: PropTypes.array,
 };
 
 export default TableComboBox;

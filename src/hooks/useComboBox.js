@@ -158,7 +158,7 @@ const useComboBox = ({header, options, width = 150}) => {
 		</_Container>
 	);
 
-	return [value === null ? '' : value.key, comboBox, setValue];
+	return [value, comboBox, setValue];
 };
 
 useComboBox.propTypes = {

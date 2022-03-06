@@ -34,7 +34,7 @@ const Content = styled.div`
  * description: 항목의 설명
  * render: 항목 (함수형)
  ***************************************************/
-const TemplateElementContainer = ({title, description, render, child}) => {
+const TemplateElementContainer = ({title, description, render}) => {
 	/**************************************************
 	 * seob - description 타입에 따라 컴포넌트를 반환하는 함수
 	 ***************************************************/
@@ -56,11 +56,7 @@ const TemplateElementContainer = ({title, description, render, child}) => {
 			<Title>{title}</Title>
 			<div>
 				{returnDescription()}
-				{render ? (
-					<Content>{render()}</Content>
-				) : (
-					<Content>{child}</Content>
-				)}
+				<Content>{render()}</Content>
 			</div>
 		</Container>
 	);
@@ -70,7 +66,6 @@ TemplateElementContainer.propTypes = {
 	title: PropTypes.string,
 	description: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 	render: PropTypes.func,
-	child: PropTypes.element,
 };
 
 export default TemplateElementContainer;

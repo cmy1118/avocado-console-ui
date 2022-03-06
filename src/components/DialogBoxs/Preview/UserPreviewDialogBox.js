@@ -22,7 +22,6 @@ import {useHistory} from 'react-router-dom';
 import IAM_USER_TAG from '../../../reducers/api/IAM/User/Tag/tags';
 import IAM_GRANT_POLICY_BY_ROLE from '../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
 import * as _ from 'lodash';
-import {TableMode} from '../../../Constants/Table/mode';
 const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
 	const dispatch = useDispatch();
@@ -470,7 +469,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 				{readOnlyData[tableKeys.users.add.groups.exclude]?.length}
 			</AddPageDialogBoxTitle>
 			<Table
-				mode={TableMode.READ_ONLY}
+				readOnly
 				tableKey={tableKeys.users.add.groups.exclude}
 				data={groupData}
 				columns={tableColumns[tableKeys.users.add.groups.exclude]}
@@ -478,7 +477,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 
 			<AddPageDialogBoxTitle>권한 : {''}</AddPageDialogBoxTitle>
 			<Table
-				mode={TableMode.READ_ONLY}
+				readOnly
 				tableKey={tableKeys.users.add.permissions}
 				data={roleData}
 				columns={tableColumns[tableKeys.users.add.permissions]}
@@ -488,7 +487,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 				태그 : {readOnlyData[tableKeys.users.add.tag].length}
 			</AddPageDialogBoxTitle>
 			<Table
-				mode={TableMode.READ_ONLY}
+				readOnly
 				tableKey={tableKeys.users.add.tag}
 				data={tagData}
 				columns={tableColumns[tableKeys.users.add.tag]}
