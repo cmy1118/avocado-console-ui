@@ -17,7 +17,6 @@ const checkboxColumn = ({
 	childCheck = true,
 	setChildCheck,
 }) => {
-	console.log('🟣checkboxColumn-childCheck:', childCheck);
 	return {
 		accessor: accessor ? accessor : 'isDefault',
 		id: id ? id : 'selection',

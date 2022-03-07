@@ -8,71 +8,20 @@ import RowCheckbox from "../../../../RecycleComponents/rowCheckbox";
 import IAM_USER from "../../../../../reducers/api/IAM/User/User/user";
 import {useDispatch} from "react-redux";
 import IAM_POLICY_ACTION_TEMPLATE from "../../../../../reducers/api/IAM/Policy/ActionTemplate/actionTemplate";
+import {ColDiv} from "../../../../../styles/components/style";
 
 const constants = {
 	main: '사용자 관리 권한',
 	title: '',
 	templates: {},
-
-	tempTableData: [
-		{
-			id: 1,
-			item: '사용자',
-			fullAuth: '전체 권한',
-			create: '생성/추가',
-			read: '조회 ',
-			update: '수정',
-			delete: '삭제/제외',
-			description: '1',
-		},
-		{
-			id: 2,
-			item: '사용자 태그',
-			fullAuth: 'fullAuth',
-			create: 'create',
-			read: 'read',
-			update: 'update',
-			delete: 'delete',
-			description: '2',
-		},
-		{
-			id: 3,
-			item: '사용자 그룹',
-			fullAuth: 'fullAuth',
-			create: 'create',
-			read: 'read',
-			update: 'update',
-			delete: 'delete',
-			description: '3',
-		},
-		{
-			id: 4,
-			item: '사용자 그룹 유형',
-			fullAuth: 'fullAuth',
-			create: 'create',
-			read: 'read',
-			update: 'update',
-			delete: 'delete',
-			description: '3',
-		},
-		{
-			id: 5,
-			item: '사용자 그룹 멤버',
-			fullAuth: 'fullAuth',
-			create: 'create',
-			read: 'read',
-			update: 'update',
-			delete: 'delete',
-			description: '3',
-		},
-	],
+	templatesId :'KR-2020-0001:202202:0001'
 };
 
 
 
 const UserManagement = () => {
 	const dispatch = useDispatch();
-	// const [dataLists,setDataLists] =useState([]);
+	const [dataLists,setDataLists] =useState([]);
 
 	// const dataLists = [
 	// 	{id : 1, data : "create"},
@@ -81,43 +30,67 @@ const UserManagement = () => {
 	// 	{id : 4, data : "delete"},
 	// ]
 
-	const dataLists =[
-		{ resource:"user",data:[{action:'create',data:2},{action:'delete',data:3}]},
-		{ resource:"group" ,data:[{id:'create',data:false},{id:'update',data:false},{id:'read',data:6}]},
-		{ resource:"member" ,data:[{id:'create',data:4},{id:'update',data:false},{id:'read',data:6}]},
-		{ resource:"group-type" ,data:[{id:'create',data:4},{id:'update',data:false},{id:'read',data:6}]},
-		{ resource:"group-tag" ,data:[{id:'create',data:4},{id:'update',data:false},{id:'read',data:6}]}
-	]
+	const column =['전체권한','추가(생성)','수정','삭제','조회','부여','회수','설명']
+	const tempColumn =['created','updated','deleted','read','revoked']
+	const tempDataLists =[
+		{ action: 'create', data: false },
+		{ action: 'read', data: false },
+		{ action: 'update', data: false },
+		{ action: 'delete', data: false },
+		{ action: 'find', data: false },
+ ]
 
 	//렌더링시 권한 템플릿 상세 정보를 조회
-	// useEffect(() => {
-	// 	const res = dispatch(
-	// 		IAM_POLICY_ACTION_TEMPLATE.asyncAction.findAllAction({
-	// 			range: 'elements=0-50',
-	// 		}),
-	// 	).unwrap()
-	// 		.then(res =>{
-	// 			console.log('권한 템플릿 상세 정보를 조회:',res);
-	// 			setDataLists(res.data);
-	//
-	// 		})
-	// }, [dispatch]);
+	useEffect(() => {
+		const res = dispatch(
+			IAM_POLICY_ACTION_TEMPLATE.asyncAction.findAllAction({
+				range: 'elements=0-50',
+				templateId : constants.templatesId
+			}),
+		).unwrap()
+			.then(res =>{
+				//모듈화 예정 ...
+				let filteredDataList =[]
+				const newData= res['data'].map(v=>{
+					let istrue;
+					 istrue = filteredDataList.filter(s=>{
+						return v['resource'] === s['resource']
+					})
+					if(filteredDataList[0] && istrue[0]){
+						const index = filteredDataList.findIndex(item => {
+							return item.resource === v['resource'];
+						});
+						filteredDataList[index].data.push(v)
+					}else{
+						filteredDataList.push({resource:v.resource , data: [v]})
+					}
+				})
+				const arr =[]
+				const result = filteredDataList.map(v=>{
+					const list = v['data'].map(s=>s.action)
+					const duplicatedData =tempDataLists.filter(item=>
+						!list.includes(item['action'])
+					)
+					const newData= v['data'].concat(duplicatedData)
+					const newObject ={resource:v.resource , data:newData}
+					arr.push(newObject)
+				})
+				console.log('Api-dataList:',arr)
+				setDataLists(arr)
+
+
+			})
+	}, [dispatch]);
 
 	return (
+
 		<div>
+			<ColDiv padding={'0px 0px 0px 25%'} width={'100%'}>
+			{column}
+			</ColDiv>
 			{dataLists.map((item,index)=>(
-				<RowCheckbox dataLists={item.data} key={index}/>
+				<RowCheckbox title={item.resource} dataLists={item.data} key={index}/>
 			))}
-			{/*{this.state.contactData.map((contact, i) => {*/}
-			{/*	return (<ContactInfo name={contact.name}*/}
-			{/*	phone={contact.phone}*/}
-			{/*	key={i}*/}
-			{/*	/>);*/}
-			{/*})}*/}
-		 {/*<RowCheckbox dataLists={dataLists}/>*/}
-		 {/*<RowCheckbox dataLists={dataLists}/>*/}
-		 {/*<RowCheckbox dataLists={dataLists}/>*/}
-		 {/*<RowCheckbox dataLists={dataLists}/>*/}
 		</div>
 	);
 };

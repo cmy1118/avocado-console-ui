@@ -325,8 +325,6 @@ const Table = ({
 				]);
 		},
 	);
-	console.log('🔥columns:', columns);
-	console.log('🔥getRowId:', getRowId);
 	const [position, setPosition] = useState({x: 0, y: 0});
 
 	const getItemStyle = (isDragging, draggableStyle, style) => ({
