@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react';
 import LoginFailure from './UserAccountProcessTemplate/LoginFailure';
 import Dormant from './UserAccountProcessTemplate/Dormant';
 import AccountActivePeriod from './UserAccountProcessTemplate/AccountActivePeriod';
-import PasswordValidityPeriod from './UserAccountProcessTemplate/PasswordValidityPeriod';
-import ModifyingGroup from './UserAccountProcessTemplate/ModifyingGroup';
+import GroupModifying from './UserAccountProcessTemplate/ModifyingGroup';
 import Resignation from './UserAccountProcessTemplate/Resignation';
 import IAM_RULE_TEMPLATE_DETAILE from '../../../../../reducers/api/IAM/Rule/templateDetail';
 import {useDispatch} from 'react-redux';
@@ -14,9 +13,12 @@ import PropTypes from 'prop-types';
  **************************************************/
 const UserAccountProcessTemplate = ({templateId}) => {
 	const dispatch = useDispatch();
+	//defaultData: 템플릿의 default value
+	const [defaultData, setDefaultData] = useState([]);
 
-	const [templateData, setTemplateData] = useState([]);
-
+	/**************************************************
+	 * ambacc244 - 사용자 계정 처리 템플릿의 default 정보 불러오기
+	 **************************************************/
 	useEffect(() => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAILE.asyncAction.findAllRuleTemplateDetailAction(
@@ -29,28 +31,26 @@ const UserAccountProcessTemplate = ({templateId}) => {
 			.then((data) => {
 				let defaultData = {};
 
-				data.data.map((v) => {
+				data.map((v) => {
 					defaultData[v.ruleType] = v;
 				});
 
-				setTemplateData(defaultData);
+				setDefaultData(defaultData);
 			});
-	}, []);
+	}, [dispatch, templateId]);
 
 	return (
 		<div>
 			<LoginFailure
-				data={templateData && templateData.SignInFailBlocking}
+				data={defaultData && defaultData.SignInFailBlocking}
 			/>
-			<Dormant data={templateData && templateData.DormantBlocking} />
+			<Dormant data={defaultData && defaultData.DormantBlocking} />
 			<AccountActivePeriod
-				data={templateData && templateData.AccountExpired}
+				data={defaultData && defaultData.AccountExpired}
 			/>
 			{/*<PasswordValidityPeriod />*/}
-			<ModifyingGroup
-				data={templateData && templateData.GroupModifying}
-			/>
-			<Resignation data={templateData && templateData.Resigned} />
+			<GroupModifying data={defaultData && defaultData.GroupModifying} />
+			<Resignation data={defaultData && defaultData.Resigned} />
 		</div>
 	);
 };

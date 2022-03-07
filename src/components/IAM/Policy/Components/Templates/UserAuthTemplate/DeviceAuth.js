@@ -38,21 +38,37 @@ const DeviceAuth = ({data}) => {
 		name: 'deviceAuthUsage',
 		options: usageOptions,
 	});
-	const [application, applicationCheckBox] = useCheckBox({
+	//application: 사용가능한 applications
+	const [application, applicationCheckBox, setApplications] = useCheckBox({
 		options: applicationOptions,
 		disabled: usage === usageOptions[1].key ? true : false,
 	});
 
+	/**************************************************
+	 * ambacc244 - 사용자 인증(단말기 인증) default 정보 세팅
+	 **************************************************/
 	useEffect(() => {
+		//단말기 사용 여부가 attribute로 넘어옴
 		if (
 			data?.attribute &&
-			Object.prototype.hasOwnProperty.call(data?.attribute, 'usage')
+			Object.prototype.hasOwnProperty.call(data.attribute, 'usage')
 		) {
+			//단말기 사용 여부가 세팅
 			setUsage(
 				data.attribute.usage
 					? usageOptions[0].key
 					: usageOptions[1].key,
 			);
+			//단말기 사용 여부 true
+			if (data.attribute.usage) {
+				//TODO: applications 넘어오는 방식 확인하기(진성님)
+				//사용하는 단말기 종류 세팅
+				setApplications([]);
+			}
+			//단말기 사용 여부가 attribute로 넘어 오지 않음
+		} else {
+			//단말기 사용 여부 false로 세팅
+			setUsage(usageOptions[1].key);
 		}
 	}, [data]);
 
