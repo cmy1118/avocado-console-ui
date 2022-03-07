@@ -52,9 +52,9 @@ const optionValue = {
 	patternFormat: {prefix: 'prefix', suffix: 'suffix'},
 	restriction: {yes: 'yes', no: 'no'},
 	personalInformationRestrictionMethod: {
-		email: 'email',
-		phoneNumber: 'phoneNumber',
-		consecutiveNumbersWithId: 'consecutiveNumbersWithId',
+		email: 'Email',
+		phoneNumber: 'Mobile',
+		consecutiveNumbersWithId: 'UserId',
 	},
 };
 

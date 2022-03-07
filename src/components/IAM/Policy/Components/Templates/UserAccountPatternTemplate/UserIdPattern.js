@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import TemplateElement from '../../TemplateElement';
 import {
 	patternFormatOptions,
@@ -7,6 +7,8 @@ import {
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
+import PropTypes from 'prop-types';
+import UserAccountPatternTemplate from '../UserAccountPatternTemplate';
 
 const userIdPattern = {
 	title: '사용자 ID 패턴',
@@ -32,19 +34,46 @@ const userIdPattern = {
 /**************************************************
  * ambacc244 - 사용자 계정 패턴(사용자 ID 패턴) 폼
  **************************************************/
-const UserIdPattern = () => {
-	const [usage, usageRadioButton] = useRadio({
+const UserIdPattern = ({data}) => {
+	const [usage, usageRadioButton, setUsage] = useRadio({
 		name: 'usage',
 		options: usageOptions,
 	});
-	const [patternFormat, patternFormatRadioButton] = useRadio({
+	const [
+		patternFormat,
+		patternFormatRadioButton,
+		setPatternFormat,
+	] = useRadio({
 		name: 'patternFormat',
 		options: patternFormatOptions,
 	});
-	const [patternInput, patternInputTextBox] = useTextBox({
+	const [patternInput, patternInputTextBox, setPatternInput] = useTextBox({
 		name: 'patternInput',
 	});
 
+	/**************************************************
+	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
+	 **************************************************/
+	useEffect(() => {
+		if (
+			data?.attribute &&
+			Object.prototype.hasOwnProperty.call(data?.attribute, 'usage')
+		) {
+			setUsage(
+				data.attribute.usage
+					? usageOptions[0].key
+					: usageOptions[1].key,
+			);
+			if (data.attribute.usage) {
+				if (data.attribute.pattern)
+					setPatternInput(data.attribute.pattern);
+
+				if (data.attribute.patternType) {
+					setPatternFormat(data.attribute.patternType);
+				}
+			}
+		}
+	}, [data]);
 	return (
 		<TemplateElementContainer
 			title={userIdPattern.title}
@@ -71,4 +100,7 @@ const UserIdPattern = () => {
 	);
 };
 
+UserIdPattern.propTypes = {
+	data: PropTypes.object,
+};
 export default UserIdPattern;

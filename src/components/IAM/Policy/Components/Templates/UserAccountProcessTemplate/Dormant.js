@@ -6,7 +6,6 @@ import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
 import PropTypes from 'prop-types';
-import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 
 const dormant = {
 	title: '휴면',

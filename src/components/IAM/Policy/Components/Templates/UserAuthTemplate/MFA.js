@@ -1,18 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
 import {
 	additionalAuthMethodOptions,
-	applicationOptions,
 	authUsageOptions,
 	requiredOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
-import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
 import useRadio from '../../../../../../hooks/useRadio';
 import useComboBox from '../../../../../../hooks/useComboBox';
 import useCheckBox from '../../../../../../hooks/useCheckBox';
 import {RowDiv} from '../../../../../../styles/components/style';
+import PropTypes from 'prop-types';
 
 const mfa = {
 	title: 'MFA 인증',
@@ -39,14 +38,16 @@ const mfa = {
 /**************************************************
  * ambacc244 - 사용자 인증(MFA 인증) 폼
  **************************************************/
-const MFA = () => {
-	const [usage, usageRadioButton] = useRadio({
-		name: 'usage',
+const MFA = ({data}) => {
+	const [usage, usageRadioButton, setUsage] = useRadio({
+		name: 'mfaUsage',
 		options: usageOptions,
 	});
 	const [authUsage1, authUsage1ComboBox] = useComboBox({
 		options: authUsageOptions,
+		disabled: usage === usageOptions[1].key ? true : false,
 	});
+
 	const [required1, required1ComboBox] = useComboBox({
 		options: requiredOptions,
 	});
@@ -55,6 +56,7 @@ const MFA = () => {
 	});
 	const [authUsage2, authUsage2ComboBox] = useComboBox({
 		options: authUsageOptions,
+		disabled: usage === usageOptions[1].key ? true : false,
 	});
 	const [required2, required2ComboBox] = useComboBox({
 		options: requiredOptions,
@@ -64,6 +66,7 @@ const MFA = () => {
 	});
 	const [authUsage3, authUsage3ComboBox] = useComboBox({
 		options: authUsageOptions,
+		disabled: usage === usageOptions[1].key ? true : false,
 	});
 	const [required3, required3ComboBox] = useComboBox({
 		options: requiredOptions,
@@ -91,6 +94,22 @@ const MFA = () => {
 			authMethod: authMethod3CheckBox,
 		},
 	];
+
+	/**************************************************
+	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
+	 **************************************************/
+	useEffect(() => {
+		if (
+			data?.attribute &&
+			Object.prototype.hasOwnProperty.call(data?.attribute, 'usage')
+		) {
+			setUsage(
+				data.attribute.usage
+					? usageOptions[0].key
+					: usageOptions[1].key,
+			);
+		}
+	}, [data]);
 
 	return (
 		<TemplateElementContainer
@@ -127,4 +146,9 @@ const MFA = () => {
 		/>
 	);
 };
+
+MFA.propTypes = {
+	data: PropTypes.object,
+};
+
 export default MFA;

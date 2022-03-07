@@ -1,13 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
 import {
 	applicationOptions,
+	gracePeriodUsageOptions,
 	usageOptions,
 } from '../../../../../../utils/options';
 import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
 import useRadio from '../../../../../../hooks/useRadio';
 import useCheckBox from '../../../../../../hooks/useCheckBox';
+import PropTypes from 'prop-types';
+import LoginFailure from '../UserAccountProcessTemplate/LoginFailure';
 
 const deviceAuth = {
 	title: '단말기 인증',
@@ -29,15 +32,29 @@ const deviceAuth = {
 /**************************************************
  * ambacc244 - 사용자 인증(단말기 인증) 폼
  **************************************************/
-const DeviceAuth = () => {
+const DeviceAuth = ({data}) => {
 	//usage: 단말기 인증 사용 여부
-	const [usage, usageRadioButton] = useRadio({
-		name: 'usage',
+	const [usage, usageRadioButton, setUsage] = useRadio({
+		name: 'deviceAuthUsage',
 		options: usageOptions,
 	});
 	const [application, applicationCheckBox] = useCheckBox({
 		options: applicationOptions,
+		disabled: usage === usageOptions[1].key ? true : false,
 	});
+
+	useEffect(() => {
+		if (
+			data?.attribute &&
+			Object.prototype.hasOwnProperty.call(data?.attribute, 'usage')
+		) {
+			setUsage(
+				data.attribute.usage
+					? usageOptions[0].key
+					: usageOptions[1].key,
+			);
+		}
+	}, [data]);
 
 	return (
 		<TemplateElementContainer
@@ -59,6 +76,10 @@ const DeviceAuth = () => {
 			}}
 		/>
 	);
+};
+
+DeviceAuth.propTypes = {
+	data: PropTypes.object,
 };
 
 export default DeviceAuth;

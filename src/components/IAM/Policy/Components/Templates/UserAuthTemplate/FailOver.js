@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import TemplateElement from '../../TemplateElement';
 import {authMethodOptions, usageOptions} from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
+import PropTypes from 'prop-types';
+import MFA from './MFA';
 
 const failOver = {
 	title: 'Fail Over',
@@ -25,22 +27,40 @@ const failOver = {
 /**************************************************
  * ambacc244 - 사용자 인증(FailOver) 폼
  **************************************************/
-const FailOver = () => {
+const FailOver = ({data}) => {
 	//usage: Fail Over 사용 여부
-	const [usage, usageRadioButton] = useRadio({
-		name: 'usage',
+	const [usage, usageRadioButton, setUsage] = useRadio({
+		name: 'failOverUsage',
 		options: usageOptions,
 	});
 	//basicAuth: 기본 인증 수단
 	const [basicAuth, basicAuthRadioButton] = useRadio({
-		name: 'basicAuth',
+		name: 'failOverBasicAuth',
 		options: authMethodOptions,
+		disabled: usage === usageOptions[1].key ? true : false,
 	});
 	//basicAuth: mfa 수단
 	const [mfa, mfaRaddioButton] = useRadio({
-		name: 'mfa',
+		name: 'failOverMfa',
 		options: authMethodOptions,
+		disabled: usage === usageOptions[1].key ? true : false,
 	});
+
+	/**************************************************
+	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
+	 **************************************************/
+	useEffect(() => {
+		if (
+			data?.attribute &&
+			Object.prototype.hasOwnProperty.call(data?.attribute, 'usage')
+		) {
+			setUsage(
+				data.attribute.usage
+					? usageOptions[0].key
+					: usageOptions[1].key,
+			);
+		}
+	}, [data]);
 
 	return (
 		<TemplateElementContainer
@@ -66,6 +86,10 @@ const FailOver = () => {
 			}}
 		/>
 	);
+};
+
+FailOver.propTypes = {
+	data: PropTypes.object,
 };
 
 export default FailOver;

@@ -1,6 +1,6 @@
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
-import React from 'react';
+import React, {useEffect} from 'react';
 import useRadio from '../../../../../../hooks/useRadio';
 import {
 	personalInformationRestrictionMethodOptions,
@@ -10,6 +10,8 @@ import {
 import useTextBox from '../../../../../../hooks/useTextBox';
 import useCheckBox from '../../../../../../hooks/useCheckBox';
 import {RowDiv} from '../../../../../../styles/components/style';
+import PropTypes from 'prop-types';
+import UserIdPattern from './UserIdPattern';
 
 const passwordPattern = {
 	title: '비밀번호 패턴',
@@ -54,34 +56,52 @@ const passwordPattern = {
 /**************************************************
  * ambacc244 - 사용자 계정 패턴(비밀번호 패턴) 폼
  **************************************************/
-const PaswordPattern = () => {
-	const [minPasswordLength, minPasswordLengthTextBox] = useTextBox({
+const PaswordPattern = ({data}) => {
+	const [
+		minPasswordLength,
+		minPasswordLengthTextBox,
+		setMinPasswordLength,
+	] = useTextBox({
 		name: 'minPasswordLength',
 	});
-	const [maxPasswordLength, maxPasswordLengthTextBox] = useTextBox({
+	const [
+		maxPasswordLength,
+		maxPasswordLengthTextBox,
+		setMaxPasswordLength,
+	] = useTextBox({
 		name: 'maxPasswordLength',
 	});
-	const [consecutiveNumbers, consecutiveNumbersTextBox] = useTextBox({
+	const [
+		consecutiveNumbers,
+		consecutiveNumbersTextBox,
+		setConsecutiveNumbers,
+	] = useTextBox({
 		name: 'consecutiveNumbers',
 	});
-	const [mixedLetterAndNumber, mixedLetterAndNumberRadioButton] = useRadio({
-		name: 'mixedLetterAndNumber',
+	const [
+		mixNumberAndAlpha,
+		mixNumberAndAlphaRadioButton,
+		setMixNumberAndAlpha,
+	] = useRadio({
+		name: 'mixNumberAndAlpha',
 		options: usageOptions,
 	});
-	const [mixedCaseLetter, mixedCaseLetterRadioButton] = useRadio({
-		name: 'mixedCaseLetter',
+	const [mixCase, mixCaseRadioButton, setMixCase] = useRadio({
+		name: 'mixCase',
 		options: usageOptions,
 	});
 	const [
 		repeatedCharacterRestrictionNumber,
 		repeatedCharacterRestrictionRadioButton,
+		setRepeatedCharacterRestrictionNumber,
 	] = useRadio({
-		name: 'repeatedCharacterRestriction',
+		name: 'repeatedCharacterRestrictionNumber',
 		options: restrictionOptions,
 	});
 	const [
 		personalInformationRestriction,
 		personalInformationRestrictionRadioButton,
+		setPersonalInformationRestriction,
 	] = useRadio({
 		name: 'personalInformationRestriction',
 		options: restrictionOptions,
@@ -90,22 +110,121 @@ const PaswordPattern = () => {
 	const [
 		personalInformationRestrictionMethod,
 		personalInformationRestrictionMethodCheckBox,
+		setPersonalInformationRestrictionMethod,
 	] = useCheckBox({options: personalInformationRestrictionMethodOptions});
 
 	const [
-		enforcePasswordHistory,
-		enforcePasswordHistoryRadioButton,
+		oldPasswordsRistriction,
+		oldPasswordsRistrictionRadioButton,
+		setOldPasswordsRistriction,
 	] = useRadio({
-		name: 'enforcePasswordHistory',
+		name: 'oldPasswordsRistriction',
 		options: restrictionOptions,
 	});
 
 	const [
-		enforcePasswordHistoryPeriod,
-		enforcePasswordHistoryPeriodTextBox,
+		allowedDaysOfOldPasswords,
+		allowedDaysOfOldPasswordsTextBox,
+		setAllowedDaysOfOldPasswords,
 	] = useTextBox({
-		name: 'enforcePasswordHistoryPeriod',
+		name: 'allowedDaysOfOldPasswords',
 	});
+	console.log(data);
+	/**************************************************
+	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
+	 **************************************************/
+	useEffect(() => {
+		if (data?.attribute?.minLength) {
+			setMinPasswordLength(data.attribute.minLength);
+		}
+
+		if (data?.attribute?.maxLength) {
+			setMaxPasswordLength(data.attribute.maxLength);
+		}
+
+		if (
+			data?.attribute &&
+			Object.prototype.hasOwnProperty.call(
+				data?.attribute,
+				'numberOfConsecutiveNumerics',
+			)
+		) {
+			setConsecutiveNumbers(data.attribute.numberOfConsecutiveNumerics);
+		}
+
+		if (
+			data?.attribute &&
+			Object.prototype.hasOwnProperty.call(
+				data?.attribute,
+				'mixNumberAndAlpha',
+			)
+		) {
+			setMixNumberAndAlpha(
+				data.attribute.mixNumberAndAlpha
+					? usageOptions[0].key
+					: usageOptions[1].key,
+			);
+		}
+
+		if (
+			data?.attribute &&
+			Object.prototype.hasOwnProperty.call(data?.attribute, 'mixCase')
+		) {
+			setMixCase(
+				data.attribute.mixCase
+					? usageOptions[0].key
+					: usageOptions[1].key,
+			);
+		}
+
+		if (
+			data?.attribute &&
+			Object.prototype.hasOwnProperty.call(
+				data?.attribute,
+				'repeatedCharacterRestrictionNumber',
+			)
+		) {
+			setRepeatedCharacterRestrictionNumber(
+				data.attribute.repeatedCharacterRestrictionNumber
+					? restrictionOptions[0].key
+					: restrictionOptions[1].key,
+			);
+		}
+
+		if (
+			data?.attribute &&
+			Object.prototype.hasOwnProperty.call(
+				data?.attribute,
+				'includePersonalInfoList',
+			)
+		) {
+			setPersonalInformationRestrictionMethod(
+				data.attribute.includePersonalInfoList,
+			);
+
+			setPersonalInformationRestriction(
+				data.attribute.allowedDaysOfOldPasswords.length !== 0
+					? restrictionOptions[0].key
+					: restrictionOptions[1].key,
+			);
+		}
+
+		if (
+			data?.attribute &&
+			Object.prototype.hasOwnProperty.call(
+				data?.attribute,
+				'allowedDaysOfOldPasswords',
+			) &&
+			data.attribute.allowedDaysOfOldPasswords !== 0
+		) {
+			setOldPasswordsRistriction(restrictionOptions[0].key);
+			setAllowedDaysOfOldPasswords(
+				data.attribute.allowedDaysOfOldPasswords,
+			);
+		} else {
+			setOldPasswordsRistriction(restrictionOptions[1].key);
+		}
+	}, [data]);
 
 	return (
 		<TemplateElementContainer
@@ -147,13 +266,13 @@ const PaswordPattern = () => {
 								passwordPattern.contents.mixedLetterAndNumber
 									.title
 							}
-							render={mixedLetterAndNumberRadioButton}
+							render={mixNumberAndAlphaRadioButton}
 						/>
 						<TemplateElement
 							title={
 								passwordPattern.contents.mixedCaseLetter.title
 							}
-							render={mixedCaseLetterRadioButton}
+							render={mixCaseRadioButton}
 						/>
 						<TemplateElement
 							title={
@@ -185,8 +304,8 @@ const PaswordPattern = () => {
 							render={() => {
 								return (
 									<RowDiv>
-										{enforcePasswordHistoryRadioButton()}
-										{enforcePasswordHistoryPeriodTextBox()}
+										{oldPasswordsRistrictionRadioButton()}
+										{allowedDaysOfOldPasswordsTextBox()}
 										{
 											passwordPattern.contents
 												.enforcePasswordHistory.period
@@ -203,4 +322,7 @@ const PaswordPattern = () => {
 	);
 };
 
+PaswordPattern.propTypes = {
+	data: PropTypes.object,
+};
 export default PaswordPattern;
