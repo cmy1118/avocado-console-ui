@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
 import {accountStatusOptions} from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
+import PropTypes from 'prop-types';
+import RadioButton from '../../../../../RecycleComponents/Form/RadioButton';
 
 const dormant = {
 	title: '휴면',
@@ -34,14 +36,34 @@ const dormant = {
 /**************************************************
  * ambacc244 - 사용자 계정 처리(휴면) 폼
  **************************************************/
-const Dormant = () => {
-	const [accountStatus, accountStatusRadioButton] = useRadio({
+const Dormant = ({data}) => {
+	const [
+		accountStatus,
+		accountStatusRadioButton,
+		setAccountStatus,
+	] = useRadio({
 		name: 'accountStatus',
 		options: accountStatusOptions,
 	});
-	const [inactivePeriod, inactivePeriodTextBox] = useTextBox({
+	const [
+		inactivePeriod,
+		inactivePeriodTextBox,
+		seInactivePeriod,
+	] = useTextBox({
 		name: 'inactivePeriod',
 	});
+
+	/**************************************************
+	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
+	 **************************************************/
+	useEffect(() => {
+		if (data?.attribute?.blockingType) {
+			setAccountStatus(data.attribute.blockingType);
+		}
+		if (data?.attribute?.unconnectedDays) {
+			seInactivePeriod(data.attribute.unconnectedDays);
+		}
+	}, [data]);
 
 	return (
 		<TemplateElementContainer
@@ -87,6 +109,10 @@ const Dormant = () => {
 			}}
 		/>
 	);
+};
+
+Dormant.propTypes = {
+	data: PropTypes.object,
 };
 
 export default Dormant;
