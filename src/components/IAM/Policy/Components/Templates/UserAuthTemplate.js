@@ -20,7 +20,7 @@ const UserAuthTemplate = ({templateId}) => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAILE.asyncAction.findAllRuleTemplateDetailAction(
 				{
-					id: 'KR-2020-0001:202202:0002',
+					id: templateId,
 				},
 			),
 		)
