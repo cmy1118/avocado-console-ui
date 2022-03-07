@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
 import {accountStatusOptions} from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
+import PropTypes from 'prop-types';
+import LoginFailure from './LoginFailure';
 
 const accountActivePeriod = {
 	title: '계정 사용 기간',
@@ -30,14 +32,23 @@ const accountActivePeriod = {
 /**************************************************
  * ambacc244 - 사용자 계정 처리(계정 사용 기간) 폼
  **************************************************/
-const AccountActivePeriod = () => {
-	const [activePeriod, activePeriodTextBox] = useTextBox({
+const AccountActivePeriod = ({data}) => {
+	const [activePeriod, activePeriodTextBox, setActivePeriod] = useTextBox({
 		name: 'activePeriod',
 	});
-	const [accountStatus, setAccountStatus] = useRadio({
+	const [accountStatus, setAccountRadioButton, setAccountStatus] = useRadio({
 		name: 'accountStatus',
 		options: accountStatusOptions,
 	});
+
+	useEffect(() => {
+		if (data?.attribute?.expiryDays) {
+			setActivePeriod(data.attribute.expiryDays);
+		}
+		if (data?.attribute?.blockingType) {
+			setAccountStatus(data.attribute.blockingType);
+		}
+	}, [data]);
 
 	return (
 		<TemplateElementContainer
@@ -66,7 +77,7 @@ const AccountActivePeriod = () => {
 							title={
 								accountActivePeriod.contents.accountStatus.title
 							}
-							render={setAccountStatus}
+							render={setAccountRadioButton}
 						/>
 
 						<TemplateElement
@@ -90,5 +101,9 @@ const AccountActivePeriod = () => {
 			}}
 		/>
 	);
+};
+
+AccountActivePeriod.propTypes = {
+	data: PropTypes.object,
 };
 export default AccountActivePeriod;

@@ -24,16 +24,16 @@ const optionValue = {
 		kakao: 'kakao',
 	},
 	accountStatus: {
-		lock: 'lock',
-		delete: 'delete',
+		lock: 'LOCKED',
+		delete: 'DELETED',
 	},
 	accountNormalization: {
 		identityVerification: 'identityVerification',
 		manager: 'manager',
 	},
 	accountStatus2: {
-		lock: 'lock',
-		delete: 'delete',
+		lock: 'LOCKED',
+		delete: 'DELETED',
 		no: 'no',
 	},
 	groupPrivileges: {
@@ -282,7 +282,7 @@ export const accountNormalization2Options = [
 	},
 ];
 
-export const gracePeriodOptions = [
+export const gracePeriodUsageOptions = [
 	{
 		key: optionValue.gracePeriod.yes,
 		label: optionLabel.gracePeriod.yes,

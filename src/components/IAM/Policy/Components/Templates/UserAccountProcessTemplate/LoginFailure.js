@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import TemplateElement from '../../TemplateElement';
 import {accountStatusOptions} from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
+import PropTypes from 'prop-types';
 
 const loginFailure = {
 	title: '로그인 실패',
@@ -34,20 +35,57 @@ const loginFailure = {
 /**************************************************
  * ambacc244 - 사용자 계정 처리(로그인 실패) 폼
  **************************************************/
-const LoginFailure = () => {
-	const [loginFailureCount, loginFailureCountTextBox] = useTextBox({
+const LoginFailure = ({data}) => {
+	const [
+		loginFailureCount,
+		loginFailureCountTextBox,
+		setLoginFailureCount,
+	] = useTextBox({
 		name: 'loginFailureCount',
 	});
-	const [accountStatus, accountStatusRadioButton] = useRadio({
+	const [
+		accountStatus,
+		accountStatusRadioButton,
+		setAccountStatus,
+	] = useRadio({
 		name: 'accountStatus',
 		options: accountStatusOptions,
 	});
-	const [resetErrorCount, resetErrorCountTextBox] = useTextBox({
+	const [
+		resetErrorCount,
+		resetErrorCountTextBox,
+		setResetErrorCount,
+	] = useTextBox({
 		name: 'resetErrorCount',
 	});
-	const [accountNormalization, accountNormalizationTextBox] = useTextBox({
+	const [
+		accountNormalization,
+		accountNormalizationTextBox,
+		setAccountNormalization,
+	] = useTextBox({
 		name: 'accountNormalization',
 	});
+
+	/**************************************************
+	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
+	 **************************************************/
+	useEffect(() => {
+		if (data?.attribute?.failedCount) {
+			setLoginFailureCount(data.attribute.failedCount);
+		}
+		if (data?.attribute?.blockingType) {
+			console.log(data.attribute.blockingType);
+			setAccountStatus(data.attribute.blockingType);
+		}
+		if (data?.attribute?.failedCountInitDays) {
+			setResetErrorCount(data.attribute.failedCountInitDays);
+		}
+		//TODO: 계정 정상화
+		// if (data?.attribute?.qwer) {
+		// 	setAccountNormalization(data.attribute.qwer);
+		// }
+	}, [data]);
+
 	return (
 		<TemplateElementContainer
 			title={loginFailure.title}
@@ -110,6 +148,10 @@ const LoginFailure = () => {
 			}}
 		/>
 	);
+};
+
+LoginFailure.propTypes = {
+	data: PropTypes.object,
 };
 
 export default LoginFailure;
