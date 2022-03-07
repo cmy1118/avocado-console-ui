@@ -6,11 +6,12 @@ import FailOver from './UserAuthTemplate/FailOver';
 import IdentityVerification from './UserAuthTemplate/IdentityVerification';
 import IAM_RULE_TEMPLATE_DETAILE from '../../../../../reducers/api/IAM/Rule/templateDetail';
 import {useDispatch} from 'react-redux';
+import PropTypes from 'prop-types';
 
 /**************************************************
  * ambacc244 - 사용자 인증 템플릿 컴포넌트
  **************************************************/
-const UserAuthTemplate = () => {
+const UserAuthTemplate = ({templateId}) => {
 	const dispatch = useDispatch();
 
 	const [templateData, setTemplateData] = useState([]);
@@ -48,6 +49,10 @@ const UserAuthTemplate = () => {
 			/>
 		</div>
 	);
+};
+
+UserAuthTemplate.propTypes = {
+	templateId: PropTypes.string,
 };
 
 export default UserAuthTemplate;

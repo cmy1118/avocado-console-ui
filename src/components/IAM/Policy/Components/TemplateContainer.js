@@ -65,7 +65,9 @@ const TemplateContainer = ({template, setTemplateList, render}) => {
 	 * seob - templateList에서 현재 템플릿을 제거하는 함수
 	 ***************************************************/
 	const deleteTemplate = () => {
-		setTemplateList((prev) => prev.filter((item) => item !== template));
+		setTemplateList((prev) =>
+			prev.filter((item) => item.template !== template),
+		);
 	};
 
 	return (
@@ -80,7 +82,7 @@ const TemplateContainer = ({template, setTemplateList, render}) => {
 					>
 						{isOpened ? arrowDownIcon : arrowRightIcon}
 					</HoverIconButton>
-					<span>{template.title}</span>
+					<span>{template.name}</span>
 				</Title>
 				<div>
 					<TransparentButton

@@ -8,6 +8,7 @@ import TableComboBox from '../../../../Table/ColumnCells/TableComboBox';
 import TableTextBox from '../../../../Table/ColumnCells/TableTextBox';
 import {RowDiv} from '../../../../../styles/components/style';
 import useTextBox from '../../../../../hooks/useTextBox';
+import PropTypes from 'prop-types';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -43,7 +44,7 @@ const contents = {
 	},
 };
 
-const UserSessionTemplate = () => {
+const UserSessionTemplate = ({templateId}) => {
 	const [screenSaverValue, screenSaverRadio, setScreenSaverValue] = useRadio({
 		name: 'sessionTemplate-screenSaver-radio',
 		options: [
@@ -243,6 +244,10 @@ const UserSessionTemplate = () => {
 			/>
 		</div>
 	);
+};
+
+UserSessionTemplate.propTypes = {
+	templateId: PropTypes.string,
 };
 
 export default UserSessionTemplate;
