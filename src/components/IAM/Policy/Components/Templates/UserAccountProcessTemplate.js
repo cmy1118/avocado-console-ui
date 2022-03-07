@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 /**************************************************
  * ambacc244 - 사용자 계정 처리 컴포넌트
  **************************************************/
-const UserAccountProcessTemplate = () => {
+const UserAccountProcessTemplate = ({templateId}) => {
 	const dispatch = useDispatch();
 
 	const [templateData, setTemplateData] = useState([]);
@@ -21,7 +21,7 @@ const UserAccountProcessTemplate = () => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAILE.asyncAction.findAllRuleTemplateDetailAction(
 				{
-					id: 'KR-2020-0001:202202:0003',
+					id: templateId,
 				},
 			),
 		)
@@ -53,6 +53,10 @@ const UserAccountProcessTemplate = () => {
 			<Resignation data={templateData && templateData.Resigned} />
 		</div>
 	);
+};
+
+UserAccountProcessTemplate.propTypes = {
+	templateId: PropTypes.string,
 };
 
 export default UserAccountProcessTemplate;

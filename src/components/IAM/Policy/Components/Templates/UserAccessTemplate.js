@@ -3,6 +3,7 @@ import TimeInterval from '../../../../RecycleComponents/Templates/TimeInterval';
 import TemplateElementContainer from '../TemplateElementContainer';
 import TemplateElement from '../TemplateElement';
 import useRadio from '../../../../../hooks/useRadio';
+import PropTypes from 'prop-types';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -34,7 +35,7 @@ const contents = {
 /**************************************************
  * seob - 사용자 접근 템플릿
  ***************************************************/
-const UserAccessTemplate = () => {
+const UserAccessTemplate = ({templateId}) => {
 	const CONSOLE_RADIO_NAME = 'console-radio-name';
 	const WEBTERM_RADIO_NAME = 'webterm-radio-name';
 	// 라디오 버튼 옵션값
@@ -115,6 +116,10 @@ const UserAccessTemplate = () => {
 			/>
 		</div>
 	);
+};
+
+UserAccessTemplate.propTypes = {
+	templateId: PropTypes.string,
 };
 
 export default UserAccessTemplate;

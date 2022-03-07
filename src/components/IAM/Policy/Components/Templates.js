@@ -1,13 +1,16 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import TemplateContainer from './TemplateContainer';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import {useDispatch} from 'react-redux';
+import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/Policy/template';
+import IAM_RULE_TEMPLATE from '../../../../reducers/api/IAM/Rule/template';
+import {templateType} from '../../../../utils/template';
+import UserAccountProcessTemplate from './Templates/UserAccountProcessTemplate';
+import UserAuthTemplate from './Templates/UserAuthTemplate';
 import UserAccessTemplate from './Templates/UserAccessTemplate';
 import UserSessionTemplate from './Templates/UserSessionTemplate';
-import styled from 'styled-components';
-import UserAuthTemplate from './Templates/UserAuthTemplate';
-import UserAccountProcessTemplate from './Templates/UserAccountProcessTemplate';
 import UserAccountPatternTemplate from './Templates/UserAccountPatternTemplate';
-import UserManagement from './Templates/UserManagement';
 
 const Container = styled.div`
 	display: flex;
@@ -28,71 +31,7 @@ const TemplateListContainer = styled.div`
  ***************************************************/
 const contents = {
 	title: 'IAM 템플릿 선택',
-	templates: {
-		userAuth: '사용자 인증',
-		userAccountProcess: '사용자 계정 처리',
-		userAccess: '사용자 접근 정책',
-		userSession: '사용자 세션 정책',
-		userAccountPattern: '사용자 계정 패턴',
-		userManagement: '사용자 관리 권한',
-		policyManagement: '정책 관리 권한',
-		roleManagement: '역할 관리 권한',
-	},
 };
-
-// memo (seob): 우선 여기에 각각의 컴포넌트를 component에 넣으면 되는데
-//  제가 작성한 템플릿 생성방식이 문제가 되거나 수정 보완할 방향이 있다면 같이 협의하면 좋겠습니다.
-// api 통신으로 응답받은 템플릿 리스트를 해당되는 컴포넌트와 연결해서 관리
-// 사용방식 또는 api response에 따라서 수정 예정
-/**************************************************
- * seob - 템플릿 리스트 아이템의 객체 배열 변수
- *
- * title: 템플릿 이름
- * description: 마우스 호버시 템플릿 상세설명
- * component: 템플릿 컴포넌트
- ***************************************************/
-const templateResponse = [
-	{
-		title: contents.templates.userAuth,
-		description: 'userAuth description',
-		component: UserAuthTemplate,
-	},
-	{
-		title: contents.templates.userAccountProcess,
-		description: 'userAccountProcess description',
-		component: UserAccountProcessTemplate,
-	},
-	{
-		title: contents.templates.userAccess,
-		description: 'userAccess description',
-		component: UserAccessTemplate,
-	},
-	{
-		title: contents.templates.userSession,
-		description: 'userSession description',
-		component: UserSessionTemplate,
-	},
-	{
-		title: contents.templates.userAccountPattern,
-		description: 'userAccountPattern description',
-		component: UserAccountPatternTemplate,
-	},
-	{
-		title: contents.templates.userManagement,
-		description: 'userManagement description',
-		component: UserManagement,
-	},
-	{
-		title: contents.templates.policyManagement,
-		description: 'policyManagement description',
-		component: '',
-	},
-	{
-		title: contents.templates.roleManagement,
-		description: 'roleManagement description',
-		component: '',
-	},
-];
 
 /**************************************************
  * seob - 정책 템플릿 리스트 컴포넌트
@@ -103,18 +42,106 @@ const templateResponse = [
 const TemplateList = ({setTemplateList, setIsOpened}) => {
 	// 각 템플릿별 설명
 	const [templateDescription, setTemplateDescription] = useState('');
+	// 규칙 템플릿 리스트
+	const [ruleTemplates, setRuleTemplates] = useState([]);
+	// 권한 템플릿 리스트
+	const [actionTemplates, setActionTemplates] = useState([]);
+	// 로딩처리 state
+	const [isLoading, setIsLoading] = useState(true);
+
+	const dispatch = useDispatch();
 
 	/**************************************************
 	 * seob - 템플릿 추가 후 닫는 함수
+	 *
+	 * template: 액션, 규칙 템플릿 findAll 조회시 각각의 템플릿 데이터
+	 * type : 액션 템플릿, 규칙 템플릿 구분 타입
 	 ***************************************************/
 	const addTemplate = useCallback(
-		({template}) => () => {
+		({template, type}) => {
+			console.log(template);
+			let currentTemplate = null;
+			// 규칙 템플릿인경우
+			if (type === templateType.RULE) {
+				// memo : 현재 템플릿을 구분하는 카테고리 값이 없으므로 id값을 기준으로 분류했습니다. (수정예정)
+				switch (template.id) {
+					case 'KR-2020-0001:202202:0002': {
+						currentTemplate = {
+							template,
+							render: () =>
+								UserAuthTemplate({templateId: template.id}),
+						};
+						break;
+					}
+					case 'KR-2020-0001:202202:0003': {
+						currentTemplate = {
+							template,
+							render: () =>
+								UserAccountProcessTemplate({
+									templateId: template.id,
+								}),
+						};
+						break;
+					}
+					case 'KR-2020-0001:202202:0004': {
+						currentTemplate = {
+							template,
+							render: () =>
+								UserAccessTemplate({
+									templateId: template.id,
+								}),
+						};
+
+						break;
+					}
+					case 'KR-2020-0001:202202:0005': {
+						currentTemplate = {
+							template,
+							render: () =>
+								UserSessionTemplate({
+									templateId: template.id,
+								}),
+						};
+						break;
+					}
+					case 'KR-2020-0001:202202:0006': {
+						currentTemplate = {
+							template,
+							render: () =>
+								UserAccountPatternTemplate({
+									templateId: template.id,
+								}),
+						};
+						break;
+					}
+				}
+			}
+			// 액션 템플릿인경우
+			// todo : 건욱님 액션 템플릿 컴포넌트 추가되면 id값 전달예정
+			else if (type === templateType.ACTION) {
+				switch (template.id) {
+					case 'KR-2020-0001:202202:0001': {
+						break;
+					}
+					case 'KR-2020-0001:202202:0002': {
+						break;
+					}
+					case 'KR-2020-0001:202202:0003': {
+						break;
+					}
+				}
+			}
+
 			// 현재 템플릿에 컴포넌트가 빈 값 인경우 return
-			if (template.component === '') return;
+			if (!currentTemplate) return;
 			setTemplateList((prev) => {
-				if (!prev.includes(template))
+				if (
+					!prev
+						.map((pre) => pre.template.id)
+						.includes(currentTemplate.template.id)
+				)
 					// 기존 리스트에 추가하려는 템플릿이 존재하지 않으면 추가
-					return [...prev, template];
+					return [...prev, currentTemplate];
 				// 기존 리스트에 추가하려는 템플릿이 존재하면 그대로
 				else return prev;
 			});
@@ -123,23 +150,90 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 		[setIsOpened, setTemplateList],
 	);
 
+	/**************************************************
+	 * seob - 규칙 템플릿 액션 템플릿 findAll api
+	 ***************************************************/
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				// 규칙 템플릿
+				dispatch(
+					IAM_RULE_TEMPLATE.asyncAction.findAllRuleTemplateAction({
+						range: `elements=0-50`,
+					}),
+				)
+					.unwrap()
+					.then((res) => setRuleTemplates(res.data));
+
+				// 액션 템플릿 findAll
+				dispatch(
+					IAM_POLICY_TEMPLATE.asyncAction.findAll({
+						range: `elements=0-50`,
+					}),
+				)
+					.unwrap()
+					.then((res) => setActionTemplates(res.data));
+			} catch (e) {
+				console.log(e);
+			}
+		};
+
+		fetchData();
+	}, [dispatch]);
+
+	useEffect(() => {
+		// 첫 로드시 각각의 템플릿 데이터를 가져오면 로딩 false
+		if (ruleTemplates.length && actionTemplates.length) {
+			setIsLoading(false);
+		}
+	}, [actionTemplates, ruleTemplates]);
+
 	return (
 		<TemplateListContainer>
 			<Title>{contents.title}</Title>
-			<ul>
-				{templateResponse.map((template) => (
-					<li
-						key={template.title}
-						onClick={addTemplate({template})}
-						onMouseEnter={() =>
-							setTemplateDescription(template.description)
-						}
-					>
-						<button>{template.title}</button>
-					</li>
-				))}
-			</ul>
-			<div>{templateDescription}</div>
+			{isLoading ? (
+				<div>Loading...</div>
+			) : (
+				<>
+					<ul>
+						{ruleTemplates.map((template) => (
+							<li
+								key={template.id}
+								onClick={() =>
+									addTemplate({
+										template,
+										type: templateType.RULE,
+									})
+								}
+								onMouseEnter={() =>
+									setTemplateDescription(template.description)
+								}
+							>
+								<button>{template.name}</button>
+							</li>
+						))}
+					</ul>
+					<ul>
+						{actionTemplates.map((template) => (
+							<li
+								key={template.id}
+								onClick={() =>
+									addTemplate({
+										template,
+										type: templateType.ACTION,
+									})
+								}
+								onMouseEnter={() =>
+									setTemplateDescription(template.description)
+								}
+							>
+								<button>{template.name}</button>
+							</li>
+						))}
+					</ul>
+					<div>{templateDescription}</div>
+				</>
+			)}
 		</TemplateListContainer>
 	);
 };
@@ -162,12 +256,12 @@ const Templates = ({isOpened, setIsOpened}) => {
 	return (
 		<>
 			<Container>
-				{templateList.map((template) => (
+				{templateList.map((v) => (
 					<TemplateContainer
-						key={template.title}
-						render={template.component}
+						key={v.template.id}
+						render={v.render}
 						setTemplateList={setTemplateList}
-						template={template}
+						template={v.template}
 					/>
 				))}
 			</Container>
