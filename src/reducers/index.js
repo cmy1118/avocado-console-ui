@@ -32,6 +32,7 @@ import IAM_GRANT_POLICY_BY_USER from './api/IAM/User/Policy/GrantPolicy/user';
 import IAM_POLICY_TEMPLATE from './api/IAM/User/Policy/policyTemplate';
 import PAM_SESSION from './api/PAM/session';
 import IAM_RULE_TEMPLATE_DETAILE from './api/IAM/Rule/templateDetail';
+import IAM_POLICY from './api/IAM/Policy/policy';
 
 const authFilter = createFilter(AUTH.name, [
 	'companyId',
@@ -85,6 +86,11 @@ const rootReducer = combineReducers({
 	[PAGINATION.name]: PAGINATION.reducer,
 	[IAM_CLIENT.name]: IAM_CLIENT.reducer,
 	[AUTH.name]: AUTH.reducer,
+	/******************************************/
+	/* ambacc244 : IAM - Policy reducers
+    /******************************************/
+	[IAM_POLICY.name]: IAM_POLICY.reducer,
+	[IAM_RULE_TEMPLATE_DETAILE.name]: IAM_RULE_TEMPLATE_DETAILE.reducer,
 	/******************************************/
 	/* ambacc244 : IAM - Rule reducers
     /******************************************/

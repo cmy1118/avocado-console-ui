@@ -19,6 +19,9 @@ import TextBox from '../../../RecycleComponents/New/TextBox';
 import * as yup from 'yup';
 import ComboBox from '../../../RecycleComponents/New/ComboBox';
 import WritePolicy from './WritePolicy';
+import {useDispatch} from 'react-redux';
+import IAM_RULE_TEMPLATE_DETAILE from '../../../../reducers/api/IAM/Rule/templateDetail';
+import IAM_POLICY from '../../../../reducers/api/IAM/Policy/policy';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -35,6 +38,8 @@ const contents = {
  **************************************************/
 const AddPolicy = () => {
 	const history = useHistory();
+	const dispatch = useDispatch();
+
 	const formRef = useRef(null);
 
 	const validation = {
@@ -56,7 +61,18 @@ const AddPolicy = () => {
 	/**************************************************
 	 * ambacc244 - 정책 추가
 	 **************************************************/
-	const onSubmitPolicyData = useCallback(() => {}, []);
+	const onSubmitPolicyData = useCallback(() => {
+		//step1: 정책 생성
+		// dispatch(IAM_POLICY.asyncAction.createPolicyAction({}))
+		// 	.unwrap()
+		// 	.then((data) => {
+		// 		console.log(data);
+		// 	});
+		//step2-1: 권한 생성
+		//step2-2: 정책 권한 연결
+		//step3-1: rule 생성
+		//step3-2: 정책 rule 연결
+	}, []);
 
 	return (
 		<>
