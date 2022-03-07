@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from "prop-types";
+import {ColDiv, RowDiv} from "../../styles/components/style";
 
-const RowCheckbox = ({dataLists}) => {
+const RowCheckbox = ({dataLists,title}) => {
     //현재 체크된 체크박스 state
     const [checkedList, setCheckedLists] = useState([]);
     //데이터가 있는 체크박스 staet
@@ -14,7 +15,7 @@ const RowCheckbox = ({dataLists}) => {
                 console.log('전체선택')
                 const checkedListArray = [];
                 dataLists.forEach((list) =>{
-                    if(list.data) {
+                    if(list.templateId) {
                         checkedListArray.push(list)
                     }
                 })
@@ -32,7 +33,7 @@ const RowCheckbox = ({dataLists}) => {
             if (checked) {
                 console.log('check 된 정보:',list)
                 console.log('check 된 checkedList정보:',...checkedList)
-                if(list.data) {
+                if(list.templateId) {
                     setCheckedLists([...checkedList, list]);
                 }
             }else {
@@ -58,7 +59,10 @@ const RowCheckbox = ({dataLists}) => {
     },[dataLists])
 
     return (
-      <div>
+        <RowDiv>
+            <ColDiv width={'25%'}>
+          {title}
+            </ColDiv>
             {dataLists?
                 <div>
                 <input
@@ -72,21 +76,22 @@ const RowCheckbox = ({dataLists}) => {
                 />
             {dataLists.map((list) => (
                 <input
-                    disabled={list.data?false:true}
+                    disabled={list.templateId?false:true}
                 key={list.id}
                 type="checkbox"
                 onChange={(e) => onCheckedElement(e.target.checked, list)}
-                checked={checkedList.includes(list) ? true : false}
+                checked={list.effect || checkedList.includes(list) ? true : false}
                 />
                 ))}
                     </div>
                 :true
             }
-      </div>
+      </RowDiv>
 
     );
 };
 RowCheckbox.propTypes = {
     dataLists: PropTypes.array,
+    title: PropTypes.string,
 }
 export default RowCheckbox;
