@@ -8,6 +8,8 @@ import UserAuthTemplate from './Templates/UserAuthTemplate';
 import UserAccountProcessTemplate from './Templates/UserAccountProcessTemplate';
 import UserAccountPatternTemplate from './Templates/UserAccountPatternTemplate';
 import UserManagement from './Templates/UserManagement';
+import PolicyManagement from './Templates/PolicyManagement';
+import RoleManagement from './Templates/RoleManagement';
 
 const Container = styled.div`
 	display: flex;
@@ -85,12 +87,12 @@ const templateResponse = [
 	{
 		title: contents.templates.policyManagement,
 		description: 'policyManagement description',
-		component: '',
+		component: PolicyManagement,
 	},
 	{
 		title: contents.templates.roleManagement,
 		description: 'roleManagement description',
-		component: '',
+		component: RoleManagement,
 	},
 ];
 
