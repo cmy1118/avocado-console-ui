@@ -41,7 +41,7 @@ const UserManagement = ({templateId}) => {
 	//렌더링시 체크박스 정보 조회
 	useEffect(() => {
 		const res = dispatch(
-			IAM_POLICY_ACTION_TEMPLATE.asyncAction.findAllAction({
+			IAM_POLICY_ACTION_TEMPLATE.asyncAction.findAllDetailAction({
 				range: 'elements=0-50',
 				templateId: templateId,
 			}),
