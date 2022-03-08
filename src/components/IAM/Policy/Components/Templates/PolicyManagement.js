@@ -25,7 +25,7 @@ const constants = {
 	action: ['created', 'updated', 'deleted', 'read', 'revoked'],
 };
 
-const UserManagement = () => {
+const PolicyManagement = () => {
 	const dispatch = useDispatch();
 	const [dataLists, setDataLists] = useState([]);
 	// 컬럼 에대한 action 정보
@@ -81,4 +81,4 @@ const UserManagement = () => {
 	);
 };
 
-export default UserManagement;
+export default PolicyManagement;

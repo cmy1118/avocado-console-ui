@@ -11,6 +11,9 @@ import UserAuthTemplate from './Templates/UserAuthTemplate';
 import UserAccessTemplate from './Templates/UserAccessTemplate';
 import UserSessionTemplate from './Templates/UserSessionTemplate';
 import UserAccountPatternTemplate from './Templates/UserAccountPatternTemplate';
+import UserManagement from './Templates/UserManagement';
+import PolicyManagement from './Templates/PolicyManagement';
+import RoleManagement from './Templates/RoleManagement';
 
 const Container = styled.div`
 	display: flex;
