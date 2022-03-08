@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CheckBox from '../New/CheckBox';
@@ -49,32 +49,81 @@ const contents = {
  * setInterval: 요일에 해당하는 time interval를 설정하는 함수
  * disabled: 외부 제한요소에 의한 제한처리 여부
  ***************************************************/
-const TimeInterval = ({title, setInterval, disabled = false}) => {
+const TimeInterval = ({week, title, data, setData}) => {
 	// 설정한 시간
-	const [time, setTime] = useState({
-		start: '09:00',
-		end: '18:00',
-	});
+
+	const [time, setTime] = useState(
+		data?.attribute.policies[week] || {from: '09:00', to: '18:00'},
+	);
+
+	console.log(data.attribute.usage);
 
 	// 체크박스 체크 여부
-	const [checked, setChecked] = useState(true);
+	const [checked, setChecked] = useState(!!data?.attribute.policies[week]);
 
 	/**************************************************
 	 * seob - input time의 값을 변경하는 함수
 	 ***************************************************/
-	const handleChangeTime = (e) => {
-		console.log(e);
-		const {value, name} = e.target;
-		console.log('name => ', name);
-		console.log('value => ', value);
-		setTime((prev) => ({...prev, [name]: value}));
-		setInterval((prev) => ({...prev, [title]: {...time, [name]: value}}));
-	};
+	const handleChangeTime = useCallback(
+		(e) => {
+			console.log(e);
+			const {value, name} = e.target;
+			console.log('name => ', name);
+			console.log('value => ', value);
+			if (name === 'from') {
+				if (value < '09:00' || value > time.to) return;
+			} else if (name === 'to') {
+				if (value < time.from || value > '24:00') return;
+			}
+			setTime((time) => ({...time, [name]: value}));
+			setData((prev) =>
+				prev.map((v) => {
+					if (v.resource === data.resource) {
+						return {
+							...v,
+							attribute: {
+								...v.attribute,
+								policies: {
+									...v.attribute.policies,
+									[week]: {...time, [name]: value},
+								},
+							},
+						};
+					} else {
+						return v;
+					}
+				}),
+			);
+			// setTime((prev) => ({...prev, [name]: value}));
+			// setInterval((prev) => ({...prev, [title]: {...time, [name]: value}}));
+		},
+		[data, setData, time, week],
+	);
 
-	// 최초 렌더링에 interval 초기화
-	useEffect(() => {
-		setInterval((prev) => ({...prev, [title]: time}));
-	}, []); // 1번만 실행되도록 deps 빈값입니다.
+	const handleChangeChecked = useCallback(() => {
+		setData((prev) =>
+			prev.map((v) => {
+				if (v.resource === data.resource) {
+					if (checked) delete v.attribute.policies[week];
+					return {
+						...v,
+						attribute: {
+							...v.attribute,
+							policies: {
+								...v.attribute.policies,
+								...(!checked && {
+									[week]: {from: '09:00:00', to: '18:00:00'},
+								}),
+							},
+						},
+					};
+				} else {
+					return v;
+				}
+			}),
+		);
+		setChecked(!checked);
+	}, [checked, data, setData, week]);
 
 	return (
 		<Container>
@@ -82,34 +131,34 @@ const TimeInterval = ({title, setInterval, disabled = false}) => {
 				<CheckBox
 					label={contents.dayOfWeek[title]}
 					checked={checked}
-					onChange={() => setChecked(!checked)}
-					disabled={disabled}
-					indeterminate={disabled}
+					onChange={handleChangeChecked}
+					disabled={!data.attribute.usage}
+					indeterminate={!data.attribute.usage}
 				/>
 			</CheckBoxContainer>
 			<IntervalContainer>
 				<input
 					type='time'
-					value={time.start}
-					name='start'
+					value={time.from}
+					name='from'
 					min='09:00'
 					// todo: 범위를 초과하지 않도록 작업 => handleChangeTime에서 처리 필요
-					max={time.end}
+					max={time.to}
 					onChange={handleChangeTime}
 					required
-					disabled={disabled || !checked}
+					disabled={!data.attribute.usage || !checked}
 				/>
 				<div> ~ </div>
 				<input
 					type='time'
-					value={time.end}
-					name='end'
+					value={time.to}
+					name='to'
 					// todo: 범위를 초과하지 않도록 작업 => handleChangeTime에서 처리 필요
-					min={time.start}
+					min={time.from}
 					max='24:00'
 					onChange={handleChangeTime}
 					required
-					disabled={disabled || !checked}
+					disabled={!data.attribute.usage || !checked}
 				/>
 			</IntervalContainer>
 		</Container>
@@ -118,8 +167,9 @@ const TimeInterval = ({title, setInterval, disabled = false}) => {
 
 TimeInterval.propTypes = {
 	title: PropTypes.string,
-	setInterval: PropTypes.func,
-	disabled: PropTypes.bool,
+	week: PropTypes.string,
+	data: PropTypes.object,
+	setData: PropTypes.func,
 };
 
 export default TimeInterval;
