@@ -1,6 +1,11 @@
 import React, {useEffect} from 'react';
 import TemplateElement from '../../TemplateElement';
-import {authMethodOptions, usageOptions} from '../../../../../../utils/options';
+import {
+	authMethodOptions,
+	optionValue,
+	setUsageOptionByAttribute,
+	usageOptions,
+} from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
 import PropTypes from 'prop-types';
@@ -34,33 +39,47 @@ const FailOver = ({data}) => {
 		options: usageOptions,
 	});
 	//basicAuth: 기본 인증 수단
-	const [basicAuth, basicAuthRadioButton] = useRadio({
+	const [basicAuth, basicAuthRadioButton, setBasicAuth] = useRadio({
 		name: 'failOverBasicAuth',
 		options: authMethodOptions,
-		disabled: usage === usageOptions[1].key ? true : false,
+		//Fail Over 사용 여부 false일때 disabled
+		disabled: usage === optionValue.usage.none,
 	});
-	//basicAuth: mfa 수단
-	const [mfa, mfaRaddioButton] = useRadio({
+	//mfa: mfa 수단
+	const [mfa, mfaRaddioButton, setMfa] = useRadio({
 		name: 'failOverMfa',
 		options: authMethodOptions,
-		disabled: usage === usageOptions[1].key ? true : false,
+		//Fail Over 사용 여부 false일때 disabled
+		disabled: usage === optionValue.usage.none,
 	});
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		if (
-			data?.attribute &&
-			Object.prototype.hasOwnProperty.call(data?.attribute, 'usage')
-		) {
-			setUsage(
-				data.attribute.usage
-					? usageOptions[0].key
-					: usageOptions[1].key,
-			);
+		//Fail Over 사용 여부 세팅
+		setUsage(
+			setUsageOptionByAttribute(
+				data,
+				'usage',
+				usageOptions[0].key,
+				usageOptions[1].key,
+			),
+		);
+		//Fail Over 사용 여부 true
+		if (data?.usage) {
+			//기본 인증 default value 있음
+			if (Object.prototype.hasOwnProperty.call(data.policies, 'Auth')) {
+				//기본 인증 수단 세팅
+				setBasicAuth(data.policies.Auth.type);
+			}
+			//MFA default value 있음
+			if (Object.prototype.hasOwnProperty.call(data.policies, 'MFA')) {
+				//MFA 인증 수단 세팅
+				setMfa(data.policies.MFA.type);
+			}
 		}
-	}, [data]);
+	}, [data, setBasicAuth, setMfa, setUsage]);
 
 	return (
 		<TemplateElementContainer

@@ -3,15 +3,16 @@ import TemplateElement from '../../TemplateElement';
 import React, {useEffect} from 'react';
 import useRadio from '../../../../../../hooks/useRadio';
 import {
-	personalInformationRestrictionMethodOptions,
+	optionValue,
+	personalInfoRestrictionMethodOptions,
 	restrictionOptions,
+	setUsageOptionByAttribute,
 	usageOptions,
 } from '../../../../../../utils/options';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import useCheckBox from '../../../../../../hooks/useCheckBox';
 import {RowDiv} from '../../../../../../styles/components/style';
 import PropTypes from 'prop-types';
-import UserIdPattern from './UserIdPattern';
 
 const passwordPattern = {
 	title: '비밀번호 패턴',
@@ -25,29 +26,21 @@ const passwordPattern = {
 			title: '비밀번호 길이',
 			message: {from: '최소', to: '최대'},
 		},
-		consecutiveNumbers: {title: '숫자 연속 횟수'},
-		mixedLetterAndNumber: {
+		numberOfConsecutiveNumerics: {title: '숫자 연속 횟수'},
+		mixNumberAndAlpha: {
 			title: '영문 숫자 혼합 여부',
 		},
-		mixedCaseLetter: {
+		mixCase: {
 			title: '대소문자 혼합 여부',
 		},
-		repeatedCharacterRestriction: {
+		repeatedAlphaRestriction: {
 			title: '반복문자 사용제한',
-			options: {yes: '제한함', no: '제한 안함'},
 		},
-		personalInformationRestriction: {
+		personalInfoRestriction: {
 			title: '인적 사항 제한',
-			restriction: {yes: '제한함', no: '제한 안함'},
-			options: {
-				email: 'Email',
-				phoneNumber: '전화번호',
-				consecutiveNumbersWithId: 'ID 동일 연속 문자 수(3)',
-			},
 		},
-		enforcePasswordHistory: {
+		oldPasswordsRistriction: {
 			title: '이전 비밀번호 재사용 제한',
-			restrict: {yes: '제한함', no: '제한 안함'},
 			period: {message: '일'},
 		},
 	},
@@ -57,6 +50,7 @@ const passwordPattern = {
  * ambacc244 - 사용자 계정 패턴(비밀번호 패턴) 폼
  **************************************************/
 const PaswordPattern = ({data}) => {
+	//minPasswordLength: 최소 비밀번호 길이
 	const [
 		minPasswordLength,
 		minPasswordLengthTextBox,
@@ -64,6 +58,7 @@ const PaswordPattern = ({data}) => {
 	] = useTextBox({
 		name: 'minPasswordLength',
 	});
+	//maxPasswordLength: 최대 비밀번호 길이
 	const [
 		maxPasswordLength,
 		maxPasswordLengthTextBox,
@@ -71,13 +66,15 @@ const PaswordPattern = ({data}) => {
 	] = useTextBox({
 		name: 'maxPasswordLength',
 	});
+	//numberOfConsecutiveNumerics: 연속 가능 숫자 횟수
 	const [
-		consecutiveNumbers,
-		consecutiveNumbersTextBox,
-		setConsecutiveNumbers,
+		numberOfConsecutiveNumerics,
+		numberOfConsecutiveNumericsTextBox,
+		setNumberOfConsecutiveNumerics,
 	] = useTextBox({
-		name: 'consecutiveNumbers',
+		name: 'numberOfConsecutiveNumerics',
 	});
+	//mixNumberAndAlpha: 영문, 숫자 혼합여부
 	const [
 		mixNumberAndAlpha,
 		mixNumberAndAlphaRadioButton,
@@ -86,33 +83,36 @@ const PaswordPattern = ({data}) => {
 		name: 'mixNumberAndAlpha',
 		options: usageOptions,
 	});
+	//mixCase: 대소문자 혼합여부
 	const [mixCase, mixCaseRadioButton, setMixCase] = useRadio({
 		name: 'mixCase',
 		options: usageOptions,
 	});
+	//repeatedAlphaRestriction: 반복문자 사용제한 유무
 	const [
-		repeatedCharacterRestrictionNumber,
-		repeatedCharacterRestrictionRadioButton,
-		setRepeatedCharacterRestrictionNumber,
+		repeatedAlphaRestriction,
+		repeatedAlphaRestrictionRadioButton,
+		setRepeatedAlphaRestriction,
 	] = useRadio({
-		name: 'repeatedCharacterRestrictionNumber',
+		name: 'repeatedAlphaRestriction',
 		options: restrictionOptions,
 	});
+	//personalInfoRestriction: 인적 사항 제한 유무
 	const [
-		personalInformationRestriction,
-		personalInformationRestrictionRadioButton,
-		setPersonalInformationRestriction,
+		personalInfoRestriction,
+		personalInfoRestrictionRadioButton,
+		setPersonalInfoRestriction,
 	] = useRadio({
-		name: 'personalInformationRestriction',
+		name: 'personalInfoRestriction',
 		options: restrictionOptions,
 	});
-
+	//personalInfoRestrictionMethod : 인적 사항 제한 요소
 	const [
-		personalInformationRestrictionMethod,
-		personalInformationRestrictionMethodCheckBox,
-		setPersonalInformationRestrictionMethod,
-	] = useCheckBox({options: personalInformationRestrictionMethodOptions});
-
+		personalInfoRestrictionMethod,
+		personalInfoRestrictionMethodCheckBox,
+		setPersonalInfoRestrictionMethod,
+	] = useCheckBox({options: personalInfoRestrictionMethodOptions});
+	//oldPasswordsRistriction: 이전 비밀번호 재사용 제한 유무
 	const [
 		oldPasswordsRistriction,
 		oldPasswordsRistrictionRadioButton,
@@ -121,7 +121,7 @@ const PaswordPattern = ({data}) => {
 		name: 'oldPasswordsRistriction',
 		options: restrictionOptions,
 	});
-
+	//allowedDaysOfOldPasswords : 이전 비밀번호 재사용 제한 일
 	const [
 		allowedDaysOfOldPasswords,
 		allowedDaysOfOldPasswordsTextBox,
@@ -129,102 +129,95 @@ const PaswordPattern = ({data}) => {
 	] = useTextBox({
 		name: 'allowedDaysOfOldPasswords',
 	});
-	console.log(data);
+
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		if (data?.attribute?.minLength) {
-			setMinPasswordLength(data.attribute.minLength);
-		}
-
-		if (data?.attribute?.maxLength) {
-			setMaxPasswordLength(data.attribute.maxLength);
-		}
-
+		//최소 비밀번호 길이 default value 있음
+		if (data?.minLength) setMinPasswordLength(data.minLength);
+		//최대 비밀번호 길이 default value 있음
+		if (data?.maxLength) setMaxPasswordLength(data.maxLength);
+		//숫자 연속 횟수 default value 있음
 		if (
-			data?.attribute &&
+			data &&
 			Object.prototype.hasOwnProperty.call(
-				data?.attribute,
+				data,
 				'numberOfConsecutiveNumerics',
 			)
 		) {
-			setConsecutiveNumbers(data.attribute.numberOfConsecutiveNumerics);
+			setNumberOfConsecutiveNumerics(data.numberOfConsecutiveNumerics);
 		}
-
-		if (
-			data?.attribute &&
-			Object.prototype.hasOwnProperty.call(
-				data?.attribute,
+		//영문, 숫자 혼합여부 세팅
+		setMixNumberAndAlpha(
+			setUsageOptionByAttribute(
+				data,
 				'mixNumberAndAlpha',
-			)
-		) {
-			setMixNumberAndAlpha(
-				data.attribute.mixNumberAndAlpha
-					? usageOptions[0].key
-					: usageOptions[1].key,
-			);
-		}
-
+				optionValue.usage.use,
+				optionValue.usage.none,
+			),
+		);
+		//대소문자 혼합여부 세팅
+		setMixCase(
+			setUsageOptionByAttribute(
+				data,
+				'mixCase',
+				optionValue.usage.use,
+				optionValue.usage.none,
+			),
+		);
+		//반복문자 사용제한 유무 세팅
+		setRepeatedAlphaRestriction(
+			setUsageOptionByAttribute(
+				data,
+				'repeatedAlpha',
+				optionValue.restriction.restrict,
+				optionValue.restriction.none,
+			),
+		);
+		//인적 사항 제한 default value 있음
 		if (
-			data?.attribute &&
-			Object.prototype.hasOwnProperty.call(data?.attribute, 'mixCase')
-		) {
-			setMixCase(
-				data.attribute.mixCase
-					? usageOptions[0].key
-					: usageOptions[1].key,
-			);
-		}
-
-		if (
-			data?.attribute &&
+			data &&
 			Object.prototype.hasOwnProperty.call(
-				data?.attribute,
-				'repeatedCharacterRestrictionNumber',
-			)
-		) {
-			setRepeatedCharacterRestrictionNumber(
-				data.attribute.repeatedCharacterRestrictionNumber
-					? restrictionOptions[0].key
-					: restrictionOptions[1].key,
-			);
-		}
-
-		if (
-			data?.attribute &&
-			Object.prototype.hasOwnProperty.call(
-				data?.attribute,
+				data,
 				'includePersonalInfoList',
 			)
 		) {
-			setPersonalInformationRestrictionMethod(
-				data.attribute.includePersonalInfoList,
-			);
-
-			setPersonalInformationRestriction(
-				data.attribute.allowedDaysOfOldPasswords.length !== 0
-					? restrictionOptions[0].key
-					: restrictionOptions[1].key,
+			setPersonalInfoRestrictionMethod(data.includePersonalInfoList);
+			setPersonalInfoRestriction(
+				data.includePersonalInfoList.length !== 0
+					? optionValue.restriction.restrict
+					: optionValue.restriction.none,
 			);
 		}
-
+		//이전 비밀번호 재사용 제한 default value 있음 && 제한 일수가 0 보다 큼
 		if (
-			data?.attribute &&
+			data &&
 			Object.prototype.hasOwnProperty.call(
-				data?.attribute,
+				data,
 				'allowedDaysOfOldPasswords',
 			) &&
-			data.attribute.allowedDaysOfOldPasswords !== 0
+			data.allowedDaysOfOldPasswords !== 0
 		) {
 			setOldPasswordsRistriction(restrictionOptions[0].key);
-			setAllowedDaysOfOldPasswords(
-				data.attribute.allowedDaysOfOldPasswords,
-			);
+			setAllowedDaysOfOldPasswords(data.allowedDaysOfOldPasswords);
+			//이전 비밀번호 사용 제한 default value 없음 || 제한 일수가 0
 		} else {
 			setOldPasswordsRistriction(restrictionOptions[1].key);
 		}
-	}, [data]);
+	}, [
+		data,
+		setAllowedDaysOfOldPasswords,
+		setMaxPasswordLength,
+		setMinPasswordLength,
+		setMixCase,
+		setMixNumberAndAlpha,
+		setNumberOfConsecutiveNumerics,
+		setOldPasswordsRistriction,
+		setPersonalInfoRestriction,
+		setPersonalInfoRestrictionMethod,
+		setRepeatedAlphaRestriction,
+	]);
 
 	return (
 		<TemplateElementContainer
@@ -256,41 +249,38 @@ const PaswordPattern = ({data}) => {
 						/>
 						<TemplateElement
 							title={
-								passwordPattern.contents.consecutiveNumbers
-									.title
+								passwordPattern.contents
+									.numberOfConsecutiveNumerics.title
 							}
-							render={consecutiveNumbersTextBox}
+							render={numberOfConsecutiveNumericsTextBox}
 						/>
 						<TemplateElement
 							title={
-								passwordPattern.contents.mixedLetterAndNumber
-									.title
+								passwordPattern.contents.mixNumberAndAlpha.title
 							}
 							render={mixNumberAndAlphaRadioButton}
 						/>
 						<TemplateElement
-							title={
-								passwordPattern.contents.mixedCaseLetter.title
-							}
+							title={passwordPattern.contents.mixCase.title}
 							render={mixCaseRadioButton}
 						/>
 						<TemplateElement
 							title={
 								passwordPattern.contents
-									.repeatedCharacterRestriction.title
+									.repeatedAlphaRestriction.title
 							}
-							render={repeatedCharacterRestrictionRadioButton}
+							render={repeatedAlphaRestrictionRadioButton}
 						/>
 						<TemplateElement
 							title={
-								passwordPattern.contents
-									.personalInformationRestriction.title
+								passwordPattern.contents.personalInfoRestriction
+									.title
 							}
 							render={() => {
 								return (
 									<RowDiv>
-										{personalInformationRestrictionRadioButton()}
-										{personalInformationRestrictionMethodCheckBox()}
+										{personalInfoRestrictionRadioButton()}
+										{personalInfoRestrictionMethodCheckBox()}
 									</RowDiv>
 								);
 							}}
@@ -298,7 +288,7 @@ const PaswordPattern = ({data}) => {
 
 						<TemplateElement
 							title={
-								passwordPattern.contents.enforcePasswordHistory
+								passwordPattern.contents.oldPasswordsRistriction
 									.title
 							}
 							render={() => {
@@ -308,7 +298,7 @@ const PaswordPattern = ({data}) => {
 										{allowedDaysOfOldPasswordsTextBox()}
 										{
 											passwordPattern.contents
-												.enforcePasswordHistory.period
+												.oldPasswordsRistriction.period
 												.message
 										}
 									</RowDiv>

@@ -2,12 +2,12 @@ import React, {useEffect} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
 import {
-	accountStatusOptions,
+	accountBlockingTypeOptions,
 	gracePeriodUsageOptions,
+	optionValue,
 } from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import PropTypes from 'prop-types';
-import LoginFailure from './LoginFailure';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
 
@@ -44,14 +44,12 @@ const resignation = {
  * ambacc244 - 사용자 계정 처리(퇴사/탈퇴) 폼
  **************************************************/
 const Resignation = ({data}) => {
-	const [
-		accountStatus,
-		accountStatusRadioButton,
-		setAccountStatus,
-	] = useRadio({
-		name: 'accountStatus',
-		options: accountStatusOptions,
+	//accountStatus: 계정 처리 방법
+	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
+		name: 'resignationBlockingType',
+		options: accountBlockingTypeOptions,
 	});
+	//gracePeriodUsage: 유예 기간 사용 유무
 	const [
 		gracePeriodUsage,
 		gracePeriodUsageRadioButton,
@@ -60,26 +58,28 @@ const Resignation = ({data}) => {
 		name: 'gracePeriodUsage',
 		options: gracePeriodUsageOptions,
 	});
+	//gracePeriod: 유예 기간
 	const [gracePeriod, gracePeriodTextBox, setGracePeriod] = useTextBox({
 		name: 'gracePeriod',
-		disabled:
-			gracePeriodUsage === gracePeriodUsageOptions[1].key ? true : false,
+		//유예 기간 사용 유무 false일때 disabled
+		disabled: gracePeriodUsage === optionValue.gracePeriod.none,
 	});
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		if (data?.attribute?.blockingType) {
-			setAccountStatus(data.attribute.blockingType);
+		//계정 처리 방법
+		if (data?.blockingType) {
+			setBlockingType(data.blockingType);
 		}
-		if (data?.attribute?.applyDays) {
-			if (data.attribute.applyDays === 0) {
-				setGracePeriodUsage(gracePeriodUsageOptions[1].key);
-			} else {
-				setGracePeriodUsage(gracePeriodUsageOptions[0].key);
-				setGracePeriod(data.attribute.applyDays);
-			}
+		//유예기간 존재 && 유예기간이 0 보다 큼
+		if (data?.applyDays && data.applyDays !== 0) {
+			setGracePeriodUsage(optionValue.gracePeriod.use);
+			setGracePeriod(data.applyDays);
+			//유예기간 존재 하지 않음
+		} else {
+			setGracePeriodUsage(optionValue.gracePeriod.none);
 		}
 	}, [data]);
 
@@ -92,7 +92,7 @@ const Resignation = ({data}) => {
 					<div>
 						<TemplateElement
 							title={resignation.contents.accountStatus.title}
-							render={accountStatusRadioButton}
+							render={blockingTypeRadioButton}
 						/>
 
 						<TemplateElement

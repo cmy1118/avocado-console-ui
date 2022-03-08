@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import LoginFailure from './UserAccountProcessTemplate/LoginFailure';
 import Dormant from './UserAccountProcessTemplate/Dormant';
 import AccountActivePeriod from './UserAccountProcessTemplate/AccountActivePeriod';
-import GroupModifying from './UserAccountProcessTemplate/ModifyingGroup';
+import ModifyingGroup from './UserAccountProcessTemplate/ModifyingGroup';
 import Resignation from './UserAccountProcessTemplate/Resignation';
 import IAM_RULE_TEMPLATE_DETAILE from '../../../../../reducers/api/IAM/Rule/templateDetail';
 import {useDispatch} from 'react-redux';
@@ -32,7 +32,7 @@ const UserAccountProcessTemplate = ({templateId}) => {
 				let defaultData = {};
 
 				data.map((v) => {
-					defaultData[v.ruleType] = v;
+					defaultData[v.ruleType] = v.attribute;
 				});
 
 				setDefaultData(defaultData);
@@ -48,8 +48,8 @@ const UserAccountProcessTemplate = ({templateId}) => {
 			<AccountActivePeriod
 				data={defaultData && defaultData.AccountExpired}
 			/>
-			{/*<PasswordValidityPeriod />*/}
-			<GroupModifying data={defaultData && defaultData.GroupModifying} />
+
+			<ModifyingGroup data={defaultData && defaultData.GroupModifying} />
 			<Resignation data={defaultData && defaultData.Resigned} />
 		</div>
 	);

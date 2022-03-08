@@ -29,7 +29,7 @@ const UserAccountPatternTemplate = ({templateId}) => {
 				let defaultData = {};
 
 				data.map((v) => {
-					defaultData[v.ruleType] = v;
+					defaultData[v.ruleType] = v.attribute;
 				});
 
 				setDefaultData(defaultData);
