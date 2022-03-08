@@ -13,9 +13,12 @@ import PropTypes from 'prop-types';
  **************************************************/
 const UserAuthTemplate = ({templateId}) => {
 	const dispatch = useDispatch();
+	//defaultData: 템플릿의 default value
+	const [defaultData, setDefaultData] = useState([]);
 
-	const [templateData, setTemplateData] = useState([]);
-
+	/**************************************************
+	 * ambacc244 - 사용자 인증 템플릿의 default 정보 불러오기
+	 **************************************************/
 	useEffect(() => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAILE.asyncAction.findAllRuleTemplateDetailAction(
@@ -28,24 +31,24 @@ const UserAuthTemplate = ({templateId}) => {
 			.then((data) => {
 				let defaultData = {};
 
-				data.data.map((v) => {
-					defaultData[v.ruleType] = v;
+				data.map((v) => {
+					defaultData[v.ruleType] = v.attribute;
 				});
-
-				setTemplateData(defaultData);
+				setDefaultData(defaultData);
 			});
-	}, []);
+	}, [dispatch, templateId]);
+
 	return (
 		<div>
 			<DeviceAuth
-				data={templateData && templateData.DeviceAuthentication}
+				data={defaultData && defaultData.DeviceAuthentication}
 			/>
-			<MFA data={templateData && templateData.MFA} />
+			<MFA data={defaultData && defaultData.MFA} />
 			<FailOver
-				data={templateData && templateData.AlternativeAuthNFailOverAuth}
+				data={defaultData && defaultData.AlternativeAuthNFailOverAuth}
 			/>
 			<IdentityVerification
-				data={templateData && templateData.IdentityVerification}
+				data={defaultData && defaultData.IdentityVerification}
 			/>
 		</div>
 	);

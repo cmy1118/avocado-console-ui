@@ -4,16 +4,18 @@ import PaswordPattern from './UserAccountPatternTemplate/PaswordPattern';
 import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
 import IAM_RULE_TEMPLATE_DETAILE from '../../../../../reducers/api/IAM/Rule/templateDetail';
-import LoginFailure from './UserAccountProcessTemplate/LoginFailure';
 
 /**************************************************
  * ambacc244 - 사용자 계정 패턴 컴포넌트
  **************************************************/
 const UserAccountPatternTemplate = ({templateId}) => {
 	const dispatch = useDispatch();
+	//defaultData: 템플릿의 default value
+	const [defaultData, setDefaultData] = useState([]);
 
-	const [templateData, setTemplateData] = useState([]);
-
+	/**************************************************
+	 * ambacc244 - 사용자 계정 패턴 템플릿의 default 정보 불러오기
+	 **************************************************/
 	useEffect(() => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAILE.asyncAction.findAllRuleTemplateDetailAction(
@@ -26,19 +28,18 @@ const UserAccountPatternTemplate = ({templateId}) => {
 			.then((data) => {
 				let defaultData = {};
 
-				data.data.map((v) => {
-					defaultData[v.ruleType] = v;
+				data.map((v) => {
+					defaultData[v.ruleType] = v.attribute;
 				});
-				setTemplateData(defaultData);
+
+				setDefaultData(defaultData);
 			});
-	}, []);
+	}, [dispatch, templateId]);
 
 	return (
 		<div>
-			<UserIdPattern data={templateData && templateData.UserIdPattern} />
-			<PaswordPattern
-				data={templateData && templateData.PasswordPattern}
-			/>
+			<UserIdPattern data={defaultData && defaultData.UserIdPattern} />
+			<PaswordPattern data={defaultData && defaultData.PasswordPattern} />
 		</div>
 	);
 };

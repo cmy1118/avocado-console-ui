@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import TemplateElement from '../../TemplateElement';
-import {accountStatusOptions} from '../../../../../../utils/options';
+import {accountBlockingTypeOptions} from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
@@ -36,28 +36,24 @@ const loginFailure = {
  * ambacc244 - 사용자 계정 처리(로그인 실패) 폼
  **************************************************/
 const LoginFailure = ({data}) => {
-	const [
-		loginFailureCount,
-		loginFailureCountTextBox,
-		setLoginFailureCount,
-	] = useTextBox({
+	//failedCount: 로그인 실패 횟수
+	const [failedCount, failedCountTextBox, setFailedCount] = useTextBox({
 		name: 'loginFailureCount',
 	});
-	const [
-		accountStatus,
-		accountStatusRadioButton,
-		setAccountStatus,
-	] = useRadio({
-		name: 'accountStatus',
-		options: accountStatusOptions,
+	//blockingType: 계정 처리 방법
+	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
+		name: 'loginFailureBlockingType',
+		options: accountBlockingTypeOptions,
 	});
+	//failedCountInitDays: 오류 횟수 초기화
 	const [
-		resetErrorCount,
-		resetErrorCountTextBox,
-		setResetErrorCount,
+		failedCountInitDays,
+		failedCountInitDaysTextBox,
+		setFailedCountInitDays,
 	] = useTextBox({
-		name: 'resetErrorCount',
+		name: 'failedCountInitDays',
 	});
+	//accountNormalization: 계정 정상화
 	const [
 		accountNormalization,
 		accountNormalizationTextBox,
@@ -70,21 +66,27 @@ const LoginFailure = ({data}) => {
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		if (data?.attribute?.failedCount) {
-			setLoginFailureCount(data.attribute.failedCount);
+		//로그인 실패 횟수 default value 있음
+		if (data?.failedCount) {
+			//로그인 실패 횟수 세팅
+			setFailedCount(data.failedCount);
 		}
-		if (data?.attribute?.blockingType) {
-			console.log(data.attribute.blockingType);
-			setAccountStatus(data.attribute.blockingType);
+		//계정 처리 방법 default value 있음
+		if (data?.blockingType) {
+			//계정 처리 방법 세팅
+			setBlockingType(data.blockingType);
 		}
-		if (data?.attribute?.failedCountInitDays) {
-			setResetErrorCount(data.attribute.failedCountInitDays);
+		//오류 횟수 초기화 default value 있음
+		if (data?.failedCountInitDays) {
+			//오류 횟수 초기화 세팅
+			setFailedCountInitDays(data.failedCountInitDays);
 		}
-		//TODO: 계정 정상화
-		// if (data?.attribute?.qwer) {
-		// 	setAccountNormalization(data.attribute.qwer);
+		//TODO: 계정 정상화 default value 있음
+		// if (data?.failedCountInitDays) {
+		// 계정 정상화 세팅
+		// 	setAccountNormalization(data.failedCountInitDays);
 		// }
-	}, [data]);
+	}, [data, setBlockingType, setFailedCount, setFailedCountInitDays]);
 
 	return (
 		<TemplateElementContainer
@@ -100,7 +102,7 @@ const LoginFailure = ({data}) => {
 							render={() => {
 								return (
 									<RowDiv>
-										{loginFailureCountTextBox()}
+										{failedCountTextBox()}
 										{
 											loginFailure.contents
 												.loginFailureCount.message
@@ -111,14 +113,14 @@ const LoginFailure = ({data}) => {
 						/>
 						<TemplateElement
 							title={loginFailure.contents.accountStatus.title}
-							render={accountStatusRadioButton}
+							render={blockingTypeRadioButton}
 						/>
 						<TemplateElement
 							title={loginFailure.contents.resetErrorCount.title}
 							render={() => {
 								return (
 									<RowDiv>
-										{resetErrorCountTextBox()}
+										{failedCountInitDaysTextBox()}
 										{
 											loginFailure.contents
 												.resetErrorCount.message
