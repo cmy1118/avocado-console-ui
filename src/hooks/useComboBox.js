@@ -84,7 +84,7 @@ const OptionContainer = styled.div`
 	});
  * 
  ***************************************************/
-const useComboBox = ({header, options, width = 150}) => {
+const useComboBox = ({header, options, width = 150, disabled = false}) => {
 	const ref = useRef(null);
 	const [isOpened, setIsOpened] = useState(false);
 	const [value, setValue] = useState(
@@ -107,6 +107,14 @@ const useComboBox = ({header, options, width = 150}) => {
 		setIsOpened(false);
 	}, []);
 
+	const handleOpened = useCallback(() => {
+		if (disabled) {
+			setIsOpened(false);
+		} else {
+			setIsOpened(!isOpened);
+		}
+	}, [disabled, isOpened]);
+
 	// react-overlay 라이브러리 닫기 함수
 	useRootClose(ref, () => setIsOpened(false), {
 		disabled: !isOpened,
@@ -117,10 +125,7 @@ const useComboBox = ({header, options, width = 150}) => {
 	 ***************************************************/
 	const comboBox = () => (
 		<_Container width={width}>
-			<IconHeader
-				onClick={() => setIsOpened(!isOpened)}
-				className={isOpened && ' focus'}
-			>
+			<IconHeader onClick={handleOpened} className={isOpened && ' focus'}>
 				{/* header가 존재하면 header, 그렇지 않으면 첫번째 옵션의 label */}
 				<HeaderOption value={header ? '' : options[0].label}>
 					{!value

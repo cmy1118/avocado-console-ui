@@ -19,7 +19,7 @@ const Container = styled.div``;
  *
  * return <div>{Radio()}</div>
  ***************************************************/
-const useRadio = ({name, options}) => {
+const useRadio = ({name, options, disabled = false}) => {
 	// 현재 value
 	const [value, setValue] = useState(options[0].key);
 
@@ -39,6 +39,7 @@ const useRadio = ({name, options}) => {
 							// 	:
 							JSON.stringify(ele.key) === JSON.stringify(value)
 						}
+						disabled={disabled}
 					/>
 					{ele.label}
 				</label>

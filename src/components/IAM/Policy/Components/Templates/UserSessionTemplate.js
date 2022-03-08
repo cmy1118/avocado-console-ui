@@ -44,24 +44,31 @@ const contents = {
 			'최대 유휴 시간은 1800초(30분)를 초과 설정할 수 없습니다.',
 		],
 	},
+	ruleType: 'ruleType',
 };
 
 const UserSessionTemplate = ({templateId}) => {
 	const dispatch = useDispatch();
 
+	// const [data, setData] = useState([]);
+
+	const [maxSession, setMaxSession] = useState([]);
+	const [sessionTimeout, setSessionTimeout] = useState([]);
+	const [screenSaver, setScreenSaver] = useState([]);
+
 	const [screenSaverValue, screenSaverRadio, setScreenSaverValue] = useRadio({
 		name: 'sessionTemplate-screenSaver-radio',
 		options: [
-			{label: '잠금', key: 'lock'},
-			{label: '삭제', key: 'delete'},
+			{label: '사용 함', key: 'yes'},
+			{label: '사용 안함', key: 'no'},
 		],
 	});
 
 	const [dormantValue, dormantRadio, setDormantValue] = useRadio({
 		header: '사용 여부',
 		options: [
-			{label: '사용 함', key: 'use'},
-			{label: '사용 안함', key: 'unuse'},
+			{label: '잠금', key: 'lock'},
+			{label: '삭제', key: 'delete'},
 		],
 	});
 
@@ -75,55 +82,32 @@ const UserSessionTemplate = ({templateId}) => {
 
 	const [idleTime, idleTimeTextBox, setIdleTime] = useTextBox({
 		name: 'idleTime',
-		disabled: screenSaverValue === 'lock',
+		disabled: screenSaverValue === 'no',
 	});
 
-	const [innerTableDatas, setInnerTableDatas] = useState(null);
-	const [innerTableColumns, setInnerTableColumns] = useState(null);
-
-	const handleOpenSubRow = ({row, isExpanded}) => {
-		console.log(row);
-		console.log(isExpanded);
-		setData((prev) =>
-			prev.map((v) => {
-				if (v.id === row.id && !isExpanded) {
-					return {
-						...v,
-						subRows: [],
-					};
-				} else if (v.id === row.id && isExpanded) {
-					delete v.subRows;
-					return {
-						...v,
-					};
-				}
-			}),
-		);
-	};
-
-	const [data, setData] = useState([
-		{
-			id: 'data0',
-			isUsed: 'use',
-			application: 'Management Console',
-			MaintenanceTime: '14400',
-			PreservationTime: '0',
-			timeout: 'timeout',
-
-			[DRAGGABLE_KEY]: 'data0',
-
-			// inner table key가 있으면, 버튼이 생기고, 버튼을 클릭했을 때, 해당 row값을 읽어와 처리하는 함수가 필요.
-		},
-		{
-			id: 'data1',
-			isUsed: 'not use',
-			application: 'Web Terminal',
-			MaintenanceTime: '3600',
-			PreservationTime: '0',
-			timeout: 'timeout',
-			[DRAGGABLE_KEY]: 'data1',
-		},
-	]);
+	// const [data, setData] = useState([
+	// 	{
+	// 		id: 'data0',
+	// 		isUsed: 'use',
+	// 		application: 'Management Console',
+	// 		MaintenanceTime: '14400',
+	// 		PreservationTime: '0',
+	// 		timeout: 'timeout',
+	//
+	// 		[DRAGGABLE_KEY]: 'data0',
+	//
+	// 		// inner table key가 있으면, 버튼이 생기고, 버튼을 클릭했을 때, 해당 row값을 읽어와 처리하는 함수가 필요.
+	// 	},
+	// 	{
+	// 		id: 'data1',
+	// 		isUsed: 'not use',
+	// 		application: 'Web Terminal',
+	// 		MaintenanceTime: '3600',
+	// 		PreservationTime: '0',
+	// 		timeout: 'timeout',
+	// 		[DRAGGABLE_KEY]: 'data1',
+	// 	},
+	// ]);
 
 	const columns = useMemo(
 		() => [
@@ -138,7 +122,7 @@ const UserSessionTemplate = ({templateId}) => {
 								{label: '사용 함', key: 'use'},
 								{label: '사용 안함', key: 'not use'},
 							]}
-							setData={setData}
+							// setData={setData}
 						/>
 					);
 				},
@@ -170,15 +154,6 @@ const UserSessionTemplate = ({templateId}) => {
 		[],
 	);
 
-	// 수정된 내용 확인용 입니다.
-	useEffect(() => {
-		console.log(data);
-		console.log('screenSaverValue => ', screenSaverValue);
-		console.log('dormantValue => ', dormantValue);
-		console.log('unConnectedPeriod => ', unConnectedPeriod);
-		console.log('idleTime => ', idleTime);
-	}, [data, dormantValue, idleTime, screenSaverValue, unConnectedPeriod]);
-
 	useEffect(() => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAILE.asyncAction.findAllRuleTemplateDetailAction(
@@ -188,8 +163,27 @@ const UserSessionTemplate = ({templateId}) => {
 			),
 		)
 			.unwrap()
-			.then((res) => console.log(res.data));
-	}, [dispatch, templateId]);
+			.then((res) => {
+				console.log(res.data);
+				res.data.forEach((v) => {
+					if (v[contents.ruleType] === 'MaxSession') {
+						setMaxSession(v);
+					} else if (v[contents.ruleType] === 'ScreenSaver') {
+						setScreenSaver(v);
+						setScreenSaverValue(v.attribute.usage ? 'yes' : 'no');
+						setIdleTime(v.attribute.timeToIdle);
+					} else if (v[[contents.ruleType]] === 'SessionTimeout') {
+						setSessionTimeout(v);
+					}
+				});
+			});
+	}, [dispatch, setIdleTime, setScreenSaverValue, templateId]);
+
+	useEffect(() => {
+		// console.log(maxSession);
+		console.log(screenSaver);
+		// console.log(sessionTimeout);
+	}, [maxSession, screenSaver, sessionTimeout]);
 
 	return (
 		<div>
@@ -197,7 +191,9 @@ const UserSessionTemplate = ({templateId}) => {
 				title={contents.sessionTimeout.title}
 				description={contents.sessionTimeout.description}
 				render={() => (
-					<Table tableKey={'session'} data={data} columns={columns} />
+					<div>테이블</div>
+
+					// <Table tableKey={'session'} data={data} columns={columns} />
 				)}
 			/>
 			<TemplateElementContainer
