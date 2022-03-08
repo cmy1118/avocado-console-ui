@@ -1,14 +1,15 @@
 import React, {useEffect} from 'react';
 import TemplateElement from '../../TemplateElement';
 import {
-	patternFormatOptions,
+	optionValue,
+	patternTypeOptions,
+	setUsageOptionByAttribute,
 	usageOptions,
 } from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import PropTypes from 'prop-types';
-import UserAccountPatternTemplate from '../UserAccountPatternTemplate';
 
 const userIdPattern = {
 	title: '사용자 ID 패턴',
@@ -19,13 +20,11 @@ const userIdPattern = {
 	contents: {
 		usage: {
 			title: '사용 여부',
-			options: {use: '사용함', nonuse: '사용 안함'},
 		},
-		patternFormat: {
+		patternType: {
 			title: '패턴 형식',
-			options: {prefix: '접두사', suffix: '접미사'},
 		},
-		patternInput: {
+		pattern: {
 			title: '패턴 입력',
 		},
 	},
@@ -35,45 +34,43 @@ const userIdPattern = {
  * ambacc244 - 사용자 계정 패턴(사용자 ID 패턴) 폼
  **************************************************/
 const UserIdPattern = ({data}) => {
+	//usage: 사용자 계정 패턴 사용 여부
 	const [usage, usageRadioButton, setUsage] = useRadio({
-		name: 'usage',
+		name: 'userPatternUsage',
 		options: usageOptions,
 	});
-	const [
-		patternFormat,
-		patternFormatRadioButton,
-		setPatternFormat,
-	] = useRadio({
-		name: 'patternFormat',
-		options: patternFormatOptions,
+	//patternType: 패턴 형식
+	const [patternType, patternTypeRadioButton, setPatternType] = useRadio({
+		name: 'patternType',
+		options: patternTypeOptions,
 	});
-	const [patternInput, patternInputTextBox, setPatternInput] = useTextBox({
-		name: 'patternInput',
+	//pattern: 패턴
+	const [pattern, patternTextBox, setPattern] = useTextBox({
+		name: 'pattern',
 	});
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		if (
-			data?.attribute &&
-			Object.prototype.hasOwnProperty.call(data?.attribute, 'usage')
-		) {
-			setUsage(
-				data.attribute.usage
-					? usageOptions[0].key
-					: usageOptions[1].key,
-			);
-			if (data.attribute.usage) {
-				if (data.attribute.pattern)
-					setPatternInput(data.attribute.pattern);
-
-				if (data.attribute.patternType) {
-					setPatternFormat(data.attribute.patternType);
-				}
-			}
+		//사용자 계정 패턴 사용 여부 세팅
+		setUsage(
+			setUsageOptionByAttribute(
+				data,
+				'usage',
+				optionValue.usage.use,
+				optionValue.usage.none,
+			),
+		);
+		//사용자 계정 패턴 사용
+		if (data?.usage) {
+			//패턴 형식 default value 존재
+			if (data?.patternType) setPatternType(data.patternType);
+			//패턴 default value 존재
+			if (data?.pattern) setPattern(data.pattern);
 		}
-	}, [data]);
+	}, [data, setPattern, setPatternType, setUsage]);
+
 	return (
 		<TemplateElementContainer
 			title={userIdPattern.title}
@@ -86,12 +83,12 @@ const UserIdPattern = ({data}) => {
 							render={usageRadioButton}
 						/>
 						<TemplateElement
-							title={userIdPattern.contents.patternFormat.title}
-							render={patternFormatRadioButton}
+							title={userIdPattern.contents.patternType.title}
+							render={patternTypeRadioButton}
 						/>
 						<TemplateElement
-							title={userIdPattern.contents.patternInput.title}
-							render={patternInputTextBox}
+							title={userIdPattern.contents.pattern.title}
+							render={patternTextBox}
 						/>
 					</div>
 				);

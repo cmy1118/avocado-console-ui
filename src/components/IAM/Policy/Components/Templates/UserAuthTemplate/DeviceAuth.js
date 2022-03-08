@@ -3,14 +3,13 @@ import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
 import {
 	applicationOptions,
-	gracePeriodUsageOptions,
+	optionValue,
+	setUsageOptionByAttribute,
 	usageOptions,
 } from '../../../../../../utils/options';
-import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
 import useRadio from '../../../../../../hooks/useRadio';
 import useCheckBox from '../../../../../../hooks/useCheckBox';
 import PropTypes from 'prop-types';
-import LoginFailure from '../UserAccountProcessTemplate/LoginFailure';
 
 const deviceAuth = {
 	title: '단말기 인증',
@@ -38,23 +37,32 @@ const DeviceAuth = ({data}) => {
 		name: 'deviceAuthUsage',
 		options: usageOptions,
 	});
-	const [application, applicationCheckBox] = useCheckBox({
+	//application: 사용가능한 applications
+	const [application, applicationCheckBox, setApplications] = useCheckBox({
 		options: applicationOptions,
-		disabled: usage === usageOptions[1].key ? true : false,
+		//단말기 인증 사용 false일때 disabled
+		disabled: usage === optionValue.usage.none,
 	});
 
+	/**************************************************
+	 * ambacc244 - 사용자 인증(단말기 인증) default 값 세팅
+	 **************************************************/
 	useEffect(() => {
-		if (
-			data?.attribute &&
-			Object.prototype.hasOwnProperty.call(data?.attribute, 'usage')
-		) {
-			setUsage(
-				data.attribute.usage
-					? usageOptions[0].key
-					: usageOptions[1].key,
-			);
+		//단말기 인증 사용 여부 세팅
+		setUsage(
+			setUsageOptionByAttribute(
+				data,
+				'usage',
+				usageOptions[0].key,
+				usageOptions[1].key,
+			),
+		);
+		//단말기 인증 사용 여부 true, 인증 단말기가 존재
+		if (data?.usage && data.resource) {
+			//사용하는 단말기 종류 세팅
+			setApplications(data.resource);
 		}
-	}, [data]);
+	}, [data, setApplications, setUsage]);
 
 	return (
 		<TemplateElementContainer

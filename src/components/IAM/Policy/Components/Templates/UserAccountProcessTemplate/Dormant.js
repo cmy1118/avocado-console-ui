@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
-import {accountStatusOptions} from '../../../../../../utils/options';
+import {accountBlockingTypeOptions} from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
@@ -14,7 +14,7 @@ const dormant = {
 		'정상화 후 재로그인 시에 패스워드를 변경해야 합니다.',
 	],
 	contents: {
-		inactivePeriod: {
+		unconnectedDays: {
 			title: '연속 미접속 기간',
 			message: '일',
 		},
@@ -36,33 +36,35 @@ const dormant = {
  * ambacc244 - 사용자 계정 처리(휴면) 폼
  **************************************************/
 const Dormant = ({data}) => {
-	const [
-		accountStatus,
-		accountStatusRadioButton,
-		setAccountStatus,
-	] = useRadio({
-		name: 'accountStatus',
-		options: accountStatusOptions,
+	//blockingType : 계정 처리 방법
+	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
+		name: 'dormantBlockingType',
+		options: accountBlockingTypeOptions,
 	});
+	// unconnectedDays: 연속 미접속 기간
 	const [
-		inactivePeriod,
-		inactivePeriodTextBox,
-		seInactivePeriod,
+		unconnectedDays,
+		unconnectedDaysTextBox,
+		setUnconnectedDays,
 	] = useTextBox({
-		name: 'inactivePeriod',
+		name: 'unconnectedDays',
 	});
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		if (data?.attribute?.blockingType) {
-			setAccountStatus(data.attribute.blockingType);
+		//계정 처리 방법 default value 존재
+		if (data?.blockingType) {
+			//계정 처리 방법 세팅
+			setBlockingType(data.blockingType);
 		}
-		if (data?.attribute?.unconnectedDays) {
-			seInactivePeriod(data.attribute.unconnectedDays);
+		//연속 미접속 기간 default value 존재
+		if (data?.unconnectedDays) {
+			//연속 미접속 기간 세팅
+			setUnconnectedDays(data.unconnectedDays);
 		}
-	}, [data]);
+	}, [data, setBlockingType, setUnconnectedDays]);
 
 	return (
 		<TemplateElementContainer
@@ -72,13 +74,13 @@ const Dormant = ({data}) => {
 				return (
 					<div>
 						<TemplateElement
-							title={dormant.contents.inactivePeriod.title}
+							title={dormant.contents.unconnectedDays.title}
 							render={() => {
 								return (
 									<RowDiv>
-										{inactivePeriodTextBox()}
+										{unconnectedDaysTextBox()}
 										{
-											dormant.contents.inactivePeriod
+											dormant.contents.unconnectedDays
 												.message
 										}
 									</RowDiv>
@@ -87,7 +89,7 @@ const Dormant = ({data}) => {
 						/>
 						<TemplateElement
 							title={dormant.contents.accountStatus.title}
-							render={accountStatusRadioButton}
+							render={blockingTypeRadioButton}
 						/>
 
 						<TemplateElement

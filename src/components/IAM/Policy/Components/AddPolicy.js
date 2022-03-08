@@ -8,7 +8,6 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../styles/components/buttons';
-import {useHistory} from 'react-router-dom';
 import {
 	AddPageContent,
 	TextBoxDescription,
@@ -20,8 +19,8 @@ import * as yup from 'yup';
 import ComboBox from '../../../RecycleComponents/New/ComboBox';
 import WritePolicy from './WritePolicy';
 import {useDispatch} from 'react-redux';
-import IAM_RULE_TEMPLATE_DETAILE from '../../../../reducers/api/IAM/Rule/templateDetail';
 import IAM_POLICY from '../../../../reducers/api/IAM/Policy/policy';
+import {policyManageTypes, policyTypes} from '../../../../utils/data';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -37,7 +36,6 @@ const contents = {
  * ambacc244 - 새로운 정책 추가를 위한 기본 정보을 입력받는 컴포넌트
  **************************************************/
 const AddPolicy = () => {
-	const history = useHistory();
 	const dispatch = useDispatch();
 
 	const formRef = useRef(null);
@@ -51,6 +49,7 @@ const AddPolicy = () => {
 			.string()
 			.max(200, '최대 길이는 200자 입니다.')
 			.required('정책 설명은 필수 입력 값입니다.'),
+		type: yup.string().required('정책 유형은 필수 입력 값입니다.'),
 	};
 
 	/**************************************************
@@ -61,17 +60,26 @@ const AddPolicy = () => {
 	/**************************************************
 	 * ambacc244 - 정책 추가
 	 **************************************************/
-	const onSubmitPolicyData = useCallback(() => {
-		//step1: 정책 생성
-		// dispatch(IAM_POLICY.asyncAction.createPolicyAction({}))
-		// 	.unwrap()
-		// 	.then((data) => {
-		// 		console.log(data);
-		// 	});
-		//step2-1: 권한 생성
-		//step2-2: 정책 권한 연결
-		//step3-1: rule 생성
-		//step3-2: 정책 rule 연결
+	const onSubmitPolicyData = useCallback((data) => {
+		//생성할 정책의 타입이 iam
+		if (data.type === policyTypes.iam) {
+			//step1: 정책 생성
+			dispatch(
+				IAM_POLICY.asyncAction.createPolicyAction({
+					name: data.name,
+					description: data.description,
+					type: policyManageTypes.Client,
+				}),
+			)
+				.unwrap()
+				.then((data) => {
+					console.log(data);
+				});
+			//step2-1: 권한 생성
+			//step2-2: 정책 권한 연결
+			//step3-1: rule 생성
+			//step3-2: 정책 rule 연결
+		}
 	}, []);
 
 	return (
@@ -128,8 +136,8 @@ const AddPolicy = () => {
 							name={'type'}
 							header={'정책 유형 선택'}
 							options={[
-								{value: 'iam', label: 'IAM'},
-								{value: 'pam', label: 'PAM'},
+								{value: policyTypes.iam, label: 'IAM'},
+								{value: policyTypes.pam, label: 'PAM'},
 							]}
 						/>
 						<TextBoxDescription>

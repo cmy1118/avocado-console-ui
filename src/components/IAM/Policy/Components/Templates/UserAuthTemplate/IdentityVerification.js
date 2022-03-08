@@ -3,6 +3,7 @@ import React, {useEffect} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import {
 	identityVerificationMethodOptions,
+	optionValue,
 	usageOptions,
 } from '../../../../../../utils/options';
 import TemplateElement from '../../TemplateElement';
@@ -10,7 +11,6 @@ import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
 import PropTypes from 'prop-types';
-import MFA from './MFA';
 
 const identityVerification = {
 	title: '본인 확인 인증',
@@ -25,7 +25,7 @@ const identityVerification = {
 		authMethod: {
 			title: '확인 유형',
 		},
-		timeOutSeconds: {
+		timeoutSeconds: {
 			title: '입력 대기 시간(초)',
 			message: '초',
 		},
@@ -45,41 +45,39 @@ const IdentityVerification = ({data}) => {
 	const [authMethod, authMethodRadioButton, setAuthMethod] = useRadio({
 		name: 'IdentityVerificationAuthMethod',
 		options: identityVerificationMethodOptions,
+		//본인 확인 인증 사용 여부 false일때 disabled
+		disabled: usage === optionValue.usage.none,
 	});
-	//timeOutSeconds: 입력 대기 시간
+	//timeoutSeconds: 입력 대기 시간
 	const [
-		timeOutSeconds,
-		timeOutSecondsTextBox,
-		setTimeOutSeconds,
+		timeoutSeconds,
+		timeoutSecondsTextBox,
+		setTimeoutSeconds,
 	] = useTextBox({
 		name: 'timeOutSeconds',
+		//본인 확인 인증 사용 여부 false일때 disabled
+		disabled: usage === optionValue.usage.none,
 	});
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		if (
-			data?.attribute &&
-			Object.prototype.hasOwnProperty.call(data.attribute, 'usage')
-		) {
-			setUsage(
-				data.attribute.usage
-					? usageOptions[0].key
-					: usageOptions[1].key,
-			);
+		//본인 확인 인증의 정책이 존재
+		if (data?.policies && Object.keys(data.policies).length > 0) {
+			//본인 확인 인증 사용 여부 세팅
+			setUsage(optionValue.usage.use);
+			//인증 수단
+			const method = Object.keys(data.policies)[0];
+			//인증수단 & 입력 대시 시간 세팅
+			setAuthMethod(method);
+			setTimeoutSeconds(data.policies[method].timoutSeconds);
+			//본인 확인 인증 정책이 존재하지 않음
+		} else {
+			//본인 확인 인증 사용 여부 세팅
+			setUsage(optionValue.usage.none);
 		}
-		if (
-			data?.attribute?.policies &&
-			Object.prototype.hasOwnProperty.call(
-				data.attribute.policies,
-				'MAIL',
-			)
-		) {
-			setAuthMethod(identityVerificationMethodOptions[1].key);
-			setTimeOutSeconds(data.attribute.policies.MAIL.timoutSeconds);
-		}
-	}, [data]);
+	}, [data, setAuthMethod, setTimeoutSeconds, setUsage]);
 
 	return (
 		<TemplateElementContainer
@@ -100,16 +98,16 @@ const IdentityVerification = ({data}) => {
 						/>
 						<TemplateElement
 							title={
-								identityVerification.contents.timeOutSeconds
+								identityVerification.contents.timeoutSeconds
 									.title
 							}
 							render={() => {
 								return (
 									<RowDiv>
-										{timeOutSecondsTextBox()}
+										{timeoutSecondsTextBox()}
 										{
 											identityVerification.contents
-												.timeOutSeconds.message
+												.timeoutSeconds.message
 										}
 									</RowDiv>
 								);

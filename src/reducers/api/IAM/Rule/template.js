@@ -5,6 +5,9 @@ import {Axios, baseURL} from '../../../../api/constants';
 
 const NAME = 'IAM_RULE_TEMPLATE';
 
+/**************************************************
+ * ambacc244 - IAM rule 템플릿 요청 액션
+ **************************************************/
 const findAllRuleTemplateAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {

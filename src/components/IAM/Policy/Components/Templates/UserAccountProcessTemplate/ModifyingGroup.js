@@ -2,8 +2,8 @@ import React, {useEffect} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
 import {
-	accountStatus2Options,
-	groupPrivilegesOptions,
+	accountBlockingType2Options,
+	groupPermissionTypeOptions,
 } from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import useComboBox from '../../../../../../hooks/useComboBox';
@@ -21,10 +21,10 @@ const modifyingGroup = {
 			title: '제어 그룹 유형',
 			placeholder: '선택',
 		},
-		accountStatus: {
+		blockingType: {
 			title: '계정 처리 방법',
 		},
-		groupPrivileges: {
+		groupPermissionType: {
 			title: '그룹 권한 처리',
 		},
 		accountNormalization: {
@@ -40,44 +40,50 @@ const tempOption = [{key: 'select', label: '선택'}];
  * ambacc244 - 사용자 계정 처리(그룹 변경) 폼
  **************************************************/
 const ModifyingGroup = ({data}) => {
-	const [
-		accountStatus,
-		accountStatusRadioButton,
-		setAccountStatus,
-	] = useRadio({
-		name: 'accountStatus',
-		options: accountStatus2Options,
-	});
-	const [
-		groupPrivileges,
-		groupPrivilegesRadioButton,
-		setGroupPrivileges,
-	] = useRadio({
-		name: 'groupPrivileges',
-		options: groupPrivilegesOptions,
-	});
-
+	//group1: 제어 그룹 유형1
 	const [group1, group1ComboBox] = useComboBox({
 		options: tempOption,
 	});
+	//group2: 제어 그룹 유형2
 	const [group2, group2ComboBox] = useComboBox({
 		options: tempOption,
 	});
+	//group3: 제어 그룹 유형3
 	const [group3, group3ComboBox] = useComboBox({
 		options: tempOption,
+	});
+	//blockingType: 계정 처리 방법
+	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
+		name: 'modifyingGroupBlockingType',
+		options: accountBlockingType2Options,
+	});
+	//groupPermissionType: 그룹 권한 처리
+	const [
+		groupPermissionType,
+		groupPermissionTypeRadioButton,
+		setGroupPermissionType,
+	] = useRadio({
+		name: 'groupPermissionType',
+		options: groupPermissionTypeOptions,
 	});
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		if (data?.attribute?.blockingType) {
-			setAccountStatus(data.attribute.blockingType);
+		//TODO: 제어 그룹 유형
+
+		//계정 처리 방법 default value 있음
+		if (data?.blockingType) {
+			//계정 처리 방법 세팅
+			setBlockingType(data.blockingType);
 		}
-		if (data?.attribute?.unconnectedDays) {
-			setGroupPrivileges(data.attribute.unconnectedDays);
+		//그룹 권한 처리 default value 있음
+		if (data?.permissionType) {
+			//그룹 권한 처리 세팅
+			setGroupPermissionType(data?.permissionType);
 		}
-	}, [data]);
+	}, [data, setBlockingType, setGroupPermissionType]);
 
 	return (
 		<TemplateElementContainer
@@ -102,14 +108,15 @@ const ModifyingGroup = ({data}) => {
 						/>
 
 						<TemplateElement
-							title={modifyingGroup.contents.accountStatus.title}
-							render={accountStatusRadioButton}
+							title={modifyingGroup.contents.blockingType.title}
+							render={blockingTypeRadioButton}
 						/>
 						<TemplateElement
 							title={
-								modifyingGroup.contents.groupPrivileges.title
+								modifyingGroup.contents.groupPermissionType
+									.title
 							}
-							render={groupPrivilegesRadioButton}
+							render={groupPermissionTypeRadioButton}
 						/>
 						<TemplateElement
 							title={

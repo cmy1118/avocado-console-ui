@@ -16,6 +16,21 @@ export const mfa = {
 	FACE_ID: 4,
 };
 
+export const policyTypes = {
+	iam: 'IAM',
+	pam: 'PAM',
+};
+
+export const policyManageTypes = {
+	Avocado: 0,
+	Client: 1,
+};
+
+export const controlTypes = {
+	RBAC: 1,
+	ABAC: 2,
+};
+
 //페이지 범위
 export const selectedPageSize = [3, 7, 100, 200];
 //계정 상태

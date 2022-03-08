@@ -1,12 +1,11 @@
 import React, {useEffect} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
-import {accountStatusOptions} from '../../../../../../utils/options';
+import {accountBlockingTypeOptions} from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
 import PropTypes from 'prop-types';
-import LoginFailure from './LoginFailure';
 
 const accountActivePeriod = {
 	title: '계정 사용 기간',
@@ -15,11 +14,11 @@ const accountActivePeriod = {
 		'관리자 정상화 후 기간 연장합니다.',
 	],
 	contents: {
-		activePeriod: {
+		expiryDays: {
 			title: '사용 기간',
 			message: '일',
 		},
-		accountStatus: {
+		blockingType: {
 			title: '계정 처리 방법',
 		},
 		accountNormalization: {
@@ -33,22 +32,31 @@ const accountActivePeriod = {
  * ambacc244 - 사용자 계정 처리(계정 사용 기간) 폼
  **************************************************/
 const AccountActivePeriod = ({data}) => {
-	const [activePeriod, activePeriodTextBox, setActivePeriod] = useTextBox({
-		name: 'activePeriod',
+	//activePeriod : 계정 사용 기간
+	const [expiryDays, expiryDaysTextBox, setExpiryDays] = useTextBox({
+		name: 'expiryDays',
 	});
-	const [accountStatus, setAccountRadioButton, setAccountStatus] = useRadio({
-		name: 'accountStatus',
-		options: accountStatusOptions,
+	//blockingType : 계정 처리 방법
+	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
+		name: 'AccountActivePeriodBlockingType',
+		options: accountBlockingTypeOptions,
 	});
 
+	/**************************************************
+	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
+	 **************************************************/
 	useEffect(() => {
-		if (data?.attribute?.expiryDays) {
-			setActivePeriod(data.attribute.expiryDays);
+		//계정 사용 기간 default value 존재
+		if (data?.expiryDays) {
+			//계정 사용 기간 세팅
+			setExpiryDays(data.expiryDays);
 		}
-		if (data?.attribute?.blockingType) {
-			setAccountStatus(data.attribute.blockingType);
+		//계정 처리 방법 default value 존재
+		if (data?.blockingType) {
+			//계정 처리 방법 세팅
+			setBlockingType(data.blockingType);
 		}
-	}, [data]);
+	}, [data, setBlockingType, setExpiryDays]);
 
 	return (
 		<TemplateElementContainer
@@ -59,15 +67,15 @@ const AccountActivePeriod = ({data}) => {
 					<div>
 						<TemplateElement
 							title={
-								accountActivePeriod.contents.activePeriod.title
+								accountActivePeriod.contents.expiryDays.title
 							}
 							render={() => {
 								return (
 									<RowDiv>
-										{activePeriodTextBox()}
+										{expiryDaysTextBox()}
 										{
 											accountActivePeriod.contents
-												.activePeriod.message
+												.expiryDays.message
 										}
 									</RowDiv>
 								);
@@ -75,9 +83,9 @@ const AccountActivePeriod = ({data}) => {
 						/>
 						<TemplateElement
 							title={
-								accountActivePeriod.contents.accountStatus.title
+								accountActivePeriod.contents.blockingType.title
 							}
-							render={setAccountRadioButton}
+							render={blockingTypeRadioButton}
 						/>
 
 						<TemplateElement
