@@ -124,12 +124,27 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 			else if (type === templateType.ACTION) {
 				switch (template.id) {
 					case 'KR-2020-0001:202202:0001': {
+						currentTemplate = {
+							template,
+							render: () =>
+								UserManagement({templateId: template.id}),
+						};
 						break;
 					}
 					case 'KR-2020-0001:202202:0002': {
+						currentTemplate = {
+							template,
+							render: () =>
+								PolicyManagement({templateId: template.id}),
+						};
 						break;
 					}
 					case 'KR-2020-0001:202202:0003': {
+						currentTemplate = {
+							template,
+							render: () =>
+								RoleManagement({templateId: template.id}),
+						};
 						break;
 					}
 				}

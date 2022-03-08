@@ -4,6 +4,8 @@ import {useDispatch} from 'react-redux';
 import IAM_POLICY_ACTION_TEMPLATE from '../../../../../reducers/api/IAM/Policy/ActionTemplate/actionTemplate';
 import {ColDiv} from '../../../../../styles/components/style';
 import {filterPropObj, objArrUnion} from '../../../../../utils/dataFitering';
+import PropTypes from "prop-types";
+import UserManagement from "./UserManagement";
 
 const constants = {
 	main: '사용자 관리 권한',
@@ -22,19 +24,20 @@ const constants = {
 		'설명',
 	],
 	//체크박스 action event 정보
-	action: ['created', 'updated', 'deleted', 'read', 'revoked'],
+	action: ['created', 'updated', 'deleted', 'read','grant', 'revoked'],
 };
 
-const PolicyManagement = () => {
+const PolicyManagement = ({templateId}) => {
 	const dispatch = useDispatch();
 	const [dataLists, setDataLists] = useState([]);
-	// 컬럼 에대한 action 정보
+	//정책관리권한 컬럼 에대한 action 정보
 	const tempDataLists = [
 		{action: 'create', data: false},
-		{action: 'read', data: false},
 		{action: 'update', data: false},
 		{action: 'delete', data: false},
 		{action: 'find', data: false},
+		{action: 'grant', data: false},
+		{action: 'revoke', data: false},
 	];
 
 	//렌더링시 체크박스 정보 조회
@@ -42,18 +45,17 @@ const PolicyManagement = () => {
 		const res = dispatch(
 			IAM_POLICY_ACTION_TEMPLATE.asyncAction.findAllAction({
 				range: 'elements=0-50',
-				templateId: constants.templatesId,
+				templateId:templateId,
 			}),
 		)
 			.unwrap()
 			.then((res) => {
-				//배열 객체 프로퍼티 분리
+				console.log('정책관리권한 API:',res)
 				const filteredDataList = filterPropObj(
 					res.data,
 					'resource',
 					'data',
 				);
-				//기존 temp배열 대상 배열객체 합치기
 				const result = objArrUnion(
 					filteredDataList,
 					tempDataLists,
@@ -80,5 +82,7 @@ const PolicyManagement = () => {
 		</div>
 	);
 };
-
+PolicyManagement.propTypes = {
+	templateId: PropTypes.string,
+};
 export default PolicyManagement;

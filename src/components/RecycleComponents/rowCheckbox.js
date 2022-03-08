@@ -42,10 +42,6 @@ const RowCheckbox = ({dataLists,title}) => {
         },
         [checkedList]
     );
-    console.log('부모에서 넘어온 체크박스 정보:',dataLists)
-    console.log('현재 체크된 정보 :',checkedList)
-    console.log('데이터가 있는 체크박스 정보:',tempDataLists)
-    console.log('-------------------------------------')
 
     //렌더링시 데이터가 없는 체크박스 처리
     useEffect(()=>{
