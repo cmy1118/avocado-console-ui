@@ -33,6 +33,7 @@ import IAM_POLICY_TEMPLATE from './api/IAM/User/Policy/policyTemplate';
 import PAM_SESSION from './api/PAM/session';
 import IAM_RULE_TEMPLATE_DETAILE from './api/IAM/Rule/templateDetail';
 import IAM_POLICY from './api/IAM/Policy/policy';
+import IAM_POLICY_ACTION_TEMPLATE from "./api/IAM/Policy/ActionTemplate/actionTemplate";
 
 const authFilter = createFilter(AUTH.name, [
 	'companyId',
@@ -58,7 +59,6 @@ const iamPolicyTypeFilter = createFilter(IAM_USER_POLICY.name, ['groupTypes']);
 const persistConfig = {
 	key: 'root',
 	storage: storageSession,
-
 	whitelist: [
 		AUTH.name,
 		IAM_USER.name,
@@ -91,6 +91,7 @@ const rootReducer = combineReducers({
     /******************************************/
 	[IAM_POLICY.name]: IAM_POLICY.reducer,
 	[IAM_RULE_TEMPLATE_DETAILE.name]: IAM_RULE_TEMPLATE_DETAILE.reducer,
+	[IAM_POLICY_ACTION_TEMPLATE.name]: IAM_POLICY_ACTION_TEMPLATE.reducer,
 	/******************************************/
 	/* ambacc244 : IAM - Rule reducers
     /******************************************/

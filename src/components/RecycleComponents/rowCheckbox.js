@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {ColDiv, RowDiv} from "../../styles/components/style";
 
 const RowCheckbox = ({dataLists,title}) => {
+    console.log('dataLists:',dataLists)
     //현재 체크된 체크박스 state
     const [checkedList, setCheckedLists] = useState([]);
     //데이터가 있는 체크박스 staet
@@ -47,7 +48,7 @@ const RowCheckbox = ({dataLists,title}) => {
     useEffect(()=>{
         let data=[]
         dataLists.map(item =>{
-            if(item.data){
+            if(item.templateId){
                 data.push(item)
             }
         })
@@ -76,7 +77,8 @@ const RowCheckbox = ({dataLists,title}) => {
                 key={list.id}
                 type="checkbox"
                 onChange={(e) => onCheckedElement(e.target.checked, list)}
-                checked={list.effect || checkedList.includes(list) ? true : false}
+                checked={checkedList.includes(list) ? true : false}
+                // checked={list.effect ||   checkedList.includes(list) ? true : false}
                 />
                 ))}
                     </div>

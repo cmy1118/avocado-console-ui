@@ -45,7 +45,7 @@ export function filterPropObj(array, prop, target) {
 			filterPropObject.push(object);
 		}
 	});
-	console.log('filterPropObject:', filterPropObject);
+	console.log('filterPropObj 결과:', filterPropObject);
 	return filterPropObject;
 }
 
@@ -71,6 +71,6 @@ export function objArrUnion(array, tempData, prop, prop2, target) {
 		// const newObject = {resource: v.resource, data: newData};
 		result.push(newObject);
 	});
-	console.log('result:', result);
+	console.log('objArrUnion 결과:', result);
 	return result;
 }
