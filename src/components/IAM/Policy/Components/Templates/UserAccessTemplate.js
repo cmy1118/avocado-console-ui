@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import TemplateElementContainer from '../../TemplateElementContainer';
+import TemplateElementContainer from '../TemplateElementContainer';
 import PropTypes from 'prop-types';
-import IAM_RULE_TEMPLATE_DETAILE from '../../../../../../reducers/api/IAM/Rule/templateDetail';
+import IAM_RULE_TEMPLATE_DETAILE from '../../../../../reducers/api/IAM/Rule/templateDetail';
 import {useDispatch} from 'react-redux';
-import TemplateElement from '../../TemplateElement';
-import TimeInterval from '../../../../../RecycleComponents/Templates/TimeInterval';
-import useRadio from '../../../../../../hooks/useRadio';
+import TemplateElement from '../TemplateElement';
+import TimeInterval from '../../../../RecycleComponents/Templates/TimeInterval';
+import useRadio from '../../../../../hooks/useRadio';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
