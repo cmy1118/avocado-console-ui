@@ -9,6 +9,8 @@ import TableTextBox from '../../../../Table/ColumnCells/TableTextBox';
 import {RowDiv} from '../../../../../styles/components/style';
 import useTextBox from '../../../../../hooks/useTextBox';
 import PropTypes from 'prop-types';
+import IAM_RULE_TEMPLATE_DETAILE from '../../../../../reducers/api/IAM/Rule/templateDetail';
+import {useDispatch} from 'react-redux';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -45,6 +47,8 @@ const contents = {
 };
 
 const UserSessionTemplate = ({templateId}) => {
+	const dispatch = useDispatch();
+
 	const [screenSaverValue, screenSaverRadio, setScreenSaverValue] = useRadio({
 		name: 'sessionTemplate-screenSaver-radio',
 		options: [
@@ -175,13 +179,17 @@ const UserSessionTemplate = ({templateId}) => {
 		console.log('idleTime => ', idleTime);
 	}, [data, dormantValue, idleTime, screenSaverValue, unConnectedPeriod]);
 
-	// 초기값 세팅
 	useEffect(() => {
-		setScreenSaverValue('delete');
-		setDormantValue('unuse');
-		setUnConnectPeriod(12);
-		setIdleTime(330);
-	}, []); // 초기 1번만 수정하므로 deps는 빈 값 입니다.
+		dispatch(
+			IAM_RULE_TEMPLATE_DETAILE.asyncAction.findAllRuleTemplateDetailAction(
+				{
+					id: templateId,
+				},
+			),
+		)
+			.unwrap()
+			.then((res) => console.log(res.data));
+	}, [dispatch, templateId]);
 
 	return (
 		<div>

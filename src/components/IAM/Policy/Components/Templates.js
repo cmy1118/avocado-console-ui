@@ -8,7 +8,7 @@ import IAM_RULE_TEMPLATE from '../../../../reducers/api/IAM/Rule/template';
 import {templateType} from '../../../../utils/template';
 import UserAccountProcessTemplate from './Templates/UserAccountProcessTemplate';
 import UserAuthTemplate from './Templates/UserAuthTemplate';
-import UserAccessTemplate from './Templates/UserAccessTemplate';
+import UserAccessTemplate from './Templates/UserAccessTemplate/UserAccessTemplate';
 import UserSessionTemplate from './Templates/UserSessionTemplate';
 import UserAccountPatternTemplate from './Templates/UserAccountPatternTemplate';
 
