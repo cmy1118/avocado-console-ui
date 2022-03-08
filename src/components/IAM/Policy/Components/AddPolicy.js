@@ -20,7 +20,11 @@ import ComboBox from '../../../RecycleComponents/New/ComboBox';
 import WritePolicy from './WritePolicy';
 import {useDispatch} from 'react-redux';
 import IAM_POLICY from '../../../../reducers/api/IAM/Policy/policy';
-import {policyManageTypes, policyTypes} from '../../../../utils/data';
+import {
+	controlTypes,
+	policyManageTypes,
+	policyTypes,
+} from '../../../../utils/data';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -69,6 +73,8 @@ const AddPolicy = () => {
 					name: data.name,
 					description: data.description,
 					type: policyManageTypes.Client,
+					controlTypes: [controlTypes.RBAC],
+					maxGrants: 5,
 				}),
 			)
 				.unwrap()
