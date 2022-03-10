@@ -8,7 +8,7 @@ const _Input = styled.input`
 	background: transparent;
 `;
 
-const TableTextBox = ({cell, isFocus}) => {
+const TableTextBox = ({cell, isFocus, setData}) => {
 	const [value, setValue] = useState(cell.value);
 	const ref = useRef(null);
 
@@ -46,6 +46,7 @@ const TableTextBox = ({cell, isFocus}) => {
 TableTextBox.propTypes = {
 	cell: PropTypes.object.isRequired,
 	isFocus: PropTypes.bool,
+	setData: PropTypes.func,
 };
 
 export default TableTextBox;

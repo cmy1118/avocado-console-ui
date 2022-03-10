@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import {Axios, baseURL} from '../../../../../api/constants';
 import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './templateDetail';
+import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'IAM_ACTION_MANAGEMENT_TEMPLATE';
 
@@ -21,7 +22,7 @@ const createAction = createAsyncThunk(
 			{
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 				},
 				baseURL: baseURL.openApi,
 			},

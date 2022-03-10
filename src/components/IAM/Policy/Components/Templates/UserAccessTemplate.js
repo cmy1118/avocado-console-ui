@@ -87,7 +87,7 @@ const UserAccessTemplate = ({templateId}) => {
 		)
 			.unwrap()
 			.then((res) => {
-				res.data.forEach((v) => {
+				res.forEach((v) => {
 					v.resource.includes('console-ui') &&
 						setConsoleRadioValue(v.attribute.usage ? 'yes' : 'no');
 					v.resource.includes('web-terminal-ui') &&

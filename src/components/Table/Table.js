@@ -309,6 +309,7 @@ const Table = ({
 	setSearch,
 	subComponentHandler,
 	inner = false,
+	isCheckBox = true,
 }) => {
 	const [skipPageReset, setSkipPageReset] = useState(false);
 
@@ -389,17 +390,18 @@ const Table = ({
 		// We also turn on the flag to not reset the page
 		if (readOnly) return;
 		setSkipPageReset(true);
-		setData((old) =>
-			old.map((row, index) => {
-				if (index === rowIndex) {
-					return {
-						...old[rowIndex],
-						[columnId]: value,
-					};
-				}
-				return row;
-			}),
-		);
+		setData &&
+			setData((old) =>
+				old.map((row, index) => {
+					if (index === rowIndex) {
+						return {
+							...old[rowIndex],
+							[columnId]: value,
+						};
+					}
+					return row;
+				}),
+			);
 	};
 
 	function dateBetweenFilterFn(rows, id, filterValues) {
@@ -507,7 +509,7 @@ const Table = ({
 					},
 					...columns,
 				]);
-			!readOnly &&
+			isCheckBox &&
 				hooks.visibleColumns.push((columns) => [
 					{
 						id: 'selection',
@@ -898,6 +900,7 @@ Table.propTypes = {
 	isSearchFilterable: PropTypes.bool,
 	// mode: PropTypes.oneOf(['normal', 'readOnly', 'inner']),
 	readOnly: PropTypes.bool,
+	isCheckBox: PropTypes.bool,
 	isDraggable: PropTypes.bool,
 	inner: PropTypes.bool,
 	subComponentHandler: PropTypes.func,
