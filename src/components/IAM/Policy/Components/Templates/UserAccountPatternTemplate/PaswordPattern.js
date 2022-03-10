@@ -33,7 +33,7 @@ const passwordPattern = {
 		mixCase: {
 			title: '대소문자 혼합 여부',
 		},
-		repeatedAlphaRestriction: {
+		repeatedAlpha: {
 			title: '반복문자 사용제한',
 		},
 		personalInfoRestriction: {
@@ -49,7 +49,7 @@ const passwordPattern = {
 /**************************************************
  * ambacc244 - 사용자 계정 패턴(비밀번호 패턴) 폼
  **************************************************/
-const PaswordPattern = ({data}) => {
+const PaswordPattern = ({data, setTemplateData}) => {
 	//minPasswordLength: 최소 비밀번호 길이
 	const [
 		minPasswordLength,
@@ -88,13 +88,13 @@ const PaswordPattern = ({data}) => {
 		name: 'mixCase',
 		options: usageOptions,
 	});
-	//repeatedAlphaRestriction: 반복문자 사용제한 유무
+	//repeatedAlpha: 반복문자 사용제한 유무
 	const [
-		repeatedAlphaRestriction,
-		repeatedAlphaRestrictionRadioButton,
-		setRepeatedAlphaRestriction,
+		repeatedAlpha,
+		repeatedAlphaRadioButton,
+		setRepeatedAlpha,
 	] = useRadio({
-		name: 'repeatedAlphaRestriction',
+		name: 'repeatedAlpha',
 		options: restrictionOptions,
 	});
 	//personalInfoRestriction: 인적 사항 제한 유무
@@ -131,13 +131,47 @@ const PaswordPattern = ({data}) => {
 	});
 
 	/**************************************************
+	 * ambacc244 - 비밀번호 패턴 데이터가 바뀌면 정책 생성을 위한 값을 변경
+	 **************************************************/
+	useEffect(() => {
+		setTemplateData({
+			...data,
+			minLength: Number(minPasswordLength),
+			maxLength: Number(maxPasswordLength),
+			numberOfConsecutiveNumerics: numberOfConsecutiveNumerics,
+			mixNumberAndAlpha: mixNumberAndAlpha,
+			mixCase: mixCase,
+			repeatedAlpha: repeatedAlpha,
+			includePersonalInfoList: personalInfoRestriction
+				? personalInfoRestrictionMethod
+				: [],
+			allowedDaysOfOldPasswords: oldPasswordsRistriction
+				? allowedDaysOfOldPasswords
+				: 0,
+		});
+	}, [
+		allowedDaysOfOldPasswords,
+		data,
+		maxPasswordLength,
+		minPasswordLength,
+		mixCase,
+		mixNumberAndAlpha,
+		numberOfConsecutiveNumerics,
+		oldPasswordsRistriction,
+		personalInfoRestriction,
+		personalInfoRestrictionMethod,
+		repeatedAlpha,
+		setTemplateData,
+	]);
+
+	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
 		//최소 비밀번호 길이 default value 있음
-		if (data?.minLength) setMinPasswordLength(data.minLength);
+		if (data?.minLength) setMinPasswordLength(String(data.minLength));
 		//최대 비밀번호 길이 default value 있음
-		if (data?.maxLength) setMaxPasswordLength(data.maxLength);
+		if (data?.maxLength) setMaxPasswordLength(String(data.maxLength));
 		//숫자 연속 횟수 default value 있음
 		if (
 			data &&
@@ -167,7 +201,7 @@ const PaswordPattern = ({data}) => {
 			),
 		);
 		//반복문자 사용제한 유무 세팅
-		setRepeatedAlphaRestriction(
+		setRepeatedAlpha(
 			setUsageOptionByAttribute(
 				data,
 				'repeatedAlpha',
@@ -216,7 +250,7 @@ const PaswordPattern = ({data}) => {
 		setOldPasswordsRistriction,
 		setPersonalInfoRestriction,
 		setPersonalInfoRestrictionMethod,
-		setRepeatedAlphaRestriction,
+		setRepeatedAlpha,
 	]);
 
 	return (
@@ -265,11 +299,8 @@ const PaswordPattern = ({data}) => {
 							render={mixCaseRadioButton}
 						/>
 						<TemplateElement
-							title={
-								passwordPattern.contents
-									.repeatedAlphaRestriction.title
-							}
-							render={repeatedAlphaRestrictionRadioButton}
+							title={passwordPattern.contents.repeatedAlpha.title}
+							render={repeatedAlphaRadioButton}
 						/>
 						<TemplateElement
 							title={
@@ -314,5 +345,6 @@ const PaswordPattern = ({data}) => {
 
 PaswordPattern.propTypes = {
 	data: PropTypes.object,
+	setTemplateData: PropTypes.func,
 };
 export default PaswordPattern;

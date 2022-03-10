@@ -63,44 +63,51 @@ const AddPolicy = () => {
 	const onClickCancelAddPolicy = useCallback(() => {}, []);
 
 	/**************************************************
-	 * ambacc244 - 정책 추가
+	 * ambacc244 - 정책 생성을 위해 템플릿 데이터 모으기
 	 **************************************************/
-	const onSubmitPolicyData = useCallback((data) => {
-		//생성할 정책의 타입이 iam
-		if (data.type === policyTypes.iam) {
-			//step1: 정책 생성
-			dispatch(
-				IAM_POLICY.asyncAction.createPolicyAction({
-					name: data.name,
-					description: data.description,
-					type: policyManageTypes.Client,
-					controlTypes: [controlTypes.RBAC],
-					maxGrants: 5,
-				}),
-			)
-				.unwrap()
-				.then((data) => {
-					console.log('정책 아이디', data.id);
-					//step2-1: 권한 생성
-
-					//step2-2: 정책 권한 연결
-
-					//step3-1: rule 생성
-					let ruleAttribute = [];
-
-					dispatch(
-						IAM_RULE_TEMPLATE.asyncAction.createRuleTemplateAction({
-							name: data.name,
-							resource: policyTypes.iam,
-							description: data.description,
-							attributes: ruleAttribute,
-						}),
-					);
-
-					//step3-2: 정책 rule 연결
-				});
-		}
+	const onSubmitGatherPolicyTemplates = useCallback(() => {
+		dispatch(IAM_POLICY.action.RequestToGatherPolicyTemplates());
 	}, []);
+
+	/**************************************************
+	 * ambacc244 - 정책 생성 액션을 위해 남겨둠
+	 **************************************************/
+	// const onSubmitPolicyData = useCallback((data) => {
+	// 	//생성할 정책의 타입이 iam
+	// 	if (data.type === policyTypes.iam) {
+	// 		//step1: 정책 생성
+	// 		dispatch(
+	// 			IAM_POLICY.asyncAction.createPolicyAction({
+	// 				name: data.name,
+	// 				description: data.description,
+	// 				type: policyManageTypes.Client,
+	// 				controlTypes: [controlTypes.RBAC],
+	// 				maxGrants: 5,
+	// 			}),
+	// 		)
+	// 			.unwrap()
+	// 			.then((data) => {
+	// 				console.log('정책 아이디', data.id);
+	// 				//step2-1: 권한 생성
+	//
+	// 				//step2-2: 정책 권한 연결
+	//
+	// 				//step3-1: rule 생성
+	// 				let ruleAttribute = [];
+	//
+	// 				dispatch(
+	// 					IAM_RULE_TEMPLATE.asyncAction.createRuleTemplateAction({
+	// 						name: data.name,
+	// 						resource: policyTypes.iam,
+	// 						description: data.description,
+	// 						attributes: ruleAttribute,
+	// 					}),
+	// 				);
+	//
+	// 				//step3-2: 정책 rule 연결
+	// 			});
+	// 	}
+	// }, []);
 
 	return (
 		<>
@@ -127,7 +134,7 @@ const AddPolicy = () => {
 						name: '',
 						description: '',
 					}}
-					onSubmit={onSubmitPolicyData}
+					onSubmit={onSubmitGatherPolicyTemplates}
 					innerRef={formRef}
 					validation={validation}
 				>

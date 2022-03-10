@@ -33,7 +33,7 @@ const userIdPattern = {
 /**************************************************
  * ambacc244 - 사용자 계정 패턴(사용자 ID 패턴) 폼
  **************************************************/
-const UserIdPattern = ({data}) => {
+const UserIdPattern = ({data, setTemplateData}) => {
 	//usage: 사용자 계정 패턴 사용 여부
 	const [usage, usageRadioButton, setUsage] = useRadio({
 		name: 'userPatternUsage',
@@ -48,6 +48,18 @@ const UserIdPattern = ({data}) => {
 	const [pattern, patternTextBox, setPattern] = useTextBox({
 		name: 'pattern',
 	});
+
+	/**************************************************
+	 * ambacc244 - 사용자 ID 패턴 데이터가 바뀌면 정책 생성을 위한 값을 변경
+	 **************************************************/
+	useEffect(() => {
+		setTemplateData({
+			...data,
+			usage: usage === optionValue.usage.use,
+			patternType: patternType,
+			pattern: pattern,
+		});
+	}, [data, setTemplateData, usage]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
@@ -99,5 +111,6 @@ const UserIdPattern = ({data}) => {
 
 UserIdPattern.propTypes = {
 	data: PropTypes.object,
+	setTemplateData: PropTypes.func,
 };
 export default UserIdPattern;

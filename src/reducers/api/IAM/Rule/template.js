@@ -57,8 +57,12 @@ const createRuleTemplateAction = createAsyncThunk(
 
 const slice = createSlice({
 	name: NAME,
-	initialState: {},
-	reducers: {},
+	initialState: {actionTemplates: {}},
+	reducers: {
+		gatherTemplate: (state, action) => {
+			state.actionTemplates[action.payload.id] = action.payload.data;
+		},
+	},
 	extraReducers: {},
 });
 

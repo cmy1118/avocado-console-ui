@@ -38,17 +38,21 @@ const createPolicyAction = createAsyncThunk(
 
 const slice = createSlice({
 	name: NAME,
-	initialState: {},
-	reducers: {},
+	initialState: {
+		creatingPolicy: false,
+	},
+	reducers: {
+		RequestToGatherPolicyTemplates: (state, action) => {
+			state.creatingPolicy = true;
+		},
+	},
 	extraReducers: {},
 });
 
 const selectAllState = createSelector(
-	(state) => state.loading,
-	(state) => state.error,
-
-	(loading) => {
-		return {loading};
+	(state) => state.creatingPolicy,
+	(creatingPolicy) => {
+		return {creatingPolicy};
 	},
 );
 

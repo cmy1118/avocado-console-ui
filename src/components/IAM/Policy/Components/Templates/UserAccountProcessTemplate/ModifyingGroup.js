@@ -39,7 +39,7 @@ const tempOption = [{key: 'select', label: '선택'}];
 /**************************************************
  * ambacc244 - 사용자 계정 처리(그룹 변경) 폼
  **************************************************/
-const ModifyingGroup = ({data}) => {
+const ModifyingGroup = ({data, setTemplateData}) => {
 	//group1: 제어 그룹 유형1
 	const [group1, group1ComboBox] = useComboBox({
 		options: tempOption,
@@ -66,6 +66,17 @@ const ModifyingGroup = ({data}) => {
 		name: 'groupPermissionType',
 		options: groupPermissionTypeOptions,
 	});
+
+	/**************************************************
+	 * ambacc244 - 그룹 변경 데이터가 바뀌면 정책 생성을 위한 값을 변경
+	 **************************************************/
+	useEffect(() => {
+		setTemplateData({
+			...data,
+			blockingType: blockingType,
+			permissionType: groupPermissionType,
+		});
+	}, [blockingType, data, groupPermissionType, setTemplateData]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
@@ -143,6 +154,7 @@ const ModifyingGroup = ({data}) => {
 
 ModifyingGroup.propTypes = {
 	data: PropTypes.object,
+	setTemplateData: PropTypes.func,
 };
 
 export default ModifyingGroup;

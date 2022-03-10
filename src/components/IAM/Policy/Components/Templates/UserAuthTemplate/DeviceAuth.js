@@ -31,7 +31,7 @@ const deviceAuth = {
 /**************************************************
  * ambacc244 - 사용자 인증(단말기 인증) 폼
  **************************************************/
-const DeviceAuth = ({data}) => {
+const DeviceAuth = ({data, setTemplateData}) => {
 	//usage: 단말기 인증 사용 여부
 	const [usage, usageRadioButton, setUsage] = useRadio({
 		name: 'deviceAuthUsage',
@@ -43,6 +43,17 @@ const DeviceAuth = ({data}) => {
 		//단말기 인증 사용 false일때 disabled
 		disabled: usage === optionValue.usage.none,
 	});
+
+	/**************************************************
+	 * ambacc244 - 단말기 인증 데이터가 바뀌면 정책 생성을 위한 값을 변경
+	 **************************************************/
+	useEffect(() => {
+		setTemplateData({
+			...data,
+			usage: usage === optionValue.usage.use,
+			resource: application,
+		});
+	}, [application, data, setTemplateData, usage]);
 
 	/**************************************************
 	 * ambacc244 - 사용자 인증(단말기 인증) default 값 세팅
@@ -88,6 +99,7 @@ const DeviceAuth = ({data}) => {
 
 DeviceAuth.propTypes = {
 	data: PropTypes.object,
+	setTemplateData: PropTypes.func,
 };
 
 export default DeviceAuth;

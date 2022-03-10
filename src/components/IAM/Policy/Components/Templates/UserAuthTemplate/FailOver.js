@@ -32,7 +32,7 @@ const failOver = {
 /**************************************************
  * ambacc244 - 사용자 인증(FailOver) 폼
  **************************************************/
-const FailOver = ({data}) => {
+const FailOver = ({data, setTemplateData}) => {
 	//usage: Fail Over 사용 여부
 	const [usage, usageRadioButton, setUsage] = useRadio({
 		name: 'failOverUsage',
@@ -52,6 +52,22 @@ const FailOver = ({data}) => {
 		//Fail Over 사용 여부 false일때 disabled
 		disabled: usage === optionValue.usage.none,
 	});
+
+	/**************************************************
+	 * ambacc244 - FailOver 데이터가 바뀌면 정책 생성을 위한 값을 변경
+	 **************************************************/
+	useEffect(() => {
+		setTemplateData({
+			...data,
+			usage: usage === optionValue.usage.use,
+			auth: {
+				type: basicAuth,
+			},
+			mfa: {
+				type: mfa,
+			},
+		});
+	}, [basicAuth, data, mfa, setTemplateData, usage]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
@@ -109,6 +125,7 @@ const FailOver = ({data}) => {
 
 FailOver.propTypes = {
 	data: PropTypes.object,
+	setTemplateData: PropTypes.func,
 };
 
 export default FailOver;

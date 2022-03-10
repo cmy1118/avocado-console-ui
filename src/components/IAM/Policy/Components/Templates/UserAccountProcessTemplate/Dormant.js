@@ -1,7 +1,10 @@
 import React, {useEffect} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
-import {accountBlockingTypeOptions} from '../../../../../../utils/options';
+import {
+	accountBlockingTypeOptions,
+	optionValue,
+} from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
@@ -35,7 +38,7 @@ const dormant = {
 /**************************************************
  * ambacc244 - 사용자 계정 처리(휴면) 폼
  **************************************************/
-const Dormant = ({data}) => {
+const Dormant = ({data, setTemplateData}) => {
 	//blockingType : 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'dormantBlockingType',
@@ -49,6 +52,17 @@ const Dormant = ({data}) => {
 	] = useTextBox({
 		name: 'unconnectedDays',
 	});
+
+	/**************************************************
+	 * ambacc244 - 휴면 데이터가 바뀌면 정책 생성을 위한 값을 변경
+	 **************************************************/
+	useEffect(() => {
+		setTemplateData({
+			...data,
+			blockingType: blockingType,
+			unconnectedDays: unconnectedDays,
+		});
+	}, [data, setTemplateData]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
@@ -114,6 +128,7 @@ const Dormant = ({data}) => {
 
 Dormant.propTypes = {
 	data: PropTypes.object,
+	setTemplateData: PropTypes.object,
 };
 
 export default Dormant;

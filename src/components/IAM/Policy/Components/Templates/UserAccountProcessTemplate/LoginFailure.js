@@ -1,6 +1,9 @@
 import React, {useEffect} from 'react';
 import TemplateElement from '../../TemplateElement';
-import {accountBlockingTypeOptions} from '../../../../../../utils/options';
+import {
+	accountBlockingTypeOptions,
+	optionValue,
+} from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
@@ -35,7 +38,7 @@ const loginFailure = {
 /**************************************************
  * ambacc244 - 사용자 계정 처리(로그인 실패) 폼
  **************************************************/
-const LoginFailure = ({data}) => {
+const LoginFailure = ({data, setTemplateData}) => {
 	//failedCount: 로그인 실패 횟수
 	const [failedCount, failedCountTextBox, setFailedCount] = useTextBox({
 		name: 'loginFailureCount',
@@ -61,6 +64,18 @@ const LoginFailure = ({data}) => {
 	] = useTextBox({
 		name: 'accountNormalization',
 	});
+
+	/**************************************************
+	 * ambacc244 - 로그인 실패 데이터가 바뀌면 정책 생성을 위한 값을 변경
+	 **************************************************/
+	useEffect(() => {
+		setTemplateData({
+			...data,
+			blockingType: blockingType,
+			failedCount: failedCount,
+			failedCountInitDays: failedCountInitDays,
+		});
+	}, [blockingType, data, failedCount, failedCountInitDays, setTemplateData]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
@@ -154,6 +169,7 @@ const LoginFailure = ({data}) => {
 
 LoginFailure.propTypes = {
 	data: PropTypes.object,
+	setTemplateData: PropTypes.func,
 };
 
 export default LoginFailure;

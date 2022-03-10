@@ -43,7 +43,7 @@ const resignation = {
 /**************************************************
  * ambacc244 - 사용자 계정 처리(퇴사/탈퇴) 폼
  **************************************************/
-const Resignation = ({data}) => {
+const Resignation = ({data, setTemplateData}) => {
 	//accountStatus: 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'resignationBlockingType',
@@ -66,6 +66,17 @@ const Resignation = ({data}) => {
 	});
 
 	/**************************************************
+	 * ambacc244 - 퇴사/탈퇴 데이터가 바뀌면 정책 생성을 위한 값을 변경
+	 **************************************************/
+	useEffect(() => {
+		setTemplateData({
+			...data,
+			blockingType: blockingType,
+			applyDays: gracePeriodUsage ? gracePeriod : 0,
+		});
+	}, [blockingType, data, gracePeriod, gracePeriodUsage, setTemplateData]);
+
+	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
@@ -81,7 +92,7 @@ const Resignation = ({data}) => {
 		} else {
 			setGracePeriodUsage(optionValue.gracePeriod.none);
 		}
-	}, [data]);
+	}, [data, setBlockingType, setGracePeriod, setGracePeriodUsage]);
 
 	return (
 		<TemplateElementContainer
@@ -130,6 +141,7 @@ const Resignation = ({data}) => {
 
 Resignation.propTypes = {
 	data: PropTypes.object,
+	setTemplateData: PropTypes.func,
 };
 
 export default Resignation;

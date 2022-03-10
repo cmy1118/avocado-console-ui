@@ -40,7 +40,7 @@ const mfa = {
 /**************************************************
  * ambacc244 - 사용자 인증(MFA 인증) 폼
  **************************************************/
-const MFA = ({data}) => {
+const MFA = ({data, setTemplateData}) => {
 	//usage: mfa 인증 사용 여부
 	const [usage, usageRadioButton, setUsage] = useRadio({
 		name: 'mfaUsage',
@@ -121,6 +121,29 @@ const MFA = ({data}) => {
 			authMethod: authMethod3CheckBox,
 		},
 	];
+
+	/**************************************************
+	 * ambacc244 - MFA 데이터가 바뀌면 정책 생성을 위한 값을 변경
+	 **************************************************/
+	useEffect(() => {
+		setTemplateData({
+			...data,
+			usage: usage === optionValue.usage.use,
+			1: {types: authMethod1, option: required1},
+			2: {types: authMethod2, option: required2},
+			3: {types: authMethod3, option: required3},
+		});
+	}, [
+		authMethod1,
+		authMethod2,
+		authMethod3,
+		data,
+		required1,
+		required2,
+		required3,
+		setTemplateData,
+		usage,
+	]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
@@ -219,6 +242,7 @@ const MFA = ({data}) => {
 
 MFA.propTypes = {
 	data: PropTypes.object,
+	setTemplateData: PropTypes.func,
 };
 
 export default MFA;

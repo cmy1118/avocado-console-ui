@@ -1,7 +1,10 @@
 import React, {useEffect} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
-import {accountBlockingTypeOptions} from '../../../../../../utils/options';
+import {
+	accountBlockingTypeOptions,
+	optionValue,
+} from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
@@ -31,7 +34,7 @@ const accountActivePeriod = {
 /**************************************************
  * ambacc244 - 사용자 계정 처리(계정 사용 기간) 폼
  **************************************************/
-const AccountActivePeriod = ({data}) => {
+const AccountActivePeriod = ({data, setTemplateData}) => {
 	//activePeriod : 계정 사용 기간
 	const [expiryDays, expiryDaysTextBox, setExpiryDays] = useTextBox({
 		name: 'expiryDays',
@@ -41,6 +44,17 @@ const AccountActivePeriod = ({data}) => {
 		name: 'AccountActivePeriodBlockingType',
 		options: accountBlockingTypeOptions,
 	});
+
+	/**************************************************
+	 * ambacc244 - 계정 사용 기간 데이터가 바뀌면 정책 생성을 위한 값을 변경
+	 **************************************************/
+	useEffect(() => {
+		setTemplateData({
+			...data,
+			expiryDays: expiryDays,
+			blockingType: blockingType,
+		});
+	}, [blockingType, data, expiryDays, setTemplateData]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
@@ -113,5 +127,6 @@ const AccountActivePeriod = ({data}) => {
 
 AccountActivePeriod.propTypes = {
 	data: PropTypes.object,
+	setTemplateData: PropTypes.func,
 };
 export default AccountActivePeriod;

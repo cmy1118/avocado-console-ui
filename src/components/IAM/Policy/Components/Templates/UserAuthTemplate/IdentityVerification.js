@@ -35,7 +35,7 @@ const identityVerification = {
 /**************************************************
  * ambacc244 - 사용자 인증(본인 확인 인증) 폼
  **************************************************/
-const IdentityVerification = ({data}) => {
+const IdentityVerification = ({data, setTemplateData}) => {
 	//usage: 본인 확인 인증 사용 여부
 	const [usage, usageRadioButton, setUsage] = useRadio({
 		name: 'identityVerificationUsage',
@@ -54,10 +54,21 @@ const IdentityVerification = ({data}) => {
 		timeoutSecondsTextBox,
 		setTimeoutSeconds,
 	] = useTextBox({
-		name: 'timeOutSeconds',
+		name: 'timeoutSeconds',
 		//본인 확인 인증 사용 여부 false일때 disabled
 		disabled: usage === optionValue.usage.none,
 	});
+
+	/**************************************************
+	 * ambacc244 - 본인 확인 인증 데이터가 바뀌면 정책 생성을 위한 값을 변경
+	 **************************************************/
+	useEffect(() => {
+		setTemplateData({
+			...data,
+			usage: usage === optionValue.usage.use,
+			policies: {[`${authMethod}`]: {timoutSeconds: timeoutSeconds}},
+		});
+	}, [authMethod, data, setTemplateData, timeoutSeconds, usage]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
@@ -122,6 +133,7 @@ const IdentityVerification = ({data}) => {
 
 IdentityVerification.propTypes = {
 	data: PropTypes.object,
+	setTemplateData: PropTypes.func,
 };
 
 export default IdentityVerification;
