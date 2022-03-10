@@ -4,7 +4,7 @@ import DeviceAuth from './UserAuthTemplate/DeviceAuth';
 import MFA from './UserAuthTemplate/MFA';
 import FailOver from './UserAuthTemplate/FailOver';
 import IdentityVerification from './UserAuthTemplate/IdentityVerification';
-import IAM_RULE_TEMPLATE_DETAILE from '../../../../../reducers/api/IAM/Rule/templateDetail';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Rule/templateDetail';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -21,7 +21,7 @@ const UserAuthTemplate = ({templateId}) => {
 	 **************************************************/
 	useEffect(() => {
 		dispatch(
-			IAM_RULE_TEMPLATE_DETAILE.asyncAction.findAllRuleTemplateDetailAction(
+			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
 				{
 					id: templateId,
 				},

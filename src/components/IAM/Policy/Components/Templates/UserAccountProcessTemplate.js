@@ -4,7 +4,7 @@ import Dormant from './UserAccountProcessTemplate/Dormant';
 import AccountActivePeriod from './UserAccountProcessTemplate/AccountActivePeriod';
 import ModifyingGroup from './UserAccountProcessTemplate/ModifyingGroup';
 import Resignation from './UserAccountProcessTemplate/Resignation';
-import IAM_RULE_TEMPLATE_DETAILE from '../../../../../reducers/api/IAM/Rule/templateDetail';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Rule/templateDetail';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -21,7 +21,7 @@ const UserAccountProcessTemplate = ({templateId}) => {
 	 **************************************************/
 	useEffect(() => {
 		dispatch(
-			IAM_RULE_TEMPLATE_DETAILE.asyncAction.findAllRuleTemplateDetailAction(
+			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
 				{
 					id: templateId,
 				},

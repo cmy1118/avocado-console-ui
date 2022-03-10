@@ -3,7 +3,7 @@ import UserIdPattern from './UserAccountPatternTemplate/UserIdPattern';
 import PaswordPattern from './UserAccountPatternTemplate/PaswordPattern';
 import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
-import IAM_RULE_TEMPLATE_DETAILE from '../../../../../reducers/api/IAM/Rule/templateDetail';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Rule/templateDetail';
 
 /**************************************************
  * ambacc244 - 사용자 계정 패턴 컴포넌트
@@ -18,7 +18,7 @@ const UserAccountPatternTemplate = ({templateId}) => {
 	 **************************************************/
 	useEffect(() => {
 		dispatch(
-			IAM_RULE_TEMPLATE_DETAILE.asyncAction.findAllRuleTemplateDetailAction(
+			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
 				{
 					id: templateId,
 				},

@@ -1,11 +1,10 @@
-import React, {memo, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import RowCheckbox from '../../../../RecycleComponents/rowCheckbox';
 import {useDispatch} from 'react-redux';
-import IAM_POLICY_ACTION_TEMPLATE from '../../../../../reducers/api/IAM/Policy/ActionTemplate/actionTemplate';
 import {ColDiv} from '../../../../../styles/components/style';
 import {filterPropObj, objArrUnion} from '../../../../../utils/dataFitering';
-import PropTypes from "prop-types";
-import UserManagement from "./UserManagement";
+import PropTypes from 'prop-types';
+import IAM_ACTION_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Policy/ActionTemplate/templateDetail';
 
 const constants = {
 	main: '사용자 관리 권한',
@@ -43,14 +42,14 @@ const RoleManagement = ({templateId}) => {
 	//렌더링시 체크박스 정보 조회
 	useEffect(() => {
 		const res = dispatch(
-			IAM_POLICY_ACTION_TEMPLATE.asyncAction.findAllDetailAction({
+			IAM_ACTION_TEMPLATE_DETAIL.asyncAction.findAllAction({
 				range: 'elements=0-50',
 				templateId: templateId,
 			}),
 		)
 			.unwrap()
 			.then((res) => {
-				console.log('역할관리권한 API:',res)
+				console.log('역할관리권한 API:', res);
 				const filteredDataList = filterPropObj(
 					res.data,
 					'resource',
