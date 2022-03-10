@@ -8,8 +8,8 @@ import FailOver from './UserAuthTemplate/FailOver';
 import IdentityVerification from './UserAuthTemplate/IdentityVerification';
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Rule/templateDetail';
 import IAM_RULE_TEMPLATE from '../../../../../reducers/api/IAM/Rule/template';
-import IAM_POLICY from '../../../../../reducers/api/PAM/Role/policy';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
+import {policyTypes} from '../../../../../utils/data';
 
 /**************************************************
  * ambacc244 - 사용자 인증 템플릿 컴포넌트
@@ -40,15 +40,18 @@ const UserAuthTemplate = ({templateId}) => {
 		if (creatingPolicy) {
 			dispatch(
 				IAM_RULE_TEMPLATE.action.gatherTemplate({
-					id: templateId,
-					// name:
-					// description:
-					data: [
-						deviceAuthenticationData,
-						mfaData,
-						alternativeAuthNFailOverAuthData,
-						identityVerificationData,
-					],
+					id: templateId.id,
+					data: {
+						name: templateId.name,
+						resource: policyTypes.iam,
+						description: templateId.description,
+						attributes: [
+							JSON.stringify(deviceAuthenticationData),
+							JSON.stringify(mfaData),
+							JSON.stringify(alternativeAuthNFailOverAuthData),
+							JSON.stringify(identityVerificationData),
+						],
+					},
 				}),
 			);
 		}
@@ -69,7 +72,7 @@ const UserAuthTemplate = ({templateId}) => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
 				{
-					id: templateId,
+					id: templateId.id,
 				},
 			),
 		)
@@ -107,7 +110,7 @@ const UserAuthTemplate = ({templateId}) => {
 };
 
 UserAuthTemplate.propTypes = {
-	templateId: PropTypes.string,
+	templateId: PropTypes.object,
 };
 
 export default UserAuthTemplate;

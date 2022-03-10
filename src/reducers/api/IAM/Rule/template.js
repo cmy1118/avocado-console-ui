@@ -50,28 +50,25 @@ const createRuleTemplateAction = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
-		console.log(response);
 		return {id: getIdFormLocation(response.headers.location)};
 	},
 );
 
 const slice = createSlice({
 	name: NAME,
-	initialState: {actionTemplates: {}},
+	initialState: {ruleTemplates: {}},
 	reducers: {
 		gatherTemplate: (state, action) => {
-			state.actionTemplates[action.payload.id] = action.payload.data;
+			state.ruleTemplates[action.payload.id] = action.payload.data;
 		},
 	},
 	extraReducers: {},
 });
 
 const selectAllState = createSelector(
-	(state) => state.loading,
-	(state) => state.error,
-
-	(loading) => {
-		return {loading};
+	(state) => state.ruleTemplates,
+	(ruleTemplates) => {
+		return {ruleTemplates};
 	},
 );
 

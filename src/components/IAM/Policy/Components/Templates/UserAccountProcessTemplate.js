@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_RULE_TEMPLATE from '../../../../../reducers/api/IAM/Rule/template';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
+import {policyTypes} from '../../../../../utils/data';
 
 /**************************************************
  * ambacc244 - 사용자 계정 처리 컴포넌트
@@ -35,14 +36,19 @@ const UserAccountProcessTemplate = ({templateId}) => {
 		if (creatingPolicy) {
 			dispatch(
 				IAM_RULE_TEMPLATE.action.gatherTemplate({
-					id: templateId,
-					data: [
-						LoginFailureData,
-						DormantData,
-						AccountActivePeriodData,
-						ModifyingGroupData,
-						ResignationData,
-					],
+					id: templateId.id,
+					data: {
+						name: templateId.name,
+						resource: policyTypes.iam,
+						description: templateId.description,
+						attributes: [
+							JSON.stringify(LoginFailureData),
+							JSON.stringify(DormantData),
+							JSON.stringify(AccountActivePeriodData),
+							JSON.stringify(ModifyingGroupData),
+							JSON.stringify(ResignationData),
+						],
+					},
 				}),
 			);
 		}
@@ -64,7 +70,7 @@ const UserAccountProcessTemplate = ({templateId}) => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
 				{
-					id: templateId,
+					id: templateId.id,
 				},
 			),
 		)
@@ -108,7 +114,7 @@ const UserAccountProcessTemplate = ({templateId}) => {
 };
 
 UserAccountProcessTemplate.propTypes = {
-	templateId: PropTypes.string,
+	templateId: PropTypes.object,
 };
 
 export default UserAccountProcessTemplate;

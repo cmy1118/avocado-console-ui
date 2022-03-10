@@ -1,8 +1,4 @@
-import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-
-import {contentType} from '../../../../../utils/auth';
-import {Axios, baseURL} from '../../../../../api/constants';
-import {getIdFormLocation} from '../../../../../utils/tableDataConverter';
+import {createSelector, createSlice} from '@reduxjs/toolkit';
 
 const NAME = 'IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE';
 

@@ -72,7 +72,7 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 						currentTemplate = {
 							template,
 							render: () =>
-								UserAuthTemplate({templateId: template.id}),
+								UserAuthTemplate({templateId: template}),
 						};
 						break;
 					}
@@ -81,7 +81,7 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 							template,
 							render: () =>
 								UserAccountProcessTemplate({
-									templateId: template.id,
+									templateId: template,
 								}),
 						};
 						break;
@@ -112,7 +112,7 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 							template,
 							render: () =>
 								UserAccountPatternTemplate({
-									templateId: template.id,
+									templateId: template,
 								}),
 						};
 						break;

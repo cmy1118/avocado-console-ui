@@ -1,4 +1,4 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {
 	TitleBar,
 	TitleBarButtons,
@@ -20,12 +20,8 @@ import ComboBox from '../../../RecycleComponents/New/ComboBox';
 import WritePolicy from './WritePolicy';
 import {useDispatch} from 'react-redux';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
-import {
-	controlTypes,
-	policyManageTypes,
-	policyTypes,
-} from '../../../../utils/data';
-import IAM_RULE_TEMPLATE from '../../../../reducers/api/IAM/Rule/template';
+import {policyTypes} from '../../../../utils/data';
+import PolicyPreviewDialogBox from '../../../DialogBoxs/Preview/PolicyPreviewDialogBox';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -42,9 +38,10 @@ const contents = {
  **************************************************/
 const AddPolicy = () => {
 	const dispatch = useDispatch();
+	const [isOpened, setIsOpened] = useState(false);
 
 	const formRef = useRef(null);
-
+	const [formData, setFormData] = useState();
 	const validation = {
 		name: yup
 			.string()
@@ -65,88 +62,16 @@ const AddPolicy = () => {
 	/**************************************************
 	 * ambacc244 - 정책 생성을 위해 템플릿 데이터 모으기
 	 **************************************************/
-	const onSubmitGatherPolicyTemplates = useCallback(() => {
-		dispatch(
-			IAM_POLICY_MANAGEMENT_POLICIES.action.RequestToGatherPolicyTemplates(),
-		);
-	}, []);
-
-	const onSubmitPolicyData = useCallback((data) => {
-		//생성할 정책의 타입이 iam
-		if (data.type === policyTypes.iam) {
-			//step1: 정책 생성
+	const onSubmitGatherPolicyTemplates = useCallback(
+		(data) => {
 			dispatch(
-				IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.createPolicyAction({
-					name: data.name,
-					description: data.description,
-					type: policyManageTypes.Client,
-					controlTypes: [controlTypes.RBAC],
-					maxGrants: 5,
-				}),
-			)
-				.unwrap()
-				.then((data) => {
-					console.log('정책 아이디', data.id);
-					//step2-1: 권한 생성
-
-					//step2-2: 정책 권한 연결
-
-					//step3-1: rule 생성
-					let ruleAttribute = [];
-
-					dispatch(
-						IAM_RULE_TEMPLATE.asyncAction.createRuleTemplateAction({
-							name: data.name,
-							resource: policyTypes.iam,
-							description: data.description,
-							attributes: ruleAttribute,
-						}),
-					);
-
-					//step3-2: 정책 rule 연결
-				});
-		}
-	}, []);
-
-	/**************************************************
-	 * ambacc244 - 정책 생성 액션을 위해 남겨둠
-	 **************************************************/
-	// const onSubmitPolicyData = useCallback((data) => {
-	// 	//생성할 정책의 타입이 iam
-	// 	if (data.type === policyTypes.iam) {
-	// 		//step1: 정책 생성
-	// 		dispatch(
-	// 			IAM_POLICY.asyncAction.createPolicyAction({
-	// 				name: data.name,
-	// 				description: data.description,
-	// 				type: policyManageTypes.Client,
-	// 				controlTypes: [controlTypes.RBAC],
-	// 				maxGrants: 5,
-	// 			}),
-	// 		)
-	// 			.unwrap()
-	// 			.then((data) => {
-	// 				console.log('정책 아이디', data.id);
-	// 				//step2-1: 권한 생성
-	//
-	// 				//step2-2: 정책 권한 연결
-	//
-	// 				//step3-1: rule 생성
-	// 				let ruleAttribute = [];
-	//
-	// 				dispatch(
-	// 					IAM_RULE_TEMPLATE.asyncAction.createRuleTemplateAction({
-	// 						name: data.name,
-	// 						resource: policyTypes.iam,
-	// 						description: data.description,
-	// 						attributes: ruleAttribute,
-	// 					}),
-	// 				);
-	//
-	// 				//step3-2: 정책 rule 연결
-	// 			});
-	// 	}
-	// }, []);
+				IAM_POLICY_MANAGEMENT_POLICIES.action.RequestToGatherPolicyTemplates(),
+			);
+			setIsOpened(true);
+			setFormData(data);
+		},
+		[setIsOpened, setFormData],
+	);
 
 	return (
 		<>
@@ -215,6 +140,11 @@ const AddPolicy = () => {
 			<WritePolicy
 				title={contents.writePolicy.title}
 				description={contents.writePolicy.description}
+			/>
+			<PolicyPreviewDialogBox
+				setIsOpened={setIsOpened}
+				isOpened={isOpened}
+				formData={formData}
 			/>
 		</>
 	);

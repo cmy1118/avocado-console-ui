@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import IAM_RULE_TEMPLATE from '../../../../../reducers/api/IAM/Rule/template';
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Rule/templateDetail';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
+import {policyTypes} from '../../../../../utils/data';
 
 /**************************************************
  * ambacc244 - 사용자 계정 패턴 컴포넌트
@@ -15,7 +16,8 @@ const UserAccountPatternTemplate = ({templateId}) => {
 	const dispatch = useDispatch();
 	const {creatingPolicy} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
-	); //defaultData: 템플릿의 default value
+	);
+	//defaultData: 템플릿의 default value
 	const [defaultData, setDefaultData] = useState([]);
 	const [userIdPatternData, setUserIdPatternData] = useState({});
 	const [PaswordPatternData, setPaswordPatternData] = useState({});
@@ -27,8 +29,16 @@ const UserAccountPatternTemplate = ({templateId}) => {
 		if (creatingPolicy) {
 			dispatch(
 				IAM_RULE_TEMPLATE.action.gatherTemplate({
-					id: templateId,
-					data: [userIdPatternData, PaswordPatternData],
+					id: templateId.id,
+					data: {
+						name: templateId.name,
+						resource: policyTypes.iam,
+						description: templateId.description,
+						attributes: [
+							JSON.stringify(userIdPatternData),
+							JSON.stringify(PaswordPatternData),
+						],
+					},
 				}),
 			);
 		}
@@ -41,7 +51,7 @@ const UserAccountPatternTemplate = ({templateId}) => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
 				{
-					id: templateId,
+					id: templateId.id,
 				},
 			),
 		)
@@ -72,7 +82,7 @@ const UserAccountPatternTemplate = ({templateId}) => {
 };
 
 UserAccountPatternTemplate.propTypes = {
-	templateId: PropTypes.string,
+	templateId: PropTypes.object,
 };
 
 export default UserAccountPatternTemplate;
