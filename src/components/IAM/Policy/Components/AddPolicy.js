@@ -19,7 +19,7 @@ import * as yup from 'yup';
 import ComboBox from '../../../RecycleComponents/New/ComboBox';
 import WritePolicy from './WritePolicy';
 import {useDispatch} from 'react-redux';
-import IAM_POLICY from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {
 	controlTypes,
 	policyManageTypes,
@@ -70,7 +70,7 @@ const AddPolicy = () => {
 		if (data.type === policyTypes.iam) {
 			//step1: 정책 생성
 			dispatch(
-				IAM_POLICY.asyncAction.createPolicyAction({
+				IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.createPolicyAction({
 					name: data.name,
 					description: data.description,
 					type: policyManageTypes.Client,

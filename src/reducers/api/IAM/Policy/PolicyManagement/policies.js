@@ -4,7 +4,7 @@ import {contentType} from '../../../../../utils/auth';
 import {Axios, baseURL} from '../../../../../api/constants';
 import {getIdFormLocation} from '../../../../../utils/tableDataConverter';
 
-const NAME = 'IAM_POLICY';
+const NAME = 'IAM_POLICY_MANAGEMENT_POLICIES';
 
 /**************************************************
  * ambacc244 - IAM policy 생성 요청 액션
@@ -52,7 +52,7 @@ const selectAllState = createSelector(
 	},
 );
 
-const IAM_POLICY = {
+const IAM_POLICY_MANAGEMENT_POLICIES = {
 	name: slice.name,
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
@@ -62,4 +62,4 @@ const IAM_POLICY = {
 	},
 };
 
-export default IAM_POLICY;
+export default IAM_POLICY_MANAGEMENT_POLICIES;

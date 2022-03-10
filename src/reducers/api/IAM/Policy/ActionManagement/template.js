@@ -1,8 +1,8 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import {Axios, baseURL} from '../../../../../api/constants';
-import IAM_ACTION_TEMPLATE_DETAIL from './templateDetail';
+import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './templateDetail';
 
-const NAME = 'IAM_ACTION_TEMPLATE';
+const NAME = 'IAM_ACTION_MANAGEMENT_TEMPLATE';
 
 //권한 템플릿 상세 정보를 조회
 const createAction = createAsyncThunk(
@@ -74,22 +74,17 @@ const slice = createSlice({
 			state.error = action.payload;
 			state.loading = false;
 		},
-		[IAM_ACTION_TEMPLATE_DETAIL.asyncAction.findAllAction.pending]: (
-			state,
-		) => {
+		[IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction
+			.pending]: (state) => {
 			state.loading = true;
 		},
-		[IAM_ACTION_TEMPLATE_DETAIL.asyncAction.findAllAction.fulfilled]: (
-			state,
-			action,
-		) => {
+		[IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction
+			.fulfilled]: (state, action) => {
 			state.actionTemplates = action.payload.data;
 			state.loading = false;
 		},
-		[IAM_ACTION_TEMPLATE_DETAIL.asyncAction.findAllAction.rejected]: (
-			state,
-			action,
-		) => {
+		[IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction
+			.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
 		},
@@ -105,7 +100,7 @@ const selectAllState = createSelector(
 	},
 );
 
-const IAM_ACTION_TEMPLATE = {
+const IAM_ACTION_MANAGEMENT_TEMPLATE = {
 	name: slice.name,
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
@@ -115,4 +110,4 @@ const IAM_ACTION_TEMPLATE = {
 	},
 };
 
-export default IAM_ACTION_TEMPLATE;
+export default IAM_ACTION_MANAGEMENT_TEMPLATE;

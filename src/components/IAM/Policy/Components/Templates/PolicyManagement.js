@@ -5,7 +5,7 @@ import {ColDiv} from '../../../../../styles/components/style';
 import {filterPropObj, objArrUnion} from '../../../../../utils/dataFitering';
 import PropTypes from 'prop-types';
 import UserManagement from './UserManagement';
-import IAM_ACTION_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Policy/ActionManagement/templateDetail';
+import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Policy/ActionManagement/templateDetail';
 
 const constants = {
 	main: '사용자 관리 권한',
@@ -43,7 +43,7 @@ const PolicyManagement = ({templateId}) => {
 	//렌더링시 체크박스 정보 조회
 	useEffect(() => {
 		const res = dispatch(
-			IAM_ACTION_TEMPLATE_DETAIL.asyncAction.findAllAction({
+			IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction({
 				range: 'elements=0-50',
 				templateId: templateId,
 			}),

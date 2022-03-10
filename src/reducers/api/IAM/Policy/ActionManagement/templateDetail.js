@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import {Axios, baseURL} from '../../../../../api/constants';
 
-const NAME = 'IAM_ACTION_TEMPLATE_DETAIL';
+const NAME = 'IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL';
 
 //권한 템플릿 상세 정보를 조회
 const findAllAction = createAsyncThunk(
@@ -50,7 +50,7 @@ const selectAllState = createSelector(
 	},
 );
 
-const IAM_ACTION_TEMPLATE_DETAIL = {
+const IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL = {
 	name: slice.name,
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
@@ -60,4 +60,4 @@ const IAM_ACTION_TEMPLATE_DETAIL = {
 	},
 };
 
-export default IAM_ACTION_TEMPLATE_DETAIL;
+export default IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL;
