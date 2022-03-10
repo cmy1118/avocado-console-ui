@@ -184,6 +184,7 @@ const PolicySpace = () => {
 		setData([
 			{
 				id: '테스트1',
+				[DRAGGABLE_KEY]: '테스트1',
 				a: '테스트1',
 				b: '테스트1',
 				c: '테스트1',
@@ -193,6 +194,7 @@ const PolicySpace = () => {
 			},
 			{
 				id: '테스트2',
+				[DRAGGABLE_KEY]: '테스트2',
 				a: '테스트2',
 				b: '테스트2',
 				c: '테스트2',
@@ -202,6 +204,7 @@ const PolicySpace = () => {
 			},
 			{
 				id: '테스트3',
+				[DRAGGABLE_KEY]: '테스트3',
 				a: '테스트3',
 				b: '테스트3',
 				c: '테스트3',

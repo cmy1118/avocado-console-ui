@@ -215,10 +215,11 @@ function SubRows({
 }) {
 	if (loading) {
 		return (
-			<tr>
-				<td />
-				<td colSpan={visibleColumns?.length - 1}>Loading...</td>
-			</tr>
+			<div
+			// colSpan={visibleColumns?.length - 1}
+			>
+				Loading...
+			</div>
 		);
 	}
 
@@ -846,6 +847,8 @@ const Table = ({
 																	}
 																	colSpan={
 																		visibleColumns.length
+																			? visibleColumns.length
+																			: 0
 																	}
 																>
 																	{renderRowSubComponent(
