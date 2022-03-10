@@ -34,24 +34,11 @@ const slice = createSlice({
 	name: NAME,
 	initialState: {
 		//actionTemplates 관리 state ( create 할 action 들을 tmeplateId 별로 담을 state )
-		actionTemplates: [],
 		loading: false,
 		error: null,
 	},
 	reducers: {},
-	extraReducers: {
-		[findAllAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[findAllAction.fulfilled]: (state, action) => {
-			state.actionTemplates = action.payload.data;
-			state.loading = false;
-		},
-		[findAllAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-	},
+	extraReducers: {},
 });
 
 const selectAllState = createSelector(
