@@ -32,9 +32,9 @@ import IAM_GRANT_POLICY_BY_USER from './api/IAM/User/Policy/GrantPolicy/user';
 import IAM_POLICY_TEMPLATE from './api/IAM/User/Policy/policyTemplate';
 import PAM_SESSION from './api/PAM/session';
 import IAM_RULE_TEMPLATE_DETAIL from './api/IAM/Rule/templateDetail';
-import IAM_POLICY from './api/IAM/Policy/policy';
-import IAM_ACTION_TEMPLATE_DETAIL from './api/IAM/Policy/ActionTemplate/templateDetail';
-import IAM_ACTION_TEMPLATE from './api/IAM/Policy/ActionTemplate/template';
+import IAM_POLICY from './api/IAM/Policy/PolicyManagement/policies';
+import IAM_ACTION_TEMPLATE_DETAIL from './api/IAM/Policy/ActionManagement/templateDetail';
+import IAM_ACTION_TEMPLATE from './api/IAM/Policy/ActionManagement/template';
 
 const authFilter = createFilter(AUTH.name, [
 	'companyId',

@@ -4,7 +4,7 @@ import {useDispatch} from 'react-redux';
 import {ColDiv} from '../../../../../styles/components/style';
 import {filterPropObj, objArrUnion} from '../../../../../utils/dataFitering';
 import PropTypes from 'prop-types';
-import IAM_ACTION_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Policy/ActionTemplate/templateDetail';
+import IAM_ACTION_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Policy/ActionManagement/templateDetail';
 
 const constants = {
 	main: '사용자 관리 권한',

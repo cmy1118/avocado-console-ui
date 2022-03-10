@@ -19,7 +19,7 @@ import * as yup from 'yup';
 import ComboBox from '../../../RecycleComponents/New/ComboBox';
 import WritePolicy from './WritePolicy';
 import {useDispatch} from 'react-redux';
-import IAM_POLICY from '../../../../reducers/api/IAM/Policy/policy';
+import IAM_POLICY from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {
 	controlTypes,
 	policyManageTypes,

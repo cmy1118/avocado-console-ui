@@ -3,7 +3,7 @@ import TemplateContainer from './TemplateContainer';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {useDispatch} from 'react-redux';
-import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/Policy/ActionTemplate/template';
+import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/Policy/ActionManagement/template';
 import IAM_RULE_TEMPLATE from '../../../../reducers/api/IAM/Rule/template';
 import {templateType} from '../../../../utils/template';
 import UserAccountProcessTemplate from './Templates/UserAccountProcessTemplate';
