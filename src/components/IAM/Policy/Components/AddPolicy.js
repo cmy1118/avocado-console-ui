@@ -25,6 +25,7 @@ import {
 	policyManageTypes,
 	policyTypes,
 } from '../../../../utils/data';
+import IAM_RULE_TEMPLATE from '../../../../reducers/api/IAM/Rule/template';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -79,12 +80,25 @@ const AddPolicy = () => {
 			)
 				.unwrap()
 				.then((data) => {
-					console.log(data);
+					console.log('정책 아이디', data.id);
+					//step2-1: 권한 생성
+
+					//step2-2: 정책 권한 연결
+
+					//step3-1: rule 생성
+					let ruleAttribute = [];
+
+					dispatch(
+						IAM_RULE_TEMPLATE.asyncAction.createRuleTemplateAction({
+							name: data.name,
+							resource: policyTypes.iam,
+							description: data.description,
+							attributes: ruleAttribute,
+						}),
+					);
+
+					//step3-2: 정책 rule 연결
 				});
-			//step2-1: 권한 생성
-			//step2-2: 정책 권한 연결
-			//step3-1: rule 생성
-			//step3-2: 정책 rule 연결
 		}
 	}, []);
 

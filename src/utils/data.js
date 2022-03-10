@@ -17,8 +17,8 @@ export const mfa = {
 };
 
 export const policyTypes = {
-	iam: 'IAM',
-	pam: 'PAM',
+	iam: 'iam*',
+	pam: 'pam*',
 };
 
 export const policyManageTypes = {

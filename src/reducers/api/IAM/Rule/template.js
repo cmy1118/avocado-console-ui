@@ -2,6 +2,7 @@ import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
 import {contentType} from '../../../../utils/auth';
 import {Axios, baseURL} from '../../../../api/constants';
+import {getIdFormLocation} from '../../../../utils/tableDataConverter';
 
 const NAME = 'IAM_RULE_TEMPLATE';
 
@@ -22,6 +23,35 @@ const findAllRuleTemplateAction = createAsyncThunk(
 			baseURL: baseURL.openApi,
 		});
 		return {data: response.data};
+	},
+);
+
+/**************************************************
+ * ambacc244 - IAM rule 생성 요청 액션
+ **************************************************/
+const createRuleTemplateAction = createAsyncThunk(
+	`${NAME}/CREATE`,
+	async (payload, {getState}) => {
+		const {userAuth} = getState().AUTH;
+
+		const response = await Axios.post(
+			`/open-api/v1/iam/rule-template`,
+			{
+				name: payload.name,
+				resource: payload.resource,
+				description: payload.description,
+				attributes: payload.attributes,
+			},
+			{
+				headers: {
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+					'Content-Type': contentType.JSON,
+				},
+				baseURL: baseURL.openApi,
+			},
+		);
+		console.log(response);
+		return {id: getIdFormLocation(response.headers.location)};
 	},
 );
 
@@ -48,6 +78,7 @@ const IAM_RULE_TEMPLATE = {
 	action: slice.actions,
 	asyncAction: {
 		findAllRuleTemplateAction,
+		createRuleTemplateAction,
 	},
 };
 

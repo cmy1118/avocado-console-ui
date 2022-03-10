@@ -148,8 +148,9 @@ export const descriptionConverter = (details) => {
 						tempObj[key] = value;
 					}
 				});
-				tempObj[detail.attribute.policyType] =
-					Object.values(tempObj)[0];
+				tempObj[detail.attribute.policyType] = Object.values(
+					tempObj,
+				)[0];
 			} else {
 				tempObj[detail.attribute.policyType] = Object.keys(
 					detail.attribute.policies,
@@ -211,4 +212,10 @@ export const descriptionConverter = (details) => {
 	// 		return str;
 	// 	}
 	// });
+};
+
+export const getIdFormLocation = (path) => {
+	const route = path.split('/');
+
+	return route[route.length - 1];
 };
