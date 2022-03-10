@@ -2,18 +2,20 @@ import React, {useEffect, useState} from 'react';
 import UserIdPattern from './UserAccountPatternTemplate/UserIdPattern';
 import PaswordPattern from './UserAccountPatternTemplate/PaswordPattern';
 import PropTypes from 'prop-types';
+
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_RULE_TEMPLATE_DETAILE from '../../../../../reducers/api/IAM/Rule/templateDetail';
 import IAM_RULE_TEMPLATE from '../../../../../reducers/api/IAM/Rule/template';
-import IAM_POLICY from '../../../../../reducers/api/IAM/Policy/policy';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Rule/templateDetail';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 
 /**************************************************
  * ambacc244 - 사용자 계정 패턴 컴포넌트
  **************************************************/
 const UserAccountPatternTemplate = ({templateId}) => {
 	const dispatch = useDispatch();
-	const {creatingPolicy} = useSelector(IAM_POLICY.selector);
-	//defaultData: 템플릿의 default value
+	const {creatingPolicy} = useSelector(
+		IAM_POLICY_MANAGEMENT_POLICIES.selector,
+	); //defaultData: 템플릿의 default value
 	const [defaultData, setDefaultData] = useState([]);
 	const [userIdPatternData, setUserIdPatternData] = useState({});
 	const [PaswordPatternData, setPaswordPatternData] = useState({});
@@ -37,7 +39,7 @@ const UserAccountPatternTemplate = ({templateId}) => {
 	 **************************************************/
 	useEffect(() => {
 		dispatch(
-			IAM_RULE_TEMPLATE_DETAILE.asyncAction.findAllRuleTemplateDetailAction(
+			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
 				{
 					id: templateId,
 				},

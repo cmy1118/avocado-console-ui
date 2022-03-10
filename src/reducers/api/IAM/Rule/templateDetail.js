@@ -3,7 +3,7 @@ import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import {contentType} from '../../../../utils/auth';
 import {Axios, baseURL} from '../../../../api/constants';
 
-const NAME = 'IAM_RULE_TEMPLATE_DETAILE';
+const NAME = 'IAM_RULE_TEMPLATE_DETAIL';
 
 /**************************************************
  * ambacc244 - IAM rule 템플릿 디테일 정보 요청 액션
@@ -43,7 +43,7 @@ const selectAllState = createSelector(
 	},
 );
 
-const IAM_RULE_TEMPLATE_DETAILE = {
+const IAM_RULE_TEMPLATE_DETAIL = {
 	name: slice.name,
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
@@ -53,4 +53,4 @@ const IAM_RULE_TEMPLATE_DETAILE = {
 	},
 };
 
-export default IAM_RULE_TEMPLATE_DETAILE;
+export default IAM_RULE_TEMPLATE_DETAIL;

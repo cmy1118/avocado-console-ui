@@ -9,7 +9,7 @@ import TableTextBox from '../../../../Table/ColumnCells/TableTextBox';
 import {RowDiv} from '../../../../../styles/components/style';
 import useTextBox from '../../../../../hooks/useTextBox';
 import PropTypes from 'prop-types';
-import IAM_RULE_TEMPLATE_DETAILE from '../../../../../reducers/api/IAM/Rule/templateDetail';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Rule/templateDetail';
 import {useDispatch} from 'react-redux';
 
 /**************************************************
@@ -156,7 +156,7 @@ const UserSessionTemplate = ({templateId}) => {
 
 	useEffect(() => {
 		dispatch(
-			IAM_RULE_TEMPLATE_DETAILE.asyncAction.findAllRuleTemplateDetailAction(
+			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
 				{
 					id: templateId,
 				},

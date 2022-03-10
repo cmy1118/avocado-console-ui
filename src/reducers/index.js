@@ -31,9 +31,10 @@ import IAM_GRANT_POLICY_BY_ROLE from './api/IAM/User/Policy/GrantPolicy/role';
 import IAM_GRANT_POLICY_BY_USER from './api/IAM/User/Policy/GrantPolicy/user';
 import IAM_POLICY_TEMPLATE from './api/IAM/User/Policy/policyTemplate';
 import PAM_SESSION from './api/PAM/session';
-import IAM_RULE_TEMPLATE_DETAILE from './api/IAM/Rule/templateDetail';
-import IAM_POLICY from './api/IAM/Policy/policy';
-import IAM_POLICY_ACTION_TEMPLATE from "./api/IAM/Policy/ActionTemplate/actionTemplate";
+import IAM_RULE_TEMPLATE_DETAIL from './api/IAM/Rule/templateDetail';
+import IAM_POLICY_MANAGEMENT_POLICIES from './api/IAM/Policy/PolicyManagement/policies';
+import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './api/IAM/Policy/ActionManagement/templateDetail';
+import IAM_ACTION_MANAGEMENT_TEMPLATE from './api/IAM/Policy/ActionManagement/template';
 
 const authFilter = createFilter(AUTH.name, [
 	'companyId',
@@ -87,16 +88,20 @@ const rootReducer = combineReducers({
 	[IAM_CLIENT.name]: IAM_CLIENT.reducer,
 	[AUTH.name]: AUTH.reducer,
 	/******************************************/
-	/* ambacc244 : IAM - Policy reducers
+	/* ambacc244 : IAM - Action reducers
     /******************************************/
-	[IAM_POLICY.name]: IAM_POLICY.reducer,
-	[IAM_RULE_TEMPLATE_DETAILE.name]: IAM_RULE_TEMPLATE_DETAILE.reducer,
-	[IAM_POLICY_ACTION_TEMPLATE.name]: IAM_POLICY_ACTION_TEMPLATE.reducer,
+	[IAM_POLICY_MANAGEMENT_POLICIES.name]:
+		IAM_POLICY_MANAGEMENT_POLICIES.reducer,
+	[IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.name]:
+		IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.reducer,
+	[IAM_ACTION_MANAGEMENT_TEMPLATE.name]:
+		IAM_ACTION_MANAGEMENT_TEMPLATE.reducer,
+
 	/******************************************/
 	/* ambacc244 : IAM - Rule reducers
     /******************************************/
 	[IAM_RULE_TEMPLATE.name]: IAM_RULE_TEMPLATE.reducer,
-	[IAM_RULE_TEMPLATE_DETAILE.name]: IAM_RULE_TEMPLATE_DETAILE.reducer,
+	[IAM_RULE_TEMPLATE_DETAIL.name]: IAM_RULE_TEMPLATE_DETAIL.reducer,
 	/******************************************/
 	/******************************************/
 	/* seob : IAM - User reducers

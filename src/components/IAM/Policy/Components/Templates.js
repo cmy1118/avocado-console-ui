@@ -3,7 +3,7 @@ import TemplateContainer from './TemplateContainer';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {useDispatch} from 'react-redux';
-import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/Policy/template';
+import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/Policy/ActionManagement/template';
 import IAM_RULE_TEMPLATE from '../../../../reducers/api/IAM/Rule/template';
 import {templateType} from '../../../../utils/template';
 import UserAccountProcessTemplate from './Templates/UserAccountProcessTemplate';
@@ -185,7 +185,7 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 
 				// 액션 템플릿 findAll
 				dispatch(
-					IAM_POLICY_TEMPLATE.asyncAction.findAll({
+					IAM_POLICY_TEMPLATE.asyncAction.findAllAction({
 						range: `elements=0-50`,
 					}),
 				)

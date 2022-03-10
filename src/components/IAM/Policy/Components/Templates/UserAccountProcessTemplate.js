@@ -4,18 +4,21 @@ import Dormant from './UserAccountProcessTemplate/Dormant';
 import AccountActivePeriod from './UserAccountProcessTemplate/AccountActivePeriod';
 import ModifyingGroup from './UserAccountProcessTemplate/ModifyingGroup';
 import Resignation from './UserAccountProcessTemplate/Resignation';
-import IAM_RULE_TEMPLATE_DETAILE from '../../../../../reducers/api/IAM/Rule/templateDetail';
+
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Rule/templateDetail';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_RULE_TEMPLATE from '../../../../../reducers/api/IAM/Rule/template';
-import IAM_POLICY from '../../../../../reducers/api/IAM/Policy/policy';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 
 /**************************************************
  * ambacc244 - 사용자 계정 처리 컴포넌트
  **************************************************/
 const UserAccountProcessTemplate = ({templateId}) => {
 	const dispatch = useDispatch();
-	const {creatingPolicy} = useSelector(IAM_POLICY.selector);
+	const {creatingPolicy} = useSelector(
+		IAM_POLICY_MANAGEMENT_POLICIES.selector,
+	);
 
 	//defaultData: 템플릿의 default value
 	const [defaultData, setDefaultData] = useState([]);
@@ -59,7 +62,7 @@ const UserAccountProcessTemplate = ({templateId}) => {
 	 **************************************************/
 	useEffect(() => {
 		dispatch(
-			IAM_RULE_TEMPLATE_DETAILE.asyncAction.findAllRuleTemplateDetailAction(
+			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
 				{
 					id: templateId,
 				},

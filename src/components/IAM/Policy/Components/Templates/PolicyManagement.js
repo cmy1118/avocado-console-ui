@@ -1,11 +1,11 @@
 import React, {memo, useEffect, useState} from 'react';
 import RowCheckbox from '../../../../RecycleComponents/rowCheckbox';
 import {useDispatch} from 'react-redux';
-import IAM_POLICY_ACTION_TEMPLATE from '../../../../../reducers/api/IAM/Policy/ActionTemplate/actionTemplate';
 import {ColDiv} from '../../../../../styles/components/style';
 import {filterPropObj, objArrUnion} from '../../../../../utils/dataFitering';
-import PropTypes from "prop-types";
-import UserManagement from "./UserManagement";
+import PropTypes from 'prop-types';
+import UserManagement from './UserManagement';
+import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Policy/ActionManagement/templateDetail';
 
 const constants = {
 	main: '사용자 관리 권한',
@@ -24,7 +24,7 @@ const constants = {
 		'설명',
 	],
 	//체크박스 action event 정보
-	action: ['created', 'updated', 'deleted', 'read','grant', 'revoked'],
+	action: ['created', 'updated', 'deleted', 'read', 'grant', 'revoked'],
 };
 
 const PolicyManagement = ({templateId}) => {
@@ -43,14 +43,14 @@ const PolicyManagement = ({templateId}) => {
 	//렌더링시 체크박스 정보 조회
 	useEffect(() => {
 		const res = dispatch(
-			IAM_POLICY_ACTION_TEMPLATE.asyncAction.findAllDetailAction({
+			IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction({
 				range: 'elements=0-50',
-				templateId:templateId,
+				templateId: templateId,
 			}),
 		)
 			.unwrap()
 			.then((res) => {
-				console.log('정책관리권한 API:',res)
+				console.log('정책관리권한 API:', res);
 				const filteredDataList = filterPropObj(
 					res.data,
 					'resource',

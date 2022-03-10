@@ -19,7 +19,7 @@ import * as yup from 'yup';
 import ComboBox from '../../../RecycleComponents/New/ComboBox';
 import WritePolicy from './WritePolicy';
 import {useDispatch} from 'react-redux';
-import IAM_POLICY from '../../../../reducers/api/IAM/Policy/policy';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {
 	controlTypes,
 	policyManageTypes,
@@ -66,7 +66,46 @@ const AddPolicy = () => {
 	 * ambacc244 - 정책 생성을 위해 템플릿 데이터 모으기
 	 **************************************************/
 	const onSubmitGatherPolicyTemplates = useCallback(() => {
-		dispatch(IAM_POLICY.action.RequestToGatherPolicyTemplates());
+		dispatch(
+			IAM_POLICY_MANAGEMENT_POLICIES.action.RequestToGatherPolicyTemplates(),
+		);
+	}, []);
+
+	const onSubmitPolicyData = useCallback((data) => {
+		//생성할 정책의 타입이 iam
+		if (data.type === policyTypes.iam) {
+			//step1: 정책 생성
+			dispatch(
+				IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.createPolicyAction({
+					name: data.name,
+					description: data.description,
+					type: policyManageTypes.Client,
+					controlTypes: [controlTypes.RBAC],
+					maxGrants: 5,
+				}),
+			)
+				.unwrap()
+				.then((data) => {
+					console.log('정책 아이디', data.id);
+					//step2-1: 권한 생성
+
+					//step2-2: 정책 권한 연결
+
+					//step3-1: rule 생성
+					let ruleAttribute = [];
+
+					dispatch(
+						IAM_RULE_TEMPLATE.asyncAction.createRuleTemplateAction({
+							name: data.name,
+							resource: policyTypes.iam,
+							description: data.description,
+							attributes: ruleAttribute,
+						}),
+					);
+
+					//step3-2: 정책 rule 연결
+				});
+		}
 	}, []);
 
 	/**************************************************
