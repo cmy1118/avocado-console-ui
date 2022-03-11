@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import RowCheckbox from '../../../../RecycleComponents/rowCheckbox';
+import React, {memo, useEffect, useState} from 'react';
+import RowCheckbox from '../../../../../RecycleComponents/rowCheckbox';
 import {useDispatch} from 'react-redux';
-import {ColDiv} from '../../../../../styles/components/style';
-import {filterPropObj, objArrUnion} from '../../../../../utils/dataFitering';
+import {ColDiv} from '../../../../../../styles/components/style';
+import {filterPropObj, objArrUnion} from '../../../../../../utils/dataFitering';
 import PropTypes from 'prop-types';
-import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Policy/ActionManagement/templateDetail';
+import UserManagement from './UserManagement';
+import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/ActionManagement/templateDetail';
 
 const constants = {
 	main: '사용자 관리 권한',
@@ -23,13 +24,13 @@ const constants = {
 		'설명',
 	],
 	//체크박스 action event 정보
-	action: ['created', 'updated', 'deleted', 'read', 'revoke'],
+	action: ['created', 'updated', 'deleted', 'read', 'grant', 'revoked'],
 };
 
-const RoleManagement = ({templateId, name, description}) => {
+const PolicyManagement = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
 	const [dataLists, setDataLists] = useState([]);
-	//역할관리권한 컬럼 에대한 action 정보
+	//정책관리권한 컬럼 에대한 action 정보
 	const tempDataLists = [
 		{action: 'create', data: false},
 		{action: 'update', data: false},
@@ -49,7 +50,7 @@ const RoleManagement = ({templateId, name, description}) => {
 		)
 			.unwrap()
 			.then((res) => {
-				console.log('역할관리권한 API:', res);
+				console.log('정책관리권한 API:', res);
 				const filteredDataList = filterPropObj(
 					res.data,
 					'resource',
@@ -81,9 +82,9 @@ const RoleManagement = ({templateId, name, description}) => {
 		</div>
 	);
 };
-RoleManagement.propTypes = {
+PolicyManagement.propTypes = {
 	templateId: PropTypes.string,
 	name: PropTypes.string,
 	description: PropTypes.string,
 };
-export default RoleManagement;
+export default PolicyManagement;

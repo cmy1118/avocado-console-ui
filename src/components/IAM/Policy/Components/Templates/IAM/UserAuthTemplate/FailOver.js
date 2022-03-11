@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
-import TemplateElement from '../../TemplateElement';
+import TemplateElement from '../../../TemplateElement';
 import {
 	authMethodOptions,
 	optionValue,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../utils/options';
-import TemplateElementContainer from '../../TemplateElementContainer';
-import useRadio from '../../../../../../hooks/useRadio';
+} from '../../../../../../../utils/options';
+import TemplateElementContainer from '../../../TemplateElementContainer';
+import useRadio from '../../../../../../../hooks/useRadio';
 import PropTypes from 'prop-types';
 import MFA from './MFA';
 

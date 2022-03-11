@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import TemplateElementContainer from '../../TemplateElementContainer';
-import TemplateElement from '../../TemplateElement';
+import TemplateElementContainer from '../../../TemplateElementContainer';
+import TemplateElement from '../../../TemplateElement';
 import {
 	additionalAuthMethodOptions,
 	authUsageOptions,
@@ -8,11 +8,11 @@ import {
 	requiredOptions,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../utils/options';
-import useRadio from '../../../../../../hooks/useRadio';
-import useComboBox from '../../../../../../hooks/useComboBox';
-import useCheckBox from '../../../../../../hooks/useCheckBox';
-import {RowDiv} from '../../../../../../styles/components/style';
+} from '../../../../../../../utils/options';
+import useRadio from '../../../../../../../hooks/useRadio';
+import useComboBox from '../../../../../../../hooks/useComboBox';
+import useCheckBox from '../../../../../../../hooks/useCheckBox';
+import {RowDiv} from '../../../../../../../styles/components/style';
 import PropTypes from 'prop-types';
 
 const mfa = {

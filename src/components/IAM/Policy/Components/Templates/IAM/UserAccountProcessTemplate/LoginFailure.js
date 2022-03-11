@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
-import TemplateElement from '../../TemplateElement';
+import TemplateElement from '../../../TemplateElement';
 import {
 	accountBlockingTypeOptions,
 	optionValue,
-} from '../../../../../../utils/options';
-import TemplateElementContainer from '../../TemplateElementContainer';
-import useRadio from '../../../../../../hooks/useRadio';
-import useTextBox from '../../../../../../hooks/useTextBox';
-import {RowDiv} from '../../../../../../styles/components/style';
+} from '../../../../../../../utils/options';
+import TemplateElementContainer from '../../../TemplateElementContainer';
+import useRadio from '../../../../../../../hooks/useRadio';
+import useTextBox from '../../../../../../../hooks/useTextBox';
+import {RowDiv} from '../../../../../../../styles/components/style';
 import PropTypes from 'prop-types';
 
 const loginFailure = {

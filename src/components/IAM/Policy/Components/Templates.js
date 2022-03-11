@@ -5,15 +5,15 @@ import styled from 'styled-components';
 import {useDispatch} from 'react-redux';
 import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/Policy/ActionManagement/template';
 import IAM_RULE_TEMPLATE from '../../../../reducers/api/IAM/Rule/template';
-import {templateType} from '../../../../utils/template';
-import UserAccountProcessTemplate from './Templates/UserAccountProcessTemplate';
-import UserAuthTemplate from './Templates/UserAuthTemplate';
-import UserAccessTemplate from './Templates/UserAccessTemplate';
-import UserSessionTemplate from './Templates/UserSessionTemplate';
-import UserAccountPatternTemplate from './Templates/UserAccountPatternTemplate';
-import UserManagement from './Templates/UserManagement';
-import PolicyManagement from './Templates/PolicyManagement';
-import RoleManagement from './Templates/RoleManagement';
+import {POLICY_TYPE, templateType} from '../../../../utils/template';
+import UserAccountProcessTemplate from './Templates/IAM/UserAccountProcessTemplate';
+import UserAuthTemplate from './Templates/IAM/UserAuthTemplate';
+import UserAccessTemplate from './Templates/IAM/UserAccessTemplate';
+import UserSessionTemplate from './Templates/IAM/UserSessionTemplate';
+import UserAccountPatternTemplate from './Templates/IAM/UserAccountPatternTemplate';
+import UserManagement from './Templates/IAM/UserManagement';
+import PolicyManagement from './Templates/IAM/PolicyManagement';
+import RoleManagement from './Templates/IAM/RoleManagement';
 
 const Container = styled.div`
 	display: flex;
@@ -33,7 +33,12 @@ const TemplateListContainer = styled.div`
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
  ***************************************************/
 const contents = {
-	title: 'IAM 템플릿 선택',
+	iam: {
+		title: 'IAM 템플릿 선택',
+	},
+	pam: {
+		title: 'PAM 템플릿 선택',
+	},
 };
 
 /**************************************************
@@ -42,15 +47,21 @@ const contents = {
  * setTemplateList: 템플릿 리스트 set 함수
  * setIsOpened: 추가할 템플릿 리스트 사이드의 setOpen
  ***************************************************/
-const TemplateList = ({setTemplateList, setIsOpened}) => {
+const TemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 	// 각 템플릿별 설명
 	const [templateDescription, setTemplateDescription] = useState('');
-	// 규칙 템플릿 리스트
-	const [ruleTemplates, setRuleTemplates] = useState([]);
-	// 권한 템플릿 리스트
-	const [actionTemplates, setActionTemplates] = useState([]);
+	// IAM 규칙 템플릿 리스트
+	const [iamRuleTemplates, setIamRuleTemplates] = useState([]);
+	// IAM 액션 템플릿 리스트
+	const [iamActionTemplates, setIamActionTemplates] = useState([]);
+	// PAM 규칙 템플릿 리스트
+	const [pamRuleTemplates, setPamRuleTemplates] = useState([]);
+	// PAM 액션 템플릿 리스트
+	const [pamActionTemplates, setPamActionTemplates] = useState([]);
+
 	// 로딩처리 state
-	const [isLoading, setIsLoading] = useState(true);
+	const [iamLoading, setIamLoading] = useState(true);
+	const [pamLoading, setPamLoading] = useState(true);
 
 	const dispatch = useDispatch();
 
@@ -65,113 +76,117 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 			console.log(template);
 			let currentTemplate = null;
 			// 규칙 템플릿인경우
-			if (type === templateType.RULE) {
-				// memo : 현재 템플릿을 구분하는 카테고리 값이 없으므로 id값을 기준으로 분류했습니다. (수정예정)
-				switch (template.id) {
-					case 'KR-2020-0001:202202:0002': {
-						currentTemplate = {
-							template,
-							render: () =>
-								UserAuthTemplate({
-									templateId: template.id,
-									name: template.name,
-									description: template.description,
-								}),
-						};
-						break;
-					}
-					case 'KR-2020-0001:202202:0003': {
-						currentTemplate = {
-							template,
-							render: () =>
-								UserAccountProcessTemplate({
-									templateId: template.id,
-									name: template.name,
-									description: template.description,
-								}),
-						};
-						break;
-					}
-					case 'KR-2020-0001:202202:0004': {
-						currentTemplate = {
-							template,
-							render: () =>
-								UserAccessTemplate({
-									templateId: template.id,
-									name: template.name,
-									description: template.description,
-								}),
-						};
+			if (policyType === POLICY_TYPE.IAM) {
+				if (type === templateType.RULE) {
+					// memo : 현재 템플릿을 구분하는 카테고리 값이 없으므로 id값을 기준으로 분류했습니다. (수정예정)
+					switch (template.id) {
+						case 'KR-2020-0001:202202:0002': {
+							currentTemplate = {
+								template,
+								render: () =>
+									UserAuthTemplate({
+										templateId: template.id,
+										name: template.name,
+										description: template.description,
+									}),
+							};
+							break;
+						}
+						case 'KR-2020-0001:202202:0003': {
+							currentTemplate = {
+								template,
+								render: () =>
+									UserAccountProcessTemplate({
+										templateId: template.id,
+										name: template.name,
+										description: template.description,
+									}),
+							};
+							break;
+						}
+						case 'KR-2020-0001:202202:0004': {
+							currentTemplate = {
+								template,
+								render: () =>
+									UserAccessTemplate({
+										templateId: template.id,
+										name: template.name,
+										description: template.description,
+									}),
+							};
 
-						break;
-					}
-					case 'KR-2020-0001:202202:0005': {
-						currentTemplate = {
-							template,
-							render: () =>
-								UserSessionTemplate({
-									templateId: template.id,
-									name: template.name,
-									description: template.description,
-								}),
-						};
-						break;
-					}
-					case 'KR-2020-0001:202202:0006': {
-						currentTemplate = {
-							template,
-							render: () =>
-								UserAccountPatternTemplate({
-									templateId: template.id,
-									name: template.name,
-									description: template.description,
-								}),
-						};
-						break;
-					}
-				}
-			}
-			// 액션 템플릿인경우
-			// todo : 건욱님 액션 템플릿 컴포넌트 추가되면 id값 전달예정
-			else if (type === templateType.ACTION) {
-				switch (template.id) {
-					case 'KR-2020-0001:202202:0001': {
-						currentTemplate = {
-							template,
-							render: () =>
-								UserManagement({
-									templateId: template.id,
-									name: template.name,
-									description: template.description,
-								}),
-						};
-						break;
-					}
-					case 'KR-2020-0001:202202:0002': {
-						currentTemplate = {
-							template,
-							render: () =>
-								PolicyManagement({
-									templateId: template.id,
-									name: template.name,
-									description: template.description,
-								}),
-						};
-						break;
-					}
-					case 'KR-2020-0001:202202:0003': {
-						currentTemplate = {
-							template,
-							render: () =>
-								RoleManagement({
-									templateId: template.id,
-									name: template.name,
-									description: template.description,
-								}),
-						};
-						break;
+							break;
+						}
+						case 'KR-2020-0001:202202:0005': {
+							currentTemplate = {
+								template,
+								render: () =>
+									UserSessionTemplate({
+										templateId: template.id,
+										name: template.name,
+										description: template.description,
+									}),
+							};
+							break;
+						}
+						case 'KR-2020-0001:202202:0006': {
+							currentTemplate = {
+								template,
+								render: () =>
+									UserAccountPatternTemplate({
+										templateId: template.id,
+										name: template.name,
+										description: template.description,
+									}),
+							};
+							break;
+						}
 					}
 				}
+				// 액션 템플릿인경우
+				// todo : 건욱님 액션 템플릿 컴포넌트 추가되면 id값 전달예정
+				else if (type === templateType.ACTION) {
+					switch (template.id) {
+						case 'KR-2020-0001:202202:0001': {
+							currentTemplate = {
+								template,
+								render: () =>
+									UserManagement({
+										templateId: template.id,
+										name: template.name,
+										description: template.description,
+									}),
+							};
+							break;
+						}
+						case 'KR-2020-0001:202202:0002': {
+							currentTemplate = {
+								template,
+								render: () =>
+									PolicyManagement({
+										templateId: template.id,
+										name: template.name,
+										description: template.description,
+									}),
+							};
+							break;
+						}
+						case 'KR-2020-0001:202202:0003': {
+							currentTemplate = {
+								template,
+								render: () =>
+									RoleManagement({
+										templateId: template.id,
+										name: template.name,
+										description: template.description,
+									}),
+							};
+							break;
+						}
+					}
+				}
+			} else if (policyType === POLICY_TYPE.PAM) {
+				///
 			}
 
 			// 현재 템플릿에 컴포넌트가 빈 값 인경우 return
@@ -189,11 +204,11 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 			});
 			setIsOpened(false);
 		},
-		[setIsOpened, setTemplateList],
+		[policyType, setIsOpened, setTemplateList],
 	);
 
 	/**************************************************
-	 * seob - 규칙 템플릿 액션 템플릿 findAll api
+	 * seob - IAM 규칙 템플릿, 액션 템플릿 findAll api
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
@@ -205,7 +220,7 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 					}),
 				)
 					.unwrap()
-					.then((res) => setRuleTemplates(res.data));
+					.then((res) => setIamRuleTemplates(res.data));
 
 				// 액션 템플릿 findAll
 				dispatch(
@@ -214,31 +229,45 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 					}),
 				)
 					.unwrap()
-					.then((res) => setActionTemplates(res.data));
+					.then((res) => setIamActionTemplates(res.data));
 			} catch (e) {
 				console.log(e);
 			}
 		};
 
-		fetchData();
-	}, [dispatch]);
+		policyType === POLICY_TYPE.IAM && fetchData();
+	}, [dispatch, policyType]);
+
+	/**************************************************
+	 * seob - PAM 규칙 템플릿, 액션 템플릿 findAll api -
+	 ***************************************************/
+	// todo : 작성예정
+	// *************************************************
 
 	useEffect(() => {
-		// 첫 로드시 각각의 템플릿 데이터를 가져오면 로딩 false
-		if (ruleTemplates.length && actionTemplates.length) {
-			setIsLoading(false);
+		// 첫 로드시 각각의 IAM 템플릿 데이터를 가져오면 로딩 false
+		if (iamRuleTemplates.length && iamActionTemplates.length) {
+			setIamLoading(false);
 		}
-	}, [actionTemplates, ruleTemplates]);
+	}, [iamActionTemplates, iamRuleTemplates]);
+
+	useEffect(() => {
+		// 첫 로드시 각각의 PAM 템플릿 데이터를 가져오면 로딩 false
+		if (pamRuleTemplates.length && pamActionTemplates.length) {
+			setPamLoading(false);
+		}
+	}, [pamActionTemplates, pamRuleTemplates]);
 
 	return (
 		<TemplateListContainer>
-			<Title>{contents.title}</Title>
-			{isLoading ? (
+			<Title>{contents[policyType].title}</Title>
+			{(policyType === POLICY_TYPE.IAM && iamLoading) ||
+			(policyType === POLICY_TYPE.PAM && pamLoading) ? (
 				<div>Loading...</div>
-			) : (
+			) : policyType === POLICY_TYPE.IAM ? (
 				<>
 					<ul>
-						{ruleTemplates.map((template) => (
+						{iamRuleTemplates.map((template) => (
 							<li
 								key={template.id}
 								onClick={() =>
@@ -256,7 +285,47 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 						))}
 					</ul>
 					<ul>
-						{actionTemplates.map((template) => (
+						{iamActionTemplates.map((template) => (
+							<li
+								key={template.id}
+								onClick={() =>
+									addTemplate({
+										template,
+										type: templateType.ACTION,
+									})
+								}
+								onMouseEnter={() =>
+									setTemplateDescription(template.description)
+								}
+							>
+								<button>{template.name}</button>
+							</li>
+						))}
+					</ul>
+					<div>{templateDescription}</div>
+				</>
+			) : (
+				<>
+					<ul>
+						{pamRuleTemplates.map((template) => (
+							<li
+								key={template.id}
+								onClick={() =>
+									addTemplate({
+										template,
+										type: templateType.RULE,
+									})
+								}
+								onMouseEnter={() =>
+									setTemplateDescription(template.description)
+								}
+							>
+								<button>{template.name}</button>
+							</li>
+						))}
+					</ul>
+					<ul>
+						{pamActionTemplates.map((template) => (
 							<li
 								key={template.id}
 								onClick={() =>
@@ -283,6 +352,7 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 TemplateList.propTypes = {
 	setTemplateList: PropTypes.func,
 	setIsOpened: PropTypes.func,
+	policyType: PropTypes.string,
 };
 
 /**************************************************
@@ -290,8 +360,9 @@ TemplateList.propTypes = {
  *
  * isOpened: 추가할 템플릿 리스트 사이드의 open 상태
  * setIsOpened: 추가할 템플릿 리스트 사이드의 setOpen
+ * policyType: iam, pam 유형 중 현재 정책유형
  ***************************************************/
-const Templates = ({isOpened, setIsOpened}) => {
+const Templates = ({isOpened, setIsOpened, policyType}) => {
 	// 정책 작성 페이지에 추가된 템플릿 리스트
 	const [templateList, setTemplateList] = useState([]);
 
@@ -311,6 +382,7 @@ const Templates = ({isOpened, setIsOpened}) => {
 				<TemplateList
 					setTemplateList={setTemplateList}
 					setIsOpened={setIsOpened}
+					policyType={policyType}
 				/>
 			)}
 		</>
@@ -320,6 +392,7 @@ const Templates = ({isOpened, setIsOpened}) => {
 Templates.propTypes = {
 	isOpened: PropTypes.bool,
 	setIsOpened: PropTypes.func,
+	policyType: PropTypes.string,
 };
 
 export default Templates;

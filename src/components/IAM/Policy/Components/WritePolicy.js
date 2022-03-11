@@ -30,6 +30,11 @@ const contents = {
 const WritePolicy = ({title, description}) => {
 	// 정책 추가 사이드바 open 상태
 	const [isOpened, setIsOpened] = useState(false);
+	const [policyType, setPolicyType] = useState('iam');
+
+	const policyTypehandler = () => {
+		setPolicyType((type) => (type === 'iam' ? 'pam' : 'iam'));
+	};
 
 	return (
 		<Container>
@@ -47,10 +52,18 @@ const WritePolicy = ({title, description}) => {
 					<NormalButton onClick={() => setIsOpened(true)}>
 						{contents.add}
 					</NormalButton>
+					{/*임의로 우선 유형변경 버튼 생성했습니다. todo: 추후 수정 예정*/}
+					<button onClick={policyTypehandler}>
+						정책유형 변경버튼
+					</button>
 				</TitleBarButtons>
 			</TitleBar>
 			<Body>
-				<Templates isOpened={isOpened} setIsOpened={setIsOpened} />
+				<Templates
+					isOpened={isOpened}
+					setIsOpened={setIsOpened}
+					policyType={policyType}
+				/>
 			</Body>
 		</Container>
 	);

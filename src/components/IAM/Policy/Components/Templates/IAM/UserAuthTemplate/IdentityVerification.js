@@ -1,15 +1,15 @@
 import React, {useEffect} from 'react';
 
-import TemplateElementContainer from '../../TemplateElementContainer';
+import TemplateElementContainer from '../../../TemplateElementContainer';
 import {
 	identityVerificationMethodOptions,
 	optionValue,
 	usageOptions,
-} from '../../../../../../utils/options';
-import TemplateElement from '../../TemplateElement';
-import useRadio from '../../../../../../hooks/useRadio';
-import useTextBox from '../../../../../../hooks/useTextBox';
-import {RowDiv} from '../../../../../../styles/components/style';
+} from '../../../../../../../utils/options';
+import TemplateElement from '../../../TemplateElement';
+import useRadio from '../../../../../../../hooks/useRadio';
+import useTextBox from '../../../../../../../hooks/useTextBox';
+import {RowDiv} from '../../../../../../../styles/components/style';
 import PropTypes from 'prop-types';
 
 const identityVerification = {

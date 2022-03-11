@@ -1,14 +1,14 @@
 import React, {useEffect} from 'react';
-import TemplateElement from '../../TemplateElement';
+import TemplateElement from '../../../TemplateElement';
 import {
 	optionValue,
 	patternTypeOptions,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../utils/options';
-import TemplateElementContainer from '../../TemplateElementContainer';
-import useRadio from '../../../../../../hooks/useRadio';
-import useTextBox from '../../../../../../hooks/useTextBox';
+} from '../../../../../../../utils/options';
+import TemplateElementContainer from '../../../TemplateElementContainer';
+import useRadio from '../../../../../../../hooks/useRadio';
+import useTextBox from '../../../../../../../hooks/useTextBox';
 import PropTypes from 'prop-types';
 
 const userIdPattern = {

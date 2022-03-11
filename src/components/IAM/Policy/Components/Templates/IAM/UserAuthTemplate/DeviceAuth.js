@@ -1,14 +1,14 @@
 import React, {useEffect} from 'react';
-import TemplateElementContainer from '../../TemplateElementContainer';
-import TemplateElement from '../../TemplateElement';
+import TemplateElementContainer from '../../../TemplateElementContainer';
+import TemplateElement from '../../../TemplateElement';
 import {
 	applicationOptions,
 	optionValue,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../utils/options';
-import useRadio from '../../../../../../hooks/useRadio';
-import useCheckBox from '../../../../../../hooks/useCheckBox';
+} from '../../../../../../../utils/options';
+import useRadio from '../../../../../../../hooks/useRadio';
+import useCheckBox from '../../../../../../../hooks/useCheckBox';
 import PropTypes from 'prop-types';
 
 const deviceAuth = {

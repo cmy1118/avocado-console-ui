@@ -1,4 +1,4 @@
-import UserManagement from '../../components/IAM/Policy/Components/Templates/UserManagement';
+import UserManagement from '../../components/IAM/Policy/Components/Templates/IAM/UserManagement';
 
 export const DRAGGABLE_KEY = 'keyId';
 export const tableKeys = Object.freeze({
@@ -105,10 +105,10 @@ export const tableKeys = Object.freeze({
 				include: 'ROLE_ADD_USER_INCLUDE',
 				exclude: 'ROLE_ADD_USER_EXCLUDE',
 			},
-			groups:{
+			groups: {
 				include: 'ROLE_ADD_GROUP_INCLUDE',
 				exclude: 'ROLE_ADD_GROUP_EXCLUDE',
-			}
+			},
 		},
 		summary: {
 			permission: 'ROLE_SUMMARY_PERMISSION',

@@ -1,15 +1,15 @@
 import React, {useEffect} from 'react';
-import TemplateElementContainer from '../../TemplateElementContainer';
-import TemplateElement from '../../TemplateElement';
+import TemplateElementContainer from '../../../TemplateElementContainer';
+import TemplateElement from '../../../TemplateElement';
 import {
 	accountBlockingTypeOptions,
 	gracePeriodUsageOptions,
 	optionValue,
-} from '../../../../../../utils/options';
-import useRadio from '../../../../../../hooks/useRadio';
+} from '../../../../../../../utils/options';
+import useRadio from '../../../../../../../hooks/useRadio';
 import PropTypes from 'prop-types';
-import useTextBox from '../../../../../../hooks/useTextBox';
-import {RowDiv} from '../../../../../../styles/components/style';
+import useTextBox from '../../../../../../../hooks/useTextBox';
+import {RowDiv} from '../../../../../../../styles/components/style';
 
 const resignation = {
 	title: '퇴사(탈퇴)',

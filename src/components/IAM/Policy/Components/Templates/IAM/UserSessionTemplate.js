@@ -1,19 +1,19 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import TemplateElement from '../TemplateElement';
-import TemplateElementContainer from '../TemplateElementContainer';
-import useRadio from '../../../../../hooks/useRadio';
-import {DRAGGABLE_KEY} from '../../../../../Constants/Table/keys';
-import Table from '../../../../Table/Table';
-import TableComboBox from '../../../../Table/ColumnCells/TableComboBox';
-import TableTextBox from '../../../../Table/ColumnCells/TableTextBox';
-import {RowDiv} from '../../../../../styles/components/style';
-import useTextBox from '../../../../../hooks/useTextBox';
+import TemplateElement from '../../TemplateElement';
+import TemplateElementContainer from '../../TemplateElementContainer';
+import useRadio from '../../../../../../hooks/useRadio';
+import {DRAGGABLE_KEY} from '../../../../../../Constants/Table/keys';
+import Table from '../../../../../Table/Table';
+import TableComboBox from '../../../../../Table/ColumnCells/TableComboBox';
+import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
+import {RowDiv} from '../../../../../../styles/components/style';
+import useTextBox from '../../../../../../hooks/useTextBox';
 import PropTypes from 'prop-types';
-import IAM_RULE_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Rule/templateDetail';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Rule/templateDetail';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_RULE_TEMPLATE from '../../../../../reducers/api/IAM/Rule/template';
-import {policyTypes} from '../../../../../utils/data';
-import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
+import IAM_RULE_TEMPLATE from '../../../../../../reducers/api/IAM/Rule/template';
+import {policyTypes} from '../../../../../../utils/data';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
