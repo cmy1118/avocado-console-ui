@@ -90,7 +90,7 @@ const LoginForm = () => {
 				.then((val) => {
 					if (
 						val?.policyParameter?.policies[0]?.type ===
-						'IdAndPassword'
+						'idAndPassword'
 					) {
 						dispatch(
 							AUTH.asyncAction.userAuthAction({
