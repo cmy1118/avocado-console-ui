@@ -260,7 +260,6 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 	 * seob717 - 정책 생성 액션 요청으로 템플릿 데이터를 redux에 저장
 	 **************************************************/
 	useEffect(() => {
-		// todo : api 수정되면, attributes에 data 가공 후 넣을 예정입니다.
 		console.log(data);
 		if (creatingPolicy) {
 			dispatch(
@@ -270,7 +269,9 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 						name: name,
 						resource: policyTypes.iam,
 						description: description,
-						attributes: [],
+						attributes: data.map((v) =>
+							JSON.stringify(v.attribute),
+						),
 					},
 				}),
 			);

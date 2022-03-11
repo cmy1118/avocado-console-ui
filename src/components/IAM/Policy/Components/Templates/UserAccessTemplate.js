@@ -102,7 +102,7 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 					v.resource.includes('web-terminal-ui') &&
 						setWebtermRadioValue(v.attribute.usage ? 'yes' : 'no');
 				});
-				setData(res.data);
+				setData(res);
 			});
 	}, [dispatch, setConsoleRadioValue, setWebtermRadioValue, templateId]);
 
@@ -139,7 +139,6 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 	 **************************************************/
 	useEffect(() => {
 		console.log(data);
-		// todo : api 수정되면, attributes에 data 가공 후 넣을 예정입니다.
 		if (creatingPolicy) {
 			dispatch(
 				IAM_RULE_TEMPLATE.action.gatherTemplate({
@@ -148,7 +147,9 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 						name: name,
 						resource: policyTypes.iam,
 						description: description,
-						attributes: [],
+						attributes: data.map((v) =>
+							JSON.stringify(v.attribute),
+						),
 					},
 				}),
 			);

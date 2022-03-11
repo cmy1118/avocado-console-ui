@@ -70,7 +70,7 @@ const AddPolicy = () => {
 			setIsOpened(true);
 			setFormData(data);
 		},
-		[setIsOpened, setFormData],
+		[dispatch],
 	);
 
 	return (

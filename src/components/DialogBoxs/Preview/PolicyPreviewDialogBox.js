@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {TitleBar} from '../../../styles/components/iam/iam';
 import IAM_RULE_TEMPLATE from '../../../reducers/api/IAM/Rule/template';
 import {policyTypes} from '../../../utils/data';
+import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from '../../../reducers/api/IAM/Policy/PolicyManagement/policyRuleTemplate';
 
 const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const dispatch = useDispatch();
@@ -43,6 +44,22 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			}
 			//step3-2: 정책 rule 연결
 			// });
+
+			/**************************************************
+			 * seob - 정책 rule 연결 - todo : 템플릿 생성 api 수정시 response에 따라서 수정할 예정입니다.
+			 ***************************************************/
+			// // 예시 템플릿 리스트
+			// const iamTemplateIdList = [
+			// 	{policyId: '', templateId: '', order: ''},
+			// 	{policyId: '', templateId: '', order: ''},
+			// 	{policyId: '', templateId: '', order: ''},
+			// ];
+			// dispatch(
+			// 	IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.joinAction(
+			// 		iamTemplateIdList,
+			// 	),
+			// );
+			// ******************************************************
 		}
 	}, [ruleTemplates, formData]);
 

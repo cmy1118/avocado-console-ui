@@ -36,6 +36,8 @@ import IAM_POLICY_MANAGEMENT_POLICIES from './api/IAM/Policy/PolicyManagement/po
 import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './api/IAM/Policy/ActionManagement/templateDetail';
 import IAM_ACTION_MANAGEMENT_TEMPLATE from './api/IAM/Policy/ActionManagement/template';
 
+import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from './api/IAM/Policy/PolicyManagement/policyRuleTemplate';
+
 const authFilter = createFilter(AUTH.name, [
 	'companyId',
 	'userAuth',
@@ -102,6 +104,8 @@ const rootReducer = combineReducers({
     /******************************************/
 	[IAM_RULE_TEMPLATE.name]: IAM_RULE_TEMPLATE.reducer,
 	[IAM_RULE_TEMPLATE_DETAIL.name]: IAM_RULE_TEMPLATE_DETAIL.reducer,
+	[IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.name]:
+		IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.reducer,
 	/******************************************/
 	/******************************************/
 	/* seob : IAM - User reducers

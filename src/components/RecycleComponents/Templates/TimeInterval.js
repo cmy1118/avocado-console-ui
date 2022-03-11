@@ -56,7 +56,7 @@ const TimeInterval = ({week, title, data, setData}) => {
 		data?.attribute.policies[week] || {from: '09:00', to: '18:00'},
 	);
 
-	console.log(data.attribute.usage);
+	// console.log(data.attribute.usage);
 
 	// 체크박스 체크 여부
 	const [checked, setChecked] = useState(!!data?.attribute.policies[week]);
