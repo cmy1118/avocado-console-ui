@@ -26,7 +26,7 @@ const constants = {
 	action: ['created', 'updated', 'deleted', 'read', 'revoke'],
 };
 
-const RoleManagement = ({templateId}) => {
+const RoleManagement = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
 	const [dataLists, setDataLists] = useState([]);
 	//역할관리권한 컬럼 에대한 action 정보
@@ -83,5 +83,7 @@ const RoleManagement = ({templateId}) => {
 };
 RoleManagement.propTypes = {
 	templateId: PropTypes.string,
+	name: PropTypes.string,
+	description: PropTypes.string,
 };
 export default RoleManagement;

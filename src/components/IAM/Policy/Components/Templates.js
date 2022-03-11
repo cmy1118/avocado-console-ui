@@ -72,7 +72,11 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 						currentTemplate = {
 							template,
 							render: () =>
-								UserAuthTemplate({templateId: template}),
+								UserAuthTemplate({
+									templateId: template.id,
+									name: template.name,
+									description: template.description,
+								}),
 						};
 						break;
 					}
@@ -81,7 +85,9 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 							template,
 							render: () =>
 								UserAccountProcessTemplate({
-									templateId: template,
+									templateId: template.id,
+									name: template.name,
+									description: template.description,
 								}),
 						};
 						break;
@@ -92,6 +98,8 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 							render: () =>
 								UserAccessTemplate({
 									templateId: template.id,
+									name: template.name,
+									description: template.description,
 								}),
 						};
 
@@ -103,6 +111,8 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 							render: () =>
 								UserSessionTemplate({
 									templateId: template.id,
+									name: template.name,
+									description: template.description,
 								}),
 						};
 						break;
@@ -112,7 +122,9 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 							template,
 							render: () =>
 								UserAccountPatternTemplate({
-									templateId: template,
+									templateId: template.id,
+									name: template.name,
+									description: template.description,
 								}),
 						};
 						break;
@@ -127,7 +139,11 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 						currentTemplate = {
 							template,
 							render: () =>
-								UserManagement({templateId: template.id}),
+								UserManagement({
+									templateId: template.id,
+									name: template.name,
+									description: template.description,
+								}),
 						};
 						break;
 					}
@@ -135,7 +151,11 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 						currentTemplate = {
 							template,
 							render: () =>
-								PolicyManagement({templateId: template.id}),
+								PolicyManagement({
+									templateId: template.id,
+									name: template.name,
+									description: template.description,
+								}),
 						};
 						break;
 					}
@@ -143,7 +163,11 @@ const TemplateList = ({setTemplateList, setIsOpened}) => {
 						currentTemplate = {
 							template,
 							render: () =>
-								RoleManagement({templateId: template.id}),
+								RoleManagement({
+									templateId: template.id,
+									name: template.name,
+									description: template.description,
+								}),
 						};
 						break;
 					}

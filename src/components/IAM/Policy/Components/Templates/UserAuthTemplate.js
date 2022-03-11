@@ -14,7 +14,7 @@ import {policyTypes} from '../../../../../utils/data';
 /**************************************************
  * ambacc244 - 사용자 인증 템플릿 컴포넌트
  **************************************************/
-const UserAuthTemplate = ({templateId}) => {
+const UserAuthTemplate = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
 	const {creatingPolicy} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
@@ -40,11 +40,11 @@ const UserAuthTemplate = ({templateId}) => {
 		if (creatingPolicy) {
 			dispatch(
 				IAM_RULE_TEMPLATE.action.gatherTemplate({
-					id: templateId.id,
+					id: templateId,
 					data: {
-						name: templateId.name,
+						name: name,
 						resource: policyTypes.iam,
-						description: templateId.description,
+						description: description,
 						attributes: [
 							JSON.stringify(deviceAuthenticationData),
 							JSON.stringify(mfaData),
@@ -58,10 +58,12 @@ const UserAuthTemplate = ({templateId}) => {
 	}, [
 		alternativeAuthNFailOverAuthData,
 		creatingPolicy,
+		description,
 		deviceAuthenticationData,
 		dispatch,
 		identityVerificationData,
 		mfaData,
+		name,
 		templateId,
 	]);
 
@@ -72,7 +74,7 @@ const UserAuthTemplate = ({templateId}) => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
 				{
-					id: templateId.id,
+					id: templateId,
 				},
 			),
 		)
@@ -110,7 +112,9 @@ const UserAuthTemplate = ({templateId}) => {
 };
 
 UserAuthTemplate.propTypes = {
-	templateId: PropTypes.object,
+	templateId: PropTypes.string,
+	name: PropTypes.string,
+	description: PropTypes.string,
 };
 
 export default UserAuthTemplate;

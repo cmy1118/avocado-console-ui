@@ -26,7 +26,7 @@ const constants = {
 	action: ['created', 'updated', 'deleted', 'read', 'revoked'],
 };
 
-const UserManagement = ({templateId}) => {
+const UserManagement = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
 	const [dataLists, setDataLists] = useState([]);
 	//사용자 관리권한 컬럼 에대한 action 정보
@@ -81,5 +81,7 @@ const UserManagement = ({templateId}) => {
 };
 UserManagement.propTypes = {
 	templateId: PropTypes.string,
+	name: PropTypes.string,
+	description: PropTypes.string,
 };
 export default UserManagement;

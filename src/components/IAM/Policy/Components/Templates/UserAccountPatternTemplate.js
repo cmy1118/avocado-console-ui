@@ -12,7 +12,7 @@ import {policyTypes} from '../../../../../utils/data';
 /**************************************************
  * ambacc244 - 사용자 계정 패턴 컴포넌트
  **************************************************/
-const UserAccountPatternTemplate = ({templateId}) => {
+const UserAccountPatternTemplate = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
 	const {creatingPolicy} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
@@ -29,11 +29,11 @@ const UserAccountPatternTemplate = ({templateId}) => {
 		if (creatingPolicy) {
 			dispatch(
 				IAM_RULE_TEMPLATE.action.gatherTemplate({
-					id: templateId.id,
+					id: templateId,
 					data: {
-						name: templateId.name,
+						name: name,
 						resource: policyTypes.iam,
-						description: templateId.description,
+						description: description,
 						attributes: [
 							JSON.stringify(userIdPatternData),
 							JSON.stringify(PaswordPatternData),
@@ -42,7 +42,15 @@ const UserAccountPatternTemplate = ({templateId}) => {
 				}),
 			);
 		}
-	}, [creatingPolicy, dispatch, templateId]);
+	}, [
+		PaswordPatternData,
+		creatingPolicy,
+		description,
+		dispatch,
+		name,
+		templateId,
+		userIdPatternData,
+	]);
 
 	/**************************************************
 	 * ambacc244 - 사용자 계정 패턴 템플릿의 default 정보 불러오기
@@ -51,7 +59,7 @@ const UserAccountPatternTemplate = ({templateId}) => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
 				{
-					id: templateId.id,
+					id: templateId,
 				},
 			),
 		)
@@ -82,7 +90,9 @@ const UserAccountPatternTemplate = ({templateId}) => {
 };
 
 UserAccountPatternTemplate.propTypes = {
-	templateId: PropTypes.object,
+	templateId: PropTypes.string,
+	name: PropTypes.string,
+	description: PropTypes.string,
 };
 
 export default UserAccountPatternTemplate;

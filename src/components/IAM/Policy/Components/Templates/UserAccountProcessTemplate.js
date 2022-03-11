@@ -15,7 +15,7 @@ import {policyTypes} from '../../../../../utils/data';
 /**************************************************
  * ambacc244 - 사용자 계정 처리 컴포넌트
  **************************************************/
-const UserAccountProcessTemplate = ({templateId}) => {
+const UserAccountProcessTemplate = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
 	const {creatingPolicy} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
@@ -36,11 +36,11 @@ const UserAccountProcessTemplate = ({templateId}) => {
 		if (creatingPolicy) {
 			dispatch(
 				IAM_RULE_TEMPLATE.action.gatherTemplate({
-					id: templateId.id,
+					id: templateId,
 					data: {
-						name: templateId.name,
+						name: name,
 						resource: policyTypes.iam,
-						description: templateId.description,
+						description: description,
 						attributes: [
 							JSON.stringify(LoginFailureData),
 							JSON.stringify(DormantData),
@@ -59,7 +59,9 @@ const UserAccountProcessTemplate = ({templateId}) => {
 		ModifyingGroupData,
 		ResignationData,
 		creatingPolicy,
+		description,
 		dispatch,
+		name,
 		templateId,
 	]);
 
@@ -70,7 +72,7 @@ const UserAccountProcessTemplate = ({templateId}) => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
 				{
-					id: templateId.id,
+					id: templateId,
 				},
 			),
 		)
@@ -114,7 +116,9 @@ const UserAccountProcessTemplate = ({templateId}) => {
 };
 
 UserAccountProcessTemplate.propTypes = {
-	templateId: PropTypes.object,
+	templateId: PropTypes.string,
+	name: PropTypes.string,
+	description: PropTypes.string,
 };
 
 export default UserAccountProcessTemplate;

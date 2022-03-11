@@ -27,7 +27,7 @@ const constants = {
 	action: ['created', 'updated', 'deleted', 'read', 'grant', 'revoked'],
 };
 
-const PolicyManagement = ({templateId}) => {
+const PolicyManagement = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
 	const [dataLists, setDataLists] = useState([]);
 	//정책관리권한 컬럼 에대한 action 정보
@@ -84,5 +84,7 @@ const PolicyManagement = ({templateId}) => {
 };
 PolicyManagement.propTypes = {
 	templateId: PropTypes.string,
+	name: PropTypes.string,
+	description: PropTypes.string,
 };
 export default PolicyManagement;
