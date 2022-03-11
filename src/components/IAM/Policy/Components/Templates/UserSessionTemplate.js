@@ -42,10 +42,16 @@ const contents = {
 	ruleType: 'ruleType',
 };
 
+/**************************************************
+ * seob - IAM의 사용자 세션 규칙 템플릿
+ *
+ * templateId : 해당 템플릿의 id
+ ***************************************************/
+// todo : TableTextBox의 invalid 검사 기능 추가해야함.
 const UserSessionTemplate = ({templateId}) => {
 	const dispatch = useDispatch();
 
-	// const [data, setData] = useState([]);
+	const [data, setData] = useState([]);
 
 	const [tableData, setTableData] = useState([]);
 	const [sessionTimeout, setSessionTimeout] = useState([]);
@@ -63,30 +69,6 @@ const UserSessionTemplate = ({templateId}) => {
 		name: 'idleTime',
 		disabled: screenSaverValue === 'no',
 	});
-
-	// const [data, setData] = useState([
-	// 	{
-	// 		id: 'data0',
-	// 		isUsed: 'use',
-	// 		application: 'Management Console',
-	// 		MaintenanceTime: '14400',
-	// 		PreservationTime: '0',
-	// 		timeout: 'timeout',
-	//
-	// 		[DRAGGABLE_KEY]: 'data0',
-	//
-	// 		// inner table key가 있으면, 버튼이 생기고, 버튼을 클릭했을 때, 해당 row값을 읽어와 처리하는 함수가 필요.
-	// 	},
-	// 	{
-	// 		id: 'data1',
-	// 		isUsed: 'not use',
-	// 		application: 'Web Terminal',
-	// 		MaintenanceTime: '3600',
-	// 		PreservationTime: '0',
-	// 		timeout: 'timeout',
-	// 		[DRAGGABLE_KEY]: 'data1',
-	// 	},
-	// ]);
 
 	const columns = useMemo(
 		() => [
@@ -167,6 +149,7 @@ const UserSessionTemplate = ({templateId}) => {
 						timeToIdle: 300,
 					},
 				});
+				setIdleTime(300);
 				setScreenSaverValue('no');
 
 				setSessionTimeout({
@@ -213,8 +196,6 @@ const UserSessionTemplate = ({templateId}) => {
 					application: contents.sessionTimeout[v[0]],
 				}));
 
-				console.log(data);
-
 				setTableData(data);
 
 				// res.data.forEach((v) => {
@@ -231,6 +212,7 @@ const UserSessionTemplate = ({templateId}) => {
 			});
 	}, [dispatch, setIdleTime, setScreenSaverValue, templateId]);
 
+	// 화면 보호기 데이터 변경시 setScreenSaver로 반영
 	useEffect(() => {
 		setScreenSaver((data) => ({
 			...data,
@@ -242,9 +224,36 @@ const UserSessionTemplate = ({templateId}) => {
 		}));
 	}, [idleTime, screenSaverValue]);
 
+	// 세션 타임아웃 데이터 변경시 setSessionTimeout로 반영
 	useEffect(() => {
-		console.log(tableData);
+		const policies = {};
+		tableData.forEach((v) => {
+			policies[v.id] = {
+				usage: v.usage === 'yes',
+				sessionTimeSeconds: parseInt(v.sessionTimeout),
+				keepAliveTimeSeconds: parseInt(v.keepAliveTimeSeconds),
+				blockingType: v.blockingType,
+			};
+		});
+
+		setSessionTimeout((prev) => ({
+			...prev,
+			attribute: {
+				...prev.attribute,
+				policies: policies,
+			},
+		}));
 	}, [tableData]);
+
+	// 데이터 저장
+	useEffect(() => {
+		setData([screenSaver, sessionTimeout]);
+	}, [screenSaver, sessionTimeout]);
+
+	// 최종 데이터
+	useEffect(() => {
+		console.log(data);
+	}, [data]);
 
 	return (
 		<div>
@@ -257,6 +266,7 @@ const UserSessionTemplate = ({templateId}) => {
 						data={tableData}
 						columns={columns}
 						isCheckBox={false}
+						setData={setTableData}
 					/>
 				)}
 			/>
