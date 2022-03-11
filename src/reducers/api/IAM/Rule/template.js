@@ -14,7 +14,7 @@ const findAllRuleTemplateAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
 
-		const response = await Axios.get(`/open-api/v1/iam/rule-template`, {
+		const response = await Axios.get(`/open-api/v1/iam/rule-templates`, {
 			headers: {
 				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				Range: payload.range,
@@ -35,7 +35,7 @@ const createRuleTemplateAction = createAsyncThunk(
 		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.post(
-			`/open-api/v1/iam/rule-template`,
+			`/open-api/v1/iam/rule-templates`,
 			{
 				name: payload.name,
 				resource: payload.resource,
