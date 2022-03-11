@@ -2,10 +2,13 @@ import React, {useEffect, useState} from 'react';
 import TemplateElementContainer from '../TemplateElementContainer';
 import PropTypes from 'prop-types';
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Rule/templateDetail';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import TemplateElement from '../TemplateElement';
 import TimeInterval from '../../../../RecycleComponents/Templates/TimeInterval';
 import useRadio from '../../../../../hooks/useRadio';
+import IAM_RULE_TEMPLATE from '../../../../../reducers/api/IAM/Rule/template';
+import {policyTypes} from '../../../../../utils/data';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -56,6 +59,9 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 		'SATURDAY',
 		'SUNDAY',
 	];
+	const {creatingPolicy} = useSelector(
+		IAM_POLICY_MANAGEMENT_POLICIES.selector,
+	);
 	const [data, setData] = useState([]);
 	const dispatch = useDispatch();
 	const CONSOLE_RADIO_NAME = 'console-radio-name';
@@ -77,6 +83,9 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 		options: radioOptions,
 	});
 
+	/**************************************************
+	 * seob - 템플릿 id를 통해 detail조회 후 setState
+	 ***************************************************/
 	useEffect(() => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
@@ -97,6 +106,9 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 			});
 	}, [dispatch, setConsoleRadioValue, setWebtermRadioValue, templateId]);
 
+	/**************************************************
+	 * seob - 정보 변경시 setState
+	 ***************************************************/
 	useEffect(() => {
 		setData((data) =>
 			data.map((v) => {
@@ -122,9 +134,26 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 		);
 	}, [consoleRadioValue, webtermRadioValue]);
 
+	/**************************************************
+	 * seob717 - 정책 생성 액션 요청으로 템플릿 데이터를 redux에 저장
+	 **************************************************/
 	useEffect(() => {
-		console.log('submit data =>', data);
-	}, [data]);
+		console.log(data);
+		// todo : api 수정되면, attributes에 data 가공 후 넣을 예정입니다.
+		if (creatingPolicy) {
+			dispatch(
+				IAM_RULE_TEMPLATE.action.gatherTemplate({
+					id: templateId,
+					data: {
+						name: name,
+						resource: policyTypes.iam,
+						description: description,
+						attributes: [],
+					},
+				}),
+			);
+		}
+	}, [creatingPolicy, data, description, dispatch, name, templateId]);
 
 	return (
 		<div>

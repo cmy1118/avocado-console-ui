@@ -10,7 +10,10 @@ import {RowDiv} from '../../../../../styles/components/style';
 import useTextBox from '../../../../../hooks/useTextBox';
 import PropTypes from 'prop-types';
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Rule/templateDetail';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import IAM_RULE_TEMPLATE from '../../../../../reducers/api/IAM/Rule/template';
+import {policyTypes} from '../../../../../utils/data';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -50,7 +53,9 @@ const contents = {
 // todo : TableTextBox의 invalid 검사 기능 추가해야함.
 const UserSessionTemplate = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
-
+	const {creatingPolicy} = useSelector(
+		IAM_POLICY_MANAGEMENT_POLICIES.selector,
+	);
 	const [data, setData] = useState([]);
 
 	const [tableData, setTableData] = useState([]);
@@ -70,6 +75,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 		disabled: screenSaverValue === 'no',
 	});
 
+	// 세션 타임아웃 테이블 컬럼
 	const columns = useMemo(
 		() => [
 			{
@@ -250,10 +256,26 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 		setData([screenSaver, sessionTimeout]);
 	}, [screenSaver, sessionTimeout]);
 
-	// 최종 데이터
+	/**************************************************
+	 * seob717 - 정책 생성 액션 요청으로 템플릿 데이터를 redux에 저장
+	 **************************************************/
 	useEffect(() => {
+		// todo : api 수정되면, attributes에 data 가공 후 넣을 예정입니다.
 		console.log(data);
-	}, [data]);
+		if (creatingPolicy) {
+			dispatch(
+				IAM_RULE_TEMPLATE.action.gatherTemplate({
+					id: templateId,
+					data: {
+						name: name,
+						resource: policyTypes.iam,
+						description: description,
+						attributes: [],
+					},
+				}),
+			);
+		}
+	}, [creatingPolicy, data, description, dispatch, name, templateId]);
 
 	return (
 		<div>
