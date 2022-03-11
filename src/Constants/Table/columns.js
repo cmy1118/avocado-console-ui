@@ -57,7 +57,10 @@ import {
 	ROLE_SUMMARY_TABS_USERS_INCLUDE_COLUMN,
 } from '../../utils/TableColumns/roles';
 import UserManagement from '../../components/IAM/Policy/Components/Templates/UserManagement';
-import {POLICY_ADD_USER_MANAGEMEN_COLUMN} from '../../utils/TableColumns/policies';
+import {
+	POLICY_ADD_PREVIEW_COLUMN,
+	POLICY_ADD_USER_MANAGEMEN_COLUMN,
+} from '../../utils/TableColumns/policies';
 import {POLICY_COLUMN} from '../../utils/TableColumns/policies';
 
 export const tableColumns = Object.freeze({
@@ -125,7 +128,10 @@ export const tableColumns = Object.freeze({
 
 	// policy and permission
 	policyAndPermission: {}, // 아직 설계 없음. 우선 네이밍 저렇게 할게요..
+	//정책
 	POLICY: POLICY_COLUMN,
+	//정책 생성
+	POLICY_ADD_PREVIEW: POLICY_ADD_PREVIEW_COLUMN,
 	// policy
 	POLICY_ADD_USER_MANAGEMENT: POLICY_ADD_USER_MANAGEMEN_COLUMN,
 	// POLICY_ADD_POLICY_MANAGEMENT: POLICY_ADD_POLICY_MANAGEMENT_COLUMN,

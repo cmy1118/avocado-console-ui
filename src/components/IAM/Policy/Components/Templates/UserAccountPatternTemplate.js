@@ -34,10 +34,7 @@ const UserAccountPatternTemplate = ({templateId, name, description}) => {
 						name: name,
 						resource: policyTypes.iam,
 						description: description,
-						attributes: [
-							JSON.stringify(userIdPatternData),
-							JSON.stringify(PaswordPatternData),
-						],
+						attributes: [userIdPatternData, PaswordPatternData],
 					},
 				}),
 			);

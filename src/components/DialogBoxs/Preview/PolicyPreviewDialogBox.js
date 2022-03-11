@@ -1,14 +1,35 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import ModalTableContainer from '../../RecycleComponents/ModalTableContainer';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {TitleBar} from '../../../styles/components/iam/iam';
 import IAM_RULE_TEMPLATE from '../../../reducers/api/IAM/Rule/template';
 import {policyTypes} from '../../../utils/data';
+import {SummaryList} from '../../../styles/components/iam/descriptionPage';
+import {LiText} from '../../../styles/components/text';
+import {AddPageDialogBoxTitle} from '../../../styles/components/iam/addPage';
+import {tableColumns} from '../../../Constants/Table/columns';
+import {tableKeys} from '../../../Constants/Table/keys';
+import Table from '../../Table/Table';
+
+const policyPreviewDialogBox = {
+	header: '정책 생성 요약보기',
+	policy: {
+		title: '정책 기본정보',
+		contents: {
+			name: '정책 이름',
+			description: '정책 설명',
+			type: '정책 유형',
+		},
+	},
+	detail: {title: '정책'},
+};
 
 const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const dispatch = useDispatch();
 	const {ruleTemplates} = useSelector(IAM_RULE_TEMPLATE.selector);
+
+	const [ruleDetail, setRuleDetail] = useState([]);
 
 	/**************************************************
 	 * ambacc244 - 정책 생성
@@ -46,15 +67,63 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 		}
 	}, [ruleTemplates, formData]);
 
+	// useEffect(() => {
+	// 	let array = [];
+	// 	console.log(ruleTemplates);
+	//
+	// 	Object.values(ruleTemplates).map((v) => {
+	// 		for (let i = 0; i < v.attribute.length; i++) {
+	// 			let data = {};
+	// 			if (i === 0) {
+	// 				data.name = v.name;
+	// 				data.description = v.description;
+	// 			}
+	//
+	// 			console.log(v.attribute[i]);
+	//
+	// 			array.push(data);
+	// 		}
+	// 	});
+	//
+	// 	setRuleDetail(array);
+	// }, [ruleTemplates]);
+
 	return (
-		<ModalTableContainer
-			title={'정책 생성 요약보기'}
-			isOpened={isOpened}
-			setIsOpened={setIsOpened}
-			handleSubmit={onSubmitPolicyForm}
-		>
-			<TitleBar>정책 기본정보</TitleBar>
-		</ModalTableContainer>
+		formData && (
+			<ModalTableContainer
+				title={policyPreviewDialogBox.header}
+				isOpened={isOpened}
+				setIsOpened={setIsOpened}
+				handleSubmit={onSubmitPolicyForm}
+			>
+				<TitleBar>{policyPreviewDialogBox.policy.title}</TitleBar>
+				<SummaryList>
+					<LiText>
+						{policyPreviewDialogBox.policy.contents.name} :{' '}
+						{formData.name}
+					</LiText>
+					<LiText>
+						{policyPreviewDialogBox.policy.contents.description} :{' '}
+						{formData.description}
+					</LiText>
+					<LiText>
+						{policyPreviewDialogBox.policy.contents.type} :{' '}
+						{formData.type}
+					</LiText>
+				</SummaryList>
+
+				<AddPageDialogBoxTitle>
+					{policyPreviewDialogBox.detail.title} :{' '}
+				</AddPageDialogBoxTitle>
+				{/*TODO: TABLE*/}
+				<Table
+					readOnly
+					columns={tableColumns[tableKeys.policy.add.preview]}
+					tableKey={tableKeys.policy.add.preview}
+					data={ruleDetail}
+				/>
+			</ModalTableContainer>
+		)
 	);
 };
 
