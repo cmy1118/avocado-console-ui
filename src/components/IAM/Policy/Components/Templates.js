@@ -14,6 +14,7 @@ import UserAccountPatternTemplate from './Templates/IAM/UserAccountPatternTempla
 import UserManagement from './Templates/IAM/UserManagement';
 import PolicyManagement from './Templates/IAM/PolicyManagement';
 import RoleManagement from './Templates/IAM/RoleManagement';
+import AccessSession from './Templates/PAM/AccessSession';
 
 const Container = styled.div`
 	display: flex;
@@ -61,7 +62,7 @@ const TemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 
 	// 로딩처리 state
 	const [iamLoading, setIamLoading] = useState(true);
-	const [pamLoading, setPamLoading] = useState(true);
+	const [pamLoading, setPamLoading] = useState(false);
 
 	const dispatch = useDispatch();
 
@@ -186,7 +187,11 @@ const TemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 					}
 				}
 			} else if (policyType === POLICY_TYPE.PAM) {
-				///
+				// todo : 서버 pam api 완료시 작성 예정
+				currentTemplate = {
+					template,
+					render: template.component,
+				};
 			}
 
 			// 현재 템플릿에 컴포넌트가 빈 값 인경우 return
@@ -242,6 +247,46 @@ const TemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 	 * seob - PAM 규칙 템플릿, 액션 템플릿 findAll api -
 	 ***************************************************/
 	// todo : 작성예정
+	useEffect(() => {
+		// const fetchData = async () => {
+		// 	try {
+		// 		// 규칙 템플릿
+		// 		dispatch(
+		// 			PAM_RULE_TEMPLATE.asyncAction.findAllRuleTemplateAction({
+		// 				range: `elements=0-50`,
+		// 			}),
+		// 		)
+		// 			.unwrap()
+		// 			.then((res) => setPamRuleTemplates(res.data));
+		//
+		// 		// 액션 템플릿 findAll
+		// 		dispatch(
+		// 			PAM_POLICY_TEMPLATE.asyncAction.findAllAction({
+		// 				range: `elements=0-50`,
+		// 			}),
+		// 		)
+		// 			.unwrap()
+		// 			.then((res) => setPamActionTemplates(res.data));
+		// 	} catch (e) {
+		// 		console.log(e);
+		// 	}
+		// };
+
+		// policyType === POLICY_TYPE.PAM && fetchData();
+
+		// memo : 임시 템플릿 생성
+		// id값은 중복되지 않도록 이전 id +1 해서 작성해주세요
+		setPamRuleTemplates([
+			{
+				id: 1,
+				name: '접속 세션 정책',
+				description: '접속 세션 정책 입니다.',
+				component: AccessSession,
+			},
+		]);
+		setPamActionTemplates([]);
+	}, [dispatch, policyType]);
+
 	// *************************************************
 
 	useEffect(() => {
@@ -254,7 +299,7 @@ const TemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 	useEffect(() => {
 		// 첫 로드시 각각의 PAM 템플릿 데이터를 가져오면 로딩 false
 		if (pamRuleTemplates.length && pamActionTemplates.length) {
-			setPamLoading(false);
+			// setPamLoading(false);
 		}
 	}, [pamActionTemplates, pamRuleTemplates]);
 
