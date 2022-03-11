@@ -85,14 +85,14 @@ const FailOver = ({data, setTemplateData}) => {
 		//Fail Over 사용 여부 true
 		if (data?.usage) {
 			//기본 인증 default value 있음
-			if (Object.prototype.hasOwnProperty.call(data.policies, 'Auth')) {
+			if (Object.prototype.hasOwnProperty.call(data.policies, 'auth')) {
 				//기본 인증 수단 세팅
-				setBasicAuth(data.policies.Auth.type);
+				setBasicAuth(data.policies.auth.type);
 			}
 			//MFA default value 있음
-			if (Object.prototype.hasOwnProperty.call(data.policies, 'MFA')) {
+			if (Object.prototype.hasOwnProperty.call(data.policies, 'mfa')) {
 				//MFA 인증 수단 세팅
-				setMfa(data.policies.MFA.type);
+				setMfa(data.policies.mfa.type);
 			}
 		}
 	}, [data, setBasicAuth, setMfa, setUsage]);

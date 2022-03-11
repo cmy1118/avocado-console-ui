@@ -70,6 +70,7 @@ const DeviceAuth = ({data, setTemplateData}) => {
 		);
 		//단말기 인증 사용 여부 true, 인증 단말기가 존재
 		if (data?.usage && data.resource) {
+			//TODO: 미성님꼐 문의후 재 확인
 			//사용하는 단말기 종류 세팅
 			setApplications(data.resource);
 		}

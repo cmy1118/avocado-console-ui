@@ -5,11 +5,11 @@ export const optionValue = {
 		webTerminal: 'web-terminal-ui:*',
 	},
 	authUsage: {use: 'use', none: 'none'},
-	required: {all: 'All', select: 'Select', none: 'no'},
+	required: {all: 'all', select: 'select', none: 'no'},
 	additionalAuthMethod: {
-		mail: 'Mail',
-		sms: 'SMS',
-		kakao: 'Kakao',
+		mail: 'mail',
+		sms: 'sms',
+		kakao: 'kakao',
 	},
 	authMethod: {
 		none: 'no',
