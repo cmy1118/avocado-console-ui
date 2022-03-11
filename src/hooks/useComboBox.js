@@ -103,6 +103,7 @@ const useComboBox = ({header, options, width = 150, disabled = false}) => {
 	 * seob - 옵션 선택 함수
 	 ***************************************************/
 	const handleChange = useCallback((e) => {
+		console.log(JSON.parse(e.target.value));
 		setValue(JSON.parse(e.target.value));
 		setIsOpened(false);
 	}, []);
@@ -125,12 +126,12 @@ const useComboBox = ({header, options, width = 150, disabled = false}) => {
 	 ***************************************************/
 	const comboBox = () => (
 		<_Container width={width}>
-			<IconHeader onClick={handleOpened} className={isOpened && ' focus'}>
+			<IconHeader onClick={handleOpened} className={isOpened && 'focus'}>
 				{/* header가 존재하면 header, 그렇지 않으면 첫번째 옵션의 label */}
-				<HeaderOption value={header ? '' : options[0].label}>
+				<HeaderOption value={value}>
 					{!value
 						? header
-						: options.find((op) => op.key === value).label}
+						: options.find((op) => op.key === value)?.label}
 				</HeaderOption>
 				{/* 열림 상태에 따른 아이콘 표시 */}
 				{isOpened ? (

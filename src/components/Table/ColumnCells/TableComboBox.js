@@ -16,6 +16,7 @@ const TableComboBox = ({cell, options, setData}) => {
 	const header = cell.row.original[cell.column.id]?.header;
 
 	const initialValue = cell.row.original[cell.column.id];
+
 	const [comboValue, ComboBox, setComboValue] = useComboBox({
 		...(header && {header: header}),
 		options: options,
@@ -28,7 +29,7 @@ const TableComboBox = ({cell, options, setData}) => {
 	// 콤보박스 값의 변화가 있으면 새로 바뀐 값을 setData
 	useEffect(() => {
 		setPrevValue(comboValue);
-		if (prevValue && prevValue !== comboValue) {
+		if (prevValue && setData && prevValue !== comboValue) {
 			setData((prev) =>
 				prev.map((v) =>
 					v !== original

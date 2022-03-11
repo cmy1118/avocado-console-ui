@@ -29,13 +29,8 @@ const contents = {
 			'사용자 세션 제어를 위한  세션 유지 시간, 보존 시간, 타임아웃 처리등의 정책을 설정합니다',
 			"세션 연결 보존 시간 설정은 '화면 잠금'시에만 해당되며, '로그아웃'일때는 세션은 바로 끊기게 됩니다",
 		],
-	},
-	dormant: {
-		title: '휴면',
-		description: [
-			'일정 기간동안 미접속 사용자의 계정을 처리하기 위해 정책을 설정합니다.',
-			'정상화 후 재로그인 시에 패스워드를 변경해야 합니다.',
-		],
+		'console-ui': 'Management Console',
+		'web-terminal': 'Web Terminal',
 	},
 	screenSaver: {
 		title: '화면 보호기',
@@ -47,12 +42,18 @@ const contents = {
 	ruleType: 'ruleType',
 };
 
+/**************************************************
+ * seob - IAM의 사용자 세션 규칙 템플릿
+ *
+ * templateId : 해당 템플릿의 id
+ ***************************************************/
+// todo : TableTextBox의 invalid 검사 기능 추가해야함.
 const UserSessionTemplate = ({templateId}) => {
 	const dispatch = useDispatch();
 
-	// const [data, setData] = useState([]);
+	const [data, setData] = useState([]);
 
-	const [maxSession, setMaxSession] = useState([]);
+	const [tableData, setTableData] = useState([]);
 	const [sessionTimeout, setSessionTimeout] = useState([]);
 	const [screenSaver, setScreenSaver] = useState([]);
 
@@ -64,65 +65,25 @@ const UserSessionTemplate = ({templateId}) => {
 		],
 	});
 
-	const [dormantValue, dormantRadio, setDormantValue] = useRadio({
-		header: '사용 여부',
-		options: [
-			{label: '잠금', key: 'lock'},
-			{label: '삭제', key: 'delete'},
-		],
-	});
-
-	const [
-		unConnectedPeriod,
-		unConnectedPeriodTextBox,
-		setUnConnectPeriod,
-	] = useTextBox({
-		name: 'unConnectPeriod',
-	});
-
 	const [idleTime, idleTimeTextBox, setIdleTime] = useTextBox({
 		name: 'idleTime',
 		disabled: screenSaverValue === 'no',
 	});
 
-	// const [data, setData] = useState([
-	// 	{
-	// 		id: 'data0',
-	// 		isUsed: 'use',
-	// 		application: 'Management Console',
-	// 		MaintenanceTime: '14400',
-	// 		PreservationTime: '0',
-	// 		timeout: 'timeout',
-	//
-	// 		[DRAGGABLE_KEY]: 'data0',
-	//
-	// 		// inner table key가 있으면, 버튼이 생기고, 버튼을 클릭했을 때, 해당 row값을 읽어와 처리하는 함수가 필요.
-	// 	},
-	// 	{
-	// 		id: 'data1',
-	// 		isUsed: 'not use',
-	// 		application: 'Web Terminal',
-	// 		MaintenanceTime: '3600',
-	// 		PreservationTime: '0',
-	// 		timeout: 'timeout',
-	// 		[DRAGGABLE_KEY]: 'data1',
-	// 	},
-	// ]);
-
 	const columns = useMemo(
 		() => [
 			{
 				Header: '사용여부',
-				accessor: 'isUsed',
+				accessor: 'usage',
 				Cell: function Component(cell) {
 					return (
 						<TableComboBox
 							cell={cell}
 							options={[
-								{label: '사용 함', key: 'use'},
-								{label: '사용 안함', key: 'not use'},
+								{label: '사용 함', key: 'yes'},
+								{label: '사용 안함', key: 'no'},
 							]}
-							// setData={setData}
+							setData={setTableData}
 						/>
 					);
 				},
@@ -134,21 +95,34 @@ const UserSessionTemplate = ({templateId}) => {
 			},
 			{
 				Header: '세션 유지시간(초)',
-				accessor: 'MaintenanceTime', //has to be changed
+				accessor: 'sessionTimeSeconds', //has to be changed
 				Cell: function Component(cell) {
 					return <TableTextBox cell={cell} />;
 				},
 			},
 			{
 				Header: '연결 보존 시간(초)',
-				accessor: 'PreservationTime', //has to be changed
+				accessor: 'keepAliveTimeSeconds', //has to be changed
 				Cell: function Component(cell) {
 					return <TableTextBox cell={cell} />;
 				},
 			},
 			{
 				Header: '타임아웃 처리',
-				accessor: 'timeout', //has to be changed
+				accessor: 'blockingType', //has to be changed
+				Cell: function Component(cell) {
+					return (
+						<TableComboBox
+							cell={cell}
+							options={[
+								{label: '로그아웃', key: 'logout'},
+								{label: '화면잠금', key: 'lock'},
+							]}
+							setData={setTableData}
+						/>
+					);
+				},
+				width: 200,
 			},
 		],
 		[],
@@ -164,26 +138,122 @@ const UserSessionTemplate = ({templateId}) => {
 		)
 			.unwrap()
 			.then((res) => {
-				console.log(res.data);
-				res.data.forEach((v) => {
-					if (v[contents.ruleType] === 'MaxSession') {
-						setMaxSession(v);
-					} else if (v[contents.ruleType] === 'ScreenSaver') {
-						setScreenSaver(v);
-						setScreenSaverValue(v.attribute.usage ? 'yes' : 'no');
-						setIdleTime(v.attribute.timeToIdle);
-					} else if (v[[contents.ruleType]] === 'SessionTimeout') {
-						setSessionTimeout(v);
-					}
+				console.log(res);
+				setScreenSaver({
+					categoryCode: 'session',
+					resource: 'iam:*',
+					ruleType: 'screen_saver',
+					attribute: {
+						ruleType: 'screen_saver',
+						usage: false,
+						timeToIdle: 300,
+					},
 				});
+				setIdleTime(300);
+				setScreenSaverValue('no');
+
+				setSessionTimeout({
+					categoryCode: 'session',
+					resource: 'iam:*',
+					ruleType: 'session_timeout',
+					attribute: {
+						ruleType: 'session_timeout',
+						policies: {
+							'console-ui': {
+								usage: false,
+								sessionTimeSeconds: 14400,
+								keepAliveTimeSeconds: 10,
+								blockingType: 'logout',
+							},
+							'web-terminal': {
+								usage: true,
+								sessionTimeSeconds: 3600,
+								keepAliveTimeSeconds: 10,
+								blockingType: 'logout',
+							},
+						},
+					},
+				});
+
+				const data = Object.entries({
+					'console-ui': {
+						usage: false,
+						sessionTimeSeconds: 14400,
+						keepAliveTimeSeconds: 10,
+						blockingType: 'logout',
+					},
+					'web-terminal': {
+						usage: true,
+						sessionTimeSeconds: 3600,
+						keepAliveTimeSeconds: 10,
+						blockingType: 'logout',
+					},
+				}).map((v) => ({
+					...v[1],
+					id: v[0],
+					[DRAGGABLE_KEY]: v[0],
+					usage: v[1].usage ? 'yes' : 'no',
+					application: contents.sessionTimeout[v[0]],
+				}));
+
+				setTableData(data);
+
+				// res.data.forEach((v) => {
+				// 	if (v[contents.ruleType] === 'MaxSession') {
+				// 		setMaxSession(v);
+				// 	} else if (v[contents.ruleType] === 'ScreenSaver') {
+				// 		setScreenSaver(v);
+				// 		setScreenSaverValue(v.attribute.usage ? 'yes' : 'no');
+				// 		setIdleTime(v.attribute.timeToIdle);
+				// 	} else if (v[[contents.ruleType]] === 'SessionTimeout') {
+				// //
+				// 	}
+				// });
 			});
 	}, [dispatch, setIdleTime, setScreenSaverValue, templateId]);
 
+	// 화면 보호기 데이터 변경시 setScreenSaver로 반영
 	useEffect(() => {
-		// console.log(maxSession);
-		console.log(screenSaver);
-		// console.log(sessionTimeout);
-	}, [maxSession, screenSaver, sessionTimeout]);
+		setScreenSaver((data) => ({
+			...data,
+			attribute: {
+				...data.attribute,
+				usage: screenSaverValue === 'yes',
+				timeToIdle: parseInt(idleTime),
+			},
+		}));
+	}, [idleTime, screenSaverValue]);
+
+	// 세션 타임아웃 데이터 변경시 setSessionTimeout로 반영
+	useEffect(() => {
+		const policies = {};
+		tableData.forEach((v) => {
+			policies[v.id] = {
+				usage: v.usage === 'yes',
+				sessionTimeSeconds: parseInt(v.sessionTimeout),
+				keepAliveTimeSeconds: parseInt(v.keepAliveTimeSeconds),
+				blockingType: v.blockingType,
+			};
+		});
+
+		setSessionTimeout((prev) => ({
+			...prev,
+			attribute: {
+				...prev.attribute,
+				policies: policies,
+			},
+		}));
+	}, [tableData]);
+
+	// 데이터 저장
+	useEffect(() => {
+		setData([screenSaver, sessionTimeout]);
+	}, [screenSaver, sessionTimeout]);
+
+	// 최종 데이터
+	useEffect(() => {
+		console.log(data);
+	}, [data]);
 
 	return (
 		<div>
@@ -191,37 +261,14 @@ const UserSessionTemplate = ({templateId}) => {
 				title={contents.sessionTimeout.title}
 				description={contents.sessionTimeout.description}
 				render={() => (
-					<div>테이블</div>
-
-					// <Table tableKey={'session'} data={data} columns={columns} />
+					<Table
+						tableKey={'session'}
+						data={tableData}
+						columns={columns}
+						isCheckBox={false}
+						setData={setTableData}
+					/>
 				)}
-			/>
-			<TemplateElementContainer
-				title={contents.dormant.title}
-				description={contents.dormant.description}
-				render={() => {
-					return (
-						<div>
-							<TemplateElement
-								title={'연속 미접속 기간'}
-								render={() => (
-									<RowDiv>
-										{unConnectedPeriodTextBox()}
-										{'일'}
-									</RowDiv>
-								)}
-							/>
-							<TemplateElement
-								title={'계정 처리 방법'}
-								render={dormantRadio}
-							/>
-							<TemplateElement
-								title={'계정 정상화'}
-								render={() => <div>본인 확인 인증</div>}
-							/>
-						</div>
-					);
-				}}
 			/>
 			<TemplateElementContainer
 				title={contents.screenSaver.title}
