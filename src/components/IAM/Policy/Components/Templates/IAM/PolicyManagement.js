@@ -5,7 +5,9 @@ import {ColDiv} from '../../../../../../styles/components/style';
 import {filterPropObj, objArrUnion} from '../../../../../../utils/dataFitering';
 import PropTypes from 'prop-types';
 import UserManagement from './UserManagement';
-import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/ActionManagement/templateDetail';
+import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Policy/ActionManagement/templateDetail';
+import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../../../../reducers/api/IAM/Policy/ActionManagement/template";
+import {actionTemplateFilter} from "../../../../../utils/template";
 
 const constants = {
 	main: '사용자 관리 권한',
@@ -43,16 +45,25 @@ const PolicyManagement = ({templateId, name, description}) => {
 	//렌더링시 체크박스 정보 조회
 	useEffect(() => {
 		const res = dispatch(
-			IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction({
+			IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.findByIdAction({
 				range: 'elements=0-50',
 				templateId: templateId,
 			}),
 		)
 			.unwrap()
 			.then((res) => {
-				console.log('정책관리권한 API:', res);
+				console.log('정책관리권한 findByIdAction:', res);
+				const setData =actionTemplateFilter(res)
+				dispatch(
+					IAM_ACTION_MANAGEMENT_TEMPLATE.action.getActionTemplates({
+						templateId: templateId,
+						name: res.data.name,
+						description: res.data.description,
+						data: setData,
+					}),
+				)
 				const filteredDataList = filterPropObj(
-					res.data,
+					setData,
 					'resource',
 					'data',
 				);

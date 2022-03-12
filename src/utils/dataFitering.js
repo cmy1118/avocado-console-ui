@@ -29,8 +29,7 @@ export function checkArraysIsUniqueHasDuplicates(arrA, arrB, value) {
 export function filterPropObj(array, prop, target) {
 	let filterPropObject = [];
 	array.map((v) => {
-		let istrue;
-		istrue = filterPropObject.filter((s) => {
+		const istrue = filterPropObject.filter((s) => {
 			return v[prop] === s[prop];
 		});
 		if (filterPropObject[0] && istrue[0]) {
