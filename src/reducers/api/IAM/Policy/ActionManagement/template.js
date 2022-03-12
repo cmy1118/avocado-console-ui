@@ -13,7 +13,6 @@ const createAction = createAsyncThunk(
 		const response = await Axios.post(
 			`/open-api/v1/iam/action-templates`,
 			{
-				id: payload.id,
 				name: payload.name,
 				description: payload.description,
 				details: payload.details,
@@ -53,6 +52,24 @@ const findAllAction = createAsyncThunk(
 	},
 );
 
+// 권한 템플릿을 ID로 조회한다.
+const findByIdAction = createAsyncThunk(
+	`${NAME}/FIND_ALL`,
+	async (payload, {getState}) => {
+		const {userAuth} = getState().AUTH;
+
+		const response = await Axios.get(`/open-api/v1/iam/action-templates/${payload.templateId}`, {
+			headers: {
+				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+				Range: payload.range,
+				// 'Content-Type': contentType.JSON,
+			},
+			baseURL: baseURL.openApi,
+		});
+		return {data: response.data};
+	},
+);
+
 const slice = createSlice({
 	name: NAME,
 	initialState: {
@@ -61,13 +78,75 @@ const slice = createSlice({
 		loading: false,
 		error: null,
 	},
-	reducers: {},
+	reducers: {
+		//권한 템플릿 조회시 default check 상태 저장
+		getActionTemplates: (state, {payload}) => {
+			state.loading = true;
+			state.actionTemplates.push({
+				templateId:payload.templateId,
+				name: payload.name,
+				description: payload.description,
+				details: payload.data
+			});
+
+		},
+		//권한 템플릿 체크박스 선택시 체크된 상태 저장
+		setActionTemplates: (state, {payload}) => {
+			state.loading = true;
+			let actionTemplates =state.actionTemplates
+			console.log('payload.allCheck:',payload.allCheck, payload.resource,)
+			//전체체크시
+			if(payload.allCheck){
+				actionTemplates.map((v,idx1)=>{
+					if(v.templateId === payload.templateId) {
+						state.actionTemplates[idx1].details.map((s, idx2) => {
+							if (s.resource === payload.resource) {
+								state.actionTemplates[idx1].details[idx2].effect = payload.setChecked
+							}
+						})
+					}
+					if(v.templateId !== payload.templateId){
+						console.log('실패')
+					}
+				})
+			}
+			//단일체크시
+			if(payload.singleCheck){
+				actionTemplates.map((v,idx1)=>{
+					if(v.templateId === payload.templateId) {
+						state.actionTemplates[idx1].details.map((s, idx2) => {
+							if (s.resource === payload.resource && s.action === payload.action) {
+								state.actionTemplates[idx1].details[idx2].effect = !state.actionTemplates[idx1].details[idx2].effect
+							}
+						})
+					}
+					if(v.templateId !== payload.templateId){
+						console.log('실패')
+					}
+				})
+			}
+
+		}
+		// setActionTemplatesDone: (state, {payload}) => {
+		// 	state.loading = false;
+		// 	console.log('setActionTemplates')
+		// 	state.actionTemplates.push({
+		// 		name: payload.resource,
+		// 		description: payload.description,
+		// 		details: payload.data
+		// 	});
+		//
+		// },
+		// setActionTemplatesFail: (state, action) => {
+		// 	state.loading = false;
+		// 	state.error = action.payload;
+		// },
+	},
 	extraReducers: {
 		[createAction.pending]: (state) => {
 			state.loading = true;
 		},
 		[createAction.fulfilled]: (state, action) => {
-			state.actionTemplates = action.payload.data;
 			state.loading = false;
 		},
 		[createAction.rejected]: (state, action) => {
@@ -80,7 +159,6 @@ const slice = createSlice({
 		},
 		[IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction
 			.fulfilled]: (state, action) => {
-			state.actionTemplates = action.payload.data;
 			state.loading = false;
 		},
 		[IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction
@@ -88,25 +166,38 @@ const slice = createSlice({
 			state.error = action.payload;
 			state.loading = false;
 		},
+		[findByIdAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[findByIdAction.fulfilled]: (state, action) => {
+			state.loading = false;
+		},
+		[findByIdAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
 	},
 });
 
 const selectAllState = createSelector(
+	(state) => state.actionTemplates,
 	(state) => state.loading,
 	(state) => state.error,
 
-	(loading) => {
-		return {loading};
+	(loading,actionTemplates) => {
+		return {loading,actionTemplates};
 	},
 );
 
-const IAM_ACTION_MANAGEMENT_TEMPLATE = {
+export const IAM_ACTION_MANAGEMENT_TEMPLATE = {
 	name: slice.name,
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
 	action: slice.actions,
 	asyncAction: {
+		createAction,
 		findAllAction,
+		findByIdAction,
 	},
 };
 
