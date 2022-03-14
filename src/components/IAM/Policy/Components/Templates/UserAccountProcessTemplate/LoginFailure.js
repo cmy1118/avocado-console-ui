@@ -1,9 +1,6 @@
 import React, {useEffect} from 'react';
 import TemplateElement from '../../TemplateElement';
-import {
-	accountBlockingTypeOptions,
-	optionValue,
-} from '../../../../../../utils/options';
+import {accountBlockingTypeOptions} from '../../../../../../utils/options';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
@@ -21,7 +18,7 @@ const loginFailure = {
 			title: '로그인 실패 횟수',
 			message: '회',
 		},
-		accountStatus: {
+		blockingType: {
 			title: '계정 처리 방법',
 		},
 		resetErrorCount: {
@@ -58,11 +55,11 @@ const LoginFailure = ({data, setTemplateData}) => {
 	});
 	//accountNormalization: 계정 정상화
 	const [
-		accountNormalization,
-		accountNormalizationTextBox,
-		setAccountNormalization,
+		unblockedDays,
+		accountUnblockedDaysTextBox,
+		setUnblockedDays,
 	] = useTextBox({
-		name: 'accountNormalization',
+		name: 'accountUnblockedDays',
 	});
 
 	/**************************************************
@@ -96,11 +93,10 @@ const LoginFailure = ({data, setTemplateData}) => {
 			//오류 횟수 초기화 세팅
 			setFailedCountInitDays(data.failedCountInitDays);
 		}
-		//TODO: 계정 정상화 default value 있음
-		// if (data?.failedCountInitDays) {
-		// 계정 정상화 세팅
-		// 	setAccountNormalization(data.failedCountInitDays);
-		// }
+		// 계정 정상화 default value 있음
+		if (data?.unblockedDays) {
+			setUnblockedDays(data.unblockedDays);
+		}
 	}, [data, setBlockingType, setFailedCount, setFailedCountInitDays]);
 
 	return (
@@ -127,7 +123,7 @@ const LoginFailure = ({data, setTemplateData}) => {
 							}}
 						/>
 						<TemplateElement
-							title={loginFailure.contents.accountStatus.title}
+							title={loginFailure.contents.blockingType.title}
 							render={blockingTypeRadioButton}
 						/>
 						<TemplateElement
@@ -151,7 +147,7 @@ const LoginFailure = ({data, setTemplateData}) => {
 							render={() => {
 								return (
 									<RowDiv>
-										{accountNormalizationTextBox()}
+										{accountUnblockedDaysTextBox()}
 										{
 											loginFailure.contents
 												.accountNormalization.message

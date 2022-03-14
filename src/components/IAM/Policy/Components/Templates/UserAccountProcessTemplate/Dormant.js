@@ -62,7 +62,7 @@ const Dormant = ({data, setTemplateData}) => {
 			blockingType: blockingType,
 			unconnectedDays: unconnectedDays,
 		});
-	}, [data, setTemplateData]);
+	}, [data, setTemplateData, blockingType, unconnectedDays]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅

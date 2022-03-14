@@ -80,10 +80,9 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 		)
 			.unwrap()
 			.then((data) => {
-				console.log(data);
 				let defaultData = {};
 				data.map((v) => {
-					defaultData[v.ruleType] = v.attribute;
+					defaultData[v.attribute.ruleType] = v.attribute;
 				});
 				setDefaultData(defaultData);
 			});

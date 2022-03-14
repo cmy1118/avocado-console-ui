@@ -41,7 +41,7 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 	});
 	//blockingType : 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
-		name: 'AccountActivePeriodBlockingType',
+		name: 'accountActivePeriodBlockingType',
 		options: accountBlockingTypeOptions,
 	});
 

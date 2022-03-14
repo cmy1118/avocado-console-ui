@@ -233,11 +233,11 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			) &&
 			data.allowedDaysOfOldPasswords !== 0
 		) {
-			setOldPasswordsRistriction(restrictionOptions[0].key);
+			setOldPasswordsRistriction(optionValue.restriction.restrict);
 			setAllowedDaysOfOldPasswords(data.allowedDaysOfOldPasswords);
 			//이전 비밀번호 사용 제한 default value 없음 || 제한 일수가 0
 		} else {
-			setOldPasswordsRistriction(restrictionOptions[1].key);
+			setOldPasswordsRistriction(optionValue.restriction.none);
 		}
 	}, [
 		data,

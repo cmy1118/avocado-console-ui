@@ -74,6 +74,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
+		console.log(data);
 		//본인 확인 인증의 정책이 존재
 		if (data?.policies && Object.keys(data.policies).length > 0) {
 			//본인 확인 인증 사용 여부 세팅
