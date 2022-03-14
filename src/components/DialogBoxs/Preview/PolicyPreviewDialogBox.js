@@ -3,13 +3,13 @@ import ModalTableContainer from '../../RecycleComponents/ModalTableContainer';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {TitleBar} from '../../../styles/components/iam/iam';
-import IAM_RULE_TEMPLATE from '../../../reducers/api/IAM/Policy/RuleManagement/template';
+import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/RuleManagement/template';
 import {policyTypes} from '../../../utils/data';
 import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from '../../../reducers/api/IAM/Policy/PolicyManagement/policyRuleTemplate';
 
 const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const dispatch = useDispatch();
-	const {ruleTemplates} = useSelector(IAM_RULE_TEMPLATE.selector);
+	const {ruleTemplates} = useSelector(IAM_RULE_MANAGEMENT_TEMPLATE.selector);
 
 	/**************************************************
 	 * ambacc244 - 정책 생성
@@ -37,7 +37,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			//step3-1: rule 생성
 			for (const v in ruleTemplates) {
 				dispatch(
-					IAM_RULE_TEMPLATE.asyncAction.createRuleTemplateAction(
+					IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.createRuleTemplateAction(
 						ruleTemplates[v],
 					),
 				);

@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import TemplateElement from '../../TemplateElement';
 import TimeInterval from '../../../../../RecycleComponents/Templates/TimeInterval';
 import useRadio from '../../../../../../hooks/useRadio';
-import IAM_RULE_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/template';
+import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/template';
 import {policyTypes} from '../../../../../../utils/data';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 
@@ -141,7 +141,7 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 		console.log(data);
 		if (creatingPolicy) {
 			dispatch(
-				IAM_RULE_TEMPLATE.action.gatherTemplate({
+				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherTemplate({
 					id: templateId,
 					data: {
 						name: name,

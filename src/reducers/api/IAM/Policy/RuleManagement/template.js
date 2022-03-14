@@ -4,7 +4,7 @@ import {contentType} from '../../../../../utils/auth';
 import {Axios, baseURL} from '../../../../../api/constants';
 import {getIdFormLocation} from '../../../../../utils/tableDataConverter';
 
-const NAME = 'IAM_RULE_TEMPLATE';
+const NAME = 'IAM_RULE_MANAGEMENT_TEMPLATE';
 
 /**************************************************
  * ambacc244 - IAM rule 템플릿 요청 액션
@@ -72,7 +72,7 @@ const selectAllState = createSelector(
 	},
 );
 
-const IAM_RULE_TEMPLATE = {
+const IAM_RULE_MANAGEMENT_TEMPLATE = {
 	name: slice.name,
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
@@ -83,4 +83,4 @@ const IAM_RULE_TEMPLATE = {
 	},
 };
 
-export default IAM_RULE_TEMPLATE;
+export default IAM_RULE_MANAGEMENT_TEMPLATE;
