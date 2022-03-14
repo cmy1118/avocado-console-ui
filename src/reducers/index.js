@@ -3,7 +3,7 @@ import storageSession from 'redux-persist/lib/storage/session';
 import createFilter from 'redux-persist-transform-filter';
 import {persistReducer} from 'redux-persist';
 
-import IAM_RULE_TEMPLATE from './api/IAM/Rule/template';
+import IAM_RULE_TEMPLATE from './api/IAM/Policy/RuleManagement/template';
 
 import IAM_USER from './api/IAM/User/User/user';
 import IAM_USER_GROUP_TYPE from './api/IAM/User/Group/groupType';
@@ -31,7 +31,7 @@ import IAM_GRANT_POLICY_BY_ROLE from './api/IAM/User/Policy/GrantPolicy/role';
 import IAM_GRANT_POLICY_BY_USER from './api/IAM/User/Policy/GrantPolicy/user';
 import IAM_POLICY_TEMPLATE from './api/IAM/User/Policy/policyTemplate';
 import PAM_SESSION from './api/PAM/session';
-import IAM_RULE_TEMPLATE_DETAIL from './api/IAM/Rule/templateDetail';
+import IAM_RULE_TEMPLATE_DETAIL from './api/IAM/Policy/RuleManagement/templateDetail';
 import IAM_POLICY_MANAGEMENT_POLICIES from './api/IAM/Policy/PolicyManagement/policies';
 import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './api/IAM/Policy/ActionManagement/templateDetail';
 import IAM_ACTION_MANAGEMENT_TEMPLATE from './api/IAM/Policy/ActionManagement/template';

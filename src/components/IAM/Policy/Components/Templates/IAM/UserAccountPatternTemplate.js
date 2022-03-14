@@ -4,8 +4,8 @@ import PaswordPattern from './UserAccountPatternTemplate/PaswordPattern';
 import PropTypes from 'prop-types';
 
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_RULE_TEMPLATE from '../../../../../../reducers/api/IAM/Rule/template';
-import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Rule/templateDetail';
+import IAM_RULE_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/template';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/templateDetail';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {policyTypes} from '../../../../../../utils/data';
 

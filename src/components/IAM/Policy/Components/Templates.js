@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {useDispatch} from 'react-redux';
 import IAM_POLICY_TEMPLATE from '../../../../reducers/api/IAM/Policy/ActionManagement/template';
-import IAM_RULE_TEMPLATE from '../../../../reducers/api/IAM/Rule/template';
+import IAM_RULE_TEMPLATE from '../../../../reducers/api/IAM/Policy/RuleManagement/template';
 import {POLICY_TYPE, templateType} from '../../../../utils/template';
 import UserAccountProcessTemplate from './Templates/IAM/UserAccountProcessTemplate';
 import UserAuthTemplate from './Templates/IAM/UserAuthTemplate';

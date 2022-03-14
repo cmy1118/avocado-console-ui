@@ -3,7 +3,7 @@ import ModalTableContainer from '../../RecycleComponents/ModalTableContainer';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {TitleBar} from '../../../styles/components/iam/iam';
-import IAM_RULE_TEMPLATE from '../../../reducers/api/IAM/Rule/template';
+import IAM_RULE_TEMPLATE from '../../../reducers/api/IAM/Policy/RuleManagement/template';
 import {policyTypes} from '../../../utils/data';
 import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from '../../../reducers/api/IAM/Policy/PolicyManagement/policyRuleTemplate';
 

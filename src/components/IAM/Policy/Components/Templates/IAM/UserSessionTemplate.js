@@ -9,9 +9,9 @@ import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import PropTypes from 'prop-types';
-import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Rule/templateDetail';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/templateDetail';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_RULE_TEMPLATE from '../../../../../../reducers/api/IAM/Rule/template';
+import IAM_RULE_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/template';
 import {policyTypes} from '../../../../../../utils/data';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 
