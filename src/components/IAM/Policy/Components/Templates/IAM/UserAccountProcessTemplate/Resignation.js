@@ -63,6 +63,8 @@ const Resignation = ({data, setTemplateData}) => {
 		name: 'gracePeriod',
 		//유예 기간 사용 유무 false일때 disabled
 		disabled: gracePeriodUsage === optionValue.gracePeriod.none,
+		//1 ~
+		regex: /^([1-9]|[1-9][0-9]*)$/,
 	});
 
 	/**************************************************

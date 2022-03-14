@@ -1,5 +1,3 @@
-import UserManagement from '../../components/IAM/Policy/Components/Templates/IAM/UserManagement';
-
 export const DRAGGABLE_KEY = 'keyId';
 export const tableKeys = Object.freeze({
 	/*******************************************************************
@@ -135,11 +133,11 @@ export const tableKeys = Object.freeze({
 	 *******************************************************************/
 	policy: {
 		basic: 'POLICY',
+		add: {preview: 'POLICY_ADD_PREVIEW'},
 		policies: {
 			userManagement: 'POLICY_ADD_USER_MANAGEMENT',
 			policyManagement: 'POLICY_ADD_POLICY_MANAGEMENT',
 			roleManagement: 'POLICY_ADD_ROLE_MANAGEMENT',
 		},
 	},
-	summary: {},
 });

@@ -46,10 +46,10 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 						resource: policyTypes.iam,
 						description: description,
 						attributes: [
-							JSON.stringify(deviceAuthenticationData),
-							JSON.stringify(mfaData),
-							JSON.stringify(alternativeAuthNFailOverAuthData),
-							JSON.stringify(identityVerificationData),
+							deviceAuthenticationData,
+							mfaData,
+							alternativeAuthNFailOverAuthData,
+							identityVerificationData,
 						],
 					},
 				}),
@@ -80,10 +80,9 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 		)
 			.unwrap()
 			.then((data) => {
-				console.log(data);
 				let defaultData = {};
 				data.map((v) => {
-					defaultData[v.ruleType] = v.attribute;
+					defaultData[v.attribute.ruleType] = v.attribute;
 				});
 				setDefaultData(defaultData);
 			});
@@ -92,19 +91,19 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 	return (
 		<div>
 			<DeviceAuth
-				data={defaultData && defaultData.DeviceAuthentication}
+				data={defaultData && defaultData.device_authentication}
 				setTemplateData={setDeviceAuthenticationData}
 			/>
 			<MFA
-				data={defaultData && defaultData.MFA}
+				data={defaultData && defaultData.mfa}
 				setTemplateData={setMfaData}
 			/>
 			<FailOver
-				data={defaultData && defaultData.AlternativeAuthNFailOverAuth}
+				data={defaultData && defaultData.alternative_authn_failover}
 				setTemplateData={setAlternativeAuthNFailOverAuthData}
 			/>
 			<IdentityVerification
-				data={defaultData && defaultData.IdentityVerification}
+				data={defaultData && defaultData.identity_verification}
 				setTemplateData={setIdentityVerificationData}
 			/>
 		</div>

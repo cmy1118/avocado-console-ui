@@ -6,7 +6,6 @@ import TableCheckbox from '../../components/Table/Options/TableCheckbox';
 import checkboxColumn from '../../components/Table/tableCheckboxColumn';
 import {tableKeys} from '../../Constants/Table/keys';
 
-
 export const POLICY_COLUMN = [
 	// {
 	// 	accessor: 'id',
@@ -54,15 +53,36 @@ export const POLICY_COLUMN = [
 	},
 ];
 
+export const POLICY_ADD_PREVIEW_COLUMN = [
+	{
+		accessor: 'name',
+		Header: '정책',
+		// disableFilters: true,
+		// disableChangeVisible: true,
+	},
+	{
+		accessor: 'description',
+		Header: '상세',
+		// disableFilters: true,
+		// disableChangeVisible: true,
+	},
+	{
+		accessor: 'data',
+		Header: '설정값',
+		// disableFilters: true,
+		// disableChangeVisible: true,
+	},
+];
+
 export const POLICY_ADD_USER_MANAGEMEN_COLUMN = [
-    {
-        accessor: 'item',
-        Header: '항목',
-        disableFilters: true,
-        disableChangeVisible: true,
-    },
-    checkboxColumn({
-        header: '전체 권한',
-        // tableKey: '1',
-    }),
+	{
+		accessor: 'item',
+		Header: '항목',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+	checkboxColumn({
+		header: '전체 권한',
+		// tableKey: '1',
+	}),
 ];

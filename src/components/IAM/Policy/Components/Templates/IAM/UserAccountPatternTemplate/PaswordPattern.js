@@ -57,6 +57,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 		setMinPasswordLength,
 	] = useTextBox({
 		name: 'minPasswordLength',
+		//10-30
+		regex: /^([1-2][0-9]|30)$/,
 	});
 	//maxPasswordLength: 최대 비밀번호 길이
 	const [
@@ -65,6 +67,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 		setMaxPasswordLength,
 	] = useTextBox({
 		name: 'maxPasswordLength',
+		//10-30
+		regex: /^([1-2][0-9]|30)$/,
 	});
 	//numberOfConsecutiveNumerics: 연속 가능 숫자 횟수
 	const [
@@ -73,6 +77,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 		setNumberOfConsecutiveNumerics,
 	] = useTextBox({
 		name: 'numberOfConsecutiveNumerics',
+		//0 || 3 - 6
+		regex: /^(0|[3-6])$/,
 	});
 	//mixNumberAndAlpha: 영문, 숫자 혼합여부
 	const [
@@ -128,6 +134,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 		setAllowedDaysOfOldPasswords,
 	] = useTextBox({
 		name: 'allowedDaysOfOldPasswords',
+		//0 - 90
+		regex: /^([0-9]|[1-8][0-9]|90)$/,
 	});
 
 	/**************************************************
@@ -169,9 +177,9 @@ const PaswordPattern = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		//최소 비밀번호 길이 default value 있음
-		if (data?.minLength) setMinPasswordLength(String(data.minLength));
+		if (data?.minLength) setMinPasswordLength(data.minLength);
 		//최대 비밀번호 길이 default value 있음
-		if (data?.maxLength) setMaxPasswordLength(String(data.maxLength));
+		if (data?.maxLength) setMaxPasswordLength(data.maxLength);
 		//숫자 연속 횟수 default value 있음
 		if (
 			data &&
@@ -233,11 +241,11 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			) &&
 			data.allowedDaysOfOldPasswords !== 0
 		) {
-			setOldPasswordsRistriction(restrictionOptions[0].key);
+			setOldPasswordsRistriction(optionValue.restriction.restrict);
 			setAllowedDaysOfOldPasswords(data.allowedDaysOfOldPasswords);
 			//이전 비밀번호 사용 제한 default value 없음 || 제한 일수가 0
 		} else {
-			setOldPasswordsRistriction(restrictionOptions[1].key);
+			setOldPasswordsRistriction(optionValue.restriction.none);
 		}
 	}, [
 		data,

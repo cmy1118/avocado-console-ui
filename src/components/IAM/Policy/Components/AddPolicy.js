@@ -41,7 +41,7 @@ const AddPolicy = () => {
 	const [isOpened, setIsOpened] = useState(false);
 
 	const formRef = useRef(null);
-	const [formData, setFormData] = useState();
+	const [formData, setFormData] = useState({});
 	const validation = {
 		name: yup
 			.string()

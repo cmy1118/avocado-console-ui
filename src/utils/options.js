@@ -5,41 +5,41 @@ export const optionValue = {
 		webTerminal: 'web-terminal-ui:*',
 	},
 	authUsage: {use: 'use', none: 'none'},
-	required: {all: 'All', select: 'Select', none: 'no'},
+	required: {all: 'all', select: 'select', none: 'no'},
 	additionalAuthMethod: {
-		mail: 'Mail',
-		sms: 'SMS',
-		kakao: 'Kakao',
+		mail: 'mail',
+		sms: 'sms',
+		kakao: 'kakao',
 	},
 	authMethod: {
-		none: 'no',
+		none: 'none',
 		mail: 'mail',
 		sms: 'sms',
 		kakao: 'kakao',
 	},
 	identityVerificationMethod: {
-		idAndPassword: 'IdAndPassword',
-		mail: 'Mail',
-		sms: 'SMS',
-		kakao: 'Kakao',
+		idAndPassword: 'idAndPassword',
+		mail: 'mail',
+		sms: 'sms',
+		kakao: 'kakao',
 	},
 	blockingType: {
-		lock: 'Locked',
-		delete: 'Deleted',
+		locked: 'locked',
+		deleted: 'deleted',
 	},
 	accountNormalization: {
 		identityVerification: 'identityVerification',
 		manager: 'manager',
 	},
 	blockingType2: {
-		lock: 'Locked',
-		delete: 'Deleted',
-		none: 'None',
+		locked: 'locked',
+		deleted: 'deleted',
+		none: 'none',
 	},
 	groupPermissionType: {
-		revoke: 'Revoke',
-		grant: 'Grant',
-		keeps: 'Keeps',
+		revoke: 'revoke',
+		grant: 'grant',
+		keeps: 'keeps',
 	},
 	accountNormalization2: {
 		revoke: 'revoke',
@@ -50,11 +50,11 @@ export const optionValue = {
 		use: 'yes',
 	},
 	patternType: {prefix: 'Prefix', suffix: 'Suffix'},
-	restriction: {restrict: 'yes', none: 'no'},
+	restriction: {restrict: 'yes', none: 'none'},
 	personalInfoRestrictionMethod: {
-		email: 'Email',
-		mobile: 'Mobile',
-		userId: 'UserId',
+		email: 'email',
+		mobile: 'mobile',
+		userId: 'userId',
 	},
 };
 
@@ -84,16 +84,16 @@ const optionLabel = {
 		kakao: '인증번호(Kakao)',
 	},
 	blockingType: {
-		lock: '잠금',
-		delete: '삭제',
+		locked: '잠금',
+		deleted: '삭제',
 	},
 	accountNormalization: {
 		identityVerification: '본인 확인 인증',
 		manager: '관리자에 의한 정상화(임시 패스워드 발급)',
 	},
 	blockingType2: {
-		lock: '잠금',
-		delete: '삭제',
+		locked: '잠금',
+		deleted: '삭제',
 		none: '안함',
 	},
 	groupPermissionType: {
@@ -221,23 +221,23 @@ export const identityVerificationMethodOptions = [
 
 export const accountBlockingTypeOptions = [
 	{
-		key: optionValue.blockingType.lock,
-		label: optionLabel.blockingType.lock,
+		key: optionValue.blockingType.locked,
+		label: optionLabel.blockingType.locked,
 	},
 	{
-		key: optionValue.blockingType.delete,
-		label: optionLabel.blockingType.delete,
+		key: optionValue.blockingType.deleted,
+		label: optionLabel.blockingType.deleted,
 	},
 ];
 
 export const accountBlockingType2Options = [
 	{
-		key: optionValue.blockingType2.lock,
-		label: optionLabel.blockingType2.lock,
+		key: optionValue.blockingType2.locked,
+		label: optionLabel.blockingType2.locked,
 	},
 	{
-		key: optionValue.blockingType2.delete,
-		label: optionLabel.blockingType2.delete,
+		key: optionValue.blockingType2.deleted,
+		label: optionLabel.blockingType2.deleted,
 	},
 	{
 		key: optionValue.blockingType2.none,

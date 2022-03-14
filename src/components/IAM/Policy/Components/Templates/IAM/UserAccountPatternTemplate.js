@@ -34,10 +34,7 @@ const UserAccountPatternTemplate = ({templateId, name, description}) => {
 						name: name,
 						resource: policyTypes.iam,
 						description: description,
-						attributes: [
-							JSON.stringify(userIdPatternData),
-							JSON.stringify(PaswordPatternData),
-						],
+						attributes: [userIdPatternData, PaswordPatternData],
 					},
 				}),
 			);
@@ -68,7 +65,7 @@ const UserAccountPatternTemplate = ({templateId, name, description}) => {
 				let defaultData = {};
 
 				data.map((v) => {
-					defaultData[v.ruleType] = v.attribute;
+					defaultData[v.attribute.ruleType] = v.attribute;
 				});
 
 				setDefaultData(defaultData);
@@ -78,11 +75,11 @@ const UserAccountPatternTemplate = ({templateId, name, description}) => {
 	return (
 		<div>
 			<UserIdPattern
-				data={defaultData && defaultData.UserIdPattern}
+				data={defaultData && defaultData.user_id_pattern}
 				setTemplateData={setUserIdPatternData}
 			/>
 			<PaswordPattern
-				data={defaultData && defaultData.PasswordPattern}
+				data={defaultData && defaultData.password_pattern}
 				setTemplateData={setPaswordPatternData}
 			/>
 		</div>

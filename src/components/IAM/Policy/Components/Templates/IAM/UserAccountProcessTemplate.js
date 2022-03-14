@@ -42,11 +42,11 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 						resource: policyTypes.iam,
 						description: description,
 						attributes: [
-							JSON.stringify(LoginFailureData),
-							JSON.stringify(DormantData),
-							JSON.stringify(AccountActivePeriodData),
-							JSON.stringify(ModifyingGroupData),
-							JSON.stringify(ResignationData),
+							LoginFailureData,
+							DormantData,
+							AccountActivePeriodData,
+							ModifyingGroupData,
+							ResignationData,
 						],
 					},
 				}),
@@ -81,7 +81,7 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 				let defaultData = {};
 
 				data.map((v) => {
-					defaultData[v.ruleType] = v.attribute;
+					defaultData[v.attribute.ruleType] = v.attribute;
 				});
 
 				setDefaultData(defaultData);
@@ -91,24 +91,24 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 	return (
 		<div>
 			<LoginFailure
-				data={defaultData && defaultData.SignInFailBlocking}
+				data={defaultData && defaultData.sign_in_fail_blocking}
 				setTemplateData={setLoginFailureData}
 			/>
 			<Dormant
-				data={defaultData && defaultData.DormantBlocking}
+				data={defaultData && defaultData.dormant_blocking}
 				setTemplateData={setDormantData}
 			/>
 			<AccountActivePeriod
-				data={defaultData && defaultData.AccountExpired}
+				data={defaultData && defaultData.account_expired}
 				setTemplateData={setAccountActivePeriodData}
 			/>
 
 			<ModifyingGroup
-				data={defaultData && defaultData.GroupModifying}
+				data={defaultData && defaultData.group_modifying}
 				setTemplateData={setModifyingGroupData}
 			/>
 			<Resignation
-				data={defaultData && defaultData.Resigned}
+				data={defaultData && defaultData.resigned}
 				setTemplateData={setResignationData}
 			/>
 		</div>

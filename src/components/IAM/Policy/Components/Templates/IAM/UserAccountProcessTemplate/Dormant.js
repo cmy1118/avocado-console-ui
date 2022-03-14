@@ -1,14 +1,12 @@
 import React, {useEffect} from 'react';
+import PropTypes from 'prop-types';
+
 import TemplateElementContainer from '../../../TemplateElementContainer';
 import TemplateElement from '../../../TemplateElement';
-import {
-	accountBlockingTypeOptions,
-	optionValue,
-} from '../../../../../../../utils/options';
-import useRadio from '../../../../../../../hooks/useRadio';
-import useTextBox from '../../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../../styles/components/style';
-import PropTypes from 'prop-types';
+import {accountBlockingTypeOptions} from '../../../../../../../utils/options';
+import useTextBox from '../../../../../../../hooks/useTextBox';
+import useRadio from '../../../../../../../hooks/useRadio';
 
 const dormant = {
 	title: '휴면',
@@ -51,6 +49,8 @@ const Dormant = ({data, setTemplateData}) => {
 		setUnconnectedDays,
 	] = useTextBox({
 		name: 'unconnectedDays',
+		//1 ~
+		regex: /^([1-9]|[1-9][0-9]*)$/,
 	});
 
 	/**************************************************
@@ -62,7 +62,7 @@ const Dormant = ({data, setTemplateData}) => {
 			blockingType: blockingType,
 			unconnectedDays: unconnectedDays,
 		});
-	}, [data, setTemplateData]);
+	}, [data, setTemplateData, blockingType, unconnectedDays]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
@@ -128,7 +128,7 @@ const Dormant = ({data, setTemplateData}) => {
 
 Dormant.propTypes = {
 	data: PropTypes.object,
-	setTemplateData: PropTypes.object,
+	setTemplateData: PropTypes.func,
 };
 
 export default Dormant;

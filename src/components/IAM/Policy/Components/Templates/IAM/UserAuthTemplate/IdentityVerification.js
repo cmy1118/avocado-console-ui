@@ -55,6 +55,8 @@ const IdentityVerification = ({data, setTemplateData}) => {
 		setTimeoutSeconds,
 	] = useTextBox({
 		name: 'timeoutSeconds',
+		//1 - 180
+		regex: /^([1-9]|[1-9][0-9]|1[0-7][0-9]|180)$/,
 		//본인 확인 인증 사용 여부 false일때 disabled
 		disabled: usage === optionValue.usage.none,
 	});
@@ -74,6 +76,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
+		console.log(data);
 		//본인 확인 인증의 정책이 존재
 		if (data?.policies && Object.keys(data.policies).length > 0) {
 			//본인 확인 인증 사용 여부 세팅
