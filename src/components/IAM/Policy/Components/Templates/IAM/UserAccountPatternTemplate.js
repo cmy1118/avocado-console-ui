@@ -4,7 +4,7 @@ import PaswordPattern from './UserAccountPatternTemplate/PaswordPattern';
 import PropTypes from 'prop-types';
 
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_RULE_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/template';
+import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/template';
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/templateDetail';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {policyTypes} from '../../../../../../utils/data';
@@ -28,7 +28,7 @@ const UserAccountPatternTemplate = ({templateId, name, description}) => {
 	useEffect(() => {
 		if (creatingPolicy) {
 			dispatch(
-				IAM_RULE_TEMPLATE.action.gatherTemplate({
+				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherTemplate({
 					id: templateId,
 					data: {
 						name: name,

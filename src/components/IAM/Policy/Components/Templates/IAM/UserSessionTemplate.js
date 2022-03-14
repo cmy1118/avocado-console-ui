@@ -11,7 +11,7 @@ import useTextBox from '../../../../../../hooks/useTextBox';
 import PropTypes from 'prop-types';
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/templateDetail';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_RULE_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/template';
+import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/template';
 import {policyTypes} from '../../../../../../utils/data';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 
@@ -134,6 +134,9 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 		[],
 	);
 
+	/**************************************************
+	 * seob - 규칙 템플릿 id에 해당하는 detail 정보 findAll
+	 ***************************************************/
 	useEffect(() => {
 		dispatch(
 			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
@@ -145,80 +148,35 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 			.unwrap()
 			.then((res) => {
 				console.log(res);
-				setScreenSaver({
-					categoryCode: 'session',
-					resource: 'iam:*',
-					ruleType: 'screen_saver',
-					attribute: {
-						ruleType: 'screen_saver',
-						usage: false,
-						timeToIdle: 300,
-					},
-				});
-				setIdleTime(300);
-				setScreenSaverValue('no');
+				for (let v of res) {
+					// 속성의 규칙 타입이 screen_saver(화면보호기)인 경우
+					if (v.attribute.ruleType === 'screen_saver') {
+						setScreenSaver(v);
+						setScreenSaverValue(v.attribute.usage ? 'yes' : 'no');
+						setIdleTime(v.attribute.timeToIdle);
+					}
+					// 속성의 규칙 타입이 session_timeout(세션타임아웃)인 경우
+					else if (v.attribute.ruleType === 'session_timeout') {
+						setSessionTimeout(v);
 
-				setSessionTimeout({
-					categoryCode: 'session',
-					resource: 'iam:*',
-					ruleType: 'session_timeout',
-					attribute: {
-						ruleType: 'session_timeout',
-						policies: {
-							'console-ui': {
-								usage: false,
-								sessionTimeSeconds: 14400,
-								keepAliveTimeSeconds: 10,
-								blockingType: 'logout',
-							},
-							'web-terminal': {
-								usage: true,
-								sessionTimeSeconds: 3600,
-								keepAliveTimeSeconds: 10,
-								blockingType: 'logout',
-							},
-						},
-					},
-				});
-
-				const data = Object.entries({
-					'console-ui': {
-						usage: false,
-						sessionTimeSeconds: 14400,
-						keepAliveTimeSeconds: 10,
-						blockingType: 'logout',
-					},
-					'web-terminal': {
-						usage: true,
-						sessionTimeSeconds: 3600,
-						keepAliveTimeSeconds: 10,
-						blockingType: 'logout',
-					},
-				}).map((v) => ({
-					...v[1],
-					id: v[0],
-					[DRAGGABLE_KEY]: v[0],
-					usage: v[1].usage ? 'yes' : 'no',
-					application: contents.sessionTimeout[v[0]],
-				}));
-
-				setTableData(data);
-
-				// res.data.forEach((v) => {
-				// 	if (v[contents.ruleType] === 'MaxSession') {
-				// 		setMaxSession(v);
-				// 	} else if (v[contents.ruleType] === 'ScreenSaver') {
-				// 		setScreenSaver(v);
-				// 		setScreenSaverValue(v.attribute.usage ? 'yes' : 'no');
-				// 		setIdleTime(v.attribute.timeToIdle);
-				// 	} else if (v[[contents.ruleType]] === 'SessionTimeout') {
-				// //
-				// 	}
-				// });
+						const data = Object.entries(v.attribute.policies).map(
+							(x) => ({
+								...x[1],
+								id: x[0],
+								[DRAGGABLE_KEY]: x[0],
+								usage: x[1].usage ? 'yes' : 'no',
+								application: contents.sessionTimeout[x[0]],
+							}),
+						);
+						setTableData(data);
+					}
+				}
 			});
 	}, [dispatch, setIdleTime, setScreenSaverValue, templateId]);
 
-	// 화면 보호기 데이터 변경시 setScreenSaver로 반영
+	/**************************************************
+	 * seob - 화면 보호기 데이터 변경시 setScreenSaver로 반영
+	 ***************************************************/
 	useEffect(() => {
 		setScreenSaver((data) => ({
 			...data,
@@ -230,7 +188,9 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 		}));
 	}, [idleTime, screenSaverValue]);
 
-	// 세션 타임아웃 데이터 변경시 setSessionTimeout로 반영
+	/**************************************************
+	 * seob - 세션 타임아웃 데이터 변경시 setSessionTimeout로 반영
+	 ***************************************************/
 	useEffect(() => {
 		const policies = {};
 		tableData.forEach((v) => {
@@ -251,7 +211,9 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 		}));
 	}, [tableData]);
 
-	// 데이터 저장
+	/**************************************************
+	 * seob - 화면보호기, 세션타임아웃 데이터 변경시 setData로 전체 data 저장
+	 ***************************************************/
 	useEffect(() => {
 		setData([screenSaver, sessionTimeout]);
 	}, [screenSaver, sessionTimeout]);
@@ -263,7 +225,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 		console.log(data);
 		if (creatingPolicy) {
 			dispatch(
-				IAM_RULE_TEMPLATE.action.gatherTemplate({
+				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherTemplate({
 					id: templateId,
 					data: {
 						name: name,

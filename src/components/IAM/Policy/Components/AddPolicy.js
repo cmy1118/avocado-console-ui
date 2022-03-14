@@ -22,6 +22,8 @@ import {useDispatch} from 'react-redux';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {policyTypes} from '../../../../utils/data';
 import PolicyPreviewDialogBox from '../../../DialogBoxs/Preview/PolicyPreviewDialogBox';
+import useTextBox from '../../../../hooks/useTextBox';
+import useComboBox from '../../../../hooks/useComboBox';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -40,8 +42,27 @@ const AddPolicy = () => {
 	const dispatch = useDispatch();
 	const [isOpened, setIsOpened] = useState(false);
 
+	// const policyTypehandler = () => {
+	// 	setPolicyType((type) => (type === 'iam' ? 'pam' : 'iam'));
+	// };
+
 	const formRef = useRef(null);
-	const [formData, setFormData] = useState({});
+	// const [formData, setFormData] = useState();
+
+	const [policyName, policyNameTextBox] = useTextBox({
+		placeholder: '정책 이름',
+	});
+	const [policyDescription, policyDescriptionTextBox] = useTextBox({
+		placeholder: '정책 설명',
+	});
+
+	const [policyType, policyTypeComboBox] = useComboBox({
+		options: [
+			{key: policyTypes.iam, label: 'IAM'},
+			{key: policyTypes.pam, label: 'PAM'},
+		],
+	});
+
 	const validation = {
 		name: yup
 			.string()
@@ -62,16 +83,16 @@ const AddPolicy = () => {
 	/**************************************************
 	 * ambacc244 - 정책 생성을 위해 템플릿 데이터 모으기
 	 **************************************************/
-	const onSubmitGatherPolicyTemplates = useCallback(
-		(data) => {
-			dispatch(
-				IAM_POLICY_MANAGEMENT_POLICIES.action.RequestToGatherPolicyTemplates(),
-			);
-			setIsOpened(true);
-			setFormData(data);
-		},
-		[dispatch],
-	);
+	// const onSubmitGatherPolicyTemplates = useCallback(
+	// 	(data) => {
+	// 		dispatch(
+	// 			IAM_POLICY_MANAGEMENT_POLICIES.action.RequestToGatherPolicyTemplates(),
+	// 		);
+	// 		setIsOpened(true);
+	// 		setFormData(data);
+	// 	},
+	// 	[dispatch],
+	// );
 
 	return (
 		<>
@@ -93,58 +114,72 @@ const AddPolicy = () => {
 				</TitleBarButtons>
 			</TitleBar>
 			<AddPageContent>
-				<Form
-					initialValues={{
-						name: '',
-						description: '',
-					}}
-					onSubmit={onSubmitGatherPolicyTemplates}
-					innerRef={formRef}
-					validation={validation}
-				>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<TextBox
-							name={'name'}
-							placeholder={'정책 이름'}
-							direction={'row'}
-						/>
-						<TextBoxDescription>
-							최대 100자, 영문 대소문자로 생성 가능합니다.
-						</TextBoxDescription>
-					</RowDiv>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<TextBox
-							name={'description'}
-							placeholder={'정책 설명'}
-							direction={'row'}
-						/>
-						<TextBoxDescription>
-							최대 200자 가능합니다.
-						</TextBoxDescription>
-					</RowDiv>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<ComboBox
-							name={'type'}
-							header={'정책 유형 선택'}
-							options={[
-								{value: policyTypes.iam, label: 'IAM'},
-								{value: policyTypes.pam, label: 'PAM'},
-							]}
-						/>
-						<TextBoxDescription>
-							정책 유형을 선택 합니다.
-						</TextBoxDescription>
-					</RowDiv>
-				</Form>
+				{/*<Form*/}
+				{/*	initialValues={{*/}
+				{/*		name: '',*/}
+				{/*		description: '',*/}
+				{/*	}}*/}
+				{/*	onSubmit={onSubmitGatherPolicyTemplates}*/}
+				{/*	innerRef={formRef}*/}
+				{/*	validation={validation}*/}
+				{/*>*/}
+				<RowDiv margin={'0px 0px 12px 0px'}>
+					{/*<TextBox*/}
+					{/*	name={'name'}*/}
+					{/*	placeholder={'정책 이름'}*/}
+					{/*	direction={'row'}*/}
+					{/*/>*/}
+					{policyNameTextBox()}
+					<TextBoxDescription>
+						최대 100자, 영문 대소문자로 생성 가능합니다.
+					</TextBoxDescription>
+				</RowDiv>
+				<RowDiv margin={'0px 0px 12px 0px'}>
+					{/*<TextBox*/}
+					{/*	name={'description'}*/}
+					{/*	placeholder={'정책 설명'}*/}
+					{/*	direction={'row'}*/}
+					{/*/>*/}
+					{policyDescriptionTextBox()}
+
+					<TextBoxDescription>
+						최대 200자 가능합니다.
+					</TextBoxDescription>
+				</RowDiv>
+				<RowDiv margin={'0px 0px 12px 0px'}>
+					{/*<ComboBox*/}
+					{/*	name={'type'}*/}
+					{/*	header={'정책 유형 선택'}*/}
+					{/*	options={[*/}
+					{/*		{value: policyTypes.iam, label: 'IAM'},*/}
+					{/*		{value: policyTypes.pam, label: 'PAM'},*/}
+					{/*	]}*/}
+					{/*/>*/}
+
+					{/*임의로 우선 유형변경 버튼 생성했습니다. todo: 추후 수정 예정*/}
+					{/*<button onClick={policyTypehandler}>*/}
+					{/*	정책유형 변경버튼*/}
+					{/*</button>*/}
+					{policyTypeComboBox()}
+					<TextBoxDescription>
+						정책 유형을 선택 합니다.
+					</TextBoxDescription>
+				</RowDiv>
+				{/*</Form>*/}
 			</AddPageContent>
 			<WritePolicy
 				title={contents.writePolicy.title}
 				description={contents.writePolicy.description}
+				policyType={policyType}
 			/>
 			<PolicyPreviewDialogBox
 				setIsOpened={setIsOpened}
 				isOpened={isOpened}
-				formData={formData}
+				formData={{
+					name: policyName,
+					description: policyDescription,
+					type: policyType,
+				}}
 			/>
 		</>
 	);

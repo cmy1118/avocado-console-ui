@@ -3,7 +3,7 @@ import ModalTableContainer from '../../RecycleComponents/ModalTableContainer';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {TitleBar} from '../../../styles/components/iam/iam';
-import IAM_RULE_TEMPLATE from '../../../reducers/api/IAM/Policy/RuleManagement/template';
+import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/RuleManagement/template';
 import {policyTypes} from '../../../utils/data';
 
 import {SummaryList} from '../../../styles/components/iam/descriptionPage';
@@ -28,7 +28,7 @@ const policyPreviewDialogBox = {
 
 const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const dispatch = useDispatch();
-	const {ruleTemplates} = useSelector(IAM_RULE_TEMPLATE.selector);
+	const {ruleTemplates} = useSelector(IAM_RULE_MANAGEMENT_TEMPLATE.selector);
 
 	const [ruleDetail, setRuleDetail] = useState([]);
 
@@ -58,14 +58,13 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			//step3-1: rule 생성
 			for (const v in ruleTemplates) {
 				dispatch(
-					IAM_RULE_TEMPLATE.asyncAction.createRuleTemplateAction({
-						...ruleTemplates[v],
-						attributes: ruleTemplates[v].attributes.map((data) =>
-							JSON.stringify(data),
+					IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.createRuleTemplateAction(
+						{...ruleTemplates[v],
+							attributes: ruleTemplates[v].attributes.map((data) =>
+								JSON.stringify(data),
+							)}
 						),
-					}),
-				)
-					.unwrap()
+				).unwrap()
 					.then((data) => {
 						console.log('rule 아이디: ', data.id);
 					});
