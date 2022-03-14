@@ -50,7 +50,8 @@ const createRuleTemplateAction = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
-		return {id: getIdFormLocation(response.headers.location)};
+		console.log(response);
+		return {id: response.data};
 	},
 );
 

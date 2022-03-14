@@ -39,6 +39,8 @@ const LoginFailure = ({data, setTemplateData}) => {
 	//failedCount: 로그인 실패 횟수
 	const [failedCount, failedCountTextBox, setFailedCount] = useTextBox({
 		name: 'loginFailureCount',
+		//1 ~
+		regex: /^([1-9]|[1-9][0-9]*)$/,
 	});
 	//blockingType: 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
@@ -52,6 +54,8 @@ const LoginFailure = ({data, setTemplateData}) => {
 		setFailedCountInitDays,
 	] = useTextBox({
 		name: 'failedCountInitDays',
+		//1 ~
+		regex: /^([1-9]|[1-9][0-9]*)$/,
 	});
 	//accountNormalization: 계정 정상화
 	const [
@@ -60,6 +64,8 @@ const LoginFailure = ({data, setTemplateData}) => {
 		setUnblockedDays,
 	] = useTextBox({
 		name: 'accountUnblockedDays',
+		//1 ~
+		regex: /^([1-9]|[1-9][0-9]*)$/,
 	});
 
 	/**************************************************

@@ -51,16 +51,23 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			// )
 			// 	.unwrap()
 			// 	.then((data) => {
-			// 		console.log('정책 아이디', data.id);
+			// 		console.log('정책 아이디: ', data.id);
 			//step2-1: 권한 생성
 			//step2-2: 정책 권한 연결
 			//step3-1: rule 생성
 			for (const v in ruleTemplates) {
 				dispatch(
-					IAM_RULE_TEMPLATE.asyncAction.createRuleTemplateAction(
-						ruleTemplates[v],
-					),
-				);
+					IAM_RULE_TEMPLATE.asyncAction.createRuleTemplateAction({
+						...ruleTemplates[v],
+						attributes: ruleTemplates[v].attributes.map((data) =>
+							JSON.stringify(data),
+						),
+					}),
+				)
+					.unwrap()
+					.then((data) => {
+						console.log('rule 아이디: ', data.id);
+					});
 			}
 			//step3-2: 정책 rule 연결
 			// });

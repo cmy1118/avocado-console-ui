@@ -55,6 +55,8 @@ const IdentityVerification = ({data, setTemplateData}) => {
 		setTimeoutSeconds,
 	] = useTextBox({
 		name: 'timeoutSeconds',
+		//1 - 180
+		regex: /^([1-9]|[1-9][0-9]|1[0-7][0-9]|180)$/,
 		//본인 확인 인증 사용 여부 false일때 disabled
 		disabled: usage === optionValue.usage.none,
 	});

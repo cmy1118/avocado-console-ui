@@ -51,7 +51,7 @@ const DeviceAuth = ({data, setTemplateData}) => {
 		setTemplateData({
 			...data,
 			usage: usage === optionValue.usage.use,
-			resource: application,
+			// resource: application,
 		});
 	}, [application, data, setTemplateData, usage]);
 

@@ -1,10 +1,7 @@
 import React, {useEffect} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
-import {
-	accountBlockingTypeOptions,
-	optionValue,
-} from '../../../../../../utils/options';
+import {accountBlockingTypeOptions} from '../../../../../../utils/options';
 import useRadio from '../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
@@ -51,6 +48,8 @@ const Dormant = ({data, setTemplateData}) => {
 		setUnconnectedDays,
 	] = useTextBox({
 		name: 'unconnectedDays',
+		//1 ~
+		regex: /^([1-9]|[1-9][0-9]*)$/,
 	});
 
 	/**************************************************
@@ -128,7 +127,7 @@ const Dormant = ({data, setTemplateData}) => {
 
 Dormant.propTypes = {
 	data: PropTypes.object,
-	setTemplateData: PropTypes.object,
+	setTemplateData: PropTypes.func,
 };
 
 export default Dormant;
