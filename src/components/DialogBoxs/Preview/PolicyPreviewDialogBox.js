@@ -4,11 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {TitleBar} from '../../../styles/components/iam/iam';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/RuleManagement/template';
-import {
-	controlTypes,
-	policyManageTypes,
-	policyTypes,
-} from '../../../utils/data';
+import {controlTypes, policyManageTypes, policyTypes,} from '../../../utils/data';
 
 import {SummaryList} from '../../../styles/components/iam/descriptionPage';
 import {LiText} from '../../../styles/components/text';
@@ -18,6 +14,7 @@ import {tableKeys} from '../../../Constants/Table/keys';
 import Table from '../../Table/Table';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from '../../../reducers/api/IAM/Policy/PolicyManagement/policyRuleTemplate';
+import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate";
 
 const policyPreviewDialogBox = {
 	header: '정책 생성 요약보기',
@@ -35,7 +32,7 @@ const policyPreviewDialogBox = {
 const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const dispatch = useDispatch();
 	const {ruleTemplates} = useSelector(IAM_RULE_MANAGEMENT_TEMPLATE.selector);
-
+	const {actionTemplates} = useSelector(IAM_ACTION_MANAGEMENT_TEMPLATE.selector);
 	const [ruleDetail, setRuleDetail] = useState([]);
 
 	/**************************************************
@@ -43,6 +40,8 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	 **************************************************/
 	const onSubmitPolicyForm = useCallback(() => {
 		if (formData.type === policyTypes.iam) {
+			//TODO:정책생성 이후 하위로직을 처리하기위한 비동기 로직 추가 예정-roberto
+
 			//TODO: step1은 매번 정책을 생성해서 커맨드 아웃했습니다.
 			// 작동은 하는 함수고 step2,3가 완료되면 연결 할것이니 삭제 하시면 곤란합니다.
 			// 올바른 step 아래에 disatch 작성 해주시면 감사하겠습니다.
@@ -65,10 +64,24 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				});
 
 			//step2-1: action 생성
-			// todo : 건욱님 작성 부탁드립니다.
+			// if(actionTemplates[0]){
+			// 	actionTemplates.forEach(v=>{
+			// 		console.log('...actionTemplates[v],:',...actionTemplates[v],)
+			// 		dispatch(
+			// 			IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.createAction(
+			// 				{...actionTemplates[v],}
+			// 			),
+			// 		).then((res)=>{
+			// 			console.log('권한 생성 res:',res)
+			// 		})
+			// 	})
+			// }
 
 			//step2-2: 정책 action 연결
-			// todo : 건욱님 작성 부탁드립니다.
+			// dispatch(
+			// 	IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.asyncAction.joinAction(
+			// 		iamTemplateIdList,
+			// 	),
 
 			//step3-1: rule 생성
 			let order = 1;

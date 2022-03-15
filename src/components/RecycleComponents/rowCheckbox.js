@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from "prop-types";
 import {ColDiv, RowDiv} from "../../styles/components/style";
-import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../reducers/api/IAM/Policy/ActionManagement/template";
+import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../reducers/api/IAM/Policy/ActionManagement/actionTemplate";
 import {useDispatch} from "react-redux";
 
 //dataLists : 행데이터
@@ -51,7 +51,6 @@ const RowCheckbox = ({dataLists,title}) => {
     //단일체크 핸들링 함수
     const onCheckedElement = useCallback(
         (checked, list) => {
-            console.log(`단일체크 핸들링 함수`)
             setStartCheck(true)
             dispatch(
                 IAM_ACTION_MANAGEMENT_TEMPLATE.action.setActionTemplates({
@@ -119,7 +118,6 @@ const RowCheckbox = ({dataLists,title}) => {
                     checked={
                         checkedList.length === 0
                             ? false : checkedList.length === tempDataLists.length ? true : false
-                            // ? false : checkedList.length === dataLists.length ? true : false
                     }
                 />
             {dataLists.map((list) => (
@@ -129,8 +127,6 @@ const RowCheckbox = ({dataLists,title}) => {
                 type="checkbox"
                 onChange={(e) => onCheckedElement(e.target.checked, list)}
                 checked={isChecked(list)}
-                // checked={checkedList.includes(list) ? true : false}
-                // checked={list.effect ||   checkedList.includes(list) ? true : false}
                 />
                 ))}
                     </div>

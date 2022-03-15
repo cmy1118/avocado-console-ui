@@ -73,7 +73,7 @@ const AddPolicy = () => {
 				<TitleBarText>정책 기본 정보</TitleBarText>
 				<TitleBarButtons>
 					<NormalButton onClick={onSubmitGatherPolicyTemplates}>
-						사용자 생성
+						정책 생성
 					</NormalButton>
 					<TransparentButton
 						type={'button'}
