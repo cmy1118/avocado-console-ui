@@ -142,21 +142,24 @@ const PaswordPattern = ({data, setTemplateData}) => {
 	 * ambacc244 - 비밀번호 패턴 데이터가 바뀌면 정책 생성을 위한 값을 변경
 	 **************************************************/
 	useEffect(() => {
-		setTemplateData({
-			...data,
-			minLength: Number(minPasswordLength),
-			maxLength: Number(maxPasswordLength),
-			numberOfConsecutiveNumerics: numberOfConsecutiveNumerics,
-			mixNumberAndAlpha: mixNumberAndAlpha,
-			mixCase: mixCase,
-			repeatedAlpha: repeatedAlpha,
-			includePersonalInfoList: personalInfoRestriction
-				? personalInfoRestrictionMethod
-				: [],
-			allowedDaysOfOldPasswords: oldPasswordsRistriction
-				? allowedDaysOfOldPasswords
-				: 0,
-		});
+		//rule 생성을 위한 ruleType이 존재
+		if (data?.ruleType) {
+			setTemplateData({
+				ruleType: data.ruleType,
+				minLength: Number(minPasswordLength),
+				maxLength: Number(maxPasswordLength),
+				numberOfConsecutiveNumerics: numberOfConsecutiveNumerics,
+				mixNumberAndAlpha: mixNumberAndAlpha === optionValue.usage.use,
+				mixCase: mixCase === optionValue.usage.use,
+				repeatedAlpha: repeatedAlpha === optionValue.restrict.restrict,
+				includePersonalInfoList: personalInfoRestriction
+					? personalInfoRestrictionMethod
+					: [],
+				allowedDaysOfOldPasswords: oldPasswordsRistriction
+					? allowedDaysOfOldPasswords
+					: 0,
+			});
+		}
 	}, [
 		allowedDaysOfOldPasswords,
 		data,
@@ -213,8 +216,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'repeatedAlpha',
-				optionValue.restriction.restrict,
-				optionValue.restriction.none,
+				optionValue.restrict.restrict,
+				optionValue.restrict.none,
 			),
 		);
 		//인적 사항 제한 default value 있음
@@ -228,8 +231,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			setPersonalInfoRestrictionMethod(data.includePersonalInfoList);
 			setPersonalInfoRestriction(
 				data.includePersonalInfoList.length !== 0
-					? optionValue.restriction.restrict
-					: optionValue.restriction.none,
+					? optionValue.restrict.restrict
+					: optionValue.restrict.none,
 			);
 		}
 		//이전 비밀번호 재사용 제한 default value 있음 && 제한 일수가 0 보다 큼
@@ -241,11 +244,11 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			) &&
 			data.allowedDaysOfOldPasswords !== 0
 		) {
-			setOldPasswordsRistriction(optionValue.restriction.restrict);
+			setOldPasswordsRistriction(optionValue.restrict.restrict);
 			setAllowedDaysOfOldPasswords(data.allowedDaysOfOldPasswords);
 			//이전 비밀번호 사용 제한 default value 없음 || 제한 일수가 0
 		} else {
-			setOldPasswordsRistriction(optionValue.restriction.none);
+			setOldPasswordsRistriction(optionValue.restrict.none);
 		}
 	}, [
 		data,

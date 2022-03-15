@@ -67,7 +67,7 @@ export const POLICY_ADD_PREVIEW_COLUMN = [
 		// disableChangeVisible: true,
 	},
 	{
-		accessor: 'data',
+		accessor: 'value',
 		Header: '설정값',
 		// disableFilters: true,
 		// disableChangeVisible: true,

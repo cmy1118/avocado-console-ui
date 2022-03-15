@@ -22,6 +22,7 @@ import {useDispatch} from 'react-redux';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {policyTypes} from '../../../../utils/data';
 import PolicyPreviewDialogBox from '../../../DialogBoxs/Preview/PolicyPreviewDialogBox';
+import IAM_RULE_TEMPLATE from '../../../../reducers/api/IAM/Policy/RuleManagement/template';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -57,7 +58,7 @@ const AddPolicy = () => {
 	/**************************************************
 	 * ambacc244 - 정책 추가 취소
 	 **************************************************/
-	const onClickCancelAddPolicy = useCallback(() => {}, []);
+	const onClickCancelAddPolicy = useCallback(() => {}, [dispatch]);
 
 	/**************************************************
 	 * ambacc244 - 정책 생성을 위해 템플릿 데이터 모으기

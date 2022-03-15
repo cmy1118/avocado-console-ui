@@ -65,18 +65,23 @@ const IdentityVerification = ({data, setTemplateData}) => {
 	 * ambacc244 - 본인 확인 인증 데이터가 바뀌면 정책 생성을 위한 값을 변경
 	 **************************************************/
 	useEffect(() => {
-		setTemplateData({
-			...data,
-			usage: usage === optionValue.usage.use,
-			policies: {[`${authMethod}`]: {timoutSeconds: timeoutSeconds}},
-		});
+		//rule 생성을 위한 ruleType이 존재
+		if (data?.ruleType) {
+			let attributes = {usage: usage === optionValue.usage.use};
+			//사용 여부 true
+			if (usage === optionValue.usage.use) {
+				attributes.policies = {
+					[`${authMethod}`]: {timoutSeconds: timeoutSeconds},
+				};
+			}
+			setTemplateData({ruleType: data.ruleType, ...attributes});
+		}
 	}, [authMethod, data, setTemplateData, timeoutSeconds, usage]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		console.log(data);
 		//본인 확인 인증의 정책이 존재
 		if (data?.policies && Object.keys(data.policies).length > 0) {
 			//본인 확인 인증 사용 여부 세팅

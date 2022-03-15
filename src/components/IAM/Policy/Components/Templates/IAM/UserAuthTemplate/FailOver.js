@@ -10,6 +10,8 @@ import TemplateElementContainer from '../../../TemplateElementContainer';
 import useRadio from '../../../../../../../hooks/useRadio';
 import PropTypes from 'prop-types';
 import MFA from './MFA';
+import useTextBox from '../../../../../../../hooks/useTextBox';
+import {RowDiv} from '../../../../../../../styles/components/style';
 
 const failOver = {
 	title: 'Fail Over',
@@ -25,6 +27,10 @@ const failOver = {
 		},
 		mfa: {
 			title: 'MFA',
+		},
+		timeoutSeconds: {
+			title: '입력 대기 시간(초)',
+			message: '초',
 		},
 	},
 };
@@ -52,22 +58,45 @@ const FailOver = ({data, setTemplateData}) => {
 		//Fail Over 사용 여부 false일때 disabled
 		disabled: usage === optionValue.usage.none,
 	});
+	//timeoutSeconds: 입력 대기 시간
+	const [
+		timeoutSeconds,
+		timeoutSecondsTextBox,
+		setTimeoutSeconds,
+	] = useTextBox({
+		name: 'timeoutSeconds',
+		//1 - 180
+		regex: /^([1-9]|[1-9][0-9]|1[0-7][0-9]|180)$/,
+		//Fail Over 사용 여부 false일때 disabled
+		disabled: usage === optionValue.usage.none,
+	});
 
 	/**************************************************
 	 * ambacc244 - FailOver 데이터가 바뀌면 정책 생성을 위한 값을 변경
 	 **************************************************/
 	useEffect(() => {
-		setTemplateData({
-			...data,
-			usage: usage === optionValue.usage.use,
-			auth: {
-				type: basicAuth,
-			},
-			mfa: {
-				type: mfa,
-			},
-		});
-	}, [basicAuth, data, mfa, setTemplateData, usage]);
+		//rule 생성을 위한 ruleType이 존재
+		if (data?.ruleType) {
+			let failOverData = {usage: usage === optionValue.usage.use};
+			//사용 여부 true
+			if (usage === optionValue.usage.use) {
+				if (basicAuth !== optionValue.authMethod.none) {
+					failOverData.auth = {type: basicAuth};
+				}
+
+				if (mfa !== optionValue.authMethod.none) {
+					failOverData.mfa = {type: mfa};
+				}
+
+				failOverData.timeoutSeconds = timeoutSeconds;
+			}
+
+			setTemplateData({
+				ruleType: data.ruleType,
+				...failOverData,
+			});
+		}
+	}, [basicAuth, data, mfa, setTemplateData, timeoutSeconds, usage]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
@@ -78,8 +107,8 @@ const FailOver = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				usageOptions[0].key,
-				usageOptions[1].key,
+				optionValue.usage.use,
+				optionValue.usage.none,
 			),
 		);
 		//Fail Over 사용 여부 true
@@ -94,8 +123,13 @@ const FailOver = ({data, setTemplateData}) => {
 				//MFA 인증 수단 세팅
 				setMfa(data.policies.mfa.type);
 			}
+			//입력 대기 시간 default value 있음
+			if (data?.timoutSeconds) {
+				//입력 대기 시간 세팅
+				setTimeoutSeconds(data.timoutSeconds);
+			}
 		}
-	}, [data, setBasicAuth, setMfa, setUsage]);
+	}, [data, setBasicAuth, setMfa, setTimeoutSeconds, setUsage]);
 
 	return (
 		<TemplateElementContainer
@@ -115,6 +149,20 @@ const FailOver = ({data, setTemplateData}) => {
 						<TemplateElement
 							title={failOver.contents.mfa.title}
 							render={mfaRaddioButton}
+						/>
+						<TemplateElement
+							title={failOver.contents.timeoutSeconds.title}
+							render={() => {
+								return (
+									<RowDiv>
+										{timeoutSecondsTextBox()}
+										{
+											failOver.contents.timeoutSeconds
+												.message
+										}
+									</RowDiv>
+								);
+							}}
 						/>
 					</div>
 				);

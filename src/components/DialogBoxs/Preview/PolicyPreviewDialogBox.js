@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import ModalTableContainer from '../../RecycleComponents/ModalTableContainer';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -12,6 +12,7 @@ import {AddPageDialogBoxTitle} from '../../../styles/components/iam/addPage';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {tableKeys} from '../../../Constants/Table/keys';
 import Table from '../../Table/Table';
+import {roleAttributeConvertor} from '../../../utils/preview';
 
 const policyPreviewDialogBox = {
 	header: '정책 생성 요약보기',
@@ -26,11 +27,36 @@ const policyPreviewDialogBox = {
 	detail: {title: '정책'},
 };
 
+const policyDescription = {
+	//사용자 인증
+	device_authentication: '단말기 인증',
+	mfa: 'MFA(다중인증)',
+	alternative_authn_failover: 'Fail Over',
+	identity_verification: '본인 확인 인증',
+	//사용자 계정 처리
+	sign_in_fail_blocking: '로그인 실패',
+	dormant_blocking: '휴먼',
+	account_expired: '계정 사용기간',
+	group_modifying: '그룹 변경',
+	resigned: '퇴사(탈퇴)',
+	// 사용자 계정 패턴
+	user_id_pattern: '사용자 ID 패턴',
+	password_pattern: '비밀번호 패턴',
+};
+
 const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const dispatch = useDispatch();
 	const {ruleTemplates} = useSelector(IAM_RULE_TEMPLATE.selector);
 
 	const [ruleDetail, setRuleDetail] = useState([]);
+
+	/**************************************************
+	 * ambacc244 - 정책 생성 취소
+	 **************************************************/
+	const onCancelPolicyForm = useCallback(() => {
+		//정책 생성을 위해 모아둔 template의 데이터를 삭제
+		dispatch(IAM_RULE_TEMPLATE.action.cancelCreatePolicy());
+	}, [dispatch]);
 
 	/**************************************************
 	 * ambacc244 - 정책 생성
@@ -89,28 +115,25 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			// );
 			// ******************************************************
 		}
-	}, [ruleTemplates, formData]);
+	}, [formData.type, ruleTemplates, dispatch]);
 
-	// useEffect(() => {
-	// 	let array = [];
-	// 	console.log(ruleTemplates);
-	//
-	// 	Object.values(ruleTemplates).map((v) => {
-	// 		for (let i = 0; i < v.attribute.length; i++) {
-	// 			let data = {};
-	// 			if (i === 0) {
-	// 				data.name = v.name;
-	// 				data.description = v.description;
-	// 			}
-	//
-	// 			console.log(v.attribute[i]);
-	//
-	// 			array.push(data);
-	// 		}
-	// 	});
-	//
-	// 	setRuleDetail(array);
-	// }, [ruleTemplates]);
+	useEffect(() => {
+		let array = [];
+
+		Object.values(ruleTemplates).map((v) => {
+			for (let i = 0; i < v.attributes.length; i++) {
+				let data = new Object();
+				if (i === 0) data.name = v.name;
+
+				data.description = policyDescription[v.attributes[i].ruleType];
+				data.id = v.attributes[i].ruleType;
+				data.value = roleAttributeConvertor(v.attributes[i]);
+				array.push(data);
+			}
+		});
+
+		setRuleDetail(array);
+	}, [ruleTemplates]);
 
 	return (
 		formData && (
@@ -119,6 +142,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				isOpened={isOpened}
 				setIsOpened={setIsOpened}
 				handleSubmit={onSubmitPolicyForm}
+				handleCancel={onCancelPolicyForm}
 			>
 				<TitleBar>{policyPreviewDialogBox.policy.title}</TitleBar>
 				<SummaryList>
@@ -142,6 +166,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				{/*TODO: TABLE*/}
 				<Table
 					readOnly
+					isCheckBox={false}
 					columns={tableColumns[tableKeys.policy.add.preview]}
 					tableKey={tableKeys.policy.add.preview}
 					data={ruleDetail}

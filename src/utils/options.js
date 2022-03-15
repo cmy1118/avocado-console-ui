@@ -1,8 +1,8 @@
 export const optionValue = {
 	usage: {use: 'use', none: 'none'},
 	application: {
-		managementConsole: 'console-ui:*',
-		webTerminal: 'web-terminal-ui:*',
+		'console-ui:*': 'console-ui:*',
+		'web-terminal-ui:*': 'web-terminal-ui:*',
 	},
 	authUsage: {use: 'use', none: 'none'},
 	required: {all: 'all', select: 'select', none: 'no'},
@@ -49,8 +49,8 @@ export const optionValue = {
 		none: 'no',
 		use: 'yes',
 	},
-	patternType: {prefix: 'Prefix', suffix: 'Suffix'},
-	restriction: {restrict: 'yes', none: 'none'},
+	patternType: {prefix: 'prefix', suffix: 'suffix'},
+	restrict: {restrict: 'yes', none: 'none'},
 	personalInfoRestrictionMethod: {
 		email: 'email',
 		mobile: 'mobile',
@@ -58,11 +58,11 @@ export const optionValue = {
 	},
 };
 
-const optionLabel = {
+export const optionLabel = {
 	usage: {use: '사용함', none: '사용 안함'},
 	application: {
-		managementConsole: 'Management Console',
-		webTerminal: 'WebTerminal',
+		'console-ui:*': 'Management Console',
+		'web-terminal-ui:*': 'WebTerminal',
 	},
 	authUsage: {use: '인증 함', none: '인증 안함'},
 	required: {all: '필수', select: '선택', none: '없음'},
@@ -110,7 +110,7 @@ const optionLabel = {
 		use: '있음',
 	},
 	patternType: {prefix: '접두사', suffix: '접미사'},
-	restriction: {restrict: '제한함', none: '제한 안함'},
+	restrict: {restrict: '제한함', none: '제한 안함'},
 	personalInfoRestrictionMethod: {
 		email: 'Email',
 		mobile: '전화번호',
@@ -131,12 +131,12 @@ export const usageOptions = [
 
 export const applicationOptions = [
 	{
-		key: optionValue.application.managementConsole,
-		label: optionLabel.application.managementConsole,
+		key: optionValue.application['console-ui:*'],
+		label: optionLabel.application['console-ui:*'],
 	},
 	{
-		key: optionValue.application.webTerminal,
-		label: optionLabel.application.webTerminal,
+		key: optionValue.application['web-terminal-ui:*'],
+		label: optionLabel.application['web-terminal-ui:*'],
 	},
 ];
 
@@ -284,12 +284,12 @@ export const patternTypeOptions = [
 
 export const restrictionOptions = [
 	{
-		key: optionValue.restriction.restrict,
-		label: optionLabel.restriction.restrict,
+		key: optionValue.restrict.restrict,
+		label: optionLabel.restrict.restrict,
 	},
 	{
-		key: optionValue.restriction.none,
-		label: optionLabel.restriction.none,
+		key: optionValue.restrict.none,
+		label: optionLabel.restrict.none,
 	},
 ];
 

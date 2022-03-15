@@ -62,6 +62,9 @@ const slice = createSlice({
 		gatherTemplate: (state, action) => {
 			state.ruleTemplates[action.payload.id] = action.payload.data;
 		},
+		cancelCreatePolicy: (state, action) => {
+			state.ruleTemplates = {};
+		},
 	},
 	extraReducers: {},
 });

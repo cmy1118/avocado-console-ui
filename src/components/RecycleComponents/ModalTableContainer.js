@@ -29,9 +29,11 @@ const ModalTableContainer = ({
 	title,
 	children,
 	handleSubmit,
+	handleCancel,
 }) => {
 	const onClickCloseDialogBox = useCallback(() => {
 		setIsOpened(false);
+		if (handleCancel) handleCancel();
 	}, [setIsOpened]);
 
 	const onSubmitCreateUser = useCallback(() => {
@@ -85,6 +87,7 @@ ModalTableContainer.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 	handleSubmit: PropTypes.func.isRequired,
+	handleCancel: PropTypes.func,
 	title: PropTypes.string.isRequired,
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 		.isRequired,

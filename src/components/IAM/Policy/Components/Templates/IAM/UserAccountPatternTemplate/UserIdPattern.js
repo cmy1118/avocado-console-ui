@@ -53,13 +53,23 @@ const UserIdPattern = ({data, setTemplateData}) => {
 	 * ambacc244 - 사용자 ID 패턴 데이터가 바뀌면 정책 생성을 위한 값을 변경
 	 **************************************************/
 	useEffect(() => {
-		setTemplateData({
-			...data,
-			usage: usage === optionValue.usage.use,
-			patternType: patternType,
-			pattern: pattern,
-		});
-	}, [data, setTemplateData, usage]);
+		//rule 생성을 위한 ruleType이 존재
+		if (data?.ruleType) {
+			const attributes = {
+				usage: usage === optionValue.usage.use,
+			};
+			//사용 여부 true
+			if (usage === optionValue.usage.use) {
+				attributes.patternType = patternType;
+				attributes.pattern = pattern;
+			}
+
+			setTemplateData({
+				ruleType: data.ruleType,
+				...attributes,
+			});
+		}
+	}, [data, pattern, patternType, setTemplateData, usage]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅

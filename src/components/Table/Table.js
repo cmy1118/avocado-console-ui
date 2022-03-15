@@ -85,6 +85,7 @@ const Styles = styled.div`
 			:last-child {
 				border-right: 0;
 			}
+			white-space: pre-wrap;
 			height: 40px;
 		}
 
