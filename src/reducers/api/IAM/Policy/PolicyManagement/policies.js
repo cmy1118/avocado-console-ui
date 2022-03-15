@@ -35,6 +35,33 @@ const createPolicyAction = createAsyncThunk(
 		return {id: getIdFormLocation(response.headers.location)};
 	},
 );
+/**************************************************
+ * ambacc244 - IAM policy 생성 요청 액션
+ **************************************************/
+const findAll = createAsyncThunk(
+	`${NAME}/FIND_ALL`,
+	async (payload, {getState}) => {
+		const {userAuth} = getState().AUTH;
+
+		const response = await Axios.get(`/open-api/v1/iam/policies`, {
+			params: {
+				type: payload.type, // 관리타입
+				keyword: payload.keyword, // 검색 키워드
+				fromTime: payload.fromTime, // 생성일시 (시작)
+				toTime: payload.toTime, // 생성일시 (종료)
+				id: payload.id, // 정책 ID
+			},
+			headers: {
+				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+				Range: payload.range,
+				'Content-Type': contentType.JSON,
+			},
+			baseURL: baseURL.openApi,
+		});
+		console.log(response);
+		return response;
+	},
+);
 
 const slice = createSlice({
 	name: NAME,
@@ -63,6 +90,7 @@ const IAM_POLICY_MANAGEMENT_POLICIES = {
 	action: slice.actions,
 	asyncAction: {
 		createPolicyAction,
+		findAll,
 	},
 };
 

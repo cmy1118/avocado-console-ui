@@ -5,20 +5,22 @@ import React from 'react';
 import TableCheckbox from '../../components/Table/Options/TableCheckbox';
 import checkboxColumn from '../../components/Table/tableCheckboxColumn';
 import {tableKeys} from '../../Constants/Table/keys';
+import TableLink from '../../components/Table/ColumnCells/TableLink';
 
 export const POLICY_COLUMN = [
 	// {
 	// 	accessor: 'id',
 	// 	Header: '사용자 계정',
-	// 	Cell: function Component(cell) {
-	// 		return <TableLink cell={cell} />;
-	// 	},
+
 	// 	disableFilters: true,
 	// 	disableChangeVisible: true,
 	// },
 	{
 		accessor: 'name',
 		Header: '정책 이름',
+		Cell: function Component(cell) {
+			return <TableLink cell={cell} />;
+		},
 		disableFilters: true,
 		disableChangeVisible: true,
 	},
@@ -40,7 +42,7 @@ export const POLICY_COLUMN = [
 		Filter: SelectionOption,
 	},
 	{
-		accessor: 'link',
+		accessor: 'grantCount',
 		Header: '역할 연결 수',
 		filter: 'equals',
 		Filter: SelectionOption,

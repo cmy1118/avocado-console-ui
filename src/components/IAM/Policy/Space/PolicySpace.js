@@ -19,64 +19,77 @@ import PAM_SESSION from '../../../../reducers/api/PAM/session';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 import * as _ from 'lodash';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
+import {totalNumberConverter} from '../../../../utils/tableDataConverter';
+import {policyTypes} from '../../../../utils/data';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
 	{url: '/policies', label: '정책'},
 ];
 
+const MANAGE_TYPE = {
+	Avocado: 'Avocado 관리형',
+	Client: '고객 관리형',
+};
+
+const APPLICATION_CODE = {
+	iam: 'IAM',
+	pam: 'PAM',
+};
+
 const PolicySpace = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
-	// const [users, setUsers] = useState([]);
+	const [policies, setPolicies] = useState([]);
 	const {page, total} = useSelector(PAGINATION.selector);
 	const [search, setSearch] = useState('');
 	const [select, setSelect] = useState({});
 
+	// 0:
+	// controlTypes: [{…}]
+	// createdTag: {createdTime: '2022-02-21T18:09:09.365+09:00', applicationCode: {…}, clientId: 'admin', requestId: '111e418e-04e5-46af-8725-6c6553a43912', userUid: 'KR-2020-0001:0000001'}
+	// description: "기본 인증"
+	// grantCount: 0
+	// id: "KR-2020-0001:202202:0001"
+	// lastEventId: 0
+	// maxGrants: 1
+	// name: "글로벌 정책"
+	// type: {code: 0, name: 'Avocado'}
+	// [[Prototype]]: Object
+	// 1:
+	// controlTypes: [{…}]
+	// createdTag: {createdTime: '2022-02-21T18:09:09.365+09:00', applicationCode: {…}, clientId: 'admin', requestId: '111e418e-04e5-46af-8725-6c6553a43912', userUid: 'KR-2020-0001:0000001'}
+	// description: ""
+	// grantCount: 0
+	// id: "KR-2020-0001:202202:0002"
+	// lastEventId: 0
+	// maxGrants: 1000
+	// name: "사용자 인증"
+	// type: {code: 1, name: 'Client'}
+
 	const policyData = useMemo(() => {
-		return [
-			{
-				id: 'policy0',
-				name: '정책 이름 0',
-				manageCategory: 'Avocado 관리형',
-				policyType: 'IAM',
-				description: '정책 설명 0',
-				link: '역할 연결 수',
-				createdTime: '생성시간',
-				[DRAGGABLE_KEY]: '0',
-			},
-			{
-				id: 'policy1',
-				name: '정책 이름 1',
-				manageCategory: 'Avocado 관리형',
-				policyType: 'PAM',
-				description: '정책 설명 1',
-				link: '역할 연결 수',
-				createdTime: '생성시간',
-				[DRAGGABLE_KEY]: '1',
-			},
-			{
-				id: 'policy2',
-				name: '정책 이름 2',
-				manageCategory: 'Avocado 관리형',
-				policyType: 'IAM',
-				description: '정책 설명 2',
-				link: '역할 연결 수',
-				createdTime: '생성시간',
-				[DRAGGABLE_KEY]: '2',
-			},
-		];
-		// return (
-		// 	users?.map((v) => ({
-		// 		...v.user,
-		// 		groups: groupsConverter(v.user.groups || []),
-		// 		status: v.user.status.code,
-		// 		createdTime: v.user.createdTag.createdTime,
-		// 		[DRAGGABLE_KEY]: ,
-		// 	})) || []
-		// );
-	}, []);
+		return policies.map((v) => ({
+			...v,
+			manageCategory: MANAGE_TYPE[v.type.name],
+			policyType: APPLICATION_CODE[v.createdTag.applicationCode.code],
+			description: v.description === '' ? '없음' : v.description,
+			createdTime: v.createdTag.createdTime,
+			[DRAGGABLE_KEY]: v.id,
+		}));
+		// 	{
+		// 		id: 'policy2',
+		// 		name: '정책 이름 2',
+		// 		manageCategory: 'Avocado 관리형',
+		// 		policyType: 'IAM',
+		// 		description: '정책 설명 2',
+		// 		link: '역할 연결 수',
+		// 		createdTime: '생성시간',
+		// 		[DRAGGABLE_KEY]: '2',
+		// 	},
+		// ];
+	}, [policies]);
 
 	const onClickLinkToAddPolicyPage = useCallback(() => {
 		history.push('/policies/add');
@@ -142,39 +155,44 @@ const PolicySpace = () => {
 		[dispatch],
 	);
 
-	const getPolicyApi = useCallback((search) => {
-		// todo : 정책 가져오는 api 생기면 처리
-		// if (page[tableKeys.policy.basic]) {
-		// 	dispatch(
-		// 		IAM_USER.asyncAction.findAllAction({
-		// 			range: page[tableKeys.policy.basic],
-		// 			...(search && {keyword: search}),
-		// 		}),
-		// 	)
-		// 		.unwrap()
-		// 		.then((res) => {
-		// 			dispatch(
-		// 				PAGINATION.action.setTotal({
-		// 					tableKey: tableKeys.policy.basic,
-		// 					element: totalNumberConverter(
-		// 						res.headers['content-range'],
-		// 					),
-		// 				}),
-		// 			);
-		// 			res.data.length ? getUsersDetailApi(res) : setUsers([]);
-		// 		})
-		// 		.catch((error) => {
-		// 			console.error('error:', error);
-		// 			dispatch(
-		// 				PAGINATION.action.setTotal({
-		// 					tableKey: tableKeys.policy.basic,
-		// 					element: 0,
-		// 				}),
-		// 			);
-		// 			setUsers([]);
-		// 		});
-		// }
-	}, []);
+	const getPolicyApi = useCallback(
+		(search) => {
+			// todo : 정책 가져오는 api 생기면 처리
+			if (page[tableKeys.policy.basic]) {
+				dispatch(
+					IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.findAll({
+						range: page[tableKeys.policy.basic],
+						// ...(search && {keyword: search}),
+					}),
+				)
+					.unwrap()
+					.then((res) => {
+						dispatch(
+							PAGINATION.action.setTotal({
+								tableKey: tableKeys.policy.basic,
+								element: totalNumberConverter(
+									res.headers['content-range'],
+								),
+							}),
+						);
+
+						setPolicies(res.data);
+						// res.data.length ? getUsersDetailApi(res) : setUsers([]);
+					})
+					.catch((error) => {
+						console.error('error:', error);
+						dispatch(
+							PAGINATION.action.setTotal({
+								tableKey: tableKeys.policy.basic,
+								element: 0,
+							}),
+						);
+						// setUsers([]);
+					});
+			}
+		},
+		[dispatch, page],
+	);
 
 	const subComponentHandler = ({row, setData, setColumns, setLoading}) => {
 		console.log(row);
