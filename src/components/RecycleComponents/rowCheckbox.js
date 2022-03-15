@@ -107,11 +107,12 @@ const RowCheckbox = ({dataLists,title}) => {
 
     return (
         <RowDiv>
-            <ColDiv width={'25%'}>
+            <ColDiv width={'300px'}>
           {title}
             </ColDiv>
             {dataLists?
-                <div>
+                <RowDiv width={'100%'}>
+                    <RowDiv  padding={'0px 20px'}>
                 <input
                     type="checkbox"
                     onChange={(e) => onCheckedAll(e.target.checked)}
@@ -120,16 +121,19 @@ const RowCheckbox = ({dataLists,title}) => {
                             ? false : checkedList.length === tempDataLists.length ? true : false
                     }
                 />
-            {dataLists.map((list) => (
-                <input
-                    disabled={list.templateId?false:true}
-                key={list.id}
-                type="checkbox"
-                onChange={(e) => onCheckedElement(e.target.checked, list)}
-                checked={isChecked(list)}
-                />
+                    </RowDiv>
+            {dataLists.map((list,index) => (
+                <RowDiv key={index} padding={'0px 20px'}>
+                    <input
+                        disabled={list.templateId?false:true}
+                    key={list.id}
+                    type="checkbox"
+                    onChange={(e) => onCheckedElement(e.target.checked, list)}
+                    checked={isChecked(list)}
+                    />
+                </RowDiv>
                 ))}
-                    </div>
+                    </RowDiv>
                 :true
             }
       </RowDiv>

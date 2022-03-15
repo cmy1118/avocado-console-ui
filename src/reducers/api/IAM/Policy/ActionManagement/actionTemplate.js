@@ -99,7 +99,6 @@ const slice = createSlice({
 		setActionTemplates: (state, {payload}) => {
 			// state.loading = true;
 			let actionTemplates =state.actionTemplates
-			console.log('payload.allCheck:',payload.allCheck, payload.resource,)
 			//전체체크시
 			if(payload.allCheck){
 				actionTemplates.map((v,idx1)=>{
