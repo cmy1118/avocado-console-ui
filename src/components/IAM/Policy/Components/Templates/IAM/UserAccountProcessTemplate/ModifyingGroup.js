@@ -4,6 +4,9 @@ import TemplateElement from '../../../TemplateElement';
 import {
 	accountBlockingType2Options,
 	groupPermissionTypeOptions,
+	optionValue,
+	setUsageOptionByAttribute,
+	usageOptions,
 } from '../../../../../../../utils/options';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useComboBox from '../../../../../../../hooks/useComboBox';
@@ -17,6 +20,9 @@ const modifyingGroup = {
 		'그룹 유형은 최대 3개까지만 설정 가능합니다.',
 	],
 	contents: {
+		usage: {
+			title: '사용 여부',
+		},
 		controlGroupType: {
 			title: '제어 그룹 유형',
 			placeholder: '선택',
@@ -24,7 +30,7 @@ const modifyingGroup = {
 		blockingType: {
 			title: '계정 처리 방법',
 		},
-		groupPermissionType: {
+		permissionType: {
 			title: '그룹 권한 처리',
 		},
 		accountNormalization: {
@@ -40,61 +46,89 @@ const tempOption = [{key: 'select', label: '선택'}];
  * ambacc244 - 사용자 계정 처리(그룹 변경) 폼
  **************************************************/
 const ModifyingGroup = ({data, setTemplateData}) => {
+	//usage : 그룹 변경 사용 여부
+	const [usage, usageRadioButton, setUsage] = useRadio({
+		name: 'modifyingGroupUsage',
+		options: usageOptions,
+	});
 	//group1: 제어 그룹 유형1
 	const [group1, group1ComboBox] = useComboBox({
 		options: tempOption,
+		disabled: usage === optionValue.usage.none,
 	});
 	//group2: 제어 그룹 유형2
 	const [group2, group2ComboBox] = useComboBox({
 		options: tempOption,
+		disabled: usage === optionValue.usage.none,
 	});
 	//group3: 제어 그룹 유형3
 	const [group3, group3ComboBox] = useComboBox({
 		options: tempOption,
+		disabled: usage === optionValue.usage.none,
 	});
 	//blockingType: 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'modifyingGroupBlockingType',
 		options: accountBlockingType2Options,
+		disabled: usage === optionValue.usage.none,
 	});
-	//groupPermissionType: 그룹 권한 처리
+	//permissionType: 그룹 권한 처리
 	const [
-		groupPermissionType,
-		groupPermissionTypeRadioButton,
-		setGroupPermissionType,
+		permissionType,
+		permissionTypeRadioButton,
+		setPermissionType,
 	] = useRadio({
 		name: 'groupPermissionType',
 		options: groupPermissionTypeOptions,
+		disabled: usage === optionValue.usage.none,
 	});
 
 	/**************************************************
 	 * ambacc244 - 그룹 변경 데이터가 바뀌면 정책 생성을 위한 값을 변경
 	 **************************************************/
 	useEffect(() => {
-		setTemplateData({
-			...data,
-			blockingType: blockingType,
-			permissionType: groupPermissionType,
-		});
-	}, [blockingType, data, groupPermissionType, setTemplateData]);
+		if (data?.ruleType) {
+			let attributes = {usage: usage === optionValue.usage.use};
+			//사용 여부 true
+			if (usage === optionValue.usage.use) {
+				attributes.blockingType = blockingType;
+				attributes.permissionType = permissionType;
+			}
+			setTemplateData({
+				ruleType: data.ruleType,
+				...attributes,
+			});
+		}
+	}, [blockingType, data, permissionType, setTemplateData, usage]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		//TODO: 제어 그룹 유형
+		setUsage(
+			setUsageOptionByAttribute(
+				data,
+				'usage',
+				usageOptions[0].key,
+				usageOptions[1].key,
+			),
+		);
+		//그룹 변경 사용 여부 ture
+		if (data?.usage) {
+			//TODO: 제어 그룹 유형
 
-		//계정 처리 방법 default value 있음
-		if (data?.blockingType) {
-			//계정 처리 방법 세팅
-			setBlockingType(data.blockingType);
+			//계정 처리 방법 default value 있음
+			if (data?.blockingType) {
+				//계정 처리 방법 세팅
+				setBlockingType(data.blockingType);
+			}
+			//그룹 권한 처리 default value 있음
+			if (data?.permissionType) {
+				//그룹 권한 처리 세팅
+				setPermissionType(data?.permissionType);
+			}
 		}
-		//그룹 권한 처리 default value 있음
-		if (data?.permissionType) {
-			//그룹 권한 처리 세팅
-			setGroupPermissionType(data?.permissionType);
-		}
-	}, [data, setBlockingType, setGroupPermissionType]);
+	}, [data, setBlockingType, setPermissionType, setUsage]);
 
 	return (
 		<TemplateElementContainer
@@ -103,6 +137,10 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 			render={() => {
 				return (
 					<div>
+						<TemplateElement
+							title={modifyingGroup.contents.usage.title}
+							render={usageRadioButton}
+						/>
 						<TemplateElement
 							title={
 								modifyingGroup.contents.controlGroupType.title
@@ -123,11 +161,8 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 							render={blockingTypeRadioButton}
 						/>
 						<TemplateElement
-							title={
-								modifyingGroup.contents.groupPermissionType
-									.title
-							}
-							render={groupPermissionTypeRadioButton}
+							title={modifyingGroup.contents.permissionType.title}
+							render={permissionTypeRadioButton}
 						/>
 						<TemplateElement
 							title={

@@ -55,7 +55,7 @@ const AddPolicy = () => {
 	/**************************************************
 	 * ambacc244 - 정책 추가 취소
 	 **************************************************/
-	const onClickCancelAddPolicy = useCallback(() => {}, []);
+	const onClickCancelAddPolicy = useCallback(() => {}, [dispatch]);
 
 	/**************************************************
 	 * ambacc244 - 정책 생성을 위해 템플릿 데이터 모으기

@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 import TemplateElementContainer from '../../../TemplateElementContainer';
 import TemplateElement from '../../../TemplateElement';
 import {RowDiv} from '../../../../../../../styles/components/style';
-import {accountBlockingTypeOptions} from '../../../../../../../utils/options';
+import {
+	accountBlockingTypeOptions,
+	optionValue,
+	setUsageOptionByAttribute,
+	usageOptions,
+} from '../../../../../../../utils/options';
 import useTextBox from '../../../../../../../hooks/useTextBox';
 import useRadio from '../../../../../../../hooks/useRadio';
 
@@ -15,6 +20,9 @@ const dormant = {
 		'정상화 후 재로그인 시에 패스워드를 변경해야 합니다.',
 	],
 	contents: {
+		usage: {
+			title: '사용 여부',
+		},
 		unconnectedDays: {
 			title: '연속 미접속 기간',
 			message: '일',
@@ -37,10 +45,16 @@ const dormant = {
  * ambacc244 - 사용자 계정 처리(휴면) 폼
  **************************************************/
 const Dormant = ({data, setTemplateData}) => {
+	//usage : 휴면 사용 여부
+	const [usage, usageRadioButton, setUsage] = useRadio({
+		name: 'dormantUsage',
+		options: usageOptions,
+	});
 	//blockingType : 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'dormantBlockingType',
 		options: accountBlockingTypeOptions,
+		disabled: usage === optionValue.usage.none,
 	});
 	// unconnectedDays: 연속 미접속 기간
 	const [
@@ -51,34 +65,57 @@ const Dormant = ({data, setTemplateData}) => {
 		name: 'unconnectedDays',
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
+		disabled: usage === optionValue.usage.none,
 	});
 
 	/**************************************************
 	 * ambacc244 - 휴면 데이터가 바뀌면 정책 생성을 위한 값을 변경
 	 **************************************************/
 	useEffect(() => {
-		setTemplateData({
-			...data,
-			blockingType: blockingType,
-			unconnectedDays: unconnectedDays,
-		});
-	}, [data, setTemplateData, blockingType, unconnectedDays]);
+		//rule 생성을 위한 ruleType이 존재
+		if (data?.ruleType) {
+			const attributes = {
+				usage: usage === optionValue.usage.use,
+			};
+			//사용 여부 true
+			if (usage === optionValue.usage.use) {
+				attributes.blockingType = blockingType;
+				attributes.unconnectedDays = unconnectedDays;
+			}
+			setTemplateData({
+				ruleType: data.ruleType,
+				...attributes,
+			});
+		}
+	}, [data, setTemplateData, blockingType, unconnectedDays, usage]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		//계정 처리 방법 default value 존재
-		if (data?.blockingType) {
-			//계정 처리 방법 세팅
-			setBlockingType(data.blockingType);
+		//휴면 사용 여부 세팅
+		setUsage(
+			setUsageOptionByAttribute(
+				data,
+				'usage',
+				optionValue.usage.use,
+				optionValue.usage.none,
+			),
+		);
+		//휴면 사용 여부 true
+		if (data?.usage) {
+			//계정 처리 방법 default value 존재
+			if (data?.blockingType) {
+				//계정 처리 방법 세팅
+				setBlockingType(data.blockingType);
+			}
+			//연속 미접속 기간 default value 존재
+			if (data?.unconnectedDays) {
+				//연속 미접속 기간 세팅
+				setUnconnectedDays(data.unconnectedDays);
+			}
 		}
-		//연속 미접속 기간 default value 존재
-		if (data?.unconnectedDays) {
-			//연속 미접속 기간 세팅
-			setUnconnectedDays(data.unconnectedDays);
-		}
-	}, [data, setBlockingType, setUnconnectedDays]);
+	}, [data, setBlockingType, setUnconnectedDays, setUsage]);
 
 	return (
 		<TemplateElementContainer
@@ -87,6 +124,10 @@ const Dormant = ({data, setTemplateData}) => {
 			render={() => {
 				return (
 					<div>
+						<TemplateElement
+							title={dormant.contents.usage.title}
+							render={usageRadioButton}
+						/>
 						<TemplateElement
 							title={dormant.contents.unconnectedDays.title}
 							render={() => {

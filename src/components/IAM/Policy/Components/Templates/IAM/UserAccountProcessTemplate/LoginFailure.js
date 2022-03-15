@@ -1,7 +1,12 @@
 import React, {useEffect} from 'react';
 
 import TemplateElement from '../../../TemplateElement';
-import {accountBlockingTypeOptions} from '../../../../../../../utils/options';
+import {
+	accountBlockingTypeOptions,
+	optionValue,
+	setUsageOptionByAttribute,
+	usageOptions,
+} from '../../../../../../../utils/options';
 import TemplateElementContainer from '../../../TemplateElementContainer';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../../hooks/useTextBox';
@@ -16,6 +21,9 @@ const loginFailure = {
 		'정상화 후 재로그인 시에 패스워드를 변경해야 합니다.',
 	],
 	contents: {
+		usage: {
+			title: '사용 여부',
+		},
 		loginFailureCount: {
 			title: '로그인 실패 횟수',
 			message: '회',
@@ -38,16 +46,23 @@ const loginFailure = {
  * ambacc244 - 사용자 계정 처리(로그인 실패) 폼
  **************************************************/
 const LoginFailure = ({data, setTemplateData}) => {
+	//usage: 로그인 실패 사용 여부
+	const [usage, usageRadioButton, setUsage] = useRadio({
+		name: 'loginFailureUsage',
+		options: usageOptions,
+	});
 	//failedCount: 로그인 실패 횟수
 	const [failedCount, failedCountTextBox, setFailedCount] = useTextBox({
 		name: 'loginFailureCount',
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
+		disabled: usage === optionValue.usage.none,
 	});
 	//blockingType: 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'loginFailureBlockingType',
 		options: accountBlockingTypeOptions,
+		disabled: usage === optionValue.usage.none,
 	});
 	//failedCountInitDays: 오류 횟수 초기화
 	const [
@@ -58,6 +73,7 @@ const LoginFailure = ({data, setTemplateData}) => {
 		name: 'failedCountInitDays',
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
+		disabled: usage === optionValue.usage.none,
 	});
 	//accountNormalization: 계정 정상화
 	const [
@@ -68,44 +84,84 @@ const LoginFailure = ({data, setTemplateData}) => {
 		name: 'accountUnblockedDays',
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
+		disabled: usage === optionValue.usage.none,
 	});
 
 	/**************************************************
 	 * ambacc244 - 로그인 실패 데이터가 바뀌면 정책 생성을 위한 값을 변경
 	 **************************************************/
 	useEffect(() => {
-		setTemplateData({
-			...data,
-			blockingType: blockingType,
-			failedCount: failedCount,
-			failedCountInitDays: failedCountInitDays,
-		});
-	}, [blockingType, data, failedCount, failedCountInitDays, setTemplateData]);
+		//rule 생성을 위한 ruleType이 존재
+		if (data?.ruleType) {
+			const attributes = {
+				usage: usage === optionValue.usage.use,
+			};
+			//사용 여부 true
+			if (usage === optionValue.usage.use) {
+				attributes.failedCount = failedCount;
+				attributes.blockingType = blockingType;
+				attributes.failedCountInitDays = failedCountInitDays;
+				attributes.unblockedDays = unblockedDays;
+			}
+
+			setTemplateData({
+				ruleType: data.ruleType,
+				...attributes,
+			});
+		}
+	}, [
+		blockingType,
+		data,
+		failedCount,
+		failedCountInitDays,
+		setTemplateData,
+		unblockedDays,
+		usage,
+	]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		//로그인 실패 횟수 default value 있음
-		if (data?.failedCount) {
-			//로그인 실패 횟수 세팅
-			setFailedCount(data.failedCount);
+		//로그인 실패 사용 여부 세팅
+		setUsage(
+			setUsageOptionByAttribute(
+				data,
+				'usage',
+				optionValue.usage.use,
+				optionValue.usage.none,
+			),
+		);
+		//로그인 실패 사용 여부 ture
+		if (data?.usage) {
+			//로그인 실패 횟수 default value 있음
+			if (data?.failedCount) {
+				//로그인 실패 횟수 세팅
+				setFailedCount(data.failedCount);
+			}
+			//계정 처리 방법 default value 있음
+			if (data?.blockingType) {
+				//계정 처리 방법 세팅
+				setBlockingType(data.blockingType);
+			}
+			//오류 횟수 초기화 default value 있음
+			if (data?.failedCountInitDays) {
+				//오류 횟수 초기화 세팅
+				setFailedCountInitDays(data.failedCountInitDays);
+			}
+			// 계정 정상화 default value 있음
+			if (data?.unblockedDays) {
+				setUnblockedDays(data.unblockedDays);
+			}
 		}
-		//계정 처리 방법 default value 있음
-		if (data?.blockingType) {
-			//계정 처리 방법 세팅
-			setBlockingType(data.blockingType);
-		}
-		//오류 횟수 초기화 default value 있음
-		if (data?.failedCountInitDays) {
-			//오류 횟수 초기화 세팅
-			setFailedCountInitDays(data.failedCountInitDays);
-		}
-		// 계정 정상화 default value 있음
-		if (data?.unblockedDays) {
-			setUnblockedDays(data.unblockedDays);
-		}
-	}, [data, setBlockingType, setFailedCount, setFailedCountInitDays]);
+	}, [
+		data,
+		setBlockingType,
+		setFailedCount,
+		setFailedCountInitDays,
+		setUnblockedDays,
+		setUsage,
+	]);
 
 	return (
 		<TemplateElementContainer
@@ -114,6 +170,10 @@ const LoginFailure = ({data, setTemplateData}) => {
 			render={() => {
 				return (
 					<div>
+						<TemplateElement
+							title={loginFailure.contents.usage.title}
+							render={usageRadioButton}
+						/>
 						<TemplateElement
 							title={
 								loginFailure.contents.loginFailureCount.title

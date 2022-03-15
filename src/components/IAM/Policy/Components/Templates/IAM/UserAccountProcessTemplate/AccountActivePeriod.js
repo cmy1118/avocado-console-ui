@@ -4,6 +4,8 @@ import TemplateElement from '../../../TemplateElement';
 import {
 	accountBlockingTypeOptions,
 	optionValue,
+	setUsageOptionByAttribute,
+	usageOptions,
 } from '../../../../../../../utils/options';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../../hooks/useTextBox';
@@ -17,6 +19,9 @@ const accountActivePeriod = {
 		'관리자 정상화 후 기간 연장합니다.',
 	],
 	contents: {
+		usage: {
+			title: '사용 여부',
+		},
 		expiryDays: {
 			title: '사용 기간',
 			message: '일',
@@ -35,42 +40,70 @@ const accountActivePeriod = {
  * ambacc244 - 사용자 계정 처리(계정 사용 기간) 폼
  **************************************************/
 const AccountActivePeriod = ({data, setTemplateData}) => {
+	//usage : 계정 사용 기간 사용 여부
+	const [usage, usageRadioButton, setUsage] = useRadio({
+		name: 'accountActivePeriodUsage',
+		options: usageOptions,
+	});
 	//activePeriod : 계정 사용 기간
 	const [expiryDays, expiryDaysTextBox, setExpiryDays] = useTextBox({
 		name: 'expiryDays',
+		disabled: usage === optionValue.usage.none,
 	});
 	//blockingType : 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'accountActivePeriodBlockingType',
 		options: accountBlockingTypeOptions,
+		disabled: usage === optionValue.usage.none,
 	});
 
 	/**************************************************
 	 * ambacc244 - 계정 사용 기간 데이터가 바뀌면 정책 생성을 위한 값을 변경
 	 **************************************************/
 	useEffect(() => {
-		setTemplateData({
-			...data,
-			expiryDays: expiryDays,
-			blockingType: blockingType,
-		});
-	}, [blockingType, data, expiryDays, setTemplateData]);
+		//rule 생성을 위한 ruleType이 존재
+		if (data?.ruleType) {
+			const attributes = {
+				usage: usage === optionValue.usage.use,
+			};
+			//사용 여부 true
+			if (usage === optionValue.usage.use) {
+				attributes.expiryDays = expiryDays;
+				attributes.blockingType = blockingType;
+			}
+
+			setTemplateData({
+				ruleType: data.ruleType,
+				...attributes,
+			});
+		}
+	}, [blockingType, data, expiryDays, setTemplateData, usage]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		//계정 사용 기간 default value 존재
-		if (data?.expiryDays) {
-			//계정 사용 기간 세팅
-			setExpiryDays(data.expiryDays);
+		setUsage(
+			setUsageOptionByAttribute(
+				data,
+				'usage',
+				optionValue.usage.use,
+				optionValue.usage.none,
+			),
+		);
+		if (data?.usage) {
+			//계정 사용 기간 default value 존재
+			if (data?.expiryDays) {
+				//계정 사용 기간 세팅
+				setExpiryDays(data.expiryDays);
+			}
+			//계정 처리 방법 default value 존재
+			if (data?.blockingType) {
+				//계정 처리 방법 세팅
+				setBlockingType(data.blockingType);
+			}
 		}
-		//계정 처리 방법 default value 존재
-		if (data?.blockingType) {
-			//계정 처리 방법 세팅
-			setBlockingType(data.blockingType);
-		}
-	}, [data, setBlockingType, setExpiryDays]);
+	}, [data, setBlockingType, setExpiryDays, setUsage]);
 
 	return (
 		<TemplateElementContainer
@@ -79,6 +112,10 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 			render={() => {
 				return (
 					<div>
+						<TemplateElement
+							title={accountActivePeriod.contents.usage.title}
+							render={usageRadioButton}
+						/>
 						<TemplateElement
 							title={
 								accountActivePeriod.contents.expiryDays.title

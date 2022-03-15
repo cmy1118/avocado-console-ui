@@ -48,11 +48,21 @@ const DeviceAuth = ({data, setTemplateData}) => {
 	 * ambacc244 - 단말기 인증 데이터가 바뀌면 정책 생성을 위한 값을 변경
 	 **************************************************/
 	useEffect(() => {
-		setTemplateData({
-			...data,
-			usage: usage === optionValue.usage.use,
-			// resource: application,
-		});
+		//rule 생성을 위한 ruleType이 존재
+		if (data?.ruleType) {
+			const attributes = {
+				usage: usage === optionValue.usage.use,
+			};
+			//사용 여부 true
+			if (usage === optionValue.usage.use) {
+				attributes.resource = application;
+			}
+
+			setTemplateData({
+				ruleType: data.ruleType,
+				...attributes,
+			});
+		}
 	}, [application, data, setTemplateData, usage]);
 
 	/**************************************************
@@ -64,13 +74,13 @@ const DeviceAuth = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				usageOptions[0].key,
-				usageOptions[1].key,
+				optionValue.usage.use,
+				optionValue.usage.none,
 			),
 		);
 		//단말기 인증 사용 여부 true, 인증 단말기가 존재
 		if (data?.usage && data.resource) {
-			//TODO: 미성님꼐 문의후 재 확인
+			//TODO: 미성님께 문의후 재 확인
 			//사용하는 단말기 종류 세팅
 			setApplications(data.resource);
 		}

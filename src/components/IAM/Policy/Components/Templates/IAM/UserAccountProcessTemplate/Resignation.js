@@ -5,6 +5,8 @@ import {
 	accountBlockingTypeOptions,
 	gracePeriodUsageOptions,
 	optionValue,
+	setUsageOptionByAttribute,
+	usageOptions,
 } from '../../../../../../../utils/options';
 import useRadio from '../../../../../../../hooks/useRadio';
 import PropTypes from 'prop-types';
@@ -19,23 +21,18 @@ const resignation = {
 		'유예 기간동안은 접근 및 권한이 유지됩니다.',
 	],
 	contents: {
+		usage: {
+			title: '사용 여부',
+		},
 		accountStatus: {
 			title: '계정 처리 방법',
-			options: {
-				lock: '잠금',
-				delete: '삭제',
-			},
 		},
 		gracePeriod: {
 			title: '유예 기간',
-			options: {
-				no: '없음',
-				yes: '있음',
-			},
 		},
 		accountNormalization: {
 			title: '계정 정상화',
-			message: '관리자 정상화',
+			message: '관리자 해제',
 		},
 	},
 };
@@ -44,10 +41,16 @@ const resignation = {
  * ambacc244 - 사용자 계정 처리(퇴사/탈퇴) 폼
  **************************************************/
 const Resignation = ({data, setTemplateData}) => {
+	//usage : 퇴사/탈퇴 사용 여부
+	const [usage, usageRadioButton, setUsage] = useRadio({
+		name: 'resignationUsage',
+		options: usageOptions,
+	});
 	//accountStatus: 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'resignationBlockingType',
 		options: accountBlockingTypeOptions,
+		disabled: usage === optionValue.usage.none,
 	});
 	//gracePeriodUsage: 유예 기간 사용 유무
 	const [
@@ -57,44 +60,75 @@ const Resignation = ({data, setTemplateData}) => {
 	] = useRadio({
 		name: 'gracePeriodUsage',
 		options: gracePeriodUsageOptions,
+		disabled: usage === optionValue.usage.none,
 	});
 	//gracePeriod: 유예 기간
 	const [gracePeriod, gracePeriodTextBox, setGracePeriod] = useTextBox({
 		name: 'gracePeriod',
 		//유예 기간 사용 유무 false일때 disabled
-		disabled: gracePeriodUsage === optionValue.gracePeriod.none,
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
+		disabled:
+			gracePeriodUsage === optionValue.gracePeriod.none ||
+			usage === optionValue.usage.none,
 	});
 
 	/**************************************************
 	 * ambacc244 - 퇴사/탈퇴 데이터가 바뀌면 정책 생성을 위한 값을 변경
 	 **************************************************/
 	useEffect(() => {
-		setTemplateData({
-			...data,
-			blockingType: blockingType,
-			applyDays: gracePeriodUsage ? gracePeriod : 0,
-		});
-	}, [blockingType, data, gracePeriod, gracePeriodUsage, setTemplateData]);
+		//rule 생성을 위한 ruleType이 존재
+		if (data?.ruleType) {
+			const attributes = {
+				usage: usage === optionValue.usage.use,
+			};
+			//사용 여부 true
+			if (usage === optionValue.usage.use) {
+				attributes.blockingType = blockingType;
+				attributes.applyDays = gracePeriodUsage ? gracePeriod : 0;
+			}
+			setTemplateData({
+				ruleType: data.ruleType,
+				...attributes,
+			});
+		}
+	}, [
+		blockingType,
+		data,
+		gracePeriod,
+		gracePeriodUsage,
+		setTemplateData,
+		usage,
+	]);
 
 	/**************************************************
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		//계정 처리 방법
-		if (data?.blockingType) {
-			setBlockingType(data.blockingType);
+		setUsage(
+			setUsageOptionByAttribute(
+				data,
+				'usage',
+				optionValue.usage.use,
+				optionValue.usage.none,
+			),
+		);
+		//퇴사/탈퇴 사용 여부 ture
+		if (data?.usage) {
+			//계정 처리 방법
+			if (data?.blockingType) {
+				setBlockingType(data.blockingType);
+			}
+			//유예기간 존재 && 유예기간이 0 보다 큼
+			if (data?.applyDays && data.applyDays !== 0) {
+				setGracePeriodUsage(optionValue.gracePeriod.use);
+				setGracePeriod(data.applyDays);
+				//유예기간 존재 하지 않음
+			} else {
+				setGracePeriodUsage(optionValue.gracePeriod.none);
+			}
 		}
-		//유예기간 존재 && 유예기간이 0 보다 큼
-		if (data?.applyDays && data.applyDays !== 0) {
-			setGracePeriodUsage(optionValue.gracePeriod.use);
-			setGracePeriod(data.applyDays);
-			//유예기간 존재 하지 않음
-		} else {
-			setGracePeriodUsage(optionValue.gracePeriod.none);
-		}
-	}, [data, setBlockingType, setGracePeriod, setGracePeriodUsage]);
+	}, [data, setBlockingType, setGracePeriod, setGracePeriodUsage, setUsage]);
 
 	return (
 		<TemplateElementContainer
@@ -104,10 +138,13 @@ const Resignation = ({data, setTemplateData}) => {
 				return (
 					<div>
 						<TemplateElement
+							title={resignation.contents.usage.title}
+							render={usageRadioButton}
+						/>
+						<TemplateElement
 							title={resignation.contents.accountStatus.title}
 							render={blockingTypeRadioButton}
 						/>
-
 						<TemplateElement
 							title={resignation.contents.gracePeriod.title}
 							render={() => {

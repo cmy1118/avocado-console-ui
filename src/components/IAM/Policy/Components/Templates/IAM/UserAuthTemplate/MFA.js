@@ -14,6 +14,7 @@ import useComboBox from '../../../../../../../hooks/useComboBox';
 import useCheckBox from '../../../../../../../hooks/useCheckBox';
 import {RowDiv} from '../../../../../../../styles/components/style';
 import PropTypes from 'prop-types';
+import useTextBox from '../../../../../../../hooks/useTextBox';
 
 const mfa = {
 	title: 'MFA 인증',
@@ -33,6 +34,10 @@ const mfa = {
 		},
 		additionalAuth3: {
 			title: '3차 추가 인증',
+		},
+		timeoutSeconds: {
+			title: '입력 대기 시간(초)',
+			message: '초',
 		},
 	},
 };
@@ -100,6 +105,18 @@ const MFA = ({data, setTemplateData}) => {
 		//3차 추가인증 사용 여부 false일때 disabled
 		disabled: required3 === optionValue.required.none,
 	});
+	//timeoutSeconds: 입력 대기 시간
+	const [
+		timeoutSeconds,
+		timeoutSecondsTextBox,
+		setTimeoutSeconds,
+	] = useTextBox({
+		name: 'timeoutSeconds',
+		//1 - 180
+		regex: /^([1-9]|[1-9][0-9]|1[0-7][0-9]|180)$/,
+		//mfa 사용 여부 false일때 disabled
+		disabled: usage === optionValue.usage.none,
+	});
 	//추가인증 화면을 그리기 위한 컴포넌트 배열
 	const additionalAuth = [
 		{
@@ -126,17 +143,41 @@ const MFA = ({data, setTemplateData}) => {
 	 * ambacc244 - MFA 데이터가 바뀌면 정책 생성을 위한 값을 변경
 	 **************************************************/
 	useEffect(() => {
-		setTemplateData({
-			...data,
-			usage: usage === optionValue.usage.use,
-			1: {types: authMethod1, option: required1},
-			2: {types: authMethod2, option: required2},
-			3: {types: authMethod3, option: required3},
-		});
+		//rule 생성을 위한 ruleType이 존재
+		if (data?.ruleType) {
+			let attributes = {usage: usage === optionValue.usage.use};
+			//사용 여부 true
+			if (usage === optionValue.usage.use) {
+				//1차 추가 인증에 사용 여부 true
+				if (authUsage1 === optionValue.authUsage.use)
+					attributes[1] = {
+						types: authMethod1,
+						option: required1,
+					};
+				//2차 추가 인증에 사용 여부 true
+				if (authUsage2 === optionValue.authUsage.use)
+					attributes[2] = {
+						types: authMethod2,
+						option: required2,
+					};
+				//3차 추가 인증에 사용 여부 true
+				if (authUsage3 === optionValue.authUsage.use)
+					attributes[3] = {
+						types: authMethod3,
+						option: required3,
+					};
+				attributes.timeoutSeconds = timeoutSeconds;
+			}
+
+			setTemplateData({ruleType: data.ruleType, ...attributes});
+		}
 	}, [
 		authMethod1,
 		authMethod2,
 		authMethod3,
+		authUsage1,
+		authUsage2,
+		authUsage3,
 		data,
 		required1,
 		required2,
@@ -180,6 +221,11 @@ const MFA = ({data, setTemplateData}) => {
 				setAuthUsage3(optionValue.authUsage.use);
 				setRequired3(data.policies['3'].option);
 				setAuthMethod3(data.policies['3'].types);
+			}
+			//입력 대기 시간 default value 있음
+			if (data?.timoutSeconds) {
+				//입력 대기 시간 세팅
+				setTimeoutSeconds(data.timoutSeconds);
 			}
 			//mfa 인증 여부 false || 추가인증 default value 없음
 		} else {
@@ -233,6 +279,17 @@ const MFA = ({data, setTemplateData}) => {
 								}}
 							/>
 						))}
+						<TemplateElement
+							title={mfa.contents.timeoutSeconds.title}
+							render={() => {
+								return (
+									<RowDiv>
+										{timeoutSecondsTextBox()}
+										{mfa.contents.timeoutSeconds.message}
+									</RowDiv>
+								);
+							}}
+						/>
 					</div>
 				);
 			}}

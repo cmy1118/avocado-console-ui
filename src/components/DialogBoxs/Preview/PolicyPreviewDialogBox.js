@@ -1,10 +1,14 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import ModalTableContainer from '../../RecycleComponents/ModalTableContainer';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {TitleBar} from '../../../styles/components/iam/iam';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/RuleManagement/template';
-import {controlTypes, policyManageTypes, policyTypes,} from '../../../utils/data';
+import {
+	controlTypes,
+	policyManageTypes,
+	policyTypes,
+} from '../../../utils/data';
 
 import {SummaryList} from '../../../styles/components/iam/descriptionPage';
 import {LiText} from '../../../styles/components/text';
@@ -12,10 +16,13 @@ import {AddPageDialogBoxTitle} from '../../../styles/components/iam/addPage';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {tableKeys} from '../../../Constants/Table/keys';
 import Table from '../../Table/Table';
+
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from '../../../reducers/api/IAM/Policy/PolicyManagement/policyRuleTemplate';
-import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate";
-import {isFulfilled, requestStatus} from '../../../utils/redux';
+import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate';
+import {isFulfilled} from '../../../utils/redux';
+
+import {roleAttributeConvertor} from '../../../utils/preview';
 
 const policyPreviewDialogBox = {
 	header: '정책 생성 요약보기',
@@ -30,12 +37,39 @@ const policyPreviewDialogBox = {
 	detail: {title: '정책'},
 };
 
+const policyDescription = {
+	//사용자 인증
+	device_authentication: '단말기 인증',
+	mfa: 'MFA(다중인증)',
+	alternative_authn_failover: 'Fail Over',
+	identity_verification: '본인 확인 인증',
+	//사용자 계정 처리
+	sign_in_fail_blocking: '로그인 실패',
+	dormant_blocking: '휴먼',
+	account_expired: '계정 사용기간',
+	group_modifying: '그룹 변경',
+	resigned: '퇴사(탈퇴)',
+	// 사용자 계정 패턴
+	user_id_pattern: '사용자 ID 패턴',
+	password_pattern: '비밀번호 패턴',
+};
+
 const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const dispatch = useDispatch();
 	const {ruleTemplates} = useSelector(IAM_RULE_MANAGEMENT_TEMPLATE.selector);
 	//생성할 권한 템플릿  객체 배열 state
-	const {actionTemplates} = useSelector(IAM_ACTION_MANAGEMENT_TEMPLATE.selector);
+	const {actionTemplates} = useSelector(
+		IAM_ACTION_MANAGEMENT_TEMPLATE.selector,
+	);
 	const [ruleDetail, setRuleDetail] = useState([]);
+
+	/**************************************************
+	 * ambacc244 - 정책 생성 취소
+	 **************************************************/
+	const onCancelPolicyForm = useCallback(() => {
+		//정책 생성을 위해 모아둔 template의 데이터를 삭제
+		dispatch(IAM_RULE_MANAGEMENT_TEMPLATE.action.cancelCreatePolicy());
+	}, [dispatch]);
 
 	/**************************************************
 	 * ambacc244 - 정책 생성
@@ -63,37 +97,35 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			if (isFulfilled(createPolicyResponse)) {
 				const policyId = createPolicyResponse.payload.id;
 
-			//step2-1: action 생성
-			/**************************************************
-			 * reoberto - action 생성
-			 ***************************************************/
-			// if(actionTemplates[0]){
-			// 	actionTemplates.forEach(v=>{
-			// 		dispatch(
-			// 			IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.createAction({
-			// 				name: v.name,
-			// 				description: v.description,
-			// 				details: v.details,
-			// 			}),
-			// 		).then((res)=>{
-			// 			console.log('권한 생성 res:',res)
-			// 		})
-			// 	})
-			// }
-			// ******************************************************
+				//step2-1: action 생성
+				/**************************************************
+				 * reoberto - action 생성
+				 ***************************************************/
+				// if(actionTemplates[0]){
+				// 	actionTemplates.forEach(v=>{
+				// 		dispatch(
+				// 			IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.createAction({
+				// 				name: v.name,
+				// 				description: v.description,
+				// 				details: v.details,
+				// 			}),
+				// 		).then((res)=>{
+				// 			console.log('권한 생성 res:',res)
+				// 		})
+				// 	})
+				// }
+				// ******************************************************
 
-
-			//step2-2: 정책 action 연결
-			/**************************************************
-			 * reoberto - 정책에 action 연결
-			 ***************************************************/
-			//:TODO 정책 action api 작업중 완료시 적용예정
-			// dispatch(
-			// 	IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.asyncAction.joinAction(
-			//   ,,,
-			// 	),
-			// ******************************************************
-
+				//step2-2: 정책 action 연결
+				/**************************************************
+				 * reoberto - 정책에 action 연결
+				 ***************************************************/
+				//:TODO 정책 action api 작업중 완료시 적용예정
+				// dispatch(
+				// 	IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.asyncAction.joinAction(
+				//   ,,,
+				// 	),
+				// ******************************************************
 
 				//step3-1: rule 생성
 				let order = 1;
@@ -155,26 +187,26 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 		}
 	}, [formData, dispatch, ruleTemplates]);
 
-	// useEffect(() => {
-	// 	let array = [];
-	// 	console.log(ruleTemplates);
-	//
-	// 	Object.values(ruleTemplates).map((v) => {
-	// 		for (let i = 0; i < v.attribute.length; i++) {
-	// 			let data = {};
-	// 			if (i === 0) {
-	// 				data.name = v.name;
-	// 				data.description = v.description;
-	// 			}
-	//
-	// 			console.log(v.attribute[i]);
-	//
-	// 			array.push(data);
-	// 		}
-	// 	});
-	//
-	// 	setRuleDetail(array);
-	// }, [ruleTemplates]);
+	/**************************************************
+	 * ambacc244 - 정책 Preview 데이터 생성
+	 **************************************************/
+	useEffect(() => {
+		let array = [];
+
+		Object.values(ruleTemplates).map((v) => {
+			for (let i = 0; i < v.attributes.length; i++) {
+				let data = new Object();
+				if (i === 0) data.name = v.name;
+
+				data.description = policyDescription[v.attributes[i].ruleType];
+				data.id = v.attributes[i].ruleType;
+				data.value = roleAttributeConvertor(v.attributes[i]);
+				array.push(data);
+			}
+		});
+
+		setRuleDetail(array);
+	}, [ruleTemplates]);
 
 	return (
 		formData && (
@@ -183,6 +215,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				isOpened={isOpened}
 				setIsOpened={setIsOpened}
 				handleSubmit={onSubmitPolicyForm}
+				handleCancel={onCancelPolicyForm}
 			>
 				<TitleBar>{policyPreviewDialogBox.policy.title}</TitleBar>
 				<SummaryList>
@@ -206,6 +239,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				{/*TODO: TABLE*/}
 				<Table
 					readOnly
+					isCheckBox={false}
 					columns={tableColumns[tableKeys.policy.add.preview]}
 					tableKey={tableKeys.policy.add.preview}
 					data={ruleDetail}

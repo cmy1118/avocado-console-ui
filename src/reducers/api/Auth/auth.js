@@ -8,7 +8,6 @@ import {
 	grantType,
 } from '../../../utils/auth';
 import base64 from 'base-64';
-// import {Cookies} from 'react-cookie';
 
 const NAME = 'AUTH';
 
