@@ -4,7 +4,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {TitleBar} from '../../../styles/components/iam/iam';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/RuleManagement/template';
-import {policyTypes} from '../../../utils/data';
+import {
+	controlTypes,
+	policyManageTypes,
+	policyTypes,
+} from '../../../utils/data';
 
 import {SummaryList} from '../../../styles/components/iam/descriptionPage';
 import {LiText} from '../../../styles/components/text';
@@ -12,6 +16,8 @@ import {AddPageDialogBoxTitle} from '../../../styles/components/iam/addPage';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {tableKeys} from '../../../Constants/Table/keys';
 import Table from '../../Table/Table';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../reducers/api/IAM/Policy/PolicyManagement/policies';
+import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from '../../../reducers/api/IAM/Policy/PolicyManagement/policyRuleTemplate';
 
 const policyPreviewDialogBox = {
 	header: '정책 생성 요약보기',
@@ -42,22 +48,33 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			//TODO: step1은 매번 정책을 생성해서 커맨드 아웃했습니다.
 			// 작동은 하는 함수고 step2,3가 완료되면 연결 할것이니 삭제 하시면 곤란합니다.
 			// 올바른 step 아래에 disatch 작성 해주시면 감사하겠습니다.
+
 			//step1: 정책 생성
-			// dispatch(
-			// 	IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.createPolicyAction({
-			// 		name: formData.name,
-			// 		description: formData.description,
-			// 		type: policyManageTypes.Client,
-			// 		controlTypes: [controlTypes.RBAC],
-			// 		maxGrants: 5,
-			// 	}),
-			// )
-			// 	.unwrap()
-			// 	.then((data) => {
-			// 		console.log('정책 아이디: ', data.id);
-			//step2-1: 권한 생성
-			//step2-2: 정책 권한 연결
+			let policyId = null;
+			dispatch(
+				IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.createPolicyAction({
+					name: formData.name,
+					description: formData.description,
+					type: policyManageTypes.Client,
+					controlTypes: [controlTypes.RBAC],
+					maxGrants: 5,
+				}),
+			)
+				.unwrap()
+				.then((data) => {
+					console.log('정책 아이디: ', data.id);
+					policyId = data.id;
+				});
+
+			//step2-1: action 생성
+			// todo : 건욱님 작성 부탁드립니다.
+
+			//step2-2: 정책 action 연결
+			// todo : 건욱님 작성 부탁드립니다.
+
 			//step3-1: rule 생성
+			let order = 1;
+			const templateList = [];
 			for (const v in ruleTemplates) {
 				dispatch(
 					IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.createRuleTemplateAction(
@@ -72,28 +89,26 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 					.unwrap()
 					.then((data) => {
 						console.log('rule 아이디: ', data.id);
+						templateList.push({
+							policyId: policyId,
+							templateId: data.id,
+							order: order++,
+						});
 					});
 			}
-			//step3-2: 정책 rule 연결
-			// });
 
+			//step3-2: 정책 rule 연결
 			/**************************************************
-			 * seob - 정책 rule 연결 - todo : 템플릿 생성 api 수정시 response에 따라서 수정할 예정입니다.
+			 * seob - 정책 rule 연결
 			 ***************************************************/
-			// // 예시 템플릿 리스트
-			// const iamTemplateIdList = [
-			// 	{policyId: '', templateId: '', order: ''},
-			// 	{policyId: '', templateId: '', order: ''},
-			// 	{policyId: '', templateId: '', order: ''},
-			// ];
-			// dispatch(
-			// 	IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.joinAction(
-			// 		iamTemplateIdList,
-			// 	),
-			// );
+			dispatch(
+				IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.joinAction(
+					templateList,
+				),
+			);
 			// ******************************************************
 		}
-	}, [formData.type, ruleTemplates, dispatch]);
+	}, [formData, dispatch, ruleTemplates]);
 
 	// useEffect(() => {
 	// 	let array = [];
