@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import RowCheckbox from '../../../../../RecycleComponents/rowCheckbox';
 import {useDispatch} from 'react-redux';
-import {ColDiv} from '../../../../../../styles/components/style';
+import {ColDiv, RowDiv} from '../../../../../../styles/components/style';
 import {filterPropObj, objArrUnion} from '../../../../../../utils/dataFitering';
 import PropTypes from 'prop-types';
 // import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Policy/ActionManagement/templateDetail';
-import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../../../../../reducers/api/IAM/Policy/ActionManagement/template";
+import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../../../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate";
 import {actionTemplateFilter} from "../../../../../../utils/template";
+import TemplateElementContainer from "../../TemplateElementContainer";
+import TemplateElement from "../../TemplateElement";
 
 const constants = {
 	main: '사용자 관리 권한',
@@ -15,6 +17,7 @@ const constants = {
 	templatesId: 'KR-2020-0001:202202:0001',
 	//체크박스 컬럼 정보
 	column: [
+		'항목',
 		'전체권한',
 		'추가(생성)',
 		'수정',
@@ -76,19 +79,28 @@ const UserManagement = ({templateId, name, description}) => {
 	}, [dispatch]);
 
 	return (
-		<div>
-			<ColDiv padding={'0px 0px 0px 25%'} width={'100%'}>
-				{constants.column}
-			</ColDiv>
-			{dataLists.map((item, index) => (
-				<RowCheckbox
-					title={item.resource}
-					dataLists={item.data}
-					key={index}
-				/>
-			))}
-		</div>
+		<TemplateElementContainer
+			title={name}
+			description={description}
+			render={() => {
+				return (
+					<div>
+						<ColDiv padding={'0px 0px 0px 25%'} width={'100%'}>
+							{constants.column}
+						</ColDiv>
+						{dataLists.map((item, index) => (
+							<RowCheckbox
+								title={item.resource}
+								dataLists={item.data}
+								key={index}
+							/>
+						))}
+					</div>
+				);
+			}}
+		/>
 	);
+
 };
 UserManagement.propTypes = {
 	templateId: PropTypes.string,

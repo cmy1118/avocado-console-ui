@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from "prop-types";
 import {ColDiv, RowDiv} from "../../styles/components/style";
-import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../reducers/api/IAM/Policy/ActionManagement/template";
+import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../reducers/api/IAM/Policy/ActionManagement/actionTemplate";
 import {useDispatch} from "react-redux";
 
 //dataLists : 행데이터
@@ -51,7 +51,6 @@ const RowCheckbox = ({dataLists,title}) => {
     //단일체크 핸들링 함수
     const onCheckedElement = useCallback(
         (checked, list) => {
-            console.log(`단일체크 핸들링 함수`)
             setStartCheck(true)
             dispatch(
                 IAM_ACTION_MANAGEMENT_TEMPLATE.action.setActionTemplates({
@@ -108,32 +107,33 @@ const RowCheckbox = ({dataLists,title}) => {
 
     return (
         <RowDiv>
-            <ColDiv width={'25%'}>
+            <ColDiv width={'300px'}>
           {title}
             </ColDiv>
             {dataLists?
-                <div>
+                <RowDiv width={'100%'}>
+                    <RowDiv  padding={'0px 20px'}>
                 <input
                     type="checkbox"
                     onChange={(e) => onCheckedAll(e.target.checked)}
                     checked={
                         checkedList.length === 0
                             ? false : checkedList.length === tempDataLists.length ? true : false
-                            // ? false : checkedList.length === dataLists.length ? true : false
                     }
                 />
-            {dataLists.map((list) => (
-                <input
-                    disabled={list.templateId?false:true}
-                key={list.id}
-                type="checkbox"
-                onChange={(e) => onCheckedElement(e.target.checked, list)}
-                checked={isChecked(list)}
-                // checked={checkedList.includes(list) ? true : false}
-                // checked={list.effect ||   checkedList.includes(list) ? true : false}
-                />
+                    </RowDiv>
+            {dataLists.map((list,index) => (
+                <RowDiv key={index} padding={'0px 20px'}>
+                    <input
+                        disabled={list.templateId?false:true}
+                    key={list.id}
+                    type="checkbox"
+                    onChange={(e) => onCheckedElement(e.target.checked, list)}
+                    checked={isChecked(list)}
+                    />
+                </RowDiv>
                 ))}
-                    </div>
+                    </RowDiv>
                 :true
             }
       </RowDiv>
