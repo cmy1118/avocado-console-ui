@@ -147,9 +147,7 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 						name: name,
 						resource: policyTypes.iam,
 						description: description,
-						attributes: data.map((v) =>
-							JSON.stringify(v.attribute),
-						),
+						attributes: data.map((v) => v.attribute),
 					},
 				}),
 			);

@@ -32,6 +32,8 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 
 	const [ruleDetail, setRuleDetail] = useState([]);
 
+	console.log(ruleTemplates);
+
 	/**************************************************
 	 * ambacc244 - 정책 생성
 	 **************************************************/
@@ -59,12 +61,15 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			for (const v in ruleTemplates) {
 				dispatch(
 					IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.createRuleTemplateAction(
-						{...ruleTemplates[v],
-							attributes: ruleTemplates[v].attributes.map((data) =>
-								JSON.stringify(data),
-							)}
-						),
-				).unwrap()
+						{
+							...ruleTemplates[v],
+							attributes: ruleTemplates[
+								v
+							].attributes.map((data) => JSON.stringify(data)),
+						},
+					),
+				)
+					.unwrap()
 					.then((data) => {
 						console.log('rule 아이디: ', data.id);
 					});
@@ -88,7 +93,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			// );
 			// ******************************************************
 		}
-	}, [ruleTemplates, formData]);
+	}, [formData.type, ruleTemplates, dispatch]);
 
 	// useEffect(() => {
 	// 	let array = [];
