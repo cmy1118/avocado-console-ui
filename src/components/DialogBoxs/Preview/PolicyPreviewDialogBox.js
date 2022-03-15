@@ -12,6 +12,9 @@ import {AddPageDialogBoxTitle} from '../../../styles/components/iam/addPage';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {tableKeys} from '../../../Constants/Table/keys';
 import Table from '../../Table/Table';
+import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate";
+import IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE
+	from "../../../reducers/api/IAM/Policy/PolicyManagement/policyActionTemplate";
 
 const policyPreviewDialogBox = {
 	header: '정책 생성 요약보기',
@@ -29,7 +32,7 @@ const policyPreviewDialogBox = {
 const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const dispatch = useDispatch();
 	const {ruleTemplates} = useSelector(IAM_RULE_MANAGEMENT_TEMPLATE.selector);
-
+	const {actionTemplates} = useSelector(IAM_ACTION_MANAGEMENT_TEMPLATE.selector);
 	const [ruleDetail, setRuleDetail] = useState([]);
 
 	/**************************************************
@@ -37,6 +40,8 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	 **************************************************/
 	const onSubmitPolicyForm = useCallback(() => {
 		if (formData.type === policyTypes.iam) {
+			//TODO:정책생성 이후 하위로직을 처리하기위한 비동기 로직 추가 예정-roberto
+			
 			//TODO: step1은 매번 정책을 생성해서 커맨드 아웃했습니다.
 			// 작동은 하는 함수고 step2,3가 완료되면 연결 할것이니 삭제 하시면 곤란합니다.
 			// 올바른 step 아래에 disatch 작성 해주시면 감사하겠습니다.
@@ -54,7 +59,24 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			// 	.then((data) => {
 			// 		console.log('정책 아이디: ', data.id);
 			//step2-1: 권한 생성
+			// if(actionTemplates[0]){
+			// 	actionTemplates.forEach(v=>{
+			// 		console.log('...actionTemplates[v],:',...actionTemplates[v],)
+			// 		dispatch(
+			// 			IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.createAction(
+			// 				{...actionTemplates[v],}
+			// 			),
+			// 		).then((res)=>{
+			// 			console.log('권한 생성 res:',res)
+			// 		})
+			// 	})
+			// }
 			//step2-2: 정책 권한 연결
+
+			// dispatch(
+			// 	IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.asyncAction.joinAction(
+			// 		iamTemplateIdList,
+			// 	),
 			//step3-1: rule 생성
 			for (const v in ruleTemplates) {
 				dispatch(
@@ -88,7 +110,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			// );
 			// ******************************************************
 		}
-	}, [ruleTemplates, formData]);
+	}, [formData.type, ruleTemplates, dispatch]);
 
 	// useEffect(() => {
 	// 	let array = [];

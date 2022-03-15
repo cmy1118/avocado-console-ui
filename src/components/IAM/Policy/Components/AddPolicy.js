@@ -102,7 +102,7 @@ const AddPolicy = () => {
 					<NormalButton
 						onClick={() => formRef.current.handleSubmit()}
 					>
-						사용자 생성
+						정책 생성
 					</NormalButton>
 					<TransparentButton
 						type={'button'}

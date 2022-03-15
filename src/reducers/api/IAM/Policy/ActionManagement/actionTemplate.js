@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import {Axios, baseURL} from '../../../../../api/constants';
-import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './templateDetail';
+import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './actionTemplateDetail';
 import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'IAM_ACTION_MANAGEMENT_TEMPLATE';
@@ -49,13 +49,14 @@ const findAllAction = createAsyncThunk(
 			},
 			baseURL: baseURL.openApi,
 		});
+		console.log('findAllAction:', response);
 		return {data: response.data};
 	},
 );
 
 // 권한 템플릿을 ID로 조회한다.
 const findByIdAction = createAsyncThunk(
-	`${NAME}/FIND_ALL`,
+	`${NAME}/FINDB_BY_ID`,
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
 
@@ -67,6 +68,7 @@ const findByIdAction = createAsyncThunk(
 			},
 			baseURL: baseURL.openApi,
 		});
+		console.log('findByIdAction:', response);
 		return {data: response.data};
 	},
 );
@@ -76,13 +78,15 @@ const slice = createSlice({
 	initialState: {
 		//actionTemplates 관리 state ( create 할 action 들을 tmeplateId 별로 담을 state )
 		actionTemplates: [],
-		loading: false,
-		error: null,
 	},
 	reducers: {
+		refreshActionTemplates: (state, {payload}) => {
+			// state.loading = true;
+			state.actionTemplates=[]
+		},
 		//권한 템플릿 조회시 default check 상태 저장
 		getActionTemplates: (state, {payload}) => {
-			state.loading = true;
+			// state.loading = true;
 			state.actionTemplates.push({
 				templateId:payload.templateId,
 				name: payload.name,
@@ -93,7 +97,7 @@ const slice = createSlice({
 		},
 		//권한 템플릿 체크박스 선택시 체크된 상태 저장
 		setActionTemplates: (state, {payload}) => {
-			state.loading = true;
+			// state.loading = true;
 			let actionTemplates =state.actionTemplates
 			console.log('payload.allCheck:',payload.allCheck, payload.resource,)
 			//전체체크시
@@ -144,49 +148,13 @@ const slice = createSlice({
 		// },
 	},
 	extraReducers: {
-		[createAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[createAction.fulfilled]: (state, action) => {
-			state.loading = false;
-		},
-		[createAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-		[IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction
-			.pending]: (state) => {
-			state.loading = true;
-		},
-		[IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction
-			.fulfilled]: (state, action) => {
-			state.loading = false;
-		},
-		[IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction
-			.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-		[findByIdAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[findByIdAction.fulfilled]: (state, action) => {
-			state.loading = false;
-		},
-		[findByIdAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
 	},
 });
 
 const selectAllState = createSelector(
 	(state) => state.actionTemplates,
-	(state) => state.loading,
-	(state) => state.error,
-
-	(loading,actionTemplates) => {
-		return {loading,actionTemplates};
+	(actionTemplates) => {
+		return {actionTemplates};
 	},
 );
 

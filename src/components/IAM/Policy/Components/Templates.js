@@ -3,7 +3,7 @@ import TemplateContainer from './TemplateContainer';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {useDispatch} from 'react-redux';
-import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../reducers/api/IAM/Policy/ActionManagement/template';
+import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../reducers/api/IAM/Policy/RuleManagement/template';
 import {templateType} from '../../../../utils/template';
 import UserAccountProcessTemplate from './Templates/IAM/UserAccountProcessTemplate';
@@ -442,6 +442,8 @@ const PamTemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 		if (ruleTemlpates.length && actionTemplates.length) {
 			// todo : pam api 연결시 처리
 		}
+		
+		
 	}, [actionTemplates, ruleTemlpates]);
 
 	return (
