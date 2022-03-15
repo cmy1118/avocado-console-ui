@@ -42,7 +42,11 @@ const PolicySpace = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
-	const [policies, setPolicies] = useState([]);
+	// memo : 추후에 데이터를 iam, pam따로 관리하면 그대로 사용 / 아닌경우 policies로 통합해서 사용
+	// iam 정책 유형들
+	const [iamPolicies, setIamPolicies] = useState([]);
+	// pam 정책 유형들
+	const [pamPolicies, setPamPolicies] = useState([]);
 	const {page, total} = useSelector(PAGINATION.selector);
 	const [search, setSearch] = useState('');
 	const [select, setSelect] = useState({});
@@ -70,10 +74,10 @@ const PolicySpace = () => {
 	// type: {code: 1, name: 'Client'}
 
 	const policyData = useMemo(() => {
-		return policies.map((v) => ({
+		return iamPolicies.map((v) => ({
 			...v,
 			manageCategory: MANAGE_TYPE[v.type.name],
-			policyType: APPLICATION_CODE[v.createdTag.applicationCode.code],
+			policyType: APPLICATION_CODE.iam,
 			description: v.description === '' ? '없음' : v.description,
 			createdTime: v.createdTag.createdTime,
 			[DRAGGABLE_KEY]: v.id,
@@ -89,7 +93,7 @@ const PolicySpace = () => {
 		// 		[DRAGGABLE_KEY]: '2',
 		// 	},
 		// ];
-	}, [policies]);
+	}, [iamPolicies]);
 
 	const onClickLinkToAddPolicyPage = useCallback(() => {
 		history.push('/policies/add');
@@ -157,7 +161,7 @@ const PolicySpace = () => {
 
 	const getPolicyApi = useCallback(
 		(search) => {
-			// todo : 정책 가져오는 api 생기면 처리
+			// memo IAM 정책 findAll 입니다. PAM은 백앤드 작업 이후 처리 예정입니다.
 			if (page[tableKeys.policy.basic]) {
 				dispatch(
 					IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.findAll({
@@ -176,7 +180,7 @@ const PolicySpace = () => {
 							}),
 						);
 
-						setPolicies(res.data);
+						setIamPolicies(res.data);
 						// res.data.length ? getUsersDetailApi(res) : setUsers([]);
 					})
 					.catch((error) => {

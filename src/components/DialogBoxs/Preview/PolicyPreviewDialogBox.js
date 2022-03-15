@@ -38,8 +38,6 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 
 	const [ruleDetail, setRuleDetail] = useState([]);
 
-	console.log(ruleTemplates);
-
 	/**************************************************
 	 * ambacc244 - 정책 생성
 	 **************************************************/
@@ -101,11 +99,12 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			/**************************************************
 			 * seob - 정책 rule 연결
 			 ***************************************************/
-			dispatch(
-				IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.joinAction(
-					templateList,
-				),
-			);
+			templateList.length === ruleTemplates.length &&
+				dispatch(
+					IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.joinAction(
+						templateList,
+					),
+				);
 			// ******************************************************
 		}
 	}, [formData, dispatch, ruleTemplates]);
