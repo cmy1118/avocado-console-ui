@@ -16,3 +16,12 @@ export function deleteId(arr, id) {
 	arr.splice(index, 1);
 	return arr;
 }
+
+export const requestStatus = {
+	fulfilled: true,
+	rejected: false,
+};
+
+export const isFulfilled = (response) => {
+	return response.meta.requestStatus === 'fulfilled';
+};
