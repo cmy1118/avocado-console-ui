@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import RowCheckbox from '../../../../../RecycleComponents/rowCheckbox';
 import {useDispatch} from 'react-redux';
-import {ColDiv, RowDiv} from '../../../../../../styles/components/style';
+import {ColDiv} from '../../../../../../styles/components/style';
 import {filterPropObj, objArrUnion} from '../../../../../../utils/dataFitering';
 import PropTypes from 'prop-types';
 // import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Policy/ActionManagement/templateDetail';
 import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../../../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate";
 import {actionTemplateFilter} from "../../../../../../utils/template";
 import TemplateElementContainer from "../../TemplateElementContainer";
-import TemplateElement from "../../TemplateElement";
 
 const constants = {
 	main: '사용자 관리 권한',

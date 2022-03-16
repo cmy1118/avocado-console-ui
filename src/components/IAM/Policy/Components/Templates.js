@@ -142,7 +142,6 @@ const IamTemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 			}
 
 			// 액션 템플릿인경우
-			// todo : 건욱님 액션 템플릿 컴포넌트 추가되면 id값 전달예정
 			else if (type === templateType.ACTION) {
 				switch (template.id) {
 					case 'KR-2020-0001:202202:0001': {
@@ -349,7 +348,6 @@ const PamTemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 			}
 
 			// 액션 템플릿인경우
-			// todo : 건욱님 액션 템플릿 컴포넌트 추가되면 id값 전달예정
 			else if (type === templateType.ACTION) {
 				switch (template.id) {
 					case 'KR-2020-0001:202202:1000': {
