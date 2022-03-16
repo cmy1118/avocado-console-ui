@@ -72,6 +72,9 @@ const slice = createSlice({
 		RequestToGatherPolicyTemplates: (state, action) => {
 			state.creatingPolicy = true;
 		},
+		createPolicyDone: (state, action) => {
+			state.creatingPolicy = false;
+		},
 	},
 	extraReducers: {},
 });
