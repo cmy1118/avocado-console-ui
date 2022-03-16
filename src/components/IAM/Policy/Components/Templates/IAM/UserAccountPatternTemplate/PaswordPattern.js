@@ -136,6 +136,7 @@ const PaswordPattern = ({data, setTemplateData}) => {
 		name: 'allowedDaysOfOldPasswords',
 		//0 - 90
 		regex: /^([0-9]|[1-8][0-9]|90)$/,
+		disabled: oldPasswordsRistriction === policyOption.restrict.none.key,
 	});
 
 	/**************************************************
@@ -157,9 +158,11 @@ const PaswordPattern = ({data, setTemplateData}) => {
 				includePersonalInfoList: personalInfoRestriction
 					? personalInfoRestrictionMethod
 					: [],
-				allowedDaysOfOldPasswords: oldPasswordsRistriction
-					? allowedDaysOfOldPasswords
-					: 0,
+				allowedDaysOfOldPasswords:
+					oldPasswordsRistriction ===
+					policyOption.restrict.restrict.key
+						? allowedDaysOfOldPasswords
+						: 0,
 			});
 		}
 	}, [
