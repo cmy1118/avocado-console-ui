@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
 import TemplateElement from '../../../TemplateElement';
 import {
-	optionValue,
+	policyOption,
 	patternTypeOptions,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/options';
+} from '../../../../../../../utils/policyOptions';
 import TemplateElementContainer from '../../../TemplateElementContainer';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../../hooks/useTextBox';
@@ -56,10 +56,10 @@ const UserIdPattern = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.ruleType) {
 			const attributes = {
-				usage: usage === optionValue.usage.use,
+				usage: usage === policyOption.usage.use,
 			};
 			//사용 여부 true
-			if (usage === optionValue.usage.use) {
+			if (usage === policyOption.usage.use) {
 				attributes.patternType = patternType;
 				attributes.pattern = pattern;
 			}
@@ -80,8 +80,8 @@ const UserIdPattern = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				optionValue.usage.use,
-				optionValue.usage.none,
+				policyOption.usage.use,
+				policyOption.usage.none,
 			),
 		);
 		//사용자 계정 패턴 사용

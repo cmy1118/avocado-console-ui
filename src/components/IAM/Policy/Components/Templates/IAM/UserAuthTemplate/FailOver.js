@@ -2,10 +2,10 @@ import React, {useEffect} from 'react';
 import TemplateElement from '../../../TemplateElement';
 import {
 	authMethodOptions,
-	optionValue,
+	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/options';
+} from '../../../../../../../utils/policyOptions';
 import TemplateElementContainer from '../../../TemplateElementContainer';
 import useRadio from '../../../../../../../hooks/useRadio';
 import PropTypes from 'prop-types';
@@ -49,14 +49,14 @@ const FailOver = ({data, setTemplateData}) => {
 		name: 'failOverBasicAuth',
 		options: authMethodOptions,
 		//Fail Over 사용 여부 false일때 disabled
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	//mfa: mfa 수단
 	const [mfa, mfaRaddioButton, setMfa] = useRadio({
 		name: 'failOverMfa',
 		options: authMethodOptions,
 		//Fail Over 사용 여부 false일때 disabled
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	//timeoutSeconds: 입력 대기 시간
 	const [
@@ -68,7 +68,7 @@ const FailOver = ({data, setTemplateData}) => {
 		//1 - 180
 		regex: /^([1-9]|[1-9][0-9]|1[0-7][0-9]|180)$/,
 		//Fail Over 사용 여부 false일때 disabled
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 
 	/**************************************************
@@ -77,14 +77,14 @@ const FailOver = ({data, setTemplateData}) => {
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.ruleType) {
-			let failOverData = {usage: usage === optionValue.usage.use};
+			let failOverData = {usage: usage === policyOption.usage.use};
 			//사용 여부 true
-			if (usage === optionValue.usage.use) {
-				if (basicAuth !== optionValue.authMethod.none) {
+			if (usage === policyOption.usage.use) {
+				if (basicAuth !== policyOption.authMethod.none) {
 					failOverData.auth = {type: basicAuth};
 				}
 
-				if (mfa !== optionValue.authMethod.none) {
+				if (mfa !== policyOption.authMethod.none) {
 					failOverData.mfa = {type: mfa};
 				}
 
@@ -107,8 +107,8 @@ const FailOver = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				optionValue.usage.use,
-				optionValue.usage.none,
+				policyOption.usage.use,
+				policyOption.usage.none,
 			),
 		);
 		//Fail Over 사용 여부 true

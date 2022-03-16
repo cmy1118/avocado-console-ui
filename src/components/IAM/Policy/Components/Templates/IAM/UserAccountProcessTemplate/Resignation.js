@@ -4,10 +4,10 @@ import TemplateElement from '../../../TemplateElement';
 import {
 	accountBlockingTypeOptions,
 	gracePeriodUsageOptions,
-	optionValue,
+	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/options';
+} from '../../../../../../../utils/policyOptions';
 import useRadio from '../../../../../../../hooks/useRadio';
 import PropTypes from 'prop-types';
 import useTextBox from '../../../../../../../hooks/useTextBox';
@@ -50,7 +50,7 @@ const Resignation = ({data, setTemplateData}) => {
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'resignationBlockingType',
 		options: accountBlockingTypeOptions,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	//gracePeriodUsage: 유예 기간 사용 유무
 	const [
@@ -60,7 +60,7 @@ const Resignation = ({data, setTemplateData}) => {
 	] = useRadio({
 		name: 'gracePeriodUsage',
 		options: gracePeriodUsageOptions,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	//gracePeriod: 유예 기간
 	const [gracePeriod, gracePeriodTextBox, setGracePeriod] = useTextBox({
@@ -69,8 +69,8 @@ const Resignation = ({data, setTemplateData}) => {
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
 		disabled:
-			gracePeriodUsage === optionValue.gracePeriod.none ||
-			usage === optionValue.usage.none,
+			gracePeriodUsage === policyOption.gracePeriod.none ||
+			usage === policyOption.usage.none,
 	});
 
 	/**************************************************
@@ -80,10 +80,10 @@ const Resignation = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.ruleType) {
 			const attributes = {
-				usage: usage === optionValue.usage.use,
+				usage: usage === policyOption.usage.use,
 			};
 			//사용 여부 true
-			if (usage === optionValue.usage.use) {
+			if (usage === policyOption.usage.use) {
 				attributes.blockingType = blockingType;
 				attributes.applyDays = gracePeriodUsage ? gracePeriod : 0;
 			}
@@ -109,8 +109,8 @@ const Resignation = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				optionValue.usage.use,
-				optionValue.usage.none,
+				policyOption.usage.use,
+				policyOption.usage.none,
 			),
 		);
 		//퇴사/탈퇴 사용 여부 ture
@@ -121,11 +121,11 @@ const Resignation = ({data, setTemplateData}) => {
 			}
 			//유예기간 존재 && 유예기간이 0 보다 큼
 			if (data?.applyDays && data.applyDays !== 0) {
-				setGracePeriodUsage(optionValue.gracePeriod.use);
+				setGracePeriodUsage(policyOption.gracePeriod.use);
 				setGracePeriod(data.applyDays);
 				//유예기간 존재 하지 않음
 			} else {
-				setGracePeriodUsage(optionValue.gracePeriod.none);
+				setGracePeriodUsage(policyOption.gracePeriod.none);
 			}
 		}
 	}, [data, setBlockingType, setGracePeriod, setGracePeriodUsage, setUsage]);

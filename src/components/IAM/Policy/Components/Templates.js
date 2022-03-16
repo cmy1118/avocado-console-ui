@@ -16,6 +16,7 @@ import PolicyManagement from './Templates/IAM/PolicyManagement';
 import RoleManagement from './Templates/IAM/RoleManagement';
 import AccessSession from './Templates/PAM/AccessSession';
 import {policyTypes} from '../../../../utils/data';
+import ConnectResource from './Templates/PAM/ConnectResource';
 
 const Container = styled.div`
 	display: flex;
@@ -428,6 +429,12 @@ const PamTemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 				description: '접속 세션 정책 입니다.',
 				component: AccessSession,
 			},
+			{
+				id: 2,
+				name: '자원 접속 인증',
+				description: '자원 접속 인증 입니다.',
+				component: ConnectResource,
+			},
 		]);
 		setActionTemplates([]);
 	}, [dispatch]);
@@ -440,8 +447,6 @@ const PamTemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 		if (ruleTemlpates.length && actionTemplates.length) {
 			// todo : pam api 연결시 처리
 		}
-		
-		
 	}, [actionTemplates, ruleTemlpates]);
 
 	return (

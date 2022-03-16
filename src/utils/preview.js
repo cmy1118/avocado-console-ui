@@ -1,16 +1,16 @@
-import {optionLabel} from './options';
+import {policyOption} from './policyOptions';
 
 const printUsage = (attribute) => {
-	if (attribute?.usage) return optionLabel.usage.use;
-	return optionLabel.usage.none;
+	if (attribute?.usage) return policyOption.usage.use.label;
+	return policyOption.usage.none.label;
 };
 const printMfa = (attribute, num) => {
 	let string = '';
 
 	if (attribute[num]) {
-		string += optionLabel.required[attribute[1].option] + ') : ';
+		string += policyOption.required[attribute[1].option].label + ') : ';
 		attribute[num].types.map((v, i) => {
-			string += optionLabel.additionalAuthMethod[v];
+			string += policyOption.additionalAuthMethod[v].label;
 			if (i !== attribute[num].types.length - 1) string += '/';
 		});
 	} else string += '안함)';
@@ -28,7 +28,7 @@ export const roleAttributeConvertor = (attribute) => {
 			if (attribute?.usage) {
 				string += '\n\t제어 어플리리케이션 : ';
 				attribute?.resource.map((v, i) => {
-					string += optionLabel.application[v];
+					string += policyOption.application[v].label;
 					if (i !== attribute.resource.length - 1) {
 						string += '/';
 					}
@@ -57,12 +57,15 @@ export const roleAttributeConvertor = (attribute) => {
 			if (attribute?.usage) {
 				string += '\n\t기본인증 : ';
 				if (attribute?.auth)
-					string += optionLabel.authMethod[attribute.auth.type] + ')';
-				else string += optionLabel.authMethod.none;
+					string +=
+						policyOption.authMethod[attribute.auth.type].label +
+						')';
+				else string += policyOption.authMethod.none.label;
 				string += '\n\tMFA : ';
 				if (attribute?.mfa)
-					string += optionLabel.authMethod[attribute.mfa.type] + ')';
-				else string += optionLabel.authMethod.none;
+					string +=
+						policyOption.authMethod[attribute.mfa.type].label + ')';
+				else string += policyOption.authMethod.none.label;
 				string +=
 					'\n\t입력 대기 시간(초) : ' + attribute.timeoutSeconds;
 			}
@@ -74,9 +77,9 @@ export const roleAttributeConvertor = (attribute) => {
 			if (attribute?.usage) {
 				string +=
 					'\n\t확인유형 : ' +
-					optionLabel.identityVerificationMethod[
+					policyOption.identityVerificationMethod[
 						Object.keys(attribute.policies)[0]
-					];
+					].label;
 
 				string +=
 					'\n\t입력 대기 시간(초) : ' +
@@ -94,7 +97,7 @@ export const roleAttributeConvertor = (attribute) => {
 					'\n\t로그인 실패 횟수 : ' + attribute.failedCount + '회';
 				string +=
 					'\n\t계정 처리 방법 : ' +
-					optionLabel.blockingType[attribute.blockingType];
+					policyOption.blockingType[attribute.blockingType].label;
 				string +=
 					'\n\t오류 횟수 초기화 : ' +
 					attribute.failedCountInitDays +
@@ -115,7 +118,7 @@ export const roleAttributeConvertor = (attribute) => {
 					'일';
 				string +=
 					'\n\t계정 처리 방법 : ' +
-					optionLabel.blockingType[attribute.blockingType];
+					policyOption.blockingType[attribute.blockingType].label;
 				string += '\n\t계정 정상화 : 본인 확인 인증';
 			}
 			break;
@@ -128,7 +131,7 @@ export const roleAttributeConvertor = (attribute) => {
 				string += '\n\t사용 기간 : ' + attribute.expiryDays + '일';
 				string +=
 					'\n\t계정 처리 방법 : ' +
-					optionLabel.blockingType[attribute.blockingType];
+					policyOption.blockingType[attribute.blockingType].label;
 				string += '\n\t계정 정상화 : 관리자 해제';
 			}
 			break;
@@ -141,10 +144,11 @@ export const roleAttributeConvertor = (attribute) => {
 				string += '\n\t제어 그룹 유형 : ';
 				string +=
 					'\n\t계정 처리 방법 : ' +
-					optionLabel.blockingType2[attribute.blockingType];
+					policyOption.blockingType2[attribute.blockingType].label;
 				string +=
 					'\n\t그룹 권한 처리 : ' +
-					optionLabel.groupPermissionType[attribute.permissionType];
+					policyOption.groupPermissionType[attribute.permissionType]
+						.label;
 				string += '\n\t계정 정상화 : 관리자 해제';
 			}
 			break;
@@ -156,7 +160,7 @@ export const roleAttributeConvertor = (attribute) => {
 			if (attribute?.usage) {
 				string +=
 					'\n\t계정 처리 방법 : ' +
-					optionLabel.blockingType2[attribute.blockingType];
+					policyOption.blockingType2[attribute.blockingType].label;
 				string += '\n\t유예 기간 : ' + attribute.applyDays + '일';
 				string += '\n\t계정 정상화 : 관리자 해제';
 			}
@@ -169,7 +173,7 @@ export const roleAttributeConvertor = (attribute) => {
 			if (attribute?.usage) {
 				string +=
 					'\n\t패턴 형식 : ' +
-					optionLabel.patternType[attribute.patternType];
+					policyOption.patternType[attribute.patternType].label;
 				string += '\n\t패턴 입력 : ' + attribute.pattern;
 			}
 			break;
@@ -187,21 +191,21 @@ export const roleAttributeConvertor = (attribute) => {
 			string +=
 				'\n영문 숫자 혼합 여부 : ' +
 				(attribute.mixNumberAndAlpha
-					? optionLabel.usage.use
-					: optionLabel.usage.none);
+					? policyOption.usage.use.label
+					: policyOption.usage.none.label);
 			string +=
 				'\n대소문자 혼합 여부 : ' +
 				(attribute.mixCase
-					? optionLabel.usage.use
-					: optionLabel.usage.none);
+					? policyOption.usage.use.label
+					: policyOption.usage.none.label);
 			string +=
 				'\n반복문자 사용제한 : ' +
 				(attribute.repeatedAlpha
-					? optionLabel.restrict.restrict
-					: optionLabel.usage.none);
+					? policyOption.restrict.restrict.label
+					: policyOption.usage.none.label);
 			string += '\n인적 사항 제한 : ';
 			attribute.includePersonalInfoList.map((v, i) => {
-				string += optionLabel.personalInfoRestrictionMethod[v];
+				string += policyOption.personalInfoRestrictionMethod[v].label;
 				if (i !== attribute.includePersonalInfoList.length - 1) {
 					string += '/';
 				}

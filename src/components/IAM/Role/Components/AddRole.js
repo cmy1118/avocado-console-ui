@@ -24,7 +24,10 @@ import {
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import TemplateElement from '../../Policy/Components/TemplateElement';
 import useRadio from '../../../../hooks/useRadio';
-import {patternTypeOptions, usageOptions} from '../../../../utils/options';
+import {
+	patternTypeOptions,
+	usageOptions,
+} from '../../../../utils/policyOptions';
 import useTextBox from '../../../../hooks/useTextBox';
 
 const AddRole = ({values, groupMembers, setValues}) => {
