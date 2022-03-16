@@ -46,7 +46,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 		name: 'IdentityVerificationAuthMethod',
 		options: identityVerificationMethodOptions,
 		//본인 확인 인증 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 	//timeoutSeconds: 입력 대기 시간
 	const [
@@ -58,7 +58,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 		//1 - 180
 		regex: /^([1-9]|[1-9][0-9]|1[0-7][0-9]|180)$/,
 		//본인 확인 인증 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 
 	/**************************************************
@@ -67,9 +67,9 @@ const IdentityVerification = ({data, setTemplateData}) => {
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.ruleType) {
-			let attributes = {usage: usage === policyOption.usage.use};
+			let attributes = {usage: usage === policyOption.usage.use.key};
 			//사용 여부 true
-			if (usage === policyOption.usage.use) {
+			if (usage === policyOption.usage.use.key) {
 				attributes.policies = {
 					[`${authMethod}`]: {timoutSeconds: timeoutSeconds},
 				};
@@ -82,19 +82,24 @@ const IdentityVerification = ({data, setTemplateData}) => {
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
+		console.log(data);
 		//본인 확인 인증의 정책이 존재
 		if (data?.policies && Object.keys(data.policies).length > 0) {
 			//본인 확인 인증 사용 여부 세팅
-			setUsage(policyOption.usage.use);
+			setUsage(policyOption.usage.use.key);
 			//인증 수단
 			const method = Object.keys(data.policies)[0];
-			//인증수단 & 입력 대시 시간 세팅
+			//인증 수단 & 입력 대시 시간 세팅
 			setAuthMethod(method);
-			setTimeoutSeconds(data.policies[method].timoutSeconds);
+			//인증 수단에 할당된 입력 대기 시간 default value 있음
+			if (data.policies[method]?.timoutSeconds)
+				setTimeoutSeconds(data.policies[method].timoutSeconds);
+			//입력 대기 시간 default value 있음
+			else if (data?.timoutSeconds) setTimeoutSeconds(data.timoutSeconds);
 			//본인 확인 인증 정책이 존재하지 않음
 		} else {
 			//본인 확인 인증 사용 여부 세팅
-			setUsage(policyOption.usage.none);
+			setUsage(policyOption.usage.none.key);
 		}
 	}, [data, setAuthMethod, setTimeoutSeconds, setUsage]);
 

@@ -49,14 +49,14 @@ const FailOver = ({data, setTemplateData}) => {
 		name: 'failOverBasicAuth',
 		options: authMethodOptions,
 		//Fail Over 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 	//mfa: mfa 수단
 	const [mfa, mfaRaddioButton, setMfa] = useRadio({
 		name: 'failOverMfa',
 		options: authMethodOptions,
 		//Fail Over 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 	//timeoutSeconds: 입력 대기 시간
 	const [
@@ -68,7 +68,7 @@ const FailOver = ({data, setTemplateData}) => {
 		//1 - 180
 		regex: /^([1-9]|[1-9][0-9]|1[0-7][0-9]|180)$/,
 		//Fail Over 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 
 	/**************************************************
@@ -77,14 +77,14 @@ const FailOver = ({data, setTemplateData}) => {
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.ruleType) {
-			let failOverData = {usage: usage === policyOption.usage.use};
+			let failOverData = {usage: usage === policyOption.usage.use.key};
 			//사용 여부 true
-			if (usage === policyOption.usage.use) {
-				if (basicAuth !== policyOption.authMethod.none) {
+			if (usage === policyOption.usage.use.key) {
+				if (basicAuth !== policyOption.authMethod.none.key) {
 					failOverData.auth = {type: basicAuth};
 				}
 
-				if (mfa !== policyOption.authMethod.none) {
+				if (mfa !== policyOption.authMethod.none.key) {
 					failOverData.mfa = {type: mfa};
 				}
 
@@ -102,17 +102,18 @@ const FailOver = ({data, setTemplateData}) => {
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
+		console.log(data);
 		//Fail Over 사용 여부 세팅
 		setUsage(
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				policyOption.usage.use,
-				policyOption.usage.none,
+				policyOption.usage.use.key,
+				policyOption.usage.none.key,
 			),
 		);
-		//Fail Over 사용 여부 true
-		if (data?.usage) {
+		//Fail Over 인증 default value 있음
+		if (data?.policies) {
 			//기본 인증 default value 있음
 			if (Object.prototype.hasOwnProperty.call(data.policies, 'auth')) {
 				//기본 인증 수단 세팅
@@ -124,10 +125,11 @@ const FailOver = ({data, setTemplateData}) => {
 				setMfa(data.policies.mfa.type);
 			}
 			//입력 대기 시간 default value 있음
-			if (data?.timoutSeconds) {
-				//입력 대기 시간 세팅
-				setTimeoutSeconds(data.timoutSeconds);
-			}
+		}
+		//입력 대기 시간 default value 있음
+		if (data?.timoutSeconds) {
+			//입력 대기 시간 세팅
+			setTimeoutSeconds(data.timoutSeconds);
 		}
 	}, [data, setBasicAuth, setMfa, setTimeoutSeconds, setUsage]);
 

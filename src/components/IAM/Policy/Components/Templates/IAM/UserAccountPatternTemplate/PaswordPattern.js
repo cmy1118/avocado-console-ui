@@ -149,9 +149,11 @@ const PaswordPattern = ({data, setTemplateData}) => {
 				minLength: Number(minPasswordLength),
 				maxLength: Number(maxPasswordLength),
 				numberOfConsecutiveNumerics: numberOfConsecutiveNumerics,
-				mixNumberAndAlpha: mixNumberAndAlpha === policyOption.usage.use,
-				mixCase: mixCase === policyOption.usage.use,
-				repeatedAlpha: repeatedAlpha === policyOption.restrict.restrict,
+				mixNumberAndAlpha:
+					mixNumberAndAlpha === policyOption.usage.use.key,
+				mixCase: mixCase === policyOption.usage.use.key,
+				repeatedAlpha:
+					repeatedAlpha === policyOption.restrict.restrict.key,
 				includePersonalInfoList: personalInfoRestriction
 					? personalInfoRestrictionMethod
 					: [],
@@ -198,8 +200,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'mixNumberAndAlpha',
-				policyOption.usage.use,
-				policyOption.usage.none,
+				policyOption.usage.use.key,
+				policyOption.usage.none.key,
 			),
 		);
 		//대소문자 혼합여부 세팅
@@ -207,8 +209,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'mixCase',
-				policyOption.usage.use,
-				policyOption.usage.none,
+				policyOption.usage.use.key,
+				policyOption.usage.none.key,
 			),
 		);
 		//반복문자 사용제한 유무 세팅
@@ -216,8 +218,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'repeatedAlpha',
-				policyOption.restrict.restrict,
-				policyOption.restrict.none,
+				policyOption.restrict.restrict.key,
+				policyOption.restrict.none.key,
 			),
 		);
 		//인적 사항 제한 default value 있음
@@ -231,8 +233,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			setPersonalInfoRestrictionMethod(data.includePersonalInfoList);
 			setPersonalInfoRestriction(
 				data.includePersonalInfoList.length !== 0
-					? policyOption.restrict.restrict
-					: policyOption.restrict.none,
+					? policyOption.restrict.restrict.key
+					: policyOption.restrict.none.key,
 			);
 		}
 		//이전 비밀번호 재사용 제한 default value 있음 && 제한 일수가 0 보다 큼
@@ -244,11 +246,11 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			) &&
 			data.allowedDaysOfOldPasswords !== 0
 		) {
-			setOldPasswordsRistriction(policyOption.restrict.restrict);
+			setOldPasswordsRistriction(policyOption.restrict.restrict.key);
 			setAllowedDaysOfOldPasswords(data.allowedDaysOfOldPasswords);
 			//이전 비밀번호 사용 제한 default value 없음 || 제한 일수가 0
 		} else {
-			setOldPasswordsRistriction(policyOption.restrict.none);
+			setOldPasswordsRistriction(policyOption.restrict.none.key);
 		}
 	}, [
 		data,
