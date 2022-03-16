@@ -1,19 +1,17 @@
 import React from 'react';
-import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
 import {
-	loginTypeOptions,
 	resourceOptions,
+	restrictionOptions,
 } from '../../../../../../utils/policyOptions';
+import TemplateElementContainer from '../../TemplateElementContainer';
 
-const connectResource = {
-	loginType: {
-		title: '로그인 방식',
+const resourceAccessRule = {
+	accessTimezone: {
+		title: '접속 가능 시간',
 		description: [
-			'원격 자원에 접속 하는 방식을 설정합니다.',
-			'자동 로그인은 사용자가 계정ID 나 패스워드를 알지 못하는 상태지만 로그인이 가능한 방식입니다.',
-			'직접 로그인 방식은 계정 ID/Password 또는 Key Pairs를 직접 선택, 입력하여 로그인 하는 방식 입니다.',
-			'수동 로그인 방식은 사용자는 접속할 계정 ID만으로 접속이 가능한 방식 입니다.',
+			'접근 가능 시간을 제한 하지 않으면 언제든 제한 없이 접근 가능합니다..',
+			'접근 가능 시간을 제한할 경우 요일별 시간을 설정 합니다. 23:59까지만 설정 가능합니다.',
 		],
 	},
 	resource: {
@@ -28,13 +26,17 @@ const connectResource = {
 };
 
 /**************************************************
- * ambacc244 - 자원 접속 방식 템플릿 컴포넌트
+ * ambacc244 - 자원 접근 정책 템플릿 컴포넌트
  **************************************************/
-const ConnectResource = () => {
-	//loginType: 로그인 방식
-	const [loginType, loginTypeRadioButton, setLoginType] = useRadio({
-		name: 'loginType',
-		options: loginTypeOptions,
+const ResourceAccessRule = () => {
+	//accessTimezoneRistriction: 사유 입력 시간제한 유무
+	const [
+		accessTimezoneRistriction,
+		accessTimezoneRistrictionRadioButton,
+		setAccessTimezoneRistriction,
+	] = useRadio({
+		name: 'accessTimezoneRistriction',
+		options: restrictionOptions,
 	});
 	//resource: 자원 선택 방식
 	const [resource, resourceRadioButton, setResource] = useRadio({
@@ -45,13 +47,20 @@ const ConnectResource = () => {
 	return (
 		<div>
 			<TemplateElementContainer
-				title={connectResource.loginType.title}
-				description={connectResource.loginType.description}
-				render={loginTypeRadioButton}
+				title={resourceAccessRule.accessTimezone.title}
+				description={resourceAccessRule.accessTimezone.description}
+				render={() => {
+					return (
+						<div>
+							{accessTimezoneRistrictionRadioButton()}
+							<div>----------------------------------</div>
+						</div>
+					);
+				}}
 			/>
 			<TemplateElementContainer
-				title={connectResource.resource.title}
-				description={connectResource.resource.description}
+				title={resourceAccessRule.resource.title}
+				description={resourceAccessRule.resource.description}
 				render={() => {
 					return (
 						<div>
@@ -64,5 +73,4 @@ const ConnectResource = () => {
 		</div>
 	);
 };
-
-export default ConnectResource;
+export default ResourceAccessRule;

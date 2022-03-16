@@ -101,6 +101,10 @@ export const policyOption = {
 		direct: {key: 'direct', label: '직접 로그인'},
 		manual: {key: 'manual', label: '수동 로그인'},
 	},
+	resource: {
+		certain: {key: 'certain', label: '특정 자원'},
+		all: {key: 'all', label: '모든 자원'},
+	},
 };
 
 export const usageOptions = [
@@ -290,6 +294,32 @@ export const personalInfoRestrictionMethodOptions = [
 	{
 		key: policyOption.personalInfoRestrictionMethod.userId.key,
 		label: policyOption.personalInfoRestrictionMethod.userId.label,
+	},
+];
+
+export const loginTypeOptions = [
+	{
+		key: policyOption.loginType.auto.key,
+		label: policyOption.loginType.auto.label,
+	},
+	{
+		key: policyOption.loginType.direct.key,
+		label: policyOption.loginType.direct.label,
+	},
+	{
+		key: policyOption.loginType.manual.key,
+		label: policyOption.loginType.manual.label,
+	},
+];
+
+export const resourceOptions = [
+	{
+		key: policyOption.resource.certain.key,
+		label: policyOption.resource.certain.label,
+	},
+	{
+		key: policyOption.resource.all.key,
+		label: policyOption.resource.all.label,
 	},
 ];
 

@@ -17,6 +17,8 @@ import RoleManagement from './Templates/IAM/RoleManagement';
 import AccessSession from './Templates/PAM/AccessSession';
 import {policyTypes} from '../../../../utils/data';
 import ConnectResource from './Templates/PAM/ConnectResource';
+import ConnectReason from './Templates/PAM/ConnectReason';
+import ResourceAccessRule from './Templates/PAM/ResourceAccessRule';
 
 const Container = styled.div`
 	display: flex;
@@ -434,6 +436,18 @@ const PamTemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 				name: '자원 접속 인증',
 				description: '자원 접속 인증 입니다.',
 				component: ConnectResource,
+			},
+			{
+				id: 3,
+				name: '자원 접근 정책',
+				description: '자원 접근 정책 입니다.',
+				component: ResourceAccessRule,
+			},
+			{
+				id: 4,
+				name: '접속 사유 정책',
+				description: '접속 사유 정책 입니다.',
+				component: ConnectReason,
 			},
 		]);
 		setActionTemplates([]);
