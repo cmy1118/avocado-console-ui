@@ -66,23 +66,20 @@ const findAll = createAsyncThunk(
 const slice = createSlice({
 	name: NAME,
 	initialState: {
-		creatingPolicy: false,
+		creatingPolicyMode: false,
 	},
 	reducers: {
-		RequestToGatherPolicyTemplates: (state, action) => {
-			state.creatingPolicy = true;
-		},
-		createPolicyDone: (state, action) => {
-			state.creatingPolicy = false;
+		changeCreatingPolicyMode: (state, {payload}) => {
+			state.creatingPolicyMode = payload.mode;
 		},
 	},
 	extraReducers: {},
 });
 
 const selectAllState = createSelector(
-	(state) => state.creatingPolicy,
-	(creatingPolicy) => {
-		return {creatingPolicy};
+	(state) => state.creatingPolicyMode,
+	(creatingPolicyMode) => {
+		return {creatingPolicyMode};
 	},
 );
 

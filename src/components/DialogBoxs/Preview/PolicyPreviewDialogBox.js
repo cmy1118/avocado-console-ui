@@ -22,7 +22,10 @@ import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from '../../../reducers/api/IAM/Polic
 import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate';
 import {isFulfilled} from '../../../utils/redux';
 
-import {actionPreviewfilter, roleAttributeConvertor} from '../../../utils/preview';
+import {
+	actionPreviewfilter,
+	roleAttributeConvertor,
+} from '../../../utils/preview';
 
 const policyPreviewDialogBox = {
 	header: '정책 생성 요약보기',
@@ -61,7 +64,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const {actionTemplates} = useSelector(
 		IAM_ACTION_MANAGEMENT_TEMPLATE.selector,
 	);
-	//정책 생성 요약보기 테이블 데이터 
+	//정책 생성 요약보기 테이블 데이터
 	const [previewData, setPreviewData] = useState([]);
 
 	/**************************************************
@@ -69,9 +72,13 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	 **************************************************/
 	const onCancelPolicyForm = useCallback(() => {
 		//정책 생성을 위해 모아둔 template의 데이터를 삭제
-		dispatch(IAM_RULE_MANAGEMENT_TEMPLATE.action.cancelCreatePolicy());
+		dispatch(IAM_RULE_MANAGEMENT_TEMPLATE.action.resetRuleTemplate());
 		//정책 생성 모드 off
-		dispatch(IAM_POLICY_MANAGEMENT_POLICIES.action.createPolicyDone());
+		dispatch(
+			IAM_POLICY_MANAGEMENT_POLICIES.action.changeCreatingPolicyMode({
+				mode: false,
+			}),
+		);
 	}, [dispatch]);
 
 	/**************************************************
@@ -189,9 +196,13 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			}
 		}
 		//정책 생성을 위해 모아둔 template의 데이터를 삭제
-		dispatch(IAM_RULE_MANAGEMENT_TEMPLATE.action.cancelCreatePolicy());
+		dispatch(IAM_RULE_MANAGEMENT_TEMPLATE.action.resetRuleTemplate());
 		//정책 생성 모드 off
-		dispatch(IAM_POLICY_MANAGEMENT_POLICIES.action.createPolicyDone());
+		dispatch(
+			IAM_POLICY_MANAGEMENT_POLICIES.action.changeCreatingPolicyMode({
+				mode: false,
+			}),
+		);
 	}, [formData, dispatch, ruleTemplates]);
 
 	/**********************************************************
@@ -212,20 +223,19 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				previewAllData.push(object);
 			}
 		});
-	
+
 		//IAM - 권한(action) 템플릿 데이터 처리
 		//TODO 함수로 모듈화할 예정입니다
-		actionTemplates.map((v)=>{
-			actionPreviewfilter(v['details']).map((s,index)=>{
-				let object ={}
-				index===0? object.policy = v.name :object.policy = ''
-				object.id = s.resource
-				object.detail= s.resource
-				object.value =s.value
-				previewAllData.push(object)
-			})
-
-		})
+		actionTemplates.map((v) => {
+			actionPreviewfilter(v['details']).map((s, index) => {
+				let object = {};
+				index === 0 ? (object.policy = v.name) : (object.policy = '');
+				object.id = s.resource;
+				object.detail = s.resource;
+				object.value = s.value;
+				previewAllData.push(object);
+			});
+		});
 		//PAM - 규칙 템플릿 데이터 처리
 
 		//PAM - 권한(action) 템플릿 데이터 처리
@@ -269,7 +279,6 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 					tableKey={tableKeys.policy.add.preview}
 					data={previewData}
 				/>
-
 			</ModalTableContainer>
 		)
 	);

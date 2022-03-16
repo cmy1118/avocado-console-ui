@@ -17,7 +17,7 @@ import {policyTypes} from '../../../../../../utils/data';
  **************************************************/
 const UserAccountProcessTemplate = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
-	const {creatingPolicy} = useSelector(
+	const {creatingPolicyMode} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
 	);
 
@@ -33,9 +33,9 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 	 * ambacc244 - 정책 생성 액션 요청으로 템플릿 데이터를 redux에 저장
 	 **************************************************/
 	useEffect(() => {
-		if (creatingPolicy) {
+		if (creatingPolicyMode) {
 			dispatch(
-				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherTemplate({
+				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
 					id: templateId,
 					data: {
 						name: name,
@@ -58,7 +58,7 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 		LoginFailureData,
 		ModifyingGroupData,
 		ResignationData,
-		creatingPolicy,
+		creatingPolicyMode,
 		description,
 		dispatch,
 		name,

@@ -55,7 +55,7 @@ const contents = {
 // todo : TableTextBox의 invalid 검사 기능 추가해야함.
 const UserSessionTemplate = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
-	const {creatingPolicy} = useSelector(
+	const {creatingPolicyMode} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
 	);
 	const [data, setData] = useState([]);
@@ -225,9 +225,9 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 	 **************************************************/
 	useEffect(() => {
 		// console.log(data);
-		if (creatingPolicy) {
+		if (creatingPolicyMode) {
 			dispatch(
-				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherTemplate({
+				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
 					id: templateId,
 					data: {
 						name: name,
@@ -238,7 +238,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 				}),
 			);
 		}
-	}, [creatingPolicy, data, description, dispatch, name, templateId]);
+	}, [creatingPolicyMode, data, description, dispatch, name, templateId]);
 
 	useEffect(() => {
 		console.log(tableData);

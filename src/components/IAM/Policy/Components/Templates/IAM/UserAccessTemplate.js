@@ -59,7 +59,7 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 		'SATURDAY',
 		'SUNDAY',
 	];
-	const {creatingPolicy} = useSelector(
+	const {creatingPolicyMode} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
 	);
 	const [data, setData] = useState([]);
@@ -139,9 +139,9 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 	 **************************************************/
 	useEffect(() => {
 		console.log(data);
-		if (creatingPolicy) {
+		if (creatingPolicyMode) {
 			dispatch(
-				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherTemplate({
+				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
 					id: templateId,
 					data: {
 						name: name,
@@ -152,7 +152,7 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 				}),
 			);
 		}
-	}, [creatingPolicy, data, description, dispatch, name, templateId]);
+	}, [creatingPolicyMode, data, description, dispatch, name, templateId]);
 
 	return (
 		<div>

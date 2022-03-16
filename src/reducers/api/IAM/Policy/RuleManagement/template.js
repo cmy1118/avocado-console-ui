@@ -59,10 +59,10 @@ const slice = createSlice({
 	name: NAME,
 	initialState: {ruleTemplates: {}},
 	reducers: {
-		gatherTemplate: (state, action) => {
+		gatherRulteTemplate: (state, action) => {
 			state.ruleTemplates[action.payload.id] = action.payload.data;
 		},
-		cancelCreatePolicy: (state, action) => {
+		resetRuleTemplate: (state, action) => {
 			state.ruleTemplates = {};
 		},
 	},

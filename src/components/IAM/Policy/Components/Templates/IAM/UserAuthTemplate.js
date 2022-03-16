@@ -16,7 +16,7 @@ import {policyTypes} from '../../../../../../utils/data';
  **************************************************/
 const UserAuthTemplate = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
-	const {creatingPolicy} = useSelector(
+	const {creatingPolicyMode} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
 	);
 	//defaultData: 템플릿의 default value
@@ -37,9 +37,9 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 	 * ambacc244 - 정책 생성 액션 요청으로 템플릿 데이터를 redux에 저장
 	 **************************************************/
 	useEffect(() => {
-		if (creatingPolicy) {
+		if (creatingPolicyMode) {
 			dispatch(
-				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherTemplate({
+				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
 					id: templateId,
 					data: {
 						name: name,
@@ -57,7 +57,7 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 		}
 	}, [
 		alternativeAuthNFailOverAuthData,
-		creatingPolicy,
+		creatingPolicyMode,
 		description,
 		deviceAuthenticationData,
 		dispatch,

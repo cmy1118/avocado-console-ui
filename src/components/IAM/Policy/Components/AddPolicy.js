@@ -63,7 +63,9 @@ const AddPolicy = () => {
 	 **************************************************/
 	const onSubmitGatherPolicyTemplates = useCallback(() => {
 		dispatch(
-			IAM_POLICY_MANAGEMENT_POLICIES.action.RequestToGatherPolicyTemplates(),
+			IAM_POLICY_MANAGEMENT_POLICIES.action.changeCreatingPolicyMode({
+				mode: true,
+			}),
 		);
 		setIsOpened(true);
 	}, [dispatch]);
