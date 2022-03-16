@@ -135,13 +135,14 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 			},
 			{
 				Header: '전체',
-				accessor: 'all', //has to be changed
+				accessor: 'all-check', //has to be changed
 				Cell: function Component(cell) {
 					return (
 						<TableCheckBox
 							cell={cell}
 							setData={setTableData}
 							refs={checkboxRefs}
+							allCheckKey={'all-check'}
 						/>
 					);
 				},
@@ -156,6 +157,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 							cell={cell}
 							setData={setTableData}
 							refs={checkboxRefs}
+							allCheckKey={'all-check'}
 						/>
 					);
 				},
@@ -170,6 +172,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 							cell={cell}
 							setData={setTableData}
 							refs={checkboxRefs}
+							allCheckKey={'all-check'}
 						/>
 					);
 				},
@@ -184,6 +187,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 							cell={cell}
 							setData={setTableData}
 							refs={checkboxRefs}
+							allCheckKey={'all-check'}
 						/>
 					);
 				},
@@ -225,7 +229,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 								[DRAGGABLE_KEY]: x[0],
 								usage: x[1].usage ? 'yes' : 'no',
 								application: contents.sessionTimeout[x[0]],
-								all: true,
+								'all-check': true,
 								read: true,
 								update: true,
 								delete: true,
