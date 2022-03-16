@@ -21,6 +21,7 @@ import PublicRoute from './routers/PublicRoute';
 import {useDispatch, useSelector} from 'react-redux';
 import AUTH from './reducers/api/Auth/auth';
 import {useIdleTimer} from 'react-idle-timer';
+import TemplateExample from './pages/TemplateExample';
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -158,6 +159,11 @@ const App = () => {
 				<PrivateRouteWithLayout
 					path='/policies'
 					component={Policy}
+					layout={IamLayout}
+				/>
+				<PrivateRouteWithLayout
+					path='/template'
+					component={TemplateExample}
 					layout={IamLayout}
 				/>
 				<PublicRoute path='/login/:companyId' component={Login} />

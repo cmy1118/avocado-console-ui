@@ -58,7 +58,6 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 	const {creatingPolicy} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
 	);
-	const checkboxRefs = useRef([]);
 	const [data, setData] = useState([]);
 
 	const [tableData, setTableData] = useState([]);
@@ -133,66 +132,6 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 				},
 				width: 200,
 			},
-			{
-				Header: '전체',
-				accessor: 'all-check', //has to be changed
-				Cell: function Component(cell) {
-					return (
-						<TableCheckBox
-							cell={cell}
-							setData={setTableData}
-							refs={checkboxRefs}
-							allCheckKey={'all-check'}
-						/>
-					);
-				},
-				width: 30,
-			},
-			{
-				Header: '조회',
-				accessor: 'read', //has to be changed
-				Cell: function Component(cell) {
-					return (
-						<TableCheckBox
-							cell={cell}
-							setData={setTableData}
-							refs={checkboxRefs}
-							allCheckKey={'all-check'}
-						/>
-					);
-				},
-				width: 30,
-			},
-			{
-				Header: '수정',
-				accessor: 'update', //has to be changed
-				Cell: function Component(cell) {
-					return (
-						<TableCheckBox
-							cell={cell}
-							setData={setTableData}
-							refs={checkboxRefs}
-							allCheckKey={'all-check'}
-						/>
-					);
-				},
-				width: 30,
-			},
-			{
-				Header: '삭제',
-				accessor: 'delete', //has to be changed
-				Cell: function Component(cell) {
-					return (
-						<TableCheckBox
-							cell={cell}
-							setData={setTableData}
-							refs={checkboxRefs}
-							allCheckKey={'all-check'}
-						/>
-					);
-				},
-				width: 30,
-			},
 		],
 		[],
 	);
@@ -229,10 +168,6 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 								[DRAGGABLE_KEY]: x[0],
 								usage: x[1].usage ? 'yes' : 'no',
 								application: contents.sessionTimeout[x[0]],
-								'all-check': true,
-								read: true,
-								update: true,
-								delete: true,
 							}),
 						);
 						setTableData(data);
