@@ -22,7 +22,7 @@ import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from '../../../reducers/api/IAM/Polic
 import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate';
 import {isFulfilled} from '../../../utils/redux';
 
-import {roleAttributeConvertor} from '../../../utils/preview';
+import {actionPreviewfilter, roleAttributeConvertor} from '../../../utils/preview';
 
 const policyPreviewDialogBox = {
 	header: '정책 생성 요약보기',
@@ -61,7 +61,8 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const {actionTemplates} = useSelector(
 		IAM_ACTION_MANAGEMENT_TEMPLATE.selector,
 	);
-	const [ruleDetail, setRuleDetail] = useState([]);
+	//정책 생성 요약보기 테이블 데이터 
+	const [previewData, setPreviewData] = useState([]);
 
 	/**************************************************
 	 * ambacc244 - 정책 생성 취소
@@ -187,26 +188,44 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 		}
 	}, [formData, dispatch, ruleTemplates]);
 
-	/**************************************************
-	 * ambacc244 - 정책 Preview 데이터 생성
-	 **************************************************/
+	/**********************************************************
+	 * ambacc244 ,roberto- 렌더링시 정책생성 Preview 데이터 갱신
+	 **********************************************************/
 	useEffect(() => {
-		let array = [];
+		//TODO:정책 생성을 눌렀을시 렌더링 실행되도록
+		let previewAllData = [];
 
+		//IAM - 규칙 템플릿 데이터 처리
 		Object.values(ruleTemplates).map((v) => {
 			for (let i = 0; i < v.attributes.length; i++) {
-				let data = new Object();
-				if (i === 0) data.name = v.name;
-
-				data.description = policyDescription[v.attributes[i].ruleType];
-				data.id = v.attributes[i].ruleType;
-				data.value = roleAttributeConvertor(v.attributes[i]);
-				array.push(data);
+				let object = new Object();
+				if (i === 0) object.policy = v.name;
+				object.id = v.attributes[i].ruleType;
+				object.detail = policyDescription[v.attributes[i].ruleType];
+				object.value = roleAttributeConvertor(v.attributes[i]);
+				previewAllData.push(object);
 			}
 		});
+	
+		//IAM - 권한(action) 템플릿 데이터 처리
+		//TODO 함수로 모듈화할 예정입니다
+		actionTemplates.map((v)=>{
+			actionPreviewfilter(v['details']).map((s,index)=>{
+				let object ={}
+				index===0? object.policy = v.name :object.policy = ''
+				object.id = s.resource
+				object.detail= s.resource
+				object.value =s.value
+				previewAllData.push(object)
+			})
 
-		setRuleDetail(array);
-	}, [ruleTemplates]);
+		})
+		//PAM - 규칙 템플릿 데이터 처리
+
+		//PAM - 권한(action) 템플릿 데이터 처리
+
+		setPreviewData(previewAllData);
+	}, [actionTemplates, ruleTemplates]);
 
 	return (
 		formData && (
@@ -242,8 +261,9 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 					isCheckBox={false}
 					columns={tableColumns[tableKeys.policy.add.preview]}
 					tableKey={tableKeys.policy.add.preview}
-					data={ruleDetail}
+					data={previewData}
 				/>
+
 			</ModalTableContainer>
 		)
 	);

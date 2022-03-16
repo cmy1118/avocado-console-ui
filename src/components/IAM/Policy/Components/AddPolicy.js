@@ -36,6 +36,7 @@ const contents = {
  **************************************************/
 const AddPolicy = () => {
 	const dispatch = useDispatch();
+	//정책 생성을 위한 dialogBox 열림닫힘 state
 	const [isOpened, setIsOpened] = useState(false);
 
 	const [policyName, policyNameTextBox] = useTextBox({
