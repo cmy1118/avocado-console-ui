@@ -11,7 +11,7 @@ const TemplateExample = () => {
 			[DRAGGABLE_KEY]: `TemplateExample-1`,
 			'all-check': true,
 			read: true,
-			update: true,
+			update: null,
 			delete: true,
 		},
 		{
@@ -20,14 +20,14 @@ const TemplateExample = () => {
 			'all-check': true,
 			read: true,
 			update: true,
-			delete: true,
+			delete: null,
 		},
 		{
 			id: `TemplateExample-3`,
 			[DRAGGABLE_KEY]: `TemplateExample-3`,
 			'all-check': true,
-			read: true,
-			update: true,
+			read: null,
+			update: null,
 			delete: true,
 		},
 		{

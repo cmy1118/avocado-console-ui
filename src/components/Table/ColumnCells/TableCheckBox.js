@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {
@@ -22,6 +22,7 @@ const InputContainer = styled.div`
 	line-height: 17px !important;
 	width: 15px;
 	height: 15px;
+	cursor: ${(props) => props.disabled && `default`};
 	svg {
 		position: absolute !important;
 		top: -2.5px !important;
@@ -80,6 +81,8 @@ const TableCheckBox = ({
 	 * seob - click에 따른 setData를 처리하는 이벤트 함수
 	 ***************************************************/
 	const handleSetData = useCallback(() => {
+		if (cell.value === null) return;
+
 		// rowChecks : 전체 check input을 제회한 나머지 check input의 dom element
 		const rowChecks = Object.entries(refs.current)
 			.filter(
@@ -184,6 +187,8 @@ const TableCheckBox = ({
 	 ***************************************************/
 	const handleClick = useCallback(
 		(e) => {
+			if (cell.value === null) return;
+
 			// shiftKey를 누른 대상이 전체 체크 input인 경우 ( 나머지 input은 shiftKey 적용 X )
 			if (e.shiftKey) {
 				if (cell.column.id === allCheckKey) {
@@ -335,6 +340,7 @@ const TableCheckBox = ({
 			allCheckKey,
 			cell.column.id,
 			cell.row.original.id,
+			cell.value,
 			handleSetData,
 			lastCheckedKey,
 			refs,
@@ -378,7 +384,16 @@ const TableCheckBox = ({
 	// 	}
 	// }, [allCheckKey, cell.column.id, cell.row.original.id, cell.value, refs]);
 
-	return (
+	return cell.value === null ? (
+		<_Container
+			// opacity={disabled.toString()}
+			className='pretty p-svg p-curve p-plain p-toggle p-thick'
+		>
+			<InputContainer type={'indeterminate'} disabled className='state'>
+				{indeterminateIcon}
+			</InputContainer>
+		</_Container>
+	) : (
 		<_Container
 			// opacity={disabled.toString()}
 			className='pretty p-svg p-curve p-plain p-toggle p-thick'

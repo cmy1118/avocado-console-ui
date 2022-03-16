@@ -161,6 +161,7 @@ const App = () => {
 					component={Policy}
 					layout={IamLayout}
 				/>
+				{/* todo : 템플릿 예시 (TemplateExample) 삭제예정 */}
 				<PrivateRouteWithLayout
 					path='/template'
 					component={TemplateExample}
