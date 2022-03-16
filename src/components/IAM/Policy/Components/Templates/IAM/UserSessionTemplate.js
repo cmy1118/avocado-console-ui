@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import TemplateElement from '../../TemplateElement';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
@@ -14,6 +14,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/template';
 import {policyTypes} from '../../../../../../utils/data';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
+import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
+import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -56,6 +58,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 	const {creatingPolicy} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
 	);
+	const checkboxRefs = useRef([]);
 	const [data, setData] = useState([]);
 
 	const [tableData, setTableData] = useState([]);
@@ -130,6 +133,62 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 				},
 				width: 200,
 			},
+			{
+				Header: '전체',
+				accessor: 'all', //has to be changed
+				Cell: function Component(cell) {
+					return (
+						<TableCheckBox
+							cell={cell}
+							setData={setTableData}
+							refs={checkboxRefs}
+						/>
+					);
+				},
+				width: 30,
+			},
+			{
+				Header: '조회',
+				accessor: 'read', //has to be changed
+				Cell: function Component(cell) {
+					return (
+						<TableCheckBox
+							cell={cell}
+							setData={setTableData}
+							refs={checkboxRefs}
+						/>
+					);
+				},
+				width: 30,
+			},
+			{
+				Header: '수정',
+				accessor: 'update', //has to be changed
+				Cell: function Component(cell) {
+					return (
+						<TableCheckBox
+							cell={cell}
+							setData={setTableData}
+							refs={checkboxRefs}
+						/>
+					);
+				},
+				width: 30,
+			},
+			{
+				Header: '삭제',
+				accessor: 'delete', //has to be changed
+				Cell: function Component(cell) {
+					return (
+						<TableCheckBox
+							cell={cell}
+							setData={setTableData}
+							refs={checkboxRefs}
+						/>
+					);
+				},
+				width: 30,
+			},
 		],
 		[],
 	);
@@ -147,7 +206,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 		)
 			.unwrap()
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				for (let v of res) {
 					// 속성의 규칙 타입이 screen_saver(화면보호기)인 경우
 					if (v.attribute.ruleType === 'screen_saver') {
@@ -166,6 +225,10 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 								[DRAGGABLE_KEY]: x[0],
 								usage: x[1].usage ? 'yes' : 'no',
 								application: contents.sessionTimeout[x[0]],
+								all: true,
+								read: true,
+								update: true,
+								delete: true,
 							}),
 						);
 						setTableData(data);
@@ -222,7 +285,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 	 * seob717 - 정책 생성 액션 요청으로 템플릿 데이터를 redux에 저장
 	 **************************************************/
 	useEffect(() => {
-		console.log(data);
+		// console.log(data);
 		if (creatingPolicy) {
 			dispatch(
 				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherTemplate({
@@ -237,6 +300,10 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 			);
 		}
 	}, [creatingPolicy, data, description, dispatch, name, templateId]);
+
+	useEffect(() => {
+		console.log(tableData);
+	}, [tableData]);
 
 	return (
 		<div>
