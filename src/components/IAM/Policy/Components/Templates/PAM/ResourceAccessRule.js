@@ -5,6 +5,9 @@ import {
 	restrictionOptions,
 } from '../../../../../../utils/policyOptions';
 import TemplateElementContainer from '../../TemplateElementContainer';
+import TemplateElement from '../../TemplateElement';
+import TimeInterval from '../../../../../RecycleComponents/Templates/TimeInterval';
+import {DayOfTheWeek} from './ConnectReason';
 
 const resourceAccessRule = {
 	accessTimezone: {
@@ -13,6 +16,7 @@ const resourceAccessRule = {
 			'접근 가능 시간을 제한 하지 않으면 언제든 제한 없이 접근 가능합니다..',
 			'접근 가능 시간을 제한할 경우 요일별 시간을 설정 합니다. 23:59까지만 설정 가능합니다.',
 		],
+		contents: {restriction: {titile: '제한 여부'}},
 	},
 	resource: {
 		title: '자원',
@@ -52,8 +56,36 @@ const ResourceAccessRule = () => {
 				render={() => {
 					return (
 						<div>
-							{accessTimezoneRistrictionRadioButton()}
+							<TemplateElement
+								title={
+									resourceAccessRule.accessTimezone.contents
+										.restriction.titile
+								}
+								render={accessTimezoneRistrictionRadioButton}
+							/>
 							<div>----------------------------------</div>
+							{Object.keys(DayOfTheWeek).map((w) => (
+								<TimeInterval
+									key={w}
+									week={w}
+									title={DayOfTheWeek[w]}
+									data={{
+										attribute: {
+											usage: false,
+											policies: {
+												MONDAY: {
+													from: '09:00:00',
+													to: '18:00:00',
+												},
+												THURSDAY: {
+													from: '09:00:00',
+													to: '18:00:00',
+												},
+											},
+										},
+									}}
+								/>
+							))}
 						</div>
 					);
 				}}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import useRadio from '../../../../../../hooks/useRadio';
 import {
 	resourceOptions,
@@ -6,8 +6,8 @@ import {
 	usageOptions,
 } from '../../../../../../utils/policyOptions';
 import TemplateElementContainer from '../../TemplateElementContainer';
-import TimeInterval from '../../../../../RecycleComponents/Templates/TimeInterval';
 import TemplateElement from '../../TemplateElement';
+import TimeInterval from '../../../../../RecycleComponents/Templates/TimeInterval';
 
 const connectReason = {
 	connectReason: {
@@ -30,14 +30,14 @@ const connectReason = {
 	},
 };
 
-const DayOfTheWeek = {
-	MON: '월',
-	TUE: '화',
-	WED: '수',
-	THU: '목',
-	FRI: '금',
-	SAT: '토',
-	SUN: '일',
+export const DayOfTheWeek = {
+	MONDAY: '월',
+	TUESDAY: '화',
+	WEDNESDAY: '수',
+	THURSDAY: '목',
+	FRIDAY: '금',
+	SATURDAY: '토',
+	SUNDAY: '일',
 };
 
 /**************************************************
@@ -58,6 +58,9 @@ const ConnectReason = () => {
 		name: 'timeoutRistriction',
 		options: restrictionOptions,
 	});
+
+	const [timezone, setTimezone] = useState({});
+
 	//resource: 자원 선택 방식
 	const [resource, resourceRadioButton, setResource] = useRadio({
 		name: 'connectResource',
@@ -87,19 +90,31 @@ const ConnectReason = () => {
 							<TemplateElement
 								title={
 									connectReason.timeout.contents.restriction
-										.title
+										.titile
 								}
 								render={timeoutRistrictionRadioButton}
 							/>
-							{/*{timeoutRistrictionRadioButton()}*/}
 							<div>----------------------------------</div>
 							{Object.keys(DayOfTheWeek).map((w) => (
 								<TimeInterval
 									key={w}
 									week={w}
 									title={DayOfTheWeek[w]}
-									// data={v}
-									// setData={setData}
+									data={{
+										attribute: {
+											usage: false,
+											policies: {
+												MONDAY: {
+													from: '09:00:00',
+													to: '18:00:00',
+												},
+												THURSDAY: {
+													from: '09:00:00',
+													to: '18:00:00',
+												},
+											},
+										},
+									}}
 								/>
 							))}
 						</div>
