@@ -70,6 +70,8 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const onCancelPolicyForm = useCallback(() => {
 		//정책 생성을 위해 모아둔 template의 데이터를 삭제
 		dispatch(IAM_RULE_MANAGEMENT_TEMPLATE.action.cancelCreatePolicy());
+		//정책 생성 모드 off
+		dispatch(IAM_POLICY_MANAGEMENT_POLICIES.action.createPolicyDone());
 	}, [dispatch]);
 
 	/**************************************************
@@ -186,6 +188,10 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				console.log(createPolicyResponse);
 			}
 		}
+		//정책 생성을 위해 모아둔 template의 데이터를 삭제
+		dispatch(IAM_RULE_MANAGEMENT_TEMPLATE.action.cancelCreatePolicy());
+		//정책 생성 모드 off
+		dispatch(IAM_POLICY_MANAGEMENT_POLICIES.action.createPolicyDone());
 	}, [formData, dispatch, ruleTemplates]);
 
 	/**********************************************************
