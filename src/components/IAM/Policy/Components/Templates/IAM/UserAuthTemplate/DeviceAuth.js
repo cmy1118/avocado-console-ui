@@ -3,10 +3,10 @@ import TemplateElementContainer from '../../../TemplateElementContainer';
 import TemplateElement from '../../../TemplateElement';
 import {
 	applicationOptions,
-	optionValue,
+	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/options';
+} from '../../../../../../../utils/policyOptions';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useCheckBox from '../../../../../../../hooks/useCheckBox';
 import PropTypes from 'prop-types';
@@ -41,7 +41,7 @@ const DeviceAuth = ({data, setTemplateData}) => {
 	const [application, applicationCheckBox, setApplications] = useCheckBox({
 		options: applicationOptions,
 		//단말기 인증 사용 false일때 disabled
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 
 	/**************************************************
@@ -51,10 +51,10 @@ const DeviceAuth = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.ruleType) {
 			const attributes = {
-				usage: usage === optionValue.usage.use,
+				usage: usage === policyOption.usage.use,
 			};
 			//사용 여부 true
-			if (usage === optionValue.usage.use) {
+			if (usage === policyOption.usage.use) {
 				attributes.resource = application;
 			}
 
@@ -74,8 +74,8 @@ const DeviceAuth = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				optionValue.usage.use,
-				optionValue.usage.none,
+				policyOption.usage.use,
+				policyOption.usage.none,
 			),
 		);
 		//단말기 인증 사용 여부 true, 인증 단말기가 존재

@@ -6,10 +6,10 @@ import TemplateElement from '../../../TemplateElement';
 import {RowDiv} from '../../../../../../../styles/components/style';
 import {
 	accountBlockingTypeOptions,
-	optionValue,
+	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/options';
+} from '../../../../../../../utils/policyOptions';
 import useTextBox from '../../../../../../../hooks/useTextBox';
 import useRadio from '../../../../../../../hooks/useRadio';
 
@@ -54,7 +54,7 @@ const Dormant = ({data, setTemplateData}) => {
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'dormantBlockingType',
 		options: accountBlockingTypeOptions,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	// unconnectedDays: 연속 미접속 기간
 	const [
@@ -65,7 +65,7 @@ const Dormant = ({data, setTemplateData}) => {
 		name: 'unconnectedDays',
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 
 	/**************************************************
@@ -75,10 +75,10 @@ const Dormant = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.ruleType) {
 			const attributes = {
-				usage: usage === optionValue.usage.use,
+				usage: usage === policyOption.usage.use,
 			};
 			//사용 여부 true
-			if (usage === optionValue.usage.use) {
+			if (usage === policyOption.usage.use) {
 				attributes.blockingType = blockingType;
 				attributes.unconnectedDays = unconnectedDays;
 			}
@@ -98,8 +98,8 @@ const Dormant = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				optionValue.usage.use,
-				optionValue.usage.none,
+				policyOption.usage.use,
+				policyOption.usage.none,
 			),
 		);
 		//휴면 사용 여부 true

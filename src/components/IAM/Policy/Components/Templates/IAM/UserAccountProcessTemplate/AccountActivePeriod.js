@@ -3,10 +3,10 @@ import TemplateElementContainer from '../../../TemplateElementContainer';
 import TemplateElement from '../../../TemplateElement';
 import {
 	accountBlockingTypeOptions,
-	optionValue,
+	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/options';
+} from '../../../../../../../utils/policyOptions';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../../styles/components/style';
@@ -48,13 +48,13 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 	//activePeriod : 계정 사용 기간
 	const [expiryDays, expiryDaysTextBox, setExpiryDays] = useTextBox({
 		name: 'expiryDays',
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	//blockingType : 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'accountActivePeriodBlockingType',
 		options: accountBlockingTypeOptions,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 
 	/**************************************************
@@ -64,10 +64,10 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.ruleType) {
 			const attributes = {
-				usage: usage === optionValue.usage.use,
+				usage: usage === policyOption.usage.use,
 			};
 			//사용 여부 true
-			if (usage === optionValue.usage.use) {
+			if (usage === policyOption.usage.use) {
 				attributes.expiryDays = expiryDays;
 				attributes.blockingType = blockingType;
 			}
@@ -87,8 +87,8 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				optionValue.usage.use,
-				optionValue.usage.none,
+				policyOption.usage.use,
+				policyOption.usage.none,
 			),
 		);
 		if (data?.usage) {

@@ -3,10 +3,10 @@ import React, {useEffect} from 'react';
 import TemplateElement from '../../../TemplateElement';
 import {
 	accountBlockingTypeOptions,
-	optionValue,
+	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/options';
+} from '../../../../../../../utils/policyOptions';
 import TemplateElementContainer from '../../../TemplateElementContainer';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../../hooks/useTextBox';
@@ -56,13 +56,13 @@ const LoginFailure = ({data, setTemplateData}) => {
 		name: 'loginFailureCount',
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	//blockingType: 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'loginFailureBlockingType',
 		options: accountBlockingTypeOptions,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	//failedCountInitDays: 오류 횟수 초기화
 	const [
@@ -73,7 +73,7 @@ const LoginFailure = ({data, setTemplateData}) => {
 		name: 'failedCountInitDays',
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	//accountNormalization: 계정 정상화
 	const [
@@ -84,7 +84,7 @@ const LoginFailure = ({data, setTemplateData}) => {
 		name: 'accountUnblockedDays',
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 
 	/**************************************************
@@ -94,10 +94,10 @@ const LoginFailure = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.ruleType) {
 			const attributes = {
-				usage: usage === optionValue.usage.use,
+				usage: usage === policyOption.usage.use,
 			};
 			//사용 여부 true
-			if (usage === optionValue.usage.use) {
+			if (usage === policyOption.usage.use) {
 				attributes.failedCount = failedCount;
 				attributes.blockingType = blockingType;
 				attributes.failedCountInitDays = failedCountInitDays;
@@ -128,8 +128,8 @@ const LoginFailure = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				optionValue.usage.use,
-				optionValue.usage.none,
+				policyOption.usage.use,
+				policyOption.usage.none,
 			),
 		);
 		//로그인 실패 사용 여부 ture

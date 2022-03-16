@@ -4,10 +4,10 @@ import TemplateElement from '../../../TemplateElement';
 import {
 	accountBlockingType2Options,
 	groupPermissionTypeOptions,
-	optionValue,
+	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/options';
+} from '../../../../../../../utils/policyOptions';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useComboBox from '../../../../../../../hooks/useComboBox';
 import {RowDiv} from '../../../../../../../styles/components/style';
@@ -54,23 +54,23 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	//group1: 제어 그룹 유형1
 	const [group1, group1ComboBox] = useComboBox({
 		options: tempOption,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	//group2: 제어 그룹 유형2
 	const [group2, group2ComboBox] = useComboBox({
 		options: tempOption,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	//group3: 제어 그룹 유형3
 	const [group3, group3ComboBox] = useComboBox({
 		options: tempOption,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	//blockingType: 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'modifyingGroupBlockingType',
 		options: accountBlockingType2Options,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	//permissionType: 그룹 권한 처리
 	const [
@@ -80,7 +80,7 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	] = useRadio({
 		name: 'groupPermissionType',
 		options: groupPermissionTypeOptions,
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 
 	/**************************************************
@@ -88,9 +88,9 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		if (data?.ruleType) {
-			let attributes = {usage: usage === optionValue.usage.use};
+			let attributes = {usage: usage === policyOption.usage.use};
 			//사용 여부 true
-			if (usage === optionValue.usage.use) {
+			if (usage === policyOption.usage.use) {
 				attributes.blockingType = blockingType;
 				attributes.permissionType = permissionType;
 			}

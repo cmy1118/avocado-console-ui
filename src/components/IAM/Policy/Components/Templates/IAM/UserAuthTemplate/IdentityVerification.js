@@ -3,9 +3,9 @@ import React, {useEffect} from 'react';
 import TemplateElementContainer from '../../../TemplateElementContainer';
 import {
 	identityVerificationMethodOptions,
-	optionValue,
+	policyOption,
 	usageOptions,
-} from '../../../../../../../utils/options';
+} from '../../../../../../../utils/policyOptions';
 import TemplateElement from '../../../TemplateElement';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../../hooks/useTextBox';
@@ -46,7 +46,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 		name: 'IdentityVerificationAuthMethod',
 		options: identityVerificationMethodOptions,
 		//본인 확인 인증 사용 여부 false일때 disabled
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 	//timeoutSeconds: 입력 대기 시간
 	const [
@@ -58,7 +58,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 		//1 - 180
 		regex: /^([1-9]|[1-9][0-9]|1[0-7][0-9]|180)$/,
 		//본인 확인 인증 사용 여부 false일때 disabled
-		disabled: usage === optionValue.usage.none,
+		disabled: usage === policyOption.usage.none,
 	});
 
 	/**************************************************
@@ -67,9 +67,9 @@ const IdentityVerification = ({data, setTemplateData}) => {
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.ruleType) {
-			let attributes = {usage: usage === optionValue.usage.use};
+			let attributes = {usage: usage === policyOption.usage.use};
 			//사용 여부 true
-			if (usage === optionValue.usage.use) {
+			if (usage === policyOption.usage.use) {
 				attributes.policies = {
 					[`${authMethod}`]: {timoutSeconds: timeoutSeconds},
 				};
@@ -85,7 +85,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 		//본인 확인 인증의 정책이 존재
 		if (data?.policies && Object.keys(data.policies).length > 0) {
 			//본인 확인 인증 사용 여부 세팅
-			setUsage(optionValue.usage.use);
+			setUsage(policyOption.usage.use);
 			//인증 수단
 			const method = Object.keys(data.policies)[0];
 			//인증수단 & 입력 대시 시간 세팅
@@ -94,7 +94,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 			//본인 확인 인증 정책이 존재하지 않음
 		} else {
 			//본인 확인 인증 사용 여부 세팅
-			setUsage(optionValue.usage.none);
+			setUsage(policyOption.usage.none);
 		}
 	}, [data, setAuthMethod, setTimeoutSeconds, setUsage]);
 
