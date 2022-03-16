@@ -57,13 +57,13 @@ export const POLICY_COLUMN = [
 
 export const POLICY_ADD_PREVIEW_COLUMN = [
 	{
-		accessor: 'name',
+		accessor: 'policy',
 		Header: '정책',
 		// disableFilters: true,
 		// disableChangeVisible: true,
 	},
 	{
-		accessor: 'description',
+		accessor: 'detail',
 		Header: '상세',
 		// disableFilters: true,
 		// disableChangeVisible: true,
