@@ -70,29 +70,32 @@ const TableCheckBox = ({cell, setData, refs}) => {
 	const handleChange = useCallback(
 		(e) => {
 			// memo - 전체 선택을 누른경우
+
+			// rowChecks : 전체 check input을 제회한 나머지 check input의 dom element
+			const rowChecks = Object.entries(refs.current)
+				.filter(
+					([key, value]) =>
+						// row에 포함된 refs들 중
+						key.split('/')[0] === cell.row.original.id &&
+						key.split('/')[1] !== 'all',
+				)
+				.map(([key, value]) => value);
 			if (cell.column.id === 'all') {
 				// memo - 전체 선택이 되어있는 경우
 				if (cell.value) {
-					//
-					console.log(cell.value);
+					for (let v of rowChecks) {
+						v.click();
+					}
 				}
 				// memo - 전체 선택이 되어있지 않은 경우
 				else {
-					//
+					for (let v of rowChecks) {
+						!v.checked && v.click();
+					}
 				}
 			}
 			// memo - 이외의 체크박스를 누른 경우
 			else {
-				// rowChecks : 전체 check input을 제회한 나머지 check input의 dom element
-				const rowChecks = Object.entries(refs.current)
-					.filter(
-						([key, value]) =>
-							// row에 포함된 refs들 중
-							key.split('/')[0] === cell.row.original.id &&
-							key.split('/')[1] !== 'all',
-					)
-					.map(([key, value]) => value);
-
 				console.log(
 					'rowChecks.map((v) => v.checked) => ',
 					rowChecks.map((v) => v.checked),
