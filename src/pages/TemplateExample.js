@@ -47,7 +47,7 @@ const TemplateExample = () => {
 			delete: true,
 		},
 	]);
-	const [lastChecked, setLastChecked] = useState(null);
+	const [lastCheckedKey, setLastCheckedKey] = useState(null);
 
 	const columns = useMemo(
 		() => [
@@ -61,8 +61,8 @@ const TemplateExample = () => {
 							setData={setTableData}
 							refs={checkboxRefs}
 							allCheckKey={'all-check'}
-							lastChecked={lastChecked}
-							setLastChecked={setLastChecked}
+							lastCheckedKey={lastCheckedKey}
+							setLastCheckedKey={setLastCheckedKey}
 						/>
 					);
 				},
@@ -78,8 +78,8 @@ const TemplateExample = () => {
 							setData={setTableData}
 							refs={checkboxRefs}
 							allCheckKey={'all-check'}
-							lastChecked={lastChecked}
-							setLastChecked={setLastChecked}
+							lastCheckedKey={lastCheckedKey}
+							setLastCheckedKey={setLastCheckedKey}
 						/>
 					);
 				},
@@ -95,8 +95,8 @@ const TemplateExample = () => {
 							setData={setTableData}
 							refs={checkboxRefs}
 							allCheckKey={'all-check'}
-							lastChecked={lastChecked}
-							setLastChecked={setLastChecked}
+							lastCheckedKey={lastCheckedKey}
+							setLastCheckedKey={setLastCheckedKey}
 						/>
 					);
 				},
@@ -112,15 +112,15 @@ const TemplateExample = () => {
 							setData={setTableData}
 							refs={checkboxRefs}
 							allCheckKey={'all-check'}
-							lastChecked={lastChecked}
-							setLastChecked={setLastChecked}
+							lastCheckedKey={lastCheckedKey}
+							setLastCheckedKey={setLastCheckedKey}
 						/>
 					);
 				},
 				width: 30,
 			},
 		],
-		[lastChecked],
+		[lastCheckedKey],
 	);
 
 	return (
