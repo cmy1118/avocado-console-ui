@@ -1,4 +1,4 @@
-import React, {useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import Table from '../components/Table/Table';
 import TableCheckBox from '../components/Table/ColumnCells/TableCheckBox';
 import {DRAGGABLE_KEY} from '../Constants/Table/keys';
@@ -122,6 +122,10 @@ const TemplateExample = () => {
 		],
 		[lastCheckedKey],
 	);
+
+	useEffect(() => {
+		console.log(tableData);
+	}, [tableData]);
 
 	return (
 		<div>

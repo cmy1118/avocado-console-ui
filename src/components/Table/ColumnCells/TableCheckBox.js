@@ -191,126 +191,133 @@ const TableCheckBox = ({
 					if (lastCheckedKey) {
 						// currentKey : 현재 체크박스의 ref.current 키
 						const currentKey = `${cell.row.original.id}/${cell.column.id}`;
-						// currentColumnInputs : refs.current에서 현재 컬럼의 element들 (전체선택 input element 리스트)
-						const currentColumnInputs = Object.entries(
-							refs.current,
-						).filter(
-							([key, value]) =>
-								key.split('/')[1] === cell.column.id,
-						);
-						// startKey : isBetween이 running상태가 되는 과정에서
-						// 현재 클릭값에 의해 변경되었는지 이전에 클릭한 값에 의해 변경되었는지에 대한 변수
-						// 이전에 클릭한 값에의해 변경된 경우 last 현재 클릭한 값에의해 변경된 경우 current
-						let startKey = null;
-						// process : 현재 클릭한 input과 이전에 클릭한 input사이의 값을 핸들링 하기 위한 처리 상태 변수
-						let process = PROCESS_STATE.READY;
-						// currentInputChecked : 현재 input element의 체크 유무
-						const currentInputChecked =
-							refs.current[
-								`${cell.row.original.id}/${cell.column.id}`
-							].checked;
-						// 현재 컬럼에 속한 전체 체크박스를 순회하며 중간에 위치한 input을 클릭하기 위한 반복문
-						for (let [key, value] of currentColumnInputs) {
-							// 컬럼 element 리스트중 key값이 이전에 저장한 lastKey와 동일할 경우 혹은,
-							// value가 현재 클릭한 체크박스 element인 경우
-							// 이전에 클릭한 element와 현재 element 중간에 위치한 input 핸들링
-							if (
-								key === lastCheckedKey ||
-								value ===
-									refs.current[
-										`${cell.row.original.id}/${cell.column.id}`
-									]
-							) {
-								// 현재 클릭과 마지막 클릭 사이에 진입하기 전인경우
-								// 현재 처리단계가 대기중인경우
-								if (process === PROCESS_STATE.READY) {
-									// 이전에 클릭한 요소에 의해 처리가 시작된 경우
-									if (key === lastCheckedKey) {
-										startKey = START_KEY.LAST;
+
+						if (lastCheckedKey === currentKey) {
+							handleSetData();
+						} else {
+							// currentColumnInputs : refs.current에서 현재 컬럼의 element들 (전체선택 input element 리스트)
+							const currentColumnInputs = Object.entries(
+								refs.current,
+							).filter(
+								([key, value]) =>
+									key.split('/')[1] === cell.column.id,
+							);
+							// startKey : isBetween이 running상태가 되는 과정에서
+							// 현재 클릭값에 의해 변경되었는지 이전에 클릭한 값에 의해 변경되었는지에 대한 변수
+							// 이전에 클릭한 값에의해 변경된 경우 last 현재 클릭한 값에의해 변경된 경우 current
+							let startKey = null;
+							// process : 현재 클릭한 input과 이전에 클릭한 input사이의 값을 핸들링 하기 위한 처리 상태 변수
+							let process = PROCESS_STATE.READY;
+							// currentInputChecked : 현재 input element의 체크 유무
+							const currentInputChecked =
+								refs.current[
+									`${cell.row.original.id}/${cell.column.id}`
+								].checked;
+							// 현재 컬럼에 속한 전체 체크박스를 순회하며 중간에 위치한 input을 클릭하기 위한 반복문
+							for (let [key, value] of currentColumnInputs) {
+								// 컬럼 element 리스트중 key값이 이전에 저장한 lastKey와 동일할 경우 혹은,
+								// value가 현재 클릭한 체크박스 element인 경우
+								// 이전에 클릭한 element와 현재 element 중간에 위치한 input 핸들링
+								if (
+									key === lastCheckedKey ||
+									value ===
+										refs.current[
+											`${cell.row.original.id}/${cell.column.id}`
+										]
+								) {
+									// 현재 클릭과 마지막 클릭 사이에 진입하기 전인경우
+									// 현재 처리단계가 대기중인경우
+									if (process === PROCESS_STATE.READY) {
+										// 이전에 클릭한 요소에 의해 처리가 시작된 경우
+										if (key === lastCheckedKey) {
+											startKey = START_KEY.LAST;
+										}
+										// 현재 클릭한 요소에 의해 처리가 시작된 경우
+										else {
+											startKey = START_KEY.CURRENT;
+										}
+										// 처리 단계 실행중으로 변경
+										process = PROCESS_STATE.RUNNING;
 									}
-									// 현재 클릭한 요소에 의해 처리가 시작된 경우
-									else {
-										startKey = START_KEY.CURRENT;
+									// 현재 처리 단계가 실행중인경우
+									else if (
+										process === PROCESS_STATE.RUNNING
+									) {
+										// 단계를 마지막 값 처리중으로 변경
+										process = PROCESS_STATE.WAITING;
 									}
-									// 처리 단계 실행중으로 변경
-									process = PROCESS_STATE.RUNNING;
 								}
-								// 현재 처리 단계가 실행중인경우
-								else if (process === PROCESS_STATE.RUNNING) {
-									// 단계를 마지막 값 처리중으로 변경
-									process = PROCESS_STATE.WAITING;
+								// 처리가 시작되면
+								if (process === PROCESS_STATE.RUNNING) {
+									// 이전 값에 의해 처리가 시작된 경우
+									if (startKey === START_KEY.LAST) {
+										// 현재 input이 체크되어 있는경우
+										if (currentInputChecked) {
+											// 체크되지 않은값들만 클릭
+											!value.checked && value.click();
+										}
+										// 현재 input이 체크되어있지 않은경우
+										else {
+											// 체크된 값들만 클릭
+											value.checked && value.click();
+										}
+									}
+									// 현재 값에 의해 처리가 시작된 경우
+									else if (startKey === START_KEY.CURRENT) {
+										// 반복문 value의 key가 현재 key와 동일한 경우
+										if (key === currentKey) {
+											value.click();
+										}
+										// key가 현재키가 아니고, 현재 input이 체크되어 있는경우
+										else if (currentInputChecked) {
+											!value.checked && value.click();
+										}
+										// key가 현재키가 아니고, 현재 input이 체크되어있지 않은경우
+										else {
+											value.checked && value.click();
+										}
+									}
 								}
+								// 처리단계가 마지막인경우
+								else if (process === PROCESS_STATE.WAITING) {
+									// 이전 값에 의해 처리가 시작된 경우
+									if (startKey === START_KEY.LAST) {
+										// 현재 input이 체크되어 있는경우
+										if (currentInputChecked) {
+											// 체크된 값들만 클릭
+											value.checked && value.click();
+										} else {
+											// 체크되지 않은값들만 클릭
+											!value.checked && value.click();
+										}
+									}
+									// 현재 값에 의해 처리가 시작된 경우
+									else if (startKey === START_KEY.CURRENT) {
+										// 반복문 value의 key가 현재 key와 동일한 경우
+										if (key === currentKey) {
+											value.click();
+										}
+										// key가 현재키가 아니고, 현재 input이 체크되어 있는경우
+										else if (currentInputChecked) {
+											!value.checked && value.click();
+										}
+										// key가 현재키가 아니고, 현재 input이 체크되어있지 않은경우
+										else {
+											value.checked && value.click();
+										}
+									}
+									// lastCheckedKey 수정
+									if (cell.column.id === allCheckKey) {
+										setLastCheckedKey(
+											`${cell.row.original.id}/${cell.column.id}`,
+										);
+									}
+									// 처리 과정 종료로 변경
+									process = PROCESS_STATE.TERMINATED;
+								}
+								// 처리 과정이 종료되면 반복문 break;
+								if (process === PROCESS_STATE.TERMINATED) break;
 							}
-							// 처리가 시작되면
-							if (process === PROCESS_STATE.RUNNING) {
-								// 이전 값에 의해 처리가 시작된 경우
-								if (startKey === START_KEY.LAST) {
-									// 현재 input이 체크되어 있는경우
-									if (currentInputChecked) {
-										// 체크되지 않은값들만 클릭
-										!value.checked && value.click();
-									}
-									// 현재 input이 체크되어있지 않은경우
-									else {
-										// 체크된 값들만 클릭
-										value.checked && value.click();
-									}
-								}
-								// 현재 값에 의해 처리가 시작된 경우
-								else if (startKey === START_KEY.CURRENT) {
-									// 반복문 value의 key가 현재 key와 동일한 경우
-									if (key === currentKey) {
-										value.click();
-									}
-									// key가 현재키가 아니고, 현재 input이 체크되어 있는경우
-									else if (currentInputChecked) {
-										!value.checked && value.click();
-									}
-									// key가 현재키가 아니고, 현재 input이 체크되어있지 않은경우
-									else {
-										value.checked && value.click();
-									}
-								}
-							}
-							// 처리단계가 마지막인경우
-							else if (process === PROCESS_STATE.WAITING) {
-								// 이전 값에 의해 처리가 시작된 경우
-								if (startKey === START_KEY.LAST) {
-									// 현재 input이 체크되어 있는경우
-									if (currentInputChecked) {
-										// 체크된 값들만 클릭
-										value.checked && value.click();
-									} else {
-										// 체크되지 않은값들만 클릭
-										!value.checked && value.click();
-									}
-								}
-								// 현재 값에 의해 처리가 시작된 경우
-								else if (startKey === START_KEY.CURRENT) {
-									// 반복문 value의 key가 현재 key와 동일한 경우
-									if (key === currentKey) {
-										value.click();
-									}
-									// key가 현재키가 아니고, 현재 input이 체크되어 있는경우
-									else if (currentInputChecked) {
-										!value.checked && value.click();
-									}
-									// key가 현재키가 아니고, 현재 input이 체크되어있지 않은경우
-									else {
-										value.checked && value.click();
-									}
-								}
-								// lastCheckedKey 수정
-								if (cell.column.id === allCheckKey) {
-									setLastCheckedKey(
-										`${cell.row.original.id}/${cell.column.id}`,
-									);
-								}
-								// 처리 과정 종료로 변경
-								process = PROCESS_STATE.TERMINATED;
-							}
-							// 처리 과정이 종료되면 반복문 break;
-							if (process === PROCESS_STATE.TERMINATED) break;
 						}
 					}
 					// lastCheckedKey 값이 존재하지 않는 경우
