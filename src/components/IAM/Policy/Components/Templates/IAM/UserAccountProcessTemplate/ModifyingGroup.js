@@ -54,23 +54,23 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	//group1: 제어 그룹 유형1
 	const [group1, group1ComboBox] = useComboBox({
 		options: tempOption,
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 	//group2: 제어 그룹 유형2
 	const [group2, group2ComboBox] = useComboBox({
 		options: tempOption,
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 	//group3: 제어 그룹 유형3
 	const [group3, group3ComboBox] = useComboBox({
 		options: tempOption,
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 	//blockingType: 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'modifyingGroupBlockingType',
 		options: accountBlockingType2Options,
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 	//permissionType: 그룹 권한 처리
 	const [
@@ -80,7 +80,7 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	] = useRadio({
 		name: 'groupPermissionType',
 		options: groupPermissionTypeOptions,
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 
 	/**************************************************
@@ -88,9 +88,9 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		if (data?.ruleType) {
-			let attributes = {usage: usage === policyOption.usage.use};
+			let attributes = {usage: usage === policyOption.usage.use.key};
 			//사용 여부 true
-			if (usage === policyOption.usage.use) {
+			if (usage === policyOption.usage.use.key) {
 				attributes.blockingType = blockingType;
 				attributes.permissionType = permissionType;
 			}
@@ -105,28 +105,26 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
+		console.log(data);
 		setUsage(
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				usageOptions[0].key,
-				usageOptions[1].key,
+				policyOption.usage.use.key,
+				policyOption.usage.none.key,
 			),
 		);
-		//그룹 변경 사용 여부 ture
-		if (data?.usage) {
-			//TODO: 제어 그룹 유형
+		//TODO: 제어 그룹 유형
 
-			//계정 처리 방법 default value 있음
-			if (data?.blockingType) {
-				//계정 처리 방법 세팅
-				setBlockingType(data.blockingType);
-			}
-			//그룹 권한 처리 default value 있음
-			if (data?.permissionType) {
-				//그룹 권한 처리 세팅
-				setPermissionType(data?.permissionType);
-			}
+		//계정 처리 방법 default value 있음
+		if (data?.blockingType) {
+			//계정 처리 방법 세팅
+			setBlockingType(data.blockingType);
+		}
+		//그룹 권한 처리 default value 있음
+		if (data?.permissionType) {
+			//그룹 권한 처리 세팅
+			setPermissionType(data?.permissionType);
 		}
 	}, [data, setBlockingType, setPermissionType, setUsage]);
 

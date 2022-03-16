@@ -54,7 +54,7 @@ const Dormant = ({data, setTemplateData}) => {
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'dormantBlockingType',
 		options: accountBlockingTypeOptions,
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 	// unconnectedDays: 연속 미접속 기간
 	const [
@@ -65,7 +65,7 @@ const Dormant = ({data, setTemplateData}) => {
 		name: 'unconnectedDays',
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 
 	/**************************************************
@@ -75,10 +75,10 @@ const Dormant = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.ruleType) {
 			const attributes = {
-				usage: usage === policyOption.usage.use,
+				usage: usage === policyOption.usage.use.key,
 			};
 			//사용 여부 true
-			if (usage === policyOption.usage.use) {
+			if (usage === policyOption.usage.use.key) {
 				attributes.blockingType = blockingType;
 				attributes.unconnectedDays = unconnectedDays;
 			}
@@ -98,22 +98,19 @@ const Dormant = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				policyOption.usage.use,
-				policyOption.usage.none,
+				policyOption.usage.use.key,
+				policyOption.usage.none.key,
 			),
 		);
-		//휴면 사용 여부 true
-		if (data?.usage) {
-			//계정 처리 방법 default value 존재
-			if (data?.blockingType) {
-				//계정 처리 방법 세팅
-				setBlockingType(data.blockingType);
-			}
-			//연속 미접속 기간 default value 존재
-			if (data?.unconnectedDays) {
-				//연속 미접속 기간 세팅
-				setUnconnectedDays(data.unconnectedDays);
-			}
+		//계정 처리 방법 default value 존재
+		if (data?.blockingType) {
+			//계정 처리 방법 세팅
+			setBlockingType(data.blockingType);
+		}
+		//연속 미접속 기간 default value 존재
+		if (data?.unconnectedDays) {
+			//연속 미접속 기간 세팅
+			setUnconnectedDays(data.unconnectedDays);
 		}
 	}, [data, setBlockingType, setUnconnectedDays, setUsage]);
 

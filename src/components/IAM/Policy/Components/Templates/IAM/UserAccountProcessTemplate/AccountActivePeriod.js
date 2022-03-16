@@ -48,13 +48,13 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 	//activePeriod : 계정 사용 기간
 	const [expiryDays, expiryDaysTextBox, setExpiryDays] = useTextBox({
 		name: 'expiryDays',
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 	//blockingType : 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'accountActivePeriodBlockingType',
 		options: accountBlockingTypeOptions,
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 
 	/**************************************************
@@ -64,10 +64,10 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.ruleType) {
 			const attributes = {
-				usage: usage === policyOption.usage.use,
+				usage: usage === policyOption.usage.use.key,
 			};
 			//사용 여부 true
-			if (usage === policyOption.usage.use) {
+			if (usage === policyOption.usage.use.key) {
 				attributes.expiryDays = expiryDays;
 				attributes.blockingType = blockingType;
 			}
@@ -87,21 +87,19 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				policyOption.usage.use,
-				policyOption.usage.none,
+				policyOption.usage.use.key,
+				policyOption.usage.none.key,
 			),
 		);
-		if (data?.usage) {
-			//계정 사용 기간 default value 존재
-			if (data?.expiryDays) {
-				//계정 사용 기간 세팅
-				setExpiryDays(data.expiryDays);
-			}
-			//계정 처리 방법 default value 존재
-			if (data?.blockingType) {
-				//계정 처리 방법 세팅
-				setBlockingType(data.blockingType);
-			}
+		//계정 사용 기간 default value 존재
+		if (data?.expiryDays) {
+			//계정 사용 기간 세팅
+			setExpiryDays(data.expiryDays);
+		}
+		//계정 처리 방법 default value 존재
+		if (data?.blockingType) {
+			//계정 처리 방법 세팅
+			setBlockingType(data.blockingType);
 		}
 	}, [data, setBlockingType, setExpiryDays, setUsage]);
 

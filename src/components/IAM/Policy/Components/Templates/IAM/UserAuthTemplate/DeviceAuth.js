@@ -41,7 +41,7 @@ const DeviceAuth = ({data, setTemplateData}) => {
 	const [application, applicationCheckBox, setApplications] = useCheckBox({
 		options: applicationOptions,
 		//단말기 인증 사용 false일때 disabled
-		disabled: usage === policyOption.usage.none,
+		disabled: usage === policyOption.usage.none.key,
 	});
 
 	/**************************************************
@@ -74,8 +74,8 @@ const DeviceAuth = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data,
 				'usage',
-				policyOption.usage.use,
-				policyOption.usage.none,
+				policyOption.usage.use.key,
+				policyOption.usage.none.key,
 			),
 		);
 		//단말기 인증 사용 여부 true, 인증 단말기가 존재
