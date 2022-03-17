@@ -61,9 +61,9 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const dispatch = useDispatch();
 	const {ruleTemplates} = useSelector(IAM_RULE_MANAGEMENT_TEMPLATE.selector);
 	//생성할 권한 템플릿  객체 배열 state
-	const {actionTemplates} = useSelector(
-		IAM_ACTION_MANAGEMENT_TEMPLATE.selector,
-	);
+	// const {actionTemplates} = useSelector(
+	// 	IAM_ACTION_MANAGEMENT_TEMPLATE.selector,
+	// );
 	//정책 생성 요약보기 테이블 데이터
 	const [previewData, setPreviewData] = useState([]);
 
@@ -226,22 +226,23 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 
 		//IAM - 권한(action) 템플릿 데이터 처리
 		//TODO 함수로 모듈화할 예정입니다
-		actionTemplates.map((v) => {
-			actionPreviewfilter(v['details']).map((s, index) => {
-				let object = {};
-				index === 0 ? (object.policy = v.name) : (object.policy = '');
-				object.id = s.resource;
-				object.detail = s.resource;
-				object.value = s.value;
-				previewAllData.push(object);
-			});
-		});
+
+		// actionTemplates.map((v) => {
+		// 	actionPreviewfilter(v['details']).map((s, index) => {
+		// 		let object = {};
+		// 		index === 0 ? (object.policy = v.name) : (object.policy = '');
+		// 		object.id = s.resource;
+		// 		object.detail = s.resource;
+		// 		object.value = s.value;
+		// 		previewAllData.push(object);
+		// 	});
+		// });
 		//PAM - 규칙 템플릿 데이터 처리
 
 		//PAM - 권한(action) 템플릿 데이터 처리
 
 		setPreviewData(previewAllData);
-	}, [actionTemplates, ruleTemplates]);
+	}, [ruleTemplates]);
 
 	return (
 		formData && (

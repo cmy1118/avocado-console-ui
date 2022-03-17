@@ -1,12 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import RowCheckbox from '../../../../../RecycleComponents/rowCheckbox';
 import {useDispatch} from 'react-redux';
 import {ColDiv, RowDiv} from '../../../../../../styles/components/style';
 import {filterPropObj, objArrUnion} from '../../../../../../utils/dataFitering';
 import PropTypes from 'prop-types';
 import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../../../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate";
-import {actionTemplateFilter} from "../../../../../../utils/template";
+import {actionTemplateFilter, actionTemplateFilter2} from "../../../../../../utils/template";
 import TemplateElementContainer from "../../TemplateElementContainer";
+import {DRAGGABLE_KEY} from "../../../../../../Constants/Table/keys";
+import TableCheckBox from "../../../../../Table/ColumnCells/TableCheckBox";
+import Table from "../../../../../Table/Table";
 
 const constants = {
 	main: '사용자 관리 권한',
@@ -26,81 +29,202 @@ const constants = {
 		'설명',
 	],
 	//체크박스 action event 정보
-	action: ['created', 'updated', 'deleted', 'read', 'revoke'],
+	action: ['create', 'delete','find','update', 'revoke'],
 };
 
+//역할관리권한 템플릿 컴포넌트
 const RoleManagement = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
-	const [dataLists, setDataLists] = useState([]);
-	//역할관리권한 컬럼 에대한 action 정보
-	const tempDataLists = [
-		{action: 'create', data: false},
-		{action: 'update', data: false},
-		{action: 'delete', data: false},
-		{action: 'find', data: false},
-		{action: 'grant', data: false},
-		{action: 'revoke', data: false},
-	];
+	const checkboxRefs = useRef([]);
+	const [tableData, setTableData] = useState([]);
+	const [lastCheckedKey, setLastCheckedKey] = useState(null);
 
-	//렌더링시 체크박스 정보 조회
-	useEffect(() => {
-		const res = dispatch(
-			IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.findByIdAction({
-				range: 'elements=0-50',
-				templateId: templateId,
-			}),
-		)
-			.unwrap()
-			.then((res) => {
-				console.log('역할관리권한 findByIdAction:', res);
-				const setData =actionTemplateFilter(res)
-				dispatch(
-					IAM_ACTION_MANAGEMENT_TEMPLATE.action.getActionTemplates({
-						templateId: templateId,
-						name: res.data.name,
-						description: res.data.description,
-						data: setData,
-					}),
-				)
-				const filteredDataList = filterPropObj(
-					setData,
-					'resource',
-					'data',
-				);
-				const result = objArrUnion(
-					filteredDataList,
-					tempDataLists,
-					'data',
-					'resource',
-					'action',
-				);
-				setDataLists(result);
-			});
-	}, [dispatch]);
-
-	return (
-		<TemplateElementContainer
-			title={name}
-			description={description}
-			render={() => {
-				return (
-					<div>
-						<ColDiv padding={'0px 0px 0px 25%'} width={'100%'}>
-							{constants.column}
-						</ColDiv>
-						{dataLists.map((item, index) => (
-							<RowCheckbox
-								title={item.resource}
-								dataLists={item.data}
-								key={index}
+	//테이블 컬럼 데이터
+	const tableColumns =
+		[
+			{Header:'전체', accessor:'all-check'},
+			{Header:'생성', accessor:'create'},
+			{Header:'삭제', accessor:'delete'},
+			{Header:'조회', accessor:'find'},
+			{Header:'수정', accessor:'update'},
+			{Header:'회수', accessor:'revoke'},
+		]
+	const columns = useMemo(
+		() => {
+			let columnsArr=[]
+			tableColumns.map(v=>{
+				let tempObj = {
+					Header: '',
+					accessor: '',
+					Cell: function Component(cell) {
+						return (
+							<TableCheckBox
+								cell={cell}
+								setData={setTableData}
+								refs={checkboxRefs}
+								allCheckKey={'all-check'}
+								lastCheckedKey={lastCheckedKey}
+								setLastCheckedKey={setLastCheckedKey}
 							/>
-						))}
-					</div>
-				);
-			}}
-		/>
+						);
+					},
+					width: 30,
+				}
+				tempObj.Header=v.Header
+				tempObj.accessor=v.accessor
+				columnsArr.push(tempObj)
+			})
+			return columnsArr
+		},
+		[lastCheckedKey, tableColumns],
+	);
+
+	useEffect(() => {
+			const res = dispatch(
+				IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.findByIdAction({
+					range: 'elements=0-50',
+					templateId: templateId,
+				}),
+			)
+				.unwrap()
+				.then((res) => {
+					const setData =actionTemplateFilter2(res,constants.action)
+					setTableData(setData)
+					// dispatch(
+					// 	IAM_ACTION_MANAGEMENT_TEMPLATE.action.getActionTemplates({
+					// 		templateId: templateId,
+					// 		name: res.data.name,
+					// 		description: res.data.description,
+					// 		data: setData,
+					// 	}),
+					// )
+					// const filteredDataList = filterPropObj(
+					// 	setData,
+					// 	'resource',
+					// 	'data',
+					// );
+					// const result = objArrUnion(
+					// 	filteredDataList,
+					// 	tempDataLists,
+					// 	'data',
+					// 	'resource',
+					// 	'action',
+					// );
+					// setDataLists(result);
+				});
+	}, [dispatch, templateId]);
+console.log('tableData:',tableData)
+	return (
+			<TemplateElementContainer
+		title={name}
+		description={description}
+		render={() => {
+			return (
+				<div>
+					<Table
+				tableKey={'TemplateExample-key1'}
+				data={tableData}
+				columns={columns}
+				isCheckBox={false}
+				setData={setTableData}
+			/>
+				</div>
+			);
+		}}
+	/>
 	);
 };
+
+
+// 	<TemplateElementContainer
+// 		title={name}
+// 		description={description}
+// 		render={() => {
+// 			return (
+// 				<div>
+// 					<Table
+// 				tableKey={'TemplateExample-key1'}
+// 				data={tableData}
+// 				columns={columns}
+// 				isCheckBox={false}
+// 				setData={setTableData}
+// 			/>
+// 				</div>
+// 			);
+// 		}}
+// 	/>
+
+
+	// const [dataLists, setDataLists] = useState([]);
+	// //역할관리권한 컬럼 에대한 action 정보
+	// const tempDataLists = [
+	// 	{action: 'create', data: false},
+	// 	{action: 'update', data: false},
+	// 	{action: 'delete', data: false},
+	// 	{action: 'find', data: false},
+	// 	{action: 'grant', data: false},
+	// 	{action: 'revoke', data: false},
+	// ];
+	//
+	// //렌더링시 체크박스 정보 조회
+	// useEffect(() => {
+	// 	const res = dispatch(
+	// 		IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.findByIdAction({
+	// 			range: 'elements=0-50',
+	// 			templateId: templateId,
+	// 		}),
+	// 	)
+	// 		.unwrap()
+	// 		.then((res) => {
+	// 			console.log('역할관리권한 findByIdAction:', res);
+	// 			const setData =actionTemplateFilter(res)
+	// 			dispatch(
+	// 				IAM_ACTION_MANAGEMENT_TEMPLATE.action.getActionTemplates({
+	// 					templateId: templateId,
+	// 					name: res.data.name,
+	// 					description: res.data.description,
+	// 					data: setData,
+	// 				}),
+	// 			)
+	// 			const filteredDataList = filterPropObj(
+	// 				setData,
+	// 				'resource',
+	// 				'data',
+	// 			);
+	// 			const result = objArrUnion(
+	// 				filteredDataList,
+	// 				tempDataLists,
+	// 				'data',
+	// 				'resource',
+	// 				'action',
+	// 			);
+	// 			setDataLists(result);
+	// 		});
+	// }, [dispatch]);
+	//
+	// return (
+	// 	<TemplateElementContainer
+	// 		title={name}
+	// 		description={description}
+	// 		render={() => {
+	// 			return (
+	// 				<div>
+	// 					<ColDiv padding={'0px 0px 0px 25%'} width={'100%'}>
+	// 						{constants.column}
+	// 					</ColDiv>
+	// 					{dataLists.map((item, index) => (
+	// 						<RowCheckbox
+	// 							title={item.resource}
+	// 							dataLists={item.data}
+	// 							key={index}
+	// 						/>
+	// 					))}
+	// 				</div>
+	// 			);
+	// 		}}
+	// 	/>
+	// );
+// };
 RoleManagement.propTypes = {
 	templateId: PropTypes.string,
 	name: PropTypes.string,
