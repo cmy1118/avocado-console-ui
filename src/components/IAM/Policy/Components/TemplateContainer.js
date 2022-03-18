@@ -94,7 +94,7 @@ const TemplateContainer = ({template, setTemplateList, render}) => {
 					</TransparentButton>
 				</div>
 			</Header>
-			<Body isOpened={isOpened}>{render()}</Body>
+			<Body isOpened={isOpened}>{render}</Body>
 		</Container>
 	);
 };
@@ -102,7 +102,7 @@ const TemplateContainer = ({template, setTemplateList, render}) => {
 TemplateContainer.propTypes = {
 	template: PropTypes.object,
 	setTemplateList: PropTypes.func,
-	render: PropTypes.func,
+	render: PropTypes.object,
 };
 
 export default TemplateContainer;

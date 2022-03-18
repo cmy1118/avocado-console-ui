@@ -9,7 +9,7 @@ const NAME = 'IAM_POLICY_MANAGEMENT_POLICIES';
 /**************************************************
  * ambacc244 - IAM policy 생성 요청 액션
  **************************************************/
-const createPolicyAction = createAsyncThunk(
+const create = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
@@ -32,7 +32,7 @@ const createPolicyAction = createAsyncThunk(
 			},
 		);
 
-		return {id: getIdFormLocation(response.headers.location)};
+		return getIdFormLocation(response.headers.location);
 	},
 );
 /**************************************************
@@ -89,7 +89,7 @@ const IAM_POLICY_MANAGEMENT_POLICIES = {
 	selector: (state) => selectAllState(state[slice.name]),
 	action: slice.actions,
 	asyncAction: {
-		createPolicyAction,
+		create,
 		findAll,
 	},
 };

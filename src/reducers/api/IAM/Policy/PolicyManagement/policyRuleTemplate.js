@@ -8,24 +8,21 @@ const NAME = 'IAM_POLICY_MANAGEMENT_RULE_TEMPLATE';
 /**************************************************
  * seob - 규칙 템플릿 정책과 연결 액션
  ***************************************************/
-const joinAction = createAsyncThunk(
-	`${NAME}/JOIN`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
+const join = createAsyncThunk(`${NAME}/JOIN`, async (payload, {getState}) => {
+	const {userAuth} = getState().AUTH;
 
-		return await Axios.post(
-			`/open-api/v1/iam/policies/${payload.policyId}/rule-templates`,
-			[...payload.templateList],
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': contentType.JSON,
-				},
-				baseURL: baseURL.openApi,
+	return await Axios.post(
+		`/open-api/v1/iam/policies/${payload.policyId}/rule-templates`,
+		[...payload.templateList],
+		{
+			headers: {
+				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+				'Content-Type': contentType.JSON,
 			},
-		);
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+});
 
 const slice = createSlice({
 	name: NAME,
@@ -51,7 +48,7 @@ const IAM_POLICY_MANAGEMENT_RULE_TEMPLATE = {
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
 	action: slice.actions,
-	asyncAction: {joinAction},
+	asyncAction: {join},
 };
 
 export default IAM_POLICY_MANAGEMENT_RULE_TEMPLATE;

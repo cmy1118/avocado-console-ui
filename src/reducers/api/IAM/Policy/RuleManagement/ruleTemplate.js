@@ -2,14 +2,13 @@ import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
 import {contentType} from '../../../../../utils/auth';
 import {Axios, baseURL} from '../../../../../api/constants';
-import {getIdFormLocation} from '../../../../../utils/tableDataConverter';
 
 const NAME = 'IAM_RULE_MANAGEMENT_TEMPLATE';
 
 /**************************************************
  * ambacc244 - IAM rule 템플릿 요청 액션
  **************************************************/
-const findAllRuleTemplateAction = createAsyncThunk(
+const findAll = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
@@ -29,7 +28,7 @@ const findAllRuleTemplateAction = createAsyncThunk(
 /**************************************************
  * ambacc244 - IAM rule 생성 요청 액션
  **************************************************/
-const createRuleTemplateAction = createAsyncThunk(
+const create = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
@@ -51,7 +50,24 @@ const createRuleTemplateAction = createAsyncThunk(
 			},
 		);
 		console.log(response);
-		return {id: response.data};
+		return response;
+	},
+);
+
+const findById = createAsyncThunk(
+	`${NAME}/FIND_BY_ID`,
+	async (payload, {getState}) => {
+		const {userAuth} = getState().AUTH;
+
+		return await Axios.get(
+			`/open-api/v1/iam/rule-templates/${payload.templateId}`,
+			{
+				headers: {
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+				},
+				baseURL: baseURL.openApi,
+			},
+		);
 	},
 );
 
@@ -82,8 +98,9 @@ const IAM_RULE_MANAGEMENT_TEMPLATE = {
 	selector: (state) => selectAllState(state[slice.name]),
 	action: slice.actions,
 	asyncAction: {
-		findAllRuleTemplateAction,
-		createRuleTemplateAction,
+		findAll,
+		create,
+		findById,
 	},
 };
 

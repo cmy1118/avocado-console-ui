@@ -49,7 +49,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 						.map((v) => v.id)
 						.forEach((groupId) => {
 							dispatch(
-								IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
+								IAM_USER_GROUP_MEMBER.asyncAction.join({
 									groupId: groupId,
 									userUid: [userUid],
 								}),

@@ -54,11 +54,9 @@ const UserAccountPatternTemplate = ({templateId, name, description}) => {
 	 **************************************************/
 	useEffect(() => {
 		dispatch(
-			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
-				{
-					id: templateId,
-				},
-			),
+			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAll({
+				id: templateId,
+			}),
 		)
 			.unwrap()
 			.then((data) => {

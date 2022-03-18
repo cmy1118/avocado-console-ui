@@ -90,11 +90,9 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const data = await dispatch(
-				IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
-					{
-						id: templateId,
-					},
-				),
+				IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAll({
+					id: templateId,
+				}),
 			);
 			if (isFulfilled(data)) {
 				console.log(data.payload);

@@ -37,6 +37,20 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 	 * ambacc244 - 정책 생성 액션 요청으로 템플릿 데이터를 redux에 저장
 	 **************************************************/
 	useEffect(() => {
+		console.log('🐱', {
+			id: templateId,
+			data: {
+				name: name,
+				resource: policyTypes.iam,
+				description: description,
+				attributes: [
+					deviceAuthenticationData,
+					mfaData,
+					alternativeAuthNFailOverAuthData,
+					identityVerificationData,
+				],
+			},
+		});
 		if (creatingPolicyMode) {
 			dispatch(
 				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
@@ -72,14 +86,13 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 	 **************************************************/
 	useEffect(() => {
 		dispatch(
-			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
-				{
-					id: templateId,
-				},
-			),
+			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAll({
+				id: templateId,
+			}),
 		)
 			.unwrap()
 			.then((data) => {
+				console.log('🦊', data);
 				let defaultData = {};
 				data.map((v) => {
 					defaultData[v.attribute.ruleType] = v.attribute;

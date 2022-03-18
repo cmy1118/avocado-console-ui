@@ -97,7 +97,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 
 			//step1: 정책 생성
 			const createPolicyResponse = await dispatch(
-				IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.createPolicyAction({
+				IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.create({
 					name: formData.name,
 					description: formData.description,
 					type: policyManageTypes.Client,
@@ -108,7 +108,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 
 			// 정책 생성 비동기 처리가 fulfilled 된 경우
 			if (isFulfilled(createPolicyResponse)) {
-				const policyId = createPolicyResponse.payload.id;
+				const policyId = createPolicyResponse.payload;
 
 				//step2-1: action 생성
 				/**************************************************
@@ -135,7 +135,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				 ***************************************************/
 				//:TODO 정책 action api 작업중 완료시 적용예정
 				// dispatch(
-				// 	IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.asyncAction.joinAction(
+				// 	IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.asyncAction.join(
 				//   ,,,
 				// 	),
 				// ******************************************************
@@ -144,23 +144,19 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				let order = 1;
 				const templateList = [];
 				for (const v in ruleTemplates) {
-					// createRuleTemplateAction 액션의 response
+					// create 액션의 response
 					const createRuleTemplateActionResponse = await dispatch(
-						IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.createRuleTemplateAction(
-							{
-								...ruleTemplates[v],
-								attributes: ruleTemplates[
-									v
-								].attributes.map((data) =>
-									JSON.stringify(data),
-								),
-							},
-						),
+						IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.create({
+							...ruleTemplates[v],
+							attributes: ruleTemplates[
+								v
+							].attributes.map((data) => JSON.stringify(data)),
+						}),
 					);
 					// 비동기 처리가 fulfilled 된 경우
 					if (isFulfilled(createRuleTemplateActionResponse)) {
 						const ruleTemplateId =
-							createRuleTemplateActionResponse.payload.id;
+							createRuleTemplateActionResponse.payload;
 						// 정책과 연결할 템플릿 리스트 저장
 						templateList.push({
 							templateId: ruleTemplateId,
@@ -180,9 +176,10 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				 ***************************************************/
 				if (templateList.length === ruleTemplates.length) {
 					const ruleTemplateJoinActionResponse = await dispatch(
-						IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.joinAction(
-							{policyId: policyId, templateList: templateList},
-						),
+						IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.join({
+							policyId: policyId,
+							templateList: templateList,
+						}),
 					);
 					if (!isFulfilled(ruleTemplateJoinActionResponse)) {
 						// 에러 핸들링
