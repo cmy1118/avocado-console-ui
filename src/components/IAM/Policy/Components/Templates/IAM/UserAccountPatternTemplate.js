@@ -8,6 +8,7 @@ import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Pol
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplateDetail';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {policyTypes} from '../../../../../../utils/data';
+import {isFulfilled} from '../../../../../../utils/redux';
 
 /**************************************************
  * ambacc244 - 사용자 계정 패턴 컴포넌트
@@ -53,21 +54,31 @@ const UserAccountPatternTemplate = ({templateId, name, description}) => {
 	 * ambacc244 - 사용자 계정 패턴 템플릿의 default 정보 불러오기
 	 **************************************************/
 	useEffect(() => {
-		dispatch(
-			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAll({
-				id: templateId,
-			}),
-		)
-			.unwrap()
-			.then((data) => {
-				let defaultData = {};
+		const fetchData = async () => {
+			const data = await dispatch(
+				IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findById({
+					templateId,
+				}),
+			);
 
-				data.map((v) => {
-					defaultData[v.attribute.ruleType] = v.attribute;
-				});
-
-				setDefaultData(defaultData);
-			});
+			if (isFulfilled(data)) {
+				console.log('🦊', data);
+			} else {
+				// 에러 핸들링
+				console.log(data);
+			}
+		};
+		fetchData();
+		// .unwrap()
+		// .then((data) => {
+		// 	let defaultData = {};
+		//
+		// 	data.map((v) => {
+		// 		defaultData[v.attribute.ruleType] = v.attribute;
+		// 	});
+		//
+		// 	setDefaultData(defaultData);
+		// });
 	}, [dispatch, templateId]);
 
 	return (

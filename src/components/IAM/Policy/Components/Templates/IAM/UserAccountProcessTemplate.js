@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {policyTypes} from '../../../../../../utils/data';
+import {isFulfilled} from '../../../../../../utils/redux';
 
 /**************************************************
  * ambacc244 - 사용자 계정 처리 컴포넌트
@@ -69,21 +70,30 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 	 * ambacc244 - 사용자 계정 처리 템플릿의 default 정보 불러오기
 	 **************************************************/
 	useEffect(() => {
-		dispatch(
-			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAll({
-				id: templateId,
-			}),
-		)
-			.unwrap()
-			.then((data) => {
-				let defaultData = {};
-
-				data.map((v) => {
-					defaultData[v.attribute.ruleType] = v.attribute;
-				});
-
-				setDefaultData(defaultData);
-			});
+		const fetchData = async () => {
+			const data = await dispatch(
+				IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findById({
+					templateId,
+				}),
+			);
+			if (isFulfilled(data)) {
+				console.log('🦊', data);
+			} else {
+				// 에러 핸들링
+				console.log(data);
+			}
+		};
+		fetchData();
+		// .unwrap()
+		// .then((data) => {
+		// 	let defaultData = {};
+		//
+		// 	data.map((v) => {
+		// 		defaultData[v.attribute.ruleType] = v.attribute;
+		// 	});
+		//
+		// 	setDefaultData(defaultData);
+		// });
 	}, [dispatch, templateId]);
 
 	return (

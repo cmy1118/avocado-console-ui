@@ -10,6 +10,7 @@ import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {policyTypes} from '../../../../../../utils/data';
+import {isFulfilled} from '../../../../../../utils/redux';
 
 /**************************************************
  * ambacc244 - 사용자 인증 템플릿 컴포넌트
@@ -37,20 +38,6 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 	 * ambacc244 - 정책 생성 액션 요청으로 템플릿 데이터를 redux에 저장
 	 **************************************************/
 	useEffect(() => {
-		console.log('🐱', {
-			id: templateId,
-			data: {
-				name: name,
-				resource: policyTypes.iam,
-				description: description,
-				attributes: [
-					deviceAuthenticationData,
-					mfaData,
-					alternativeAuthNFailOverAuthData,
-					identityVerificationData,
-				],
-			},
-		});
 		if (creatingPolicyMode) {
 			dispatch(
 				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
@@ -85,20 +72,30 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 	 * ambacc244 - 사용자 인증 템플릿의 default 정보 불러오기
 	 **************************************************/
 	useEffect(() => {
-		dispatch(
-			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAll({
-				id: templateId,
-			}),
-		)
-			.unwrap()
-			.then((data) => {
+		const fetchData = async () => {
+			const data = await dispatch(
+				IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findById({
+					templateId,
+				}),
+			);
+			if (isFulfilled(data)) {
 				console.log('🦊', data);
-				let defaultData = {};
-				data.map((v) => {
-					defaultData[v.attribute.ruleType] = v.attribute;
-				});
-				setDefaultData(defaultData);
-			});
+			} else {
+				// 에러 핸들링
+				console.log(data);
+			}
+		};
+		fetchData();
+
+		// .unwrap()
+		// .then((data) => {
+		// 	console.log('', data);
+		// 	let defaultData = {};
+		// 	data.map((v) => {
+		// 		defaultData[v.attribute.ruleType] = v.attribute;
+		// 	});
+		// 	setDefaultData(defaultData);
+		// });
 	}, [dispatch, templateId]);
 
 	return (

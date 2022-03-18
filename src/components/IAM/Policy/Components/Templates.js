@@ -89,30 +89,40 @@ const IamTemplateList = ({
 								return (
 									<UserAuthTemplate
 										templateId={template.id}
+										name={template.name}
+										description={template.description}
 									/>
 								);
 							case 'account':
 								return (
 									<UserAccountProcessTemplate
 										templateId={template.id}
+										name={template.name}
+										description={template.description}
 									/>
 								);
 							case 'userAccess':
 								return (
 									<UserAccessTemplate
 										templateId={template.id}
+										name={template.name}
+										description={template.description}
 									/>
 								);
 							case 'session':
 								return (
 									<UserSessionTemplate
 										templateId={template.id}
+										name={template.name}
+										description={template.description}
 									/>
 								);
 							case 'pattern':
 								return (
 									<UserAccountPatternTemplate
 										templateId={template.id}
+										name={template.name}
+										description={template.description}
 									/>
 								);
 
@@ -124,17 +134,27 @@ const IamTemplateList = ({
 						switch (template.id) {
 							case 'KR-2020-0001:202202:0001':
 								return (
-									<UserManagement templateId={template.id} />
+									<UserManagement
+										templateId={template.id}
+										name={template.name}
+										description={template.description}
+									/>
 								);
 							case 'KR-2020-0001:202202:0002':
 								return (
 									<PolicyManagement
 										templateId={template.id}
+										name={template.name}
+										description={template.description}
 									/>
 								);
 							case 'KR-2020-0001:202202:0003':
 								return (
-									<RoleManagement templateId={template.id} />
+									<RoleManagement
+										templateId={template.id}
+										name={template.name}
+										description={template.description}
+									/>
 								);
 
 							default:
@@ -146,24 +166,44 @@ const IamTemplateList = ({
 						switch (template.categoryCode) {
 							case '1':
 								return (
-									<ConnectResource templateId={template.id} />
+									<ConnectResource
+										templateId={template.id}
+										name={template.name}
+										description={template.description}
+									/>
 								);
 							case '2':
 								return (
 									<ResourceAccessRule
 										templateId={template.id}
+										name={template.name}
+										description={template.description}
 									/>
 								);
 							case '3':
 								return (
-									<ConnectReason templateId={template.id} />
+									<ConnectReason
+										templateId={template.id}
+										name={template.name}
+										description={template.description}
+									/>
 								);
 							case '4':
 								return (
-									<CommandControl templateId={template.id} />
+									<CommandControl
+										templateId={template.id}
+										name={template.name}
+										description={template.description}
+									/>
 								);
 							case '5':
-								return <FileAccess templateId={template.id} />;
+								return (
+									<FileAccess
+										templateId={template.id}
+										name={template.name}
+										description={template.description}
+									/>
+								);
 
 							default:
 								return <h1>No template match</h1>;
