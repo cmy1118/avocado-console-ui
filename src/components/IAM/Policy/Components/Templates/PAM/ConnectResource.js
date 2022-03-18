@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
 import {
 	loginTypeOptions,
+	policyOption,
 	resourceOptions,
 } from '../../../../../../utils/policyOptions';
+import ResourceGrooupTableContainer from './Resource/ResourceGrooupTableContainer';
+import ResourceTableContainer from './Resource/ResourceTableContainer';
+import ResourceSelectionContainer from './Resource/ResourceSelectionContainer';
 
 const connectResource = {
 	loginType: {
@@ -57,6 +61,11 @@ const ConnectResource = () => {
 						<div>
 							{resourceRadioButton()}
 							<div>----------------------------------</div>
+							<ResourceSelectionContainer
+								disabled={
+									resource === policyOption.resource.all.key
+								}
+							/>
 						</div>
 					);
 				}}

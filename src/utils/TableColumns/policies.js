@@ -88,3 +88,45 @@ export const POLICY_ADD_USER_MANAGEMEN_COLUMN = [
 		// tableKey: '1',
 	}),
 ];
+
+export const PAM_TEMPLATE_RESOURCE_GROUP_COLUMN = [
+	{
+		accessor: 'route',
+		Header: '자원 그룹 경로',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+	{
+		accessor: 'name',
+		Header: '그룹 이름',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+];
+
+export const PAM_TEMPLATE_RESOURCE_COLUMN = [
+	{
+		accessor: 'group',
+		Header: '그룹',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+	{
+		accessor: 'name',
+		Header: '자원 이름',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+	{
+		accessor: 'address',
+		Header: '주소',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+	{
+		accessor: 'protocol',
+		Header: '프로토콜',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+];

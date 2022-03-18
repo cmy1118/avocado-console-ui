@@ -211,8 +211,9 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	useEffect(() => {
 		//TODO:정책 생성을 눌렀을시 렌더링 실행되도록
 		let previewAllData = [];
-
 		//IAM - 규칙 템플릿 데이터 처리
+		console.log(ruleTemplates);
+
 		Object.values(ruleTemplates).map((v) => {
 			for (let i = 0; i < v.attributes.length; i++) {
 				let object = new Object();
@@ -223,7 +224,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				previewAllData.push(object);
 			}
 		});
-
+		console.log(actionTemplates);
 		//IAM - 권한(action) 템플릿 데이터 처리
 		//TODO 함수로 모듈화할 예정입니다
 		actionTemplates.map((v) => {
