@@ -73,16 +73,16 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 	 **************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
-			const data = await dispatch(
+			const res = await dispatch(
 				IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findById({
 					templateId,
 				}),
 			);
-			if (isFulfilled(data)) {
-				console.log('🦊', data);
+			if (isFulfilled(res)) {
+				console.log('🦊', res);
 			} else {
 				// 에러 핸들링
-				console.log(data);
+				console.log(res);
 			}
 		};
 		fetchData();

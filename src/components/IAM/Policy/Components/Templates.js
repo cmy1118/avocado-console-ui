@@ -414,8 +414,6 @@ const IamTemplateList = ({
 		}
 	}, [policyType]);
 
-	console.log(actionTemplates);
-
 	return (
 		<TemplateListContainer>
 			<Title>{contents[policyType].title}</Title>

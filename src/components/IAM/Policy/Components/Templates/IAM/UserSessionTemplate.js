@@ -9,12 +9,12 @@ import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import PropTypes from 'prop-types';
-import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplateDetail';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
 import {policyTypes} from '../../../../../../utils/data';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {isFulfilled} from '../../../../../../utils/redux';
+import {ruleTypes} from '../../../../../../utils/template';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -133,31 +133,29 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
-			const data = await dispatch(
+			const res = await dispatch(
 				IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findById({
 					templateId,
 				}),
 			);
-			if (isFulfilled(data)) {
-				console.log(data);
-				for (let v of data.payload) {
-					// 속성의 규칙 타입이 screen_saver(화면보호기)인 경우
-					if (v.attribute.ruleType === 'screen_saver') {
+			if (isFulfilled(res)) {
+				console.log(res.payload.data);
+				setData(res.payload.data);
+				for (let v of res.payload.data.attributes) {
+					if (v.ruleType === ruleTypes.screen_saver) {
 						setScreenSaver(v);
-						setScreenSaverValue(v.attribute.usage ? 'yes' : 'no');
-						setIdleTime(v.attribute.timeToIdle);
-					}
-					// 속성의 규칙 타입이 session_timeout(세션타임아웃)인 경우
-					else if (v.attribute.ruleType === 'session_timeout') {
+						setScreenSaverValue(v.usage ? 'yes' : 'no');
+						setIdleTime(v.timeToIdle);
+					} else if (v.ruleType === ruleTypes.session_timeout) {
 						setSessionTimeout(v);
 
-						const data = Object.entries(v.attribute.policies).map(
-							(x) => ({
-								...x[1],
-								id: x[0],
-								[DRAGGABLE_KEY]: x[0],
-								usage: x[1].usage ? 'yes' : 'no',
-								application: contents.sessionTimeout[x[0]],
+						const data = Object.entries(v.policies).map(
+							([key, value]) => ({
+								...value,
+								id: key,
+								[DRAGGABLE_KEY]: key,
+								usage: value.usage ? 'yes' : 'no',
+								application: contents.sessionTimeout[key],
 							}),
 						);
 						setTableData(data);
@@ -165,7 +163,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 				}
 			} else {
 				// 에러 핸들링
-				console.log(data.error);
+				console.log(res.error);
 			}
 		};
 		fetchData();
@@ -177,11 +175,8 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 	useEffect(() => {
 		setScreenSaver((data) => ({
 			...data,
-			attribute: {
-				...data.attribute,
-				usage: screenSaverValue === 'yes',
-				timeToIdle: parseInt(idleTime),
-			},
+			usage: screenSaverValue === 'yes',
+			timeToIdle: parseInt(idleTime),
 		}));
 	}, [idleTime, screenSaverValue]);
 
@@ -201,10 +196,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 
 		setSessionTimeout((prev) => ({
 			...prev,
-			attribute: {
-				...prev.attribute,
-				policies: policies,
-			},
+			policies: policies,
 		}));
 	}, [tableData]);
 
@@ -212,14 +204,17 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 	 * seob - 화면보호기, 세션타임아웃 데이터 변경시 setData로 전체 data 저장
 	 ***************************************************/
 	useEffect(() => {
-		setData([screenSaver, sessionTimeout]);
+		setData((prev) => ({
+			...prev,
+			attributes: [screenSaver, sessionTimeout],
+		}));
 	}, [screenSaver, sessionTimeout]);
 
 	/**************************************************
 	 * seob717 - 정책 생성 액션 요청으로 템플릿 데이터를 redux에 저장
 	 **************************************************/
 	useEffect(() => {
-		// console.log(data);
+		console.log('🦊', data);
 		if (creatingPolicyMode) {
 			dispatch(
 				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
