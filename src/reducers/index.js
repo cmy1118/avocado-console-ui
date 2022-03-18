@@ -3,7 +3,7 @@ import storageSession from 'redux-persist/lib/storage/session';
 import createFilter from 'redux-persist-transform-filter';
 import {persistReducer} from 'redux-persist';
 
-import IAM_RULE_MANAGEMENT_TEMPLATE from './api/IAM/Policy/RuleManagement/template';
+import IAM_RULE_MANAGEMENT_TEMPLATE from './api/IAM/Policy/RuleManagement/ruleTemplate';
 
 import IAM_USER from './api/IAM/User/User/user';
 import IAM_USER_GROUP_TYPE from './api/IAM/User/Group/groupType';
@@ -31,13 +31,13 @@ import IAM_GRANT_POLICY_BY_ROLE from './api/IAM/User/Policy/GrantPolicy/role';
 import IAM_GRANT_POLICY_BY_USER from './api/IAM/User/Policy/GrantPolicy/user';
 import IAM_POLICY_TEMPLATE from './api/IAM/User/Policy/policyTemplate';
 import PAM_SESSION from './api/PAM/session';
-import IAM_RULE_TEMPLATE_DETAIL from './api/IAM/Policy/RuleManagement/templateDetail';
+import IAM_RULE_TEMPLATE_DETAIL from './api/IAM/Policy/RuleManagement/ruleTemplateDetail';
 import IAM_POLICY_MANAGEMENT_POLICIES from './api/IAM/Policy/PolicyManagement/policies';
 import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './api/IAM/Policy/ActionManagement/actionTemplateDetail';
 import IAM_ACTION_MANAGEMENT_TEMPLATE from './api/IAM/Policy/ActionManagement/actionTemplate';
 
 import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from './api/IAM/Policy/PolicyManagement/policyRuleTemplate';
-import IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE from "./api/IAM/Policy/PolicyManagement/policyActionTemplate";
+import IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE from './api/IAM/Policy/PolicyManagement/policyActionTemplate';
 
 const authFilter = createFilter(AUTH.name, [
 	'companyId',
@@ -100,7 +100,7 @@ const rootReducer = combineReducers({
 	[IAM_ACTION_MANAGEMENT_TEMPLATE.name]:
 		IAM_ACTION_MANAGEMENT_TEMPLATE.reducer,
 	[IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.name]:
-	IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.reducer,
+		IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.reducer,
 
 	/******************************************/
 	/* ambacc244 : IAM - Rule reducers

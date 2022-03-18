@@ -238,6 +238,38 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
+		case 'allowed_service_time': {
+			string += printUsage(attribute);
+
+			if (attribute?.usage) {
+				string += '\n계정 처리 방법 : ' + 'hello';
+				string += '\n유예 기간 : ';
+				string += '\n계정 정상화 : 관리자 해제';
+			}
+			break;
+		}
+
+		case 'session_timeout': {
+			Object.entries(attribute.policies).map(([key, value], i) => {
+				string += i === 0 ? `${key}` : `\n${key}`;
+				if (value.usage) {
+					string += `\n세션 유지 시간 : ${value.sessionTimeSeconds}초`;
+					string += `\n연결 보존 시간 : ${value.keepAliveTimeSeconds}초`;
+					string += `\n타임아웃 처리 : ${value.blockingType}`;
+				} else {
+					string += `\n${printUsage(value)}`;
+				}
+			});
+
+			break;
+		}
+
+		case 'screen_saver': {
+			string += printUsage(attribute);
+			string += `\n유휴시간 : ${attribute.timeToIdle}초`;
+			break;
+		}
+
 		default:
 			break;
 	}

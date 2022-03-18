@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import TemplateElement from '../../TemplateElement';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
@@ -9,25 +9,17 @@ import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import {RowDiv} from '../../../../../../styles/components/style';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import PropTypes from 'prop-types';
-import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/templateDetail';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplateDetail';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/template';
+import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
 import {policyTypes} from '../../../../../../utils/data';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
-import CheckBox from '../../../../../RecycleComponents/New/CheckBox';
-import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
+import {isFulfilled} from '../../../../../../utils/redux';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
  ***************************************************/
 const contents = {
-	common: {
-		isLimited: {
-			title: '제한 여부',
-			true: '제한 함',
-			false: '제한 안함',
-		},
-	},
 	sessionTimeout: {
 		title: '세션 타임 아웃',
 		description: [
@@ -137,20 +129,20 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 	);
 
 	/**************************************************
-	 * seob - 규칙 템플릿 id에 해당하는 detail 정보 findAll
+	 * seob - 규칙 템플릿 id에 해당하는 데이터 detail - findAll
 	 ***************************************************/
 	useEffect(() => {
-		dispatch(
-			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
-				{
-					id: templateId,
-				},
-			),
-		)
-			.unwrap()
-			.then((res) => {
-				// console.log(res);
-				for (let v of res) {
+		const fetchData = async () => {
+			const data = await dispatch(
+				IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
+					{
+						id: templateId,
+					},
+				),
+			);
+			if (isFulfilled(data)) {
+				console.log(data);
+				for (let v of data.payload) {
 					// 속성의 규칙 타입이 screen_saver(화면보호기)인 경우
 					if (v.attribute.ruleType === 'screen_saver') {
 						setScreenSaver(v);
@@ -173,7 +165,12 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 						setTableData(data);
 					}
 				}
-			});
+			} else {
+				// 에러 핸들링
+				console.log(data.error);
+			}
+		};
+		fetchData();
 	}, [dispatch, setIdleTime, setScreenSaverValue, templateId]);
 
 	/**************************************************
@@ -198,7 +195,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 		tableData.forEach((v) => {
 			policies[v.id] = {
 				usage: v.usage === 'yes',
-				sessionTimeSeconds: parseInt(v.sessionTimeout),
+				sessionTimeSeconds: parseInt(v.sessionTimeSeconds),
 				keepAliveTimeSeconds: parseInt(v.keepAliveTimeSeconds),
 				blockingType: v.blockingType,
 			};

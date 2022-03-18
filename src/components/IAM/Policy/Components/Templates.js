@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {useDispatch} from 'react-redux';
 import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate';
-import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../reducers/api/IAM/Policy/RuleManagement/template';
 import {templateType} from '../../../../utils/template';
 import UserAccountProcessTemplate from './Templates/IAM/UserAccountProcessTemplate';
 import UserAuthTemplate from './Templates/IAM/UserAuthTemplate';
@@ -14,11 +13,13 @@ import UserAccountPatternTemplate from './Templates/IAM/UserAccountPatternTempla
 import UserManagement from './Templates/IAM/UserManagement';
 import PolicyManagement from './Templates/IAM/PolicyManagement';
 import RoleManagement from './Templates/IAM/RoleManagement';
-import AccessSession from './Templates/PAM/AccessSession';
+import CommandControl from './Templates/PAM/CommandControl';
 import {policyTypes} from '../../../../utils/data';
 import ConnectResource from './Templates/PAM/ConnectResource';
 import ConnectReason from './Templates/PAM/ConnectReason';
 import ResourceAccessRule from './Templates/PAM/ResourceAccessRule';
+import FileAccess from './Templates/PAM/FileAccess';
+import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
 
 const Container = styled.div`
 	display: flex;
@@ -53,7 +54,12 @@ const contents = {
  * setIsOpened: 추가할 템플릿 리스트 사이드의 setOpen
  * policyType : 템플릿 타입
  ***************************************************/
-const IamTemplateList = ({setTemplateList, setIsOpened, policyType}) => {
+const IamTemplateList = ({
+	setTemplateList,
+	templateList,
+	setIsOpened,
+	policyType,
+}) => {
 	// 각 템플릿별 설명
 	const [templateDescription, setTemplateDescription] = useState('');
 	// IAM 규칙 템플릿 리스트
@@ -74,6 +80,11 @@ const IamTemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 	 ***************************************************/
 	const addTemplate = useCallback(
 		({template, type}) => {
+			if (templateList.length === 5) {
+				alert('추가 가능한 최대 템플릿 수는 5개 입니다.');
+				return;
+			}
+
 			console.log(template);
 			let currentTemplate = null;
 			// 규칙 템플릿인경우
@@ -201,7 +212,7 @@ const IamTemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 			});
 			setIsOpened(false);
 		},
-		[setIsOpened, setTemplateList],
+		[setIsOpened, setTemplateList, templateList.length],
 	);
 
 	/**************************************************
@@ -298,6 +309,7 @@ IamTemplateList.propTypes = {
 	setTemplateList: PropTypes.func,
 	setIsOpened: PropTypes.func,
 	policyType: PropTypes.string,
+	templateList: PropTypes.array,
 };
 
 /**************************************************
@@ -307,7 +319,12 @@ IamTemplateList.propTypes = {
  * setIsOpened: 추가할 템플릿 리스트 사이드의 setOpen
  * policyType : 템플릿 타입
  ***************************************************/
-const PamTemplateList = ({setTemplateList, setIsOpened, policyType}) => {
+const PamTemplateList = ({
+	setTemplateList,
+	templateList,
+	setIsOpened,
+	policyType,
+}) => {
 	// 각 템플릿별 설명
 	const [templateDescription, setTemplateDescription] = useState('');
 	// PAM 규칙 템플릿 리스트
@@ -329,6 +346,11 @@ const PamTemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 	 ***************************************************/
 	const addTemplate = useCallback(
 		({template, type}) => {
+			if (templateList.length === 5) {
+				alert('추가 가능한 최대 템플릿 수는 5개 입니다.');
+				return;
+			}
+
 			console.log(template);
 			let currentTemplate = null;
 			// 규칙 템플릿인경우
@@ -388,7 +410,7 @@ const PamTemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 			});
 			setIsOpened(false);
 		},
-		[setIsOpened, setTemplateList],
+		[setIsOpened, setTemplateList, templateList.length],
 	);
 
 	/**************************************************
@@ -427,27 +449,33 @@ const PamTemplateList = ({setTemplateList, setIsOpened, policyType}) => {
 		setRuleTemplates([
 			{
 				id: 1,
-				name: '접속 세션 정책',
-				description: '접속 세션 정책 입니다.',
-				component: AccessSession,
-			},
-			{
-				id: 2,
 				name: '자원 접속 인증',
 				description: '자원 접속 인증 입니다.',
 				component: ConnectResource,
 			},
 			{
-				id: 3,
+				id: 2,
 				name: '자원 접근 정책',
 				description: '자원 접근 정책 입니다.',
 				component: ResourceAccessRule,
 			},
 			{
-				id: 4,
+				id: 3,
 				name: '접속 사유 정책',
 				description: '접속 사유 정책 입니다.',
 				component: ConnectReason,
+			},
+			{
+				id: 4,
+				name: '명령어 제어 정책',
+				description: '명령어 제어 정책 입니다.',
+				component: CommandControl,
+			},
+			{
+				id: 5,
+				name: '파일 접근 권한',
+				description: '파일 접근 권한 정책 입니다.',
+				component: FileAccess,
 			},
 		]);
 		setActionTemplates([]);
@@ -517,6 +545,7 @@ PamTemplateList.propTypes = {
 	setTemplateList: PropTypes.func,
 	setIsOpened: PropTypes.func,
 	policyType: PropTypes.string,
+	templateList: PropTypes.array,
 };
 
 /**************************************************
@@ -566,6 +595,7 @@ const Templates = ({isOpened, setIsOpened, policyType}) => {
 				? isOpened && (
 						<IamTemplateList
 							setTemplateList={setIamTemplateList}
+							templateList={iamTemplateList}
 							setIsOpened={setIsOpened}
 							policyType={policyType}
 						/>
@@ -573,6 +603,7 @@ const Templates = ({isOpened, setIsOpened, policyType}) => {
 				: isOpened && (
 						<PamTemplateList
 							setTemplateList={setPamTemplateList}
+							templateList={pamTemplateList}
 							setIsOpened={setIsOpened}
 							policyType={policyType}
 						/>

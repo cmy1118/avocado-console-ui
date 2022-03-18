@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import PropTypes from 'prop-types';
-import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/templateDetail';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplateDetail';
 import {useDispatch, useSelector} from 'react-redux';
 import TemplateElement from '../../TemplateElement';
 import TimeInterval from '../../../../../RecycleComponents/Templates/TimeInterval';
 import useRadio from '../../../../../../hooks/useRadio';
-import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/template';
+import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
 import {policyTypes} from '../../../../../../utils/data';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
+import {isFulfilled} from '../../../../../../utils/redux';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -87,23 +88,29 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 	 * seob - 템플릿 id를 통해 detail조회 후 setState
 	 ***************************************************/
 	useEffect(() => {
-		dispatch(
-			IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
-				{
-					id: templateId,
-				},
-			),
-		)
-			.unwrap()
-			.then((res) => {
-				res.forEach((v) => {
+		const fetchData = async () => {
+			const data = await dispatch(
+				IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetailAction(
+					{
+						id: templateId,
+					},
+				),
+			);
+			if (isFulfilled(data)) {
+				console.log(data.payload);
+				for (let v of data.payload) {
 					v.resource.includes('console-ui') &&
 						setConsoleRadioValue(v.attribute.usage ? 'yes' : 'no');
 					v.resource.includes('web-terminal-ui') &&
 						setWebtermRadioValue(v.attribute.usage ? 'yes' : 'no');
-				});
-				setData(res);
-			});
+				}
+
+				setData(data.payload);
+			} else {
+				console.log(data.error);
+			}
+		};
+		fetchData();
 	}, [dispatch, setConsoleRadioValue, setWebtermRadioValue, templateId]);
 
 	/**************************************************
@@ -138,7 +145,6 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 	 * seob717 - 정책 생성 액션 요청으로 템플릿 데이터를 redux에 저장
 	 **************************************************/
 	useEffect(() => {
-		console.log(data);
 		if (creatingPolicyMode) {
 			dispatch(
 				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({

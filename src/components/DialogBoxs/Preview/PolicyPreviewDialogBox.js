@@ -3,7 +3,7 @@ import ModalTableContainer from '../../RecycleComponents/ModalTableContainer';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {TitleBar} from '../../../styles/components/iam/iam';
-import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/RuleManagement/template';
+import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
 import {
 	controlTypes,
 	policyManageTypes,
@@ -55,15 +55,18 @@ const policyDescription = {
 	// 사용자 계정 패턴
 	user_id_pattern: '사용자 ID 패턴',
 	password_pattern: '비밀번호 패턴',
+	allowed_service_time: '접근 허용 시간',
+	session_timeout: '세션 타임아웃',
+	screen_saver: '화면 보호기',
 };
 
 const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const dispatch = useDispatch();
 	const {ruleTemplates} = useSelector(IAM_RULE_MANAGEMENT_TEMPLATE.selector);
 	//생성할 권한 템플릿  객체 배열 state
-	// const {actionTemplates} = useSelector(
-	// 	IAM_ACTION_MANAGEMENT_TEMPLATE.selector,
-	// );
+	const {actionTemplates} = useSelector(
+		IAM_ACTION_MANAGEMENT_TEMPLATE.selector,
+	);
 	//정책 생성 요약보기 테이블 데이터
 	const [previewData, setPreviewData] = useState([]);
 
@@ -160,7 +163,6 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 							createRuleTemplateActionResponse.payload.id;
 						// 정책과 연결할 템플릿 리스트 저장
 						templateList.push({
-							policyId: policyId,
 							templateId: ruleTemplateId,
 							order: order++,
 						});
@@ -179,7 +181,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				if (templateList.length === ruleTemplates.length) {
 					const ruleTemplateJoinActionResponse = await dispatch(
 						IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.joinAction(
-							templateList,
+							{policyId: policyId, templateList: templateList},
 						),
 					);
 					if (!isFulfilled(ruleTemplateJoinActionResponse)) {
@@ -212,10 +214,12 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 		//TODO:정책 생성을 눌렀을시 렌더링 실행되도록
 		let previewAllData = [];
 
+		console.log(ruleTemplates);
+
 		//IAM - 규칙 템플릿 데이터 처리
 		Object.values(ruleTemplates).map((v) => {
 			for (let i = 0; i < v.attributes.length; i++) {
-				let object = new Object();
+				let object = {};
 				if (i === 0) object.policy = v.name;
 				object.id = v.attributes[i].ruleType;
 				object.detail = policyDescription[v.attributes[i].ruleType];
@@ -226,23 +230,22 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 
 		//IAM - 권한(action) 템플릿 데이터 처리
 		//TODO 함수로 모듈화할 예정입니다
-
-		// actionTemplates.map((v) => {
-		// 	actionPreviewfilter(v['details']).map((s, index) => {
-		// 		let object = {};
-		// 		index === 0 ? (object.policy = v.name) : (object.policy = '');
-		// 		object.id = s.resource;
-		// 		object.detail = s.resource;
-		// 		object.value = s.value;
-		// 		previewAllData.push(object);
-		// 	});
-		// });
+		actionTemplates.map((v) => {
+			actionPreviewfilter(v['details']).map((s, index) => {
+				let object = {};
+				index === 0 ? (object.policy = v.name) : (object.policy = '');
+				object.id = s.resource;
+				object.detail = s.resource;
+				object.value = s.value;
+				previewAllData.push(object);
+			});
+		});
 		//PAM - 규칙 템플릿 데이터 처리
 
 		//PAM - 권한(action) 템플릿 데이터 처리
 
 		setPreviewData(previewAllData);
-	}, [ruleTemplates]);
+	}, [actionTemplates, ruleTemplates]);
 
 	return (
 		formData && (

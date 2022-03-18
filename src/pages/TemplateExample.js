@@ -66,7 +66,7 @@ const TemplateExample = () => {
 						/>
 					);
 				},
-				width: 30,
+				width: 50,
 			},
 			{
 				Header: '조회',
@@ -83,7 +83,7 @@ const TemplateExample = () => {
 						/>
 					);
 				},
-				width: 30,
+				width: 50,
 			},
 			{
 				Header: '수정',
@@ -100,7 +100,7 @@ const TemplateExample = () => {
 						/>
 					);
 				},
-				width: 30,
+				width: 50,
 			},
 			{
 				Header: '삭제',
@@ -117,7 +117,7 @@ const TemplateExample = () => {
 						/>
 					);
 				},
-				width: 30,
+				width: 50,
 			},
 		],
 		[lastCheckedKey],

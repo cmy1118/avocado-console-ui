@@ -14,8 +14,8 @@ const joinAction = createAsyncThunk(
 		const {userAuth} = getState().AUTH;
 
 		return await Axios.post(
-			`/open-api/v1/iam/policies/rule-templates`,
-			[...payload],
+			`/open-api/v1/iam/policies/${payload.policyId}/rule-templates`,
+			[...payload.templateList],
 			{
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
