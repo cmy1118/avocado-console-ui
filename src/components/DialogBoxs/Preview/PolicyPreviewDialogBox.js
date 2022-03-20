@@ -19,13 +19,13 @@ import Table from '../../Table/Table';
 
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from '../../../reducers/api/IAM/Policy/PolicyManagement/policyRuleTemplate';
-import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate';
 import {isFulfilled} from '../../../utils/redux';
 
 import {
 	actionPreviewfilter,
 	roleAttributeConvertor,
 } from '../../../utils/preview';
+import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate";
 
 const policyPreviewDialogBox = {
 	header: '정책 생성 요약보기',
@@ -61,9 +61,9 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const dispatch = useDispatch();
 	const {ruleTemplates} = useSelector(IAM_RULE_MANAGEMENT_TEMPLATE.selector);
 	//생성할 권한 템플릿  객체 배열 state
-	// const {actionTemplates} = useSelector(
-	// 	IAM_ACTION_MANAGEMENT_TEMPLATE.selector,
-	// );
+	const {actionTemplates} = useSelector(
+		IAM_ACTION_MANAGEMENT_TEMPLATE.selector,
+	);
 	//정책 생성 요약보기 테이블 데이터
 	const [previewData, setPreviewData] = useState([]);
 
@@ -81,120 +81,129 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 		);
 	}, [dispatch]);
 
-	/**************************************************
-	 * ambacc244 - 정책 생성
-	 **************************************************/
-	const onSubmitPolicyForm = useCallback(async () => {
-		if (formData.type === policyTypes.iam) {
-			//TODO:정책생성 이후 하위로직을 처리하기위한 비동기 로직 추가 예정-roberto
-
-			//TODO: step1은 매번 정책을 생성해서 커맨드 아웃했습니다.
-			// 작동은 하는 함수고 step2,3가 완료되면 연결 할것이니 삭제 하시면 곤란합니다.
-			// 올바른 step 아래에 disatch 작성 해주시면 감사하겠습니다.
-
-			//step1: 정책 생성
-			const createPolicyResponse = await dispatch(
-				IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.createPolicyAction({
-					name: formData.name,
-					description: formData.description,
-					type: policyManageTypes.Client,
-					controlTypes: [controlTypes.RBAC],
-					maxGrants: 5,
+	/*************************************************************************
+	 * 정책 생성
+	 *************************************************************************/
+	async function createPolicy(){
+		 return dispatch(
+			IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.createPolicyAction({
+				name: formData.name,
+				description: formData.description,
+				type: policyManageTypes.Client,
+				controlTypes: [controlTypes.RBAC],
+				maxGrants: 5,
+			})
+		);
+	}
+	/*************************************************************************
+	 * roberto -권한(action) 생성
+	 *************************************************************************/
+	async function createAction (){
+		let actionIds=[];
+		console.log('🟡권한(action) 생성')
+		 // actionIds = await response()
+		  for (const v of actionTemplates) {
+			  await dispatch(
+				IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.createAction({
+					name: v.name,
+					description: v.description,
+					details: v.details,
 				}),
-			);
+			).then(res => {
+				//TODO: 백엔드 response id 요청
+				actionIds.push(res.payload.headers.location.split('/').reverse()[0])
+			});
+		}
+		console.log('🟡권한(action) 생성-actionIds:',actionIds)
+		return actionIds
+	}
+	/*************************************************************************
+	 * roberot -생성된 권한 정책 연결
+	 *************************************************************************/
+	async function joinAction(policyId,actionIds){
+		console.log('🟡생성된 권한 정책 연결',actionIds)
+	}
 
-			// 정책 생성 비동기 처리가 fulfilled 된 경우
-			if (isFulfilled(createPolicyResponse)) {
-				const policyId = createPolicyResponse.payload.id;
-
-				//step2-1: action 생성
-				/**************************************************
-				 * reoberto - action 생성
-				 ***************************************************/
-				// if(actionTemplates[0]){
-				// 	actionTemplates.forEach(v=>{
-				// 		dispatch(
-				// 			IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.createAction({
-				// 				name: v.name,
-				// 				description: v.description,
-				// 				details: v.details,
-				// 			}),
-				// 		).then((res)=>{
-				// 			console.log('권한 생성 res:',res)
-				// 		})
-				// 	})
-				// }
-				// ******************************************************
-
-				//step2-2: 정책 action 연결
-				/**************************************************
-				 * reoberto - 정책에 action 연결
-				 ***************************************************/
-				//:TODO 정책 action api 작업중 완료시 적용예정
-				// dispatch(
-				// 	IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.asyncAction.joinAction(
-				//   ,,,
-				// 	),
-				// ******************************************************
-
-				//step3-1: rule 생성
-				let order = 1;
-				const templateList = [];
-				for (const v in ruleTemplates) {
-					// createRuleTemplateAction 액션의 response
-					const createRuleTemplateActionResponse = await dispatch(
-						IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.createRuleTemplateAction(
-							{
-								...ruleTemplates[v],
-								attributes: ruleTemplates[
-									v
-								].attributes.map((data) =>
-									JSON.stringify(data),
-								),
-							},
-						),
-					);
-					// 비동기 처리가 fulfilled 된 경우
-					if (isFulfilled(createRuleTemplateActionResponse)) {
-						const ruleTemplateId =
-							createRuleTemplateActionResponse.payload.id;
-						// 정책과 연결할 템플릿 리스트 저장
-						templateList.push({
-							policyId: policyId,
-							templateId: ruleTemplateId,
-							order: order++,
-						});
-					}
-					// 비동기 처리가 rejected 된 경우
-					else {
-						// 에러 핸들링
-						console.log(createRuleTemplateActionResponse);
-					}
-				}
-
-				//step3-2: 정책 rule 연결
-				/**************************************************
-				 * seob - 정책 rule 연결
-				 ***************************************************/
-				if (templateList.length === ruleTemplates.length) {
-					const ruleTemplateJoinActionResponse = await dispatch(
-						IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.joinAction(
-							templateList,
-						),
-					);
-					if (!isFulfilled(ruleTemplateJoinActionResponse)) {
-						// 에러 핸들링
-						console.log(ruleTemplateJoinActionResponse);
-					}
-				}
-				// ******************************************************
+	/*************************************************************************
+	 * roberto -  권한(action)정책연결 실행 비동기 함수
+	 *************************************************************************/
+	async function createJoinAction (policyId,actionTemplates){
+		console.log('🟡권한(action)정책연결 실행 비동기 함수')
+		try{
+			if(actionTemplates[0]) {
+				console.log('🟡createJoinAction-try')
+					 const actionIds =await createAction()
+				console.log('🟡권한(action)정책연결 실행 비동기 함수-actionIds:',actionIds)
+				     const res =await joinAction(policyId,actionIds)
 			}
-			// 정책 생성 비동기 처리가 rejected 된 경우
+		}catch(err){
+			console.log(err)
+		}
+	}
+
+	/*************************************************************************
+	 * ambacc244, seob - 규칙 생성,정책연결 비동기 함수
+	 *************************************************************************/
+	const createJoinRule =async (policyId,ruleTemplates)=>{
+		console.log('🔴규칙 생성,정책연결 비동기 함수')
+		let order = 1;
+		const templateList = [];
+		for (const v in ruleTemplates) {
+			// createRuleTemplateAction 액션의 response
+			const createRuleTemplateActionResponse = await dispatch(
+				IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.createRuleTemplateAction(
+					{
+						...ruleTemplates[v],
+						attributes: ruleTemplates[
+							v
+							].attributes.map((data) =>
+							JSON.stringify(data),
+						),
+					},
+				),
+			);
+			console.log('🔴규칙 생성api 완료:',createRuleTemplateActionResponse)
+			// 비동기 처리가 fulfilled 된 경우
+			if (isFulfilled(createRuleTemplateActionResponse)) {
+				const ruleTemplateId =
+					createRuleTemplateActionResponse.payload.id;
+				// 정책과 연결할 템플릿 리스트 저장
+				templateList.push({
+					policyId: policyId,
+					templateId: ruleTemplateId,
+					order: order++,
+				});
+			}
+			// 비동기 처리가 rejected 된 경우
 			else {
 				// 에러 핸들링
-				console.log(createPolicyResponse);
+				console.log(createRuleTemplateActionResponse);
 			}
 		}
+		/**************************************************
+		 * seob - 정책 rule 연결
+		 ***************************************************/
+		if (templateList.length === ruleTemplates.length) {
+			const ruleTemplateJoinActionResponse = await dispatch(
+				IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.joinAction(
+					templateList,
+				),
+			);
+			console.log('🔴규칙 연결api 완료',ruleTemplateJoinActionResponse)
+			if (!isFulfilled(ruleTemplateJoinActionResponse)) {
+				// 에러 핸들링
+				console.log(ruleTemplateJoinActionResponse);
+			}
+		}
+	}
+
+	/*************************************************************************
+	 * redux 상태 초기화
+	 *************************************************************************/
+	 async function initRedux (){
+		console.log('🟡initRedux')
+		//redux action데이터 초기화
+		dispatch(IAM_ACTION_MANAGEMENT_TEMPLATE.action.initActionTemplates());
 		//정책 생성을 위해 모아둔 template의 데이터를 삭제
 		dispatch(IAM_RULE_MANAGEMENT_TEMPLATE.action.resetRuleTemplate());
 		//정책 생성 모드 off
@@ -203,7 +212,39 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				mode: false,
 			}),
 		);
-	}, [formData, dispatch, ruleTemplates]);
+		return true
+	}
+
+	/*************************************************************************
+	 * ambacc244,roberto - 정책 최종 생성
+	 *************************************************************************/
+		//TODO: step1은 매번 정책을 생성해서 커맨드 아웃했습니다.
+		// 작동은 하는 함수고 step2,3가 완료되면 연결 할것이니 삭제 하시면 곤란합니다.
+		// 올바른 step 아래에 disatch 작성 해주시면 감사하겠습니다. -ambacc244
+
+		//TODO: 정책생성 이후 규칙,권한 에대한 생성,연결 비동기 처리 보장 하기위해,에러 핸들링하기위해 변경 -roberto
+		// 규칙 생성,연결 쪽은 따로 코드를 건드리지 않았습니다 createJoinRule() 안에 기존 로직있습니다 -roberto
+	const onSubmitPolicyForm = useCallback(async () => {
+		try{
+			if (formData.type === policyTypes.iam) {
+				//step1 정책생성
+				const policy =await createPolicy()
+				//생성된 정책 id가 있으면 실행
+				if (policy.payload.id) {
+					const policyId = policy.payload.id;
+					//step2.3 권한,규칙 생성 후 정책 연결
+					//Promise.all : 비동기 병렬처리 파라미터 배열안에 실행할 비동기함수 삽입
+					console.log('ruleTemplates:',ruleTemplates)
+					await Promise.all([createJoinAction(policyId,actionTemplates), createJoinRule(policyId,ruleTemplates)])
+				}
+			}
+			await initRedux()
+			await alert('정책생성 완료')
+		}catch(err){
+			alert('정책생성 오류')
+			console.log(err);
+		}
+	}, [formData, initRedux, createPolicy, createJoinAction, actionTemplates, createJoinRule, ruleTemplates]);
 
 	/**********************************************************
 	 * ambacc244 ,roberto- 렌더링시 정책생성 Preview 데이터 갱신
@@ -243,6 +284,9 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 
 		setPreviewData(previewAllData);
 	}, [ruleTemplates]);
+
+
+
 
 	return (
 		formData && (
