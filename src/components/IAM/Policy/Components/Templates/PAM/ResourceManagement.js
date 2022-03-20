@@ -28,7 +28,7 @@ const constants = {
         '설명',
     ],
     //체크박스 action event 정보
-    action: ['created', 'updated', 'deleted', 'read', 'revoked'],
+    action: ['create', 'update', 'delete', 'read', 'revoked'],
 };
 /*******************************************************************
  * roberto - 자원 관리 권한 템플릿
