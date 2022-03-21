@@ -13,16 +13,28 @@ const Header = styled.div`
 	justify-content: space-between;
 `;
 
-const TableContainer = ({render}) => {
+const ButtonContainer = styled.div`
+	display: flex;
+`;
+
+/**************************************************
+ * seob - 테이블 데이터를 추가, 삭제하는 컨테이너
+ *
+ * title : 테이블 컨테이너 제목
+ * onAdd : 추가 버튼 이벤트 처리함수
+ * onRemove : 삭제 버튼 이벤트 처리함수
+ * render : 컨테이너로 감쌀 테이블
+ ***************************************************/
+const TableContainer = ({title = '', onAdd, onRemove, render}) => {
 	// 추가 삭제 컨테이너
 	return (
 		<Container>
 			<Header>
-				<div>제목</div>
-				<div>
-					<NormalButton>추가</NormalButton>
-					<NormalButton>삭제</NormalButton>
-				</div>
+				<div>{title}</div>
+				<ButtonContainer>
+					<NormalButton onClick={onAdd}>추가</NormalButton>
+					<NormalButton onClick={onRemove}>삭제</NormalButton>
+				</ButtonContainer>
 			</Header>
 			<div>{render}</div>
 		</Container>
@@ -31,5 +43,8 @@ const TableContainer = ({render}) => {
 
 TableContainer.propTypes = {
 	render: PropTypes.object,
+	title: PropTypes.string,
+	onAdd: PropTypes.func,
+	onRemove: PropTypes.func,
 };
 export default TableContainer;

@@ -1,10 +1,9 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import Table from '../../../../../Table/Table';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
 import TemplateElement from '../../TemplateElement';
-import TableComboBox from '../../../../../Table/ColumnCells/TableComboBox';
 import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import {DRAGGABLE_KEY} from '../../../../../../Constants/Table/keys';
 import TableContainer from '../../../../../Table/TableContainer';
@@ -28,6 +27,9 @@ const contents = {
 		],
 	},
 };
+
+// 임시 테이블 셀 id
+let ID = 4;
 
 const CommandControl = () => {
 	const dispatch = useDispatch();
@@ -63,6 +65,26 @@ const CommandControl = () => {
 		],
 		[],
 	);
+
+	/**************************************************
+	 * seob - 테이블 데이터 추가 함수
+	 ***************************************************/
+	const handleAdd = useCallback(() => {
+		console.log('add');
+		setTableData((prev) => [
+			...prev,
+			{id: ID, [DRAGGABLE_KEY]: `${ID}`, controlCommand: ''},
+		]);
+		ID++;
+	}, []);
+
+	/**************************************************
+	 * seob - 테이블 데이터 삭제 함수
+	 ***************************************************/
+	const handleRemove = useCallback(() => {
+		console.log(select);
+		console.log('remove');
+	}, [select]);
 
 	/**************************************************
 	 * seob - 규칙 템플릿 id에 해당하는 데이터 findById
@@ -101,6 +123,9 @@ const CommandControl = () => {
 				description={contents.controlCommand.description}
 				render={() => (
 					<TableContainer
+						title={contents.controlCommand.title}
+						onAdd={handleAdd}
+						onRemove={handleRemove}
 						render={
 							<Table
 								tableKey={'session'}
