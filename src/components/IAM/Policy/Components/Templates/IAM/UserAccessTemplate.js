@@ -85,7 +85,7 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 	});
 
 	/**************************************************
-	 * seob - 템플릿 id를 통해 detail조회 후 setState
+	 * seob - 템플릿 id에 해당되는 데이터 findById
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {

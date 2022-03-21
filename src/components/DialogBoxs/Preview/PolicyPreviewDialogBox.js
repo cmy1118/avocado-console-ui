@@ -155,6 +155,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 					);
 					// 비동기 처리가 fulfilled 된 경우
 					if (isFulfilled(createRuleTemplateActionResponse)) {
+						console.log(createRuleTemplateActionResponse);
 						const ruleTemplateId =
 							createRuleTemplateActionResponse.payload;
 						// 정책과 연결할 템플릿 리스트 저장
@@ -209,39 +210,39 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	 **********************************************************/
 	useEffect(() => {
 		//TODO:정책 생성을 눌렀을시 렌더링 실행되도록
-		let previewAllData = [];
-
-		console.log(ruleTemplates);
-
-		//IAM - 규칙 템플릿 데이터 처리
-		Object.values(ruleTemplates).map((v) => {
-			for (let i = 0; i < v.attributes.length; i++) {
-				let object = {};
-				if (i === 0) object.policy = v.name;
-				object.id = v.attributes[i].ruleType;
-				object.detail = policyDescription[v.attributes[i].ruleType];
-				object.value = roleAttributeConvertor(v.attributes[i]);
-				previewAllData.push(object);
-			}
-		});
-
-		//IAM - 권한(action) 템플릿 데이터 처리
-		//TODO 함수로 모듈화할 예정입니다
-		actionTemplates.map((v) => {
-			actionPreviewfilter(v['details']).map((s, index) => {
-				let object = {};
-				index === 0 ? (object.policy = v.name) : (object.policy = '');
-				object.id = s.resource;
-				object.detail = s.resource;
-				object.value = s.value;
-				previewAllData.push(object);
-			});
-		});
-		//PAM - 규칙 템플릿 데이터 처리
-
-		//PAM - 권한(action) 템플릿 데이터 처리
-
-		setPreviewData(previewAllData);
+		// let previewAllData = [];
+		//
+		// console.log(ruleTemplates);
+		//
+		// //IAM - 규칙 템플릿 데이터 처리
+		// Object.values(ruleTemplates).map((v) => {
+		// 	for (let i = 0; i < v.attributes.length; i++) {
+		// 		let object = {};
+		// 		if (i === 0) object.policy = v.name;
+		// 		object.id = v.attributes[i].ruleType;
+		// 		object.detail = policyDescription[v.attributes[i].ruleType];
+		// 		object.value = roleAttributeConvertor(v.attributes[i]);
+		// 		previewAllData.push(object);
+		// 	}
+		// });
+		//
+		// //IAM - 권한(action) 템플릿 데이터 처리
+		// //TODO 함수로 모듈화할 예정입니다
+		// actionTemplates.map((v) => {
+		// 	actionPreviewfilter(v['details']).map((s, index) => {
+		// 		let object = {};
+		// 		index === 0 ? (object.policy = v.name) : (object.policy = '');
+		// 		object.id = s.resource;
+		// 		object.detail = s.resource;
+		// 		object.value = s.value;
+		// 		previewAllData.push(object);
+		// 	});
+		// });
+		// //PAM - 규칙 템플릿 데이터 처리
+		//
+		// //PAM - 권한(action) 템플릿 데이터 처리
+		//
+		// setPreviewData(previewAllData);
 	}, [actionTemplates, ruleTemplates]);
 
 	return (
