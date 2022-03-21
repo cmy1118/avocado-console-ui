@@ -85,31 +85,31 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 	});
 
 	/**************************************************
-	 * seob - 템플릿 id를 통해 detail조회 후 setState
+	 * seob - 템플릿 id에 해당되는 데이터 findById
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
-			const data = await dispatch(
+			const res = await dispatch(
 				IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findById({
 					templateId,
 				}),
 			);
-			if (isFulfilled(data)) {
-				console.log(data.payload);
-				for (let v of data.payload) {
-					v.resource.includes('console-ui') &&
-						setConsoleRadioValue(v.attribute.usage ? 'yes' : 'no');
-					v.resource.includes('web-terminal-ui') &&
-						setWebtermRadioValue(v.attribute.usage ? 'yes' : 'no');
-				}
-
-				setData(data.payload);
+			if (isFulfilled(res)) {
+				console.log(res.payload.data);
+				// for (let v of data.payload) {
+				// 	v.resource.includes('console-ui') &&
+				// 		setConsoleRadioValue(v.attribute.usage ? 'yes' : 'no');
+				// 	v.resource.includes('web-terminal-ui') &&
+				// 		setWebtermRadioValue(v.attribute.usage ? 'yes' : 'no');
+				// }
+				//
+				// setData(data.payload);
 			} else {
-				console.log(data.error);
+				console.log(res.error);
 			}
 		};
 		fetchData();
-	}, [dispatch, setConsoleRadioValue, setWebtermRadioValue, templateId]);
+	}, [dispatch, templateId]);
 
 	/**************************************************
 	 * seob - 정보 변경시 setState
