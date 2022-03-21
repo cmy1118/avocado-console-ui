@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import {Axios, baseURL} from '../../../../../api/constants';
+import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './actionTemplateDetail';
 import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'IAM_ACTION_MANAGEMENT_TEMPLATE';
@@ -80,12 +81,23 @@ const slice = createSlice({
 		actionTemplates: [],
 	},
 	reducers: {
-		refreshActionTemplates: (state, {payload}) => {
-			// state.loading = true;
-			state.actionTemplates = [];
+		initActionTemplates: (state, action) => {
+			state.actionTemplates=[];
 		},
+		//권한 템플릿 조회시 default check 상태 저장 - 체크박스 변경전 (지우지마세요)
+		// getActionTemplates: (state, {payload}) => {
+		// 	// state.loading = true;
+		// 	state.actionTemplates.push({
+		// 		templateId:payload.templateId,
+		// 		name: payload.name,
+		// 		description: payload.description,
+		// 		details: payload.data
+		// 	});
+		//
+		// },
 		//권한 템플릿 조회시 default check 상태 저장
 		getActionTemplates: (state, {payload}) => {
+			console.log('getActionTemplates!:',payload.data)
 			// state.loading = true;
 			state.actionTemplates.push({
 				templateId: payload.templateId,
@@ -94,7 +106,7 @@ const slice = createSlice({
 				details: payload.data,
 			});
 		},
-		//권한 템플릿 체크박스 선택시 체크된 상태 저장
+		//권한 템플릿 체크박스 선택시 체크된 상태 저장 - 체크박스 변경전 (지우지마세요)
 		setActionTemplates: (state, {payload}) => {
 			// state.loading = true;
 			let actionTemplates = state.actionTemplates;

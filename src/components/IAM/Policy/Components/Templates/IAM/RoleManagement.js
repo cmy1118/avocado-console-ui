@@ -1,15 +1,12 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import RowCheckbox from '../../../../../RecycleComponents/rowCheckbox';
-import {useDispatch} from 'react-redux';
-import {ColDiv, RowDiv} from '../../../../../../styles/components/style';
-import {filterPropObj, objArrUnion} from '../../../../../../utils/dataFitering';
+import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../../../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate";
-import {actionTemplateFilter, actionTemplateFilter2} from "../../../../../../utils/template";
+import {actionTemplateFilter, getActionTemplatesFilter} from "../../../../../../utils/template";
 import TemplateElementContainer from "../../TemplateElementContainer";
-import {DRAGGABLE_KEY} from "../../../../../../Constants/Table/keys";
 import TableCheckBox from "../../../../../Table/ColumnCells/TableCheckBox";
 import Table from "../../../../../Table/Table";
+import IAM_POLICY_MANAGEMENT_POLICIES from "../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies";
 
 const constants = {
 	main: '사용자 관리 권한',
@@ -35,6 +32,9 @@ const constants = {
 //역할관리권한 템플릿 컴포넌트
 const RoleManagement = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
+	const {creatingPolicyMode} = useSelector(
+		IAM_POLICY_MANAGEMENT_POLICIES.selector,
+	);
 	const checkboxRefs = useRef([]);
 	const [tableData, setTableData] = useState([]);
 	const [lastCheckedKey, setLastCheckedKey] = useState(null);
@@ -88,31 +88,23 @@ const RoleManagement = ({templateId, name, description}) => {
 			)
 				.unwrap()
 				.then((res) => {
-					const setData =actionTemplateFilter2(res,constants.action)
+					const setData =actionTemplateFilter(res,constants.action)
 					setTableData(setData)
-					// dispatch(
-					// 	IAM_ACTION_MANAGEMENT_TEMPLATE.action.getActionTemplates({
-					// 		templateId: templateId,
-					// 		name: res.data.name,
-					// 		description: res.data.description,
-					// 		data: setData,
-					// 	}),
-					// )
-					// const filteredDataList = filterPropObj(
-					// 	setData,
-					// 	'resource',
-					// 	'data',
-					// );
-					// const result = objArrUnion(
-					// 	filteredDataList,
-					// 	tempDataLists,
-					// 	'data',
-					// 	'resource',
-					// 	'action',
-					// );
-					// setDataLists(result);
 				});
 	}, [dispatch, templateId]);
+
+	useEffect(()=>{
+		if (creatingPolicyMode) {
+			dispatch(
+				IAM_ACTION_MANAGEMENT_TEMPLATE.action.getActionTemplates({
+					templateId: templateId,
+					name: name,
+					description: description,
+					data: getActionTemplatesFilter(tableData,constants.action)
+				}),
+			)
+		}
+	},[creatingPolicyMode, description, dispatch, name, tableData, templateId])
 console.log('tableData:',tableData)
 	return (
 			<TemplateElementContainer
