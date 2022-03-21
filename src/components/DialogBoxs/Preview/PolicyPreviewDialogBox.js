@@ -272,7 +272,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 				<AddPageDialogBoxTitle>
 					{policyPreviewDialogBox.detail.title} :{' '}
 				</AddPageDialogBoxTitle>
-				{/*TODO: TABLE*/}
+
 				<Table
 					readOnly
 					isCheckBox={false}

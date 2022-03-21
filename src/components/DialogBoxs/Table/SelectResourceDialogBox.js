@@ -19,7 +19,7 @@ import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import {useDispatch} from 'react-redux';
 import ComboBox from '../../RecycleComponents/New/ComboBox';
-import {ColDiv} from '../../../styles/components/style';
+import {ColDiv, RowDiv} from '../../../styles/components/style';
 import {isFulfilled} from '../../../utils/redux';
 import RRM_RESOURCE from '../../../reducers/api/RRM/Resource/resource';
 
@@ -138,7 +138,7 @@ const SelectResourceDialogBox = ({
 					innerRef={searchRef}
 					initialValues={{search: ''}}
 				>
-					<ColDiv>
+					<RowDiv>
 						<TextBox
 							placeholder={
 								selectResourceGroupDialogBox.searchBar
@@ -158,7 +158,7 @@ const SelectResourceDialogBox = ({
 							header={'프로토콜 전체'}
 							options={protocolOptions}
 						/>
-					</ColDiv>
+					</RowDiv>
 				</Form>
 
 				<Table
