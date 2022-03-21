@@ -55,30 +55,24 @@ const UserAccountPatternTemplate = ({templateId, name, description}) => {
 	 **************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
-			const res = await dispatch(
-				IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findById({
-					templateId,
-				}),
-			);
+			try {
+				const res = await dispatch(
+					IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAll({
+						id: templateId,
+					}),
+				);
+				let defaultData = {};
 
-			if (isFulfilled(res)) {
-				console.log('🦊', res);
-			} else {
-				// 에러 핸들링
-				console.log(res);
+				res.payload.data.map((v) => {
+					defaultData[v.attribute.ruleType] = v.attribute;
+				});
+
+				setDefaultData(defaultData);
+			} catch (err) {
+				console.log('error => ', err);
 			}
 		};
 		fetchData();
-		// .unwrap()
-		// .then((data) => {
-		// 	let defaultData = {};
-		//
-		// 	data.map((v) => {
-		// 		defaultData[v.attribute.ruleType] = v.attribute;
-		// 	});
-		//
-		// 	setDefaultData(defaultData);
-		// });
 	}, [dispatch, templateId]);
 
 	return (
