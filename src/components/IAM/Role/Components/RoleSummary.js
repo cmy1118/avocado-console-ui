@@ -168,7 +168,7 @@ const RoleSummary = ({roleId, param, setIsOpened, isSummaryOpened}) => {
 				}),
 			)
 				.unwrap()
-				.then((groups) =>
+				.then((groups) => {
 					groups.map((id) => {
 						dispatch(
 							IAM_USER_GROUP.asyncAction.findByIdAction({
@@ -204,8 +204,8 @@ const RoleSummary = ({roleId, param, setIsOpened, isSummaryOpened}) => {
 											});
 									});
 							});
-					}),
-				);
+					});
+				});
 	}, [roleId, dispatch, isSummaryOpened, setGroup]);
 
 	return (

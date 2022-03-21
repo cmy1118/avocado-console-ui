@@ -133,7 +133,14 @@ export const tableKeys = Object.freeze({
 	 *******************************************************************/
 	policy: {
 		basic: 'POLICY',
-		add: {preview: 'POLICY_ADD_PREVIEW'},
+		add: {
+			preview: 'POLICY_ADD_PREVIEW',
+			pamTemplate: {
+				resoureGroup: 'PAM_TEMPLATE_RESOURCE_GROUP',
+				resource: 'PAM_TEMPLATE_RESOURCE',
+				addResource: 'PAM_TEMPLATE_ADD_RESOURCE',
+			},
+		},
 		policies: {
 			userManagement: 'POLICY_ADD_USER_MANAGEMENT',
 			policyManagement: 'POLICY_ADD_POLICY_MANAGEMENT',

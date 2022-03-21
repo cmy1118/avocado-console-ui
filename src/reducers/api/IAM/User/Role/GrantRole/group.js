@@ -110,6 +110,8 @@ const findUserGroupsById = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
+		console.log(response);
+
 		return response.data;
 	},
 );

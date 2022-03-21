@@ -11,9 +11,7 @@ import {Icon} from '../../styles/components/icons';
 import {RowDiv} from '../../styles/components/style';
 import {Draggable, Droppable} from 'react-beautiful-dnd';
 import styled from 'styled-components';
-import * as _ from 'lodash';
-import {DRAGGABLE_KEY, INNER_TABLE} from '../../Constants/Table/keys';
-import InnerTableContainer from './InnerTableContainer';
+import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
 import TableOptionsBar from './TableOptionsBar';
 import {
 	useExpanded,
@@ -25,7 +23,6 @@ import {
 	useTable,
 } from 'react-table';
 import TableCheckbox from './Options/TableCheckbox';
-import {TableMode} from '../../Constants/Table/mode';
 
 const Styles = styled.div`
 	// padding: 1rem;

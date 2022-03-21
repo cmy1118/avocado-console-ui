@@ -10,11 +10,12 @@ import {
 import {IconButton} from '../../../styles/components/icons';
 import useInput from '../../../hooks/useInput';
 import {closeIcon} from '../../../icons/icons';
-import Form from '../../RecycleComponents/Form';
+
 import {
 	NormalButton,
 	TransparentButton,
 } from '../../../styles/components/buttons';
+import {Form} from 'formik';
 
 const _DialogBox = styled(DialogBox)`
 	width: 404px;
