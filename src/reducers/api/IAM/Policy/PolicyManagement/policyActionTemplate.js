@@ -7,16 +7,21 @@ const NAME = 'IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE';
 const join = createAsyncThunk(`${NAME}/JOIN`, async (payload, {getState}) => {
 	const {userAuth} = getState().AUTH;
 
-	return await Axios.post(
+	const response = await Axios.post(
 		`/open-api/v1/iam/policies/${payload.policyId}/action-templates`,
+		{
+			actionTemplates: payload.actionTemplates,
+		},
 		{
 			headers: {
 				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				Range: payload.range,
+				policyId: payload.policyId,
 			},
 			baseURL: baseURL.openApi,
 		},
 	);
+	console.log(`${NAME}/join:`, response);
+	return response;
 });
 
 const slice = createSlice({
@@ -26,18 +31,7 @@ const slice = createSlice({
 		error: null,
 	},
 	reducers: {},
-	extraReducers: {
-		[join.pending]: (state) => {
-			state.loading = true;
-		},
-		[join.fulfilled]: (state, action) => {
-			state.loading = false;
-		},
-		[join.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-	},
+	extraReducers: {},
 });
 
 const selectAllState = createSelector(
