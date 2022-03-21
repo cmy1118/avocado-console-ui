@@ -15,6 +15,7 @@ import {policyTypes} from '../../../../../../utils/data';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {isFulfilled} from '../../../../../../utils/redux';
 import {ruleTypes} from '../../../../../../utils/template';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplateDetail';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -133,23 +134,27 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
-			const res = await dispatch(
-				IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findById({
-					templateId,
-				}),
-			);
-			if (isFulfilled(res)) {
+			try {
+				const res = await dispatch(
+					// IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findById({
+					// 	templateId,
+					// }),
+					IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAll({
+						id: templateId,
+					}),
+				);
 				console.log(res.payload.data);
-				setData(res.payload.data);
-				for (let v of res.payload.data.attributes) {
-					if (v.ruleType === ruleTypes.screen_saver) {
-						setScreenSaver(v);
-						setScreenSaverValue(v.usage ? 'yes' : 'no');
-						setIdleTime(v.timeToIdle);
-					} else if (v.ruleType === ruleTypes.session_timeout) {
-						setSessionTimeout(v);
+				for (let v of res.payload.data) {
+					if (v.attribute.ruleType === ruleTypes.screen_saver) {
+						setScreenSaver(v.attribute);
+						setScreenSaverValue(v.attribute.usage ? 'yes' : 'no');
+						setIdleTime(v.attribute.timeToIdle);
+					} else if (
+						v.attribute.ruleType === ruleTypes.session_timeout
+					) {
+						setSessionTimeout(v.attribute);
 
-						const data = Object.entries(v.policies).map(
+						const data = Object.entries(v.attribute.policies).map(
 							([key, value]) => ({
 								...value,
 								id: key,
@@ -161,10 +166,37 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 						setTableData(data);
 					}
 				}
-			} else {
-				// 에러 핸들링
-				console.log(res.error);
+			} catch (err) {
+				console.log('error => ', err);
 			}
+
+			// if (isFulfilled(res)) {
+			// 	console.log(res.payload.data);
+			// 	setData(res.payload.data);
+			// 	for (let v of res.payload.data.attributes) {
+			// 		if (v.ruleType === ruleTypes.screen_saver) {
+			// 			setScreenSaver(v);
+			// 			setScreenSaverValue(v.usage ? 'yes' : 'no');
+			// 			setIdleTime(v.timeToIdle);
+			// 		} else if (v.ruleType === ruleTypes.session_timeout) {
+			// 			setSessionTimeout(v);
+			//
+			// 			const data = Object.entries(v.policies).map(
+			// 				([key, value]) => ({
+			// 					...value,
+			// 					id: key,
+			// 					[DRAGGABLE_KEY]: key,
+			// 					usage: value.usage ? 'yes' : 'no',
+			// 					application: contents.sessionTimeout[key],
+			// 				}),
+			// 			);
+			// 			setTableData(data);
+			// 		}
+			// 	}
+			// } else {
+			//	// 에러 핸들링
+			// 	console.log(res.error);
+			// }
 		};
 		fetchData();
 	}, [dispatch, setIdleTime, setScreenSaverValue, templateId]);

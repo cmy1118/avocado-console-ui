@@ -89,24 +89,26 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
-			const res = await dispatch(
-				IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findById({
-					templateId,
-				}),
-			);
-			if (isFulfilled(res)) {
+			try {
+				const res = await dispatch(
+					IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAll({
+						id: templateId,
+					}),
+				);
 				console.log(res.payload.data);
-				// for (let v of data.payload) {
-				// 	v.resource.includes('console-ui') &&
-				// 		setConsoleRadioValue(v.attribute.usage ? 'yes' : 'no');
-				// 	v.resource.includes('web-terminal-ui') &&
-				// 		setWebtermRadioValue(v.attribute.usage ? 'yes' : 'no');
-				// }
-				//
-				// setData(data.payload);
-			} else {
-				console.log(res.error);
+				// todo : api 수정이 확정 되면 작업할 예정입니다.
+			} catch (err) {
+				console.log('err => ', err);
 			}
+
+			// for (let v of data.payload) {
+			// 	v.resource.includes('console-ui') &&
+			// 		setConsoleRadioValue(v.attribute.usage ? 'yes' : 'no');
+			// 	v.resource.includes('web-terminal-ui') &&
+			// 		setWebtermRadioValue(v.attribute.usage ? 'yes' : 'no');
+			// }
+			//
+			// setData(data.payload);
 		};
 		fetchData();
 	}, [dispatch, templateId]);
