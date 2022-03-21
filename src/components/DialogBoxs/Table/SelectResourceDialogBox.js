@@ -1,5 +1,9 @@
-import React, {useCallback, useMemo, useState} from 'react';
-import {DialogBox, DialogBoxFooter} from '../../../styles/components/dialogBox';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {
+	DialogBox,
+	DialogBoxFooter,
+	DialogBoxHeader,
+} from '../../../styles/components/dialogBox';
 import {
 	NormalButton,
 	TransparentButton,
@@ -9,17 +13,43 @@ import PropTypes from 'prop-types';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {tableKeys} from '../../../Constants/Table/keys';
 import Table from '../../Table/Table';
+import {Icon, IconButton} from '../../../styles/components/icons';
+import {closeIcon, searchIcon} from '../../../icons/icons';
+import Form from '../../RecycleComponents/New/Form';
+import TextBox from '../../RecycleComponents/New/TextBox';
+import {useDispatch} from 'react-redux';
+import ComboBox from '../../RecycleComponents/New/ComboBox';
+import {ColDiv} from '../../../styles/components/style';
+import {isFulfilled} from '../../../utils/redux';
+import RRM_RESOURCE from '../../../reducers/api/RRM/Resource/resource';
 
 const _DialogBox = styled(DialogBox)`
+	display: flex;
+	flex-direction: column;
 	width: 800px;
+	height: 500px;
+`;
+
+const _Contents = styled.div`
+	flex: 1;
 `;
 
 const selectResourceGroupDialogBox = {
+	title: '자원 추가',
+	searchBar: {
+		placeholder: '그룹 이름, 자원 이름, 주소',
+	},
 	button: {
 		confirm: '확인',
 		cancel: '취소',
 	},
 };
+
+const protocolOptions = [
+	{value: '', label: '프로토콜 전체'},
+	{value: 'SSH', label: 'SSH'},
+	{value: 'SFTP', label: 'SFTP'},
+];
 
 const SelectResourceDialogBox = ({
 	isOpened,
@@ -27,34 +57,13 @@ const SelectResourceDialogBox = ({
 	selected,
 	setSelected,
 }) => {
+	const dispatch = useDispatch();
+	const searchRef = useRef(null);
+	//resources: 검색된 자원 리스트
+	const [resources, setResources] = useState([]);
 	//addedSelection: 추가로 선택될 자원
 	const [addedSelection, setAddedSelection] = useState([]);
-	const tempData = useMemo(
-		() => [
-			{
-				id: '1',
-				group: '그룹 1 > 그룹 2',
-				name: '자원 1',
-				address: '023.233.123',
-				protocol: 'SSH',
-			},
-			{
-				id: '2',
-				group: '그룹 1',
-				name: '자원 2',
-				address: '023.233.123',
-				protocol: 'SSH',
-			},
-			{
-				id: '3',
-				group: '그룹 3',
-				name: '자원 3',
-				address: '023.233.123',
-				protocol: 'SSH',
-			},
-		],
-		[],
-	);
+
 	/**************************************************
 	 * ambacc244 - 추가적인 자원 선택 취소
 	 **************************************************/
@@ -76,6 +85,39 @@ const SelectResourceDialogBox = ({
 		setIsOpened(false);
 	}, [addedSelection, selected, setIsOpened, setSelected]);
 
+	/**************************************************
+	 * ambacc244 - 자원 그룹 검색
+	 **************************************************/
+	const onSubmitSearchVal = useCallback(async (v) => {
+		//검색 입력값의 길이가 2 이상
+		if (v?.search.length > 1) {
+			const response = await dispatch(
+				RRM_RESOURCE.asyncAction.findAllResourceAction({
+					serviceType: v?.protocol || '',
+					keyword2: v.search.trim(),
+				}),
+			);
+			//요청에 대한 응답 성공
+			if (isFulfilled(response))
+				setResources(
+					response.payload.map((v) => ({
+						id: v.id,
+						group: v.group.namePath,
+						name: v.name,
+						address: v.defaultAddress,
+						protocol: v.servicePorts[0].serviceType.name,
+					})) || [],
+				);
+		}
+	}, []);
+
+	useEffect(() => {
+		//다이얼로그박스가 열림
+		if (isOpened) {
+			setResources([]);
+		}
+	}, [isOpened]);
+
 	return (
 		<_DialogBox
 			isOpen={isOpened}
@@ -83,15 +125,53 @@ const SelectResourceDialogBox = ({
 			ariaHideApp={false}
 			shouldCloseOnOverlayClick={false}
 		>
-			<Table
-				columns={
-					tableColumns[tableKeys.policy.add.pamTemplate.resource]
-				}
-				tableKey={tableKeys.policy.add.pamTemplate.resource}
-				data={tempData}
-				setSelect={setAddedSelection}
-				isCheckBox
-			/>
+			<DialogBoxHeader>
+				<div>{selectResourceGroupDialogBox.title}</div>
+				<IconButton onClick={onClickCloseDialogBox}>
+					{closeIcon}
+				</IconButton>
+			</DialogBoxHeader>
+
+			<_Contents>
+				<Form
+					onSubmit={onSubmitSearchVal}
+					innerRef={searchRef}
+					initialValues={{search: ''}}
+				>
+					<ColDiv>
+						<TextBox
+							placeholder={
+								selectResourceGroupDialogBox.searchBar
+									.placeholder
+							}
+							front={
+								<Icon size={'sm'} margin_right={'0px'}>
+									{searchIcon}
+								</Icon>
+							}
+							name={'search'}
+						/>
+						<ComboBox
+							innerRef={searchRef}
+							width={'150px'}
+							name='protocol'
+							header={'프로토콜 전체'}
+							options={protocolOptions}
+						/>
+					</ColDiv>
+				</Form>
+
+				<Table
+					columns={
+						tableColumns[tableKeys.policy.add.pamTemplate.resource]
+					}
+					tableKey={tableKeys.policy.add.pamTemplate.resource}
+					data={resources}
+					setSelect={setAddedSelection}
+					isCheckBox
+				/>
+			</_Contents>
+
 			<DialogBoxFooter>
 				<TransparentButton onClick={onClickAddSelection}>
 					{selectResourceGroupDialogBox.button.confirm}

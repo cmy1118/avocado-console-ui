@@ -27,7 +27,7 @@ const resourceTableContainer = {
  **************************************************/
 const ResourceTableContainer = ({selected, setSelected}) => {
 	const [isOpened, setIsOpened] = useState(false);
-	const [deselected, setDeseleted] = useState([]);
+	const [deselected, setDeseleted] = useState({});
 
 	/**************************************************
 	 * ambacc244 - 자원을 추가로 선택해 추가 하기 위한 DialogBox 열기
@@ -40,9 +40,15 @@ const ResourceTableContainer = ({selected, setSelected}) => {
 	 * ambacc244 - 체크된 자원을 선택 해제
 	 **************************************************/
 	const onClickDeselectResourceGroup = useCallback(() => {
-		// setSelected([]);
-		deselected[tableKeys.policy.add.pamTemplate.resource];
-	}, []);
+		setSelected(
+			selected.filter(
+				(v) =>
+					!deselected[
+						tableKeys.policy.add.pamTemplate.resource
+					].includes(v),
+			),
+		);
+	}, [deselected, selected]);
 
 	return (
 		<div>

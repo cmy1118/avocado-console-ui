@@ -26,6 +26,7 @@ const resourceGrooupTableContainer = {
  **************************************************/
 const ResourceGrooupTableContainer = ({selected, setSelected}) => {
 	const [isOpened, setIsOpened] = useState(false);
+	const [deselected, setDeseleted] = useState({});
 
 	/**************************************************
 	 * ambacc244 - 자원 그룹을 추가로 선택해 추가 하기 위한 DialogBox 열기
@@ -38,8 +39,15 @@ const ResourceGrooupTableContainer = ({selected, setSelected}) => {
 	 * ambacc244 - 체크된 자원 그룹을 선택 해제
 	 **************************************************/
 	const onClickDeselectResourceGroup = useCallback(() => {
-		// setSelected([]);
-	}, []);
+		setSelected(
+			selected.filter(
+				(v) =>
+					!deselected[
+						tableKeys.policy.add.pamTemplate.resoureGroup
+					].includes(v),
+			),
+		);
+	}, [deselected, selected]);
 
 	return (
 		<div>
@@ -51,6 +59,7 @@ const ResourceGrooupTableContainer = ({selected, setSelected}) => {
 					{resourceGrooupTableContainer.button.delete}
 				</TransparentButton>
 			</_ButtonContianer>
+
 			<Table
 				columns={
 					tableColumns[tableKeys.policy.add.pamTemplate.resoureGroup]
@@ -58,7 +67,9 @@ const ResourceGrooupTableContainer = ({selected, setSelected}) => {
 				tableKey={tableKeys.policy.add.pamTemplate.resoureGroup}
 				data={selected}
 				isCheckBox
+				setSelect={setDeseleted}
 			/>
+
 			<SelectResourceGroupDialogBox
 				setIsOpened={setIsOpened}
 				isOpened={isOpened}

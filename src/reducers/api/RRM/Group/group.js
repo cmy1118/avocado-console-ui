@@ -26,7 +26,6 @@ const findAllGroupAction = createAsyncThunk(
 			},
 			baseURL: baseURL.openApi,
 		});
-		console.log(response);
 		return {id: payload.parentId, data: response.data};
 	},
 );

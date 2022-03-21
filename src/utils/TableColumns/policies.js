@@ -1,10 +1,7 @@
 import SelectionOption from '../../components/Table/Options/Search/SelectionOption';
-import {statusConverter} from '../tableDataConverter';
 import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
 import React from 'react';
-import TableCheckbox from '../../components/Table/Options/TableCheckbox';
 import checkboxColumn from '../../components/Table/tableCheckboxColumn';
-import {tableKeys} from '../../Constants/Table/keys';
 import TableLink from '../../components/Table/ColumnCells/TableLink';
 
 export const POLICY_COLUMN = [
@@ -91,7 +88,7 @@ export const POLICY_ADD_USER_MANAGEMEN_COLUMN = [
 
 export const PAM_TEMPLATE_RESOURCE_GROUP_COLUMN = [
 	{
-		accessor: 'route',
+		accessor: 'namePath',
 		Header: '자원 그룹 경로',
 		disableFilters: true,
 		disableChangeVisible: true,

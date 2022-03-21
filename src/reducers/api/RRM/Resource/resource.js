@@ -100,6 +100,34 @@ const findByIdAction = createAsyncThunk(
 	},
 );
 
+const findAllResourceAction = createAsyncThunk(
+	`${NAME}/FIND_ALL`,
+	async (payload, {getState}) => {
+		const {userAuth} = getState().AUTH;
+
+		const response = await Axios.get(`/open-api/v1/rrm/remote-resources`, {
+			params: {
+				type: payload.type,
+				osType: payload.osType,
+				serviceType: payload.serviceType,
+				parentGroupId: payload.parentId,
+				keyword: payload.keyword,
+				keyword2: payload.keyword2,
+				includeChildNode: payload.includeChildNode,
+				includeAccount: payload.includeAccount,
+			},
+			headers: {
+				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+				'Content-Type': 'application/json',
+				Range: payload.range || `elements=0-50`,
+			},
+			baseURL: baseURL.openApi,
+		});
+
+		return response.data;
+	},
+);
+
 const findAllAccountAction = createAsyncThunk(
 	`${NAME}/findAllAccount`,
 	async (payload, {getState}) => {
@@ -126,7 +154,10 @@ const findAllAccountAction = createAsyncThunk(
 	},
 );
 
-const findAllBasicAction = createAsyncThunk(
+/**************************************************
+ * ambacc244 -
+ **************************************************/
+const findAllResourceBasicAction = createAsyncThunk(
 	`${NAME}/FIND_ALL_BASIC`,
 	async (payload, {getState}) => {
 		const {client} = getState().IAM_CLIENT;
@@ -256,21 +287,6 @@ const slice = createSlice({
 			state.loading = false;
 		},
 
-		[findAllBasicAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[findAllBasicAction.fulfilled]: (state, action) => {
-			state.resources.computingSystems = _.uniqBy(
-				state.resources.computingSystems.concat(action.payload),
-				(e) => e.id,
-			);
-			state.loading = false;
-		},
-		[findAllBasicAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-
 		[findAllServicePortAction.pending]: (state) => {
 			state.loading = true;
 		},
@@ -316,10 +332,11 @@ const RRM_RESOURCE = {
 		updateAction,
 		deleteAction,
 		findByIdAction,
-		findAllBasicAction,
+		findAllResourceBasicAction,
 		findAllServicePortAction,
 		findAllTagAction,
 		findAllAccountAction,
+		findAllResourceAction,
 	},
 };
 
