@@ -3,7 +3,7 @@ import ModalTableContainer from '../../RecycleComponents/ModalTableContainer';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {TitleBar} from '../../../styles/components/iam/iam';
-import {controlTypes, policyManageTypes,} from '../../../utils/data';
+import {controlTypes, policyManageTypes} from '../../../utils/data';
 
 import {SummaryList} from '../../../styles/components/iam/descriptionPage';
 import {LiText} from '../../../styles/components/text';
@@ -16,9 +16,10 @@ import IAM_POLICY_MANAGEMENT_POLICIES from '../../../reducers/api/IAM/Policy/Pol
 import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from '../../../reducers/api/IAM/Policy/PolicyManagement/policyRuleTemplate';
 import {isFulfilled} from '../../../utils/redux';
 
-import {roleAttributeConvertor,} from '../../../utils/preview';
+import {roleAttributeConvertor} from '../../../utils/preview';
 import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate';
-import IAM_RULE_MANAGEMENT_TEMPLATE from "../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate";
+import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
+import IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE from '../../../reducers/api/IAM/Policy/PolicyManagement/policyActionTemplate';
 
 const policyPreviewDialogBox = {
 	header: '정책 생성 요약보기',
@@ -117,6 +118,23 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	 *************************************************************************/
 	async function joinAction(policyId, actionIds) {
 		console.log('🟡생성된 권한 정책 연결', actionIds);
+		if (actionIds[0]) {
+			let actionTemplates = [];
+			let order = 0;
+			actionIds.forEach((v) => {
+				let obj = {};
+				obj.templateId = v;
+				obj.order = order++;
+				actionTemplates.push(obj);
+			});
+			console.log('joinAction:', actionTemplates);
+			return await dispatch(
+				IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.asyncAction.join({
+					policyId: policyId,
+					actionTemplates: actionTemplates,
+				}),
+			);
+		}
 	}
 
 	/*************************************************************************
@@ -217,41 +235,45 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	/*************************************************************************
 	 * ambacc244,roberto - 정책 최종 생성
 	 *************************************************************************/
-		//TODO: step1은 매번 정책을 생성해서 커맨드 아웃했습니다.
-		// 작동은 하는 함수고 step2,3가 완료되면 연결 할것이니 삭제 하시면 곤란합니다.
-		// 올바른 step 아래에 disatch 작성 해주시면 감사하겠습니다. -ambacc244
+	//TODO: step1은 매번 정책을 생성해서 커맨드 아웃했습니다.
+	// 작동은 하는 함수고 step2,3가 완료되면 연결 할것이니 삭제 하시면 곤란합니다.
+	// 올바른 step 아래에 disatch 작성 해주시면 감사하겠습니다. -ambacc244
 
-		//TODO: 정책생성 이후 규칙,권한 에대한 생성,연결 비동기 처리 보장 하기위해,에러 핸들링하기위해 변경 -roberto
-		// 규칙 생성,연결 쪽은 따로 코드를 건드리지 않았습니다 createJoinRule() 안에 기존 로직있습니다 -roberto
+	//TODO: 정책생성 이후 규칙,권한 에대한 생성,연결 비동기 처리 보장 하기위해,에러 핸들링하기위해 변경 -roberto
+	// 규칙 생성,연결 쪽은 따로 코드를 건드리지 않았습니다 createJoinRule() 안에 기존 로직있습니다 -roberto
 	const onSubmitPolicyForm = useCallback(async () => {
-			try {
-				//step1 정책생성
-				const policy = await createPolicy();
-				//생성된 정책 id가 있으면 실행
-				if (policy.payload.id) {
-					const policyId = policy.payload.id;
-					//step2.3 권한,규칙 생성 후 정책 연결
-					//Promise.all : 비동기 병렬처리 파라미터 배열안에 실행할 비동기함수 삽입
-					console.log('ruleTemplates:', ruleTemplates);
-					await Promise.all([
-						createJoinAction(policyId, actionTemplates),
-						createJoinRule(policyId, ruleTemplates),
-					]);
-				}
-				await initRedux();
-				await alert('정책생성 완료');
-			} catch (err) {
-				alert('정책생성 오류');
-				console.log(err);
+		try {
+			//step1 정책생성
+			const policy = await createPolicy();
+			//생성된 정책 id가 있으면 실행
+			console.log('createPolicy 실행완료 id:', policy);
+			console.log('createPolicy 실행완료 id:', policy.payload);
+			console.log('actionTemplates :', actionTemplates);
+			console.log('ruleTemplates :', ruleTemplates);
+			if (policy.payload) {
+				const policyId = policy.payload;
+				//step2.3 권한,규칙 생성 후 정책 연결
+				//Promise.all : 비동기 병렬처리 파라미터 배열안에 실행할 비동기함수 삽입
+				console.log('ruleTemplates:', ruleTemplates);
+				await Promise.all([
+					createJoinAction(policyId, actionTemplates),
+					createJoinRule(policyId, ruleTemplates),
+				]);
 			}
-		}, [
-			initRedux,
-			createPolicy,
-			createJoinAction,
-			actionTemplates,
-			createJoinRule,
-			ruleTemplates,
-		]);
+			await initRedux();
+			await alert('정책생성 완료');
+		} catch (err) {
+			alert('정책생성 오류');
+			console.log(err);
+		}
+	}, [
+		initRedux,
+		createPolicy,
+		createJoinAction,
+		actionTemplates,
+		createJoinRule,
+		ruleTemplates,
+	]);
 
 	/**********************************************************
 	 * ambacc244 ,roberto- 렌더링시 정책생성 Preview 데이터 갱신
