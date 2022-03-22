@@ -139,6 +139,7 @@ export const tableKeys = Object.freeze({
 				resoureGroup: 'PAM_TEMPLATE_RESOURCE_GROUP',
 				resource: 'PAM_TEMPLATE_RESOURCE',
 				addResource: 'PAM_TEMPLATE_ADD_RESOURCE',
+				accessResource: 'PAM_TEMPLATE_RESOURCE_ACCESS',
 			},
 		},
 		policies: {

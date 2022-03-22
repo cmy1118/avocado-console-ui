@@ -73,3 +73,20 @@ export function objArrUnion(array, tempData, prop, prop2, target) {
 	console.log('objArrUnion 결과:', result);
 	return result;
 }
+
+/**************************************************
+ * 로 나누어진 패스를 > 로 변환
+ * 예시 : 폴더1/폴더2 => 폴더1 > 폴더2
+ *
+ * str: 변환을 할 문자열
+ **************************************************/
+export function AllreplaceStr(str) {
+	//입력된 string이 빈값이 아님
+	if (str) {
+		// let replaced_str = str.replace(/특정문자열(특수기호는 앞에'\' 붙여줌)/g, '바꿀문자열');
+		let replaced_str = str.replace(/\//g, ' > ');
+		return replaced_str;
+	} else {
+		return '';
+	}
+}
