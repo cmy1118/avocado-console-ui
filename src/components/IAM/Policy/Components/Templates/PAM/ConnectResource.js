@@ -6,8 +6,6 @@ import {
 	policyOption,
 	resourceOptions,
 } from '../../../../../../utils/policyOptions';
-import ResourceGrooupTableContainer from './Resource/ResourceGrooupTableContainer';
-import ResourceTableContainer from './Resource/ResourceTableContainer';
 import ResourceSelectionContainer from './Resource/ResourceSelectionContainer';
 
 const connectResource = {
@@ -45,6 +43,8 @@ const ConnectResource = () => {
 		name: 'connectResource',
 		options: resourceOptions,
 	});
+	//selected: 선택된 자원 & 그룹
+	const [selected, setSelected] = useState({});
 
 	return (
 		<div>
@@ -65,6 +65,7 @@ const ConnectResource = () => {
 								disabled={
 									resource === policyOption.resource.all.key
 								}
+								setSelected={setSelected}
 							/>
 						</div>
 					);

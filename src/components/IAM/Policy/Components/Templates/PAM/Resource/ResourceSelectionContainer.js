@@ -34,7 +34,7 @@ const resourceSelectionContainer = {
 	resource: {title: '자원'},
 };
 
-const ResourceSelectionContainer = ({disabled = false}) => {
+const ResourceSelectionContainer = ({disabled = false, setSelected}) => {
 	//isResourceGroupOpened: 선택된 자원 그룹 펼치기
 	const [isResourceGroupOpened, setIsResourceGroupOpened] = useState(false);
 	//isResourceOpened: 선택된 자원  펼치기
@@ -44,18 +44,34 @@ const ResourceSelectionContainer = ({disabled = false}) => {
 	//selectedResource: 선택된 자원
 	const [selectedResource, setSelectedResource] = useState([]);
 
+	/**************************************************
+	 * ambacc244 - 자원 테이블 접고 펼치기
+	 **************************************************/
 	const onClickFoldResourceGroupTable = useCallback(() => {
 		if (!disabled) {
 			setIsResourceGroupOpened(!isResourceGroupOpened);
 		}
 	}, [disabled, isResourceGroupOpened]);
 
+	/**************************************************
+	 * ambacc244 - 자원 그룹 테이블 접고 펼치기
+	 **************************************************/
 	const onClickFoldResourceTable = useCallback(() => {
 		if (!disabled) {
 			setIsResourceOpened(!isResourceOpened);
 		}
 	}, [disabled, isResourceOpened]);
 
+	/**************************************************
+	 * ambacc244 -선택된 자원, 자원 그룹이 변경을 감짙
+	 **************************************************/
+	useEffect(() => {
+		setSelected({group: selectedResourceGroup, resource: selectedResource});
+	}, [selectedResourceGroup, selectedResource]);
+
+	/**************************************************
+	 * ambacc244 - 모든 자원을 선택 했을때 선택된 자원과, 그룹 해제
+	 **************************************************/
 	useEffect(() => {
 		//모든 자원 선택
 		if (disabled) {
@@ -121,6 +137,7 @@ const ResourceSelectionContainer = ({disabled = false}) => {
 
 ResourceSelectionContainer.propTypes = {
 	disabled: PropTypes.bool.isRequired,
+	setSelected: PropTypes.func.isRequired,
 };
 
 export default ResourceSelectionContainer;

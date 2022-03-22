@@ -4,7 +4,6 @@ import Table from '../../../../../Table/Table';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
 import TemplateElement from '../../TemplateElement';
-import TableComboBox from '../../../../../Table/ColumnCells/TableComboBox';
 import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import {DRAGGABLE_KEY} from '../../../../../../Constants/Table/keys';
 import TableContainer from '../../../../../Table/TableContainer';
