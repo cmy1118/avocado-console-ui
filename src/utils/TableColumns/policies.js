@@ -127,3 +127,47 @@ export const PAM_TEMPLATE_RESOURCE_COLUMN = [
 		disableChangeVisible: true,
 	},
 ];
+export const PAM_TEMPLATE_RESOURCE_ACCESS_COLUMN = [
+	{
+		accessor: 'group',
+		Header: '그룹',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+	{
+		accessor: 'name',
+		Header: '자원 이름',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+	{
+		accessor: 'address',
+		Header: '주소',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+	{
+		accessor: 'protocol',
+		Header: '프로토콜',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+	{
+		accessor: 'port',
+		Header: '포트',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+	{
+		accessor: 'accessAccount',
+		Header: '접속계정',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+	{
+		accessor: 'suAccess',
+		Header: 'SU 접속',
+		disableFilters: true,
+		disableChangeVisible: true,
+	},
+];

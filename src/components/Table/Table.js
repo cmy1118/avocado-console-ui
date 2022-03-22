@@ -16,13 +16,14 @@ import TableOptionsBar from './TableOptionsBar';
 import {
 	useExpanded,
 	useFilters,
-	useGlobalFilter,
+	useGlobalFilter, useMountedLayoutEffect,
 	usePagination,
 	useRowSelect,
 	useSortBy,
 	useTable,
 } from 'react-table';
 import TableCheckbox from './Options/TableCheckbox';
+import {usePrevious} from "../../hooks/usePrevious";
 
 const Styles = styled.div`
 	// padding: 1rem;
@@ -307,9 +308,15 @@ const Table = ({
 	setSearch,
 	subComponentHandler,
 	inner = false,
+				   rowClick,
 	isCheckBox = true,
-}) => {
+   defaultClick, //테이블 특정 row를 미리 클릭된 화면으로 보여주는 기능
+
+			   }) => {
 	const [skipPageReset, setSkipPageReset] = useState(false);
+	const [lastClickedIndex, setLastClickedIndex] = useState(null);
+	const [searchValue, setSearchValue] = useState('');
+
 
 	// Create a function that will render our row sub components
 	const renderRowSubComponent = useCallback(
@@ -534,6 +541,10 @@ const Table = ({
 		},
 	);
 	const [position, setPosition] = useState({x: 0, y: 0});
+	const [selectRow, setSelectRow] = useState(selectedFlatRows);
+	const [checkRow, setCheckRow] = useState(true);
+	const prevSelectRow = usePrevious(selectRow);
+
 
 	const getItemStyle = (isDragging, draggableStyle, style) => ({
 		// 혹시 모를 나중의 스타일 적용을 대비해서 제거 ㄴㄴ
@@ -608,10 +619,97 @@ const Table = ({
 		[isDraggable],
 	);
 
+	/******************************************************************
+	 * seob - 테이블 데이터 클릭 기능
+	 ******************************************************************/
+	const handleClick = useCallback(
+		(row) => (e) => {
+			console.log('handleClick')
+			//handleClick 시 defaultClick 기능 해제
+			setSelectRow(false);
+			rowClick && rowClick(e, row.original);
+			const checkboxes = document.querySelectorAll(
+				`.${tableKey}[type='checkbox']`,
+			);
+			// checkboxes[row.index + 1].click();
+			setLastClickedIndex(row.index + 1);
+			if (e.shiftKey) {
+				if (lastClickedIndex) {
+					console.log('lastClickedIndex => ', lastClickedIndex);
+					console.log('currentClickedIndex => ', row.index + 1);
+					let max = Math.max(lastClickedIndex, row.index + 1);
+					let min = Math.min(lastClickedIndex, row.index + 1);
+					if (lastClickedIndex >= row.index + 1) {
+						while (max >= min) {
+							if (checkboxes[row.index + 1].checked)
+								checkboxes[max].checked &&
+								checkboxes[max]?.click();
+							else
+								!checkboxes[max].checked &&
+								checkboxes[max]?.click();
+							max--;
+						}
+					} else {
+						while (max >= min) {
+							if (checkboxes[row.index + 1].checked)
+								checkboxes[min].checked &&
+								checkboxes[min]?.click();
+							else
+								!checkboxes[min].checked &&
+								checkboxes[min]?.click();
+							min++;
+						}
+					}
+				} else {
+					checkboxes[row.index + 1]?.click();
+				}
+			} else if (e.metaKey) {
+				checkboxes[row.index + 1]?.click();
+			} else {
+				checkboxes.forEach((checkbox, i) => {
+					if (checkbox.checked) checkbox?.click();
+				});
+				checkboxes[row.index + 1]?.click();
+			}
+			//
+			console.log(row);
+		},
+		[lastClickedIndex, rowClick, tableKey],
+	);
+	/*******************************************************************************
+	 * roberto - defaultClick 을위한 렌더링 기능 : 처음 렌더링시에만 특정 행을 선택되게한다
+	 *
+	 *  prevSelectRow :이전 선택된 행
+	 *  selectRow	  :선택된 행
+	 *  defaultClick  :defaultClick 사용유뮤 props
+	 *******************************************************************************/
+	useEffect(() => {
+		//처음 렌더링인지 확인
+		if (
+			setCheckRow &&
+			defaultClick &&
+			prevSelectRow?.length === selectRow?.length &&
+			prevSelectRow[0]?.id === selectRow[0]?.id
+		) {
+			//div[type='row'] : 테이블 행 dom 요소
+			const firstRow = document.querySelectorAll(`div[type='row']`);
+			// 렌더링시 테이블 첫번째 행이 선택되지 않았으면 클릭
+			if (!firstRow[0]?.className.includes('selected')) {
+				firstRow[0]?.click();
+			}
+			setCheckRow(false);
+		} else {
+			setCheckRow(false);
+		}
+	}, [checkRow, defaultClick, prevSelectRow, selectRow, tableKey]);
 	useEffect(() => {
 		setSelect && selectedFlatRows && selectedDropButton(selectedFlatRows);
 	}, [selectedRowIds, setSelect, selectedDropButton, selectedFlatRows]);
-
+	useMountedLayoutEffect(() => {
+		//defualtClick을 위한 기능
+		setSelect && setSelect(selectedFlatRows.map((v) => v.original));
+		defaultClick && setSelectRow(selectedFlatRows);
+	}, []);
 	return (
 		<_Container>
 			{(isPaginable || isSearchable) && (
@@ -902,6 +1000,9 @@ Table.propTypes = {
 	isDraggable: PropTypes.bool,
 	inner: PropTypes.bool,
 	subComponentHandler: PropTypes.func,
+	defaultClick: PropTypes.bool,
+	rowClick: PropTypes.func,
+
 };
 
 export default Table;

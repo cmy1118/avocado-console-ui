@@ -22,6 +22,9 @@ import FileAccess from './Templates/PAM/FileAccess';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
 import {isFulfilled} from '../../../../utils/redux';
 import MFA from './Templates/PAM/MFA';
+import ResourceManagement from "./Templates/PAM/ResourceManagement";
+import ResourceAccess from "./Templates/PAM/ResourceAccess/ResourceAccess";
+import ResourceCollectManagement from "./Templates/PAM/ResourceCollectManagement";
 
 const Container = styled.div`
 	display: flex;
@@ -223,6 +226,34 @@ const IamTemplateList = ({
 						switch (template.categoryCode) {
 							case '1':
 								return <div>액션 템플릿 예시</div>;
+							case '2':
+								return (
+									//자원 관리 권한
+									<ResourceManagement
+										templateId={template.id}
+										name={template.name}
+										description={template.description}
+									/>
+								);
+							case '3':
+								return (
+									//자원 수집 관리 권한
+									<ResourceCollectManagement
+										templateId={template.id}
+										name={template.name}
+										description={template.description}
+									/>
+								);
+							case '4':
+								return (
+									//자원 접근 권한
+									<ResourceAccess
+										templateId={template.id}
+										name={template.name}
+										description={template.description}
+									/>
+								);
+
 							default:
 								return <h1>No template match</h1>;
 						}
@@ -425,6 +456,27 @@ const IamTemplateList = ({
 					description: '액션 템플릿 예시',
 					id: '1',
 					name: '액션 템플릿',
+					resource: '*',
+				},
+				{
+					categoryCode: '2',
+					description: '자원 관리 권한',
+					id: '2',
+					name: '자원 관리 권한',
+					resource: '*',
+				},
+				{
+					categoryCode: '3',
+					description: '자원 수집 관리 권한',
+					id: '3',
+					name: '자원 수집 관리 권한',
+					resource: '*',
+				},
+				{
+					categoryCode: '4',
+					description: '자원 접근 권한',
+					id: '4',
+					name: '자원 접근 권한',
 					resource: '*',
 				},
 			]);

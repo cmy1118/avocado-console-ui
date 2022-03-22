@@ -57,7 +57,7 @@ import {
 	ROLE_SUMMARY_USER_COLUMN,
 } from '../../utils/TableColumns/roles';
 import {
-	PAM_TEMPLATE_ADD_RESOURCE_COLUMN,
+	PAM_TEMPLATE_ADD_RESOURCE_COLUMN, PAM_TEMPLATE_RESOURCE_ACCESS_COLUMN,
 	PAM_TEMPLATE_RESOURCE_COLUMN,
 	PAM_TEMPLATE_RESOURCE_GROUP_COLUMN,
 	POLICY_ADD_PREVIEW_COLUMN,
@@ -66,7 +66,9 @@ import {
 } from '../../utils/TableColumns/policies';
 
 export const tableColumns = Object.freeze({
-	// userAuth
+	/**********************************************************************
+	 * 사용자
+	 **********************************************************************/
 	USER: USER_COLUMN, // 기본
 	USER_ADD_GROUPS_INCLUDE: USER_ADD_GROUPS_INCLUDE_COLUMN, //submit 되는 테이블 => include
 	USER_ADD_GROUPS_EXCLUDE: USER_ADD_GROUPS_EXCLUDE_COLUMN,
@@ -86,7 +88,9 @@ export const tableColumns = Object.freeze({
 	USER_SUMMARY_TABS_PERMISSIONS_INCLUDE: USER_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN,
 	USER_SUMMARY_TABS_PERMISSIONS_EXCLUDE: USER_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN,
 
-	// group
+	/**********************************************************************
+	 * 그룹
+	 **********************************************************************/
 	GROUP: GROUP_COLUMN,
 	GROUP_TYPE: GROUP_TYPE_COLUMN,
 	GROUP_ADD_USERS_INCLUDE: GROUP_ADD_USERS_INCLUDE_COLUMN,
@@ -106,7 +110,9 @@ export const tableColumns = Object.freeze({
 	GROUP_SUMMARY_TABS_PERMISSIONS_INCLUDE: GROUP_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN,
 	GROUP_SUMMARY_TABS_PERMISSIONS_EXCLUDE: GROUP_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN,
 
-	// roles
+	/**********************************************************************
+	 * 역할
+	 **********************************************************************/
 	ROLE: ROLE_COLUMN,
 	//역할 생성
 	ROLE_ADD_POLICIES_INCLUDE: ROLE_ADD_POLICIES_INCLUDE_COLUMN,
@@ -130,8 +136,11 @@ export const tableColumns = Object.freeze({
 
 	// policy and permission
 	policyAndPermission: {}, // 아직 설계 없음. 우선 네이밍 저렇게 할게요..
-	//정책
+	/**********************************************************************
+	 * 정책
+	 **********************************************************************/
 	POLICY: POLICY_COLUMN,
+
 	//정책 생성
 	POLICY_ADD_PREVIEW: POLICY_ADD_PREVIEW_COLUMN,
 	// policy
@@ -143,4 +152,5 @@ export const tableColumns = Object.freeze({
 	//policy template
 	PAM_TEMPLATE_RESOURCE_GROUP: PAM_TEMPLATE_RESOURCE_GROUP_COLUMN,
 	PAM_TEMPLATE_RESOURCE: PAM_TEMPLATE_RESOURCE_COLUMN,
+	PAM_TEMPLATE_RESOURCE_ACCESS: PAM_TEMPLATE_RESOURCE_ACCESS_COLUMN,
 });
