@@ -4,8 +4,6 @@ import Dormant from './UserAccountProcessTemplate/Dormant';
 import AccountActivePeriod from './UserAccountProcessTemplate/AccountActivePeriod';
 import ModifyingGroup from './UserAccountProcessTemplate/ModifyingGroup';
 import Resignation from './UserAccountProcessTemplate/Resignation';
-
-import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplateDetail';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
@@ -21,7 +19,6 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 	const {creatingPolicyMode} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
 	);
-
 	//defaultData: 템플릿의 default value
 	const [defaultData, setDefaultData] = useState([]);
 	const [LoginFailureData, setLoginFailureData] = useState({});

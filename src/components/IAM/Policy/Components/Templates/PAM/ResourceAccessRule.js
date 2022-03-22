@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import useRadio from '../../../../../../hooks/useRadio';
 import {
+	policyOption,
 	resourceOptions,
 	restrictionOptions,
 } from '../../../../../../utils/policyOptions';
@@ -8,6 +9,7 @@ import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
 import TimeInterval from '../../../../../RecycleComponents/Templates/TimeInterval';
 import {DayOfTheWeek} from './ConnectReason';
+import ResourceSelectionContainer from './Resource/ResourceSelectionContainer';
 
 const resourceAccessRule = {
 	accessTimezone: {
@@ -47,6 +49,8 @@ const ResourceAccessRule = () => {
 		name: 'connectResource',
 		options: resourceOptions,
 	});
+	//selected: 선택된 자원 & 그룹
+	const [selected, setSelected] = useState({});
 
 	return (
 		<div>
@@ -98,6 +102,12 @@ const ResourceAccessRule = () => {
 						<div>
 							{resourceRadioButton()}
 							<div>----------------------------------</div>
+							<ResourceSelectionContainer
+								disabled={
+									resource === policyOption.resource.all.key
+								}
+								setSelected={setSelected}
+							/>
 						</div>
 					);
 				}}

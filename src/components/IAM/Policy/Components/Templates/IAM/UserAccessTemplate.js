@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import PropTypes from 'prop-types';
-import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplateDetail';
 import {useDispatch, useSelector} from 'react-redux';
 import TemplateElement from '../../TemplateElement';
 import TimeInterval from '../../../../../RecycleComponents/Templates/TimeInterval';
