@@ -87,7 +87,7 @@ const CommandControl = () => {
 	}, [select]);
 
 	/**************************************************
-	 * seob - 규칙 템플릿 id에 해당하는 데이터 findById
+	 * seob - 규칙 템플릿 id에 해당하는 데이터 detail findAll
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
@@ -103,9 +103,10 @@ const CommandControl = () => {
 			// 	// 에러 핸들링
 			// 	console.log(res.error);
 			// }
+			setControlTypeValue('white');
 		};
 		fetchData();
-	}, [dispatch]);
+	}, [dispatch, setControlTypeValue]);
 	return (
 		<div>
 			<TemplateElementContainer
@@ -118,26 +119,28 @@ const CommandControl = () => {
 					/>
 				)}
 			/>
-			<TemplateElementContainer
-				title={contents.controlCommand.title}
-				description={contents.controlCommand.description}
-				render={() => (
-					<TableContainer
-						title={contents.controlCommand.title}
-						onAdd={handleAdd}
-						onRemove={handleRemove}
-						render={
-							<Table
-								tableKey={'session'}
-								data={tableData}
-								columns={columns}
-								setData={setTableData}
-								setSelect={setSelect}
-							/>
-						}
-					/>
-				)}
-			/>
+			{controlTypeValue === 'white' && (
+				<TemplateElementContainer
+					title={contents.controlCommand.title}
+					description={contents.controlCommand.description}
+					render={() => (
+						<TableContainer
+							title={contents.controlCommand.title}
+							onAdd={handleAdd}
+							onRemove={handleRemove}
+							render={
+								<Table
+									tableKey={'session'}
+									data={tableData}
+									columns={columns}
+									setData={setTableData}
+									setSelect={setSelect}
+								/>
+							}
+						/>
+					)}
+				/>
+			)}
 		</div>
 	);
 };
