@@ -81,12 +81,53 @@ const SubContainer = styled.div`
 const useTextBox = ({name = '', regex, placeholder = '', disabled = false}) => {
 	const [value, setValue] = useState('');
 	const [isValid, setIsValid] = useState(false);
+	// const [lastValidValue, setLastValidValue] = useState('');
+
 	const onFocusContainer = useCallback((e) => {
 		e.target.parentElement.classList.add('focus');
 	}, []);
-	const onBlurContainer = useCallback((e) => {
-		e.target.parentElement.classList.remove('focus');
-	}, []);
+	const onBlurContainer = useCallback(
+		(e) => {
+			e.target.parentElement.classList.remove('focus');
+			// if (!isValid) {
+			// 	console.log(lastValidValue);
+			// 	setValue(lastValidValue);
+			// }
+		},
+		[
+			// isValid, lastValidValue
+		],
+	);
+
+	/**************************************************
+	 * seob - input onChange 이벤트 처리함수
+	 ***************************************************/
+	const handleChange = useCallback(
+		(e) => {
+			setValue(e.target.value);
+			// console.log(isValid);
+			// if (regex && !regex.test(e.target.value) && isValid) {
+			// 	setLastValidValue(e.target.value);
+			// }
+
+			// // 정규식이 있는경우
+			// if (regex) {
+			// 	// 초기값인 경우 setValue
+			// 	if (e.target.value === '') {
+			// 		setValue(e.target.value);
+			// 	}
+			// 	// 입력값이 있는경우 regex 검사를 통과히먄 setValue
+			// 	else {
+			// 		regex.test(e.target.value) && setValue(e.target.value);
+			// 	}
+			// } else {
+			// 	setValue(e.target.value);
+			// }
+		},
+		[
+			// isValid, regex
+		],
+	);
 
 	useEffect(() => {
 		regex && setIsValid(regex.test(value));
@@ -99,7 +140,7 @@ const useTextBox = ({name = '', regex, placeholder = '', disabled = false}) => {
 					type={'text'}
 					value={value}
 					name={name}
-					onChange={(e) => setValue(e.target.value)}
+					onChange={handleChange}
 					onFocus={onFocusContainer}
 					onBlur={onBlurContainer}
 					placeholder={placeholder}

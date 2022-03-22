@@ -82,6 +82,20 @@ const TableCheckBox = ({
 	 ***************************************************/
 	const handleSetData = useCallback(() => {
 		if (cell.value === null) return;
+		// allCheckKey prop이 없는경우 기본 클릭동작
+		if (!allCheckKey) {
+			setData((data) =>
+				data.map((v) => {
+					if (v.id === cell.row.original.id) {
+						return {
+							...v,
+							[cell.column.id]: !v[cell.column.id],
+						};
+					} else return v;
+				}),
+			);
+			return;
+		}
 
 		// rowChecks : 전체 check input을 제회한 나머지 check input의 dom element
 		const rowChecks = Object.entries(refs.current)
@@ -191,6 +205,7 @@ const TableCheckBox = ({
 
 			// shiftKey를 누른 대상이 전체 체크 input인 경우 ( 나머지 input은 shiftKey 적용 X )
 			if (e.shiftKey) {
+				if (!allCheckKey) return;
 				if (cell.column.id === allCheckKey) {
 					// lastCheckedKey 값이 존재하는 경우
 					if (lastCheckedKey) {

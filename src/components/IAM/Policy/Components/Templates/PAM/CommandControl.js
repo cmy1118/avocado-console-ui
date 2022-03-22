@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import Table from '../../../../../Table/Table';
 import TemplateElementContainer from '../../TemplateElementContainer';
@@ -27,6 +27,9 @@ const contents = {
 		],
 	},
 };
+
+// 임시 테이블 셀 id
+let ID = 4;
 
 const CommandControl = () => {
 	const dispatch = useDispatch();
@@ -64,7 +67,27 @@ const CommandControl = () => {
 	);
 
 	/**************************************************
-	 * seob - 규칙 템플릿 id에 해당하는 데이터 findById
+	 * seob - 테이블 데이터 추가 함수
+	 ***************************************************/
+	const handleAdd = useCallback(() => {
+		console.log('add');
+		setTableData((prev) => [
+			...prev,
+			{id: ID, [DRAGGABLE_KEY]: `${ID}`, controlCommand: ''},
+		]);
+		ID++;
+	}, []);
+
+	/**************************************************
+	 * seob - 테이블 데이터 삭제 함수
+	 ***************************************************/
+	const handleRemove = useCallback(() => {
+		console.log(select);
+		console.log('remove');
+	}, [select]);
+
+	/**************************************************
+	 * seob - 규칙 템플릿 id에 해당하는 데이터 detail findAll
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
@@ -80,9 +103,10 @@ const CommandControl = () => {
 			// 	// 에러 핸들링
 			// 	console.log(res.error);
 			// }
+			setControlTypeValue('white');
 		};
 		fetchData();
-	}, [dispatch]);
+	}, [dispatch, setControlTypeValue]);
 	return (
 		<div>
 			<TemplateElementContainer
@@ -95,23 +119,28 @@ const CommandControl = () => {
 					/>
 				)}
 			/>
-			<TemplateElementContainer
-				title={contents.controlCommand.title}
-				description={contents.controlCommand.description}
-				render={() => (
-					<TableContainer
-						render={
-							<Table
-								tableKey={'session'}
-								data={tableData}
-								columns={columns}
-								setData={setTableData}
-								setSelect={setSelect}
-							/>
-						}
-					/>
-				)}
-			/>
+			{controlTypeValue === 'white' && (
+				<TemplateElementContainer
+					title={contents.controlCommand.title}
+					description={contents.controlCommand.description}
+					render={() => (
+						<TableContainer
+							title={contents.controlCommand.title}
+							onAdd={handleAdd}
+							onRemove={handleRemove}
+							render={
+								<Table
+									tableKey={'session'}
+									data={tableData}
+									columns={columns}
+									setData={setTableData}
+									setSelect={setSelect}
+								/>
+							}
+						/>
+					)}
+				/>
+			)}
 		</div>
 	);
 };

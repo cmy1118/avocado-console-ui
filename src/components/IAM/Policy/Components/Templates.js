@@ -21,6 +21,7 @@ import ResourceAccessRule from './Templates/PAM/ResourceAccessRule';
 import FileAccess from './Templates/PAM/FileAccess';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
 import {isFulfilled} from '../../../../utils/redux';
+import MFA from './Templates/PAM/MFA';
 
 const Container = styled.div`
 	display: flex;
@@ -174,15 +175,16 @@ const IamTemplateList = ({
 								);
 							case '2':
 								return (
-									<ResourceAccessRule
+									<MFA
 										templateId={template.id}
 										name={template.name}
 										description={template.description}
 									/>
 								);
+
 							case '3':
 								return (
-									<ConnectReason
+									<ResourceAccessRule
 										templateId={template.id}
 										name={template.name}
 										description={template.description}
@@ -190,13 +192,21 @@ const IamTemplateList = ({
 								);
 							case '4':
 								return (
-									<CommandControl
+									<ConnectReason
 										templateId={template.id}
 										name={template.name}
 										description={template.description}
 									/>
 								);
 							case '5':
+								return (
+									<CommandControl
+										templateId={template.id}
+										name={template.name}
+										description={template.description}
+									/>
+								);
+							case '6':
 								return (
 									<FileAccess
 										templateId={template.id}
@@ -375,29 +385,36 @@ const IamTemplateList = ({
 				},
 				{
 					categoryCode: '2',
-					description: '자원 접근 정책',
+					description: '다중인증(MFA)',
 					id: '2',
-					name: '자원 접근 정책',
+					name: '다중인증(MFA)',
 					resource: '*',
 				},
 				{
 					categoryCode: '3',
-					description: '접속 사유 정책',
+					description: '자원 접근 정책',
 					id: '3',
-					name: '접속 사유 정책',
+					name: '자원 접근 정책',
 					resource: '*',
 				},
 				{
 					categoryCode: '4',
-					description: '명령어 제어 정책',
+					description: '접속 사유 정책',
 					id: '4',
-					name: '명령어 제어 정책',
+					name: '접속 사유 정책',
 					resource: '*',
 				},
 				{
 					categoryCode: '5',
-					description: '파일 접근 권한',
+					description: '명령어 제어 정책',
 					id: '5',
+					name: '명령어 제어 정책',
+					resource: '*',
+				},
+				{
+					categoryCode: '6',
+					description: '파일 접근 권한',
+					id: '6',
 					name: '파일 접근 권한',
 					resource: '*',
 				},
