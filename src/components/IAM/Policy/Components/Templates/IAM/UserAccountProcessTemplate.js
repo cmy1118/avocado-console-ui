@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {policyTypes} from '../../../../../../utils/data';
-import {isFulfilled} from '../../../../../../utils/redux';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplateDetail';
 
 /**************************************************
  * ambacc244 - 사용자 계정 처리 컴포넌트
