@@ -68,7 +68,9 @@ const MFA = () => {
 		timeoutSecondsValue,
 		timeoutSecondsTextBox,
 		setTimeoutSeconds,
-	] = useTextBox({});
+	] = useTextBox({
+		regex: /^[0-9]+$/,
+	});
 
 	/**************************************************
 	 * seob - 규칙 템플릿 id에 해당하는 데이터 detail findAll
