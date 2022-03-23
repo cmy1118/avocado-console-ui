@@ -60,9 +60,9 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 		() => [
 			{url: '/iam', label: 'IAM'},
 			{url: '/policies', label: '역할'},
-			{url: '/policies/' + type + '/' + policyId, label: policyId},
+			{url: '/policies/' + type + '/' + policy?.id, label: policy?.name},
 		],
-		[policyId, type],
+		[policy, type],
 	);
 
 	const TabBarInfo = [

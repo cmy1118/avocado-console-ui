@@ -15,7 +15,6 @@ const _Link = styled(Link)`
 `;
 
 const TableLink = ({cell, text}) => {
-	// console.log('cell', cell.value);
 	const location = useLocation();
 	const [value, setValue] = useState(cell.value);
 	//****************************************************************//
@@ -31,11 +30,17 @@ const TableLink = ({cell, text}) => {
 	const dataType = cell.column?.type;
 	const data = cell.row.original;
 	const paramId = data.userUid ? data.userUid : data.id;
+	const policyType =
+		data.policyType === 'IAM' ? 'iam' : data.policyType === 'PAM' && 'pam';
 
 	return grantUserId ? (
 		<_Link to={{pathname: `/${dataType}/${grantUserId}`}}>{text}</_Link>
 	) : dataType ? (
 		<_Link to={{pathname: `/${dataType}/${paramId}`}}>{value}</_Link>
+	) : policyType ? (
+		<_Link to={{pathname: `${pathname}/${policyType}/${paramId}`}}>
+			{value}
+		</_Link>
 	) : (
 		<_Link to={`${pathname}/${paramId}`}>{value}</_Link>
 	);
