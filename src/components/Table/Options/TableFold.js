@@ -11,10 +11,20 @@ const _TableFoldTitle = styled.div`
 `;
 
 //children = button
-const TableFold = ({children, title, space, isFold, setIsFold}) => {
+const TableFold = ({
+	disabled = false,
+	children,
+	title,
+	space,
+	isFold,
+	setIsFold,
+}) => {
 	const onClickFold = useCallback(() => {
-		setIsFold({...isFold, [space]: !isFold[space]});
-	}, [isFold, setIsFold, space]);
+		console.log(disabled);
+		if (!disabled) {
+			setIsFold({...isFold, [space]: !isFold[space]});
+		}
+	}, [disabled, isFold, setIsFold, space]);
 	return (
 		<div>
 			<TableTitle
@@ -44,5 +54,6 @@ TableFold.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
+	disabled: PropTypes.bool,
 };
 export default TableFold;
