@@ -80,7 +80,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	 *************************************************************************/
 	async function createPolicy() {
 		return dispatch(
-			IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.create({
+			IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.createPolicy({
 				name: formData.name,
 				description: formData.description,
 				type: policyManageTypes.Client,

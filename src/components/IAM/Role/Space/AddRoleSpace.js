@@ -4,10 +4,10 @@ import {
 	AddSpaceContainer,
 } from '../../../../styles/components/iam/addPage';
 import {FOLD_DATA} from '../../../../utils/data';
-import ConnectPolicyToRole from '../Components/ConnectPolicyToRole';
-import ConnectUserToRole from '../Components/ConnectUserToRole';
-import ConnectGroupToRole from '../Components/ConnectGroupToRole';
-import AddRole from '../Components/AddRole';
+import ConnectPolicyToRole from '../Components/Add/ConnectPolicyToRole';
+import ConnectUserToRole from '../Components/Add/ConnectUserToRole';
+import ConnectGroupToRole from '../Components/Add/ConnectGroupToRole';
+import AddRole from '../Components/Add/AddRole';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const paths = [

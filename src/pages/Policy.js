@@ -10,8 +10,11 @@ const Policy = ({match}) => {
 		<>
 			{match.path === '/policies/add' ? (
 				<AddPolicySpace />
-			) : match.params?.id ? (
-				<PolicyDescriptionSpace policyId={match.params.id} />
+			) : match.params?.id && match.params?.type ? (
+				<PolicyDescriptionSpace
+					policyId={match.params.id}
+					type={match.params.type}
+				/>
 			) : (
 				<PolicySpace />
 			)}
@@ -23,6 +26,7 @@ Policy.propTypes = {
 	match: PropTypes.shape({
 		path: PropTypes.string.isRequired,
 		params: PropTypes.shape({
+			type: PropTypes.string,
 			id: PropTypes.string,
 		}),
 	}),

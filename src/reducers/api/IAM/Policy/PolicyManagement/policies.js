@@ -9,7 +9,7 @@ const NAME = 'IAM_POLICY_MANAGEMENT_POLICIES';
 /**************************************************
  * ambacc244 - IAM policy 생성 요청 액션
  **************************************************/
-const create = createAsyncThunk(
+const createPolicy = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
@@ -35,6 +35,33 @@ const create = createAsyncThunk(
 		return getIdFormLocation(response.headers.location);
 	},
 );
+
+/**************************************************
+ * ambacc244 - IAM policy 생성 요청 액션
+ **************************************************/
+const updatePolicy = createAsyncThunk(
+	`${NAME}/UPDATE`,
+	async (payload, {getState}) => {
+		const {userAuth} = getState().AUTH;
+
+		const response = await Axios.put(
+			`/open-api/v1/iam/policies/${payload.id}`,
+			{
+				name: payload?.name,
+				description: payload?.description,
+				maxGrants: payload?.maxGrants,
+			},
+			{
+				headers: {
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+					'Content-Type': contentType.JSON,
+				},
+				baseURL: baseURL.openApi,
+			},
+		);
+	},
+);
+
 /**************************************************
  * ambacc244 - IAM policy 생성 요청 액션
  **************************************************/
@@ -60,6 +87,28 @@ const findAll = createAsyncThunk(
 		});
 		console.log(response);
 		return response;
+	},
+);
+
+/**************************************************
+ * ambacc244 - IAM policy id로 검색 요청 액션
+ **************************************************/
+const findPolicyById = createAsyncThunk(
+	`${NAME}/FIND_BY_ID`,
+	async (payload, {getState}) => {
+		const {userAuth} = getState().AUTH;
+
+		const response = await Axios.get(
+			`/open-api/v1/iam/policies/${payload.id}`,
+			{
+				headers: {
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+					// 'Content-Type': contentType.JSON,
+				},
+				baseURL: baseURL.openApi,
+			},
+		);
+		return response.data;
 	},
 );
 
@@ -89,8 +138,10 @@ const IAM_POLICY_MANAGEMENT_POLICIES = {
 	selector: (state) => selectAllState(state[slice.name]),
 	action: slice.actions,
 	asyncAction: {
-		create,
+		createPolicy,
 		findAll,
+		findPolicyById,
+		updatePolicy,
 	},
 };
 

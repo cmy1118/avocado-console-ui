@@ -47,7 +47,7 @@ const _TabItem = styled.div`
 	width: 100%;
 `;
 
-const TabBar = ({Tabs, param, id, isOpened, setIsOpened}) => {
+const TabBar = ({Tabs, isOpened, setIsOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {search} = useLocation();
@@ -56,11 +56,11 @@ const TabBar = ({Tabs, param, id, isOpened, setIsOpened}) => {
 		(v) => () => {
 			setIsOpened(false);
 			history.push({
-				pathname: `/${param}/${id}`,
+				pathname: location.pathname,
 				search: `tabs=${v}`,
 			});
 		},
-		[setIsOpened, param, dispatch, history, id],
+		[setIsOpened, dispatch, history],
 	);
 	return (
 		<_TabContainer>
@@ -87,8 +87,6 @@ const TabBar = ({Tabs, param, id, isOpened, setIsOpened}) => {
 };
 TabBar.propTypes = {
 	Tabs: PropTypes.array.isRequired,
-	id: PropTypes.string.isRequired,
-	param: PropTypes.string.isRequired,
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 };

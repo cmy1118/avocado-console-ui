@@ -281,7 +281,7 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 					groups.data.forEach((group) => {
 						dispatch(
 							IAM_USER.asyncAction.findByUidAction({
-								userUid: group.createdTag.actorTag.userUid,
+								userUid: group.createdTag.actorTag?.userUid,
 							}),
 						)
 							.unwrap()

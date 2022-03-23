@@ -183,8 +183,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 				<TabContainer isOpened={!isSummaryOpened}>
 					<TabBar
 						Tabs={TabBarInfo}
-						param={'groups'}
-						id={groupId}
 						isOpened={isSummaryOpened}
 						setIsOpened={setIsSummaryOpened}
 					/>

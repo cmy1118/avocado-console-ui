@@ -150,7 +150,7 @@ const UserGroupsTab = ({
 					.then((group) => {
 						dispatch(
 							IAM_USER.asyncAction.findByUidAction({
-								userUid: group.createdTag.actorTag.userUid,
+								userUid: group.createdTag.actorTag?.userUid,
 							}),
 						)
 							.unwrap()

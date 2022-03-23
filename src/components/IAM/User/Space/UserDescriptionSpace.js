@@ -122,7 +122,7 @@ const UserDescriptionSpace = ({userUid}) => {
 
 			<DescriptionPageContainer>
 				<div>
-					<TitleBar className={'subHeader'}>
+					<TitleBar>
 						<TitleBarText>
 							<HoverIconButton
 								color={'font'}
@@ -185,8 +185,6 @@ const UserDescriptionSpace = ({userUid}) => {
 				<TabContainer isOpened={!isSummaryOpened}>
 					<TabBar
 						Tabs={TabBarInfo}
-						param={'users'}
-						id={userUid}
 						isOpened={isSummaryOpened}
 						setIsOpened={setIsSummaryOpened}
 					/>
