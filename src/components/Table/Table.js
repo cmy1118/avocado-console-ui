@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
 	arrowDownIcon,
@@ -16,14 +16,12 @@ import TableOptionsBar from './TableOptionsBar';
 import {
 	useExpanded,
 	useFilters,
-	useGlobalFilter, useMountedLayoutEffect,
+	useGlobalFilter,
 	usePagination,
 	useRowSelect,
 	useSortBy,
 	useTable,
 } from 'react-table';
-import TableCheckbox from './Options/TableCheckbox';
-import {usePrevious} from "../../hooks/usePrevious";
 
 const Styles = styled.div`
 	// padding: 1rem;
@@ -296,7 +294,7 @@ const Table = ({
 	columns,
 	tableKey,
 	setData,
-	setSelect,
+	// setSelect,
 	isDraggable,
 	// mode = 'normal',
 	readOnly = false,
@@ -308,15 +306,14 @@ const Table = ({
 	setSearch,
 	subComponentHandler,
 	inner = false,
-				   rowClick,
+	rowClick,
 	isCheckBox = true,
-   defaultClick, //테이블 특정 row를 미리 클릭된 화면으로 보여주는 기능
-
-			   }) => {
+	defaultClick, //테이블 특정 row를 미리 클릭된 화면으로 보여주는 기능
+}) => {
 	const [skipPageReset, setSkipPageReset] = useState(false);
 	const [lastClickedIndex, setLastClickedIndex] = useState(null);
 	const [searchValue, setSearchValue] = useState('');
-
+	const skipPageResetRef = useRef(false);
 
 	// Create a function that will render our row sub components
 	const renderRowSubComponent = useCallback(
@@ -391,23 +388,26 @@ const Table = ({
 	// 		: cellLength * magicSpacing + 24 + 'px';
 	// };
 
-	const updateMyData = (rowIndex, columnId, value) => {
-		// We also turn on the flag to not reset the page
-		if (readOnly) return;
-		setSkipPageReset(true);
-		setData &&
-			setData((old) =>
-				old.map((row, index) => {
-					if (index === rowIndex) {
-						return {
-							...old[rowIndex],
-							[columnId]: value,
-						};
-					}
-					return row;
-				}),
-			);
-	};
+	const updateMyData = useCallback(
+		(rowIndex, columnId, value) => {
+			// We also turn on the flag to not reset the page
+			if (readOnly) return;
+			setSkipPageReset(true);
+			setData &&
+				setData((old) =>
+					old.map((row, index) => {
+						if (index === rowIndex) {
+							return {
+								...old[rowIndex],
+								[columnId]: value,
+							};
+						}
+						return row;
+					}),
+				);
+		},
+		[readOnly, setData],
+	);
 
 	function dateBetweenFilterFn(rows, id, filterValues) {
 		let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;
@@ -481,6 +481,12 @@ const Table = ({
 			getRowId,
 			filterTypes,
 			autoResetPage: !skipPageReset,
+			autoResetExpanded: !skipPageReset,
+			autoResetGroupBy: !skipPageReset,
+			autoResetSelectedRows: !skipPageReset,
+			autoResetSortBy: !skipPageReset,
+			autoResetFilters: !skipPageReset,
+			autoResetRowState: !skipPageReset,
 			updateMyData,
 		},
 		useGlobalFilter,
@@ -514,37 +520,36 @@ const Table = ({
 					},
 					...columns,
 				]);
-			isCheckBox &&
-				hooks.visibleColumns.push((columns) => [
-					{
-						id: 'selection',
-						// eslint-disable-next-line react/prop-types,react/display-name
-						Header: ({getToggleAllPageRowsSelectedProps}) => (
-							<TableCheckbox
-								{...getToggleAllPageRowsSelectedProps()}
-								tablekey={tableKey}
-							/>
-						),
-						// eslint-disable-next-line react/prop-types,react/display-name
-						Cell: ({row}) => (
-							<TableCheckbox
-								// eslint-disable-next-line react/prop-types,react/display-name
-								{...row.getToggleRowSelectedProps()}
-								tablekey={tableKey}
-							/>
-						),
-						// width: 40,
-						// disableChangeVisible: true,
-					},
-					...columns,
-				]);
+			// isCheckBox &&
+			// 	hooks.visibleColumns.push((columns) => [
+			// 		{
+			// 			id: 'selection',
+			// 			// eslint-disable-next-line react/prop-types,react/display-name
+			// 			Header: ({getToggleAllPageRowsSelectedProps}) => (
+			// 				<TableCheckbox
+			// 					{...getToggleAllPageRowsSelectedProps()}
+			// 					tablekey={tableKey}
+			// 				/>
+			// 			),
+			// 			// eslint-disable-next-line react/prop-types,react/display-name
+			// 			Cell: ({row}) => (
+			// 				<TableCheckbox
+			// 					// eslint-disable-next-line react/prop-types,react/display-name
+			// 					{...row.getToggleRowSelectedProps()}
+			// 					tablekey={tableKey}
+			// 				/>
+			// 			),
+			// 			// width: 40,
+			// 			// disableChangeVisible: true,
+			// 		},
+			// 		...columns,
+			// 	]);
 		},
 	);
 	const [position, setPosition] = useState({x: 0, y: 0});
-	const [selectRow, setSelectRow] = useState(selectedFlatRows);
+	// const [selectRow, setSelectRow] = useState(selectedFlatRows);
 	const [checkRow, setCheckRow] = useState(true);
-	const prevSelectRow = usePrevious(selectRow);
-
+	// const prevSelectRow = usePrevious(selectRow);
 
 	const getItemStyle = (isDragging, draggableStyle, style) => ({
 		// 혹시 모를 나중의 스타일 적용을 대비해서 제거 ㄴㄴ
@@ -590,9 +595,9 @@ const Table = ({
 		(selectedFlatRows) => {
 			const data = {};
 			data[tableKey] = selectedFlatRows.map((v) => v.original);
-			setSelect && setSelect(data);
+			// setSelect && setSelect(data);
 		},
-		[setSelect, tableKey],
+		[tableKey],
 	);
 
 	const onMouseDownItem = useCallback(
@@ -624,9 +629,9 @@ const Table = ({
 	 ******************************************************************/
 	const handleClick = useCallback(
 		(row) => (e) => {
-			console.log('handleClick')
+			console.log('handleClick');
 			//handleClick 시 defaultClick 기능 해제
-			setSelectRow(false);
+			// setSelectRow(false);
 			rowClick && rowClick(e, row.original);
 			const checkboxes = document.querySelectorAll(
 				`.${tableKey}[type='checkbox']`,
@@ -643,20 +648,20 @@ const Table = ({
 						while (max >= min) {
 							if (checkboxes[row.index + 1].checked)
 								checkboxes[max].checked &&
-								checkboxes[max]?.click();
+									checkboxes[max]?.click();
 							else
 								!checkboxes[max].checked &&
-								checkboxes[max]?.click();
+									checkboxes[max]?.click();
 							max--;
 						}
 					} else {
 						while (max >= min) {
 							if (checkboxes[row.index + 1].checked)
 								checkboxes[min].checked &&
-								checkboxes[min]?.click();
+									checkboxes[min]?.click();
 							else
 								!checkboxes[min].checked &&
-								checkboxes[min]?.click();
+									checkboxes[min]?.click();
 							min++;
 						}
 					}
@@ -683,33 +688,33 @@ const Table = ({
 	 *  selectRow	  :선택된 행
 	 *  defaultClick  :defaultClick 사용유뮤 props
 	 *******************************************************************************/
-	useEffect(() => {
-		//처음 렌더링인지 확인
-		if (
-			setCheckRow &&
-			defaultClick &&
-			prevSelectRow?.length === selectRow?.length &&
-			prevSelectRow[0]?.id === selectRow[0]?.id
-		) {
-			//div[type='row'] : 테이블 행 dom 요소
-			const firstRow = document.querySelectorAll(`div[type='row']`);
-			// 렌더링시 테이블 첫번째 행이 선택되지 않았으면 클릭
-			if (!firstRow[0]?.className.includes('selected')) {
-				firstRow[0]?.click();
-			}
-			setCheckRow(false);
-		} else {
-			setCheckRow(false);
-		}
-	}, [checkRow, defaultClick, prevSelectRow, selectRow, tableKey]);
-	useEffect(() => {
-		setSelect && selectedFlatRows && selectedDropButton(selectedFlatRows);
-	}, [selectedRowIds, setSelect, selectedDropButton, selectedFlatRows]);
-	useMountedLayoutEffect(() => {
-		//defualtClick을 위한 기능
-		setSelect && setSelect(selectedFlatRows.map((v) => v.original));
-		defaultClick && setSelectRow(selectedFlatRows);
-	}, []);
+	// useEffect(() => {
+	// 	//처음 렌더링인지 확인
+	// 	if (
+	// 		setCheckRow &&
+	// 		defaultClick &&
+	// 		prevSelectRow?.length === selectRow?.length &&
+	// 		prevSelectRow[0]?.id === selectRow[0]?.id
+	// 	) {
+	// 		//div[type='row'] : 테이블 행 dom 요소
+	// 		const firstRow = document.querySelectorAll(`div[type='row']`);
+	// 		// 렌더링시 테이블 첫번째 행이 선택되지 않았으면 클릭
+	// 		if (!firstRow[0]?.className.includes('selected')) {
+	// 			firstRow[0]?.click();
+	// 		}
+	// 		setCheckRow(false);
+	// 	} else {
+	// 		setCheckRow(false);
+	// 	}
+	// }, [checkRow, defaultClick, prevSelectRow, selectRow, tableKey]);
+	// useEffect(() => {
+	// 	setSelect && selectedFlatRows && selectedDropButton(selectedFlatRows);
+	// }, [selectedRowIds, setSelect, selectedDropButton, selectedFlatRows]);
+	// useMountedLayoutEffect(() => {
+	//defualtClick을 위한 기능
+	// setSelect && setSelect(selectedFlatRows.map((v) => v.original));
+	// defaultClick && setSelectRow(selectedFlatRows);
+	// }, []);
 	return (
 		<_Container>
 			{(isPaginable || isSearchable) && (
@@ -1002,7 +1007,6 @@ Table.propTypes = {
 	subComponentHandler: PropTypes.func,
 	defaultClick: PropTypes.bool,
 	rowClick: PropTypes.func,
-
 };
 
 export default Table;
