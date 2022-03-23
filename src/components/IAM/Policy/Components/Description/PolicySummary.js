@@ -6,6 +6,9 @@ import {
 	SummaryTableTitle,
 } from '../../../../../styles/components/iam/descriptionPage';
 import {useHistory, useLocation} from 'react-router-dom';
+import {tableKeys} from '../../../../../Constants/Table/keys';
+import Table from '../../../../Table/Table';
+import {tableColumns} from '../../../../../Constants/Table/columns';
 
 const policySummary = {
 	permission: '규칙/권한 : ',
@@ -20,9 +23,9 @@ const PolicySummary = ({policyId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const location = useLocation();
-	const [permission, setPermission] = useState([]);
-	const [policy, setPolicy] = useState([]);
-	const [tag, setTag] = useState([]);
+	const [permissionData, setPermissionData] = useState([]);
+	const [policyData, setPolicyData] = useState([]);
+	const [tagData, setTagData] = useState([]);
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
@@ -72,33 +75,35 @@ const PolicySummary = ({policyId}) => {
 		<SummaryTablesContainer>
 			<SummaryTableTitle onClick={onClickChangeTab('permission')}>
 				{policySummary.permission}
+				{permissionData.length}
 			</SummaryTableTitle>
-			{/*<Table*/}
-			{/*	readOnly*/}
-			{/*	data={permission}*/}
-			{/*	tableKey={tableKeys.policy.summary.permission}*/}
-			{/*	columns={tableColumns[tableKeys.policy.summary.permission]}*/}
-			{/*/>*/}
+			<Table
+				readOnly
+				data={permissionData}
+				tableKey={tableKeys.policy.summary.permission}
+				columns={tableColumns[tableKeys.policy.summary.permission]}
+			/>
 
 			<SummaryTableTitle onClick={onClickChangeTab('role')}>
-				{policySummary.role}
+				{policySummary.role} {policyData.length}
 			</SummaryTableTitle>
-			{/*<Table*/}
-			{/*	readOnly*/}
-			{/*	data={permission}*/}
-			{/*	tableKey={tableKeys.policy.summary.role}*/}
-			{/*	columns={tableColumns[tableKeys.policy.summary.role]}*/}
-			{/*/>*/}
+			<Table
+				readOnly
+				data={policyData}
+				tableKey={tableKeys.policy.summary.role}
+				columns={tableColumns[tableKeys.policy.summary.role]}
+			/>
 
 			<SummaryTableTitle onClick={onClickChangeTab('tag')}>
 				{policySummary.tag}
+				{tagData.length}
 			</SummaryTableTitle>
-			{/*<Table*/}
-			{/*	readOnly*/}
-			{/*	data={permission}*/}
-			{/*	tableKey={tableKeys.policy.summary.tag}*/}
-			{/*	columns={tableColumns[tableKeys.policy.summary.tag]}*/}
-			{/*/>*/}
+			<Table
+				readOnly
+				data={tagData}
+				tableKey={tableKeys.policy.summary.tag}
+				columns={tableColumns[tableKeys.policy.summary.tag]}
+			/>
 		</SummaryTablesContainer>
 	);
 };

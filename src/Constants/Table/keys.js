@@ -143,9 +143,20 @@ export const tableKeys = Object.freeze({
 			},
 		},
 		summary: {
-			permission: 'POLICY_SUMMARY_RERMISSION',
+			permission: 'POLICY_SUMMARY_PERMISSION',
 			role: 'POLICY_SUMMARY_ROLE',
 			tag: 'POLICY_SUMMARY_TAG',
+			tabs: {
+				permission: 'POLICY_SUMMARY_PERMISSION_TAB',
+				role: {
+					include: 'POLICY_SUMMARY_RERMISSION_INCLUDE',
+					exclude: 'POLICY_SUMMARY_RERMISSION_EXCLUDE',
+				},
+				tag: {
+					include: 'POLICY_SUMMARY_TAG_INCLUDE',
+					exclude: 'POLICY_SUMMARY_TAG_EXCLUDE',
+				},
+			},
 		},
 		policies: {
 			userManagement: 'POLICY_ADD_USER_MANAGEMENT',
