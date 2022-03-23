@@ -167,6 +167,14 @@ const GroupSpace = () => {
 						setTotal(
 							totalNumberConverter(res.headers['content-range']),
 						);
+						dispatch(
+							PAGINATION.action.setTotal({
+								tableKey: tableKeys.groups.basic,
+								element: totalNumberConverter(
+									res.headers['content-range'],
+								),
+							}),
+						);
 						res.data.length ? getDetailApi(res) : setGroups([]);
 					})
 					.catch((error) => {

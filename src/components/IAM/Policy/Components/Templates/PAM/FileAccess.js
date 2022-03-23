@@ -7,6 +7,7 @@ import {DRAGGABLE_KEY} from '../../../../../../Constants/Table/keys';
 import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import TableComboBox from '../../../../../Table/ColumnCells/TableComboBox';
 import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
+import useSelection from '../../../../../../hooks/table/useSelection';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -26,11 +27,12 @@ const contents = {
 const FileAccess = () => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
-	const [select, setSelect] = useState({});
+	const [select, selectionColumn] = useSelection();
 
 	// 세션 타임아웃 테이블 컬럼
 	const columns = useMemo(
 		() => [
+			selectionColumn,
 			{
 				Header: '구분',
 				accessor: 'type',
@@ -74,7 +76,7 @@ const FileAccess = () => {
 				width: 70,
 			},
 		],
-		[],
+		[selectionColumn],
 	);
 
 	const [tableData, setTableData] = useState([
@@ -97,6 +99,38 @@ const FileAccess = () => {
 		{
 			id: 2,
 			[DRAGGABLE_KEY]: '2',
+			name: 'exe',
+			read: false,
+			write: false,
+			type: 'extension',
+		},
+		{
+			id: 3,
+			[DRAGGABLE_KEY]: '3',
+			name: 'exe',
+			read: false,
+			write: false,
+			type: 'extension',
+		},
+		{
+			id: 4,
+			[DRAGGABLE_KEY]: '4',
+			name: 'exe',
+			read: false,
+			write: false,
+			type: 'extension',
+		},
+		{
+			id: 5,
+			[DRAGGABLE_KEY]: '5',
+			name: 'exe',
+			read: false,
+			write: false,
+			type: 'extension',
+		},
+		{
+			id: 6,
+			[DRAGGABLE_KEY]: '6',
 			name: 'exe',
 			read: false,
 			write: false,
@@ -154,7 +188,7 @@ const FileAccess = () => {
 								data={tableData}
 								columns={columns}
 								setData={setTableData}
-								setSelect={setSelect}
+								isCheckBox={false}
 							/>
 						}
 					/>
