@@ -97,4 +97,7 @@ export const FOLD_DATA = {
 	RolePolicyTab: false,
 	RoleUserTab: false,
 	RoleGroupTab: false,
+
+	//policy Template
+	ResourceAcessTemplate: false,
 };

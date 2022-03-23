@@ -22,9 +22,9 @@ import FileAccess from './Templates/PAM/FileAccess';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
 import {isFulfilled} from '../../../../utils/redux';
 import MFA from './Templates/PAM/MFA';
-import ResourceManagement from "./Templates/PAM/ResourceManagement";
-import ResourceAccess from "./Templates/PAM/ResourceAccess/ResourceAccess";
-import ResourceCollectManagement from "./Templates/PAM/ResourceCollectManagement";
+import ResourceManagement from './Templates/PAM/ResourceManagement';
+import ResourceAccess from './Templates/PAM/ResourceAccess/ResourceAccess';
+import ResourceCollectManagement from './Templates/PAM/ResourceCollectManagement';
 
 const Container = styled.div`
 	display: flex;
