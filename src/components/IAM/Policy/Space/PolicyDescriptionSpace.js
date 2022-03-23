@@ -16,16 +16,9 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../styles/components/buttons';
-import {
-	DescriptionPageContainer,
-	SummaryList,
-} from '../../../../styles/components/iam/descriptionPage';
+import {DescriptionPageContainer} from '../../../../styles/components/iam/descriptionPage';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {isFulfilled} from '../../../../utils/redux';
-import {LiText} from '../../../../styles/components/text';
-import {RowDiv} from '../../../../styles/components/style';
-import useTextArea from '../../../../hooks/useTextArea';
-import {policyManageType} from '../../../../utils/policy';
 import {
 	CoveredByTabContent,
 	TabContainer,
@@ -33,6 +26,7 @@ import {
 import PolicySummary from '../Components/Description/PolicySummary';
 import TabBar from '../../TabBar';
 import PolicyTabContents from '../Components/Description/PolicyTabContents';
+import PolicyDetail from '../Components/Description/PolicyDetail';
 
 const policyDescriptionSpace = {
 	button: {create: '정책 생성', delete: '삭제'},
@@ -76,11 +70,6 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 		{name: '역할', href: 'role'},
 		{name: '태그', href: 'tag'},
 	];
-	//description: 정책 상세 설명
-	const [description, setDescription, descriptionTextArea] = useTextArea({
-		name: 'description',
-		regex: /^.{0,200}$/,
-	});
 
 	/**************************************************
 	 * ambacc244 - 탭을 열고 닫음
@@ -113,25 +102,6 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 	const onClickDeletePolicy = useCallback(() => {}, []);
 
 	/**************************************************
-	 * ambacc244 - 정책 상세 설명 변경
-	 **************************************************/
-	const onClickChangeDescription = useCallback(async () => {
-		//TODO: name, maxGrants 삭제 예정
-		const res = await dispatch(
-			IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.updatePolicy({
-				id: policyId,
-				name: policy.name,
-				description: description,
-				maxGrants: policy.maxGrants,
-			}),
-		);
-		//요청에 대한 응답 성공
-		if (isFulfilled(res)) {
-			setPolicy({...policy, description: description});
-		}
-	}, [policyId, description, policy]);
-
-	/**************************************************
 	 * ambacc244 - 정책 상세 설명 정보 세팅
 	 **************************************************/
 	useEffect(() => {
@@ -143,9 +113,7 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 			);
 
 			if (isFulfilled(res)) {
-				// console.log(res.payload);
 				setPolicy(res.payload);
-				setDescription(res.payload.description);
 			}
 		};
 
@@ -185,48 +153,7 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 						</TitleBarButtons>
 					</TitleBar>
 
-					<SummaryList>
-						<LiText>
-							{policyDescriptionSpace.detail.name}
-							{policy?.name} ({' '}
-							{policyManageType[policy?.type.code]} )
-						</LiText>
-						<LiText>
-							<RowDiv>
-								{
-									policyDescriptionSpace.detail.description
-										.title
-								}
-								<div>
-									<RowDiv>
-										{descriptionTextArea()}
-										<NormalButton
-											onClick={onClickChangeDescription}
-										>
-											{
-												policyDescriptionSpace.detail
-													.description.button.save
-											}
-										</NormalButton>
-									</RowDiv>
-									{
-										policyDescriptionSpace.detail
-											.description.description
-									}
-								</div>
-							</RowDiv>
-						</LiText>
-						<LiText>
-							{policyDescriptionSpace.detail.createdTime}
-							{policy?.createdTag.createdTime}
-						</LiText>
-						<LiText>
-							{policyDescriptionSpace.detail.lastEventTime}
-						</LiText>
-						<LiText>
-							{policyDescriptionSpace.detail.lastEvent}
-						</LiText>
-					</SummaryList>
+					<PolicyDetail policy={policy} setPolicy={setPolicy} />
 				</div>
 
 				<CoveredByTabContent isOpened={isSummaryOpened}>

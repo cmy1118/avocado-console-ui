@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import PropTypes from 'prop-types';
 import {useLocation} from 'react-router-dom';
 import qs from 'qs';
@@ -10,17 +10,18 @@ import PolicyTagTab from './Tabs/PolicyTagTab';
 
 const PolicyTabContents = ({policyId}) => {
 	const {search} = useLocation();
+	const tab = useMemo(
+		() => qs.parse(search, {ignoreQueryPrefix: true}).tabs,
+		[search],
+	);
 
 	return (
 		<TabContentSpace>
-			{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-				'permission' && <PolicyPermissionTab policyId={policyId} />}
-			{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'role' && (
-				<PolicyRoleTab policyId={policyId} />
+			{tab === 'permission' && (
+				<PolicyPermissionTab policyId={policyId} />
 			)}
-			{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'tag' && (
-				<PolicyTagTab policyId={policyId} />
-			)}
+			{tab === 'role' && <PolicyRoleTab policyId={policyId} />}
+			{tab === 'tag' && <PolicyTagTab policyId={policyId} />}
 		</TabContentSpace>
 	);
 };
