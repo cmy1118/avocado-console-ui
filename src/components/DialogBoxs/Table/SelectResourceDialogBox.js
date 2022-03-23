@@ -91,16 +91,16 @@ const SelectResourceDialogBox = ({
 	const onSubmitSearchVal = useCallback(async (v) => {
 		//검색 입력값의 길이가 2 이상
 		if (v?.search.length > 1) {
-			const response = await dispatch(
+			const res = await dispatch(
 				RRM_RESOURCE.asyncAction.findAllResourceAction({
 					serviceType: v?.protocol || '',
 					keyword2: v.search.trim(),
 				}),
 			);
 			//요청에 대한 응답 성공
-			if (isFulfilled(response))
+			if (isFulfilled(res))
 				setResources(
-					response.payload.map((v) => ({
+					res.payload.map((v) => ({
 						id: v.id,
 						group: v.group.namePath,
 						name: v.name,

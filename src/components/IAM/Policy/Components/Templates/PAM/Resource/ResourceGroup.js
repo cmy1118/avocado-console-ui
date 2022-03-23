@@ -37,13 +37,13 @@ const ResourceGroup = ({data, selected, setSelect, disabledGroups}) => {
 		//그룹이 접힌 상태
 		if (!isOpened) {
 			//그룹의 하위 자식들을 로드를 위한 api 호출
-			const response = await dispatch(
+			const res = await dispatch(
 				RRM_GROUP.asyncAction.findAllGroupAction({
 					parentId: data.id,
 				}),
 			);
 			//api 호출 성공
-			if (isFulfilled(response)) setChildern(response.payload.data || []);
+			if (isFulfilled(res)) setChildern(res.payload.data || []);
 			//그룹이 열린 상태
 		} else {
 			//그룹의 하위 자식들을 비워줌

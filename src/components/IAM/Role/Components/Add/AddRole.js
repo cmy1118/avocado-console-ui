@@ -1,34 +1,34 @@
 import React, {useCallback, useEffect, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
+import IAM_USER_GROUP_TYPE from '../../../../../reducers/api/IAM/User/Group/groupType';
 import PropTypes from 'prop-types';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../styles/components/buttons';
-import ComboBox from '../../../RecycleComponents/New/ComboBox';
-import TextBox from '../../../RecycleComponents/New/TextBox';
-import Form from '../../../RecycleComponents/New/Form';
-import {ColDiv, Label, RowDiv} from '../../../../styles/components/style';
+} from '../../../../../styles/components/buttons';
+import ComboBox from '../../../../RecycleComponents/New/ComboBox';
+import TextBox from '../../../../RecycleComponents/New/TextBox';
+import Form from '../../../../RecycleComponents/New/Form';
+import {ColDiv, Label, RowDiv} from '../../../../../styles/components/style';
 import * as yup from 'yup';
 import {
 	AddPageContent,
 	TextBoxDescription,
-} from '../../../../styles/components/iam/addPage';
+} from '../../../../../styles/components/iam/addPage';
 import {
 	TitleBar,
 	TitleBarButtons,
 	TitleBarText,
-} from '../../../../styles/components/iam/iam';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
-import TemplateElement from '../../Policy/Components/TemplateElement';
-import useRadio from '../../../../hooks/useRadio';
+} from '../../../../../styles/components/iam/iam';
+import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
+import TemplateElement from '../../../Policy/Components/TemplateElement';
+import useRadio from '../../../../../hooks/useRadio';
 import {
 	patternTypeOptions,
 	usageOptions,
-} from '../../../../utils/policyOptions';
-import useTextBox from '../../../../hooks/useTextBox';
+} from '../../../../../utils/policyOptions';
+import useTextBox from '../../../../../hooks/useTextBox';
 
 const AddRole = ({values, groupMembers, setValues}) => {
 	const dispatch = useDispatch();

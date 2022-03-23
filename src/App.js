@@ -151,8 +151,9 @@ const App = () => {
 					component={Policy}
 					layout={IamLayout}
 				/>
+
 				<PrivateRouteWithLayout
-					path='/policies/:id'
+					path='/policies/:type/:id'
 					component={Policy}
 					layout={IamLayout}
 				/>

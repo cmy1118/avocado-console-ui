@@ -2,9 +2,9 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import {useHistory, useLocation} from 'react-router-dom';
-import RoleSummary from '../Components/RoleSummary';
+import RoleSummary from '../Components/Description/RoleSummary';
 import TabBar from '../../TabBar';
-import RolePolicyTab from '../Components/Tabs/RolePolicyTab';
+import RolePolicyTab from '../Components/Description/Tabs/RolePolicyTab';
 import {useDispatch} from 'react-redux';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import {HoverIconButton} from '../../../../styles/components/icons';
@@ -34,9 +34,10 @@ import {
 } from '../../../../styles/components/iam/iam';
 import useTextArea from '../../../../hooks/useTextArea';
 import {RowDiv} from '../../../../styles/components/style';
-import RoleUserTab from '../Components/Tabs/RoleUserTab';
-import RoleGroupTab from '../Components/Tabs/RoleGroupTab';
+import RoleUserTab from '../Components/Description/Tabs/RoleUserTab';
+import RoleGroupTab from '../Components/Description/Tabs/RoleGroupTab';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import RoleTabContents from '../Components/Description/RoleTabContents';
 
 const roleDescriptionSpace = {
 	title: '요약',
@@ -239,43 +240,14 @@ const RoleDescriptionSpace = ({roleId}) => {
 				<TabContainer isOpened={!isSummaryOpened}>
 					<TabBar
 						Tabs={TabBarInfo}
-						param={'roles'}
-						id={roleId}
 						isOpened={isSummaryOpened}
 						setIsOpened={setIsSummaryOpened}
 					/>
-					<TabContentSpace>
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'role' && (
-							<RolePolicyTab
-								roleId={roleId}
-								space={'RolePolicyTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-								isSummaryOpened={isSummaryOpened}
-							/>
-						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'user' && (
-							<RoleUserTab
-								roleId={roleId}
-								space={'RoleUserTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-								isSummaryOpened={isSummaryOpened}
-							/>
-						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'group' && (
-							<RoleGroupTab
-								roleId={roleId}
-								space={'RoleGroupTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
-								isSummaryOpened={isSummaryOpened}
-							/>
-						)}
-					</TabContentSpace>
+
+					<RoleTabContents
+						roleId={roleId}
+						isOpened={isSummaryOpened}
+					/>
 				</TabContainer>
 			</DescriptionPageContainer>
 		</IamContainer>

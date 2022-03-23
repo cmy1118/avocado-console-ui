@@ -3,23 +3,23 @@ import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 
-import Table from '../../../Table/Table';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
+import Table from '../../../../Table/Table';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../Constants/Table/columns';
 import {
 	SummaryTablesContainer,
 	SummaryTableTitle,
-} from '../../../../styles/components/iam/descriptionPage';
-import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
-import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
+} from '../../../../../styles/components/iam/descriptionPage';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import IAM_ROLES_GRANT_ROLE_USER from '../../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import {
 	descriptionConverter,
 	descValues,
 	expiredConverter,
-} from '../../../../utils/tableDataConverter';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
-import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import PAM_SESSION from '../../../../reducers/api/PAM/session';
+} from '../../../../../utils/tableDataConverter';
+import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
+import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
+import PAM_SESSION from '../../../../../reducers/api/PAM/session';
 
 const roleSummary = {
 	policy: '권한/정책 : ',

@@ -83,13 +83,13 @@ const SelectResourceGroupDialogBox = ({
 	 **************************************************/
 	useEffect(() => {
 		const getRootResourceGroups = async () => {
-			const response = await dispatch(
+			const res = await dispatch(
 				RRM_GROUP.asyncAction.findAllGroupAction({
 					parentId: 'null',
 				}),
 			);
 			//요청에 대한 응답 성공
-			if (isFulfilled(response)) setGroups(response.payload.data || []);
+			if (isFulfilled(res)) setGroups(res.payload.data || []);
 		};
 		//다이얼로그박스가 열림
 		if (isOpened) {

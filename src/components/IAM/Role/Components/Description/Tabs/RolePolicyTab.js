@@ -3,26 +3,26 @@ import PropTypes from 'prop-types';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../../styles/components/buttons';
-import Table from '../../../../Table/Table';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../../Constants/Table/columns';
-import DragContainer from '../../../../Table/DragContainer';
-import {TableTitle} from '../../../../../styles/components/table';
-import TableFold from '../../../../Table/Options/TableFold';
-import TableOptionText from '../../../../Table/Options/TableOptionText';
-import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
+} from '../../../../../../styles/components/buttons';
+import Table from '../../../../../Table/Table';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../../Constants/Table/columns';
+import DragContainer from '../../../../../Table/DragContainer';
+import {TableTitle} from '../../../../../../styles/components/table';
+import TableFold from '../../../../../Table/Options/TableFold';
+import TableOptionText from '../../../../../Table/Options/TableOptionText';
+import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
 import {
 	FoldableContainer,
 	TitleBarButtons,
-} from '../../../../../styles/components/iam/iam';
+} from '../../../../../../styles/components/iam/iam';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
-import PAM_ROLES from '../../../../../reducers/api/PAM/Role/roles';
-import {CollapsbleContent} from '../../../../../styles/components/style';
-import {descValues} from '../../../../../utils/tableDataConverter';
-import AUTH from '../../../../../reducers/api/Auth/auth';
-import {account} from '../../../../../utils/auth';
+import IAM_ROLES from '../../../../../../reducers/api/IAM/User/Role/roles';
+import PAM_ROLES from '../../../../../../reducers/api/PAM/Role/roles';
+import {CollapsbleContent} from '../../../../../../styles/components/style';
+import {descValues} from '../../../../../../utils/tableDataConverter';
+import AUTH from '../../../../../../reducers/api/Auth/auth';
+import {account} from '../../../../../../utils/auth';
 
 const policyType = {
 	'KR-2020-0005:202111:0001': '사용자 인증',

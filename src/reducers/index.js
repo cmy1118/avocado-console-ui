@@ -32,6 +32,7 @@ import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './api/IAM/Policy/ActionManage
 import IAM_ACTION_MANAGEMENT_TEMPLATE from './api/IAM/Policy/ActionManagement/actionTemplate';
 import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from './api/IAM/Policy/PolicyManagement/policyRuleTemplate';
 import IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE from './api/IAM/Policy/PolicyManagement/policyActionTemplate';
+import IAM_GRANTED_POLICY from './api/IAM/Policy/PolicyManagement/grantedPolicy';
 
 import PAM_ROLES from './api/PAM/Role/roles';
 import PAM_ROLE_SET from './api/PAM/Role/roleSet';
@@ -95,7 +96,7 @@ const rootReducer = combineReducers({
 	[IAM_CLIENT.name]: IAM_CLIENT.reducer,
 	[AUTH.name]: AUTH.reducer,
 	/******************************************/
-	/* ambacc244 : IAM - Action reducers
+	/* IAM - Action reducers
     /******************************************/
 	[IAM_POLICY_MANAGEMENT_POLICIES.name]:
 		IAM_POLICY_MANAGEMENT_POLICIES.reducer,
@@ -105,17 +106,20 @@ const rootReducer = combineReducers({
 		IAM_ACTION_MANAGEMENT_TEMPLATE.reducer,
 	[IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.name]:
 		IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.reducer,
+	[IAM_GRANTED_POLICY.name]: IAM_GRANTED_POLICY.reducer,
+	/******************************************/
 
 	/******************************************/
-	/* ambacc244 : IAM - Rule reducers
+	/* IAM - Rule reducers
     /******************************************/
 	[IAM_RULE_MANAGEMENT_TEMPLATE.name]: IAM_RULE_MANAGEMENT_TEMPLATE.reducer,
 	[IAM_RULE_TEMPLATE_DETAIL.name]: IAM_RULE_TEMPLATE_DETAIL.reducer,
 	[IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.name]:
 		IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.reducer,
 	/******************************************/
+
 	/******************************************/
-	/* seob : IAM - User reducers
+	/* IAM - User reducers
     /******************************************/
 	[IAM_USER.name]: IAM_USER.reducer,
 	[IAM_USER_GROUP.name]: IAM_USER_GROUP.reducer,
@@ -132,7 +136,7 @@ const rootReducer = combineReducers({
 	/******************************************/
 
 	/******************************************/
-	/* seob : PAM reducers
+	/* PAM reducers
     /******************************************/
 	[PAM_ROLES.name]: PAM_ROLES.reducer,
 	[PAM_ROLE_SET.name]: PAM_ROLE_SET.reducer,
@@ -141,13 +145,13 @@ const rootReducer = combineReducers({
 	[PAM_SESSION.name]: PAM_SESSION.reducer,
 
 	/******************************************/
-	/* seob : RRM reducers
+	/* RRM reducers
     /******************************************/
 	[RRM_RESOURCE.name]: RRM_RESOURCE.reducer,
 	[RRM_GROUP.name]: RRM_GROUP.reducer,
 	[RRM_GROUP_TYPE.name]: RRM_GROUP_TYPE.reducer,
 	/******************************************/
-	/* roberto : Table_update 선택기능추가
+	/* Table_update 선택기능추가
     /******************************************/
 	[CURRENT_TARGET.name]: CURRENT_TARGET.reducer,
 	/******************************************/

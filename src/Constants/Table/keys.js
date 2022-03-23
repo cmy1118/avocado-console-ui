@@ -141,6 +141,11 @@ export const tableKeys = Object.freeze({
 				addResource: 'PAM_TEMPLATE_ADD_RESOURCE',
 			},
 		},
+		summary: {
+			permission: 'POLICY_SUMMARY_RERMISSION',
+			role: 'POLICY_SUMMARY_ROLE',
+			tag: 'POLICY_SUMMARY_TAG',
+		},
 		policies: {
 			userManagement: 'POLICY_ADD_USER_MANAGEMENT',
 			policyManagement: 'POLICY_ADD_POLICY_MANAGEMENT',
