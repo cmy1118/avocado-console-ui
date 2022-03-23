@@ -16,7 +16,7 @@ const policySummary = {
 /**************************************************
  * ambacc244 - IAM policy의 상세 정보를 보여주는 컴포넌트
  **************************************************/
-const PolicySummary = ({policyId, setIsOpened, isSummaryOpened}) => {
+const PolicySummary = ({policyId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const location = useLocation();
@@ -26,8 +26,6 @@ const PolicySummary = ({policyId, setIsOpened, isSummaryOpened}) => {
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
-			setIsOpened(false);
-
 			history.push({
 				pathname: location.pathname,
 				search: `tabs=${v}`,
@@ -107,8 +105,6 @@ const PolicySummary = ({policyId, setIsOpened, isSummaryOpened}) => {
 
 PolicySummary.propTypes = {
 	policyId: PropTypes.string.isRequired,
-	setIsOpened: PropTypes.func.isRequired,
-	isSummaryOpened: PropTypes.bool.isRequired,
 };
 
 export default PolicySummary;

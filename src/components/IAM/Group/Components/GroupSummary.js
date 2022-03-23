@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import {
 	SummaryTablesContainer,
 	SummaryTableTitle,
@@ -15,13 +15,17 @@ import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import {TableMode} from '../../../../Constants/Table/mode';
 
-const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
+const GroupSummary = ({groupId}) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const location = useLocation();
 	const {page} = useSelector(PAGINATION.selector);
 	const [groupUserMembers, setGroupUserMembers] = useState([]);
 
-	//console.log(groupUserMembers);
+	const isSummaryOpened = useMemo(() => {
+		if (location.search) return false;
+		else return true;
+	}, [location.search]);
 
 	const userData = useMemo(() => {
 		return groupUserMembers.map((v) => ({
@@ -52,13 +56,12 @@ const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
-			setIsOpened(false);
 			history.push({
-				pathname: `/${param}/${groupId}`,
+				pathname: location.pathname,
 				search: `tabs=${v}`,
 			});
 		},
-		[setIsOpened, history, param, groupId],
+		[history, location],
 	);
 
 	useEffect(() => {
@@ -133,8 +136,5 @@ const GroupSummary = ({groupId, param, setIsOpened, isSummaryOpened}) => {
 
 GroupSummary.propTypes = {
 	groupId: PropTypes.string.isRequired,
-	param: PropTypes.string.isRequired,
-	setIsOpened: PropTypes.func.isRequired,
-	isSummaryOpened: PropTypes.bool.isRequired,
 };
 export default GroupSummary;

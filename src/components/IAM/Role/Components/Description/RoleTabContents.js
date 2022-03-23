@@ -1,11 +1,7 @@
 import React, {useState} from 'react';
 
 import PropTypes from 'prop-types';
-import TabBar from '../../../TabBar';
-import {
-	TabContainer,
-	TabContentSpace,
-} from '../../../../../styles/components/iam/iamTab';
+import {TabContentSpace} from '../../../../../styles/components/iam/iamTab';
 import qs from 'qs';
 import RolePolicyTab from './Tabs/RolePolicyTab';
 import RoleUserTab from './Tabs/RoleUserTab';

@@ -4,12 +4,12 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import qs from 'qs';
 
-import UserInfoTab from '../Components/UserInfoTab';
-import UserGroupsTab from '../Components/UserGroupsTab';
+import UserInfoTab from '../Components/Tab/UserInfoTab';
+import UserGroupsTab from '../Components/Tab/UserGroupsTab';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
 import UserOnDescPageTags from '../Components/UserOnDescPageTags';
 import UserSummary from '../Components/UserSummary';
-import UserRolesTab from '../Components/UserRolesTab';
+import UserRolesTab from '../Components/Tab/UserRolesTab';
 import {HoverIconButton} from '../../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
 import TabBar from '../../TabBar';
@@ -43,10 +43,14 @@ import CurrentPathBar from '../../../Header/CurrentPathBar';
 const UserDescriptionSpace = ({userUid}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const {search} = useLocation();
+	const location = useLocation();
+
 	const [user, setUser] = useState(null);
 
-	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
+	const isSummaryOpened = useMemo(() => {
+		if (location.search) return false;
+		else return true;
+	}, [location.search]);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 	const paths = useMemo(
 		() => [
@@ -64,18 +68,18 @@ const UserDescriptionSpace = ({userUid}) => {
 	];
 
 	const onClickFoldSummary = useCallback(() => {
-		setIsSummaryOpened(!isSummaryOpened);
 		if (isSummaryOpened) {
 			history.push({
-				pathname: `/users/${userUid}`,
+				pathname: location.pathname,
+
 				search: 'tabs=user',
 			});
 		} else {
 			history.push({
-				pathname: `/users/${userUid}`,
+				pathname: location.pathname,
 			});
 		}
-	}, [history, isSummaryOpened, userUid]);
+	}, [isSummaryOpened, history]);
 
 	const onClickLinkToAddUserPage = useCallback(() => {
 		history.push('/users/add');
@@ -105,16 +109,6 @@ const UserDescriptionSpace = ({userUid}) => {
 				pathname: `/users/${userUid}`,
 			});
 	}, [history, isSummaryOpened, userUid]);
-
-	/**************************************************
-	 * ambacc244 - current Path Bar의 현재 경로 클릭으로 탭을 닫음
-	 **************************************************/
-	useEffect(() => {
-		//현재 경로에서 탭의 정보가 없음
-		if (!qs.parse(search, {ignoreQueryPrefix: true})?.tabs) {
-			setIsSummaryOpened(true);
-		}
-	}, [search]);
 
 	return (
 		<IamContainer>
@@ -174,28 +168,19 @@ const UserDescriptionSpace = ({userUid}) => {
 				</div>
 
 				<CoveredByTabContent isOpened={isSummaryOpened}>
-					<UserSummary
-						isSummaryOpened={isSummaryOpened}
-						userUid={userUid}
-						param={'users'}
-						setIsOpened={setIsSummaryOpened}
-					/>
+					<UserSummary userUid={userUid} />
 				</CoveredByTabContent>
 
 				<TabContainer isOpened={!isSummaryOpened}>
-					<TabBar
-						Tabs={TabBarInfo}
-						isOpened={isSummaryOpened}
-						setIsOpened={setIsSummaryOpened}
-					/>
+					<TabBar Tabs={TabBarInfo} />
 
 					<TabContentSpace>
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'user' && (
+						{qs.parse(location.search, {ignoreQueryPrefix: true})
+							.tabs === 'user' && (
 							<UserInfoTab user={user} userUid={userUid} />
 						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'group' && (
+						{qs.parse(location.search, {ignoreQueryPrefix: true})
+							.tabs === 'group' && (
 							<UserGroupsTab
 								title
 								userUid={userUid}
@@ -205,8 +190,8 @@ const UserDescriptionSpace = ({userUid}) => {
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'role' && (
+						{qs.parse(location.search, {ignoreQueryPrefix: true})
+							.tabs === 'role' && (
 							<UserRolesTab
 								userUid={userUid}
 								space={'UserRolesTab'}
@@ -215,8 +200,8 @@ const UserDescriptionSpace = ({userUid}) => {
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'tag' && (
+						{qs.parse(location.search, {ignoreQueryPrefix: true})
+							.tabs === 'tag' && (
 							<UserOnDescPageTags
 								userUid={userUid}
 								space={'UserOnDescPageTags'}

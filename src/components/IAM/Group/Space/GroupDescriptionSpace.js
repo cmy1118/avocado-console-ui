@@ -41,14 +41,18 @@ import CurrentPathBar from '../../../Header/CurrentPathBar';
 const GroupDescriptionSpace = ({groupId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const {search} = useLocation();
+	const location = useLocation();
 
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const {members} = useSelector(IAM_USER_GROUP_MEMBER.selector);
-	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
 	const [isOpened, setIsOpened] = useState(true);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 	const [group, setGroup] = useState(null);
+
+	const isSummaryOpened = useMemo(() => {
+		if (location.search) return false;
+		else return true;
+	}, [location.search]);
 
 	const paths = useMemo(
 		() => [
@@ -67,18 +71,17 @@ const GroupDescriptionSpace = ({groupId}) => {
 
 	let onClickFoldSummary;
 	onClickFoldSummary = useCallback(() => {
-		setIsSummaryOpened(!isSummaryOpened);
 		if (isSummaryOpened) {
 			history.push({
-				pathname: `/groups/${groupId}`,
+				pathname: location.pathname,
 				search: 'tabs=userAuth',
 			});
 		} else {
 			history.push({
-				pathname: `/groups/${groupId}`,
+				pathname: location.pathname,
 			});
 		}
-	}, [history, isSummaryOpened, groupId]);
+	}, [isSummaryOpened, location]);
 
 	const onClickChangeGroupName = useCallback(() => {
 		setIsOpened(true);
@@ -119,16 +122,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 				pathname: `/groups/${groupId}`,
 			});
 	}, [history, isSummaryOpened, groupId]);
-
-	/**************************************************
-	 * ambacc244 - current Path Bar의 현재 경로 클릭으로 탭을 닫음
-	 **************************************************/
-	useEffect(() => {
-		//현재 경로에서 탭의 정보가 없음
-		if (!qs.parse(search, {ignoreQueryPrefix: true})?.tabs) {
-			setIsSummaryOpened(true);
-		}
-	}, [search]);
 
 	return (
 		<IamContainer>
@@ -172,23 +165,14 @@ const GroupDescriptionSpace = ({groupId}) => {
 				</div>
 
 				<CoveredByTabContent isOpened={isSummaryOpened}>
-					<GroupSummary
-						isSummaryOpened={isSummaryOpened}
-						groupId={groupId}
-						param={'groups'}
-						setIsOpened={setIsSummaryOpened}
-					/>
+					<GroupSummary groupId={groupId} />
 				</CoveredByTabContent>
 
 				<TabContainer isOpened={!isSummaryOpened}>
-					<TabBar
-						Tabs={TabBarInfo}
-						isOpened={isSummaryOpened}
-						setIsOpened={setIsSummaryOpened}
-					/>
+					<TabBar Tabs={TabBarInfo} />
 					<TabContentSpace>
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'user' && (
+						{qs.parse(location.search, {ignoreQueryPrefix: true})
+							.tabs === 'user' && (
 							<GroupUsersTab
 								groupId={groupId}
 								space={'GroupUsersTab'}
@@ -197,8 +181,8 @@ const GroupDescriptionSpace = ({groupId}) => {
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'role' && (
+						{qs.parse(location.search, {ignoreQueryPrefix: true})
+							.tabs === 'role' && (
 							<GroupRolesTab
 								groupId={groupId}
 								space={'GroupRolesTab'}
@@ -206,8 +190,8 @@ const GroupDescriptionSpace = ({groupId}) => {
 								setIsFold={setIsTableFold}
 							/>
 						)}
-						{qs.parse(search, {ignoreQueryPrefix: true}).tabs ===
-							'tag' && (
+						{qs.parse(location.search, {ignoreQueryPrefix: true})
+							.tabs === 'tag' && (
 							<GroupOnDescPageTags
 								groupId={groupId}
 								space={'GroupOnDescPageTags'}

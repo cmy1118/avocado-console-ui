@@ -1,6 +1,8 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import {useLocation} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+
 import {
 	IamContainer,
 	TitleBar,
@@ -8,7 +10,6 @@ import {
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
-import qs from 'qs';
 import {HoverIconButton} from '../../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
 import {
@@ -19,7 +20,6 @@ import {
 	DescriptionPageContainer,
 	SummaryList,
 } from '../../../../styles/components/iam/descriptionPage';
-import {useDispatch} from 'react-redux';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {isFulfilled} from '../../../../utils/redux';
 import {LiText} from '../../../../styles/components/text';
@@ -32,6 +32,7 @@ import {
 } from '../../../../styles/components/iam/iamTab';
 import PolicySummary from '../Components/Description/PolicySummary';
 import TabBar from '../../TabBar';
+import PolicyTabContents from '../Components/Description/PolicyTabContents';
 
 const policyDescriptionSpace = {
 	button: {create: '정책 생성', delete: '삭제'},
@@ -52,18 +53,14 @@ const policyDescriptionSpace = {
 
 const PolicyDescriptionSpace = ({policyId, type}) => {
 	const dispatch = useDispatch();
-
-	const {search} = useLocation();
-
+	const history = useHistory();
+	const location = useLocation();
 	const [policy, setPolicy] = useState(null);
 
-	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
-
-	const onClickFoldSummary = useCallback(() => {}, []);
-
-	const onClickLinkToAddPolicyPage = useCallback(() => {}, []);
-
-	const onClickDeletePolicy = useCallback(() => {}, []);
+	const isSummaryOpened = useMemo(() => {
+		if (location.search) return false;
+		else return true;
+	}, [location.search]);
 
 	const paths = useMemo(
 		() => [
@@ -86,6 +83,36 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 	});
 
 	/**************************************************
+	 * ambacc244 - 탭을 열고 닫음
+	 **************************************************/
+	const onClickFoldTab = useCallback(() => {
+		if (isSummaryOpened) {
+			history.push({
+				pathname: location.pathname,
+				search: 'tabs=permission',
+			});
+		} else {
+			history.push({
+				pathname: location.pathname,
+			});
+		}
+	}, [isSummaryOpened, history]);
+
+	/**************************************************
+	 * ambacc244 - 정책 생성 페이지로 이동
+	 **************************************************/
+	const onClickLinkToAddPolicyPage = useCallback(() => {
+		history.push({
+			pathname: '/policies/add',
+		});
+	}, []);
+
+	/**************************************************
+	 * ambacc244 - 정책 삭제
+	 **************************************************/
+	const onClickDeletePolicy = useCallback(() => {}, []);
+
+	/**************************************************
 	 * ambacc244 - 정책 상세 설명 변경
 	 **************************************************/
 	const onClickChangeDescription = useCallback(async () => {
@@ -105,15 +132,8 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 	}, [policyId, description, policy]);
 
 	/**************************************************
-	 * ambacc244 - current Path Bar의 현재 경로 클릭으로 탭을 닫음
+	 * ambacc244 - 정책 상세 설명 정보 세팅
 	 **************************************************/
-	useEffect(() => {
-		//현재 경로에서 탭의 정보가 없음
-		if (!qs.parse(search, {ignoreQueryPrefix: true})?.tabs) {
-			setIsSummaryOpened(true);
-		}
-	}, [search]);
-
 	useEffect(() => {
 		const getPolicy = async () => {
 			const res = await dispatch(
@@ -123,7 +143,7 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 			);
 
 			if (isFulfilled(res)) {
-				console.log(res.payload);
+				// console.log(res.payload);
 				setPolicy(res.payload);
 				setDescription(res.payload.description);
 			}
@@ -144,7 +164,7 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 								color={'font'}
 								size={'m'}
 								margin={'0px'}
-								onClick={onClickFoldSummary}
+								onClick={onClickFoldTab}
 							>
 								{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
 							</HoverIconButton>
@@ -210,19 +230,12 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 				</div>
 
 				<CoveredByTabContent isOpened={isSummaryOpened}>
-					<PolicySummary
-						policyId={policyId}
-						setIsOpened={setIsSummaryOpened}
-						isSummaryOpened={isSummaryOpened}
-					/>
+					<PolicySummary policyId={policyId} />
 				</CoveredByTabContent>
 
 				<TabContainer isOpened={!isSummaryOpened}>
-					<TabBar
-						Tabs={TabBarInfo}
-						isOpened={isSummaryOpened}
-						setIsOpened={setIsSummaryOpened}
-					/>
+					<TabBar Tabs={TabBarInfo} />
+					<PolicyTabContents policyId={policyId} />
 				</TabContainer>
 			</DescriptionPageContainer>
 		</IamContainer>

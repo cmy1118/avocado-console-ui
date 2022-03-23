@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {useHistory, useLocation} from 'react-router-dom';
@@ -47,20 +47,24 @@ const _TabItem = styled.div`
 	width: 100%;
 `;
 
-const TabBar = ({Tabs, isOpened, setIsOpened}) => {
+const TabBar = ({Tabs}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {search} = useLocation();
 
+	const isTabOpened = useMemo(() => {
+		if (location.search) return false;
+		else return true;
+	}, [location.search]);
+
 	const onClickChangeTab = useCallback(
 		(v) => () => {
-			setIsOpened(false);
 			history.push({
 				pathname: location.pathname,
 				search: `tabs=${v}`,
 			});
 		},
-		[setIsOpened, dispatch, history],
+		[dispatch, history],
 	);
 	return (
 		<_TabContainer>
@@ -69,7 +73,7 @@ const TabBar = ({Tabs, isOpened, setIsOpened}) => {
 					return (
 						<_Tabs key={i}>
 							<_TabItem
-								isfold={isOpened}
+								isfold={isTabOpened}
 								selected={
 									qs.parse(search, {ignoreQueryPrefix: true})
 										.tabs === v.href

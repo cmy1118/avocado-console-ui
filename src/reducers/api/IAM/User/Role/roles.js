@@ -99,6 +99,7 @@ const findByIdAction = createAsyncThunk(
 		return response.data;
 	},
 );
+
 const getsAction = createAsyncThunk(
 	`${NAME}/GETS`,
 	async (payload, {getState}) => {

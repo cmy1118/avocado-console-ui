@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 
 import Table from '../../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
@@ -30,9 +30,15 @@ const roleSummary = {
 /**************************************************
  * ambacc244 - 이 역할의 권한,정책 이 역할을 가지는 사용자,그룹들을 보여줌
  **************************************************/
-const RoleSummary = ({roleId, param, setIsOpened, isSummaryOpened}) => {
+const RoleSummary = ({roleId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const location = useLocation();
+
+	const isSummaryOpened = useMemo(() => {
+		if (location.search) return false;
+		else return true;
+	}, [location.search]);
 	//permissions: 이 역할의 권한,정책
 	const [permissions, setPermissions] = useState(null);
 	//user: 이 역할을 가지는 사용자
@@ -93,13 +99,12 @@ const RoleSummary = ({roleId, param, setIsOpened, isSummaryOpened}) => {
 	 **************************************************/
 	const onClickChangeTab = useCallback(
 		(v) => () => {
-			setIsOpened(false);
 			history.push({
-				pathname: `/${param}/${roleId}`,
+				pathname: location.pathname,
 				search: `tabs=${v}`,
 			});
 		},
-		[setIsOpened, history, param, roleId],
+		[history],
 	);
 
 	/**************************************************
@@ -257,8 +262,5 @@ const RoleSummary = ({roleId, param, setIsOpened, isSummaryOpened}) => {
 
 RoleSummary.propTypes = {
 	roleId: PropTypes.string.isRequired,
-	param: PropTypes.string.isRequired,
-	setIsOpened: PropTypes.func.isRequired,
-	isSummaryOpened: PropTypes.bool.isRequired,
 };
 export default RoleSummary;

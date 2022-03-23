@@ -1,10 +1,8 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import qs from 'qs';
 import {useHistory, useLocation} from 'react-router-dom';
 import RoleSummary from '../Components/Description/RoleSummary';
 import TabBar from '../../TabBar';
-import RolePolicyTab from '../Components/Description/Tabs/RolePolicyTab';
 import {useDispatch} from 'react-redux';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import {HoverIconButton} from '../../../../styles/components/icons';
@@ -19,7 +17,6 @@ import {LiText} from '../../../../styles/components/text';
 import {
 	CoveredByTabContent,
 	TabContainer,
-	TabContentSpace,
 } from '../../../../styles/components/iam/iamTab';
 import user from '../../../../reducers/api/IAM/User/User/user';
 import {
@@ -34,8 +31,6 @@ import {
 } from '../../../../styles/components/iam/iam';
 import useTextArea from '../../../../hooks/useTextArea';
 import {RowDiv} from '../../../../styles/components/style';
-import RoleUserTab from '../Components/Description/Tabs/RoleUserTab';
-import RoleGroupTab from '../Components/Description/Tabs/RoleGroupTab';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import RoleTabContents from '../Components/Description/RoleTabContents';
 
@@ -65,8 +60,14 @@ const roleDescriptionSpace = {
 const RoleDescriptionSpace = ({roleId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const {search} = useLocation();
+	const location = useLocation();
 	const [role, setRole] = useState(null);
+
+	const isSummaryOpened = useMemo(() => {
+		if (location.search) return false;
+		else return true;
+	}, [location.search]);
+
 	const paths = useMemo(
 		() => [
 			{url: '/iam', label: 'IAM'},
@@ -80,9 +81,6 @@ const RoleDescriptionSpace = ({roleId}) => {
 		name: 'description',
 		regex: /^.{0,200}$/,
 	});
-
-	const [isSummaryOpened, setIsSummaryOpened] = useState(true);
-	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 	const TabBarInfo = [
 		{name: '권한', href: 'role'},
 		{name: '사용자', href: 'user'},
@@ -93,18 +91,17 @@ const RoleDescriptionSpace = ({roleId}) => {
 	 * roberto6385 - 이 역할의 상세 설명 접고 펼치기
 	 **************************************************/
 	const onClickFoldSummary = useCallback(() => {
-		setIsSummaryOpened(!isSummaryOpened);
 		if (isSummaryOpened) {
 			history.push({
-				pathname: `/roles/${roleId}`,
+				pathname: location.pathname,
 				search: 'tabs=role',
 			});
 		} else {
 			history.push({
-				pathname: `/roles/${roleId}`,
+				pathname: location.pathname,
 			});
 		}
-	}, [history, isSummaryOpened, roleId]);
+	}, [isSummaryOpened]);
 
 	/**************************************************
 	 * ambacc244 - 역할 생성 페이지로 이동
@@ -139,16 +136,6 @@ const RoleDescriptionSpace = ({roleId}) => {
 				history.push('/404');
 			});
 	}, [dispatch, history, roleId, setDescription]);
-
-	/**************************************************
-	 * ambacc244 - current Path Bar의 현재 경로 클릭으로 탭을 닫음
-	 **************************************************/
-	useEffect(() => {
-		//현재 경로에서 탭의 정보가 없음
-		if (!qs.parse(search, {ignoreQueryPrefix: true})?.tabs) {
-			setIsSummaryOpened(true);
-		}
-	}, [search]);
 
 	return (
 		<IamContainer>
@@ -229,20 +216,11 @@ const RoleDescriptionSpace = ({roleId}) => {
 				</div>
 
 				<CoveredByTabContent isOpened={isSummaryOpened}>
-					<RoleSummary
-						isSummaryOpened={isSummaryOpened}
-						roleId={roleId}
-						param={'roles'}
-						setIsOpened={setIsSummaryOpened}
-					/>
+					<RoleSummary roleId={roleId} />
 				</CoveredByTabContent>
 
 				<TabContainer isOpened={!isSummaryOpened}>
-					<TabBar
-						Tabs={TabBarInfo}
-						isOpened={isSummaryOpened}
-						setIsOpened={setIsSummaryOpened}
-					/>
+					<TabBar Tabs={TabBarInfo} />
 
 					<RoleTabContents
 						roleId={roleId}

@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import Table from '../../../Table/Table';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import {
 	SummaryTablesContainer,
 	SummaryTableTitle,
@@ -24,10 +24,16 @@ import * as _ from 'lodash';
 import AUTH from '../../../../reducers/api/Auth/auth';
 import {account} from '../../../../utils/auth';
 
-const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
+const UserSummary = ({userUid}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const location = useLocation();
+
 	const {companyId} = useSelector(AUTH.selector);
+	const isSummaryOpened = useMemo(() => {
+		if (location.search) return false;
+		else return true;
+	}, [location.search]);
 
 	const [user, setUser] = useState(null);
 	const {initialPage} = useSelector(PAGINATION.selector);
@@ -37,13 +43,13 @@ const UserSummary = ({userUid, param, setIsOpened, isSummaryOpened}) => {
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
-			setIsOpened(false);
 			history.push({
-				pathname: `/${param}/${userUid}`,
+				pathname: location.pathname,
+
 				search: `tabs=${v}`,
 			});
 		},
-		[setIsOpened, history, param, userUid],
+		[history],
 	);
 
 	const groupData = useMemo(() => {

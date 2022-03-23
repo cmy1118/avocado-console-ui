@@ -2,17 +2,17 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useDispatch} from 'react-redux';
 
 import PropTypes from 'prop-types';
-import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import ModalFormContainer from '../../../RecycleComponents/ModalFormContainer';
+import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
+import ModalFormContainer from '../../../../RecycleComponents/ModalFormContainer';
 import {
 	NormalBorderButton,
 	NormalButton,
-} from '../../../../styles/components/buttons';
-import TextBox from '../../../RecycleComponents/New/TextBox';
-import Form from '../../../RecycleComponents/New/Form';
-import {ColDiv, Label, RowDiv} from '../../../../styles/components/style';
-import {TableTitle} from '../../../../styles/components/table';
-import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
+} from '../../../../../styles/components/buttons';
+import TextBox from '../../../../RecycleComponents/New/TextBox';
+import Form from '../../../../RecycleComponents/New/Form';
+import {ColDiv, Label, RowDiv} from '../../../../../styles/components/style';
+import {TableTitle} from '../../../../../styles/components/table';
+import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
 
 const UserInfoTab = ({user, userUid}) => {
 	const dispatch = useDispatch();
