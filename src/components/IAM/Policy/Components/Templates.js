@@ -298,42 +298,27 @@ const IamTemplateList = ({
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
-			// 규칙 템플릿 findAll
-			const ruleTemplates = await dispatch(
-				IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findAll({
-					range: `elements=0-50`,
-				}),
-			);
-			// 액션 템플릿 findAll
-			const actionTemplates = await dispatch(
-				IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.findAllAction({
-					range: `elements=0-50`,
-				}),
-			);
+			try {
+				// 규칙 템플릿 findAll
+				const ruleTemplates = await dispatch(
+					IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findAll({
+						range: `elements=0-50`,
+					}),
+				).unwrap();
 
-			// 규칙 템플릿 fulfilled된 경우
-			if (isFulfilled(ruleTemplates)) {
-				console.log(ruleTemplates);
-				setRuleTemplates(ruleTemplates.payload.data);
-			}
-			// 규칙 템플릿 rejected된 경우
-			else {
-				//에러 핸들링
-				console.log(ruleTemplates.error);
-			}
+				setRuleTemplates(ruleTemplates.data);
 
-			// 액션 템플릿 fulfilled된 경우
-			if (isFulfilled(actionTemplates)) {
-				console.log(actionTemplates);
-				setActionTemplates(actionTemplates.payload.data);
-			}
-			// 액션 템플릿 rejected된 경우
-			else {
-				//에러 핸들링
-				console.log(actionTemplates.error);
+				// 액션 템플릿 findAll
+				const actionTemplates = await dispatch(
+					IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.findAllAction({
+						range: `elements=0-50`,
+					}),
+				).unwrap();
+				setActionTemplates(actionTemplates.data);
+			} catch (err) {
+				console.error(err);
 			}
 		};
-
 		policyType === policyTypes.iam && fetchData();
 	}, [dispatch, policyType]);
 
@@ -353,44 +338,29 @@ const IamTemplateList = ({
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
-			// 규칙 템플릿 findAll
-			const ruleTemplates = await dispatch(
-				IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findAll({
-					range: `elements=0-50`,
-				}),
-			);
-			// 액션 템플릿 findAll
-			const actionTemplates = await dispatch(
-				IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.findAllAction({
-					range: `elements=0-50`,
-				}),
-			);
+			try {
+				// 규칙 템플릿 findAll
+				const ruleTemplates = await dispatch(
+					IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findAll({
+						range: `elements=0-50`,
+					}),
+				).unwrap();
+				setRuleTemplates(ruleTemplates.data);
 
-			// 규칙 템플릿 fulfilled된 경우
-			if (isFulfilled(ruleTemplates)) {
-				console.log(ruleTemplates);
-				setRuleTemplates(ruleTemplates.payload.data);
-			}
-			// 규칙 템플릿 rejected된 경우
-			else {
-				//에러 핸들링
-				console.log(ruleTemplates.error);
-			}
-
-			// 액션 템플릿 fulfilled된 경우
-			if (isFulfilled(actionTemplates)) {
-				console.log(actionTemplates);
-				setActionTemplates(actionTemplates.payload.data);
-			}
-			// 액션 템플릿 rejected된 경우
-			else {
-				//에러 핸들링
-				console.log(actionTemplates.error);
+				// 액션 템플릿 findAll
+				const actionTemplates = await dispatch(
+					IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.findAllAction({
+						range: `elements=0-50`,
+					}),
+				).unwrap();
+				setActionTemplates(actionTemplates.data);
+			} catch (err) {
+				console.error(err);
 			}
 		};
 
 		// policyType === policyTypes.pam && fetchData();
-	}, [dispatch, policyType]);
+	}, [actionTemplates, dispatch, policyType, ruleTemplates]);
 
 	useEffect(() => {
 		// 첫 로드시 각각의 IAM 템플릿 데이터를 가져오면 로딩 false
