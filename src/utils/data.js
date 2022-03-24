@@ -60,6 +60,14 @@ export const tableSearchSelectOptions = {
 		{value: 'Public', label: 'Public'},
 		{value: 'Private', label: 'Private'},
 	],
+	manageCategory: [
+		{value: 'Avocado 관리형', label: 'Avocado 관리형'},
+		{value: '고객 관리형', label: '고객 관리형'},
+	],
+	policyType: [
+		{value: 'IAM', label: 'IAM'},
+		{value: 'PAM', label: 'PAM'},
+	],
 };
 
 //Link Columns 설정값

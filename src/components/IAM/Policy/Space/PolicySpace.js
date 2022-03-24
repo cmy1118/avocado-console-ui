@@ -49,8 +49,8 @@ const PolicySpace = () => {
 	const [pamPolicies, setPamPolicies] = useState([]);
 	const {page, total} = useSelector(PAGINATION.selector);
 	const [search, setSearch] = useState('');
-	const [select, setSelect] = useState({});
-
+	const [select, setSelect] = useState([]);
+	console.log('select:', select);
 	// 0:
 	// controlTypes: [{…}]
 	// createdTag: {createdTime: '2022-02-21T18:09:09.365+09:00', applicationCode: {…}, clientId: 'admin', requestId: '111e418e-04e5-46af-8725-6c6553a43912', userUid: 'KR-2020-0001:0000001'}
@@ -98,20 +98,6 @@ const PolicySpace = () => {
 	const onClickLinkToAddPolicyPage = useCallback(() => {
 		history.push('/policies/add');
 	}, [history]);
-
-	const onClickDeletePolicies = useCallback(() => {
-		if (select[tableKeys.policy.basic]?.length) {
-			console.log(select[tableKeys.policy.basic]);
-			select[tableKeys.policy.basic].forEach((v) => {
-				// todo : 정책 삭제 api 들어오면 해당 처리
-				// dispatch(
-				// 	IAM_USER.asyncAction.deleteAction({
-				// 		userUid: v.userUid,
-				// 	}),
-				// );
-			});
-		}
-	}, [select]);
 
 	const getUsersDetailApi = useCallback(
 		(res) => {
@@ -198,6 +184,35 @@ const PolicySpace = () => {
 		[dispatch, page],
 	);
 
+	async function errorHandler(res) {
+		try {
+			console.log('res:', res);
+			console.log('res.unwrap():', res.unwrap());
+			return res.unwrap();
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	const onClickDeletePolicies = useCallback(async () => {
+		try {
+			if (select[tableKeys.policy.basic]?.length) {
+				for (const v of select[tableKeys.policy.basic]) {
+					await dispatch(
+						IAM_USER_POLICY.asyncAction.deleteAction({
+							// hp: v.id,
+							id: v.id,
+						}),
+					).unwrap();
+				}
+			}
+			await getPolicyApi();
+			alert('정책 삭제 완료');
+		} catch (a) {
+			alert('정책 삭제 오류');
+			console.log(a);
+		}
+	}, [dispatch, getPolicyApi, select]);
 	const subComponentHandler = ({row, setData, setColumns, setLoading}) => {
 		console.log(row);
 
@@ -297,6 +312,7 @@ const PolicySpace = () => {
 				isSearchFilterable
 				isColumnFilterable
 				setSearch={setSearch}
+				setSelect={setSelect}
 				subComponentHandler={subComponentHandler}
 			/>
 		</IamContainer>

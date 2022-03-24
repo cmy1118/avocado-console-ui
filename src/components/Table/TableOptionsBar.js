@@ -85,9 +85,29 @@ const TableOptionsBar = ({
 	setSearch,
 }) => {
 	const [selectedSearchFilters, setSelectedSearchFilters] = useState([]);
+	console.log('headerGroups:', headerGroups);
+	console.log('isSearchFilterable:', isSearchFilterable);
+	console.log('selectedSearchFilters:', selectedSearchFilters);
 
+	/****************************************************************************************
+	 * 검색필터 기능
+	 ****************************************************************************************/
+	//검색필터 컨텍스트 메뉴 열기 상태 관리 훅스
+	const [
+		isSearchFilterContextMenuOpened,
+		setIsSearchFilterContextMenuOpened,
+	] = useState(false);
+
+	//검색필터 컨텍스트 메뉴 열기
+	const onClickOpenSearchFilterContextMenu = useCallback(() => {
+		console.log('onClickOpenSearchFilterContextMenu:');
+		setIsSearchFilterContextMenuOpened(true);
+	}, []);
+
+	//검색필터 닫기 버튼 핸들러
 	const onClickCloseFilter = useCallback(
 		(v) => () => {
+			console.log('onClickCloseFilter:', v);
 			setSelectedSearchFilters(
 				selectedSearchFilters.filter((val) => val !== v),
 			);
@@ -96,32 +116,36 @@ const TableOptionsBar = ({
 		[selectedSearchFilters, setAllFilters, filters],
 	);
 
+	//검색필터 '모두삭제' 버튼 핸들러
 	const onClickResetFilters = useCallback(() => {
+		console.log('onClickResetFilters:');
 		setSelectedSearchFilters([]);
 		setAllFilters([]);
 	}, [setAllFilters]);
 
-	const [
-		isSearchFilterContextMenuOpened,
-		setIsSearchFilterContextMenuOpened,
-	] = useState(false);
+	/****************************************************************************************/
+
+	/****************************************************************************************
+	 * 컬럼필터 기능
+	 ****************************************************************************************/
+	//컬럼필터 컨텍스트 메뉴 열기 상태 관리 훅스
 	const [
 		isColumnFilterContextMenuOpened,
 		setIsColumnFilterContextMenuOpened,
 	] = useState(false);
 
-	const onClickOpenSearchFilterContextMenu = useCallback(() => {
-		setIsSearchFilterContextMenuOpened(true);
-	}, []);
-
+	//컬럼필터 컨텍스트 메뉴 열기
 	const onClickOpenSelectColumnsContextMenu = useCallback(() => {
+		console.log('onClickOpenSelectColumnsContextMenu:');
 		setIsColumnFilterContextMenuOpened(true);
 	}, [setIsColumnFilterContextMenuOpened]);
+	/****************************************************************************************/
 
 	return (
 		<_Container>
 			<RowDiv justifyContent={'space-between'} margin={'0px 16px'}>
 				<_OptionContainer>
+					{/*검색 기능 사용시*/}
 					{isSearchable && (
 						<Search
 							setSearch={setSearch}
@@ -129,6 +153,8 @@ const TableOptionsBar = ({
 							setGlobalFilter={setGlobalFilter}
 						/>
 					)}
+
+					{/*검색필터 기능 사용시*/}
 					{isSearchFilterable && (
 						<div>
 							<_FilterButton
@@ -138,6 +164,7 @@ const TableOptionsBar = ({
 								<_FilterText>필터 추가</_FilterText>
 							</_FilterButton>
 							<PositionRelativeDiv>
+								{/*검색필터 기능 사용시 모달창*/}
 								{isSearchFilterContextMenuOpened && (
 									<SearchOptionsContextMenu
 										isOpened={
@@ -178,6 +205,8 @@ const TableOptionsBar = ({
 						tableKey={tableKey}
 					/>
 					<PageSizing pageSize={pageSize} setPageSize={setPageSize} />
+
+					{/*컬럼필터 기능 사용시*/}
 					{isColumnFilterable && (
 						<div>
 							<IconButton
@@ -209,6 +238,7 @@ const TableOptionsBar = ({
 					)}
 				</_OptionContainer>
 			</RowDiv>
+			{/*검색필터 선택했을때*/}
 			{selectedSearchFilters[0] &&
 				headerGroups.map((headerGroup, i) => (
 					<FiltersContainer
@@ -246,6 +276,7 @@ const TableOptionsBar = ({
 									),
 							)}
 						</RowDiv>
+
 						{selectedSearchFilters.length !== 0 && (
 							<RowDiv alignItems={'flex-end'}>
 								<NormalBorderButton

@@ -46,6 +46,24 @@ const grantGetsAction = createAsyncThunk(
 	},
 );
 
+const deleteAction = createAsyncThunk(
+	`${NAME}/DELETE`,
+	async (payload, {getState}) => {
+		const {userAuth} = getState().AUTH;
+		const response = await Axios.delete(
+			`open-api/v1/iam/policies/${payload.id}`,
+			{
+				headers: {
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+					'Content-Type': 'application/json',
+					Range: 'elements=0-50',
+				},
+				baseURL: baseURL.openApi,
+			},
+		);
+	},
+);
+
 const slice = createSlice({
 	name: NAME,
 	initialState: {
@@ -96,6 +114,7 @@ const IAM_USER_POLICY = {
 	asyncAction: {
 		getsAction,
 		grantGetsAction,
+		deleteAction,
 	},
 };
 

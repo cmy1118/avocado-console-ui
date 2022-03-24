@@ -17,7 +17,8 @@ export const POLICY_COLUMN = [
 	{
 		accessor: 'manageCategory',
 		Header: '관리 구분',
-		disableFilters: true,
+		filter: 'equals',
+		Filter: SelectionOption,
 	},
 	{
 		accessor: 'policyType',
@@ -28,14 +29,12 @@ export const POLICY_COLUMN = [
 	{
 		accessor: 'description',
 		Header: '설명',
-		filter: 'equals',
-		Filter: SelectionOption,
 	},
 	{
 		accessor: 'grantCount',
 		Header: '역할 연결 수',
-		filter: 'equals',
-		Filter: SelectionOption,
+		// filter: 'equals',
+		// Filter: SelectionOption,
 	},
 	{
 		accessor: 'createdTime',
