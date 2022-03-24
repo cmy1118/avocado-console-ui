@@ -136,14 +136,12 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 		const fetchData = async () => {
 			try {
 				const res = await dispatch(
-					// IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findById({
-					// 	templateId,
-					// }),
 					IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAll({
 						id: templateId,
 					}),
 				);
 				console.log(res.payload.data);
+				setData(res.payload.data);
 				for (let v of res.payload.data) {
 					if (v.attribute.ruleType === ruleTypes.screen_saver) {
 						setScreenSaver(v.attribute);
@@ -152,8 +150,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 					} else if (
 						v.attribute.ruleType === ruleTypes.session_timeout
 					) {
-						setSessionTimeout(v.attribute);
-
+						// setSessionTimeout(v.attribute);
 						const data = Object.entries(v.attribute.policies).map(
 							([key, value]) => ({
 								...value,
@@ -163,40 +160,13 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 								application: contents.sessionTimeout[key],
 							}),
 						);
+
 						setTableData(data);
 					}
 				}
 			} catch (err) {
 				console.log('error => ', err);
 			}
-
-			// if (isFulfilled(res)) {
-			// 	console.log(res.payload.data);
-			// 	setData(res.payload.data);
-			// 	for (let v of res.payload.data.attributes) {
-			// 		if (v.ruleType === ruleTypes.screen_saver) {
-			// 			setScreenSaver(v);
-			// 			setScreenSaverValue(v.usage ? 'yes' : 'no');
-			// 			setIdleTime(v.timeToIdle);
-			// 		} else if (v.ruleType === ruleTypes.session_timeout) {
-			// 			setSessionTimeout(v);
-			//
-			// 			const data = Object.entries(v.policies).map(
-			// 				([key, value]) => ({
-			// 					...value,
-			// 					id: key,
-			// 					[DRAGGABLE_KEY]: key,
-			// 					usage: value.usage ? 'yes' : 'no',
-			// 					application: contents.sessionTimeout[key],
-			// 				}),
-			// 			);
-			// 			setTableData(data);
-			// 		}
-			// 	}
-			// } else {
-			//	// 에러 핸들링
-			// 	console.log(res.error);
-			// }
 		};
 		fetchData();
 	}, [dispatch, setIdleTime, setScreenSaverValue, templateId]);
@@ -213,58 +183,59 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 	}, [idleTime, screenSaverValue]);
 
 	/**************************************************
-	 * seob - 세션 타임아웃 데이터 변경시 setSessionTimeout로 반영
-	 ***************************************************/
-	useEffect(() => {
-		const policies = {};
-		tableData.forEach((v) => {
-			policies[v.id] = {
-				usage: v.usage === 'yes',
-				sessionTimeSeconds: parseInt(v.sessionTimeSeconds),
-				keepAliveTimeSeconds: parseInt(v.keepAliveTimeSeconds),
-				blockingType: v.blockingType,
-			};
-		});
-
-		setSessionTimeout((prev) => ({
-			...prev,
-			policies: policies,
-		}));
-	}, [tableData]);
-
-	/**************************************************
 	 * seob - 화면보호기, 세션타임아웃 데이터 변경시 setData로 전체 data 저장
 	 ***************************************************/
 	useEffect(() => {
-		setData((prev) => ({
-			...prev,
-			attributes: [screenSaver, sessionTimeout],
-		}));
-	}, [screenSaver, sessionTimeout]);
+		setData((prev) => {
+			return prev.map((p) => {
+				if (p.attribute.ruleType === ruleTypes.screen_saver) {
+					return {...p, attribute: screenSaver};
+				} else if (p.attribute.ruleType === ruleTypes.session_timeout) {
+					return {
+						...p,
+						attribute: {
+							...p.attribute,
+							policies: tableData.reduce((pre, cur) => {
+								const {id} = cur;
+								return {
+									...pre,
+									[id]: {
+										blockingType: cur.blockingType,
+										keepAliveTimeSeconds: parseInt(
+											cur.keepAliveTimeSeconds,
+										),
+										sessionTimeSeconds: parseInt(
+											cur.sessionTimeSeconds,
+										),
+										usage: cur.usage === 'yes',
+									},
+								};
+							}, {}),
+						},
+					};
+				}
+			});
+		});
+	}, [screenSaver, tableData]);
 
 	/**************************************************
 	 * seob717 - 정책 생성 액션 요청으로 템플릿 데이터를 redux에 저장
 	 **************************************************/
 	useEffect(() => {
-		console.log('🦊', data);
+		console.log('data => ', data);
 		if (creatingPolicyMode) {
 			dispatch(
 				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
-					id: templateId,
-					data: {
-						name: name,
-						resource: policyTypes.iam,
-						description: description,
-						attributes: data.attributes,
-					},
+					name: name,
+					description: description,
+					details: data.map((v) => ({
+						resource: v.resource,
+						attribute: v.attribute,
+					})),
 				}),
 			);
 		}
 	}, [creatingPolicyMode, data, description, dispatch, name, templateId]);
-
-	useEffect(() => {
-		console.log(tableData);
-	}, [tableData]);
 
 	return (
 		<div>

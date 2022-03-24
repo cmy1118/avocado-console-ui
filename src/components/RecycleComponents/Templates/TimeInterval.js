@@ -75,7 +75,7 @@ const TimeInterval = ({week, title, data, setData}) => {
 			} else if (name === 'to') {
 				if (value < time.from || value > '24:00') return;
 			}
-			setTime((time) => ({...time, [name]: value}));
+			setTime((time) => ({...time, [name]: `${value}:00`}));
 			setData((prev) =>
 				prev.map((v) => {
 					if (v.resource === data.resource) {
@@ -85,7 +85,7 @@ const TimeInterval = ({week, title, data, setData}) => {
 								...v.attribute,
 								policies: {
 									...v.attribute.policies,
-									[week]: {...time, [name]: value},
+									[week]: {...time, [name]: `${value}:00`},
 								},
 							},
 						};
