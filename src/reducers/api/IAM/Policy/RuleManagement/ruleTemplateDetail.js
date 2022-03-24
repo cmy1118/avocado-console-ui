@@ -14,7 +14,7 @@ const findAll = createAsyncThunk(
 		const {userAuth} = getState().AUTH;
 
 		return await Axios.get(
-			`/open-api/v1/iam/rule-template-details/${payload.id}`,
+			`/open-api/v1/iam/rule-templates/${payload.id}/details`,
 			{
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,

@@ -95,22 +95,22 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 					}),
 				);
 				console.log(res.payload.data);
+
+				for (let v of res.payload.data) {
+					v.resource.includes('console-ui') &&
+						setConsoleRadioValue(v.attribute.usage ? 'yes' : 'no');
+					v.resource.includes('web-terminal-ui') &&
+						setWebtermRadioValue(v.attribute.usage ? 'yes' : 'no');
+				}
+
+				setData(res.payload.data);
 				// todo : api 수정이 확정 되면 작업할 예정입니다.
 			} catch (err) {
 				console.log('err => ', err);
 			}
-
-			// for (let v of data.payload) {
-			// 	v.resource.includes('console-ui') &&
-			// 		setConsoleRadioValue(v.attribute.usage ? 'yes' : 'no');
-			// 	v.resource.includes('web-terminal-ui') &&
-			// 		setWebtermRadioValue(v.attribute.usage ? 'yes' : 'no');
-			// }
-			//
-			// setData(data.payload);
 		};
 		fetchData();
-	}, [dispatch, templateId]);
+	}, [dispatch, setConsoleRadioValue, setWebtermRadioValue, templateId]);
 
 	/**************************************************
 	 * seob - 정보 변경시 setState
@@ -144,16 +144,16 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 	 * seob717 - 정책 생성 액션 요청으로 템플릿 데이터를 redux에 저장
 	 **************************************************/
 	useEffect(() => {
+		console.log(data);
 		if (creatingPolicyMode) {
 			dispatch(
 				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
-					id: templateId,
-					data: {
-						name: name,
-						resource: policyTypes.iam,
-						description: description,
-						attributes: data.map((v) => v.attribute),
-					},
+					name: name,
+					description: description,
+					details: data.map((v) => ({
+						resource: v.resource,
+						attribute: v.attribute,
+					})),
 				}),
 			);
 		}

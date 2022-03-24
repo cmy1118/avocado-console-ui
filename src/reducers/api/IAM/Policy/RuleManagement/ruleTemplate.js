@@ -75,8 +75,8 @@ const slice = createSlice({
 	name: NAME,
 	initialState: {ruleTemplates: {}},
 	reducers: {
-		gatherRulteTemplate: (state, action) => {
-			state.ruleTemplates[action.payload.id] = action.payload.data;
+		gatherRulteTemplate: (state, {payload}) => {
+			state.ruleTemplates.push(payload);
 		},
 		resetRuleTemplate: (state, action) => {
 			state.ruleTemplates = {};
