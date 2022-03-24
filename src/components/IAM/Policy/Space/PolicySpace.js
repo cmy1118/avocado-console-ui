@@ -21,7 +21,7 @@ import * as _ from 'lodash';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
-import {policyTypes} from '../../../../utils/data';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -41,6 +41,9 @@ const APPLICATION_CODE = {
 const PolicySpace = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const [select, column] = useSelectColumn(
+		tableColumns[tableKeys.policy.basic],
+	);
 
 	// memo : 추후에 데이터를 iam, pam따로 관리하면 그대로 사용 / 아닌경우 policies로 통합해서 사용
 	// iam 정책 유형들
@@ -49,7 +52,7 @@ const PolicySpace = () => {
 	const [pamPolicies, setPamPolicies] = useState([]);
 	const {page, total} = useSelector(PAGINATION.selector);
 	const [search, setSearch] = useState('');
-	const [select, setSelect] = useState([]);
+	// const [select, setSelect] = useState([]);
 	console.log('select:', select);
 	// 0:
 	// controlTypes: [{…}]
@@ -305,14 +308,13 @@ const PolicySpace = () => {
 
 			<Table
 				tableKey={tableKeys.policy.basic}
-				columns={tableColumns[tableKeys.policy.basic]}
+				columns={column}
 				data={policyData}
 				isPaginable
 				isSearchable
 				isSearchFilterable
 				isColumnFilterable
 				setSearch={setSearch}
-				setSelect={setSelect}
 				subComponentHandler={subComponentHandler}
 			/>
 		</IamContainer>

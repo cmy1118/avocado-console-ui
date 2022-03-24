@@ -158,59 +158,40 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	}
 
 	/*************************************************************************
-	 * ambacc244, seob - 규칙 생성,정책연결 비동기 함수
+	 * ambacc244, seob - 규칙 생성, 정책연결 비동기 함수
 	 *************************************************************************/
 	const createJoinRule = async (policyId, ruleTemplates) => {
 		console.log('🔴규칙 생성,정책연결 비동기 함수');
-		let order = 1;
-		const templateList = [];
-		for (const v in ruleTemplates) {
-			// createRuleTemplateAction 액션의 response
-			const createRuleTemplateActionResponse = await dispatch(
-				IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.createRuleTemplateAction(
-					{
-						...ruleTemplates[v],
-						attributes: ruleTemplates[v].attributes.map((data) =>
-							JSON.stringify(data),
-						),
-					},
-				),
+
+		try {
+			const joinList = await Promise.all(
+				ruleTemplates.map(async (v, i) => {
+					const res = await dispatch(
+						IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.create({
+							...v,
+							details: v.details.map((d) => ({
+								...d,
+								attribute: JSON.stringify(d.attribute),
+							})),
+						}),
+					).unwrap();
+
+					return {
+						templateId: res.headers.location.split('/').pop(),
+						order: i,
+					};
+				}),
 			);
-			console.log(
-				'🔴규칙 생성api 완료:',
-				createRuleTemplateActionResponse,
-			);
-			// 비동기 처리가 fulfilled 된 경우
-			if (isFulfilled(createRuleTemplateActionResponse)) {
-				const ruleTemplateId =
-					createRuleTemplateActionResponse.payload.id;
-				// 정책과 연결할 템플릿 리스트 저장
-				templateList.push({
+
+			console.log(joinList);
+			await dispatch(
+				IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.join({
 					policyId: policyId,
-					templateId: ruleTemplateId,
-					order: order++,
-				});
-			}
-			// 비동기 처리가 rejected 된 경우
-			else {
-				// 에러 핸들링
-				console.log(createRuleTemplateActionResponse);
-			}
-		}
-		/**************************************************
-		 * seob - 정책 rule 연결
-		 ***************************************************/
-		if (templateList.length === ruleTemplates.length) {
-			const ruleTemplateJoinActionResponse = await dispatch(
-				IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.joinAction(
-					templateList,
-				),
-			);
-			console.log('🔴규칙 연결api 완료', ruleTemplateJoinActionResponse);
-			if (!isFulfilled(ruleTemplateJoinActionResponse)) {
-				// 에러 핸들링
-				console.log(ruleTemplateJoinActionResponse);
-			}
+					templateList: joinList,
+				}),
+			).unwrap();
+		} catch (err) {
+			console.error(err);
 		}
 	};
 
@@ -250,14 +231,15 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			console.log('createPolicy 실행완료 id:', policy.payload);
 			console.log('actionTemplates :', actionTemplates);
 			console.log('ruleTemplates :', ruleTemplates);
+
 			if (policy.payload) {
 				const policyId = policy.payload;
 				//step2.3 권한,규칙 생성 후 정책 연결
 				//Promise.all : 비동기 병렬처리 파라미터 배열안에 실행할 비동기함수 삽입
 				console.log('ruleTemplates:', ruleTemplates);
 				await Promise.all([
-					createJoinAction(policyId, actionTemplates),
-					createJoinRule(policyId, ruleTemplates),
+					await createJoinAction(policyId, actionTemplates),
+					await createJoinRule(policyId, ruleTemplates),
 				]);
 			}
 			await initRedux();
@@ -267,12 +249,12 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			console.log(err);
 		}
 	}, [
-		initRedux,
 		createPolicy,
-		createJoinAction,
 		actionTemplates,
-		createJoinRule,
 		ruleTemplates,
+		initRedux,
+		createJoinAction,
+		createJoinRule,
 	]);
 
 	/**********************************************************
@@ -284,16 +266,16 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 		//IAM - 규칙 템플릿 데이터 처리
 		console.log(ruleTemplates);
 
-		Object.values(ruleTemplates).map((v) => {
-			for (let i = 0; i < v.attributes.length; i++) {
-				let object = new Object();
-				if (i === 0) object.policy = v.name;
-				object.id = v.attributes[i].ruleType;
-				object.detail = policyDescription[v.attributes[i].ruleType];
-				object.value = roleAttributeConvertor(v.attributes[i]);
-				previewAllData.push(object);
-			}
-		});
+		// Object.values(ruleTemplates).map((v) => {
+		// 	for (let i = 0; i < v.attributes.length; i++) {
+		// 		let object = new Object();
+		// 		if (i === 0) object.policy = v.name;
+		// 		object.id = v.attributes[i].ruleType;
+		// 		object.detail = policyDescription[v.attributes[i].ruleType];
+		// 		object.value = roleAttributeConvertor(v.attributes[i]);
+		// 		previewAllData.push(object);
+		// 	}
+		// });
 		console.log(actionTemplates);
 		//IAM - 권한(action) 템플릿 데이터 처리
 		//TODO 함수로 모듈화할 예정입니다
@@ -313,7 +295,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 		//PAM - 권한(action) 템플릿 데이터 처리
 
 		setPreviewData(previewAllData);
-	}, [ruleTemplates]);
+	}, [actionTemplates, ruleTemplates]);
 
 	return (
 		formData && (

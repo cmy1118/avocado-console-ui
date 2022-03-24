@@ -35,12 +35,7 @@ const create = createAsyncThunk(
 
 		const response = await Axios.post(
 			`/open-api/v1/iam/rule-templates`,
-			{
-				name: payload.name,
-				resource: payload.resource,
-				description: payload.description,
-				attributes: payload.attributes,
-			},
+			{...payload},
 			{
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
@@ -73,13 +68,13 @@ const findById = createAsyncThunk(
 
 const slice = createSlice({
 	name: NAME,
-	initialState: {ruleTemplates: {}},
+	initialState: {ruleTemplates: []},
 	reducers: {
 		gatherRulteTemplate: (state, {payload}) => {
 			state.ruleTemplates.push(payload);
 		},
 		resetRuleTemplate: (state, action) => {
-			state.ruleTemplates = {};
+			state.ruleTemplates = [];
 		},
 	},
 	extraReducers: {},
