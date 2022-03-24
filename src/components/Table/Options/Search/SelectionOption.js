@@ -11,6 +11,9 @@ const placeholders = {
 	MFA: 'MFA',
 	passwordExpiryTime: '비밀번호 수명',
 	roleType: '역할 유형',
+	manageCategory:'관리 구분',
+	policyType:'정책 구분',
+
 };
 
 const SelectionOption = ({column: {setFilter, id}}) => {

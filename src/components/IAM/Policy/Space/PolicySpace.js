@@ -199,8 +199,10 @@ const PolicySpace = () => {
 
 	const onClickDeletePolicies = useCallback(async () => {
 		try {
-			if (select[tableKeys.policy.basic]?.length) {
-				for (const v of select[tableKeys.policy.basic]) {
+			console.log('select:',select)
+			if (select?.length) {
+				for (const v of select) {
+					console.log('v.id:',v.id)
 					await dispatch(
 						IAM_USER_POLICY.asyncAction.deleteAction({
 							// hp: v.id,
