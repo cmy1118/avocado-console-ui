@@ -21,6 +21,7 @@ import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/group
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -28,8 +29,10 @@ const paths = [
 ];
 
 const GroupSpace = () => {
-	const [select, setSelect] = useState({});
 	const dispatch = useDispatch();
+	const [select, columns] = useSelectColumn(
+		tableColumns[tableKeys.groups.basic],
+	);
 	const history = useHistory();
 	const [groups, setGroups] = useState([]);
 	const {page} = useSelector(PAGINATION.selector);
@@ -55,8 +58,8 @@ const GroupSpace = () => {
 	}, [history]);
 
 	const onClickDeleteGroup = useCallback(() => {
-		if (select[tableKeys.groups.basic][0]) {
-			select[tableKeys.groups.basic].forEach((v) => {
+		if (select.length) {
+			select.forEach((v) => {
 				dispatch(
 					IAM_USER_GROUP.asyncAction.deleteAction({
 						id: v.id,
@@ -211,9 +214,8 @@ const GroupSpace = () => {
 			</TitleBar>
 
 			<Table
-				setSelect={setSelect}
 				tableKey={tableKeys.groups.basic}
-				columns={tableColumns[tableKeys.groups.basic]}
+				columns={columns}
 				data={data}
 				isPaginable
 				isSearchable

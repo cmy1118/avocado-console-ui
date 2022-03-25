@@ -24,6 +24,7 @@ import PAGINATION from '../../../../reducers/pagination';
 import PAM_SESSION from '../../../../reducers/api/PAM/session';
 import {RowDiv} from '../../../../styles/components/style';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -37,7 +38,10 @@ const UserSpace = () => {
 	const [users, setUsers] = useState([]);
 	const {page, total} = useSelector(PAGINATION.selector);
 	const [search, setSearch] = useState('');
-	const [select, setSelect] = useState({});
+
+	const [select, columns] = useSelectColumn(
+		tableColumns[tableKeys.users.basic],
+	);
 
 	const userData = useMemo(() => {
 		console.log(users);
@@ -65,8 +69,8 @@ const UserSpace = () => {
 	}, [history]);
 
 	const onClickDeleteUsers = useCallback(() => {
-		if (select[tableKeys.users.basic][0]) {
-			select[tableKeys.users.basic].forEach((v) => {
+		if (select.length) {
+			select.forEach((v) => {
 				dispatch(
 					IAM_USER.asyncAction.deleteAction({
 						userUid: v.userUid,
@@ -133,7 +137,7 @@ const UserSpace = () => {
 					});
 			}
 		},
-		[dispatch, page],
+		[dispatch, getUsersDetailApi, page],
 	);
 
 	useEffect(() => {
@@ -163,7 +167,7 @@ const UserSpace = () => {
 
 			<Table
 				tableKey={tableKeys.users.basic}
-				columns={tableColumns[tableKeys.users.basic]}
+				columns={columns}
 				data={userData}
 				isPaginable
 				isSearchable

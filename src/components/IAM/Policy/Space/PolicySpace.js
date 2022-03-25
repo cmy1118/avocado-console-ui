@@ -41,7 +41,7 @@ const APPLICATION_CODE = {
 const PolicySpace = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const [select, column] = useSelectColumn(
+	const [select, columns] = useSelectColumn(
 		tableColumns[tableKeys.policy.basic],
 	);
 
@@ -199,10 +199,8 @@ const PolicySpace = () => {
 
 	const onClickDeletePolicies = useCallback(async () => {
 		try {
-			console.log('select:',select)
-			if (select?.length) {
+			if (select.length) {
 				for (const v of select) {
-					console.log('v.id:',v.id)
 					await dispatch(
 						IAM_USER_POLICY.asyncAction.deleteAction({
 							// hp: v.id,
@@ -310,7 +308,7 @@ const PolicySpace = () => {
 
 			<Table
 				tableKey={tableKeys.policy.basic}
-				columns={column}
+				columns={columns}
 				data={policyData}
 				isPaginable
 				isSearchable

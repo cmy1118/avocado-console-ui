@@ -22,6 +22,7 @@ import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Rol
 import {parentGroupConverter} from '../../../../../utils/tableDataConverter';
 import * as _ from 'lodash';
 import {CollapsbleContent} from '../../../../../styles/components/style';
+import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 
 const UserGroupsTab = ({
 	userUid,
@@ -36,7 +37,15 @@ const UserGroupsTab = ({
 	const {page} = useSelector(PAGINATION.selector);
 	const [includedGroups, setIncludedGroups] = useState([]);
 	const [excluedeGroups, setExcluedeGroups] = useState([]);
-	const [select, setSelect] = useState({});
+
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.users.summary.tabs.groups.include],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.users.summary.tabs.groups.exclude],
+	);
+	const [selected, setSelected] = useState({});
+
 	const [search, setSearch] = useState('');
 	const [total, setTotal] = useState(0);
 	const [includedDataIds, setIncludedDataIds] = useState(
@@ -254,10 +263,17 @@ const UserGroupsTab = ({
 		}
 	}, [getExcludedGroupData, groups, isSummaryOpened]);
 
+	useEffect(() => {
+		setSelected({
+			[tableKeys.users.summary.tabs.groups.include]: includeSelect,
+			[tableKeys.users.summary.tabs.groups.exclude]: excludeSelect,
+		});
+	}, [excludeSelect, includeSelect]);
+
 	return (
 		<TabContentContainer>
 			<DragContainer
-				selected={select}
+				selected={selected}
 				data={includedDataIds}
 				setData={setIncludedDataIds}
 				includedKey={tableKeys.users.summary.tabs.groups.include}
@@ -272,9 +288,7 @@ const UserGroupsTab = ({
 						margin='0px 0px 0px 5px'
 						onClick={() =>
 							onClickDeleteGroupFromUser(
-								select[
-									tableKeys.users.summary.tabs.groups.include
-								].map((v) => v.id),
+								includeSelect.map((v) => v.id),
 							)
 						}
 					>
@@ -282,15 +296,10 @@ const UserGroupsTab = ({
 					</TransparentButton>
 				</TableTitle>
 				<Table
-					setSelect={setSelect}
 					isDraggable
 					data={includedData}
 					tableKey={tableKeys.users.summary.tabs.groups.include}
-					columns={
-						tableColumns[
-							tableKeys.users.summary.tabs.groups.include
-						]
-					}
+					columns={includeColumns}
 					isPaginable
 					isSearchable
 					isSearchFilterable
@@ -310,10 +319,7 @@ const UserGroupsTab = ({
 							margin='0px 0px 0px 5px'
 							onClick={() =>
 								onClickAddGroupToUser(
-									select[
-										tableKeys.users.summary.tabs.groups
-											.exclude
-									].map((v) => v.id),
+									excludeSelect.map((v) => v.id),
 								)
 							}
 						>
@@ -323,17 +329,12 @@ const UserGroupsTab = ({
 					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
 						<TableOptionText data={'groups'} />
 						<Table
-							setSelect={setSelect}
 							isDraggable
 							data={excludedData}
 							tableKey={
 								tableKeys.users.summary.tabs.groups.exclude
 							}
-							columns={
-								tableColumns[
-									tableKeys.users.summary.tabs.groups.exclude
-								]
-							}
+							columns={excludeColumns}
 							isPaginable
 							isSearchable
 							isSearchFilterable

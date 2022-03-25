@@ -5,7 +5,7 @@ import {
 	NormalBorderButton,
 	NormalButton,
 } from '../../../../../../styles/components/buttons';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import TableFold from '../../../../../Table/Options/TableFold';
 import {
 	FoldableContainer,
@@ -16,6 +16,7 @@ import {tableKeys} from '../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
 import Table from '../../../../../Table/Table';
 import DragContainer from '../../../../../Table/DragContainer';
+import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 
 const policyRoleTab = {
 	include: {
@@ -35,7 +36,20 @@ const PolicyRoleTab = ({policyId}) => {
 
 	const [inRole, setInRole] = useState([]);
 	const [exRole, setExRole] = useState([]);
-	const [selected, setSelected] = useState(null);
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.policy.summary.tabs.role.include],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.policy.summary.tabs.role.exclude],
+	);
+	const [selected, setSelected] = useState({});
+
+	useEffect(() => {
+		setSelected({
+			[tableKeys.policy.summary.tabs.role.include]: includeSelect,
+			[tableKeys.policy.summary.tabs.role.exclude]: excludeSelect,
+		});
+	}, [excludeSelect, includeSelect]);
 
 	return (
 		<TabContentContainer>
@@ -58,13 +72,10 @@ const PolicyRoleTab = ({policyId}) => {
 				includedData={inRole}
 			>
 				<Table
-					setSelect={setSelected}
 					isDraggable
 					data={inRole}
 					tableKey={tableKeys.policy.summary.tabs.role.include}
-					columns={
-						tableColumns[tableKeys.policy.summary.tabs.role.include]
-					}
+					columns={includeColumns}
 					isPaginable
 					isSearchable
 					isSearchFilterable
@@ -88,17 +99,12 @@ const PolicyRoleTab = ({policyId}) => {
 						height={isFold['RoleUserTab'] ? '374px' : '0px'}
 					>
 						<Table
-							setSelect={setSelected}
 							isDraggable
 							data={exRole}
 							tableKey={
 								tableKeys.policy.summary.tabs.role.exclude
 							}
-							columns={
-								tableColumns[
-									tableKeys.policy.summary.tabs.role.exclude
-								]
-							}
+							columns={excludeColumns}
 							isPaginable
 							isSearchable
 							isSearchFilterable

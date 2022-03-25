@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {TitleBarButtons} from '../../../../styles/components/iam/iam';
 import IAM_USER_TAG from '../../../../reducers/api/IAM/User/Tag/tags';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const _TableSpace = styled(TableTitle)`
 	margin-top: 30px;
@@ -26,7 +27,18 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 	const [user, setUser] = useState(null);
 	const [data, setData] = useState([]);
 
-	const [select, setSelect] = useState({});
+	const [basicSelect, basicColumns] = useSelectColumn(
+		tableColumns[tableKeys.users.summary.tabs.tags.basic],
+	);
+
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.users.summary.tabs.tags.permissions.include],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.users.summary.tabs.tags.permissions.exclude],
+	);
+	const [selected, setSelected] = useState({});
+
 	const onClickAddRow = useCallback(() => {
 		const lastValues = data.slice().pop();
 		if (lastValues?.name === '' || lastValues?.value === '') {
@@ -60,9 +72,8 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 	}, [data, dispatch, userUid]);
 
 	const onClickDeleteRow = useCallback(() => {
-		console.log(select);
-		if (select[tableKeys.users.summary.tabs.tags.basic][0]) {
-			select[tableKeys.users.summary.tabs.tags.basic].forEach((tag) => {
+		if (basicSelect.length) {
+			basicSelect.forEach((tag) => {
 				dispatch(
 					IAM_USER_TAG.asyncAction.deleteAction({
 						userUid,
@@ -72,16 +83,13 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 			});
 			setData(
 				data.filter(
-					(v) =>
-						!select[tableKeys.users.summary.tabs.tags.basic]
-							.map((x) => x.name)
-							.includes(v.name),
+					(v) => !basicSelect.map((x) => x.name).includes(v.name),
 				),
 			);
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
-	}, [data, dispatch, select, userUid]);
+	}, [data, dispatch, basicSelect, userUid]);
 
 	useEffect(() => {
 		console.log(user);
@@ -130,26 +138,16 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 			<TableOptionText data={'tags'} />
 
 			<Table
-				setSelect={setSelect}
 				tableKey={tableKeys.users.summary.tabs.tags.basic}
 				data={data}
 				setData={setData}
-				columns={tableColumns[tableKeys.users.summary.tabs.tags.basic]}
+				columns={basicColumns}
 			/>
 
-			{select[tableKeys.users.summary.tabs.tags.basic]?.length === 1 && (
+			{basicSelect.length === 1 && (
 				<div>
 					<_TableSpace>
-						태그 [
-						{
-							select[tableKeys.users.summary.tabs.tags.basic][0]
-								.name
-						}{' '}
-						:{' '}
-						{
-							select[tableKeys.users.summary.tabs.tags.basic][0]
-								.value
-						}
+						태그 [{basicSelect[0].name} : {basicSelect[0].value}
 						]의 정책 :
 						<TransparentButton margin='0px 0px 0px 5px'>
 							연결 해제
@@ -162,25 +160,11 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 								.include
 						}
 						data={[]}
-						columns={
-							tableColumns[
-								tableKeys.users.summary.tabs.tags.permissions
-									.include
-							]
-						}
+						columns={includeColumns}
 					/>
 
 					<_TableSpace>
-						태그 [
-						{
-							select[tableKeys.users.summary.tabs.tags.basic][0]
-								.name
-						}{' '}
-						:{' '}
-						{
-							select[tableKeys.users.summary.tabs.tags.basic][0]
-								.value
-						}
+						태그 [{basicSelect[0].name} : {basicSelect[0].value}
 						]의 다른 정책 :
 						<TitleBarButtons>
 							<NormalButton>정책 생성</NormalButton>
@@ -196,12 +180,7 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 								.exclude
 						}
 						data={[]}
-						columns={
-							tableColumns[
-								tableKeys.users.summary.tabs.tags.permissions
-									.exclude
-							]
-						}
+						columns={excludeColumns}
 					/>
 				</div>
 			)}

@@ -18,6 +18,7 @@ import PAGINATION from '../../../../reducers/pagination';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import {useHistory} from 'react-router-dom';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -25,11 +26,13 @@ const paths = [
 ];
 
 const RoleSpace = () => {
+	const [select, columns] = useSelectColumn(
+		tableColumns[tableKeys.roles.basic],
+	);
 	const dispatch = useDispatch();
 	const history = useHistory();
 	// const {roles} = useSelector(IAM_ROLES.selector);
 	const {page} = useSelector(PAGINATION.selector);
-	const [select, setSelect] = useState({});
 	const [roles, setRoles] = useState([]);
 	const [total, setTotal] = useState(0);
 	const [search, setSearch] = useState('');
@@ -112,9 +115,8 @@ const RoleSpace = () => {
 			</TitleBar>
 
 			<Table
-				setSelect={setSelect}
 				tableKey={tableKeys.roles.basic}
-				columns={tableColumns[tableKeys.roles.basic]}
+				columns={columns}
 				data={data}
 				isPaginable
 				isSearchable

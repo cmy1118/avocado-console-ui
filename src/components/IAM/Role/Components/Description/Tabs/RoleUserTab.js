@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
 	NormalBorderButton,
@@ -17,6 +17,7 @@ import {
 	TitleBarButtons,
 } from '../../../../../../styles/components/iam/iam';
 import {CollapsbleContent} from '../../../../../../styles/components/style';
+import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 
 const roleUserTab = {
 	include: {title: '이 역할의 사용자 : ', button: {delete: '연결 해제'}},
@@ -30,8 +31,16 @@ const roleUserTab = {
  * ambacc244 - 이 역할을 가지는 사용자와, 가지지 않는 사용자를 보여줌
  **************************************************/
 const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
-	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
+
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.roles.summary.tabs.users.include],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.roles.summary.tabs.users.exclude],
+	);
+	const [selected, setSelected] = useState({});
+
 	//includedData : 이 역할을 할당받은 사용자
 	const includedData = useMemo(() => {
 		return [];
@@ -40,6 +49,13 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 	const excludedData = useMemo(() => {
 		return [];
 	}, []);
+
+	useEffect(() => {
+		setSelected({
+			[tableKeys.roles.summary.tabs.users.include]: includeSelect,
+			[tableKeys.roles.summary.tabs.users.exclude]: excludeSelect,
+		});
+	}, [excludeSelect, includeSelect]);
 
 	return (
 		<TabContentContainer>
@@ -51,7 +67,7 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 				</NormalBorderButton>
 			</TableTitle>
 			<DragContainer
-				selected={select}
+				selected={selected}
 				data={includedDataIds}
 				setData={setIncludedDataIds}
 				includedKey={tableKeys.roles.summary.tabs.users.include}
@@ -59,13 +75,10 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 				includedData={includedData}
 			>
 				<Table
-					setSelect={setSelect}
 					isDraggable
 					data={includedData}
 					tableKey={tableKeys.roles.summary.tabs.users.include}
-					columns={
-						tableColumns[tableKeys.roles.summary.tabs.users.include]
-					}
+					columns={includeColumns}
 					isPaginable
 					isSearchable
 					isSearchFilterable
@@ -91,17 +104,12 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold}) => {
 						<TableOptionText data={'usersRoles'} />
 
 						<Table
-							setSelect={setSelect}
 							isDraggable
 							data={excludedData}
 							tableKey={
 								tableKeys.roles.summary.tabs.users.exclude
 							}
-							columns={
-								tableColumns[
-									tableKeys.roles.summary.tabs.users.exclude
-								]
-							}
+							columns={excludeColumns}
 							isPaginable
 							isSearchable
 							isSearchFilterable

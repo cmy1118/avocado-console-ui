@@ -17,13 +17,21 @@ import {
 	expiredConverter,
 	groupsConverter,
 } from '../../../../utils/tableDataConverter';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {page} = useSelector(PAGINATION.selector);
 	const [includedDataIds, setIncludedDataIds] = useState([]);
-	const [select, setSelect] = useState({});
+
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.groups.add.users.include],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.groups.add.users.exclude],
+	);
+	const [selected, setSelected] = useState({});
 
 	console.log(users);
 	console.log(includedDataIds);
@@ -82,6 +90,13 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 		setValue(includedDataIds);
 	}, [includedDataIds, setValue]);
 
+	useEffect(() => {
+		setSelected({
+			[tableKeys.roles.add.users.include]: includeSelect,
+			[tableKeys.roles.add.users.exclude]: excludeSelect,
+		});
+	}, [excludeSelect, includeSelect]);
+
 	return (
 		<FoldableContainer>
 			<TableFold
@@ -94,7 +109,7 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 				<>
 					<TableOptionText data={'groups'} />
 					<DragContainer
-						selected={select}
+						selected={selected}
 						data={includedDataIds}
 						setData={setIncludedDataIds}
 						includedKey={tableKeys.groups.add.users.include}
@@ -103,15 +118,10 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 					>
 						<RowDiv>
 							<Table
-								setSelect={setSelect}
 								isDraggable
 								data={excludedData}
 								tableKey={tableKeys.groups.add.users.exclude}
-								columns={
-									tableColumns[
-										tableKeys.groups.add.users.exclude
-									]
-								}
+								columns={excludeColumns}
 								isPaginable
 								isSearchable
 								isSearchFilterable
@@ -125,7 +135,7 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 									RightTableKey={
 										tableKeys.groups.add.users.include
 									}
-									select={select}
+									select={selected}
 									dataLeft={excludedData}
 									dataRight={includedData}
 									rightDataIds={includedDataIds}
@@ -137,17 +147,12 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 									추가 사용자: {includedDataIds.length}건
 								</TableHeader>
 								<Table
-									setSelect={setSelect}
 									isDraggable
 									data={includedData}
 									tableKey={
 										tableKeys.groups.add.users.include
 									}
-									columns={
-										tableColumns[
-											tableKeys.groups.add.users.include
-										]
-									}
+									columns={includeColumns}
 								/>
 							</ColDiv>
 						</RowDiv>

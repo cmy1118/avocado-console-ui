@@ -13,12 +13,22 @@ import PropTypes from 'prop-types';
 import TableFold from '../../../Table/Options/TableFold';
 import DragContainer from '../../../Table/DragContainer';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const [includedDataIds, setIncludedDataIds] = useState([]);
-	const [select, setSelect] = useState({});
+
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.groups.add.roles.exclude],
+	);
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.groups.add.roles.include],
+	);
+
+	const [selected, setSelected] = useState({});
+
 	const excludedData = useMemo(() => {
 		return roles
 			.filter((v) => !includedDataIds.includes(v.id))
@@ -60,6 +70,13 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 		);
 	}, [includedData, dispatch]);
 
+	useEffect(() => {
+		setSelected({
+			[tableKeys.groups.add.roles.exclude]: excludeSelect,
+			[tableKeys.groups.add.roles.include]: includeSelect,
+		});
+	}, [excludeSelect, includeSelect]);
+
 	return (
 		<FoldableContainer>
 			<TableFold
@@ -72,7 +89,7 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 				<>
 					<TableOptionText data={'roles'} />
 					<DragContainer
-						selected={select}
+						selected={selected}
 						data={includedDataIds}
 						setData={setIncludedDataIds}
 						includedKey={tableKeys.groups.add.roles.include}
@@ -81,15 +98,10 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 					>
 						<RowDiv>
 							<Table
-								setSelect={setSelect}
 								isDraggable
 								data={excludedData}
 								tableKey={tableKeys.groups.add.roles.exclude}
-								columns={
-									tableColumns[
-										tableKeys.groups.add.roles.exclude
-									]
-								}
+								columns={excludeColumns}
 							/>
 							<RowDiv alignItems={'center'}>
 								<DropButton
@@ -99,7 +111,7 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 									RightTableKey={
 										tableKeys.groups.add.roles.include
 									}
-									select={select}
+									select={selected}
 									dataRight={includedData}
 									rightDataIds={includedDataIds}
 									setRightDataIds={setIncludedDataIds}
@@ -110,17 +122,12 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 									추가 Roles: {includedDataIds.length}건
 								</TableHeader>
 								<Table
-									setSelect={setSelect}
 									isDraggable
 									data={includedData}
 									tableKey={
 										tableKeys.groups.add.roles.include
 									}
-									columns={
-										tableColumns[
-											tableKeys.groups.add.roles.include
-										]
-									}
+									columns={includeColumns}
 								/>
 							</ColDiv>
 						</RowDiv>

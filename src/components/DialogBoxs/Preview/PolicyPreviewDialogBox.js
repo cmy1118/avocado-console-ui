@@ -328,7 +328,6 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 
 				<Table
 					readOnly
-					isCheckBox={false}
 					columns={tableColumns[tableKeys.policy.add.preview]}
 					tableKey={tableKeys.policy.add.preview}
 					data={previewData}

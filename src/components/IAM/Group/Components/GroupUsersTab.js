@@ -17,9 +17,9 @@ import DragContainer from '../../../Table/DragContainer';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
-import {usePrevState} from '../../../../hooks/usePrevState';
 import PAGINATION from '../../../../reducers/pagination';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const GroupUsersTab = ({
 	groupId,
@@ -32,7 +32,15 @@ const GroupUsersTab = ({
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {page} = useSelector(PAGINATION.selector);
 	const {users} = useSelector(IAM_USER.selector);
-	const [select, setSelect] = useState({});
+
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.groups.summary.tabs.users.include],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.groups.summary.tabs.users.exclude],
+	);
+	const [selected, setSelected] = useState({});
+
 	const [otherMembers, setOtherMembers] = useState(0);
 	const [search, setSearch] = useState('');
 	const [members, setMembers] = useState([]);
@@ -46,8 +54,8 @@ const GroupUsersTab = ({
 		members.map((v) => v.userUid) || [],
 	);
 
-	const prevIncludedDataIds = usePrevState(includedDataIds);
-	const prevSelect = usePrevState(select);
+	// const prevIncludedDataIds = usePrevState(includedDataIds);
+	// const prevSelect = usePrevState(select);
 
 	// console.log(users);
 	// console.log(members);
@@ -155,10 +163,17 @@ const GroupUsersTab = ({
 		}
 	}, [page, dispatch, groupId, isSummaryOpened]);
 
+	useEffect(() => {
+		setSelected({
+			[tableKeys.groups.summary.tabs.users.include]: includeSelect,
+			[tableKeys.groups.summary.tabs.users.exclude]: excludeSelect,
+		});
+	}, [excludeSelect, includeSelect]);
+
 	return (
 		<TabContentContainer>
 			<DragContainer
-				selected={select}
+				selected={selected}
 				data={includedDataIds}
 				setData={setIncludedDataIds}
 				includedKey={tableKeys.groups.summary.tabs.users.include}
@@ -173,9 +188,7 @@ const GroupUsersTab = ({
 						margin='0px 0px 0px 5px'
 						onClick={() =>
 							onClickDeleteUsersFromGroup(
-								select[
-									tableKeys.groups.summary.tabs.users.include
-								].map((v) => v.userUid),
+								includeSelect.map((v) => v.userUid),
 							)
 						}
 					>
@@ -183,15 +196,10 @@ const GroupUsersTab = ({
 					</TransparentButton>
 				</TableTitle>
 				<Table
-					setSelect={setSelect}
 					isDraggable
 					data={includedData}
 					tableKey={tableKeys.groups.summary.tabs.users.include}
-					columns={
-						tableColumns[
-							tableKeys.groups.summary.tabs.users.include
-						]
-					}
+					columns={includeColumns}
 					isPaginable
 					isSearchable
 					isSearchFilterable
@@ -209,10 +217,7 @@ const GroupUsersTab = ({
 							margin='0px 0px 0px 5px'
 							onClick={() =>
 								onClickAddUsersToGroup(
-									select[
-										tableKeys.groups.summary.tabs.users
-											.exclude
-									].map((v) => v.userUid),
+									excludeSelect.map((v) => v.userUid),
 								)
 							}
 						>
@@ -224,18 +229,12 @@ const GroupUsersTab = ({
 							<TableOptionText data={'usersGroups'} />
 
 							<Table
-								setSelect={setSelect}
 								isDraggable
 								data={excludedData}
 								tableKey={
 									tableKeys.groups.summary.tabs.users.exclude
 								}
-								columns={
-									tableColumns[
-										tableKeys.groups.summary.tabs.users
-											.exclude
-									]
-								}
+								columns={excludeColumns}
 								isPaginable
 								isSearchable
 								isSearchFilterable

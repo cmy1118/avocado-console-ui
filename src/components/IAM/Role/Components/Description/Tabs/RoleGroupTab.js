@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
 	NormalBorderButton,
@@ -18,6 +18,7 @@ import {
 	TitleBarButtons,
 } from '../../../../../../styles/components/iam/iam';
 import {CollapsbleContent} from '../../../../../../styles/components/style';
+import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 
 const roleGroupTab = {
 	include: {title: '이 역할의 그룹 : ', button: {delete: '연결 해제'}},
@@ -31,7 +32,13 @@ const roleGroupTab = {
  * ambacc244 - 이 역할을 가지는 그룹과, 가지지 않는 그룹을 보여줌
  **************************************************/
 const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
-	const [select, setSelect] = useState({});
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.roles.summary.tabs.groups.include],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.roles.summary.tabs.groups.exclude],
+	);
+	const [selected, setSelected] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const includedData = useMemo(() => {
 		return [];
@@ -40,6 +47,13 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 	const excludedData = useMemo(() => {
 		return [];
 	}, []);
+
+	useEffect(() => {
+		setSelected({
+			[tableKeys.roles.summary.tabs.groups.include]: includeSelect,
+			[tableKeys.roles.summary.tabs.groups.exclude]: excludeSelect,
+		});
+	}, [excludeSelect, includeSelect]);
 
 	return (
 		<TabContentContainer>
@@ -51,7 +65,7 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 				</NormalBorderButton>
 			</TableTitle>
 			<DragContainer
-				selected={select}
+				selected={selected}
 				data={includedDataIds}
 				setData={setIncludedDataIds}
 				includedKey={tableKeys.roles.summary.tabs.groups.include}
@@ -59,15 +73,10 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 				includedData={includedData}
 			>
 				<Table
-					setSelect={setSelect}
 					isDraggable
 					data={includedData}
 					tableKey={tableKeys.roles.summary.tabs.groups.include}
-					columns={
-						tableColumns[
-							tableKeys.roles.summary.tabs.groups.include
-						]
-					}
+					columns={includeColumns}
 					isPaginable
 					isSearchable
 					isSearchFilterable
@@ -92,17 +101,12 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
 						<TableOptionText data={'groups'} />
 						<Table
-							setSelect={setSelect}
 							isDraggable
 							data={excludedData}
 							tableKey={
 								tableKeys.roles.summary.tabs.groups.exclude
 							}
-							columns={
-								tableColumns[
-									tableKeys.roles.summary.tabs.groups.exclude
-								]
-							}
+							columns={excludeColumns}
 							isPaginable
 							isSearchable
 							isSearchFilterable

@@ -19,6 +19,7 @@ import IAM_ROLES_GRANT_ROLE_USER from '../../../../../reducers/api/IAM/User/Role
 import PAGINATION from '../../../../../reducers/pagination';
 import * as _ from 'lodash';
 import {CollapsbleContent} from '../../../../../styles/components/style';
+import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 
 const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -27,8 +28,15 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const {userRoles} = useSelector(IAM_ROLES_GRANT_ROLE_USER.selector);
 	const [includedRoles, setIncludedRoles] = useState([]);
 	const [excluedeRoles, setExcluedeRoles] = useState([]);
-	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState(userRoles || []);
+
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.users.summary.tabs.roles.include],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.users.summary.tabs.roles.exclude],
+	);
+	const [selected, setSelected] = useState({});
 
 	const includedData = useMemo(() => {
 		return includedRoles
@@ -205,6 +213,14 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 			getExcludedRolespData(roles);
 		}
 	}, [getExcludedRolespData, roles]);
+
+	useEffect(() => {
+		setSelected({
+			[tableKeys.users.summary.tabs.roles.include]: includeSelect,
+			[tableKeys.users.summary.tabs.roles.exclude]: excludeSelect,
+		});
+	}, [excludeSelect, includeSelect]);
+
 	return (
 		<TabContentContainer>
 			<TableTitle>
@@ -213,9 +229,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					margin='0px 0px 0px 5px'
 					onClick={() =>
 						onClickDeleteRolesFromUser(
-							select[
-								tableKeys.users.summary.tabs.roles.include
-							]?.map((v) => v.id),
+							includeSelect.map((v) => v.id),
 						)
 					}
 				>
@@ -223,7 +237,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				</TransparentButton>
 			</TableTitle>
 			<DragContainer
-				selected={select}
+				selected={selected}
 				data={includedDataIds}
 				setData={setIncludedDataIds}
 				includedKey={tableKeys.users.summary.tabs.roles.include}
@@ -233,13 +247,10 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				disjointFunction={onClickDeleteRolesFromUser}
 			>
 				<Table
-					setSelect={setSelect}
 					isDraggable
 					data={includedData}
 					tableKey={tableKeys.users.summary.tabs.roles.include}
-					columns={
-						tableColumns[tableKeys.users.summary.tabs.roles.include]
-					}
+					columns={includeColumns}
 					isPaginable
 					isSearchable
 					isSearchFilterable
@@ -258,10 +269,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 							margin='0px 0px 0px 5px'
 							onClick={() =>
 								onClickAddRolesToUser(
-									select[
-										tableKeys.users.summary.tabs.roles
-											.exclude
-									]?.map((v) => v.id),
+									excludeSelect.map((v) => v.id),
 								)
 							}
 						>
@@ -272,17 +280,12 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 						<TableOptionText data={'roles'} />
 
 						<Table
-							setSelect={setSelect}
 							isDraggable
 							data={excludedData}
 							tableKey={
 								tableKeys.users.summary.tabs.roles.exclude
 							}
-							columns={
-								tableColumns[
-									tableKeys.users.summary.tabs.roles.exclude
-								]
-							}
+							columns={excludeColumns}
 							isPaginable
 							isSearchable
 							isSearchFilterable

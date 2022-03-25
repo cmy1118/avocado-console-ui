@@ -134,7 +134,6 @@ const CommandControl = () => {
 									data={tableData}
 									columns={columns}
 									setData={setTableData}
-									setSelect={setSelect}
 								/>
 							}
 						/>
