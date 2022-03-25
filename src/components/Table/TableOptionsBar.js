@@ -85,9 +85,9 @@ const TableOptionsBar = ({
 	setSearch,
 }) => {
 	const [selectedSearchFilters, setSelectedSearchFilters] = useState([]);
-	console.log('headerGroups:', headerGroups);
-	console.log('isSearchFilterable:', isSearchFilterable);
-	console.log('selectedSearchFilters:', selectedSearchFilters);
+	// console.log('headerGroups:', headerGroups);
+	// console.log('isSearchFilterable:', isSearchFilterable);
+	// console.log('selectedSearchFilters:', selectedSearchFilters);
 
 	/****************************************************************************************
 	 * 검색필터 기능

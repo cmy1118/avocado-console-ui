@@ -18,8 +18,15 @@ import DragContainer from '../../../Table/DragContainer';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 
-const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
+const GroupRolesTab = ({
+	groupId,
+	space,
+	isFold,
+	setIsFold,
+	isSummaryOpened,
+}) => {
 	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {roles} = useSelector(IAM_ROLES.selector);
@@ -28,71 +35,106 @@ const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 		groups,
 		groupId,
 	]);
-	const [includedDataIds, setIncludedDataIds] = useState(group.roles);
-
+	console.log('select:', select);
+	//그룹에 부여된 역할 관리 훅
+	const [includedDataIds, setIncludedDataIds] = useState([]);
+	const [excludedDataIds, setExcludedDataIds] = useState([]);
+	console.log('roles:', roles);
+	console.log('includedDataIds:', includedDataIds);
 	const includedData = useMemo(() => {
-		return roles
-			.filter((v) => includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-				numberOfUsers: v.groups.length,
-				[DRAGGABLE_KEY]: v.roleId,
-			}));
-	}, [roles, includedDataIds]);
+		return includedDataIds
+			? includedDataIds.map((v) => ({
+					...v,
+					type: roleTypeConverter(v.companyId),
+					numberOfUsers: '',
+					createdTime: v.createdTag ? v.createdTag.createdTime : '',
+					[DRAGGABLE_KEY]: v.id,
+			  }))
+			: [];
+	}, [includedDataIds]);
 
 	const excludedData = useMemo(() => {
-		return roles
-			.filter((v) => !includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-				numberOfUsers: v.groups.length,
-				[DRAGGABLE_KEY]: v.roleId,
-			}));
-	}, [roles, includedDataIds]);
+		return excludedDataIds
+			? excludedDataIds.map((v) => ({
+					...v,
+					type: roleTypeConverter(v.companyId),
+					numberOfUsers: '',
+					createdTime: v.createdTag.createdTime,
+					[DRAGGABLE_KEY]: v.id,
+			  }))
+			: [];
+	}, [excludedDataIds]);
 
-	const onClickDeleteRolesFromGroup = useCallback(() => {
-		dispatch(
-			IAM_USER_GROUP.action.deleteRolesFromGroup({
-				id: groupId,
-				roles: Object.keys(
-					select[tableKeys.groups.summary.tabs.roles.include],
-				),
-			}),
-		);
-		dispatch(
-			IAM_ROLES.action.deleteRolesFromGroup({
-				id: groupId,
-				roles: Object.keys(
-					select[tableKeys.groups.summary.tabs.roles.include],
-				),
-			}),
-		);
-	}, [dispatch, groupId, select]);
+	const onClickDeleteRolesFromGroup = useCallback(
+		async (data) => {
+			try {
+				if (data) {
+					await dispatch(
+						IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.revokeAction({
+							groupId: groupId,
+							roleId: data,
+						}),
+					).unwrap();
+					await alert('그룹 권한 삭제 완료');
+				}
+			} catch (err) {
+				alert('그룹 권한 삭제 오류');
+				console.log(err);
+			}
+		},
+		[dispatch, groupId],
+	);
 
-	const onClickAddRolesToGroup = useCallback(() => {
-		dispatch(
-			IAM_USER_GROUP.action.addRolesToGroup({
-				id: groupId,
-				roles: Object.keys(
-					select[tableKeys.groups.summary.tabs.roles.exclude],
-				),
-			}),
-		);
-		dispatch(
-			IAM_ROLES.action.addRolesToGroup({
-				id: groupId,
-				roles: Object.keys(
-					select[tableKeys.groups.summary.tabs.roles.exclude],
-				),
-			}),
-		);
-	}, [dispatch, groupId, select]);
+	const onClickAddRolesToGroup = useCallback(
+		async (data) => {
+			try {
+				if (data) {
+					console.log('데이터:', data);
+					await dispatch(
+						IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.grantAction({
+							groupId: groupId,
+							roleld: data,
+						}),
+					).unwrap();
+					await alert('그룹 권한 추가 완료');
+				}
+			} catch (err) {
+				alert('그룹 권한 추가 오류');
+				console.log(err);
+			}
+		},
+		[dispatch, groupId],
+	);
 
+	//그룹에 부여된 역할 조회 (포함,포함안함)
+	const groupRolesApi = useCallback(async () => {
+		try {
+			//포함
+			const includeGrantRole = await dispatch(
+				IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
+					id: groupId,
+				}),
+			).unwrap();
+			//포함안함
+			const excludeGrantRole = await dispatch(
+				IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
+					id: groupId,
+					exclude: true,
+				}),
+			).unwrap();
+
+			//api 요청 데이터 삽입
+			await setIncludedDataIds(includeGrantRole.data);
+			await setExcludedDataIds(excludeGrantRole.data);
+		} catch (err) {
+			console.log(err);
+		}
+	}, [dispatch, groupId]);
 	useEffect(() => {
-		setIncludedDataIds(group.roles);
-	}, [group.roles]);
+		if (!isSummaryOpened) {
+			groupRolesApi();
+		}
+	}, [groupRolesApi, isSummaryOpened]);
 	return (
 		<TabContentContainer>
 			<DragContainer
@@ -102,12 +144,20 @@ const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 				includedKey={tableKeys.groups.summary.tabs.roles.include}
 				excludedData={excludedData}
 				includedData={includedData}
+				joinFunction={onClickAddRolesToGroup}
+				disjointFunction={onClickDeleteRolesFromGroup}
 			>
 				<TableTitle>
-					이 그룹의 권한 : {excludedData.length}
+					이 그룹의 권한 : {includedData.length}
 					<TransparentButton
 						margin='0px 0px 0px 5px'
-						onClick={onClickDeleteRolesFromGroup}
+						onClick={() =>
+							onClickDeleteRolesFromGroup(
+								select[
+									tableKeys.groups.summary.tabs.roles.include
+								].map((v) => v.id),
+							)
+						}
 					>
 						삭제
 					</TransparentButton>
@@ -115,7 +165,7 @@ const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 				<Table
 					setSelect={setSelect}
 					isDraggable
-					data={excludedData}
+					data={includedData}
 					tableKey={tableKeys.groups.summary.tabs.roles.include}
 					columns={
 						tableColumns[
@@ -132,7 +182,14 @@ const GroupRolesTab = ({groupId, space, isFold, setIsFold}) => {
 					>
 						<NormalButton
 							margin='0px 0px 0px 5px'
-							onClick={onClickAddRolesToGroup}
+							onClick={() =>
+								onClickAddRolesToGroup(
+									select[
+										tableKeys.groups.summary.tabs.roles
+											.exclude
+									].map((v) => v.id),
+								)
+							}
 						>
 							권한 추가
 						</NormalButton>
@@ -167,6 +224,7 @@ GroupRolesTab.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
+	isSummaryOpened: PropTypes.bool,
 };
 
 export default GroupRolesTab;

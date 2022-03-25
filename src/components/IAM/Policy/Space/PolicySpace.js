@@ -184,16 +184,6 @@ const PolicySpace = () => {
 		[dispatch, page],
 	);
 
-	async function errorHandler(res) {
-		try {
-			console.log('res:', res);
-			console.log('res.unwrap():', res.unwrap());
-			return res.unwrap();
-		} catch (e) {
-			console.log(e);
-		}
-	}
-
 	const onClickDeletePolicies = useCallback(async () => {
 		try {
 			if (select[tableKeys.policy.basic]?.length) {

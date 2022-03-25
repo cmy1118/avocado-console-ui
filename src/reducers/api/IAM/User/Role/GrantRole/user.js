@@ -54,12 +54,12 @@ const getsAction = createAsyncThunk(
 		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
 		const response = await Axios.get(
-			`/open-api/v1/iam/users/${payload.userUid}/roles`,
+			`/open-api/v1/iam/user-groups/${payload.userUid}/roles`,
 			{
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
-					Range: payload.range,
+					Range: 'elements=0-50',
 				},
 				baseURL: baseURL.openApi,
 			},
