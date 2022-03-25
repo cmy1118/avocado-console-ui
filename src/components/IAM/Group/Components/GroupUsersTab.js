@@ -17,9 +17,11 @@ import DragContainer from '../../../Table/DragContainer';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
+import {usePrevState} from '../../../../hooks/usePrevState';
 import PAGINATION from '../../../../reducers/pagination';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 
 const GroupUsersTab = ({
 	groupId,
@@ -44,124 +46,101 @@ const GroupUsersTab = ({
 	const [otherMembers, setOtherMembers] = useState(0);
 	const [search, setSearch] = useState('');
 	const [members, setMembers] = useState([]);
-
-	const group = useMemo(() => groups.find((v) => v.id === groupId), [
-		groups,
-		groupId,
-	]);
-
-	const [includedDataIds, setIncludedDataIds] = useState(
-		members.map((v) => v.userUid) || [],
-	);
-
-	// const prevIncludedDataIds = usePrevState(includedDataIds);
-	// const prevSelect = usePrevState(select);
-
-	// console.log(users);
-	// console.log(members);
+	const [includedDataIds, setIncludedDataIds] = useState([]);
+	const [excludedDataIds, setExcludedDataIds] = useState([]);
 
 	const includedData = useMemo(() => {
 		//	console.log(includedDataIds);
-		return members
-			.filter((v) => includedDataIds.includes(v.userUid))
-			.map((v) => ({
-				...v,
-				numberOfGroups: v.groups ? v.groups.length : 0,
-				createdTime: v.createdTag.createdTime,
-				[DRAGGABLE_KEY]: v.userUid,
-			}));
-	}, [includedDataIds, members]);
+		return includedDataIds
+			? includedDataIds.map((v) => ({
+					...v,
+					id: v.userId,
+					name: v.userName,
+					numberOfGroups: v.groups ? v.groups.length : 0,
+					createdTime: v.createdTag ? v.createdTag.createdTime : '',
+					[DRAGGABLE_KEY]: v.userUid,
+			  }))
+			: [];
+	}, [includedDataIds]);
 
 	const excludedData = useMemo(() => {
-		return users
-			.filter((v) => !includedDataIds.includes(v.userUid))
-			.map((v) => ({
-				...v,
-				numberOfGroups: v.groups ? v.groups.length : 0,
-				createdTime: v.createdTag.createdTime,
-				[DRAGGABLE_KEY]: v.userUid,
-			}));
-	}, [includedDataIds, users]);
+		return excludedDataIds
+			? excludedDataIds.map((v) => ({
+					...v,
+					numberOfGroups: v.groups ? v.groups.length : 0,
+					createdTime: v.createdTag.createdTime,
+					[DRAGGABLE_KEY]: v.userUid,
+			  }))
+			: [];
+	}, [excludedDataIds]);
+
+	//그룹에 부여된 사용자 조회 (포함안함 - 기능 없음 )
+	const groupUserApi = useCallback(async () => {
+		try {
+			//포함
+			const includeGrantUser = await dispatch(
+				IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
+					groupId: groupId,
+					range: 'elements=0-50',
+				}),
+			).unwrap();
+			console.log('includeGrantUser:', includeGrantUser);
+			//비포함 (전체 - 포함)
+			const allGrantUser = await dispatch(
+				IAM_USER.asyncAction.findAllAction({
+					range: 'elements=0-50',
+				}),
+			).unwrap();
+			console.log('allGrantUser:', allGrantUser);
+			const excludeGrantUser = await allGrantUser['data'].filter(
+				(x) =>
+					!includeGrantUser['data']
+						.map((v) => v.userUid)
+						.includes(x.userUid),
+			);
+			console.log('excludeGrantUser:', excludeGrantUser);
+
+			//api 요청 데이터 삽입
+			await setIncludedDataIds(includeGrantUser.data);
+			await setExcludedDataIds(excludeGrantUser);
+			// await setExcludedDataIds(excludeGrantUser.data);
+			await console.log('includeGrantRole:', includeGrantUser.data);
+			await console.log('excludeGrantRole:', excludeGrantUser);
+		} catch (err) {
+			alert('그룹에 부여된 사용자 조회 에러');
+			console.log(err);
+		}
+	}, [dispatch, groupId]);
 
 	const onClickDeleteUsersFromGroup = useCallback(
-		(data) => {
-			//	console.log(data);
-			dispatch(
+		async (data) => {
+			await dispatch(
 				IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
 					groupId: groupId,
 					userUid: data,
 				}),
-			);
+			).unwrap();
+			await groupUserApi();
 		},
-		[dispatch, groupId],
+		[dispatch, groupId, groupUserApi],
 	);
 
 	const onClickAddUsersToGroup = useCallback(
-		(data) => {
-			//	console.log(data);
-			dispatch(
+		async (data) => {
+			await dispatch(
 				IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
 					groupId: groupId,
 					userUid: data,
 				}),
 			);
+			await groupUserApi();
 		},
 		[dispatch, groupId],
 	);
 
 	useEffect(() => {
-		if (!isSummaryOpened) {
-			console.log('dispatch A');
-			dispatch(
-				IAM_USER.asyncAction.findAllAction({
-					range: 'elements=0-50',
-				}),
-			)
-				.unwrap()
-				.then((groups) => {
-					setOtherMembers(
-						totalNumberConverter(groups.headers['content-range']) -
-							includedDataIds.length,
-					);
-				});
-		}
-	}, [dispatch, includedDataIds, isSummaryOpened, page]);
-
-	useEffect(() => {
-		if (
-			!isSummaryOpened &&
-			page[tableKeys.groups.summary.tabs.users.include]
-		) {
-			console.log('dispatch B');
-			dispatch(
-				IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
-					groupId: groupId,
-					range: page[tableKeys.groups.summary.tabs.users.include],
-				}),
-			)
-				.unwrap()
-				.then((members) => {
-					const arr = [];
-					members.data.forEach((member) => {
-						dispatch(
-							IAM_USER.asyncAction.findByUidAction({
-								userUid: member.userUid,
-							}),
-						)
-							.unwrap()
-							.then((user) => {
-								arr.push(user);
-								if (arr.length === members.data.length) {
-									setMembers(arr);
-									setIncludedDataIds(
-										arr.map((v) => v.userUid),
-									);
-								}
-							});
-					});
-				});
-		}
-	}, [page, dispatch, groupId, isSummaryOpened]);
+		groupUserApi();
+	}, [groupUserApi]);
 
 	useEffect(() => {
 		setSelected({
@@ -208,7 +187,9 @@ const GroupUsersTab = ({
 				/>
 				<FoldableContainer>
 					<TableFold
-						title={<>이 그룹의 다른 사용자 : {otherMembers}</>}
+						title={
+							<>이 그룹의 다른 사용자 : {excludedData.length}</>
+						}
 						space={'GroupUsersTab'}
 						isFold={isFold}
 						setIsFold={setIsFold}

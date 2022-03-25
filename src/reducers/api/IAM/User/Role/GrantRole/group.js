@@ -10,7 +10,7 @@ const grantAction = createAsyncThunk(
 		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
 		const response = await Axios.post(
-			`/open-api/v1/iam/user-groups//${payload.id}/roles`,
+			`/open-api/v1/iam/user-groups/${payload.id}/roles`,
 			{
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
@@ -32,8 +32,8 @@ const revokeAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
-		const response = await Axios.put(
-			`/open-api/v1/iam/user-groups//${payload.id}/roles`,
+		const response = await Axios.delete(
+			`/open-api/v1/iam/user-groups/${payload.groupId}/roles`,
 			{
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
@@ -61,11 +61,15 @@ const getsAction = createAsyncThunk(
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
-					Range: payload.range,
+					Range: 'elements=0-50',
+				},
+				params: {
+					exclude: payload.exclude,
 				},
 				baseURL: baseURL.openApi,
 			},
 		);
+		console.log(response);
 		return {data: response.data, headers: response.headers};
 	},
 );
@@ -77,7 +81,7 @@ const getEventsAction = createAsyncThunk(
 		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
 		const response = await Axios.get(
-			`//open-api/v1/iam/user-groups//${payload.id}/roles/events`,
+			`//open-api/v1/iam/user-groups/${payload.id}/roles/events`,
 			{
 				params: {
 					fromTime: payload.fromTime,

@@ -37,6 +37,8 @@ import {
 } from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import {tableKeys} from '../../../../Constants/Table/keys';
+import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const dispatch = useDispatch();
@@ -74,7 +76,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 		if (isSummaryOpened) {
 			history.push({
 				pathname: location.pathname,
-				search: 'tabs=userAuth',
+				search: 'tabs=user',
 			});
 		} else {
 			history.push({
@@ -87,34 +89,42 @@ const GroupDescriptionSpace = ({groupId}) => {
 		setIsOpened(true);
 	}, [setIsOpened]);
 
-	const onClickDeleteGroup = useCallback(() => {
-		dispatch(
-			IAM_USER_GROUP.asyncAction.deleteAction({
-				id: groupId,
-			}),
-		);
-	}, [dispatch, groupId]);
+	//그룹 삭제 이벤트 핸들러 함수
+	const onClickDeleteGroup = useCallback(async () => {
+		try {
+			await dispatch(
+				IAM_USER_GROUP.asyncAction.deleteAction({
+					id: groupId,
+				}),
+			).unwrap();
+			await history.push({pathname: `/groups/`});
+			alert('그룹 삭제 완료');
+		} catch (a) {
+			alert('그룹 삭제 오류');
+			console.log(a);
+		}
+	}, [dispatch, groupId, history]);
 
-	// if groupId does not exist, direct to 404 page
-	// useEffect(() => {
-	// 	if (groupId && !group) {
-	// 		history.push('/404');
-	// 	}
-	// 	history.push(`${groupId}`);
-	// }, [groupId, group, history]);
+	//그룹 id 조회 함수
+	const findByIdApi = useCallback(async () => {
+		try {
+			const group = await dispatch(
+				IAM_USER_GROUP.asyncAction.findByIdAction({
+					id: groupId,
+				}),
+			).unwrap();
+			console.log('findByIdApi:', group);
+			await setGroup(group);
+		} catch (err) {
+			alert('api 호출 에러');
+			console.log(err);
+		}
+	}, [dispatch, groupId]);
 
 	useEffect(() => {
-		dispatch(
-			IAM_USER_GROUP.asyncAction.findByIdAction({
-				id: groupId,
-			}),
-		)
-			.unwrap()
-			.then((v) => {
-				setGroup(v);
-			})
-			.catch((err) => console.log(err));
-	}, [dispatch, groupId]);
+		//그룹 id 정보 조회
+		findByIdApi();
+	}, [findByIdApi]);
 
 	useEffect(() => {
 		if (isSummaryOpened && history.location.search)
@@ -188,6 +198,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 								space={'GroupRolesTab'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
+								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
 						{qs.parse(location.search, {ignoreQueryPrefix: true})
@@ -197,6 +208,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 								space={'GroupOnDescPageTags'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
+								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
 					</TabContentSpace>
