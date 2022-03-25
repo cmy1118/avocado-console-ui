@@ -18,6 +18,7 @@ import {
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -28,10 +29,12 @@ const paths = [
 const GroupTypeSpace = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const [select, columns] = useSelectColumn(
+		tableColumns[tableKeys.groups.type],
+	);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [initialGroupTypes, setInitialGroupTypes] = useState([]);
-	const [select, setSelect] = useState({});
 	const [data, setData] = useState(
 		groupTypes.map((v) => ({
 			...v,
@@ -87,8 +90,8 @@ const GroupTypeSpace = () => {
 
 	const onClickDeleteGroupTypes = useCallback(() => {
 		//	console.log(select);
-		if (select[tableKeys.groups.type][0]) {
-			select[tableKeys.groups.type].forEach((v) => {
+		if (select.length) {
+			select.forEach((v) => {
 				dispatch(
 					IAM_USER_GROUP_TYPE.asyncAction.deleteAction({
 						id: v.id,
@@ -147,9 +150,8 @@ const GroupTypeSpace = () => {
 
 			<TableOptionText data={'groupsType'} />
 			<Table
-				setSelect={setSelect}
 				tableKey={tableKeys.groups.type}
-				columns={tableColumns[tableKeys.groups.type]}
+				columns={columns}
 				data={data}
 				setData={setData}
 			/>

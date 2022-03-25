@@ -9,6 +9,7 @@ import {tableKeys} from '../../../../../../../Constants/Table/keys';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import SelectResourceGroupDialogBox from '../../../../../../DialogBoxs/Table/SelectResourceGroupDialogBox';
+import useSelectColumn from '../../../../../../../hooks/table/useSelectColumn';
 
 const _ButtonContianer = styled.div`
 	display: flex;
@@ -26,7 +27,9 @@ const resourceGrooupTableContainer = {
  **************************************************/
 const ResourceGrooupTableContainer = ({selected, setSelected}) => {
 	const [isOpened, setIsOpened] = useState(false);
-	const [deselected, setDeseleted] = useState({});
+	const [select, columns] = useSelectColumn(
+		tableColumns[tableKeys.policy.add.pamTemplate.resoureGroup],
+	);
 
 	/**************************************************
 	 * ambacc244 - 자원 그룹을 추가로 선택해 추가 하기 위한 DialogBox 열기
@@ -39,15 +42,8 @@ const ResourceGrooupTableContainer = ({selected, setSelected}) => {
 	 * ambacc244 - 체크된 자원 그룹을 선택 해제
 	 **************************************************/
 	const onClickDeselectResourceGroup = useCallback(() => {
-		setSelected(
-			selected.filter(
-				(v) =>
-					!deselected[
-						tableKeys.policy.add.pamTemplate.resoureGroup
-					].includes(v),
-			),
-		);
-	}, [deselected, selected]);
+		setSelected((prev) => prev.filter((p) => !select.includes(p)));
+	}, [select, setSelected]);
 
 	return (
 		<div>
@@ -61,13 +57,9 @@ const ResourceGrooupTableContainer = ({selected, setSelected}) => {
 			</_ButtonContianer>
 
 			<Table
-				columns={
-					tableColumns[tableKeys.policy.add.pamTemplate.resoureGroup]
-				}
-				tableKey={tableKeys.policy.add.pamTemplate.resoureGroup}
 				data={selected}
-				isCheckBox
-				setSelect={setDeseleted}
+				columns={columns}
+				tableKey={tableKeys.policy.add.pamTemplate.resoureGroup}
 			/>
 
 			<SelectResourceGroupDialogBox

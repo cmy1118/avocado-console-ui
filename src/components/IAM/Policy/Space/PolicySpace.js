@@ -41,7 +41,7 @@ const APPLICATION_CODE = {
 const PolicySpace = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const [select, column] = useSelectColumn(
+	const [select, columns] = useSelectColumn(
 		tableColumns[tableKeys.policy.basic],
 	);
 
@@ -308,7 +308,7 @@ const PolicySpace = () => {
 
 			<Table
 				tableKey={tableKeys.policy.basic}
-				columns={column}
+				columns={columns}
 				data={policyData}
 				isPaginable
 				isSearchable

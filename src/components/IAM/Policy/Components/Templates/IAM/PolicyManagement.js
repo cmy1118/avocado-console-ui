@@ -1,12 +1,15 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
-import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../../../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate";
-import {actionTemplateFilter, getActionTemplatesFilter} from "../../../../../../utils/template";
-import TemplateElementContainer from "../../TemplateElementContainer";
-import TableCheckBox from "../../../../../Table/ColumnCells/TableCheckBox";
-import Table from "../../../../../Table/Table";
-import IAM_POLICY_MANAGEMENT_POLICIES from "../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies";
+import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate';
+import {
+	actionTemplateFilter,
+	getActionTemplatesFilter,
+} from '../../../../../../utils/template';
+import TemplateElementContainer from '../../TemplateElementContainer';
+import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
+import Table from '../../../../../Table/Table';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 
 const constants = {
 	main: '사용자 관리 권한',
@@ -39,45 +42,41 @@ const PolicyManagement = ({templateId, name, description}) => {
 	const [lastCheckedKey, setLastCheckedKey] = useState(null);
 
 	//테이블 컬럼 데이터
-	const tableColumns =
-		[
-			{Header:'전체', accessor:'all-check'},
-			{Header:'생성', accessor:'create'},
-			{Header:'삭제', accessor:'delete'},
-			{Header:'조회', accessor:'find'},
-			{Header:'수정', accessor:'update'},
-			{Header:'부여', accessor:'grant'},
-			{Header:'회수', accessor:'revoke'},
-		]
-	const columns = useMemo(
-		() => {
-			let columnsArr=[]
-			tableColumns.map(v=>{
-				let tempObj = {
-					Header: '',
-					accessor: '',
-					Cell: function Component(cell) {
-						return (
-							<TableCheckBox
-								cell={cell}
-								setData={setTableData}
-								refs={checkboxRefs}
-								allCheckKey={'all-check'}
-								lastCheckedKey={lastCheckedKey}
-								setLastCheckedKey={setLastCheckedKey}
-							/>
-						);
-					},
-					width: 30,
-				}
-				tempObj.Header=v.Header
-				tempObj.accessor=v.accessor
-				columnsArr.push(tempObj)
-			})
-			return columnsArr
-		},
-		[lastCheckedKey, tableColumns],
-	);
+	const tableColumns = [
+		{Header: '전체', accessor: 'all-check'},
+		{Header: '생성', accessor: 'create'},
+		{Header: '삭제', accessor: 'delete'},
+		{Header: '조회', accessor: 'find'},
+		{Header: '수정', accessor: 'update'},
+		{Header: '부여', accessor: 'grant'},
+		{Header: '회수', accessor: 'revoke'},
+	];
+	const columns = useMemo(() => {
+		let columnsArr = [];
+		tableColumns.map((v) => {
+			let tempObj = {
+				Header: '',
+				accessor: '',
+				Cell: function Component(cell) {
+					return (
+						<TableCheckBox
+							cell={cell}
+							setData={setTableData}
+							refs={checkboxRefs}
+							allCheckKey={'all-check'}
+							lastCheckedKey={lastCheckedKey}
+							setLastCheckedKey={setLastCheckedKey}
+						/>
+					);
+				},
+				width: 30,
+			};
+			tempObj.Header = v.Header;
+			tempObj.accessor = v.accessor;
+			columnsArr.push(tempObj);
+		});
+		return columnsArr;
+	}, [lastCheckedKey, tableColumns]);
 
 	useEffect(() => {
 		const res = dispatch(
@@ -88,8 +87,8 @@ const PolicyManagement = ({templateId, name, description}) => {
 		)
 			.unwrap()
 			.then((res) => {
-				const setData =actionTemplateFilter(res,constants.action)
-				setTableData(setData)
+				const setData = actionTemplateFilter(res, constants.action);
+				setTableData(setData);
 				// dispatch(
 				// 	IAM_ACTION_MANAGEMENT_TEMPLATE.action.getActionTemplates({
 				// 		templateId: templateId,
@@ -111,27 +110,32 @@ const PolicyManagement = ({templateId, name, description}) => {
 				// 	'action',
 				// );
 				// setDataLists(result);
-					// console.log(data);
-
+				// console.log(data);
 			});
 	}, [dispatch, templateId]);
-	
-	useEffect(()=>{
+
+	useEffect(() => {
 		if (creatingPolicyMode) {
 			dispatch(
 				IAM_ACTION_MANAGEMENT_TEMPLATE.action.getActionTemplates({
 					templateId: templateId,
 					name: name,
 					description: description,
-					data: getActionTemplatesFilter(tableData,constants.action)
+					data: getActionTemplatesFilter(tableData, constants.action),
 				}),
-			)
+			);
 		}
-	},[creatingPolicyMode, description, dispatch, name, tableData, templateId])
-	console.log('tableData:',tableData)
+	}, [
+		creatingPolicyMode,
+		description,
+		dispatch,
+		name,
+		tableData,
+		templateId,
+	]);
+	console.log('tableData:', tableData);
 	return (
 		<TemplateElementContainer
-
 			title={name}
 			description={description}
 			render={() => {
@@ -141,7 +145,6 @@ const PolicyManagement = ({templateId, name, description}) => {
 							tableKey={'TemplateExample-key1'}
 							data={tableData}
 							columns={columns}
-							isCheckBox={false}
 							setData={setTableData}
 						/>
 					</div>

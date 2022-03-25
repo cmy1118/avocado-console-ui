@@ -16,11 +16,15 @@ import {
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
 import {CollapsbleContent} from '../../../../styles/components/style';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const AddTagToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
-	const [select, setSelect] = useState({});
+
+	const [select, columns] = useSelectColumn(
+		tableColumns[tableKeys.users.add.tag],
+	);
 
 	const tagData = useMemo(() => {
 		return data.map((v) => {
@@ -55,14 +59,9 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		if (select[tableKeys.users.add.tag][0]) {
+		if (select.length) {
 			setData(
-				data.filter(
-					(v) =>
-						!select[tableKeys.users.add.tag]
-							.map((x) => x.name)
-							.includes(v.name),
-				),
+				data.filter((v) => !select.map((x) => x.name).includes(v.name)),
 			);
 		} else {
 			alert('선택된 값이 없습니다.');
@@ -102,11 +101,10 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 			<CollapsbleContent height={isFold[space] ? '358px' : '0px'}>
 				<TableOptionText data={'tags'} />
 				<Table
-					setSelect={setSelect}
 					tableKey={tableKeys.users.add.tag}
 					data={tagData}
 					setData={setData}
-					columns={tableColumns[tableKeys.users.add.tag]}
+					columns={columns}
 				/>
 			</CollapsbleContent>
 		</FoldableContainer>

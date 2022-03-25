@@ -15,11 +15,15 @@ import {
 	FoldableContainer,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const AddTagToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
-	const [select, setSelect] = useState({});
+	const [select, columns] = useSelectColumn(
+		tableColumns[tableKeys.groups.add.tag],
+	);
+	// const [select, setSelect] = useState({});
 	const onClickAddRow = useCallback(() => {
 		console.log(data);
 		const lastValues = data.slice().pop();
@@ -38,6 +42,7 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 
 	const onClickDeleteRow = useCallback(() => {
 		//	console.log(select[tableKeys.groups.add.tag]);
+		console.log(select);
 		//	console.log('삭제 처리 필요');
 	}, [select]);
 
@@ -86,11 +91,10 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 				<>
 					<TableOptionText data={'tags'} />
 					<Table
-						setSelect={setSelect}
 						tableKey={tableKeys.groups.add.tag}
 						data={tagData}
 						setData={setData}
-						columns={tableColumns[tableKeys.groups.add.tag]}
+						columns={columns}
 					/>
 				</>
 			)}

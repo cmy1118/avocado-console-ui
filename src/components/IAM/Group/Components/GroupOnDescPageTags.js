@@ -13,6 +13,7 @@ import {
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {TitleBarButtons} from '../../../../styles/components/iam/iam';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const GroupOnDescPageTags = ({groupId}) => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
@@ -33,7 +34,10 @@ const GroupOnDescPageTags = ({groupId}) => {
 		}) || [],
 	);
 
-	const [select, setSelect] = useState({});
+	const [select, columns] = useSelectColumn(
+		tableColumns[tableKeys.groups.summary.tabs.tags.basic],
+	);
+
 	const onClickAddRow = useCallback(() => {
 		const lastValues = data.slice().pop();
 		//	console.log(lastValues);
@@ -56,15 +60,12 @@ const GroupOnDescPageTags = ({groupId}) => {
 	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		if (select[tableKeys.groups.summary.tabs.tags.basic][0]) {
-			// console.log(
-			// 	'api 처리',
-			// 	select[tableKeys.groups.summary.tabs.tags.basic],
-			// );
+		if (select.length) {
+			console.log(select);
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
-	}, [data, select]);
+	}, [select]);
 
 	return (
 		<TabContentContainer>
@@ -87,10 +88,9 @@ const GroupOnDescPageTags = ({groupId}) => {
 			</TableTitle>
 			<TableOptionText data={'tags'} />
 			<Table
-				setSelect={setSelect}
 				tableKey={tableKeys.groups.summary.tabs.tags.basic}
 				data={data}
-				columns={tableColumns[tableKeys.groups.summary.tabs.tags.basic]}
+				columns={columns}
 				setData={setData}
 			/>
 		</TabContentContainer>

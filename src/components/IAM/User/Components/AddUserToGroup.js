@@ -22,15 +22,23 @@ import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const [groups, setGroups] = useState([]);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
-	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [search, setSearch] = useState('');
 	const {page} = useSelector(PAGINATION.selector);
+
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.users.add.groups.include],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.users.add.groups.exclude],
+	);
+	const [selected, setSelected] = useState({});
 
 	const includedData = useMemo(() => {
 		return (
@@ -62,15 +70,6 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 				})) || []
 		);
 	}, [groups, includedDataIds]);
-
-	useEffect(() => {
-		dispatch(
-			CURRENT_TARGET.action.addReadOnlyData({
-				title: tableKeys.users.add.groups.exclude,
-				data: includedData,
-			}),
-		);
-	}, [dispatch, includedData]);
 
 	const getUsersGroupDetailApi = useCallback(
 		(res) => {
@@ -128,8 +127,24 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	}, [dispatch, getUsersGroupDetailApi, page]);
 
 	useEffect(() => {
+		dispatch(
+			CURRENT_TARGET.action.addReadOnlyData({
+				title: tableKeys.users.add.groups.exclude,
+				data: includedData,
+			}),
+		);
+	}, [dispatch, includedData]);
+
+	useEffect(() => {
 		getUsersGroupApi();
 	}, [getUsersGroupApi, page]);
+
+	useEffect(() => {
+		setSelected({
+			[tableKeys.users.add.groups.include]: includeSelect,
+			[tableKeys.users.add.groups.exclude]: excludeSelect,
+		});
+	}, [excludeSelect, includeSelect]);
 
 	return (
 		<FoldableContainer>
@@ -142,7 +157,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 			<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
 				<TableOptionText data={'groups'} />
 				<DragContainer
-					selected={select}
+					selected={selected}
 					data={includedDataIds}
 					setData={setIncludedDataIds}
 					includedKey={tableKeys.users.add.groups.include}
@@ -151,12 +166,9 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 				>
 					<RowDiv>
 						<Table
-							setSelect={setSelect}
 							isDraggable
 							tableKey={tableKeys.users.add.groups.exclude}
-							columns={
-								tableColumns[tableKeys.users.add.groups.exclude]
-							}
+							columns={excludeColumns}
 							data={excludedData}
 							isPaginable
 							isSearchable
@@ -172,7 +184,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 								RightTableKey={
 									tableKeys.users.add.groups.include
 								}
-								select={select}
+								select={selected}
 								dataLeft={excludedData}
 								dataRight={includedData}
 								rightDataIds={includedDataIds}
@@ -184,14 +196,9 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 								추가 그룹: {includedDataIds.length}건
 							</TableHeader>
 							<Table
-								setSelect={setSelect}
 								isDraggable
 								tableKey={tableKeys.users.add.groups.include}
-								columns={
-									tableColumns[
-										tableKeys.users.add.groups.include
-									]
-								}
+								columns={includeColumns}
 								data={includedData}
 							/>
 						</ColDiv>

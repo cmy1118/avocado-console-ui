@@ -287,16 +287,14 @@ SubRowAsync.propTypes = {
 	tableKey: PropTypes.string,
 };
 
-const sortArr = ['expander', 'selection'];
+// const sortArr = ['expander', 'selection'];
 
 const Table = ({
 	data,
 	columns,
 	tableKey,
 	setData,
-	// setSelect,
 	isDraggable,
-	// mode = 'normal',
 	readOnly = false,
 	isSortable = false,
 	isPaginable = false,
@@ -307,7 +305,6 @@ const Table = ({
 	subComponentHandler,
 	inner = false,
 	rowClick,
-	isCheckBox = true,
 	defaultClick, //테이블 특정 row를 미리 클릭된 화면으로 보여주는 기능
 }) => {
 	const [skipPageReset, setSkipPageReset] = useState(false);
@@ -795,13 +792,6 @@ const Table = ({
 															isSortable &&
 																column.getSortByToggleProps(),
 														)}
-														className={
-															sortArr.includes(
-																column.id,
-															)
-																? 'hello'
-																: ''
-														}
 														width={column.width}
 													>
 														<span>
@@ -810,9 +800,8 @@ const Table = ({
 															)}
 														</span>
 														{isSortable &&
-															!sortArr.includes(
-																column.id,
-															) && (
+															column.id ===
+																'expander' && (
 																<Icon
 																	margin={
 																		'0px'
@@ -915,15 +904,6 @@ const Table = ({
 																					.column
 																					.width
 																			}
-																			className={
-																				sortArr.includes(
-																					cell
-																						.column
-																						.id,
-																				)
-																					? 'hello'
-																					: ''
-																			}
 																			key={
 																				i
 																			}
@@ -983,7 +963,6 @@ Table.propTypes = {
 	isSortable: PropTypes.bool,
 	isSelectable: PropTypes.bool,
 	setData: PropTypes.func,
-	setSelect: PropTypes.func,
 	setSearch: PropTypes.func,
 	getTableProps: PropTypes.func,
 	getColumnWidth: PropTypes.func,

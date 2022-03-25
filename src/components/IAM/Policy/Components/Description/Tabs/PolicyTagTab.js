@@ -5,7 +5,7 @@ import {
 	NormalButton,
 } from '../../../../../../styles/components/buttons';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {tableKeys} from '../../../../../../Constants/Table/keys';
 import DragContainer from '../../../../../Table/DragContainer';
 import Table from '../../../../../Table/Table';
@@ -16,6 +16,7 @@ import {
 } from '../../../../../../styles/components/iam/iam';
 import TableFold from '../../../../../Table/Options/TableFold';
 import {CollapsbleContent} from '../../../../../../styles/components/style';
+import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 
 const policyTagTab = {
 	include: {
@@ -35,7 +36,21 @@ const PolicyTagTab = ({policyId}) => {
 
 	const [inTag, setInTag] = useState([]);
 	const [exTag, setExTag] = useState([]);
-	const [selected, setSelected] = useState(null);
+
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.policy.summary.tabs.role.include],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.policy.summary.tabs.role.exclude],
+	);
+	const [selected, setSelected] = useState({});
+
+	useEffect(() => {
+		setSelected({
+			[tableKeys.policy.summary.tabs.role.include]: includeSelect,
+			[tableKeys.policy.summary.tabs.role.exclude]: excludeSelect,
+		});
+	}, [excludeSelect, includeSelect]);
 
 	return (
 		<TabContentContainer>
@@ -58,13 +73,10 @@ const PolicyTagTab = ({policyId}) => {
 				includedData={inTag}
 			>
 				<Table
-					setSelect={setSelected}
 					isDraggable
 					data={inTag}
 					tableKey={tableKeys.policy.summary.tabs.role.include}
-					columns={
-						tableColumns[tableKeys.policy.summary.tabs.role.include]
-					}
+					columns={includeColumns}
 					isPaginable
 					isSearchable
 					isSearchFilterable
@@ -88,17 +100,12 @@ const PolicyTagTab = ({policyId}) => {
 						height={isFold['RoleUserTab'] ? '374px' : '0px'}
 					>
 						<Table
-							setSelect={setSelected}
 							isDraggable
 							data={exTag}
 							tableKey={
 								tableKeys.policy.summary.tabs.role.exclude
 							}
-							columns={
-								tableColumns[
-									tableKeys.policy.summary.tabs.role.exclude
-								]
-							}
+							columns={excludeColumns}
 							isPaginable
 							isSearchable
 							isSearchFilterable

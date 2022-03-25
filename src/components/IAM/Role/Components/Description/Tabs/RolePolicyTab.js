@@ -23,6 +23,7 @@ import {CollapsbleContent} from '../../../../../../styles/components/style';
 import {descValues} from '../../../../../../utils/tableDataConverter';
 import AUTH from '../../../../../../reducers/api/Auth/auth';
 import {account} from '../../../../../../utils/auth';
+import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 
 const policyType = {
 	'KR-2020-0005:202111:0001': '사용자 인증',
@@ -224,9 +225,16 @@ const rolePolicyTab = {
  **************************************************/
 const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
-	const [select, setSelect] = useState({});
 	const {companyId} = useSelector(AUTH.selector);
 	const [includedDataIds, setIncludedDataIds] = useState([]);
+
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.roles.summary.tabs.permissions.include],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.roles.summary.tabs.permissions.exclude],
+	);
+	const [selected, setSelected] = useState({});
 
 	const [inPolicy, setInPolicy] = useState(null);
 	const [exPolicy, setExPolicy] = useState(null);
@@ -343,6 +351,13 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 		companyId,
 	]);
 
+	useEffect(() => {
+		setSelected({
+			[tableKeys.roles.summary.tabs.permissions.include]: includeSelect,
+			[tableKeys.roles.summary.tabs.permissions.exclude]: excludeSelect,
+		});
+	}, [excludeSelect, includeSelect]);
+
 	return (
 		<TabContentContainer>
 			<TableTitle>
@@ -353,7 +368,7 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 				</TransparentButton>
 			</TableTitle>
 			<DragContainer
-				selected={select}
+				selected={selected}
 				data={includedDataIds}
 				setData={setIncludedDataIds}
 				includedKey={tableKeys.roles.summary.tabs.permissions.include}
@@ -361,15 +376,10 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 				includedData={includedData}
 			>
 				<Table
-					setSelect={setSelect}
 					isDraggable
 					data={includedData}
 					tableKey={tableKeys.roles.summary.tabs.permissions.include}
-					columns={
-						tableColumns[
-							tableKeys.roles.summary.tabs.permissions.include
-						]
-					}
+					columns={includeColumns}
 					isPaginable
 					isSearchable
 					isSearchFilterable
@@ -396,18 +406,12 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
 						<TableOptionText data={'policies'} />
 						<Table
-							setSelect={setSelect}
 							isDraggable
 							data={excludedData}
 							tableKey={
 								tableKeys.roles.summary.tabs.permissions.exclude
 							}
-							columns={
-								tableColumns[
-									tableKeys.roles.summary.tabs.permissions
-										.exclude
-								]
-							}
+							columns={excludeColumns}
 							isPaginable
 							isSearchable
 							isSearchFilterable

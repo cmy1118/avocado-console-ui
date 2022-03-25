@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
 	DialogBox,
 	DialogBoxFooter,
@@ -19,9 +19,10 @@ import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import {useDispatch} from 'react-redux';
 import ComboBox from '../../RecycleComponents/New/ComboBox';
-import {ColDiv, RowDiv} from '../../../styles/components/style';
+import {RowDiv} from '../../../styles/components/style';
 import {isFulfilled} from '../../../utils/redux';
 import RRM_RESOURCE from '../../../reducers/api/RRM/Resource/resource';
+import useSelectColumn from '../../../hooks/table/useSelectColumn';
 
 const _DialogBox = styled(DialogBox)`
 	display: flex;
@@ -62,7 +63,10 @@ const SelectResourceDialogBox = ({
 	//resources: 검색된 자원 리스트
 	const [resources, setResources] = useState([]);
 	//addedSelection: 추가로 선택될 자원
-	const [addedSelection, setAddedSelection] = useState([]);
+	// const [addedSelection, setAddedSelection] = useState([]);
+	const [select, columns] = useSelectColumn(
+		tableColumns[tableKeys.policy.add.pamTemplate.resource],
+	);
 
 	/**************************************************
 	 * ambacc244 - 추가적인 자원 선택 취소
@@ -77,39 +81,39 @@ const SelectResourceDialogBox = ({
 	 **************************************************/
 	const onClickAddSelection = useCallback(() => {
 		//선택된 자원에 추가로 선택된 자원 추가
-		setSelected([
-			...selected,
-			...addedSelection[tableKeys.policy.add.pamTemplate.resource],
-		]);
+		setSelected([...selected, ...select]);
 		//다이얼로그박스 닫기
 		setIsOpened(false);
-	}, [addedSelection, selected, setIsOpened, setSelected]);
+	}, [select, selected, setIsOpened, setSelected]);
 
 	/**************************************************
 	 * ambacc244 - 자원 그룹 검색
 	 **************************************************/
-	const onSubmitSearchVal = useCallback(async (v) => {
-		//검색 입력값의 길이가 2 이상
-		if (v?.search.length > 1) {
-			const res = await dispatch(
-				RRM_RESOURCE.asyncAction.findAllResourceAction({
-					serviceType: v?.protocol || '',
-					keyword2: v.search.trim(),
-				}),
-			);
-			//요청에 대한 응답 성공
-			if (isFulfilled(res))
-				setResources(
-					res.payload.map((v) => ({
-						id: v.id,
-						group: v.group.namePath,
-						name: v.name,
-						address: v.defaultAddress,
-						protocol: v.servicePorts[0].serviceType.name,
-					})) || [],
+	const onSubmitSearchVal = useCallback(
+		async (v) => {
+			//검색 입력값의 길이가 2 이상
+			if (v?.search.length > 1) {
+				const res = await dispatch(
+					RRM_RESOURCE.asyncAction.findAllResourceAction({
+						serviceType: v?.protocol || '',
+						keyword2: v.search.trim(),
+					}),
 				);
-		}
-	}, []);
+				//요청에 대한 응답 성공
+				if (isFulfilled(res))
+					setResources(
+						res.payload.map((v) => ({
+							id: v.id,
+							group: v.group.namePath,
+							name: v.name,
+							address: v.defaultAddress,
+							protocol: v.servicePorts[0].serviceType.name,
+						})) || [],
+					);
+			}
+		},
+		[dispatch],
+	);
 
 	/**************************************************
 	 * ambacc244 - 다이얼로그 박스가 열리면
@@ -165,13 +169,9 @@ const SelectResourceDialogBox = ({
 				</Form>
 
 				<Table
-					columns={
-						tableColumns[tableKeys.policy.add.pamTemplate.resource]
-					}
+					columns={columns}
 					tableKey={tableKeys.policy.add.pamTemplate.resource}
 					data={resources}
-					setSelect={setAddedSelection}
-					isCheckBox
 				/>
 			</_Contents>
 

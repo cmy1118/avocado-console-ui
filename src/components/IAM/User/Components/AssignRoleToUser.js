@@ -19,12 +19,21 @@ import DragContainer from '../../../Table/DragContainer';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import CURRENT_TARGET from '../../../../reducers/currentTarget';
+import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
 	const [includedDataIds, setIncludedDataIds] = useState([]);
-	const [select, setSelect] = useState({});
+
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.users.add.roles.include],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.users.add.roles.exclude],
+	);
+	const [selected, setSelected] = useState({});
+
 	const [roles, setRoles] = useState([]);
 
 	const includedData = useMemo(() => {
@@ -87,6 +96,13 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 		getUsersRoleApi();
 	}, [getUsersRoleApi, page]);
 
+	useEffect(() => {
+		setSelected({
+			[tableKeys.roles.add.users.include]: includeSelect,
+			[tableKeys.roles.add.users.exclude]: excludeSelect,
+		});
+	}, [excludeSelect, includeSelect]);
+
 	return (
 		<FoldableContainer>
 			<TableFold
@@ -99,7 +115,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 			<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
 				<TableOptionText data={'roles'} />
 				<DragContainer
-					selected={select}
+					selected={selected}
 					data={includedDataIds}
 					setData={setIncludedDataIds}
 					includedKey={tableKeys.users.add.roles.include}
@@ -108,13 +124,10 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 				>
 					<RowDiv>
 						<Table
-							setSelect={setSelect}
 							isDraggable
 							data={excludedData}
 							tableKey={tableKeys.users.add.roles.exclude}
-							columns={
-								tableColumns[tableKeys.users.add.roles.exclude]
-							}
+							columns={excludeColumns}
 							isPaginable
 							isSearchable
 							isSearchFilterable
@@ -126,7 +139,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 								RightTableKey={
 									tableKeys.users.add.roles.include
 								}
-								select={select}
+								select={selected}
 								dataLeft={excludedData}
 								dataRight={includedData}
 								rightDataIds={includedDataIds}
@@ -138,15 +151,10 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 								추가 Roles: {includedDataIds.length}건
 							</TableHeader>
 							<Table
-								setSelect={setSelect}
 								isDraggable
 								data={includedData}
 								tableKey={tableKeys.users.add.roles.include}
-								columns={
-									tableColumns[
-										tableKeys.users.add.roles.include
-									]
-								}
+								columns={includeColumns}
 							/>
 						</ColDiv>
 					</RowDiv>
