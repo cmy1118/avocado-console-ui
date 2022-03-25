@@ -1,7 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_ROLES from '../../../../reducers/api/PAM/Role/roles';
 import {roleTypeConverter} from '../../../../utils/tableDataConverter';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
@@ -14,10 +13,14 @@ import TableFold from '../../../Table/Options/TableFold';
 import DragContainer from '../../../Table/DragContainer';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+import PAGINATION from '../../../../reducers/pagination';
+import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 
 const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
+	const {page} = useSelector(PAGINATION.selector);
+
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
 	const [excludeSelect, excludeColumns] = useSelectColumn(
@@ -27,26 +30,32 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 		tableColumns[tableKeys.groups.add.roles.include],
 	);
 
+	console.log(roles);
+
 	const [selected, setSelected] = useState({});
 
 	const excludedData = useMemo(() => {
-		return roles
-			.filter((v) => !includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				numberOfUsers: v.users.length,
-				[DRAGGABLE_KEY]: v.roleId,
-			}));
+		return (
+			roles
+				.filter((v) => !includedDataIds.includes(v.id))
+				.map((v) => ({
+					...v,
+					// numberOfUsers: v.users.length,
+					[DRAGGABLE_KEY]: v.id,
+				})) || []
+		);
 	}, [roles, includedDataIds]);
 
 	const includedData = useMemo(() => {
-		return roles
-			.filter((v) => includedDataIds.includes(v.id))
-			.map((v) => ({
-				...v,
-				type: roleTypeConverter(v.companyId),
-				[DRAGGABLE_KEY]: v.roleId,
-			}));
+		return (
+			roles
+				.filter((v) => includedDataIds.includes(v.id))
+				.map((v) => ({
+					...v,
+					// type: roleTypeConverter(v.companyId),
+					[DRAGGABLE_KEY]: v.id,
+				})) || []
+		);
 	}, [roles, includedDataIds]);
 
 	// const onClickDeleteRolesFromGroup = useCallback(() => {
@@ -69,6 +78,15 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 			}),
 		);
 	}, [includedData, dispatch]);
+
+	useEffect(() => {
+		page[tableKeys.groups.add.roles.exclude] &&
+			dispatch(
+				IAM_ROLES.asyncAction.getsAction({
+					range: page[tableKeys.groups.add.roles.exclude],
+				}),
+			);
+	}, [dispatch, page]);
 
 	useEffect(() => {
 		setSelected({
@@ -102,6 +120,10 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 								data={excludedData}
 								tableKey={tableKeys.groups.add.roles.exclude}
 								columns={excludeColumns}
+								isPaginable
+								isSearchable
+								// isSearchFilterable
+								// isColumnFilterable
 							/>
 							<RowDiv alignItems={'center'}>
 								<DropButton
