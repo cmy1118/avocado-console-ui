@@ -188,7 +188,6 @@ const FileAccess = () => {
 								data={tableData}
 								columns={columns}
 								setData={setTableData}
-								isCheckBox={false}
 							/>
 						}
 					/>

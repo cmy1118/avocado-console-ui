@@ -247,7 +247,6 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 						tableKey={'session'}
 						data={tableData}
 						columns={columns}
-						isCheckBox={false}
 						setData={setTableData}
 					/>
 				)}

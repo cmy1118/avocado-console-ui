@@ -134,7 +134,6 @@ const TemplateExample = () => {
 				tableKey={'TemplateExample-key'}
 				data={tableData}
 				columns={columns}
-				isCheckBox={false}
 				setData={setTableData}
 			/>
 		</div>
