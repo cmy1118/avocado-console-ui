@@ -150,6 +150,7 @@ const GroupRolesTab = ({
 		});
 	}, [excludeSelect, includeSelect]);
 
+	useEffect(() => {
 		if (!isSummaryOpened) {
 			groupRolesApi();
 		}
@@ -194,7 +195,9 @@ const GroupRolesTab = ({
 					>
 						<NormalButton
 							margin='0px 0px 0px 5px'
-							onClick={onClickAddRolesToGroup(excludeSelect.map(v=>v.id))}
+							onClick={onClickAddRolesToGroup(
+								excludeSelect.map((v) => v.id),
+							)}
 						>
 							권한 추가
 						</NormalButton>
@@ -223,6 +226,7 @@ GroupRolesTab.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
+	isSummaryOpened: PropTypes.bool,
 };
 
 export default GroupRolesTab;
