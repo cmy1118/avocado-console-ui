@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'qs';
-import DIALOG_BOX from '../../reducers/dialogBoxs';
-import {confirmAlertMessages} from '../../utils/alertMessage';
 import {useDispatch} from 'react-redux';
 
 const _TabContainer = styled.div`
@@ -91,7 +89,5 @@ const TabBar = ({Tabs}) => {
 };
 TabBar.propTypes = {
 	Tabs: PropTypes.array.isRequired,
-	isOpened: PropTypes.bool.isRequired,
-	setIsOpened: PropTypes.func.isRequired,
 };
 export default TabBar;

@@ -9,6 +9,7 @@ import useTextArea from '../../../../../hooks/useTextArea';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {isFulfilled} from '../../../../../utils/redux';
 import {useDispatch} from 'react-redux';
+import {NavLink} from 'react-router-dom';
 
 export const policySummary = {
 	name: '정책 이름 : ',
@@ -22,9 +23,8 @@ export const policySummary = {
 	lastEvent: '마지막 작업 : ',
 };
 
-const PolicyDetail = ({policy, setPolicy}) => {
+const PolicySummary = ({policy, setPolicy}) => {
 	const dispatch = useDispatch();
-
 	//description: 정책 상세 설명
 	const [description, setDescription, descriptionTextArea] = useTextArea({
 		name: 'description',
@@ -50,11 +50,12 @@ const PolicyDetail = ({policy, setPolicy}) => {
 		}
 	}, [description, policy]);
 
+	/**************************************************
+	 * ambacc244 - 정책 상세 설명 변경으로 인한 업데이트
+	 **************************************************/
 	useEffect(() => {
-		if (policy?.description) {
-			setDescription(policy.description);
-		}
-	}, [policy]);
+		setDescription(policy?.description || '');
+	}, [policy?.description]);
 
 	return (
 		<SummaryList>
@@ -78,17 +79,41 @@ const PolicyDetail = ({policy, setPolicy}) => {
 			</LiText>
 			<LiText>
 				{policySummary.createdTime}
-				{policy?.createdTag.createdTime}
+				{policy?.createdTag?.createdTime}{' '}
+				{policy?.createdTag?.userName &&
+					policy?.createdTag?.userUid && [
+						<NavLink
+							to={`/user/${policy?.createdTag?.userUid}`}
+							key={'sfsd'}
+						>
+							{policy?.createdTag?.userName}
+						</NavLink>,
+					]}
 			</LiText>
-			<LiText>{policySummary.lastEventTime}</LiText>
-			<LiText>{policySummary.lastEvent}</LiText>
+			<LiText>
+				{policySummary.lastEventTime}
+				{policy?.lastEventLog?.eventTime}
+			</LiText>
+			<LiText>
+				{policySummary.lastEvent}
+				{policy?.lastEventLog?.category}{' '}
+				{policy?.lastEventLog?.userName &&
+					policy?.lastEventLog?.userUid && [
+						<NavLink
+							to={`/user/${policy?.lastEventLog?.userUid}`}
+							key={'sfsd'}
+						>
+							{policy?.lastEventLog?.userName}
+						</NavLink>,
+					]}
+			</LiText>
 		</SummaryList>
 	);
 };
 
-PolicyDetail.propTypes = {
+PolicySummary.propTypes = {
 	policy: PropTypes.object.isRequired,
 	setPolicy: PropTypes.func.isRequired,
 };
 
-export default PolicyDetail;
+export default PolicySummary;

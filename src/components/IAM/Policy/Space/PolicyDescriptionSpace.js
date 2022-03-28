@@ -23,10 +23,10 @@ import {
 	CoveredByTabContent,
 	TabContainer,
 } from '../../../../styles/components/iam/iamTab';
-import PolicySummary from '../Components/Description/PolicySummary';
+import PolicyDetail from '../Components/Description/PolicySummary';
 import TabBar from '../../TabBar';
 import PolicyTabContents from '../Components/Description/PolicyTabContents';
-import PolicyDetail from '../Components/Description/PolicyDetail';
+import PolicySummary from '../Components/Description/PolicyDetail';
 
 const policyDescriptionSpace = {
 	button: {create: '정책 생성', delete: '삭제'},
@@ -153,11 +153,13 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 						</TitleBarButtons>
 					</TitleBar>
 
-					<PolicyDetail policy={policy} setPolicy={setPolicy} />
+					{policy && (
+						<PolicySummary policy={policy} setPolicy={setPolicy} />
+					)}
 				</div>
 
 				<CoveredByTabContent isOpened={isSummaryOpened}>
-					<PolicySummary policyId={policyId} />
+					<PolicyDetail policyId={policyId} />
 				</CoveredByTabContent>
 
 				<TabContainer isOpened={!isSummaryOpened}>

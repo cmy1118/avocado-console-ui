@@ -17,6 +17,9 @@ import {tableColumns} from '../../../../../../Constants/Table/columns';
 import Table from '../../../../../Table/Table';
 import DragContainer from '../../../../../Table/DragContainer';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
+import IAM_GRAN_REVOKE_ROLE from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/grantRevokeRole';
+import {isFulfilled} from '../../../../../../utils/redux';
+import {useDispatch} from 'react-redux';
 
 const policyRoleTab = {
 	include: {
@@ -30,19 +33,21 @@ const policyRoleTab = {
 };
 
 const PolicyRoleTab = ({policyId}) => {
-	const onClickDeletePolicy = useCallback(() => {}, []);
+	const dispatch = useDispatch();
+
 	const [isFold, setIsFold] = useState(true);
 	const [inRoleIds, setInRoleIds] = useState([]);
-
 	const [inRole, setInRole] = useState([]);
 	const [exRole, setExRole] = useState([]);
+	const [selected, setSelected] = useState({});
 	const [includeSelect, includeColumns] = useSelectColumn(
 		tableColumns[tableKeys.policy.summary.tabs.role.include],
 	);
 	const [excludeSelect, excludeColumns] = useSelectColumn(
 		tableColumns[tableKeys.policy.summary.tabs.role.exclude],
 	);
-	const [selected, setSelected] = useState({});
+
+	const onClickDeletePolicy = useCallback(() => {}, []);
 
 	useEffect(() => {
 		setSelected({
@@ -50,6 +55,25 @@ const PolicyRoleTab = ({policyId}) => {
 			[tableKeys.policy.summary.tabs.role.exclude]: excludeSelect,
 		});
 	}, [excludeSelect, includeSelect]);
+
+	useEffect(() => {
+		const getIncludedRolesByPolicy = async () => {
+			const res = await dispatch(
+				IAM_GRAN_REVOKE_ROLE.asyncAction.findAllRoleByPolicyId({
+					policyId: policyId,
+				}),
+			);
+
+			if (isFulfilled(res)) {
+				setInRole(res.payload || []);
+			}
+		};
+
+		const getExcludedRolesByPolicy = async () => {};
+
+		getIncludedRolesByPolicy();
+		getExcludedRolesByPolicy();
+	}, []);
 
 	return (
 		<TabContentContainer>

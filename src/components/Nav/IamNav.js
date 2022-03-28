@@ -1,15 +1,13 @@
 import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
 
-import {Link, NavLink, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import {HoverIconButton, Icon, IconButton} from '../../styles/components/icons';
 import {
 	arrowDownIcon,
 	arrowRightIcon,
 	burgerMenuIcon,
 	dashboardIcon,
-	fileIcon,
-	folderIcon,
 	groupsIcon,
 	moreVertIcon,
 	policyIcon,
@@ -19,15 +17,8 @@ import {
 } from '../../icons/icons';
 import PropTypes from 'prop-types';
 import qs from 'qs';
-import {
-	NavContainer,
-	NavItem,
-	NavItemList,
-	NavItemTemp,
-} from '../../styles/components/nav';
+import {NavContainer, NavItem, NavItemList} from '../../styles/components/nav';
 import {useDispatch} from 'react-redux';
-import DIALOG_BOX from '../../reducers/dialogBoxs';
-import {confirmAlertMessages} from '../../utils/alertMessage';
 
 const _NavItem = styled.div`
 	box-sizing: border-box;

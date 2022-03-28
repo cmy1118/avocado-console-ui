@@ -9,6 +9,8 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {tableKeys} from '../../../../../Constants/Table/keys';
 import Table from '../../../../Table/Table';
 import {tableColumns} from '../../../../../Constants/Table/columns';
+import IAM_GRAN_REVOKE_ROLE from '../../../../../reducers/api/IAM/Policy/PolicyManagement/grantRevokeRole';
+import {isFulfilled} from '../../../../../utils/redux';
 
 const policySummary = {
 	permission: '규칙/권한 : ',
@@ -19,12 +21,12 @@ const policySummary = {
 /**************************************************
  * ambacc244 - IAM policy의 상세 정보를 보여주는 컴포넌트
  **************************************************/
-const PolicySummary = ({policyId}) => {
+const PolicyDetail = ({policyId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const location = useLocation();
 	const [permissionData, setPermissionData] = useState([]);
-	const [policyData, setPolicyData] = useState([]);
+	const [roleData, setRoleData] = useState([]);
 	const [tagData, setTagData] = useState([]);
 
 	const onClickChangeTab = useCallback(
@@ -43,8 +45,8 @@ const PolicySummary = ({policyId}) => {
 	useEffect(() => {
 		const getPolicyDetail = async () => {
 			// const res = await dispatch(
-			// 	IAM_GRANTED_POLICY.asyncAction.getDetailsByRole({
-			// 		roleId: policyId,
+			// 	IAM_GRAN_REVOKE_ROLE.asyncAction.findAllRoleByPolicyId({
+			// 		policyId: policyId,
 			// 	}),
 			// );
 			//
@@ -59,7 +61,17 @@ const PolicySummary = ({policyId}) => {
 	 * ambacc244 - IAM policy에 연결된 role
 	 **************************************************/
 	useEffect(() => {
-		const getRolesByPolicy = async () => {};
+		const getRolesByPolicy = async () => {
+			const res = await dispatch(
+				IAM_GRAN_REVOKE_ROLE.asyncAction.findAllRoleByPolicyId({
+					policyId: policyId,
+				}),
+			);
+
+			if (isFulfilled(res)) {
+				setRoleData(res.payload || []);
+			}
+		};
 		getRolesByPolicy();
 	}, [policyId]);
 
@@ -85,11 +97,11 @@ const PolicySummary = ({policyId}) => {
 			/>
 
 			<SummaryTableTitle onClick={onClickChangeTab('role')}>
-				{policySummary.role} {policyData.length}
+				{policySummary.role} {roleData.length}
 			</SummaryTableTitle>
 			<Table
 				readOnly
-				data={policyData}
+				data={roleData}
 				tableKey={tableKeys.policy.summary.role}
 				columns={tableColumns[tableKeys.policy.summary.role]}
 			/>
@@ -108,8 +120,8 @@ const PolicySummary = ({policyId}) => {
 	);
 };
 
-PolicySummary.propTypes = {
+PolicyDetail.propTypes = {
 	policyId: PropTypes.string.isRequired,
 };
 
-export default PolicySummary;
+export default PolicyDetail;

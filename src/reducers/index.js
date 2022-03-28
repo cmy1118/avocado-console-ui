@@ -43,6 +43,7 @@ import PAM_SESSION from './api/PAM/session';
 import RRM_RESOURCE from './api/RRM/Resource/resource';
 import RRM_GROUP from './api/RRM/Group/group';
 import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
+import IAM_GRAN_REVOKE_ROLE from './api/IAM/Policy/PolicyManagement/grantRevokeRole';
 
 const authFilter = createFilter(AUTH.name, [
 	'companyId',
@@ -95,11 +96,18 @@ const rootReducer = combineReducers({
 	[PAGINATION.name]: PAGINATION.reducer,
 	[IAM_CLIENT.name]: IAM_CLIENT.reducer,
 	[AUTH.name]: AUTH.reducer,
+
 	/******************************************/
-	/* IAM - Action reducers
+	/* IAM - Policy reducers
     /******************************************/
 	[IAM_POLICY_MANAGEMENT_POLICIES.name]:
 		IAM_POLICY_MANAGEMENT_POLICIES.reducer,
+	[IAM_GRAN_REVOKE_ROLE.name]: IAM_GRAN_REVOKE_ROLE.reducer,
+	/******************************************/
+
+	/******************************************/
+	/* IAM - Action reducers
+    /******************************************/
 	[IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.name]:
 		IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.reducer,
 	[IAM_ACTION_MANAGEMENT_TEMPLATE.name]:

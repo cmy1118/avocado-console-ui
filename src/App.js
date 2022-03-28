@@ -175,7 +175,6 @@ const App = () => {
 				/>
 				<PublicRoute component={NotFound} />
 			</Switch>
-
 			<ConfirmDialogBox />
 			<DeleteDialogBox />
 		</BrowserRouter>
