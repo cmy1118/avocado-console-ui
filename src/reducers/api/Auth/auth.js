@@ -151,19 +151,20 @@ const altAuthVerificationAction = createAsyncThunk(
 const refreshTokenAction = createAsyncThunk(
 	`${NAME}/refresh`,
 	async (payload, {getState}) => {
-		const authState = getState()[NAME];
-		console.log(authState.userAuth.refresh_token);
+		const {userAuth, companyId} = getState().AUTH;
+
+		console.log(userAuth.refresh_token, companyId);
 		const response = await Axios.post('/oauth2/v1/token', null, {
 			params: {
 				grant_type: grantType.REFRESH_TOKEN,
-				refresh_token: authState.userAuth.refresh_token,
+				refresh_token: userAuth.refresh_token,
 				// refresh_token: Cookies.get('refreshToken'),
 			},
 			headers: {
 				'Content-Type': contentType.URL_ENCODED,
 				Authorization:
 					'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
-				CompanyId: authState.companyId,
+				CompanyId: companyId,
 				ApplicationCode: 'console-ui',
 			},
 			baseURL: baseURL.auth,

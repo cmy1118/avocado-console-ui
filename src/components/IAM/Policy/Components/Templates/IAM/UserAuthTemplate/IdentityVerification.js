@@ -66,7 +66,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
-		if (data?.ruleType) {
+		if (data?.attribute?.ruleType) {
 			let attributes = {usage: usage === policyOption.usage.use.key};
 			//사용 여부 true
 			if (usage === policyOption.usage.use.key) {
@@ -74,7 +74,10 @@ const IdentityVerification = ({data, setTemplateData}) => {
 					[`${authMethod}`]: {timoutSeconds: timeoutSeconds},
 				};
 			}
-			setTemplateData({ruleType: data.ruleType, ...attributes});
+			setTemplateData({
+				resource: data?.resource,
+				attribute: {ruleType: data?.attribute.ruleType, ...attributes},
+			});
 		}
 	}, [authMethod, data, setTemplateData, timeoutSeconds, usage]);
 
@@ -82,20 +85,25 @@ const IdentityVerification = ({data, setTemplateData}) => {
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		console.log(data);
 		//본인 확인 인증의 정책이 존재
-		if (data?.policies && Object.keys(data.policies).length > 0) {
+		if (
+			data?.attribute?.policies &&
+			Object.keys(data?.attribute.policies).length > 0
+		) {
 			//본인 확인 인증 사용 여부 세팅
 			setUsage(policyOption.usage.use.key);
 			//인증 수단
-			const method = Object.keys(data.policies)[0];
+			const method = Object.keys(data?.attribute.policies)[0];
 			//인증 수단 & 입력 대시 시간 세팅
 			setAuthMethod(method);
 			//인증 수단에 할당된 입력 대기 시간 default value 있음
-			if (data.policies[method]?.timoutSeconds)
-				setTimeoutSeconds(data.policies[method].timoutSeconds);
+			if (data?.attribute.policies[method]?.timoutSeconds)
+				setTimeoutSeconds(
+					data?.attribute.policies[method].timoutSeconds,
+				);
 			//입력 대기 시간 default value 있음
-			else if (data?.timoutSeconds) setTimeoutSeconds(data.timoutSeconds);
+			else if (data?.attribute?.timoutSeconds)
+				setTimeoutSeconds(data?.attribute.timoutSeconds);
 			//본인 확인 인증 정책이 존재하지 않음
 		} else {
 			//본인 확인 인증 사용 여부 세팅

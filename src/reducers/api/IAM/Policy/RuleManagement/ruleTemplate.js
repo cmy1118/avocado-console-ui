@@ -28,7 +28,7 @@ const findAll = createAsyncThunk(
 /**************************************************
  * ambacc244 - IAM rule 생성 요청 액션
  **************************************************/
-const create = createAsyncThunk(
+const createRule = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
@@ -94,7 +94,7 @@ const IAM_RULE_MANAGEMENT_TEMPLATE = {
 	action: slice.actions,
 	asyncAction: {
 		findAll,
-		create,
+		createRule,
 		findById,
 	},
 };

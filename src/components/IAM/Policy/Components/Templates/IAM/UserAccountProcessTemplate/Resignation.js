@@ -78,7 +78,7 @@ const Resignation = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
-		if (data?.ruleType) {
+		if (data?.attribute?.ruleType) {
 			const attributes = {
 				usage: usage === policyOption.usage.use.key,
 			};
@@ -88,8 +88,8 @@ const Resignation = ({data, setTemplateData}) => {
 				attributes.applyDays = gracePeriodUsage ? gracePeriod : 0;
 			}
 			setTemplateData({
-				ruleType: data.ruleType,
-				...attributes,
+				resource: data?.resource,
+				attribute: {ruleType: data?.attribute.ruleType, ...attributes},
 			});
 		}
 	}, [
@@ -107,20 +107,20 @@ const Resignation = ({data, setTemplateData}) => {
 	useEffect(() => {
 		setUsage(
 			setUsageOptionByAttribute(
-				data,
+				data?.attribute,
 				'usage',
 				policyOption.usage.use.key,
 				policyOption.usage.none.key,
 			),
 		);
 		//계정 처리 방법
-		if (data?.blockingType) {
-			setBlockingType(data.blockingType);
+		if (data?.attribute?.blockingType) {
+			setBlockingType(data.attribute.blockingType);
 		}
 		//유예기간 존재 && 유예기간이 0 보다 큼
-		if (data?.applyDays && data.applyDays !== 0) {
+		if (data?.attribute?.applyDays && data?.attribute?.applyDays !== 0) {
 			setGracePeriodUsage(policyOption.gracePeriod.use.key);
-			setGracePeriod(data.applyDays);
+			setGracePeriod(data.attribute.applyDays);
 			//유예기간 존재 하지 않음
 		} else {
 			setGracePeriodUsage(policyOption.gracePeriod.none.key);

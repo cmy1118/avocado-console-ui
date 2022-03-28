@@ -56,7 +56,7 @@ const UserIdPattern = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
-		if (data?.ruleType) {
+		if (data?.attribute?.ruleType) {
 			const attributes = {
 				usage: usage === policyOption.usage.use.key,
 			};
@@ -67,8 +67,8 @@ const UserIdPattern = ({data, setTemplateData}) => {
 			}
 
 			setTemplateData({
-				ruleType: data.ruleType,
-				...attributes,
+				resource: data?.resource,
+				attribute: {ruleType: data?.attribute.ruleType, ...attributes},
 			});
 		}
 	}, [data, pattern, patternType, setTemplateData, usage]);
@@ -80,16 +80,17 @@ const UserIdPattern = ({data, setTemplateData}) => {
 		//사용자 계정 패턴 사용 여부 세팅
 		setUsage(
 			setUsageOptionByAttribute(
-				data,
+				data?.attribute,
 				'usage',
 				policyOption.usage.use.key,
 				policyOption.usage.none.key,
 			),
 		);
 		//패턴 형식 default value 존재
-		if (data?.patternType) setPatternType(data.patternType);
+		if (data?.attribute?.patternType)
+			setPatternType(data?.attribute.patternType);
 		//패턴 default value 존재
-		if (data?.pattern) setPattern(data.pattern);
+		if (data?.attribute?.pattern) setPattern(data?.attribute.pattern);
 	}, [data, setPattern, setPatternType, setUsage]);
 
 	return (

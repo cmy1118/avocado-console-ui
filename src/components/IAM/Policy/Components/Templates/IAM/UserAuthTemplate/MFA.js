@@ -144,7 +144,7 @@ const MFA = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
-		if (data?.ruleType) {
+		if (data?.attribute?.ruleType) {
 			let attributes = {usage: usage === policyOption.usage.use.key};
 			//사용 여부 true
 			if (usage === policyOption.usage.use.key) {
@@ -169,7 +169,10 @@ const MFA = ({data, setTemplateData}) => {
 				attributes.timeoutSeconds = timeoutSeconds;
 			}
 
-			setTemplateData({ruleType: data.ruleType, ...attributes});
+			setTemplateData({
+				resource: data?.resource,
+				attribute: {ruleType: data?.attribute.ruleType, ...attributes},
+			});
 		}
 	}, [
 		authMethod1,
@@ -193,34 +196,49 @@ const MFA = ({data, setTemplateData}) => {
 		//mfa 인증 여부 세팅
 		setUsage(
 			setUsageOptionByAttribute(
-				data,
+				data?.attribute,
 				'usage',
 				policyOption.usage.use.key,
 				policyOption.usage.none.key,
 			),
 		);
 		// 추가인증 default value 있음
-		if (data?.policies) {
+		if (data?.attribute?.policies) {
 			//1차 추가 인증 default value 있음
-			if (Object.prototype.hasOwnProperty.call(data.policies, '1')) {
+			if (
+				Object.prototype.hasOwnProperty.call(
+					data?.attribute.policies,
+					'1',
+				)
+			) {
 				//1차 추가 인증 세팅
 				setAuthUsage1(policyOption.authUsage.use.key);
-				setRequired1(data.policies['1'].option);
-				setAuthMethod1(data.policies['1'].types);
+				setRequired1(data?.attribute.policies['1'].option);
+				setAuthMethod1(data?.attribute.policies['1'].types);
 			}
 			//2차 추가 인증 default value 있음
-			if (Object.prototype.hasOwnProperty.call(data.policies, '2')) {
+			if (
+				Object.prototype.hasOwnProperty.call(
+					data?.attribute.policies,
+					'2',
+				)
+			) {
 				//2차 추가 인증 세팅
 				setAuthUsage2(policyOption.authUsage.use.key);
-				setRequired2(data.policies['2'].option);
-				setAuthMethod2(data.policies['2'].types);
+				setRequired2(data?.attribute.policies['2'].option);
+				setAuthMethod2(data?.attribute.policies['2'].types);
 			}
 			//3차 추가 인증 default value 있음
-			if (Object.prototype.hasOwnProperty.call(data.policies, '3')) {
+			if (
+				Object.prototype.hasOwnProperty.call(
+					data?.attribute.policies,
+					'3',
+				)
+			) {
 				//3차 추가 인증 세팅
 				setAuthUsage3(policyOption.authUsage.use.key);
-				setRequired3(data.policies['3'].option);
-				setAuthMethod3(data.policies['3'].types);
+				setRequired3(data?.attribute.policies['3'].option);
+				setAuthMethod3(data?.attribute.policies['3'].types);
 			}
 			//mfa 인증 여부 false || 추가인증 default value 없음
 		} else {
@@ -232,9 +250,9 @@ const MFA = ({data, setTemplateData}) => {
 			setRequired3(policyOption.required.none.key);
 		}
 		//입력 대기 시간 default value 있음
-		if (data?.timoutSeconds) {
+		if (data?.attribute?.timoutSeconds) {
 			//입력 대기 시간 세팅
-			setTimeoutSeconds(data.timoutSeconds);
+			setTimeoutSeconds(data?.attribute.timoutSeconds);
 		}
 	}, [
 		data,

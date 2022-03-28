@@ -14,9 +14,6 @@ import Table from '../../Table/Table';
 
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from '../../../reducers/api/IAM/Policy/PolicyManagement/policyRuleTemplate';
-import {isFulfilled} from '../../../utils/redux';
-
-import {roleAttributeConvertor} from '../../../utils/preview';
 import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/ActionManagement/actionTemplate';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
 import IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE from '../../../reducers/api/IAM/Policy/PolicyManagement/policyActionTemplate';
@@ -32,23 +29,6 @@ const policyPreviewDialogBox = {
 		},
 	},
 	detail: {title: '정책'},
-};
-
-const policyDescription = {
-	//사용자 인증
-	device_authentication: '단말기 인증',
-	mfa: 'MFA(다중인증)',
-	alternative_authn_failover: 'Fail Over',
-	identity_verification: '본인 확인 인증',
-	//사용자 계정 처리
-	sign_in_fail_blocking: '로그인 실패',
-	dormant_blocking: '휴먼',
-	account_expired: '계정 사용기간',
-	group_modifying: '그룹 변경',
-	resigned: '퇴사(탈퇴)',
-	// 사용자 계정 패턴
-	user_id_pattern: '사용자 ID 패턴',
-	password_pattern: '비밀번호 패턴',
 };
 
 const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
@@ -156,7 +136,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			console.log(err);
 		}
 	}
-
+	console.log(ruleTemplates);
 	/*************************************************************************
 	 * ambacc244, seob - 규칙 생성, 정책연결 비동기 함수
 	 *************************************************************************/
@@ -167,10 +147,10 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			const joinList = await Promise.all(
 				ruleTemplates.map(async (v, i) => {
 					const res = await dispatch(
-						IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.create({
+						IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.createRule({
 							...v,
 							details: v.details.map((d) => ({
-								...d,
+								resource: d.resource,
 								attribute: JSON.stringify(d.attribute),
 							})),
 						}),

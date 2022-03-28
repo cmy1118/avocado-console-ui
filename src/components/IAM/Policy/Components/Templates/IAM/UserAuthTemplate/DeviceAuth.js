@@ -49,7 +49,7 @@ const DeviceAuth = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
-		if (data?.ruleType) {
+		if (data?.attribute?.ruleType) {
 			const attributes = {
 				usage: usage === policyOption.usage.use,
 			};
@@ -59,8 +59,8 @@ const DeviceAuth = ({data, setTemplateData}) => {
 			}
 
 			setTemplateData({
-				ruleType: data.ruleType,
-				...attributes,
+				resource: data?.resource,
+				attribute: {ruleType: data?.attribute.ruleType, ...attributes},
 			});
 		}
 	}, [application, data, setTemplateData, usage]);
@@ -72,17 +72,16 @@ const DeviceAuth = ({data, setTemplateData}) => {
 		//단말기 인증 사용 여부 세팅
 		setUsage(
 			setUsageOptionByAttribute(
-				data,
+				data?.attribute,
 				'usage',
 				policyOption.usage.use.key,
 				policyOption.usage.none.key,
 			),
 		);
-		//단말기 인증 사용 여부 true, 인증 단말기가 존재
-		if (data?.usage && data.resource) {
-			//TODO: 미성님께 문의후 재 확인
+		// 인증 단말기가 존재
+		if (data?.attribute?.resource) {
 			//사용하는 단말기 종류 세팅
-			setApplications(data.resource);
+			setApplications(data?.attribute.resource);
 		}
 	}, [data, setApplications, setUsage]);
 

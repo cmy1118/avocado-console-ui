@@ -87,7 +87,7 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	 * ambacc244 - 그룹 변경 데이터가 바뀌면 정책 생성을 위한 값을 변경
 	 **************************************************/
 	useEffect(() => {
-		if (data?.ruleType) {
+		if (data?.attribute?.ruleType) {
 			let attributes = {usage: usage === policyOption.usage.use.key};
 			//사용 여부 true
 			if (usage === policyOption.usage.use.key) {
@@ -95,8 +95,8 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 				attributes.permissionType = permissionType;
 			}
 			setTemplateData({
-				ruleType: data.ruleType,
-				...attributes,
+				resource: data?.resource,
+				attribute: {ruleType: data?.attribute.ruleType, ...attributes},
 			});
 		}
 	}, [blockingType, data, permissionType, setTemplateData, usage]);
@@ -105,10 +105,9 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		console.log(data);
 		setUsage(
 			setUsageOptionByAttribute(
-				data,
+				data?.attribute,
 				'usage',
 				policyOption.usage.use.key,
 				policyOption.usage.none.key,
@@ -117,14 +116,14 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 		//TODO: 제어 그룹 유형
 
 		//계정 처리 방법 default value 있음
-		if (data?.blockingType) {
+		if (data?.attribute?.blockingType) {
 			//계정 처리 방법 세팅
-			setBlockingType(data.blockingType);
+			setBlockingType(data?.attribute.blockingType);
 		}
 		//그룹 권한 처리 default value 있음
-		if (data?.permissionType) {
+		if (data?.attribute?.permissionType) {
 			//그룹 권한 처리 세팅
-			setPermissionType(data?.permissionType);
+			setPermissionType(data?.attribute?.permissionType);
 		}
 	}, [data, setBlockingType, setPermissionType, setUsage]);
 

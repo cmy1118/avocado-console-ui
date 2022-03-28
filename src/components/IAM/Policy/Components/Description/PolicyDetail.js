@@ -84,7 +84,7 @@ const PolicySummary = ({policy, setPolicy}) => {
 					policy?.createdTag?.userUid && [
 						<NavLink
 							to={`/user/${policy?.createdTag?.userUid}`}
-							key={'sfsd'}
+							key={'user'}
 						>
 							{policy?.createdTag?.userName}
 						</NavLink>,
@@ -101,7 +101,7 @@ const PolicySummary = ({policy, setPolicy}) => {
 					policy?.lastEventLog?.userUid && [
 						<NavLink
 							to={`/user/${policy?.lastEventLog?.userUid}`}
-							key={'sfsd'}
+							key={'user'}
 						>
 							{policy?.lastEventLog?.userName}
 						</NavLink>,

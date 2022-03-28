@@ -76,24 +76,24 @@ const FailOver = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
-		if (data?.ruleType) {
-			let failOverData = {usage: usage === policyOption.usage.use.key};
+		if (data?.attribute?.ruleType) {
+			let attributes = {usage: usage === policyOption.usage.use.key};
 			//사용 여부 true
 			if (usage === policyOption.usage.use.key) {
 				if (basicAuth !== policyOption.authMethod.none.key) {
-					failOverData.auth = {type: basicAuth};
+					attributes.auth = {type: basicAuth};
 				}
 
 				if (mfa !== policyOption.authMethod.none.key) {
-					failOverData.mfa = {type: mfa};
+					attributes.mfa = {type: mfa};
 				}
 
-				failOverData.timeoutSeconds = timeoutSeconds;
+				attributes.timeoutSeconds = timeoutSeconds;
 			}
 
 			setTemplateData({
-				ruleType: data.ruleType,
-				...failOverData,
+				resource: data?.resource,
+				attribute: {ruleType: data?.attribute.ruleType, ...attributes},
 			});
 		}
 	}, [basicAuth, data, mfa, setTemplateData, timeoutSeconds, usage]);
@@ -102,34 +102,43 @@ const FailOver = ({data, setTemplateData}) => {
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
-		console.log(data);
 		//Fail Over 사용 여부 세팅
 		setUsage(
 			setUsageOptionByAttribute(
-				data,
+				data?.attribute,
 				'usage',
 				policyOption.usage.use.key,
 				policyOption.usage.none.key,
 			),
 		);
 		//Fail Over 인증 default value 있음
-		if (data?.policies) {
+		if (data?.attribute?.policies) {
 			//기본 인증 default value 있음
-			if (Object.prototype.hasOwnProperty.call(data.policies, 'auth')) {
+			if (
+				Object.prototype.hasOwnProperty.call(
+					data?.attribute.policies,
+					'auth',
+				)
+			) {
 				//기본 인증 수단 세팅
-				setBasicAuth(data.policies.auth.type);
+				setBasicAuth(data?.attribute.policies.auth.type);
 			}
 			//MFA default value 있음
-			if (Object.prototype.hasOwnProperty.call(data.policies, 'mfa')) {
+			if (
+				Object.prototype.hasOwnProperty.call(
+					data?.attribute.policies,
+					'mfa',
+				)
+			) {
 				//MFA 인증 수단 세팅
-				setMfa(data.policies.mfa.type);
+				setMfa(data?.attribute.policies.mfa.type);
 			}
 			//입력 대기 시간 default value 있음
 		}
 		//입력 대기 시간 default value 있음
-		if (data?.timoutSeconds) {
+		if (data?.attribute?.timoutSeconds) {
 			//입력 대기 시간 세팅
-			setTimeoutSeconds(data.timoutSeconds);
+			setTimeoutSeconds(data?.attribute.timoutSeconds);
 		}
 	}, [data, setBasicAuth, setMfa, setTimeoutSeconds, setUsage]);
 

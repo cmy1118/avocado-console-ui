@@ -34,19 +34,15 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 		if (creatingPolicyMode) {
 			dispatch(
 				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
-					id: templateId,
-					data: {
-						name: name,
-						resource: policyTypes.iam,
-						description: description,
-						attributes: [
-							LoginFailureData,
-							DormantData,
-							AccountActivePeriodData,
-							ModifyingGroupData,
-							ResignationData,
-						],
-					},
+					name: name,
+					description: description,
+					details: [
+						LoginFailureData,
+						DormantData,
+						AccountActivePeriodData,
+						ModifyingGroupData,
+						ResignationData,
+					],
 				}),
 			);
 		}
@@ -78,7 +74,7 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 				let defaultData = {};
 
 				res.payload.data.map((v) => {
-					defaultData[v.attribute.ruleType] = v.attribute;
+					defaultData[v.attribute.ruleType] = v;
 				});
 
 				setDefaultData(defaultData);

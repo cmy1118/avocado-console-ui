@@ -9,8 +9,6 @@ import IdentityVerification from './UserAuthTemplate/IdentityVerification';
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplateDetail';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplate';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
-import {policyTypes} from '../../../../../../utils/data';
-import {isFulfilled} from '../../../../../../utils/redux';
 
 /**************************************************
  * ambacc244 - 사용자 인증 템플릿 컴포넌트
@@ -41,20 +39,22 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 		if (creatingPolicyMode) {
 			dispatch(
 				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
-					id: templateId,
-					data: {
-						name: name,
-						resource: policyTypes.iam,
-						description: description,
-						attributes: [
-							deviceAuthenticationData,
-							mfaData,
-							alternativeAuthNFailOverAuthData,
-							identityVerificationData,
-						],
-					},
+					name: name,
+					description: description,
+					details: [
+						deviceAuthenticationData,
+						mfaData,
+						alternativeAuthNFailOverAuthData,
+						identityVerificationData,
+					],
 				}),
 			);
+			console.log([
+				deviceAuthenticationData,
+				mfaData,
+				alternativeAuthNFailOverAuthData,
+				identityVerificationData,
+			]);
 		}
 	}, [
 		alternativeAuthNFailOverAuthData,
@@ -80,10 +80,9 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 					}),
 				);
 
-				console.log(res.payload.data);
 				let defaultData = {};
 				res.payload.data.map((v) => {
-					defaultData[v.attribute.ruleType] = v.attribute;
+					defaultData[v.attribute.ruleType] = v;
 				});
 				setDefaultData(defaultData);
 			} catch (err) {

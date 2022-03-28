@@ -8,7 +8,6 @@ import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Pol
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/RuleManagement/ruleTemplateDetail';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
 import {policyTypes} from '../../../../../../utils/data';
-import {isFulfilled} from '../../../../../../utils/redux';
 
 /**************************************************
  * ambacc244 - 사용자 계정 패턴 컴포넌트
@@ -30,13 +29,9 @@ const UserAccountPatternTemplate = ({templateId, name, description}) => {
 		if (creatingPolicyMode) {
 			dispatch(
 				IAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
-					id: templateId,
-					data: {
-						name: name,
-						resource: policyTypes.iam,
-						description: description,
-						attributes: [userIdPatternData, PaswordPatternData],
-					},
+					name: name,
+					description: description,
+					details: [userIdPatternData, PaswordPatternData],
 				}),
 			);
 		}
@@ -64,7 +59,7 @@ const UserAccountPatternTemplate = ({templateId, name, description}) => {
 				let defaultData = {};
 
 				res.payload.data.map((v) => {
-					defaultData[v.attribute.ruleType] = v.attribute;
+					defaultData[v.attribute.ruleType] = v;
 				});
 
 				setDefaultData(defaultData);

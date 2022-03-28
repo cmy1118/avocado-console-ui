@@ -62,7 +62,7 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
-		if (data?.ruleType) {
+		if (data?.attribute?.ruleType) {
 			const attributes = {
 				usage: usage === policyOption.usage.use.key,
 			};
@@ -73,8 +73,8 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 			}
 
 			setTemplateData({
-				ruleType: data.ruleType,
-				...attributes,
+				resource: data?.resource,
+				attribute: {ruleType: data?.attribute.ruleType, ...attributes},
 			});
 		}
 	}, [blockingType, data, expiryDays, setTemplateData, usage]);
@@ -85,21 +85,21 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 	useEffect(() => {
 		setUsage(
 			setUsageOptionByAttribute(
-				data,
+				data?.attribute,
 				'usage',
 				policyOption.usage.use.key,
 				policyOption.usage.none.key,
 			),
 		);
 		//계정 사용 기간 default value 존재
-		if (data?.expiryDays) {
+		if (data?.attribute?.expiryDays) {
 			//계정 사용 기간 세팅
-			setExpiryDays(data.expiryDays);
+			setExpiryDays(data?.attribute.expiryDays);
 		}
 		//계정 처리 방법 default value 존재
-		if (data?.blockingType) {
+		if (data?.attribute?.blockingType) {
 			//계정 처리 방법 세팅
-			setBlockingType(data.blockingType);
+			setBlockingType(data?.attribute.blockingType);
 		}
 	}, [data, setBlockingType, setExpiryDays, setUsage]);
 

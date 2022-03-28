@@ -73,7 +73,7 @@ const Dormant = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
-		if (data?.ruleType) {
+		if (data?.attribute?.ruleType) {
 			const attributes = {
 				usage: usage === policyOption.usage.use.key,
 			};
@@ -83,8 +83,8 @@ const Dormant = ({data, setTemplateData}) => {
 				attributes.unconnectedDays = unconnectedDays;
 			}
 			setTemplateData({
-				ruleType: data.ruleType,
-				...attributes,
+				resource: data?.resource,
+				attribute: {ruleType: data?.attribute.ruleType, ...attributes},
 			});
 		}
 	}, [data, setTemplateData, blockingType, unconnectedDays, usage]);
@@ -96,21 +96,21 @@ const Dormant = ({data, setTemplateData}) => {
 		//휴면 사용 여부 세팅
 		setUsage(
 			setUsageOptionByAttribute(
-				data,
+				data?.attribute,
 				'usage',
 				policyOption.usage.use.key,
 				policyOption.usage.none.key,
 			),
 		);
 		//계정 처리 방법 default value 존재
-		if (data?.blockingType) {
+		if (data?.attribute?.blockingType) {
 			//계정 처리 방법 세팅
-			setBlockingType(data.blockingType);
+			setBlockingType(data?.attribute.blockingType);
 		}
 		//연속 미접속 기간 default value 존재
-		if (data?.unconnectedDays) {
+		if (data?.attribute?.unconnectedDays) {
 			//연속 미접속 기간 세팅
-			setUnconnectedDays(data.unconnectedDays);
+			setUnconnectedDays(data?.attribute.unconnectedDays);
 		}
 	}, [data, setBlockingType, setUnconnectedDays, setUsage]);
 

@@ -92,7 +92,7 @@ const LoginFailure = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
-		if (data?.ruleType) {
+		if (data?.attribute?.ruleType) {
 			const attributes = {
 				usage: usage === policyOption.usage.use.key,
 			};
@@ -105,8 +105,8 @@ const LoginFailure = ({data, setTemplateData}) => {
 			}
 
 			setTemplateData({
-				ruleType: data.ruleType,
-				...attributes,
+				resource: data?.resource,
+				attribute: {ruleType: data?.attribute.ruleType, ...attributes},
 			});
 		}
 	}, [
@@ -126,30 +126,30 @@ const LoginFailure = ({data, setTemplateData}) => {
 		//로그인 실패 사용 여부 세팅
 		setUsage(
 			setUsageOptionByAttribute(
-				data,
+				data?.attribute,
 				'usage',
 				policyOption.usage.use.key,
 				policyOption.usage.none.key,
 			),
 		);
 		//로그인 실패 횟수 default value 있음
-		if (data?.failedCount) {
+		if (data?.attribute?.failedCount) {
 			//로그인 실패 횟수 세팅
-			setFailedCount(data.failedCount);
+			setFailedCount(data?.attribute.failedCount);
 		}
 		//계정 처리 방법 default value 있음
-		if (data?.blockingType) {
+		if (data?.attribute?.blockingType) {
 			//계정 처리 방법 세팅
-			setBlockingType(data.blockingType);
+			setBlockingType(data?.attribute.blockingType);
 		}
 		//오류 횟수 초기화 default value 있음
-		if (data?.failedCountInitDays) {
+		if (data?.attribute?.failedCountInitDays) {
 			//오류 횟수 초기화 세팅
-			setFailedCountInitDays(data.failedCountInitDays);
+			setFailedCountInitDays(data?.attribute.failedCountInitDays);
 		}
 		// 계정 정상화 default value 있음
-		if (data?.unblockedDays) {
-			setUnblockedDays(data.unblockedDays);
+		if (data?.attribute?.unblockedDays) {
+			setUnblockedDays(data?.attribute.unblockedDays);
 		}
 	}, [
 		data,

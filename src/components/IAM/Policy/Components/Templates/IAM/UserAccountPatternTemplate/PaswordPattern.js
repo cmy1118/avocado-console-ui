@@ -144,25 +144,28 @@ const PaswordPattern = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
-		if (data?.ruleType) {
+		if (data?.attribute?.ruleType) {
 			setTemplateData({
-				ruleType: data.ruleType,
-				minLength: Number(minPasswordLength),
-				maxLength: Number(maxPasswordLength),
-				numberOfConsecutiveNumerics: numberOfConsecutiveNumerics,
-				mixNumberAndAlpha:
-					mixNumberAndAlpha === policyOption.usage.use.key,
-				mixCase: mixCase === policyOption.usage.use.key,
-				repeatedAlpha:
-					repeatedAlpha === policyOption.restrict.restrict.key,
-				includePersonalInfoList: personalInfoRestriction
-					? personalInfoRestrictionMethod
-					: [],
-				allowedDaysOfOldPasswords:
-					oldPasswordsRistriction ===
-					policyOption.restrict.restrict.key
-						? allowedDaysOfOldPasswords
-						: 0,
+				resource: data?.resource,
+				attribute: {
+					ruleType: data?.attribute.ruleType,
+					minLength: Number(minPasswordLength),
+					maxLength: Number(maxPasswordLength),
+					numberOfConsecutiveNumerics: numberOfConsecutiveNumerics,
+					mixNumberAndAlpha:
+						mixNumberAndAlpha === policyOption.usage.use.key,
+					mixCase: mixCase === policyOption.usage.use.key,
+					repeatedAlpha:
+						repeatedAlpha === policyOption.restrict.restrict.key,
+					includePersonalInfoList: personalInfoRestriction
+						? personalInfoRestrictionMethod
+						: [],
+					allowedDaysOfOldPasswords:
+						oldPasswordsRistriction ===
+						policyOption.restrict.restrict.key
+							? allowedDaysOfOldPasswords
+							: 0,
+				},
 			});
 		}
 	}, [
@@ -185,23 +188,27 @@ const PaswordPattern = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		//최소 비밀번호 길이 default value 있음
-		if (data?.minLength) setMinPasswordLength(data.minLength);
+		if (data?.attribute?.minLength)
+			setMinPasswordLength(data?.attribute.minLength);
 		//최대 비밀번호 길이 default value 있음
-		if (data?.maxLength) setMaxPasswordLength(data.maxLength);
+		if (data?.attribute?.maxLength)
+			setMaxPasswordLength(data?.attribute.maxLength);
 		//숫자 연속 횟수 default value 있음
 		if (
-			data &&
+			data?.attribute &&
 			Object.prototype.hasOwnProperty.call(
-				data,
+				data?.attribute,
 				'numberOfConsecutiveNumerics',
 			)
 		) {
-			setNumberOfConsecutiveNumerics(data.numberOfConsecutiveNumerics);
+			setNumberOfConsecutiveNumerics(
+				data.attribute.numberOfConsecutiveNumerics,
+			);
 		}
 		//영문, 숫자 혼합여부 세팅
 		setMixNumberAndAlpha(
 			setUsageOptionByAttribute(
-				data,
+				data?.attribute,
 				'mixNumberAndAlpha',
 				policyOption.usage.use.key,
 				policyOption.usage.none.key,
@@ -210,7 +217,7 @@ const PaswordPattern = ({data, setTemplateData}) => {
 		//대소문자 혼합여부 세팅
 		setMixCase(
 			setUsageOptionByAttribute(
-				data,
+				data?.attribute,
 				'mixCase',
 				policyOption.usage.use.key,
 				policyOption.usage.none.key,
@@ -219,7 +226,7 @@ const PaswordPattern = ({data, setTemplateData}) => {
 		//반복문자 사용제한 유무 세팅
 		setRepeatedAlpha(
 			setUsageOptionByAttribute(
-				data,
+				data?.attribute,
 				'repeatedAlpha',
 				policyOption.restrict.restrict.key,
 				policyOption.restrict.none.key,
@@ -227,30 +234,34 @@ const PaswordPattern = ({data, setTemplateData}) => {
 		);
 		//인적 사항 제한 default value 있음
 		if (
-			data &&
+			data?.attribute &&
 			Object.prototype.hasOwnProperty.call(
-				data,
+				data?.attribute,
 				'includePersonalInfoList',
 			)
 		) {
-			setPersonalInfoRestrictionMethod(data.includePersonalInfoList);
+			setPersonalInfoRestrictionMethod(
+				data?.attribute.includePersonalInfoList,
+			);
 			setPersonalInfoRestriction(
-				data.includePersonalInfoList.length !== 0
+				data?.attribute.includePersonalInfoList.length !== 0
 					? policyOption.restrict.restrict.key
 					: policyOption.restrict.none.key,
 			);
 		}
 		//이전 비밀번호 재사용 제한 default value 있음 && 제한 일수가 0 보다 큼
 		if (
-			data &&
+			data?.attribute &&
 			Object.prototype.hasOwnProperty.call(
-				data,
+				data?.attribute,
 				'allowedDaysOfOldPasswords',
 			) &&
-			data.allowedDaysOfOldPasswords !== 0
+			data?.attribute.allowedDaysOfOldPasswords !== 0
 		) {
 			setOldPasswordsRistriction(policyOption.restrict.restrict.key);
-			setAllowedDaysOfOldPasswords(data.allowedDaysOfOldPasswords);
+			setAllowedDaysOfOldPasswords(
+				data?.attribute.allowedDaysOfOldPasswords,
+			);
 			//이전 비밀번호 사용 제한 default value 없음 || 제한 일수가 0
 		} else {
 			setOldPasswordsRistriction(policyOption.restrict.none.key);
