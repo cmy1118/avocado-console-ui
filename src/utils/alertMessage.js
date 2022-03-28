@@ -35,11 +35,20 @@ export const confirmAlertMessages = {
 		type: alertMessageTypes.alert,
 		message: '최대 10개의 권한만 부여 가능합니다.',
 	},
+
+	maxNumberOfPolicy:{
+		key: 'maxNumberOfPolicy',
+		type: alertMessageTypes.alert,
+		message: '최대 5개의 정책만 추가 가능합니다.',
+	},
+
 	maxNumberOfTags: {
 		key: 'maxNumberOfTags',
 		type: alertMessageTypes.alert,
 		message: '최대 10개의 태그만 등록 가능합니다.',
 	},
+
+
 	//default 값
 	maxNumberOfDatas: {
 		key: 'maxNumberOfDatas',

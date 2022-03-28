@@ -9,6 +9,7 @@ import ConnectUserToRole from '../Components/Add/ConnectUserToRole';
 import ConnectGroupToRole from '../Components/Add/ConnectGroupToRole';
 import AddRole from '../Components/Add/AddRole';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import ConnectUserToRole2 from "../Components/Add/ConnectUserToRole2";
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -18,7 +19,9 @@ const paths = [
 
 const AddRoleSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
+
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
+
 	const [values, setValues] = useState({
 		type: '',
 		parentId: '',
@@ -31,32 +34,47 @@ const AddRoleSpace = () => {
 			<CurrentPathBar paths={paths} />
 
 			<AddPageContainer>
-				<AddRole
-					setIsOpened={setIsOpened}
-					values={values}
-					groupMembers={groupMembers}
-					setValues={setValues}
-				/>
+				<AddRole setIsOpened={setIsOpened}/>
+				<ConnectPolicyToRole space={'ConnectPolicyToRole'}
+									 isFold={isTableFold}
+									 setIsFold={setIsTableFold}/>
 
-				<ConnectPolicyToRole
-					space={'RolePolicyTab'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-					setValue={setGroupMembers}
-				/>
-				<ConnectUserToRole
-					space={'RoleUserTab'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-					setValue={setGroupMembers}
-				/>
-				<ConnectGroupToRole
-					space={'RoleGroupTab'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-					setValue={setGroupMembers}
-				/>
+				<ConnectUserToRole2 space={'ConnectUserToRole2'}
+									 isFold={isTableFold}
+									 setIsFold={setIsTableFold}/>
+
+
 			</AddPageContainer>
+
+
+
+			{/*<AddPageContainer>*/}
+			{/*	<AddRole*/}
+			{/*		setIsOpened={setIsOpened}*/}
+			{/*		values={values}*/}
+			{/*		groupMembers={groupMembers}*/}
+			{/*		setValues={setValues}*/}
+			{/*	/>*/}
+
+			{/*	<ConnectPolicyToRole*/}
+			{/*		space={'RolePolicyTab'}*/}
+			{/*		isFold={isTableFold}*/}
+			{/*		setIsFold={setIsTableFold}*/}
+			{/*		setValue={setGroupMembers}*/}
+			{/*	/>*/}
+			{/*	<ConnectUserToRole*/}
+			{/*		space={'RoleUserTab'}*/}
+			{/*		isFold={isTableFold}*/}
+			{/*		setIsFold={setIsTableFold}*/}
+			{/*		setValue={setGroupMembers}*/}
+			{/*	/>*/}
+			{/*	<ConnectGroupToRole*/}
+			{/*		space={'RoleGroupTab'}*/}
+			{/*		isFold={isTableFold}*/}
+			{/*		setIsFold={setIsTableFold}*/}
+			{/*		setValue={setGroupMembers}*/}
+			{/*	/>*/}
+			{/*</AddPageContainer>*/}
 		</AddSpaceContainer>
 	);
 };

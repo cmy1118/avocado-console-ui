@@ -97,4 +97,8 @@ export const FOLD_DATA = {
 	RolePolicyTab: false,
 	RoleUserTab: false,
 	RoleGroupTab: false,
+
+//=================================================
+	//ADD_ROLE_SPACE
+	ConnectPolicyToRole: false,
 };
