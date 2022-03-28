@@ -54,8 +54,9 @@ const GroupUsersTab = ({
 		return includedDataIds
 			? includedDataIds.map((v) => ({
 					...v,
-					id: v.userId,
-					name: v.userName,
+					id: v.userId ? v.userId : v.id,
+					//TODO userName 요청
+					name: v.name ? v.name : v.userName,
 					numberOfGroups: v.groups ? v.groups.length : 0,
 					createdTime: v.createdTag ? v.createdTag.createdTime : '',
 					[DRAGGABLE_KEY]: v.userUid,
@@ -67,6 +68,8 @@ const GroupUsersTab = ({
 		return excludedDataIds
 			? excludedDataIds.map((v) => ({
 					...v,
+					id: v.id ? v.id : v.userId,
+					name: v.name ? v.name : v.userName,
 					numberOfGroups: v.groups ? v.groups.length : 0,
 					createdTime: v.createdTag.createdTime,
 					[DRAGGABLE_KEY]: v.userUid,
@@ -74,7 +77,59 @@ const GroupUsersTab = ({
 			: [];
 	}, [excludedDataIds]);
 
-	//그룹에 부여된 사용자 조회 (포함안함 - 기능 없음 )
+	const onClickDeleteUsersFromGroup = useCallback(
+		async (data) => {
+			try {
+				await dispatch(
+					IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
+						groupId: groupId,
+						userUid: data,
+					}),
+				).unwrap();
+				await setIncludedDataIds(
+					includedDataIds.filter((v) => !data.includes(v.userUid)),
+				);
+
+				await setExcludedDataIds([
+					...includedDataIds.filter((v) => data.includes(v.userUid)),
+					...excludedData,
+				]);
+				alert('삭제 완료');
+			} catch (err) {
+				await alert('삭제 오류');
+				console.error(err);
+			}
+		},
+		[dispatch, excludedData, groupId, includedDataIds],
+	);
+
+	const onClickAddUsersToGroup = useCallback(
+		async (data) => {
+			try {
+				await dispatch(
+					IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
+						groupId: groupId,
+						userUid: data,
+					}),
+				).unwrap();
+				await setIncludedDataIds([
+					...excludedDataIds.filter((v) => data.includes(v.userUid)),
+					...includedDataIds,
+				]);
+				await setExcludedDataIds(
+					excludedDataIds.filter((v) => !data.includes(v.userUid)),
+				);
+				alert('추가 완료');
+			} catch (err) {
+				alert('추가 오류');
+				console.error(err);
+			}
+		},
+		[dispatch, excludedDataIds, groupId, includedDataIds],
+	);
+
+	//그룹에 부여된 사용자 조회
+	// ToDO: 포함안함 api - 기능 없음 추가 요청 예정
 	const groupUserApi = useCallback(async () => {
 		try {
 			//포함
@@ -84,63 +139,34 @@ const GroupUsersTab = ({
 					range: 'elements=0-50',
 				}),
 			).unwrap();
-			console.log('includeGrantUser:', includeGrantUser);
 			//비포함 (전체 - 포함)
 			const allGrantUser = await dispatch(
 				IAM_USER.asyncAction.findAllAction({
 					range: 'elements=0-50',
 				}),
 			).unwrap();
-			console.log('allGrantUser:', allGrantUser);
 			const excludeGrantUser = await allGrantUser['data'].filter(
 				(x) =>
 					!includeGrantUser['data']
 						.map((v) => v.userUid)
 						.includes(x.userUid),
 			);
-			console.log('excludeGrantUser:', excludeGrantUser);
-
-			//api 요청 데이터 삽입
+			//api 요청 데이터 (포함/비포함)테이블 삽입
 			await setIncludedDataIds(includeGrantUser.data);
 			await setExcludedDataIds(excludeGrantUser);
 			// await setExcludedDataIds(excludeGrantUser.data);
-			await console.log('includeGrantRole:', includeGrantUser.data);
-			await console.log('excludeGrantRole:', excludeGrantUser);
 		} catch (err) {
-			alert('그룹에 부여된 사용자 조회 에러');
+			alert('조회 에러');
 			console.log(err);
 		}
 	}, [dispatch, groupId]);
 
-	const onClickDeleteUsersFromGroup = useCallback(
-		async (data) => {
-			await dispatch(
-				IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
-					groupId: groupId,
-					userUid: data,
-				}),
-			).unwrap();
-			await groupUserApi();
-		},
-		[dispatch, groupId, groupUserApi],
-	);
-
-	const onClickAddUsersToGroup = useCallback(
-		async (data) => {
-			await dispatch(
-				IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
-					groupId: groupId,
-					userUid: data,
-				}),
-			);
-			await groupUserApi();
-		},
-		[dispatch, groupId],
-	);
-
+	//그룹 사용자 데이터 api 호출 (포함/비포함)
 	useEffect(() => {
-		groupUserApi();
-	}, [groupUserApi]);
+		if (!isSummaryOpened) {
+			groupUserApi();
+		}
+	}, [groupUserApi, isSummaryOpened]);
 
 	useEffect(() => {
 		setSelected({

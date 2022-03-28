@@ -12,7 +12,7 @@ import {
 } from '../../utils/dataFitering';
 import styled from 'styled-components';
 import {confirmAlertMessages} from '../../utils/alertMessage';
-import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../Constants/Table/keys';
 
 const Container = styled(DragDropContext)`
 	height: 300px;
@@ -130,6 +130,7 @@ const DragContainer = ({
 					//	console.log('미포함');
 					setSelectedItems([...items, result.draggableId]);
 				}
+				//하나 선택 드래그할때
 			} else {
 				setSelectedItems([result.draggableId]);
 			}

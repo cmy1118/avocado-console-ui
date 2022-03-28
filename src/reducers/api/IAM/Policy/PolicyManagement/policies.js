@@ -85,7 +85,6 @@ const findAll = createAsyncThunk(
 			},
 			baseURL: baseURL.openApi,
 		});
-		console.log(response);
 		return response;
 	},
 );

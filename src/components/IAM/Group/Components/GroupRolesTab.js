@@ -30,26 +30,23 @@ const GroupRolesTab = ({
 }) => {
 	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const {roles} = useSelector(IAM_ROLES.selector);
-	const [select, setSelect] = useState({});
 	const group = useMemo(() => groups.find((v) => v.id === groupId), [
 		groups,
 		groupId,
 	]);
+	//포함된 테이블 선택정보
 	const [includeSelect, includeColumns] = useSelectColumn(
 		tableColumns[tableKeys.groups.summary.tabs.roles.include],
 	);
+	//포함되지 않은 테이블 선택정보
 	const [excludeSelect, excludeColumns] = useSelectColumn(
 		tableColumns[tableKeys.groups.summary.tabs.roles.exclude],
 	);
 	const [selected, setSelected] = useState({});
 
-	console.log('select:', select);
-	//그룹에 부여된 역할 관리 훅
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [excludedDataIds, setExcludedDataIds] = useState([]);
-	console.log('roles:', roles);
-	console.log('includedDataIds:', includedDataIds);
+
 	const includedData = useMemo(() => {
 		return includedDataIds
 			? includedDataIds.map((v) => ({
@@ -68,51 +65,69 @@ const GroupRolesTab = ({
 					...v,
 					type: roleTypeConverter(v.companyId),
 					numberOfUsers: '',
-					createdTime: v.createdTag.createdTime,
+					createdTime: v.createdTag ? v.createdTag.createdTime : '',
 					[DRAGGABLE_KEY]: v.id,
 			  }))
 			: [];
 	}, [excludedDataIds]);
 
+	//그룹에 권한 삭제 실행 함수
 	const onClickDeleteRolesFromGroup = useCallback(
 		async (data) => {
 			try {
 				if (data) {
 					await dispatch(
 						IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.revokeAction({
-							groupId: groupId,
+							id: groupId,
 							roleId: data,
 						}),
 					).unwrap();
-					await alert('그룹 권한 삭제 완료');
+					//테이블 데이터 변경 - api 새로고침 x
+					await setIncludedDataIds(
+						includedDataIds.filter((v) => !data.includes(v.id)),
+					);
+					await setExcludedDataIds([
+						...includedDataIds.filter((v) => data.includes(v.id)),
+						...excludedData,
+					]);
+					await alert('삭제 완료');
 				}
 			} catch (err) {
-				alert('그룹 권한 삭제 오류');
+				alert('삭제 오류');
 				console.log(err);
 			}
 		},
-		[dispatch, groupId],
+		[dispatch, excludedData, groupId, includedDataIds],
 	);
 
+	//그룹에 권한 추가 실행 함수
 	const onClickAddRolesToGroup = useCallback(
 		async (data) => {
 			try {
 				if (data) {
-					console.log('데이터:', data);
 					await dispatch(
 						IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.grantAction({
-							groupId: groupId,
+							id: groupId,
 							roleld: data,
+							// roleld: excludeSelect.map((v) => v.id),
 						}),
 					).unwrap();
-					await alert('그룹 권한 추가 완료');
+
+					await setIncludedDataIds([
+						...excludedDataIds.filter((v) => data.includes(v.id)),
+						...includedDataIds,
+					]);
+					await setExcludedDataIds(
+						excludedDataIds.filter((v) => !data.includes(v.id)),
+					);
+					alert('추가 완료');
 				}
 			} catch (err) {
-				alert('그룹 권한 추가 오류');
+				alert('추가 오류');
 				console.log(err);
 			}
 		},
-		[dispatch, groupId],
+		[dispatch, excludedDataIds, groupId, includedDataIds],
 	);
 
 	//그룹에 부여된 역할 조회 (포함,포함안함)
@@ -132,24 +147,27 @@ const GroupRolesTab = ({
 				}),
 			).unwrap();
 
-			//api 요청 데이터 삽입
+			//api 요청 데이터 (포함/비포함)테이블 삽입
 			await setIncludedDataIds(includeGrantRole.data);
 			await setExcludedDataIds(excludeGrantRole.data);
 		} catch (err) {
+			alert('조회 오류');
 			console.log(err);
 		}
 	}, [dispatch, groupId]);
+
 	useEffect(() => {
 		setIncludedDataIds(group.roles);
 	}, [group.roles]);
 
 	useEffect(() => {
 		setSelected({
-			[tableKeys.roles.add.users.include]: includeSelect,
-			[tableKeys.roles.add.users.exclude]: excludeSelect,
+			[tableKeys.groups.summary.tabs.roles.include]: includeSelect,
+			[tableKeys.groups.summary.tabs.roles.exclude]: excludeSelect,
 		});
 	}, [excludeSelect, includeSelect]);
 
+	//그룹 권한 데이터 api 호출 (포함/비포함)
 	useEffect(() => {
 		if (!isSummaryOpened) {
 			groupRolesApi();
@@ -195,9 +213,11 @@ const GroupRolesTab = ({
 					>
 						<NormalButton
 							margin='0px 0px 0px 5px'
-							onClick={onClickAddRolesToGroup(
-								excludeSelect.map((v) => v.id),
-							)}
+							onClick={() =>
+								onClickAddRolesToGroup(
+									excludeSelect.map((v) => v.id),
+								)
+							}
 						>
 							권한 추가
 						</NormalButton>
