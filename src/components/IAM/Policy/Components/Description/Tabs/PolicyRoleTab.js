@@ -17,7 +17,7 @@ import {tableColumns} from '../../../../../../Constants/Table/columns';
 import Table from '../../../../../Table/Table';
 import DragContainer from '../../../../../Table/DragContainer';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
-import IAM_GRAN_REVOKE_ROLE from '../../../../../../reducers/api/IAM/Policy/PolicyManagement/grantRevokeRole';
+import IAM_GRAN_REVOKE_ROLE from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeRole';
 import {isFulfilled} from '../../../../../../utils/redux';
 import {useDispatch} from 'react-redux';
 

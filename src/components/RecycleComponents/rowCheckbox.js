@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from "prop-types";
 import {ColDiv, RowDiv} from "../../styles/components/style";
-import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../reducers/api/IAM/Policy/ActionManagement/actionTemplate";
+import IAM_ACTION_MANAGEMENT_TEMPLATE from "../../reducers/api/IAM/Policy/IAM/ActionManagement/actionTemplate";
 import {useDispatch} from "react-redux";
 
 //dataLists : 행데이터

@@ -1,27 +1,25 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../api/constants';
+import {Axios, baseURL} from '../../../../../../api/constants';
 
-const NAME = 'IAM_GRANTED_POLICY';
+const NAME = 'IAM_GRAN_REVOKE_ROLE';
 
 /**************************************************
  * ambacc244 - IAM role에 부여된 규칙/정책을 조회
  **************************************************/
-const getDetailsByRole = createAsyncThunk(
-	`${NAME}/GET_DETAIL_BY_ROLE`,
+const findAllRoleByPolicyId = createAsyncThunk(
+	`${NAME}/FIND_ALL_BY_POLIY_ID`,
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(
-			`/open-api/v1/iam/roles/${payload.roleId}/policy-details`,
+			`/open-api/v1/iam/roles/policies/${payload.policyId}`,
 			{
 				params: {
-					resource: payload.resource,
-					action: payload.action,
-					effect: payload.effect,
-					ruleType: payload.ruleType,
+					keyword: payload.keyword,
 				},
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+					Range: 'elements=0-50',
 				},
 				baseURL: baseURL.openApi,
 			},
@@ -44,12 +42,12 @@ const slice = createSlice({
 	extraReducers: {},
 });
 
-const IAM_GRANTED_POLICY = {
+const IAM_GRAN_REVOKE_ROLE = {
 	name: slice.name,
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
 	action: slice.actions,
-	asyncAction: {getDetailsByRole},
+	asyncAction: {findAllRoleByPolicyId},
 };
 
-export default IAM_GRANTED_POLICY;
+export default IAM_GRAN_REVOKE_ROLE;

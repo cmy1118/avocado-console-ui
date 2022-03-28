@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {contentType} from '../../../../../utils/auth';
-import {Axios, baseURL} from '../../../../../api/constants';
+import {contentType} from '../../../../../../utils/auth';
+import {Axios, baseURL} from '../../../../../../api/constants';
 
 const NAME = 'IAM_RULE_TEMPLATE_DETAIL';
 

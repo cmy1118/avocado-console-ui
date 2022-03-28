@@ -1,8 +1,8 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {contentType} from '../../../../../utils/auth';
-import {Axios, baseURL} from '../../../../../api/constants';
-import {getIdFormLocation} from '../../../../../utils/tableDataConverter';
+import {contentType} from '../../../../../../utils/auth';
+import {Axios, baseURL} from '../../../../../../api/constants';
+import {getIdFormLocation} from '../../../../../../utils/tableDataConverter';
 
 const NAME = 'IAM_POLICY_MANAGEMENT_POLICIES';
 

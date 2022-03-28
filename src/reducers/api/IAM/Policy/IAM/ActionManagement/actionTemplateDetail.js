@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../api/constants';
+import {Axios, baseURL} from '../../../../../../api/constants';
 
 const NAME = 'IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL';
 

@@ -28,14 +28,21 @@ export const ruleTypes = {
 //정책생성 - 권한 템플릿 id 조회 필터링
 export function actionTemplateFilter(arr, action) {
 	console.log('actionTemplateFilter2-arr:', arr);
-	const setArr = arr.data['details'].map((v) => {
+	const setArr = arr.data['details']? arr.data['details'].map((v) => {
 		return {
 			templateId: v.templateId,
 			resource: v.resource,
 			action: v.action,
 			effect: v.effect,
 		};
-	});
+	}):arr.data.map((v) => {
+		return {
+			templateId: v.templateId,
+			resource: v.resource,
+			action: v.action,
+			effect: v.effect,
+		};
+	})
 	console.log('권한 템플릿id 조회 필터링 data:', setArr);
 	//테이블 칼럼에 맞도록 객체 세팅
 	let tempObj = {'all-check': true};

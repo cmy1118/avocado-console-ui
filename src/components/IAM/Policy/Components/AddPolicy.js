@@ -15,7 +15,7 @@ import {
 import {RowDiv} from '../../../../styles/components/style';
 import WritePolicy from './WritePolicy';
 import {useDispatch} from 'react-redux';
-import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import {policyTypes} from '../../../../utils/data';
 import PolicyPreviewDialogBox from '../../../DialogBoxs/Preview/PolicyPreviewDialogBox';
 import useTextBox from '../../../../hooks/useTextBox';

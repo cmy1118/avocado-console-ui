@@ -19,7 +19,7 @@ import PAM_SESSION from '../../../../reducers/api/PAM/session';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 import * as _ from 'lodash';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
-import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 

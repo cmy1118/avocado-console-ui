@@ -9,7 +9,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {tableKeys} from '../../../../../Constants/Table/keys';
 import Table from '../../../../Table/Table';
 import {tableColumns} from '../../../../../Constants/Table/columns';
-import IAM_GRAN_REVOKE_ROLE from '../../../../../reducers/api/IAM/Policy/PolicyManagement/grantRevokeRole';
+import IAM_GRAN_REVOKE_ROLE from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeRole';
 import {isFulfilled} from '../../../../../utils/redux';
 
 const policySummary = {

@@ -3,7 +3,7 @@ import storageSession from 'redux-persist/lib/storage/session';
 import createFilter from 'redux-persist-transform-filter';
 import {persistReducer} from 'redux-persist';
 
-import IAM_RULE_MANAGEMENT_TEMPLATE from './api/IAM/Policy/RuleManagement/ruleTemplate';
+import IAM_RULE_MANAGEMENT_TEMPLATE from './api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
 
 import IAM_USER from './api/IAM/User/User/user';
 import IAM_USER_GROUP_TYPE from './api/IAM/User/Group/groupType';
@@ -25,14 +25,14 @@ import IAM_USER_TAG from './api/IAM/User/Tag/tags';
 import IAM_GRANT_POLICY_BY_ROLE from './api/IAM/User/Policy/GrantPolicy/role';
 import IAM_GRANT_POLICY_BY_USER from './api/IAM/User/Policy/GrantPolicy/user';
 import IAM_POLICY_TEMPLATE from './api/IAM/User/Policy/policyTemplate';
-import IAM_RULE_TEMPLATE_DETAIL from './api/IAM/Policy/RuleManagement/ruleTemplateDetail';
+import IAM_RULE_TEMPLATE_DETAIL from './api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
 
-import IAM_POLICY_MANAGEMENT_POLICIES from './api/IAM/Policy/PolicyManagement/policies';
-import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './api/IAM/Policy/ActionManagement/actionTemplateDetail';
-import IAM_ACTION_MANAGEMENT_TEMPLATE from './api/IAM/Policy/ActionManagement/actionTemplate';
-import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from './api/IAM/Policy/PolicyManagement/policyRuleTemplate';
-import IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE from './api/IAM/Policy/PolicyManagement/policyActionTemplate';
-import IAM_GRANTED_POLICY from './api/IAM/Policy/PolicyManagement/grantedPolicy';
+import IAM_POLICY_MANAGEMENT_POLICIES from './api/IAM/Policy/IAM/PolicyManagement/policies';
+import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './api/IAM/Policy/IAM/ActionManagement/actionTemplateDetail';
+import IAM_ACTION_MANAGEMENT_TEMPLATE from './api/IAM/Policy/IAM/ActionManagement/actionTemplate';
+import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from './api/IAM/Policy/IAM/PolicyManagement/policyRuleTemplate';
+import IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE from './api/IAM/Policy/IAM/PolicyManagement/policyActionTemplate';
+import IAM_GRANTED_POLICY from './api/IAM/Policy/IAM/PolicyManagement/grantedPolicy';
 
 import PAM_ROLES from './api/PAM/Role/roles';
 import PAM_ROLE_SET from './api/PAM/Role/roleSet';
@@ -43,7 +43,7 @@ import PAM_SESSION from './api/PAM/session';
 import RRM_RESOURCE from './api/RRM/Resource/resource';
 import RRM_GROUP from './api/RRM/Group/group';
 import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
-import IAM_GRAN_REVOKE_ROLE from './api/IAM/Policy/PolicyManagement/grantRevokeRole';
+import IAM_GRAN_REVOKE_ROLE from './api/IAM/Policy/IAM/PolicyManagement/grantRevokeRole';
 
 const authFilter = createFilter(AUTH.name, [
 	'companyId',

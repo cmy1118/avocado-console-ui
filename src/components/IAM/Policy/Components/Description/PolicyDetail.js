@@ -6,7 +6,7 @@ import {NormalButton} from '../../../../../styles/components/buttons';
 import React, {useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import useTextArea from '../../../../../hooks/useTextArea';
-import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import {isFulfilled} from '../../../../../utils/redux';
 import {useDispatch} from 'react-redux';
 import {NavLink} from 'react-router-dom';

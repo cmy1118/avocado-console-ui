@@ -17,7 +17,7 @@ import {
 	TransparentButton,
 } from '../../../../styles/components/buttons';
 import {DescriptionPageContainer} from '../../../../styles/components/iam/descriptionPage';
-import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/PolicyManagement/policies';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import {isFulfilled} from '../../../../utils/redux';
 import {
 	CoveredByTabContent,
