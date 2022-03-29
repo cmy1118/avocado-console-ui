@@ -165,24 +165,33 @@ export const POLICY_SUMMARY_RERMISSION_INCLUDE_COLUMN = [
 		},
 	},
 	{
-		accessor: 'roleType',
+		accessor: 'type',
 		Header: '역할 유형',
 	},
 	{
-		accessor: 'grantRegulation',
+		accessor: 'maxGrants',
 		Header: '부여 제한',
 	},
 	{
-		accessor: 'descriptoin',
+		accessor: 'description',
 		Header: '설명',
 	},
 	{
-		accessor: 'numberOfPermissions',
+		accessor: 'grantedCount',
 		Header: '권한 연결 수',
 	},
 	{
 		accessor: 'grantUser',
 		Header: '연결자',
+		type: 'users',
+		Cell: function Component(cell) {
+			return (
+				<TableLink
+					cell={cell}
+					text={cell.value?.name + '(' + cell.value?.id + ')'}
+				/>
+			);
+		},
 	},
 ];
 export const POLICY_SUMMARY_RERMISSION_EXCLUDE_COLUMN = [
@@ -194,24 +203,33 @@ export const POLICY_SUMMARY_RERMISSION_EXCLUDE_COLUMN = [
 		},
 	},
 	{
-		accessor: 'roleType',
+		accessor: 'type',
 		Header: '역할 유형',
 	},
 	{
-		accessor: 'grantRegulation',
+		accessor: 'maxGrants',
 		Header: '부여 제한',
 	},
 	{
-		accessor: 'descriptoin',
+		accessor: 'description',
 		Header: '설명',
 	},
 	{
-		accessor: 'numberOfPolicy',
+		accessor: 'grantedCount',
 		Header: '정책 연결 수',
 	},
 	{
 		accessor: 'grantUser',
 		Header: '연결자',
+		type: 'users',
+		Cell: function Component(cell) {
+			return (
+				<TableLink
+					cell={cell}
+					text={cell.value?.name + '(' + cell.value?.id + ')'}
+				/>
+			);
+		},
 	},
 ];
 
