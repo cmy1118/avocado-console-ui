@@ -48,20 +48,14 @@ export const POLICY_ADD_PREVIEW_COLUMN = [
 	{
 		accessor: 'policy',
 		Header: '정책',
-		// disableFilters: true,
-		// disableChangeVisible: true,
 	},
 	{
 		accessor: 'detail',
 		Header: '상세',
-		// disableFilters: true,
-		// disableChangeVisible: true,
 	},
 	{
 		accessor: 'value',
 		Header: '설정값',
-		// disableFilters: true,
-		// disableChangeVisible: true,
 	},
 ];
 
@@ -84,33 +78,39 @@ export const POLICY_SUMMARY_RERMISSION_COLUMN = [
 	{
 		accessor: 'name',
 		Header: '역할 이름',
+		type: 'roles',
 		Cell: function Component(cell) {
 			return <TableLink cell={cell} />;
 		},
 	},
 	{
-		accessor: 'manageCategory',
-		Header: '관리 구분',
+		accessor: 'type',
+		Header: '역할 유형',
 	},
 	{
-		accessor: 'grantRegulation',
+		accessor: 'maxGrants',
 		Header: '부여 제한',
-	},
-	{
-		accessor: 'numberOfPermissions',
-		Header: '권한 부여수',
 	},
 	{
 		accessor: 'description',
 		Header: '설명',
 	},
 	{
-		accessor: 'createdTime',
-		Header: '생성 일시',
+		accessor: 'grantedCount',
+		Header: '정책 연결 수',
 	},
 	{
 		accessor: 'grantUser',
 		Header: '연결자',
+		type: 'users',
+		Cell: function Component(cell) {
+			return (
+				<TableLink
+					cell={cell}
+					text={cell.value?.name + '(' + cell.value?.id + ')'}
+				/>
+			);
+		},
 	},
 ];
 
@@ -156,10 +156,11 @@ export const POLICY_SUMMARY_PERMISSION_TAB_COLUMN = [
 	},
 ];
 
-export const POLICY_SUMMARY_RERMISSION_INCLUDE_COLUMN = [
+export const POLICY_SUMMARY_ROLE_INCLUDE_COLUMN = [
 	{
 		accessor: 'name',
 		Header: '역할 이름',
+		type: 'roles',
 		Cell: function Component(cell) {
 			return <TableLink cell={cell} />;
 		},
@@ -194,10 +195,11 @@ export const POLICY_SUMMARY_RERMISSION_INCLUDE_COLUMN = [
 		},
 	},
 ];
-export const POLICY_SUMMARY_RERMISSION_EXCLUDE_COLUMN = [
+export const POLICY_SUMMARY_ROLE_EXCLUDE_COLUMN = [
 	{
 		accessor: 'name',
 		Header: '역할 이름',
+		type: 'roles',
 		Cell: function Component(cell) {
 			return <TableLink cell={cell} />;
 		},

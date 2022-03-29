@@ -23,10 +23,10 @@ import {
 	CoveredByTabContent,
 	TabContainer,
 } from '../../../../styles/components/iam/iamTab';
-import PolicyDetail from '../Components/Description/PolicySummary';
+import PolicyDetail from '../Components/Description/PolicyDetail';
 import TabBar from '../../TabBar';
 import PolicyTabContents from '../Components/Description/PolicyTabContents';
-import PolicySummary from '../Components/Description/PolicyDetail';
+import PolicySummary from '../Components/Description/PolicySummary';
 
 const policyDescriptionSpace = {
 	button: {create: '정책 생성', delete: '삭제'},
