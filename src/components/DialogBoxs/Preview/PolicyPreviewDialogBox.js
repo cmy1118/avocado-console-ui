@@ -16,9 +16,12 @@ import IAM_POLICY_MANAGEMENT_POLICIES from '../../../reducers/api/IAM/Policy/IAM
 import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policyRuleTemplate';
 import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/ActionManagement/actionTemplate';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
-import IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policyActionTemplate';
+import POLICY_MANAGEMENT_ACTION_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policyActionTemplate';
+import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/PAM/ActionManagement/actionTemplate';
 
 const policyPreviewDialogBox = {
+	IAM: 'iam*',
+	PAM: 'pam*',
 	header: '정책 생성 요약보기',
 	policy: {
 		title: '정책 기본정보',
@@ -34,9 +37,12 @@ const policyPreviewDialogBox = {
 const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const dispatch = useDispatch();
 	const {ruleTemplates} = useSelector(IAM_RULE_MANAGEMENT_TEMPLATE.selector);
-	//생성할 권한 템플릿  객체 배열 state
+	//생성할 권한 템플릿
 	const {actionTemplates} = useSelector(
 		IAM_ACTION_MANAGEMENT_TEMPLATE.selector,
+	);
+	const {pamActionTemplates} = useSelector(
+		PAM_ACTION_MANAGEMENT_TEMPLATE.selector,
 	);
 	//정책 생성 요약보기 테이블 데이터
 	const [previewData, setPreviewData] = useState([]);
@@ -69,120 +75,205 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 			}),
 		);
 	}
-	/*************************************************************************
-	 * roberto -권한(action) 생성
-	 *************************************************************************/
-	async function createAction() {
-		let actionIds = [];
-		console.log('🟡권한(action) 생성');
-		// actionIds = await response()
-		for (const v of actionTemplates) {
-			await dispatch(
-				IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.createAction({
-					name: v.name,
-					description: v.description,
-					details: v.details,
-				}),
-			).then((res) => {
-				//TODO: 백엔드 response id 요청
-				actionIds.push(
-					res.payload.headers.location.split('/').reverse()[0],
-				);
-			});
-		}
-		console.log('🟡권한(action) 생성-actionIds:', actionIds);
-		return actionIds;
-	}
-	/*************************************************************************
-	 * roberot -생성된 권한 정책 연결
-	 *************************************************************************/
-	async function joinAction(policyId, actionIds) {
-		console.log('🟡생성된 권한 정책 연결', actionIds);
-		if (actionIds[0]) {
-			let actionTemplates = [];
-			let order = 0;
-			actionIds.forEach((v) => {
-				let obj = {};
-				obj.templateId = v;
-				obj.order = order++;
-				actionTemplates.push(obj);
-			});
-			console.log('joinAction:', actionTemplates);
-			return await dispatch(
-				IAM_POLICY_MANAGEMENT_ACTION_TEMPLATE.asyncAction.join({
-					policyId: policyId,
-					actionTemplates: actionTemplates,
-				}),
-			);
-		}
-	}
+	/*****************************************************************************************************************************
+	 * [IAM]
+	 *****************************************************************************************************************************/
 
 	/*************************************************************************
-	 * roberto -  권한(action)정책연결 실행 비동기 함수
+	 * roberto -[IAM] : 권한(action) 생성
 	 *************************************************************************/
-	async function createJoinAction(policyId, actionTemplates) {
-		console.log('🟡권한(action)정책연결 실행 비동기 함수');
+	async function createAction() {
+		try {
+			let actionIds = [];
+			for (const v of actionTemplates) {
+				await dispatch(
+					IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.createAction({
+						name: v.name,
+						description: v.description,
+						details: v.details,
+						categoryType: v.categoryType,
+					}),
+				).then((res) => {
+					console.log('권한생성:', res);
+					actionIds.push(
+						res.payload.headers.location.split('/').reverse()[0],
+					);
+				});
+			}
+			return actionIds;
+		} catch (err) {
+			alert('권한 생성 에러');
+			console.log(err);
+		}
+	}
+	/*************************************************************************
+	 * roberto -[IAM] : 생성된 권한 정책 연결
+	 *************************************************************************/
+	async function joinAction(policyId, actionIds) {
+		try {
+			if (actionIds[0]) {
+				let tempActionTemplates = [];
+				let order = 0;
+				actionIds.forEach((v) => {
+					let obj = {};
+					obj.templateId = v;
+					obj.order = order++;
+					tempActionTemplates.push(obj);
+				});
+				await dispatch(
+					POLICY_MANAGEMENT_ACTION_TEMPLATE.asyncAction.join({
+						policyId: policyId,
+						actionTemplates: tempActionTemplates,
+					}),
+				).unwrap();
+			}
+		} catch (err) {
+			alert('권한 정책 연결 에러');
+			console.log(err);
+		}
+	}
+	/*************************************************************************
+	 * roberto - [IAM] : 권한(action)정책연결 실행 비동기 함수
+	 *************************************************************************/
+	async function createJoinIamAction(policyId, actionTemplates) {
 		try {
 			if (actionTemplates[0]) {
-				console.log('🟡createJoinAction-try');
 				const actionIds = await createAction();
-				console.log(
-					'🟡권한(action)정책연결 실행 비동기 함수-actionIds:',
-					actionIds,
-				);
 				const res = await joinAction(policyId, actionIds);
+				return res;
 			}
 		} catch (err) {
 			console.log(err);
 		}
 	}
-	console.log(ruleTemplates);
 	/*************************************************************************
-	 * ambacc244, seob - 규칙 생성, 정책연결 비동기 함수
+	 * ambacc244, seob - [IAM] : 규칙 생성, 정책연결 비동기 함수
 	 *************************************************************************/
 	const createJoinRule = async (policyId, ruleTemplates) => {
 		console.log('🔴규칙 생성,정책연결 비동기 함수');
-
 		try {
-			const joinList = await Promise.all(
-				ruleTemplates.map(async (v, i) => {
-					const res = await dispatch(
-						IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.createRule({
-							...v,
-							details: v.details.map((d) => ({
-								resource: d.resource,
-								attribute: JSON.stringify(d.attribute),
-							})),
-						}),
-					).unwrap();
+			if (ruleTemplates[0]) {
+				const joinList = await Promise.all(
+					ruleTemplates.map(async (v, i) => {
+						const res = await dispatch(
+							IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.createRule(
+								{
+									...v,
+									details: v.details.map((d) => ({
+										resource: d.resource,
+										attribute: JSON.stringify(d.attribute),
+									})),
+								},
+							),
+						).unwrap();
 
-					return {
-						templateId: res.headers.location.split('/').pop(),
-						order: i,
-					};
-				}),
-			);
+						return {
+							templateId: res.headers.location.split('/').pop(),
+							order: i,
+						};
+					}),
+				);
 
-			console.log(joinList);
-			await dispatch(
-				IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.join({
-					policyId: policyId,
-					templateList: joinList,
-				}),
-			).unwrap();
+				console.log(joinList);
+				await dispatch(
+					IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.asyncAction.join({
+						policyId: policyId,
+						templateList: joinList,
+					}),
+				).unwrap();
+			}
 		} catch (err) {
 			console.error(err);
 		}
 	};
+	/*****************************************************************************************************************************/
+
+	/*****************************************************************************************************************************
+	 * [PAM]
+	 *****************************************************************************************************************************/
+
+	/*************************************************************************
+	 * roberto -[PAM] : 권한(action) 생성
+	 *************************************************************************/
+	async function createPamAction(actionTemplates) {
+		try {
+			let actionIds = [];
+			for (const v of actionTemplates) {
+				await dispatch(
+					PAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.createAction({
+						name: v.name,
+						description: v.description,
+						details: v.details,
+						categoryType: v.categoryType,
+					}),
+				).then((res) => {
+					console.log('생성시 :', res);
+					actionIds.push(
+						res.payload.headers.location.split('/').reverse()[0],
+					);
+				});
+			}
+			return actionIds;
+		} catch (err) {
+			alert('권한 생성 오류');
+			console.log(err);
+		}
+	}
+	/*************************************************************************
+	 * roberto -[PAM] : 생성된 권한 정책 연결
+	 *************************************************************************/
+	async function joinPamAction(policyId, actionIds) {
+		try {
+			if (actionIds[0]) {
+				let tempActionTemplates = [];
+				let order = 0;
+				actionIds.forEach((v) => {
+					let obj = {};
+					obj.templateId = v;
+					obj.order = order++;
+					tempActionTemplates.push(obj);
+				});
+				await dispatch(
+					POLICY_MANAGEMENT_ACTION_TEMPLATE.asyncAction.join({
+						policyId: policyId,
+						actionTemplates: tempActionTemplates,
+					}),
+				).unwrap();
+			}
+		} catch (err) {
+			alert('정책연결 실패');
+			console.log(err);
+		}
+	}
+
+	/*************************************************************************
+	 * roberto -[PAM] :  권한(action)정책연결 실행 비동기 함수
+	 *************************************************************************/
+	async function createJoinPamAction(policyId, actionTemplates) {
+		try {
+			if (actionTemplates[0]) {
+				//action 생성
+				const actionIds = await createPamAction(actionTemplates);
+				//생성된 action id값들 정책 연결
+				console.log('actionIds:', actionIds);
+				const res = await joinPamAction(policyId, actionIds);
+				console.log('res:', res);
+			}
+		} catch (err) {
+			alert('권한생성 및 정책연결 실패');
+			console.log(err);
+		}
+	}
 
 	/*************************************************************************
 	 * redux 상태 초기화
 	 *************************************************************************/
 	async function initRedux() {
-		console.log('🟡initRedux');
-		//redux action데이터 초기화
+		//IAM redux action데이터 초기화
 		dispatch(IAM_ACTION_MANAGEMENT_TEMPLATE.action.initActionTemplates());
-		//정책 생성을 위해 모아둔 template의 데이터를 삭제
+		//IAM redux action데이터 초기화
+		dispatch(PAM_ACTION_MANAGEMENT_TEMPLATE.action.initActionTemplates());
+		//IAM 정책 생성을 위해 모아둔 template의 데이터를 삭제
 		dispatch(IAM_RULE_MANAGEMENT_TEMPLATE.action.resetRuleTemplate());
 		//정책 생성 모드 off
 		dispatch(
@@ -206,37 +297,46 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 		try {
 			//step1 정책생성
 			const policy = await createPolicy();
-			//생성된 정책 id가 있으면 실행
-			console.log('createPolicy 실행완료 id:', policy);
-			console.log('createPolicy 실행완료 id:', policy.payload);
-			console.log('actionTemplates :', actionTemplates);
-			console.log('ruleTemplates :', ruleTemplates);
 
+			//생성된 정책 id가 있으면 실행
 			if (policy.payload) {
 				const policyId = policy.payload;
-				//step2.3 권한,규칙 생성 후 정책 연결
-				//Promise.all : 비동기 병렬처리 파라미터 배열안에 실행할 비동기함수 삽입
-				console.log('ruleTemplates:', ruleTemplates);
-				await Promise.all([
-					await createJoinAction(policyId, actionTemplates),
-					await createJoinRule(policyId, ruleTemplates),
-				]);
+
+				//정책정보 IAM 일때
+				if (formData.type === policyPreviewDialogBox.IAM) {
+					console.log('iam 일때');
+					//step2.3 권한,규칙 생성 후 정책 연결
+					//Promise.all : 비동기 병렬처리 파라미터 배열안에 실행할 비동기함수 삽입
+					await Promise.all([
+						await createJoinIamAction(policyId, actionTemplates),
+						await createJoinRule(policyId, ruleTemplates),
+					]);
+				}
+				//정책정보 PAM 일때
+				if (formData.type === policyPreviewDialogBox.PAM) {
+					console.log('pam 일때');
+					await Promise.all([
+						await createJoinPamAction(policyId, pamActionTemplates),
+					]);
+				}
 			}
 			await initRedux();
 			await alert('정책생성 완료');
 		} catch (err) {
-			alert('정책생성 오류');
+			alert('정책생성 실패');
 			console.log(err);
 		}
 	}, [
 		createPolicy,
 		actionTemplates,
+		pamActionTemplates,
 		ruleTemplates,
 		initRedux,
-		createJoinAction,
+		formData.type,
+		createJoinIamAction,
 		createJoinRule,
+		createJoinPamAction,
 	]);
-
 	/**********************************************************
 	 * ambacc244 ,roberto- 렌더링시 정책생성 Preview 데이터 갱신
 	 **********************************************************/

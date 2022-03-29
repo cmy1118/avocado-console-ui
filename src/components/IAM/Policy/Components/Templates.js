@@ -142,6 +142,9 @@ const IamTemplateList = ({
 										templateId={template.id}
 										name={template.name}
 										description={template.description}
+										categoryType={
+											template.categoryType.name
+										}
 									/>
 								);
 							case 'KR-2020-0001:202202:0002':
@@ -150,6 +153,9 @@ const IamTemplateList = ({
 										templateId={template.id}
 										name={template.name}
 										description={template.description}
+										categoryType={
+											template.categoryType.name
+										}
 									/>
 								);
 							case 'KR-2020-0001:202202:0003':
@@ -158,6 +164,9 @@ const IamTemplateList = ({
 										templateId={template.id}
 										name={template.name}
 										description={template.description}
+										categoryType={
+											template.categoryType.name
+										}
 									/>
 								);
 

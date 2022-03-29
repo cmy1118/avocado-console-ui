@@ -17,6 +17,7 @@ const createAction = createAsyncThunk(
 				name: payload.name,
 				description: payload.description,
 				details: payload.details,
+				categoryType: payload.categoryType,
 			},
 			{
 				headers: {
@@ -82,7 +83,7 @@ const slice = createSlice({
 	},
 	reducers: {
 		initActionTemplates: (state, action) => {
-			state.actionTemplates=[];
+			state.actionTemplates = [];
 		},
 		//권한 템플릿 조회시 default check 상태 저장 - 체크박스 변경전 (지우지마세요)
 		// getActionTemplates: (state, {payload}) => {
@@ -97,13 +98,13 @@ const slice = createSlice({
 		// },
 		//권한 템플릿 조회시 default check 상태 저장
 		getActionTemplates: (state, {payload}) => {
-			console.log('getActionTemplates!:',payload.data)
 			// state.loading = true;
 			state.actionTemplates.push({
 				templateId: payload.templateId,
 				name: payload.name,
 				description: payload.description,
 				details: payload.data,
+				categoryType: payload.categoryType,
 			});
 		},
 		//권한 템플릿 체크박스 선택시 체크된 상태 저장 - 체크박스 변경전 (지우지마세요)

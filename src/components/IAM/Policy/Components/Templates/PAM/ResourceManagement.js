@@ -14,8 +14,8 @@ import TemplateElementContainer from '../../TemplateElementContainer';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
 import Table from '../../../../../Table/Table';
-import PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL
-	from "../../../../../../reducers/api/IAM/Policy/PAM/ActionManagement/actionTemplateDetail";
+import PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/PAM/ActionManagement/actionTemplateDetail';
+import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/PAM/ActionManagement/actionTemplate';
 
 const constants = {
 	main: '자원 관리 권한',
@@ -125,7 +125,7 @@ const ResourceManagement = ({templateId, name, description}) => {
 	useEffect(() => {
 		if (creatingPolicyMode) {
 			dispatch(
-				IAM_ACTION_MANAGEMENT_TEMPLATE.action.getActionTemplates({
+				PAM_ACTION_MANAGEMENT_TEMPLATE.action.getActionTemplates({
 					templateId: templateId,
 					name: name,
 					description: description,

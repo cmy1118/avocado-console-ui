@@ -11,6 +11,7 @@ import TemplateElementContainer from '../../TemplateElementContainer';
 import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
 import Table from '../../../../../Table/Table';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
+import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/IAM/ActionManagement/actionTemplateDetail';
 
 const constants = {
 	main: '사용자 관리 권한',
@@ -34,7 +35,7 @@ const constants = {
 };
 
 //사용자 관리권한 템플릿 컴포넌트
-const UserManagement = ({templateId, name, description}) => {
+const UserManagement = ({templateId, name, description, categoryType}) => {
 	const dispatch = useDispatch();
 	const {creatingPolicyMode} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
@@ -80,7 +81,7 @@ const UserManagement = ({templateId, name, description}) => {
 
 	useEffect(() => {
 		const res = dispatch(
-			IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.findByIdAction({
+			IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction({
 				range: 'elements=0-50',
 				templateId: templateId,
 			}),
@@ -100,10 +101,12 @@ const UserManagement = ({templateId, name, description}) => {
 					name: name,
 					description: description,
 					data: getActionTemplatesFilter(tableData, constants.action),
+					categoryType: categoryType,
 				}),
 			);
 		}
 	}, [
+		categoryType,
 		creatingPolicyMode,
 		description,
 		dispatch,
@@ -132,8 +135,9 @@ const UserManagement = ({templateId, name, description}) => {
 	);
 };
 UserManagement.propTypes = {
-	templateId: PropTypes.string,
-	name: PropTypes.string,
-	description: PropTypes.string,
+	templateId: PropTypes.string.isRequired,
+	name: PropTypes.string.isRequired,
+	description: PropTypes.string.isRequired,
+	categoryType: PropTypes.string.isRequired,
 };
 export default UserManagement;
