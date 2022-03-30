@@ -25,6 +25,7 @@ import MFA from './Templates/PAM/MFA';
 import ResourceManagement from './Templates/PAM/ResourceManagement';
 import ResourceAccess from './Templates/PAM/ResourceAccess/ResourceAccess';
 import ResourceCollectManagement from './Templates/PAM/ResourceCollectManagement';
+import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../reducers/api/IAM/Policy/PAM/ActionManagement/actionTemplate';
 
 const Container = styled.div`
 	display: flex;
@@ -86,6 +87,9 @@ const IamTemplateList = ({
 	const addTemplate = useCallback(
 		({template, type}) => {
 			const switchComponent = (template, type) => {
+				/*********************************************************************************************************
+				 * [IAM]
+				 *********************************************************************************************************/
 				if (policyType === policyTypes.iam) {
 					if (type === templateType.RULE) {
 						switch (template.categoryCode) {
@@ -135,8 +139,8 @@ const IamTemplateList = ({
 						}
 					} else if (type === templateType.ACTION) {
 						// todo - action 템플릿에 categoryCode가 추가되면 수정하겠습니다.
-						switch (template.id) {
-							case 'KR-2020-0001:202202:0001':
+						switch (template.categoryType.name) {
+							case 'User':
 								return (
 									<UserManagement
 										templateId={template.id}
@@ -147,7 +151,7 @@ const IamTemplateList = ({
 										}
 									/>
 								);
-							case 'KR-2020-0001:202202:0002':
+							case 'Policy':
 								return (
 									<PolicyManagement
 										templateId={template.id}
@@ -158,7 +162,7 @@ const IamTemplateList = ({
 										}
 									/>
 								);
-							case 'KR-2020-0001:202202:0003':
+							case 'Role':
 								return (
 									<RoleManagement
 										templateId={template.id}
@@ -174,9 +178,13 @@ const IamTemplateList = ({
 								return <h1>No template match</h1>;
 						}
 					}
+					/*********************************************************************************************************
+					 * [PAM]
+					 *********************************************************************************************************/
 				} else if (policyType === policyTypes.pam) {
 					if (type === templateType.RULE) {
 						switch (template.categoryCode) {
+							//:Todo 아직 PAM 규칙 템플릿 정보를 모두 주지않아서 보류했습니다
 							case '1':
 								return (
 									<ConnectResource
@@ -232,10 +240,8 @@ const IamTemplateList = ({
 						}
 					} else if (type === templateType.ACTION) {
 						// todo - action 템플릿에 categoryCode가 추가되면 수정하겠습니다.
-						switch (template.categoryCode) {
-							case '1':
-								return <div>액션 템플릿 예시</div>;
-							case '2':
+						switch (template.categoryType.name) {
+							case 'Resource':
 								return (
 									//자원 관리 권한
 									<ResourceManagement
@@ -244,7 +250,7 @@ const IamTemplateList = ({
 										description={template.description}
 									/>
 								);
-							case '3':
+							case 'Collect':
 								return (
 									//자원 수집 관리 권한
 									<ResourceCollectManagement
@@ -253,7 +259,7 @@ const IamTemplateList = ({
 										description={template.description}
 									/>
 								);
-							case '4':
+							case 'Access':
 								return (
 									//자원 접근 권한
 									<ResourceAccess
@@ -314,7 +320,6 @@ const IamTemplateList = ({
 						range: `elements=0-50`,
 					}),
 				).unwrap();
-
 				setRuleTemplates(ruleTemplates.data);
 
 				// 액션 템플릿 findAll
@@ -349,27 +354,28 @@ const IamTemplateList = ({
 		const fetchData = async () => {
 			try {
 				// 규칙 템플릿 findAll
-				const ruleTemplates = await dispatch(
-					IAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findAll({
-						range: `elements=0-50`,
-					}),
-				).unwrap();
-				setRuleTemplates(ruleTemplates.data);
+				// const ruleTemplates = await dispatch(
+				// 	.....asyncAction.findAll({
+				// 		range: `elements=0-50`,
+				// 	}),
+				// ).unwrap();
+				// console.log('ruleTemplates:', ruleTemplates);
+				// setRuleTemplates(ruleTemplates.data);
 
 				// 액션 템플릿 findAll
 				const actionTemplates = await dispatch(
-					IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.findAllAction({
+					PAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.findAllAction({
 						range: `elements=0-50`,
 					}),
 				).unwrap();
 				setActionTemplates(actionTemplates.data);
 			} catch (err) {
+				alert('PAM Action 호출에러');
 				console.error(err);
 			}
 		};
-
-		// policyType === policyTypes.pam && fetchData();
-	}, [actionTemplates, dispatch, policyType, ruleTemplates]);
+		policyType === policyTypes.pam && fetchData();
+	}, [dispatch, policyType]);
 
 	useEffect(() => {
 		// 첫 로드시 각각의 IAM 템플릿 데이터를 가져오면 로딩 false
