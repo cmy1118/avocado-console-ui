@@ -9,6 +9,7 @@ const joinAction = createAsyncThunk(
 	`${NAME}/JOIN`,
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
+
 		const response = await Axios.put(
 			`/open-api/v1/iam/user-group-sets/${payload.groupId}`,
 			[...payload.userUid],

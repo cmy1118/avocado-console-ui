@@ -156,7 +156,7 @@ const getUserGroupsAction = createAsyncThunk(
 			{
 				params: {
 					groupTypeId: payload.groupTypeId,
-					includeGroup: payload.isIncludeGroup,
+					includeGroup: payload.includeGroup,
 				},
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,

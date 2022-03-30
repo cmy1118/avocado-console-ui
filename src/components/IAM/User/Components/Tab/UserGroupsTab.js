@@ -19,7 +19,10 @@ import {FoldableContainer} from '../../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../../reducers/api/IAM/User/Group/groupMember';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
-import {parentGroupConverter} from '../../../../../utils/tableDataConverter';
+import {
+	parentGroupConverter,
+	roleTypeConverter,
+} from '../../../../../utils/tableDataConverter';
 import * as _ from 'lodash';
 import {CollapsbleContent} from '../../../../../styles/components/style';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
@@ -32,11 +35,6 @@ const UserGroupsTab = ({
 	isSummaryOpened,
 }) => {
 	const dispatch = useDispatch();
-	const [user, setUser] = useState(null);
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const {page} = useSelector(PAGINATION.selector);
-	const [includedGroups, setIncludedGroups] = useState([]);
-	const [excluedeGroups, setExcluedeGroups] = useState([]);
 
 	const [includeSelect, includeColumns] = useSelectColumn(
 		tableColumns[tableKeys.users.summary.tabs.groups.include],
@@ -48,220 +46,141 @@ const UserGroupsTab = ({
 
 	const [search, setSearch] = useState('');
 	const [total, setTotal] = useState(0);
-	const [includedDataIds, setIncludedDataIds] = useState(
-		user?.groups?.map((v) => v.id) || [],
-	);
+
+	const [includedDataIds, setIncludedDataIds] = useState([]);
+	const [excludedDataIds, setExcludedDataIds] = useState([]);
 
 	const includedData = useMemo(() => {
-		return (
-			_.uniqBy(includedGroups.concat(excluedeGroups), 'id')
-				.filter((v) => includedDataIds?.includes(v.id))
-				.map((v) => ({
+		return includedDataIds
+			? includedDataIds.map((v) => ({
 					...v,
-					name: v.name,
-					type: v.userGroupType.name,
-					parentGroup: parentGroupConverter(v.parentGroup.name),
-					createdTime: v.createdTag.createdTime,
+					name: v.name ? v.name : '',
+					type: v.userGroupType ? v.userGroupType.name : '',
+					parentGroup: v.userGroupType
+						? parentGroupConverter(v.parentGroup.name)
+						: '',
+					createdTime: v.createdTag ? v.createdTag.createdTime : '',
 					[DRAGGABLE_KEY]: v.id,
-				})) || []
-		);
-	}, [includedGroups, excluedeGroups, includedDataIds]);
+			  }))
+			: [];
+	}, [includedDataIds]);
 
 	const excludedData = useMemo(() => {
-		const types = excluedeGroups
-			.filter((v) => includedDataIds?.includes(v.id))
-			.map((v) => v.userGroupType.name);
-
-		return (
-			excluedeGroups
-				.filter((v) => !includedDataIds?.includes(v.id))
-				.filter((v) => !types.includes(v.userGroupType.name))
-				.map((v) => ({
+		return excludedDataIds
+			? excludedDataIds.map((v) => ({
 					...v,
-					name: v.name,
-					type: v.userGroupType.name,
+					name: v.name ? v.name : '',
+					type: v.userGroupType.name ? v.userGroupType.name : '',
 					parentGroup: parentGroupConverter(v.parentGroup.name),
-					createdTime: v.createdTag.createdTime,
+					createdTime: v.createdTag ? v.createdTag.createdTime : '',
 					[DRAGGABLE_KEY]: v.id,
-				})) || []
-		);
-	}, [excluedeGroups, includedDataIds]);
-	//삭제
+			  }))
+			: [];
+	}, [excludedDataIds]);
+
+	//그룹삭제
 	const onClickDeleteGroupFromUser = useCallback(
-		(data) => {
-			data.forEach((v) => {
-				dispatch(
-					IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
-						groupId: v,
-						userUid: userUid,
-					}),
-				);
-			});
-			setIncludedDataIds(
-				includedDataIds.filter((v) => !data.includes(v)),
-			);
-		},
-		[dispatch, includedDataIds, userUid],
-	);
-
-	const onClickAddGroupToUser = useCallback(
-		(data) => {
-			data.forEach((v) => {
-				dispatch(
-					IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
-						groupId: v,
-						userUid: [userUid],
-					}),
-				);
-			});
-			setIncludedDataIds(includedDataIds.concat(data));
-		},
-		[dispatch, includedDataIds, userUid],
-	);
-
-	const getExcludedGroupData = useCallback(
-		(groups) => {
-			const arr = [];
-			groups.forEach((group) => {
-				dispatch(
-					IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
-						id: group.id,
-						range:
-							page[tableKeys.users.summary.tabs.groups.exclude] ||
-							'elements=0-50',
-					}),
-				)
-					.unwrap()
-					.then((roles) => {
-						arr.push({
-							...group,
-							numberOfRoles: !roles.data ? 0 : roles.data.length,
-						});
-						if (arr.length === groups.length) {
-							setExcluedeGroups(arr);
-						}
-					});
-			});
-		},
-		[dispatch, page],
-	);
-
-	const getIncludedGroupsData = useCallback(
-		(user) => {
-			const arr = [];
-			user.groups?.forEach((v) =>
-				dispatch(
-					IAM_USER_GROUP.asyncAction.findByIdAction({
-						id: v.id,
-					}),
-				)
-					.unwrap()
-					.then((group) => {
-						dispatch(
-							IAM_USER.asyncAction.findByUidAction({
-								userUid: group.createdTag.actorTag?.userUid,
-							}),
-						)
-							.unwrap()
-							.then((grantUser) => {
-								arr.push({
-									...group,
-									grantUser: {
-										userUid: grantUser.userUid,
-										id: grantUser.id,
-										name: grantUser.name,
+		async (data) => {
+			try {
+				if (data) {
+					await Promise.all([
+						data.forEach((groupId) => {
+							dispatch(
+								IAM_USER_GROUP_MEMBER.asyncAction.disjointAction(
+									{
+										groupId: groupId,
+										userUid: userUid,
 									},
-								});
-								if (user.groups.length === arr.length) {
-									if (arr[0]) {
-										const arr2 = [];
-										arr.forEach((v) => {
-											dispatch(
-												IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
-													{
-														id: v.id,
-														range:
-															page[
-																tableKeys.users
-																	.summary
-																	.tabs.groups
-																	.include
-															],
-													},
-												),
-											)
-												.unwrap()
-												.then((role) => {
-													arr2.push({
-														...v,
-														numberOfRoles: !role.data
-															? 0
-															: role.data.length,
-													});
-													if (
-														arr.length ===
-														arr2.length
-													) {
-														setIncludedGroups(arr2);
-													}
-												});
-										});
-									}
-								}
-							});
-					}),
-			);
+								),
+							).unwrap();
+						}),
+					]);
+					await setIncludedDataIds(
+						includedDataIds.filter((v) => !data.includes(v.id)),
+					);
+					await setExcludedDataIds([
+						...includedDataIds.filter((v) => data.includes(v.id)),
+						...excludedData,
+					]);
+					await alert('삭제 완료');
+				}
+			} catch (err) {
+				alert('삭제 오류');
+				console.log(err);
+			}
 		},
-		[dispatch, page],
+		[dispatch, excludedData, includedDataIds, userUid],
 	);
 
-	const GetUserExcludeGroupsApi = useCallback(() => {
-		if (
-			!isSummaryOpened &&
-			page[tableKeys.users.summary.tabs.groups.include] &&
-			user
-		) {
-			dispatch(
-				IAM_USER_GROUP.asyncAction.findAllAction({
-					range: page[tableKeys.users.summary.tabs.groups.include],
-				}),
-			);
-		}
-	}, [dispatch, isSummaryOpened, page, user]);
-
-	const GetUserIncludeGroupsApi = useCallback(() => {
-		if (
-			!user &&
-			page[tableKeys.users.summary.tabs.groups.include] &&
-			!isSummaryOpened
-		) {
-			dispatch(
-				IAM_USER.asyncAction.findByUidAction({
-					userUid: userUid,
-				}),
-			)
-				.unwrap()
-				.then((res) => {
-					console.log('res:', res);
-					setUser(res);
-					setIncludedDataIds(
-						res.groups ? res.groups.map((v) => v.id) : [],
+	//그룹추가
+	const onClickAddGroupToUser = useCallback(
+		async (data) => {
+			console.log('data:', data);
+			try {
+				if (data) {
+					// for (const groupId of data) {
+					await Promise.all([
+						data.forEach((groupId) => {
+							dispatch(
+								IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
+									groupId: groupId,
+									userUid: [userUid],
+								}),
+							).unwrap();
+						}),
+					]);
+					await setIncludedDataIds([
+						...excludedDataIds.filter((v) => data.includes(v.id)),
+						...includedDataIds,
+					]);
+					await setExcludedDataIds(
+						excludedDataIds.filter((v) => !data.includes(v.id)),
 					);
-					res ? getIncludedGroupsData(res) : setIncludedGroups([]);
-				});
-		}
-	}, [dispatch, getIncludedGroupsData, isSummaryOpened, page, user, userUid]);
+					alert('추가 완료');
+				}
+			} catch (err) {
+				alert('추가 오류');
+				console.log(err);
+			}
+		},
+		[dispatch, excludedDataIds, includedDataIds, userUid],
+	);
 
-	useEffect(() => {
-		GetUserExcludeGroupsApi();
-		GetUserIncludeGroupsApi();
-	}, [page, GetUserIncludeGroupsApi, GetUserExcludeGroupsApi]);
-
-	useEffect(() => {
-		if (!isSummaryOpened && groups[0]) {
-			getExcludedGroupData(groups);
+	const userGroupsApi = useCallback(async () => {
+		try {
+			//포함
+			const includeData = await dispatch(
+				IAM_USER.asyncAction.getUserGroupsAction({
+					userUid: userUid,
+					range: `elements=0-50`,
+					// range: page[tableKeys.users.summary.tabs.groups.include],
+				}),
+			).unwrap();
+			//포함안함
+			const excludeData = await dispatch(
+				IAM_USER.asyncAction.getUserGroupsAction({
+					userUid: userUid,
+					includeGroup: false,
+					range: `elements=0-50`,
+					// range: page[tableKeys.users.summary.tabs.groups.include],
+				}),
+			).unwrap();
+			//api 요청 데이터 (포함/비포함)테이블 삽입
+			console.log('includeData:', includeData);
+			console.log('excludeData:', excludeData);
+			await setIncludedDataIds(includeData.data);
+			await setExcludedDataIds(excludeData.data);
+		} catch (err) {
+			alert('조회 오류');
+			console.log(err);
 		}
-	}, [getExcludedGroupData, groups, isSummaryOpened]);
+	}, [dispatch, userUid]);
+	//사용자 그룹 데이터 api 호출 (포함/비포함)
+	useEffect(() => {
+		if (!isSummaryOpened) {
+			userGroupsApi();
+		}
+	}, [isSummaryOpened, userGroupsApi]);
 
 	useEffect(() => {
 		setSelected({

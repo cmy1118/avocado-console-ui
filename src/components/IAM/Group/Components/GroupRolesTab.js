@@ -134,13 +134,13 @@ const GroupRolesTab = ({
 	const groupRolesApi = useCallback(async () => {
 		try {
 			//포함
-			const includeGrantRole = await dispatch(
+			const includeData = await dispatch(
 				IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
 					id: groupId,
 				}),
 			).unwrap();
 			//포함안함
-			const excludeGrantRole = await dispatch(
+			const excludeData = await dispatch(
 				IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
 					id: groupId,
 					exclude: true,
@@ -148,8 +148,8 @@ const GroupRolesTab = ({
 			).unwrap();
 
 			//api 요청 데이터 (포함/비포함)테이블 삽입
-			await setIncludedDataIds(includeGrantRole.data);
-			await setExcludedDataIds(excludeGrantRole.data);
+			await setIncludedDataIds(includeData.data);
+			await setExcludedDataIds(excludeData.data);
 		} catch (err) {
 			alert('조회 오류');
 			console.log(err);
