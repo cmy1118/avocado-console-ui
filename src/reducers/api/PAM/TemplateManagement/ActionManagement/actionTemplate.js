@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {Axios, baseURL} from '../../../../../api/constants';
 import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './actionTemplateDetail';
-import {contentType} from '../../../../../../utils/auth';
+import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'PAM_ACTION_MANAGEMENT_TEMPLATE';
 

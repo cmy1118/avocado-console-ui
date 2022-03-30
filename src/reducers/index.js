@@ -47,8 +47,8 @@ import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
 import IAM_GRAN_REVOKE_ROLE from './api/IAM/Policy/IAM/PolicyManagement/grantRevokeRole';
 import PAM_RULE_TEMPLATE_DETAIL from './api/PAM/TemplateManagement/RuleTemplate/ruleTemplateDetail';
 import PAM_RULE_MANAGEMENT_TEMPLATE from './api/PAM/TemplateManagement/RuleTemplate/ruleTemplate';
-import PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './api/IAM/Policy/PAM/ActionManagement/actionTemplateDetail';
-import PAM_ACTION_MANAGEMENT_TEMPLATE from './api/IAM/Policy/PAM/ActionManagement/actionTemplate';
+import PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './api/PAM/TemplateManagement/ActionManagement/actionTemplateDetail';
+import PAM_ACTION_MANAGEMENT_TEMPLATE from './api/PAM/TemplateManagement/ActionManagement/actionTemplate';
 
 const authFilter = createFilter(AUTH.name, [
 	'companyId',

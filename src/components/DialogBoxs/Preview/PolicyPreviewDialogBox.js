@@ -17,7 +17,7 @@ import IAM_POLICY_MANAGEMENT_RULE_TEMPLATE from '../../../reducers/api/IAM/Polic
 import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/ActionManagement/actionTemplate';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
 import POLICY_MANAGEMENT_ACTION_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policyActionTemplate';
-import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/PAM/ActionManagement/actionTemplate';
+import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/PAM/TemplateManagement/ActionManagement/actionTemplate';
 
 const policyPreviewDialogBox = {
 	IAM: 'iam*',

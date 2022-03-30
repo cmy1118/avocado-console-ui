@@ -14,8 +14,8 @@ import TemplateElementContainer from '../../TemplateElementContainer';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
 import Table from '../../../../../Table/Table';
-import PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/PAM/ActionManagement/actionTemplateDetail';
-import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/PAM/ActionManagement/actionTemplate';
+import PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../../reducers/api/PAM/TemplateManagement/ActionManagement/actionTemplateDetail';
+import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/PAM/TemplateManagement/ActionManagement/actionTemplate';
 
 const constants = {
 	main: '자원 관리 권한',

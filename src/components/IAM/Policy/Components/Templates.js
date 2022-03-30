@@ -25,7 +25,7 @@ import MFA from './Templates/PAM/MFA';
 import ResourceManagement from './Templates/PAM/ResourceManagement';
 import ResourceAccess from './Templates/PAM/ResourceAccess/ResourceAccess';
 import ResourceCollectManagement from './Templates/PAM/ResourceCollectManagement';
-import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../reducers/api/IAM/Policy/PAM/ActionManagement/actionTemplate';
+import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../reducers/api/PAM/TemplateManagement/ActionManagement/actionTemplate';
 
 const Container = styled.div`
 	display: flex;
