@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useRadio from '../../../../../../hooks/useRadio';
 import {
 	resourceOptions,
@@ -8,6 +8,9 @@ import {
 import TemplateElementContainer from '../../TemplateElementContainer';
 import TemplateElement from '../../TemplateElement';
 import TimeInterval from '../../../../../RecycleComponents/Templates/TimeInterval';
+import PropTypes from 'prop-types';
+import {useDispatch} from 'react-redux';
+import PAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/PAM/TemplateManagement/RuleTemplate/ruleTemplateDetail';
 
 const connectReason = {
 	connectReason: {
@@ -43,7 +46,8 @@ export const DayOfTheWeek = {
 /**************************************************
  * ambacc244 - 접속 사유 정책 템플릿 컴포넌트
  **************************************************/
-const ConnectReason = () => {
+const ConnectReason = ({templateId, name, description}) => {
+	const dispatch = useDispatch();
 	//usage: 접속 사유 정책 사용 유무
 	const [usage, usageRadioButton, setUsage] = useRadio({
 		name: 'ConnectReasonUsage',
@@ -66,6 +70,29 @@ const ConnectReason = () => {
 		name: 'connectResource',
 		options: resourceOptions,
 	});
+
+	/**************************************************
+	 * ambacc244 - 접속 사유 정책 템플릿의 default 정보 불러오기
+	 **************************************************/
+	useEffect(() => {
+		const getDefaultValue = async () => {
+			try {
+				const res = await dispatch(
+					PAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetail(
+						{
+							id: templateId,
+						},
+					),
+				);
+
+				console.log(res.payload.data);
+			} catch (err) {
+				console.log('error => ', err);
+			}
+		};
+
+		getDefaultValue();
+	}, [dispatch, templateId]);
 
 	return (
 		<div>
@@ -135,6 +162,12 @@ const ConnectReason = () => {
 			/>
 		</div>
 	);
+};
+
+ConnectReason.propTypes = {
+	templateId: PropTypes.string,
+	name: PropTypes.string,
+	description: PropTypes.string,
 };
 
 export default ConnectReason;

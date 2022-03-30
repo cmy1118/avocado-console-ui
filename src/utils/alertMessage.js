@@ -48,4 +48,10 @@ export const confirmAlertMessages = {
 	},
 };
 
-export const deleteAlertMessages = {};
+export const deleteAlertMessages = {
+	deletePolicy: {
+		key: 'deletePolicy',
+		type: alertMessageTypes.alert,
+		message: '해당 정책을 삭제하시겠습니까.',
+	},
+};

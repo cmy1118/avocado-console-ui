@@ -149,8 +149,8 @@ export const tableKeys = Object.freeze({
 			tabs: {
 				permission: 'POLICY_SUMMARY_PERMISSION_TAB',
 				role: {
-					include: 'POLICY_SUMMARY_RERMISSION_INCLUDE',
-					exclude: 'POLICY_SUMMARY_RERMISSION_EXCLUDE',
+					include: 'POLICY_SUMMARY_ROLE_INCLUDE',
+					exclude: 'POLICY_SUMMARY_ROLE_EXCLUDE',
 				},
 				tag: {
 					include: 'POLICY_SUMMARY_TAG_INCLUDE',

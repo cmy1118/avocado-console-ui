@@ -12,7 +12,7 @@ import {
 	TitleBarButtons,
 } from '../../../../../../styles/components/iam/iam';
 import {CollapsbleContent} from '../../../../../../styles/components/style';
-import {tableKeys} from '../../../../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
 import Table from '../../../../../Table/Table';
 import DragContainer from '../../../../../Table/DragContainer';
@@ -32,55 +32,150 @@ const policyRoleTab = {
 	},
 };
 
+/**************************************************
+ * ambacc244 - api 호출 받은 role정보를 현 페이지의 테이블에 알맞게 수정
+ *
+ * data (array) : api로 호출 받은 role 정보
+ **************************************************/
+const convertTableData = (data) => {
+	return (data || []).map((v) => ({
+		...v,
+		type: v.type.name,
+		maxGrants: v.maxGrants || '제한 없음',
+		grantUser: {
+			name: v.createdTag.userName,
+			id: v.createdTag.userId,
+			userUid: v.createdTag.userUid,
+		},
+		[DRAGGABLE_KEY]: v.id,
+	}));
+};
+
 const PolicyRoleTab = ({policyId}) => {
 	const dispatch = useDispatch();
 
-	const [isFold, setIsFold] = useState(true);
+	const [isFold, setIsFold] = useState({});
 	const [inRoleIds, setInRoleIds] = useState([]);
-	const [inRole, setInRole] = useState([]);
-	const [exRole, setExRole] = useState([]);
+	//inRoles : 현 정책이 부여된 roles
+	const [inRoles, setInRoles] = useState([]);
+	//inRoles : 현 정책이 부여되지 않은 roles
+	const [exRoles, setExRoles] = useState([]);
 	const [selected, setSelected] = useState({});
-	const [includeSelect, includeColumns] = useSelectColumn(
+	//inSelectedRoles : 현 정책이 부여된 roles중 선택된 roles
+	const [inSelectedRoles, includeColumns] = useSelectColumn(
 		tableColumns[tableKeys.policy.summary.tabs.role.include],
 	);
-	const [excludeSelect, excludeColumns] = useSelectColumn(
+	//exSelectedRoles : 현 정책이 부여되지 않은 roles중 선택된 roles
+	const [exSelectedRoles, excludeColumns] = useSelectColumn(
 		tableColumns[tableKeys.policy.summary.tabs.role.exclude],
 	);
 
-	const onClickDeletePolicy = useCallback(() => {}, []);
+	/**************************************************
+	 * ambacc244 - 현 policy가 부여된 role들을 불러오기
+	 **************************************************/
+	const getIncludedRolesByPolicy = useCallback(async () => {
+		const include = await dispatch(
+			IAM_GRAN_REVOKE_ROLE.asyncAction.findAllRoleByPolicyId({
+				policyId: policyId,
+			}),
+		);
 
-	useEffect(() => {
-		setSelected({
-			[tableKeys.policy.summary.tabs.role.include]: includeSelect,
-			[tableKeys.policy.summary.tabs.role.exclude]: excludeSelect,
-		});
-	}, [excludeSelect, includeSelect]);
+		if (isFulfilled(include)) {
+			const includeData = convertTableData(include.payload);
+			setInRoles(includeData);
+		}
+	}, [dispatch, policyId]);
 
-	useEffect(() => {
-		const getIncludedRolesByPolicy = async () => {
-			const res = await dispatch(
-				IAM_GRAN_REVOKE_ROLE.asyncAction.findAllRoleByPolicyId({
+	/**************************************************
+	 * ambacc244 - 현 policy가 부여되지 않은 role들을 불러오기
+	 **************************************************/
+	const getExcludedRolesByPolicy = useCallback(async () => {
+		const exclude = await dispatch(
+			IAM_GRAN_REVOKE_ROLE.asyncAction.findAllRoleByPolicyId({
+				policyId: policyId,
+				exclude: true,
+			}),
+		);
+
+		if (isFulfilled(exclude)) {
+			const excludeData = convertTableData(exclude.payload);
+			setExRoles(excludeData);
+		}
+	}, [dispatch, policyId]);
+
+	/**************************************************
+	 * ambacc244 - 선택한 role들에 현 policy 부여 해제
+	 **************************************************/
+	const onClickRevokeRoles = useCallback(() => {
+		inSelectedRoles.map(async (v) => {
+			await dispatch(
+				IAM_GRAN_REVOKE_ROLE.asyncAction.revokeRolePolicy({
 					policyId: policyId,
+					roleId: v.id,
 				}),
 			);
+		});
 
-			if (isFulfilled(res)) {
-				setInRole(res.payload || []);
-			}
-		};
+		setExRoles([...inSelectedRoles, ...exRoles]);
+		setInRoles(inRoles.filter((v) => !inSelectedRoles.includes(v)));
+	}, [
+		dispatch,
+		getExcludedRolesByPolicy,
+		inRoles,
+		exRoles,
+		inSelectedRoles,
+		policyId,
+	]);
 
-		const getExcludedRolesByPolicy = async () => {};
+	/**************************************************
+	 * ambacc244 - 선택한 role들에 현 policy 부여
+	 **************************************************/
+	const onClickGrantRoles = useCallback(async () => {
+		exSelectedRoles.map(async (v) => {
+			await dispatch(
+				IAM_GRAN_REVOKE_ROLE.asyncAction.grantRolePolicy({
+					policyId: policyId,
+					roleId: v.id,
+					order: 0,
+				}),
+			);
+		});
 
+		setInRoles([...exSelectedRoles, ...inRoles]);
+		setExRoles(exRoles.filter((v) => !exSelectedRoles.includes(v)));
+	}, [
+		dispatch,
+		exSelectedRoles,
+		getIncludedRolesByPolicy,
+		policyId,
+		exRoles,
+		inRoles,
+	]);
+
+	/**************************************************
+	 * seb
+	 **************************************************/
+	useEffect(() => {
+		setSelected({
+			[tableKeys.policy.summary.tabs.role.include]: inSelectedRoles,
+			[tableKeys.policy.summary.tabs.role.exclude]: exSelectedRoles,
+		});
+	}, [exSelectedRoles, inSelectedRoles]);
+
+	/**************************************************
+	 * ambacc244 - role 탭이 열리면 이 policy가 부여된/부여되지 않은 role을 불러옴
+	 **************************************************/
+	useEffect(() => {
 		getIncludedRolesByPolicy();
 		getExcludedRolesByPolicy();
-	}, []);
+	}, [getExcludedRolesByPolicy, getIncludedRolesByPolicy]);
 
 	return (
 		<TabContentContainer>
 			<TableTitle>
-				{policyRoleTab.include.title + inRole.length}
+				{policyRoleTab.include.title + inRoles.length}
 				<NormalBorderButton
-					onClick={onClickDeletePolicy}
+					onClick={onClickRevokeRoles}
 					margin={'0px 0px 0px 5px'}
 				>
 					{policyRoleTab.include.button.delete}
@@ -92,12 +187,12 @@ const PolicyRoleTab = ({policyId}) => {
 				data={inRoleIds}
 				setData={setInRoleIds}
 				includedKey={tableKeys.policy.summary.tabs.role.include}
-				excludedData={exRole}
-				includedData={inRole}
+				excludedData={exRoles}
+				includedData={inRoles}
 			>
 				<Table
 					isDraggable
-					data={inRole}
+					data={inRoles}
 					tableKey={tableKeys.policy.summary.tabs.role.include}
 					columns={includeColumns}
 					isPaginable
@@ -108,13 +203,16 @@ const PolicyRoleTab = ({policyId}) => {
 
 				<FoldableContainer>
 					<TableFold
-						title={policyRoleTab.include.title + exRole.length}
+						title={policyRoleTab.include.title + exRoles.length}
 						space={'RoleUserTab'}
 						isFold={isFold}
 						setIsFold={setIsFold}
 					>
 						<TitleBarButtons>
-							<NormalButton margin={'0px 0px 0px 5px'}>
+							<NormalButton
+								onClick={onClickGrantRoles}
+								margin={'0px 0px 0px 5px'}
+							>
 								{policyRoleTab.exclude.button.add}
 							</NormalButton>
 						</TitleBarButtons>
@@ -124,7 +222,7 @@ const PolicyRoleTab = ({policyId}) => {
 					>
 						<Table
 							isDraggable
-							data={exRole}
+							data={exRoles}
 							tableKey={
 								tableKeys.policy.summary.tabs.role.exclude
 							}
@@ -144,4 +242,5 @@ const PolicyRoleTab = ({policyId}) => {
 PolicyRoleTab.propTypes = {
 	policyId: PropTypes.string.isRequired,
 };
+
 export default PolicyRoleTab;
