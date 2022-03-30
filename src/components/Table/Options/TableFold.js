@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {TableTitle} from '../../../styles/components/table';
-import {HoverIconButton, IconButton} from '../../../styles/components/icons';
+import {HoverIconButton} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowRightIcon} from '../../../icons/icons';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';

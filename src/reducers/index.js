@@ -43,7 +43,10 @@ import PAM_SESSION from './api/PAM/session';
 import RRM_RESOURCE from './api/RRM/Resource/resource';
 import RRM_GROUP from './api/RRM/Group/group';
 import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
+
 import IAM_GRAN_REVOKE_ROLE from './api/IAM/Policy/IAM/PolicyManagement/grantRevokeRole';
+import PAM_RULE_TEMPLATE_DETAIL from './api/PAM/TemplateManagement/RuleTemplate/ruleTemplateDetail';
+import PAM_RULE_MANAGEMENT_TEMPLATE from './api/PAM/TemplateManagement/RuleTemplate/ruleTemplate';
 import PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './api/IAM/Policy/PAM/ActionManagement/actionTemplateDetail';
 import PAM_ACTION_MANAGEMENT_TEMPLATE from './api/IAM/Policy/PAM/ActionManagement/actionTemplate';
 
@@ -153,10 +156,13 @@ const rootReducer = combineReducers({
 	[PAM_ROLE_USER.name]: PAM_ROLE_USER.reducer,
 	[PAM_ROLE_USER_GROUP.name]: PAM_ROLE_USER_GROUP.reducer,
 	[PAM_SESSION.name]: PAM_SESSION.reducer,
+	[PAM_RULE_TEMPLATE_DETAIL.name]: PAM_RULE_TEMPLATE_DETAIL.reducer,
+	[PAM_RULE_MANAGEMENT_TEMPLATE.name]: PAM_RULE_MANAGEMENT_TEMPLATE.reducer,
 	[PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.name]:
 		PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.reducer,
 	[PAM_ACTION_MANAGEMENT_TEMPLATE.name]:
 		PAM_ACTION_MANAGEMENT_TEMPLATE.reducer,
+	/******************************************/
 
 	/******************************************/
 	/* RRM reducers

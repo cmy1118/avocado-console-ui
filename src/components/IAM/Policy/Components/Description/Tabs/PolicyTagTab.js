@@ -31,7 +31,7 @@ const policyTagTab = {
 
 const PolicyTagTab = ({policyId}) => {
 	const onClickDeleteTag = useCallback(() => {}, []);
-	const [isFold, setIsFold] = useState(true);
+	const [isFold, setIsFold] = useState({});
 	const [inTagIds, setInTagIds] = useState([]);
 
 	const [inTag, setInTag] = useState([]);

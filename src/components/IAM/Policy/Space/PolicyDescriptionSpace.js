@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useHistory, useLocation} from 'react-router-dom';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {
 	IamContainer,
@@ -23,10 +23,12 @@ import {
 	CoveredByTabContent,
 	TabContainer,
 } from '../../../../styles/components/iam/iamTab';
-import PolicyDetail from '../Components/Description/PolicySummary';
+import PolicyDetail from '../Components/Description/PolicyDetail';
 import TabBar from '../../TabBar';
 import PolicyTabContents from '../Components/Description/PolicyTabContents';
-import PolicySummary from '../Components/Description/PolicyDetail';
+import PolicySummary from '../Components/Description/PolicySummary';
+import DIALOG_BOX from '../../../../reducers/dialogBoxs';
+import {deleteAlertMessages} from '../../../../utils/alertMessage';
 
 const policyDescriptionSpace = {
 	button: {create: '정책 생성', delete: '삭제'},
@@ -50,6 +52,7 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 	const history = useHistory();
 	const location = useLocation();
 	const [policy, setPolicy] = useState(null);
+	const {nextAction} = useSelector(DIALOG_BOX.selector);
 
 	const isSummaryOpened = useMemo(() => {
 		if (location.search) return false;
@@ -94,12 +97,39 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 		history.push({
 			pathname: '/policies/add',
 		});
-	}, []);
+	}, [history]);
+
+	/**************************************************
+	 * ambacc244 - 정책 삭제 요청 인식 재확인 요청
+	 **************************************************/
+	const onClickDeletePolicy = useCallback(() => {
+		dispatch(
+			DIALOG_BOX.action.openAlert({
+				key: deleteAlertMessages.deletePolicy.key,
+			}),
+		);
+	}, [dispatch]);
 
 	/**************************************************
 	 * ambacc244 - 정책 삭제
 	 **************************************************/
-	const onClickDeletePolicy = useCallback(() => {}, []);
+	useEffect(() => {
+		const deletePolicy = async () => {
+			try {
+				await dispatch(
+					IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.deletePolicy({
+						id: policyId,
+					}),
+				).unwrap();
+
+				await history.push({pathname: '/policies'});
+			} catch (err) {
+				console.log(err);
+			}
+		};
+
+		if (nextAction === deleteAlertMessages.deletePolicy.key) deletePolicy();
+	}, [nextAction, policyId]);
 
 	/**************************************************
 	 * ambacc244 - 정책 상세 설명 정보 세팅

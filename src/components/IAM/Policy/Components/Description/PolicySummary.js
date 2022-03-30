@@ -1,127 +1,136 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import {SummaryList} from '../../../../../styles/components/iam/descriptionPage';
+import {LiText} from '../../../../../styles/components/text';
+import {policyManageType} from '../../../../../utils/policy';
+import {RowDiv} from '../../../../../styles/components/style';
+import {NormalButton} from '../../../../../styles/components/buttons';
+import React, {useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {useDispatch} from 'react-redux';
-import {
-	SummaryTablesContainer,
-	SummaryTableTitle,
-} from '../../../../../styles/components/iam/descriptionPage';
-import {useHistory, useLocation} from 'react-router-dom';
-import {tableKeys} from '../../../../../Constants/Table/keys';
-import Table from '../../../../Table/Table';
-import {tableColumns} from '../../../../../Constants/Table/columns';
-import IAM_GRAN_REVOKE_ROLE from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeRole';
-import {isFulfilled} from '../../../../../utils/redux';
 
-const policySummary = {
-	permission: '규칙/권한 : ',
-	role: '이 정책과 연결된 역할 : ',
-	tag: '이 정책과 연결된 태그 : ',
+import {useDispatch} from 'react-redux';
+import {NavLink} from 'react-router-dom';
+
+import useTextArea from '../../../../../hooks/useTextArea';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
+import {isFulfilled} from '../../../../../utils/redux';
+import {parentheses, squareBrackets} from '../../../../../utils/word';
+
+export const policySummary = {
+	name: '정책 이름 : ',
+	description: {
+		title: '정책 설명 : ',
+		description: '최대 200자 까지 가능합니다.',
+		button: {save: '저장'},
+	},
+	createdTime: '생성 일시 : ',
+	lastEventTime: '마지막 작업 일시 : ',
+	lastEvent: '마지막 작업 : ',
 };
 
-/**************************************************
- * ambacc244 - IAM policy의 상세 정보를 보여주는 컴포넌트
- **************************************************/
-const PolicyDetail = ({policyId}) => {
+const PolicySummary = ({policy, setPolicy}) => {
 	const dispatch = useDispatch();
-	const history = useHistory();
-	const location = useLocation();
-	const [permissionData, setPermissionData] = useState([]);
-	const [roleData, setRoleData] = useState([]);
-	const [tagData, setTagData] = useState([]);
-
-	const onClickChangeTab = useCallback(
-		(v) => () => {
-			history.push({
-				pathname: location.pathname,
-				search: `tabs=${v}`,
-			});
-		},
-		[location],
-	);
+	//description: 정책 상세 설명
+	const [description, setDescription, descriptionTextArea] = useTextArea({
+		name: 'description',
+		regex: /^.{0,200}$/,
+	});
+	console.log(policy);
+	/**************************************************
+	 * ambacc244 - 정책 상세 설명 변경
+	 **************************************************/
+	const onClickChangeDescription = useCallback(async () => {
+		//TODO: name, maxGrants 삭제 예정
+		const res = await dispatch(
+			IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.updatePolicy({
+				id: policy.id,
+				name: policy.name,
+				description: description,
+				maxGrants: policy.maxGrants,
+			}),
+		);
+		//요청에 대한 응답 성공
+		if (isFulfilled(res)) {
+			setPolicy({...policy, description: description});
+		}
+	}, [description, policy]);
 
 	/**************************************************
-	 * ambacc244 - IAM policy에 부여된 규칙/정책을 조회
+	 * ambacc244 - 정책 상세 설명 변경으로 인한 업데이트
 	 **************************************************/
 	useEffect(() => {
-		const getPolicyDetail = async () => {
-			// const res = await dispatch(
-			// 	IAM_GRAN_REVOKE_ROLE.asyncAction.findAllRoleByPolicyId({
-			// 		policyId: policyId,
-			// 	}),
-			// );
-			//
-			// if (isFulfilled(res)) {
-			// 	console.log(res.payload);
-			// }
-		};
-		getPolicyDetail();
-	}, [policyId]);
-
-	/**************************************************
-	 * ambacc244 - IAM policy에 연결된 role
-	 **************************************************/
-	useEffect(() => {
-		const getRolesByPolicy = async () => {
-			const res = await dispatch(
-				IAM_GRAN_REVOKE_ROLE.asyncAction.findAllRoleByPolicyId({
-					policyId: policyId,
-				}),
-			);
-
-			if (isFulfilled(res)) {
-				setRoleData(res.payload || []);
-			}
-		};
-		getRolesByPolicy();
-	}, [policyId]);
-
-	/**************************************************
-	 * ambacc244 - IAM policy에 연결된 태그
-	 **************************************************/
-	useEffect(() => {
-		const getTagsByPolicy = async () => {};
-		getTagsByPolicy();
-	}, [policyId]);
+		setDescription(policy?.description || '');
+	}, [policy?.description]);
 
 	return (
-		<SummaryTablesContainer>
-			<SummaryTableTitle onClick={onClickChangeTab('permission')}>
-				{policySummary.permission}
-				{permissionData.length}
-			</SummaryTableTitle>
-			<Table
-				readOnly
-				data={permissionData}
-				tableKey={tableKeys.policy.summary.permission}
-				columns={tableColumns[tableKeys.policy.summary.permission]}
-			/>
-
-			<SummaryTableTitle onClick={onClickChangeTab('role')}>
-				{policySummary.role} {roleData.length}
-			</SummaryTableTitle>
-			<Table
-				readOnly
-				data={roleData}
-				tableKey={tableKeys.policy.summary.role}
-				columns={tableColumns[tableKeys.policy.summary.role]}
-			/>
-
-			<SummaryTableTitle onClick={onClickChangeTab('tag')}>
-				{policySummary.tag}
-				{tagData.length}
-			</SummaryTableTitle>
-			<Table
-				readOnly
-				data={tagData}
-				tableKey={tableKeys.policy.summary.tag}
-				columns={tableColumns[tableKeys.policy.summary.tag]}
-			/>
-		</SummaryTablesContainer>
+		<SummaryList>
+			<LiText>
+				{policySummary.name}
+				{policy?.name} {parentheses.left}{' '}
+				{policyManageType[policy?.type.code]} {parentheses.right}
+			</LiText>
+			<LiText>
+				<RowDiv>
+					{policySummary.description.title}
+					<div>
+						<RowDiv>
+							{descriptionTextArea()}
+							<NormalButton onClick={onClickChangeDescription}>
+								{policySummary.description.button.save}
+							</NormalButton>
+						</RowDiv>
+						{policySummary.description.description}
+					</div>
+				</RowDiv>
+			</LiText>
+			<LiText>
+				{policySummary.createdTime}
+				{policy?.createdTag?.createdTime}{' '}
+				{policy?.createdTag?.userName && policy?.createdTag?.userUid && (
+					<>
+						{squareBrackets.left}
+						<NavLink
+							to={`/user/${policy?.createdTag?.userUid}`}
+							key={'user'}
+						>
+							{policy?.createdTag?.userName}
+							{parentheses.left}
+							{policy?.createdTag?.userId}
+							{parentheses.right}
+						</NavLink>
+						{squareBrackets.right}
+					</>
+				)}
+			</LiText>
+			<LiText>
+				{policySummary.lastEventTime}
+				{policy?.lastEventLog?.eventTime}
+			</LiText>
+			<LiText>
+				{policySummary.lastEvent}
+				{policy?.lastEventLog?.category}{' '}
+				{policy?.lastEventLog?.userName &&
+					policy?.lastEventLog?.userUid && (
+						<>
+							{squareBrackets.left}
+							<NavLink
+								to={`/user/${policy?.lastEventLog?.userUid}`}
+								key={'user'}
+							>
+								{policy?.lastEventLog?.userName}
+								{parentheses.left}
+								{policy?.lastEventLog?.userId}
+								{parentheses.right}
+							</NavLink>
+							{squareBrackets.right}
+						</>
+					)}
+			</LiText>
+		</SummaryList>
 	);
 };
 
-PolicyDetail.propTypes = {
-	policyId: PropTypes.string.isRequired,
+PolicySummary.propTypes = {
+	policy: PropTypes.object.isRequired,
+	setPolicy: PropTypes.func.isRequired,
 };
 
-export default PolicyDetail;
+export default PolicySummary;

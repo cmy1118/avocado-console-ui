@@ -63,6 +63,25 @@ const updatePolicy = createAsyncThunk(
 );
 
 /**************************************************
+ * ambacc244 - IAM policy 삭제 요청 액션
+ **************************************************/
+const deletePolicy = createAsyncThunk(
+	`${NAME}/DELETE`,
+	async (payload, {getState}) => {
+		const {userAuth} = getState().AUTH;
+		const response = await Axios.delete(
+			`/open-api/v1/iam/policies/${payload.id}`,
+			{
+				headers: {
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+				},
+				baseURL: baseURL.openApi,
+			},
+		);
+	},
+);
+
+/**************************************************
  * ambacc244 - IAM policy 생성 요청 액션
  **************************************************/
 const findAll = createAsyncThunk(
@@ -141,6 +160,7 @@ const IAM_POLICY_MANAGEMENT_POLICIES = {
 		findAll,
 		findPolicyById,
 		updatePolicy,
+		deletePolicy,
 	},
 };
 

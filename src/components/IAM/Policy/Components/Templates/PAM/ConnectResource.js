@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TemplateElementContainer from '../../TemplateElementContainer';
 import useRadio from '../../../../../../hooks/useRadio';
 import {
@@ -7,6 +7,10 @@ import {
 	resourceOptions,
 } from '../../../../../../utils/policyOptions';
 import ResourceSelectionContainer from './Resource/ResourceSelectionContainer';
+import PAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/PAM/TemplateManagement/RuleTemplate/ruleTemplateDetail';
+import PropTypes from 'prop-types';
+import ConnectReason from './ConnectReason';
+import {useDispatch} from 'react-redux';
 
 const connectResource = {
 	loginType: {
@@ -32,7 +36,8 @@ const connectResource = {
 /**************************************************
  * ambacc244 - 자원 접속 방식 템플릿 컴포넌트
  **************************************************/
-const ConnectResource = () => {
+const ConnectResource = ({templateId, name, description}) => {
+	const dispatch = useDispatch();
 	//loginType: 로그인 방식
 	const [loginType, loginTypeRadioButton, setLoginType] = useRadio({
 		name: 'loginType',
@@ -45,6 +50,29 @@ const ConnectResource = () => {
 	});
 	//selected: 선택된 자원 & 그룹
 	const [selected, setSelected] = useState({});
+
+	/**************************************************
+	 * ambacc244 - 자원 접속 방식 템플릿의 default 정보 불러오기
+	 **************************************************/
+	useEffect(() => {
+		const getDefaultValue = async () => {
+			try {
+				const res = await dispatch(
+					PAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetail(
+						{
+							id: templateId,
+						},
+					),
+				);
+
+				console.log(res.payload.data);
+			} catch (err) {
+				console.log('error => ', err);
+			}
+		};
+
+		getDefaultValue();
+	}, [dispatch, templateId]);
 
 	return (
 		<div>
@@ -73,6 +101,12 @@ const ConnectResource = () => {
 			/>
 		</div>
 	);
+};
+
+ConnectResource.propTypes = {
+	templateId: PropTypes.string,
+	name: PropTypes.string,
+	description: PropTypes.string,
 };
 
 export default ConnectResource;
