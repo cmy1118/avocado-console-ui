@@ -62,51 +62,39 @@ const DragContainer = ({
 			if (CheckDropDataType(tableKey)) {
 				if (CheckDropDataType(tableKey) === GROUP) {
 					if (
-						checkArrayhasDuplicates(
-							excludedData
-								.filter((v) => selected.includes(v.id))
-								.map((v) => v.type),
-						)
+						checkArrayhasDuplicates(excludedData.filter((v) => selected.includes(v.id)).map((v) => v.type))
 					) {
 						dispatch(
-							DIALOG_BOX.action.openAlert({
-								key:
-									confirmAlertMessages.singleCountGroupTypes
-										.key,
-							}),
+							DIALOG_BOX.action.openAlert({key: confirmAlertMessages.singleCountGroupTypes.key,}),
 						);
 						return true;
 					}
 					return false;
 				} else if (CheckDropDataType(tableKey) === ROLES) {
 					// API : roles 일때 - 역할 유형 검사 : Private 유형은 한사용자에게만
-					if (
-						checkArrayIsUniqueHasDuplicates(
-							excludedData
-								.filter((v) => selected.includes(v.id))
-								.map((v) => v.type),
-							FILTER_TYPE,
+					if (checkArrayIsUniqueHasDuplicates(
+							excludedData.filter((v) => selected.includes(v.id)).map((v) => v.type),FILTER_TYPE,
 						) ||
 						checkArraysIsUniqueHasDuplicates(
 							includedData.map((v) => v.type),
-							excludedData
-								.filter((v) => selected.includes(v.id))
-								.map((v) => v.type),
-							FILTER_TYPE,
-						)
+							excludedData.filter((v) => selected.includes(v.id)).map((v) => v.type), FILTER_TYPE,)
 					) {
 						dispatch(
-							DIALOG_BOX.action.openAlert({
-								key:
-									confirmAlertMessages.singleCountRolesTypes
-										.key,
+							DIALOG_BOX.action.openAlert({key: confirmAlertMessages.singleCountRolesTypes.key,
 							}),
 						);
+
+
 						return true;
 					} else {
 						return false;
 					}
-				} else {
+				}
+
+
+
+
+				else {
 					return false;
 				}
 			}

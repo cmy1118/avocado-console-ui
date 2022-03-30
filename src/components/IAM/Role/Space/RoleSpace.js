@@ -5,19 +5,13 @@ import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
 
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../../styles/components/buttons';
-import {
-	IamContainer,
-	TitleBar,
-	TitleBarButtons,
-} from '../../../../styles/components/iam/iam';
+import {NormalButton, TransparentButton} from '../../../../styles/components/buttons';
+import {IamContainer, TitleBar, TitleBarButtons} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import {useHistory} from 'react-router-dom';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import {isFulfilled} from "../../../../utils/redux";
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -27,14 +21,13 @@ const paths = [
 const RoleSpace = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	// const {roles} = useSelector(IAM_ROLES.selector);
+
 	const {page} = useSelector(PAGINATION.selector);
-	const [select, setSelect] = useState({});
 	const [roles, setRoles] = useState([]);
 	const [total, setTotal] = useState(0);
 	const [search, setSearch] = useState('');
 
-	const data = useMemo(() => {
+	const roleData = useMemo(() => {
 		return (
 			roles?.map((v) => ({
 				...v,
@@ -45,11 +38,29 @@ const RoleSpace = () => {
 		);
 	}, [roles]);
 
-	const onCLickLinkToAddRole = useCallback(() => {
-		history.push('/roles/add');
-	}, [history]);
-
-	const getDetailApi = useCallback((res) => {
+	const getRoleApi = useCallback(async (search) =>{
+			if(page[tableKeys.roles.basic]){
+				const res = await dispatch(
+					IAM_ROLES.asyncAction.getsAction({
+						range: page[tableKeys.roles.basic],
+						...(search && {keyword: search}),
+					})
+				);
+				if(isFulfilled(res)){
+					dispatch(
+						PAGINATION.action.setTotal({
+							tableKey: tableKeys.roles.basic,
+							element: totalNumberConverter(
+								res.payload.headers['content-range'],
+							),
+						})
+					)
+					setTotal( totalNumberConverter(res.payload.headers['content-range']))
+					res.payload.data.length ? await getRoleDetailApi(res.payload) : setRoles([])
+				}
+			}
+	},[dispatch,page])
+	const getRoleDetailApi = useCallback(async (res) => {
 		const arr = [];
 		res.data.map((v) => {
 			arr.push({
@@ -59,41 +70,17 @@ const RoleSpace = () => {
 				createdTime: v.createdTag.createdTime,
 				numberOfPermissions: v.grantedCount,
 				type: v.maxGrants === '1' ? 'Private' : 'Public',
-			});
-		});
-		setRoles(arr);
-	}, []);
-
-	const getDataApi = useCallback(
-		(search) => {
-			const arr = [];
-			if (page[tableKeys.roles.basic]) {
-				dispatch(
-					IAM_ROLES.asyncAction.getsAction({
-						range: page[tableKeys.roles.basic],
-						keyword: search ? search : '',
-					}),
-				)
-					.unwrap()
-					.then((res) => {
-						setTotal(
-							totalNumberConverter(res.headers['content-range']),
-						);
-						res.data.length ? getDetailApi(res) : setRoles([]);
-					})
-					.catch((error) => {
-						console.error('error:', error);
-						setTotal(totalNumberConverter(0));
-						setRoles([]);
-					});
-			}
-		},
-		[dispatch, getDetailApi, page],
-	);
+			})
+		})
+		setRoles(arr)
+	},[]);
+	const onCLickLinkToAddRole = useCallback(() => {
+		history.push('/roles/add');
+	}, [history]);
 
 	useEffect(() => {
-		getDataApi(search);
-	}, [getDataApi, page, search]);
+		getRoleApi(search);
+	}, [getRoleApi, page, search]);
 
 	return (
 		<IamContainer>
@@ -112,10 +99,9 @@ const RoleSpace = () => {
 			</TitleBar>
 
 			<Table
-				setSelect={setSelect}
 				tableKey={tableKeys.roles.basic}
 				columns={tableColumns[tableKeys.roles.basic]}
-				data={data}
+				data={roleData}
 				isPaginable
 				isSearchable
 				isSearchFilterable

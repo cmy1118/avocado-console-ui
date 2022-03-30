@@ -1,15 +1,13 @@
 import React, {useState} from 'react';
-import {
-	AddPageContainer,
-	AddSpaceContainer,
-} from '../../../../styles/components/iam/addPage';
+import {AddPageContainer, AddSpaceContainer,} from '../../../../styles/components/iam/addPage';
 import {FOLD_DATA} from '../../../../utils/data';
 import ConnectPolicyToRole from '../Components/Add/ConnectPolicyToRole';
 import ConnectUserToRole from '../Components/Add/ConnectUserToRole';
-import ConnectGroupToRole from '../Components/Add/ConnectGroupToRole';
+
 import AddRole from '../Components/Add/AddRole';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
-import ConnectUserToRole2 from "../Components/Add/ConnectUserToRole2";
+import ConnectGroupToRole from '../Components/Add/ConnectGroupToRole';
+import RolePreviewDialogBox from "../../../DialogBoxs/Preview/RolePreviewDialogBox";
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -22,13 +20,6 @@ const AddRoleSpace = () => {
 
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
-	const [values, setValues] = useState({
-		type: '',
-		parentId: '',
-		name: '',
-	});
-	const [groupMembers, setGroupMembers] = useState([]);
-
 	return (
 		<AddSpaceContainer>
 			<CurrentPathBar paths={paths} />
@@ -39,11 +30,15 @@ const AddRoleSpace = () => {
 									 isFold={isTableFold}
 									 setIsFold={setIsTableFold}/>
 
-				<ConnectUserToRole2 space={'ConnectUserToRole2'}
+				<ConnectUserToRole space={'ConnectUserToRole'}
 									 isFold={isTableFold}
 									 setIsFold={setIsTableFold}/>
 
+				<ConnectGroupToRole space={'ConnectGroupToRole'}
+								   isFold={isTableFold}
+								   setIsFold={setIsTableFold}/>
 
+				<RolePreviewDialogBox setIsOpened={setIsOpened} isOpened={isOpened}/>
 			</AddPageContainer>
 
 

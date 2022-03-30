@@ -70,6 +70,7 @@ const findAll = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
 
+
 		const response = await Axios.get(`/open-api/v1/iam/policies`, {
 			params: {
 				type: payload.type, // 관리타입
@@ -112,17 +113,35 @@ const findPolicyById = createAsyncThunk(
 	},
 );
 
+
 const slice = createSlice({
 	name: NAME,
 	initialState: {
 		creatingPolicyMode: false,
+		policies : [],
+		loading: false,
+		error: null,
 	},
 	reducers: {
 		changeCreatingPolicyMode: (state, {payload}) => {
 			state.creatingPolicyMode = payload.mode;
 		},
 	},
-	extraReducers: {},
+	extraReducers: {
+		[findAll.pending] : (state) =>{
+			state.loading = true;
+		},
+
+		[findAll.fulfilled] : (state,action) =>{
+			state.loading = false;
+			state.policies = action.payload;
+		},
+
+		[findAll.rejected] : (state,action) =>{
+			state.loading = false;
+			state.error = action.payload;
+		}
+	},
 });
 
 const selectAllState = createSelector(

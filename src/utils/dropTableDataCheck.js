@@ -13,6 +13,8 @@ export const tableDropDataType = [
 			'GROUP_ADD_USERS_EXCLUDE',
 			'GROUP_SUMMARY_TABS_USERS_INCLUDE',
 			'GROUP_SUMMARY_TABS_USERS_EXCLUDE',
+			'ROLE_ADD_USER_INCLUDE',
+			'ROLE_ADD_USER_EXCLUDE'
 		],
 	},
 	{
@@ -20,6 +22,8 @@ export const tableDropDataType = [
 		tablekeys: [
 			'USER_ADD_GROUPS_INCLUDE',
 			'USER_SUMMARY_TABS_GROUPS_INCLUDE',
+			'ROLE_ADD_GROUP_INCLUDE',
+			'ROLE_ADD_GROUP_EXCLUDE',
 		],
 	},
 	{

@@ -69,6 +69,6 @@ export const PermissionName = styled.div`
 
 export const CollapsbleContent = styled.div`
 	max-height: ${(props) => (props.height ? props.height : '0px')};
-	overflow: hidden;
+	overflow: scroll;
 	transition: max-height 0.2s ease-out;
 `;

@@ -33,13 +33,13 @@ const BorderHoverIconButton = styled(IconButton)`
 `;
 
 const DropButton = ({
-	select,
-	rightDataIds,
-	dataRight,
-	setRightDataIds,
-	leftTableKey,
-	RightTableKey,
-}) => {
+						select,
+						rightDataIds,
+						dataRight,
+						setRightDataIds,
+						leftTableKey,
+						RightTableKey,
+					}) => {
 	/***************************************************************************/
 	/* DndTable_update : 유형별 조건에 맞는 경고 알림추가
 	/*
@@ -72,6 +72,7 @@ const DropButton = ({
 			const GROUP = 'groups';
 			const ROLES = 'roles';
 			const UESRS = 'users';
+			const POLICY = 'policy';
 			const FILTER_TYPE = 'Private';
 			let preDataType = [];
 			if (predata) {
@@ -81,23 +82,18 @@ const DropButton = ({
 			}
 			// console.log(predata);
 			// console.log(preDataType);
-			const CheckDataType =
-				selectdata[leftTablekey] &&
-				selectdata[leftTablekey].map((v) => v.type);
+
+			const CheckDataType = selectdata[leftTablekey] && selectdata[leftTablekey].map((v) => v.type);
 			if (CheckDropDataType(rightTableKey)) {
 				if (CheckDropDataType(rightTableKey) === GROUP) {
-					const TypeLimited = CheckDataType.filter(
-						(v) => preDataType ?? preDataType.includes(v),
-					).length;
+					const TypeLimited = CheckDataType.filter((v) => preDataType ?? preDataType.includes(v),).length;
 					if (
 						TypeLimited > 1 &&
 						checkArrayhasDuplicates(CheckDataType)
 					) {
 						dispatch(
 							DIALOG_BOX.action.openAlert({
-								key:
-									confirmAlertMessages.singleCountGroupTypes
-										.key,
+								key: confirmAlertMessages.singleCountGroupTypes.key,
 							}),
 						);
 						return false;
@@ -106,27 +102,28 @@ const DropButton = ({
 				} else if (CheckDropDataType(rightTableKey) === ROLES) {
 					// API : roles 일때 - 역할 유형 검사 : Private 유형은 한사용자에게만
 					if (
-						checkArrayIsUniqueHasDuplicates(
-							CheckDataType,
-							FILTER_TYPE,
-						) ||
-						checkArraysIsUniqueHasDuplicates(
-							preDataType,
-							CheckDataType,
-							FILTER_TYPE,
-						)
+						checkArrayIsUniqueHasDuplicates(CheckDataType, FILTER_TYPE) || checkArraysIsUniqueHasDuplicates(preDataType, CheckDataType, FILTER_TYPE)
 					) {
 						dispatch(
-							DIALOG_BOX.action.openAlert({
-								key:
-									confirmAlertMessages.singleCountRolesTypes
-										.key,
-							}),
+							DIALOG_BOX.action.openAlert({key: confirmAlertMessages.singleCountRolesTypes.key,}),
 						);
 						return false;
 					} else {
 						return true;
 					}
+				} else if(CheckDropDataType(rightTableKey) === POLICY){
+					const TypeLimited = CheckDataType.filter((v) => preDataType ?? preDataType.includes(v)).length;
+					if (
+						TypeLimited > 5 && checkArrayhasDuplicates(CheckDataType)
+					) {
+						dispatch(
+							DIALOG_BOX.action.openAlert({
+								key: confirmAlertMessages.maxNumberOfPolicy.key,
+							}),
+						);
+						return false;
+					}
+					return true;
 				} else {
 					return true;
 				}
@@ -142,24 +139,17 @@ const DropButton = ({
 		const UESRS = 'users';
 		//TODO: users 의 uid 데이터 처리 수정
 		if (CheckDropDataType(leftTableKey) === UESRS) {
-			selectId =
-				select[leftTableKey] &&
-				select[leftTableKey].map((v) => v.userUid);
+			selectId = select[leftTableKey] && select[leftTableKey].map((v) => v.userUid);
 		} else {
-			selectId =
-				select[leftTableKey] && select[leftTableKey].map((v) => v.id);
+			selectId = select[leftTableKey] && select[leftTableKey].map((v) => v.id);
 		}
-		rightDataIds &&
-			selectId &&
-			onClickMaxNumber(selectId, rightDataIds, RightTableKey) &&
-			onClickTypeLimited(
-				select,
-				dataRight,
-				leftTableKey,
-				RightTableKey,
-			) &&
-			setRightDataIds &&
-			setRightDataIds(rightDataIds.concat(selectId));
+
+		rightDataIds && selectId && onClickMaxNumber(selectId, rightDataIds, RightTableKey) && onClickTypeLimited(
+			select,
+			dataRight,
+			leftTableKey,
+			RightTableKey,
+		) && setRightDataIds && setRightDataIds(rightDataIds.concat(selectId));
 	}, [
 		RightTableKey,
 		dataRight,
@@ -175,12 +165,16 @@ const DropButton = ({
 	const onClickRightDropButton = useCallback(() => {
 		const UESRS = 'users';
 		//TODO: users 의 uid 데이터 처리 수정
-		const selectId =
-			select[RightTableKey] && select[RightTableKey].map((v) => v.id);
+		let selectId = null;
 
-		rightDataIds &&
-			selectId &&
-			setRightDataIds(rightDataIds.filter((v) => !selectId.includes(v)));
+		if(CheckDropDataType(leftTableKey) === UESRS){
+			selectId = select[RightTableKey] && select[RightTableKey].map((v) => v.userUid);
+		}else{
+			selectId = select[RightTableKey] && select[RightTableKey].map((v) => v.id);
+		}
+
+		rightDataIds && selectId &&
+		setRightDataIds(rightDataIds.filter((v) => !selectId.includes(v)));
 	}, [RightTableKey, rightDataIds, select, setRightDataIds]);
 
 	return (
