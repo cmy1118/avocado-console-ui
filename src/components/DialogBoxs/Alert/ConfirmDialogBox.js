@@ -40,7 +40,7 @@ export const checkDropTypeAlertMessage = (tableKey) => {
 const ConfirmDialogBox = () => {
 	const dispatch = useDispatch();
 	const {alert} = useSelector(DIALOG_BOX.selector);
-	//	console.log(alert);
+
 	const onClickCloseDialogBox = useCallback(() => {
 		dispatch(DIALOG_BOX.action.closeAlert());
 	}, [dispatch]);

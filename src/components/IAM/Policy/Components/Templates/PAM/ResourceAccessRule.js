@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useRadio from '../../../../../../hooks/useRadio';
 import {
 	policyOption,
@@ -10,6 +10,9 @@ import TemplateElement from '../../TemplateElement';
 import TimeInterval from '../../../../../RecycleComponents/Templates/TimeInterval';
 import {DayOfTheWeek} from './ConnectReason';
 import ResourceSelectionContainer from './Resource/ResourceSelectionContainer';
+import PAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/PAM/TemplateManagement/RuleTemplate/ruleTemplateDetail';
+import {useDispatch} from 'react-redux';
+import PropTypes from 'prop-types';
 
 const resourceAccessRule = {
 	accessTimezone: {
@@ -34,7 +37,8 @@ const resourceAccessRule = {
 /**************************************************
  * ambacc244 - 자원 접근 정책 템플릿 컴포넌트
  **************************************************/
-const ResourceAccessRule = () => {
+const ResourceAccessRule = ({templateId, name, description}) => {
+	const dispatch = useDispatch();
 	//accessTimezoneRistriction: 사유 입력 시간제한 유무
 	const [
 		accessTimezoneRistriction,
@@ -51,6 +55,29 @@ const ResourceAccessRule = () => {
 	});
 	//selected: 선택된 자원 & 그룹
 	const [selected, setSelected] = useState({});
+
+	/**************************************************
+	 * ambacc244 - 자원 접근 정책 템플릿의 default 정보 불러오기
+	 **************************************************/
+	useEffect(() => {
+		const getDefaultValue = async () => {
+			try {
+				const res = await dispatch(
+					PAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetail(
+						{
+							id: templateId,
+						},
+					),
+				);
+
+				console.log(res.payload.data);
+			} catch (err) {
+				console.log('error => ', err);
+			}
+		};
+
+		getDefaultValue();
+	}, [dispatch, templateId]);
 
 	return (
 		<div>
@@ -115,4 +142,11 @@ const ResourceAccessRule = () => {
 		</div>
 	);
 };
+
+ResourceAccessRule.propTypes = {
+	templateId: PropTypes.string,
+	name: PropTypes.string,
+	description: PropTypes.string,
+};
+
 export default ResourceAccessRule;

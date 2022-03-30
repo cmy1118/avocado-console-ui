@@ -30,7 +30,9 @@ const DeleteDialogBox = () => {
 		dispatch(DIALOG_BOX.action.closeAlert());
 	}, [dispatch]);
 
-	const handleOnClickDeleteEvents = useCallback(() => {}, []);
+	const onClickProcessDeleteAction = useCallback(() => {
+		dispatch(DIALOG_BOX.action.closeAlert({isConfirmed: true}));
+	}, [dispatch]);
 
 	return (
 		<AlertDialogBox
@@ -87,7 +89,7 @@ const DeleteDialogBox = () => {
 					<NormalButton
 						width={'120px'}
 						margin={'0px 0px 0px 8px'}
-						onClick={handleOnClickDeleteEvents}
+						onClick={onClickProcessDeleteAction}
 					>
 						Delete
 					</NormalButton>
@@ -95,7 +97,7 @@ const DeleteDialogBox = () => {
 					<WarningButton
 						width={'120px'}
 						margin={'0px 0px 0px 8px'}
-						onClick={handleOnClickDeleteEvents}
+						onClick={onClickProcessDeleteAction}
 					>
 						Delete
 					</WarningButton>

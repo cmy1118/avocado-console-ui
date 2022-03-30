@@ -4,12 +4,33 @@ const slice = createSlice({
 	name: 'DIALOG_BOX',
 	initialState: {
 		alert: {open: false},
+		nextAction: null,
 	},
 	reducers: {
-		openAlert: (state, action) => {
-			state.alert = {open: true, key: action.payload.key};
+		/**************************************************
+		 * ambacc244 - 알림창 열기
+		 **************************************************/
+		openAlert: (state, {payload}) => {
+			state.alert = {open: true, key: payload.key};
 		},
-		closeAlert: (state) => {
+
+		/**************************************************
+		 * ambacc244 - 알림창을 닫은후 처리해야 할 작업이 완료
+		 **************************************************/
+		setNextAction: (state) => {
+			state.nextAction = null;
+		},
+
+		/**************************************************
+		 * ambacc244 - 알림창 닫기
+		 **************************************************/
+		closeAlert: (state, {payload}) => {
+			//알림창을 닫은후 처리해야 하는 action이 있음
+			if (payload?.isConfirmed) {
+				//action의 key를 저장
+				state.nextAction = state.alert.key;
+			}
+			//알림창 닫기
 			state.alert = {open: false};
 		},
 	},
@@ -17,8 +38,9 @@ const slice = createSlice({
 
 const selectAllState = createSelector(
 	(state) => state.alert,
-	(alert) => {
-		return {alert};
+	(state) => state.nextAction,
+	(alert, nextAction) => {
+		return {alert, nextAction};
 	},
 );
 
