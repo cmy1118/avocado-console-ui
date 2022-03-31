@@ -61,11 +61,14 @@ const getsAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 					Range: 'elements=0-50',
 				},
+				params: {
+					exclude: payload.exclude,
+				},
 				baseURL: baseURL.openApi,
 			},
 		);
-		console.log('IAM_ROLES_GRANT_ROLE_USER_getsAction', response.data);
-		return {data: response.data || [], headers: response.headers};
+		console.log('IAM_ROLES_GRANT_ROLE_USER_getsAction', response);
+		return {data: response.data, headers: response.headers};
 	},
 );
 

@@ -82,11 +82,9 @@ const getEventsAction = createAsyncThunk(
 		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
 		const response = await Axios.get(
-			`//open-api/v1/iam/user-groups/${payload.id}/roles/events`,
+			`/open-api/v1/iam/user-groups/${payload.id}/roles/events`,
 			{
 				params: {
-					fromTime: payload.fromTime,
-					toTime: payload.toTime,
 					roleId: payload.roleId,
 				},
 				headers: {
@@ -97,6 +95,7 @@ const getEventsAction = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
+		console.log('response:', response);
 		return {data: response.data, headers: response.headers};
 	},
 );
