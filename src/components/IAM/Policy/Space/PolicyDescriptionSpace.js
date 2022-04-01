@@ -48,6 +48,8 @@ const policyDescriptionSpace = {
 };
 
 const PolicyDescriptionSpace = ({policyId, type}) => {
+	console.log('RERERER');
+
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const location = useLocation();
@@ -65,7 +67,7 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 			{url: '/policies', label: '역할'},
 			{url: '/policies/' + type + '/' + policyId, label: policy?.name},
 		],
-		[policy.name, policyId, type],
+		[policy, policyId, type],
 	);
 
 	const TabBarInfo = [
@@ -149,8 +151,6 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 
 		getPolicy();
 	}, [policyId]);
-
-	console.log('RERERER');
 
 	return (
 		<IamContainer>
