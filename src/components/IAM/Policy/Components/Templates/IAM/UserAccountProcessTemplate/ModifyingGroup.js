@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import TemplateElementContainer from '../../../TemplateElementContainer';
-import TemplateElement from '../../../TemplateElement';
+import TemplateLayout from '../../Outline/TemplateLayout';
+import TemplateElement from '../../Outline/TemplateElement';
 import {
 	accountBlockingType2Options,
 	groupPermissionTypeOptions,
@@ -128,7 +128,7 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	}, [data, setBlockingType, setPermissionType, setUsage]);
 
 	return (
-		<TemplateElementContainer
+		<TemplateLayout
 			title={modifyingGroup.title}
 			description={modifyingGroup.description}
 			render={() => {

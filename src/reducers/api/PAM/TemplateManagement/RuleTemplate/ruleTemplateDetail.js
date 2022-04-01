@@ -13,16 +13,15 @@ const findAllRuleTemplateDetail = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
 
-		return await Axios.get(
-			`/open-api/v1/iam/rule-templates/${payload.id}/details`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': contentType.JSON,
-				},
-				baseURL: baseURL.openApi,
+		return await Axios.get(`/open-api/v1/pam/rule-templates/details`, {
+			params: {
+				templateId: payload.templateId,
 			},
-		);
+			headers: {
+				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+			},
+			baseURL: baseURL.openApi,
+		});
 	},
 );
 

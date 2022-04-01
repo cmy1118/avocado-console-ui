@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import TableContainer from '../../../../../Table/TableContainer';
 import Table from '../../../../../Table/Table';
-import TemplateElementContainer from '../../TemplateElementContainer';
+import TemplateLayout from '../Outline/TemplateLayout';
 import {DRAGGABLE_KEY} from '../../../../../../Constants/Table/keys';
 import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import TableComboBox from '../../../../../Table/ColumnCells/TableComboBox';
@@ -174,7 +174,7 @@ const FileAccess = () => {
 	}, [dispatch]);
 	return (
 		<div>
-			<TemplateElementContainer
+			<TemplateLayout
 				title={contents.fileDirectory.title}
 				description={contents.fileDirectory.description}
 				render={() => (

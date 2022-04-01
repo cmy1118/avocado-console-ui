@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import TemplateElementContainer from '../../TemplateElementContainer';
+import TemplateLayout from '../Outline/TemplateLayout';
 import useRadio from '../../../../../../hooks/useRadio';
 import useCheckBox from '../../../../../../hooks/useCheckBox';
-import TemplateElement from '../../TemplateElement';
+import TemplateElement from '../Outline/TemplateElement';
 import useTextBox from '../../../../../../hooks/useTextBox';
 
 /**************************************************
@@ -88,7 +88,7 @@ const MFA = () => {
 	}, [dispatch]);
 	return (
 		<div>
-			<TemplateElementContainer
+			<TemplateLayout
 				title={contents.mfa.title}
 				description={contents.mfa.description}
 				render={() => (

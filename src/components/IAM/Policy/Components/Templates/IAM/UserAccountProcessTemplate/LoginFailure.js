@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 
-import TemplateElement from '../../../TemplateElement';
+import TemplateElement from '../../Outline/TemplateElement';
 import {
 	accountBlockingTypeOptions,
 	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
 } from '../../../../../../../utils/policyOptions';
-import TemplateElementContainer from '../../../TemplateElementContainer';
+import TemplateLayout from '../../Outline/TemplateLayout';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../../styles/components/style';
@@ -161,7 +161,7 @@ const LoginFailure = ({data, setTemplateData}) => {
 	]);
 
 	return (
-		<TemplateElementContainer
+		<TemplateLayout
 			title={loginFailure.title}
 			description={loginFailure.description}
 			render={() => {

@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import DeviceAuth from './UserAuthTemplate/DeviceAuth';
-import MFA from './UserAuthTemplate/MFA';
-import FailOver from './UserAuthTemplate/FailOver';
-import IdentityVerification from './UserAuthTemplate/IdentityVerification';
-import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
-import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
-import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
+import DeviceAuth from './DeviceAuth';
+import MFA from './MFA';
+import FailOver from './FailOver';
+import IdentityVerification from './IdentityVerification';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
+import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 
 /**************************************************
  * ambacc244 - 사용자 인증 템플릿 컴포넌트
@@ -49,12 +49,6 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 					],
 				}),
 			);
-			console.log([
-				deviceAuthenticationData,
-				mfaData,
-				alternativeAuthNFailOverAuthData,
-				identityVerificationData,
-			]);
 		}
 	}, [
 		alternativeAuthNFailOverAuthData,
@@ -72,7 +66,7 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 	 * ambacc244 - 사용자 인증 템플릿의 default 정보 불러오기
 	 **************************************************/
 	useEffect(() => {
-		const fetchData = async () => {
+		const getDefaultValue = async () => {
 			try {
 				const res = await dispatch(
 					IAM_RULE_TEMPLATE_DETAIL.asyncAction.findAll({
@@ -89,7 +83,7 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 				console.log('error => ', err);
 			}
 		};
-		fetchData();
+		getDefaultValue();
 	}, [dispatch, templateId]);
 
 	return (

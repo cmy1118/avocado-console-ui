@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import {arrowDownIcon, arrowRightIcon} from '../../../../icons/icons';
-import {HoverIconButton} from '../../../../styles/components/icons';
-import {TransparentButton} from '../../../../styles/components/buttons';
+import {arrowDownIcon, arrowRightIcon} from '../../../../../../icons/icons';
+import {HoverIconButton} from '../../../../../../styles/components/icons';
+import {TransparentButton} from '../../../../../../styles/components/buttons';
 
 const Container = styled.div`
 	.fold-title {

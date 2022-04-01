@@ -1,5 +1,5 @@
-import TemplateElementContainer from '../../../TemplateElementContainer';
-import TemplateElement from '../../../TemplateElement';
+import TemplateLayout from '../../Outline/TemplateLayout';
+import TemplateElement from '../../Outline/TemplateElement';
 import React, {useEffect} from 'react';
 import useRadio from '../../../../../../../hooks/useRadio';
 import {
@@ -281,7 +281,7 @@ const PaswordPattern = ({data, setTemplateData}) => {
 	]);
 
 	return (
-		<TemplateElementContainer
+		<TemplateLayout
 			title={passwordPattern.title}
 			description={passwordPattern.description}
 			render={() => {

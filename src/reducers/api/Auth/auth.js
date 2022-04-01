@@ -48,8 +48,6 @@ const userAuthAction = createAsyncThunk(
 			},
 			baseURL: baseURL.auth,
 		});
-
-		// setAuthorizationToken(response.data?.access_token);
 		return response.data;
 	},
 );
@@ -153,7 +151,6 @@ const refreshTokenAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {userAuth, companyId} = getState().AUTH;
 
-		console.log(userAuth.refresh_token, companyId);
 		const response = await Axios.post('/oauth2/v1/token', null, {
 			params: {
 				grant_type: grantType.REFRESH_TOKEN,
@@ -205,6 +202,7 @@ const slice = createSlice({
 			state.companyId = action.meta.arg.companyId;
 		},
 		[userAuthAction.fulfilled]: (state, action) => {
+			console.log(action.payload);
 			state.loading = false;
 			state.userAuth = action.payload;
 			state.isLoggedIn = true;

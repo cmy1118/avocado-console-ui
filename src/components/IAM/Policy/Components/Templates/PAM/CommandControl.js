@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import Table from '../../../../../Table/Table';
-import TemplateElementContainer from '../../TemplateElementContainer';
+import TemplateLayout from '../Outline/TemplateLayout';
 import useRadio from '../../../../../../hooks/useRadio';
-import TemplateElement from '../../TemplateElement';
+import TemplateElement from '../Outline/TemplateElement';
 import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import {DRAGGABLE_KEY} from '../../../../../../Constants/Table/keys';
 import TableContainer from '../../../../../Table/TableContainer';
@@ -109,7 +109,7 @@ const CommandControl = () => {
 	}, [dispatch, setControlTypeValue]);
 	return (
 		<div>
-			<TemplateElementContainer
+			<TemplateLayout
 				title={contents.controlType.title}
 				description={contents.controlType.description}
 				render={() => (
@@ -120,7 +120,7 @@ const CommandControl = () => {
 				)}
 			/>
 			{controlTypeValue === 'white' && (
-				<TemplateElementContainer
+				<TemplateLayout
 					title={contents.controlCommand.title}
 					description={contents.controlCommand.description}
 					render={() => (

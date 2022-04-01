@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import TemplateElementContainer from '../../../TemplateElementContainer';
-import TemplateElement from '../../../TemplateElement';
+import TemplateLayout from '../../Outline/TemplateLayout';
+import TemplateElement from '../../Outline/TemplateElement';
 import {
 	applicationOptions,
 	policyOption,
@@ -86,7 +86,7 @@ const DeviceAuth = ({data, setTemplateData}) => {
 	}, [data, setApplications, setUsage]);
 
 	return (
-		<TemplateElementContainer
+		<TemplateLayout
 			title={deviceAuth.title}
 			description={deviceAuth.description}
 			render={() => {

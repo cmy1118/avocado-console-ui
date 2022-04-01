@@ -10,7 +10,7 @@ import {
 	actionTemplateFilter,
 	getActionTemplatesFilter,
 } from '../../../../../../utils/template';
-import TemplateElementContainer from '../../TemplateElementContainer';
+import TemplateLayout from '../Outline/TemplateLayout';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
 import Table from '../../../../../Table/Table';
@@ -40,7 +40,7 @@ const constants = {
 /*******************************************************************
  * roberto - 자원 관리 권한 템플릿
  ******************************************************************/
-const ResourceManagement = ({templateId, name, description}) => {
+const ResourceManagement = ({templateId, name, description, categoryType}) => {
 	const dispatch = useDispatch();
 	const {creatingPolicyMode} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
@@ -143,7 +143,7 @@ const ResourceManagement = ({templateId, name, description}) => {
 	]);
 	console.log('tableData:', tableData);
 	return (
-		<TemplateElementContainer
+		<TemplateLayout
 			title={name}
 			description={description}
 			render={() => {
@@ -165,5 +165,6 @@ ResourceManagement.propTypes = {
 	templateId: PropTypes.string,
 	name: PropTypes.string,
 	description: PropTypes.string,
+	categoryType: PropTypes.string,
 };
 export default ResourceManagement;

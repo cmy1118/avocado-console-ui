@@ -63,9 +63,9 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 		() => [
 			{url: '/iam', label: 'IAM'},
 			{url: '/policies', label: '역할'},
-			{url: '/policies/' + type + '/' + policy?.id, label: policy?.name},
+			{url: '/policies/' + type + '/' + policyId, label: policy?.name},
 		],
-		[policy, type],
+		[policy.name, policyId, type],
 	);
 
 	const TabBarInfo = [
@@ -149,6 +149,8 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 
 		getPolicy();
 	}, [policyId]);
+
+	console.log('RERERER');
 
 	return (
 		<IamContainer>

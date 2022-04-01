@@ -22,6 +22,7 @@ import CurrentPathBar from '../../../Header/CurrentPathBar';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+import {policyTypes} from '../../../../utils/data';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -99,7 +100,10 @@ const PolicySpace = () => {
 	}, [iamPolicies]);
 
 	const onClickLinkToAddPolicyPage = useCallback(() => {
-		history.push('/policies/add');
+		history.push({
+			pathname: '/policies/add',
+			search: `type=${policyTypes.iam}`,
+		});
 	}, [history]);
 
 	const getUsersDetailApi = useCallback(

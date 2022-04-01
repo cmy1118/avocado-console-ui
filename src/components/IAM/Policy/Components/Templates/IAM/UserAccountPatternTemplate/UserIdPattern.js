@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
-import TemplateElement from '../../../TemplateElement';
+import TemplateElement from '../../Outline/TemplateElement';
 import {
 	policyOption,
 	patternTypeOptions,
 	setUsageOptionByAttribute,
 	usageOptions,
 } from '../../../../../../../utils/policyOptions';
-import TemplateElementContainer from '../../../TemplateElementContainer';
+import TemplateLayout from '../../Outline/TemplateLayout';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../../hooks/useTextBox';
 import PropTypes from 'prop-types';
@@ -94,7 +94,7 @@ const UserIdPattern = ({data, setTemplateData}) => {
 	}, [data, setPattern, setPatternType, setUsage]);
 
 	return (
-		<TemplateElementContainer
+		<TemplateLayout
 			title={userIdPattern.title}
 			description={userIdPattern.description}
 			render={() => {

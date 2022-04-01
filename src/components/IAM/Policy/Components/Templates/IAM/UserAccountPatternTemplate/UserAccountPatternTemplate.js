@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import UserIdPattern from './UserAccountPatternTemplate/UserIdPattern';
-import PaswordPattern from './UserAccountPatternTemplate/PaswordPattern';
+import UserIdPattern from './UserIdPattern';
+import PaswordPattern from './PaswordPattern';
 import PropTypes from 'prop-types';
 
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
-import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
-import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
-import {policyTypes} from '../../../../../../utils/data';
+import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
+import {policyTypes} from '../../../../../../../utils/data';
 
 /**************************************************
  * ambacc244 - 사용자 계정 패턴 컴포넌트

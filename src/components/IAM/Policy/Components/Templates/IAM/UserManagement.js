@@ -7,7 +7,7 @@ import {
 	actionTemplateFilter,
 	getActionTemplatesFilter,
 } from '../../../../../../utils/template';
-import TemplateElementContainer from '../../TemplateElementContainer';
+import TemplateLayout from '../Outline/TemplateLayout';
 import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
 import Table from '../../../../../Table/Table';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
@@ -116,7 +116,7 @@ const UserManagement = ({templateId, name, description, categoryType}) => {
 	]);
 	console.log('tableData:', tableData);
 	return (
-		<TemplateElementContainer
+		<TemplateLayout
 			title={name}
 			description={description}
 			render={() => {

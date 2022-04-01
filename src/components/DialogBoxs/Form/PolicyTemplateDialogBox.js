@@ -1,11 +1,16 @@
 import React from 'react';
-import {DialogBoxFooter, DialogBoxHeader} from "../../../styles/components/dialogBox";
-import {IconButton} from "../../../styles/components/icons";
-import {closeIcon} from "../../../icons/icons";
-import {NormalButton, TransparentButton} from "../../../styles/components/buttons";
+import {
+	DialogBoxFooter,
+	DialogBoxHeader,
+} from '../../../styles/components/dialogBox';
+import {IconButton} from '../../../styles/components/icons';
+import {closeIcon} from '../../../icons/icons';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../styles/components/buttons';
 
 const PolicyTemplateDialogBox = () => {
-
 	return (
 		<_DialogBox
 			isOpen={isOpened}
@@ -52,6 +57,7 @@ const PolicyTemplateDialogBox = () => {
 				<NormalButton onClick={onSubmitForm}>Save</NormalButton>
 			</DialogBoxFooter>
 		</_DialogBox>
+	);
 };
 
 export default PolicyTemplateDialogBox;

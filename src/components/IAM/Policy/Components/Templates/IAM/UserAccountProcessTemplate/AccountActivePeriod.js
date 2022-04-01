@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import TemplateElementContainer from '../../../TemplateElementContainer';
-import TemplateElement from '../../../TemplateElement';
+import TemplateLayout from '../../Outline/TemplateLayout';
+import TemplateElement from '../../Outline/TemplateElement';
 import {
 	accountBlockingTypeOptions,
 	policyOption,
@@ -104,7 +104,7 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 	}, [data, setBlockingType, setExpiryDays, setUsage]);
 
 	return (
-		<TemplateElementContainer
+		<TemplateLayout
 			title={accountActivePeriod.title}
 			description={accountActivePeriod.description}
 			render={() => {

@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 
-import TemplateElementContainer from '../../../TemplateElementContainer';
-import TemplateElement from '../../../TemplateElement';
+import TemplateLayout from '../../Outline/TemplateLayout';
+import TemplateElement from '../../Outline/TemplateElement';
 import {RowDiv} from '../../../../../../../styles/components/style';
 import {
 	accountBlockingTypeOptions,
@@ -115,7 +115,7 @@ const Dormant = ({data, setTemplateData}) => {
 	}, [data, setBlockingType, setUnconnectedDays, setUsage]);
 
 	return (
-		<TemplateElementContainer
+		<TemplateLayout
 			title={dormant.title}
 			description={dormant.description}
 			render={() => {

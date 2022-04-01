@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
-import TemplateElement from '../../../TemplateElement';
+import TemplateElement from '../../Outline/TemplateElement';
 import {
 	authMethodOptions,
 	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
 } from '../../../../../../../utils/policyOptions';
-import TemplateElementContainer from '../../../TemplateElementContainer';
+import TemplateLayout from '../../Outline/TemplateLayout';
 import useRadio from '../../../../../../../hooks/useRadio';
 import PropTypes from 'prop-types';
 import MFA from './MFA';
@@ -143,7 +143,7 @@ const FailOver = ({data, setTemplateData}) => {
 	}, [data, setBasicAuth, setMfa, setTimeoutSeconds, setUsage]);
 
 	return (
-		<TemplateElementContainer
+		<TemplateLayout
 			title={failOver.title}
 			description={failOver.description}
 			render={() => {

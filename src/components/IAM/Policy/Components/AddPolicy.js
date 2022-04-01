@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
 	TitleBar,
 	TitleBarButtons,
@@ -20,15 +20,11 @@ import {policyTypes} from '../../../../utils/data';
 import PolicyPreviewDialogBox from '../../../DialogBoxs/Preview/PolicyPreviewDialogBox';
 import useTextBox from '../../../../hooks/useTextBox';
 import useComboBox from '../../../../hooks/useComboBox';
+import {useHistory, useLocation} from 'react-router-dom';
 
-/**************************************************
- * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
- ***************************************************/
-const contents = {
-	writePolicy: {
-		title: '정책 작성',
-		description: '정책 유형에 해당되는 탬플릿 5개까지만 추가 가능합니다.',
-	},
+const addPolicy = {
+	title: '정책 작성',
+	description: '정책 유형에 해당되는 탬플릿 5개까지만 추가 가능합니다.',
 };
 
 /**************************************************
@@ -36,9 +32,11 @@ const contents = {
  **************************************************/
 const AddPolicy = () => {
 	const dispatch = useDispatch();
-	//정책 생성을 위한 dialogBox 열림닫힘 state
+	const history = useHistory();
+	const location = useLocation();
+	//isOpened: 정책 생성을 위한 dialogBox 열림닫힘 state
 	const [isOpened, setIsOpened] = useState(false);
-
+	//policyName: 생성할 정책 이름
 	const [policyName, policyNameTextBox] = useTextBox({
 		placeholder: '정책 이름',
 	});
@@ -46,7 +44,7 @@ const AddPolicy = () => {
 		placeholder: '정책 설명',
 	});
 
-	const [policyType, policyTypeComboBox] = useComboBox({
+	const [policyType, policyTypeComboBox, setPolicyType] = useComboBox({
 		options: [
 			{key: policyTypes.iam, label: 'IAM'},
 			{key: policyTypes.pam, label: 'PAM'},
@@ -56,7 +54,7 @@ const AddPolicy = () => {
 	/**************************************************
 	 * ambacc244 - 정책 추가 취소
 	 **************************************************/
-	const onClickCancelAddPolicy = useCallback(() => {}, [dispatch]);
+	const onClickCancelAddPolicy = useCallback(() => {}, []);
 
 	/**************************************************
 	 * ambacc244 - 정책 생성을 위해 템플릿 데이터 모으기
@@ -69,6 +67,18 @@ const AddPolicy = () => {
 		);
 		setIsOpened(true);
 	}, [dispatch]);
+
+	/**************************************************
+	 * ambacc244 - 정책 유형이 변경되면 url도 변경
+	 **************************************************/
+	useEffect(() => {
+		if (Object.values(policyTypes).includes(policyType)) {
+			history.push({
+				pathname: location.pathname,
+				search: `type=${policyType}`,
+			});
+		}
+	}, [history, location.pathname, policyType]);
 
 	return (
 		<>
@@ -108,8 +118,8 @@ const AddPolicy = () => {
 				</RowDiv>
 			</AddPageContent>
 			<WritePolicy
-				title={contents.writePolicy.title}
-				description={contents.writePolicy.description}
+				title={addPolicy.title}
+				description={addPolicy.description}
 				policyType={policyType}
 			/>
 			<PolicyPreviewDialogBox

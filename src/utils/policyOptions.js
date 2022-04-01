@@ -96,10 +96,10 @@ export const policyOption = {
 		mobile: {key: 'mobile', label: '전화번호'},
 		userId: {key: 'userId', label: 'ID 동일 연속 문자 수(3)'},
 	},
-	loginType: {
+	inputType: {
 		auto: {key: 'auto', label: '자동 로그인'},
-		direct: {key: 'direct', label: '직접 로그인'},
-		manual: {key: 'manual', label: '수동 로그인'},
+		chooseLoginType: {key: 'choose_login_type', label: '직접 로그인'},
+		idInput: {key: 'id_input', label: '수동 로그인'},
 	},
 	resource: {
 		certain: {key: 'certain', label: '특정 자원'},
@@ -297,18 +297,18 @@ export const personalInfoRestrictionMethodOptions = [
 	},
 ];
 
-export const loginTypeOptions = [
+export const inputTypeOptions = [
 	{
-		key: policyOption.loginType.auto.key,
-		label: policyOption.loginType.auto.label,
+		key: policyOption.inputType.auto.key,
+		label: policyOption.inputType.auto.label,
 	},
 	{
-		key: policyOption.loginType.direct.key,
-		label: policyOption.loginType.direct.label,
+		key: policyOption.inputType.chooseLoginType.key,
+		label: policyOption.inputType.chooseLoginType.label,
 	},
 	{
-		key: policyOption.loginType.manual.key,
-		label: policyOption.loginType.manual.label,
+		key: policyOption.inputType.idInput.key,
+		label: policyOption.inputType.idInput.label,
 	},
 ];
 

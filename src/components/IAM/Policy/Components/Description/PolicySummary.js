@@ -112,12 +112,12 @@ const PolicySummary = ({policy, setPolicy}) => {
 						<>
 							{squareBrackets.left}
 							<NavLink
-								to={`/user/${policy?.lastEventLog?.userUid}`}
+								to={`/user/${policy.lastEventLog.userUid}`}
 								key={'user'}
 							>
-								{policy?.lastEventLog?.userName}
+								{policy.lastEventLog.userName}
 								{parentheses.left}
-								{policy?.lastEventLog?.userId}
+								{policy.lastEventLog.userId}
 								{parentheses.right}
 							</NavLink>
 							{squareBrackets.right}

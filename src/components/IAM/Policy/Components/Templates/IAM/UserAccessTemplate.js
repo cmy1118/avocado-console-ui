@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import TemplateElementContainer from '../../TemplateElementContainer';
+import TemplateLayout from '../Outline/TemplateLayout';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
-import TemplateElement from '../../TemplateElement';
+import TemplateElement from '../Outline/TemplateElement';
 import TimeInterval from '../../../../../RecycleComponents/Templates/TimeInterval';
 import useRadio from '../../../../../../hooks/useRadio';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
@@ -162,7 +162,7 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 	return (
 		<div>
 			{data.map((v, i) => (
-				<TemplateElementContainer
+				<TemplateLayout
 					key={i}
 					title={contents[v.resource].title}
 					description={contents[v.resource].description}

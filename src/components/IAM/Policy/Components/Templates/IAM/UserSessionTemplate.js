@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import TemplateElement from '../../TemplateElement';
-import TemplateElementContainer from '../../TemplateElementContainer';
+import TemplateElement from '../Outline/TemplateElement';
+import TemplateLayout from '../Outline/TemplateLayout';
 import useRadio from '../../../../../../hooks/useRadio';
 import {DRAGGABLE_KEY} from '../../../../../../Constants/Table/keys';
 import Table from '../../../../../Table/Table';
@@ -239,7 +239,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 
 	return (
 		<div>
-			<TemplateElementContainer
+			<TemplateLayout
 				title={contents.sessionTimeout.title}
 				description={contents.sessionTimeout.description}
 				render={() => (
@@ -251,7 +251,7 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 					/>
 				)}
 			/>
-			<TemplateElementContainer
+			<TemplateLayout
 				title={contents.screenSaver.title}
 				description={contents.screenSaver.description}
 				render={() => {

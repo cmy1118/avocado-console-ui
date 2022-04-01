@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import TemplateElementContainer from '../../../TemplateElementContainer';
-import TemplateElement from '../../../TemplateElement';
+import TemplateLayout from '../../Outline/TemplateLayout';
+import TemplateElement from '../../Outline/TemplateElement';
 import {
 	additionalAuthMethodOptions,
 	authUsageOptions,
@@ -269,7 +269,7 @@ const MFA = ({data, setTemplateData}) => {
 	]);
 
 	return (
-		<TemplateElementContainer
+		<TemplateLayout
 			title={mfa.title}
 			description={mfa.description}
 			render={() => {

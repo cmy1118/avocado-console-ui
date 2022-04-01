@@ -22,7 +22,7 @@ import {
 	TitleBarText,
 } from '../../../../../styles/components/iam/iam';
 import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
-import TemplateElement from '../../../Policy/Components/TemplateElement';
+import TemplateElement from '../../../Policy/Components/Templates/Outline/TemplateElement';
 import useRadio from '../../../../../hooks/useRadio';
 import {
 	patternTypeOptions,

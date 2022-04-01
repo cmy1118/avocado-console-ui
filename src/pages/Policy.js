@@ -6,17 +6,20 @@ import AddPolicySpace from '../components/IAM/Policy/Space/AddPolicySpace';
 import PolicyDescriptionSpace from '../components/IAM/Policy/Space/PolicyDescriptionSpace';
 
 const Policy = ({match}) => {
+	console.log(match);
 	return (
 		<>
 			{match.path === '/policies/add' ? (
 				<AddPolicySpace />
-			) : match.params?.id && match.params?.type ? (
+			) : match.path === '/policies' &&
+			  match.params?.id &&
+			  match.params?.type ? (
 				<PolicyDescriptionSpace
 					policyId={match.params.id}
 					type={match.params.type}
 				/>
 			) : (
-				<PolicySpace />
+				match.path === '/policies' && <PolicySpace />
 			)}
 		</>
 	);

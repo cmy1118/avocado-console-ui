@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import LoginFailure from './UserAccountProcessTemplate/LoginFailure';
-import Dormant from './UserAccountProcessTemplate/Dormant';
-import AccountActivePeriod from './UserAccountProcessTemplate/AccountActivePeriod';
-import ModifyingGroup from './UserAccountProcessTemplate/ModifyingGroup';
-import Resignation from './UserAccountProcessTemplate/Resignation';
+import LoginFailure from './LoginFailure';
+import Dormant from './Dormant';
+import AccountActivePeriod from './AccountActivePeriod';
+import ModifyingGroup from './ModifyingGroup';
+import Resignation from './Resignation';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
-import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
-import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
-import {policyTypes} from '../../../../../../utils/data';
-import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
+import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
+import {policyTypes} from '../../../../../../../utils/data';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
 
 /**************************************************
  * ambacc244 - 사용자 계정 처리 컴포넌트

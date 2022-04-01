@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Templates from './Templates';
+import Templates from './Templates/Outline/Templates';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {NormalButton} from '../../../../styles/components/buttons';

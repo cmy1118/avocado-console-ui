@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import TemplateElementContainer from '../../../TemplateElementContainer';
-import TemplateElement from '../../../TemplateElement';
+import TemplateLayout from '../../Outline/TemplateLayout';
+import TemplateElement from '../../Outline/TemplateElement';
 import {
 	accountBlockingTypeOptions,
 	gracePeriodUsageOptions,
@@ -128,7 +128,7 @@ const Resignation = ({data, setTemplateData}) => {
 	}, [data, setBlockingType, setGracePeriod, setGracePeriodUsage, setUsage]);
 
 	return (
-		<TemplateElementContainer
+		<TemplateLayout
 			title={resignation.title}
 			description={resignation.description}
 			render={() => {

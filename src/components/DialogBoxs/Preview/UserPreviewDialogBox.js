@@ -22,6 +22,7 @@ import {useHistory} from 'react-router-dom';
 import IAM_USER_TAG from '../../../reducers/api/IAM/User/Tag/tags';
 import IAM_GRANT_POLICY_BY_ROLE from '../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
 import * as _ from 'lodash';
+
 const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
 	const dispatch = useDispatch();

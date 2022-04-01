@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 
-import TemplateElementContainer from '../../../TemplateElementContainer';
+import TemplateLayout from '../../Outline/TemplateLayout';
 import {
 	identityVerificationMethodOptions,
 	policyOption,
 	usageOptions,
 } from '../../../../../../../utils/policyOptions';
-import TemplateElement from '../../../TemplateElement';
+import TemplateElement from '../../Outline/TemplateElement';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../../styles/components/style';
@@ -112,7 +112,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 	}, [data, setAuthMethod, setTimeoutSeconds, setUsage]);
 
 	return (
-		<TemplateElementContainer
+		<TemplateLayout
 			title={identityVerification.title}
 			description={identityVerification.description}
 			render={() => {

@@ -1,27 +1,17 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import TemplateElementContainer from '../../../TemplateElementContainer';
-import Table from '../../../../../../Table/Table';
+import React from 'react';
+import TemplateLayout from '../../Outline/TemplateLayout';
 import PropTypes from 'prop-types';
-import ResourceManagement from '../ResourceManagement';
-import RRM_RESOURCE from '../../../../../../../reducers/api/RRM/Resource/resource';
-import {useDispatch, useSelector} from 'react-redux';
-import {tableColumns} from '../../../../../../../Constants/Table/columns';
-import {tableKeys} from '../../../../../../../Constants/Table/keys';
-import AddAcessResourceAccountDialogBox from '../../../../../../DialogBoxs/Form/AddAcessResourceAccountDialogBox';
-import {RowDiv} from '../../../../../../../styles/components/style';
-import {AllreplaceStr} from '../../../../../../../utils/dataFitering';
 import useRadio from '../../../../../../../hooks/useRadio';
 import {
 	policyOption,
 	resourceOptions,
 } from '../../../../../../../utils/policyOptions';
-import {FoldableContainer} from '../../../../../../../styles/components/iam/iam';
 import ResourceAccessTemplate from './ResourceAccessTemplate';
 
 /**********************************************************************
  * roberto - 자원 접근 권한
  **********************************************************************/
-const ResourceAccess = ({templateId, name, description}) => {
+const ResourceAccess = ({templateId, name, description, categoryType}) => {
 	const [resource, resourceRadioButton, setResource] = useRadio({
 		name: 'ResourceAccessList',
 		options: resourceOptions,
@@ -29,7 +19,7 @@ const ResourceAccess = ({templateId, name, description}) => {
 
 	return (
 		<div>
-			<TemplateElementContainer
+			<TemplateLayout
 				title={name}
 				description={description}
 				render={() => {
@@ -56,5 +46,6 @@ ResourceAccess.propTypes = {
 	templateId: PropTypes.string,
 	name: PropTypes.string,
 	description: PropTypes.string,
+	categoryType: PropTypes.string,
 };
 export default ResourceAccess;

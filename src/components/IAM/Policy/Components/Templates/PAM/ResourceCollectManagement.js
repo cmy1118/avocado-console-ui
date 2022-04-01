@@ -3,10 +3,7 @@
  ******************************************************************/
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import RowCheckbox from '../../../../../RecycleComponents/rowCheckbox';
 import {useDispatch, useSelector} from 'react-redux';
-import {ColDiv} from '../../../../../../styles/components/style';
-import {filterPropObj, objArrUnion} from '../../../../../../utils/dataFitering';
 import PropTypes from 'prop-types';
 // import IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../reducers/api/IAM/Policy/ActionManagement/templateDetail';
 import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/IAM/ActionManagement/actionTemplate';
@@ -14,7 +11,7 @@ import {
 	actionTemplateFilter,
 	getActionTemplatesFilter,
 } from '../../../../../../utils/template';
-import TemplateElementContainer from '../../TemplateElementContainer';
+import TemplateLayout from '../Outline/TemplateLayout';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
 import Table from '../../../../../Table/Table';
@@ -42,7 +39,12 @@ const constants = {
 /*******************************************************************
  * roberto - 자원 수집 관리 권한 템플릿
  ******************************************************************/
-const ResourceCollectManagement = ({templateId, name, description}) => {
+const ResourceCollectManagement = ({
+	templateId,
+	name,
+	description,
+	categoryType,
+}) => {
 	const dispatch = useDispatch();
 	const {creatingPolicyMode} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
@@ -146,7 +148,7 @@ const ResourceCollectManagement = ({templateId, name, description}) => {
 	console.log('tableData:', tableData);
 	return (
 		<div>
-			<TemplateElementContainer
+			<TemplateLayout
 				title={name}
 				description={description}
 				render={() => {
@@ -162,13 +164,13 @@ const ResourceCollectManagement = ({templateId, name, description}) => {
 					);
 				}}
 			/>
-			<TemplateElementContainer
+			<TemplateLayout
 				title={'적용예정'}
 				description={'적용예정'}
 				render={() => {
 					return <div>영애님 컴포넌트 생성시 적용예정..</div>;
 				}}
-			></TemplateElementContainer>
+			></TemplateLayout>
 		</div>
 	);
 };
@@ -176,5 +178,6 @@ ResourceCollectManagement.propTypes = {
 	templateId: PropTypes.string,
 	name: PropTypes.string,
 	description: PropTypes.string,
+	categoryType: PropTypes.string,
 };
 export default ResourceCollectManagement;

@@ -3,6 +3,7 @@ import {IamContainer} from '../../../../styles/components/iam/iam';
 import AddPolicy from '../Components/AddPolicy';
 import {AddPageContainer} from '../../../../styles/components/iam/addPage';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import {useLocation} from 'react-router-dom';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
