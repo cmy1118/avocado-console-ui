@@ -21,7 +21,7 @@ import {useDispatch} from 'react-redux';
 import ComboBox from '../../RecycleComponents/New/ComboBox';
 import {RowDiv} from '../../../styles/components/style';
 import {isFulfilled} from '../../../utils/redux';
-import RRM_RESOURCE from '../../../reducers/api/RRM/Resource/resource';
+import RRM_RESOURCE from '../../../reducers/api/PAM/Resource/resource';
 import useSelectColumn from '../../../hooks/table/useSelectColumn';
 
 const _DialogBox = styled(DialogBox)`
@@ -52,19 +52,13 @@ const protocolOptions = [
 	{value: 'SFTP', label: 'SFTP'},
 ];
 
-const SelectResourceDialogBox = ({
-	isOpened,
-	setIsOpened,
-	selected,
-	setSelected,
-}) => {
+const SelectResourceDialogBox = ({isOpened, setIsOpened, setSelected}) => {
 	const dispatch = useDispatch();
 	const searchRef = useRef(null);
 	//resources: 검색된 자원 리스트
 	const [resources, setResources] = useState([]);
 	//addedSelection: 추가로 선택될 자원
-	// const [addedSelection, setAddedSelection] = useState([]);
-	const [select, columns] = useSelectColumn(
+	const [addedSelection, columns] = useSelectColumn(
 		tableColumns[tableKeys.policy.add.pamTemplate.resource],
 	);
 
@@ -81,10 +75,10 @@ const SelectResourceDialogBox = ({
 	 **************************************************/
 	const onClickAddSelection = useCallback(() => {
 		//선택된 자원에 추가로 선택된 자원 추가
-		setSelected([...selected, ...select]);
+		setSelected((prev) => [...prev, ...addedSelection]);
 		//다이얼로그박스 닫기
 		setIsOpened(false);
-	}, [select, selected, setIsOpened, setSelected]);
+	}, [addedSelection, setIsOpened, setSelected]);
 
 	/**************************************************
 	 * ambacc244 - 자원 그룹 검색
@@ -95,7 +89,7 @@ const SelectResourceDialogBox = ({
 			if (v?.search.length > 1) {
 				const res = await dispatch(
 					RRM_RESOURCE.asyncAction.findAllResourceAction({
-						serviceType: v?.protocol || '',
+						serviceType: v?.protocol,
 						keyword2: v.search.trim(),
 					}),
 				);
@@ -190,7 +184,6 @@ const SelectResourceDialogBox = ({
 SelectResourceDialogBox.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
-	selected: PropTypes.array.isRequired,
 	setSelected: PropTypes.func.isRequired,
 };
 

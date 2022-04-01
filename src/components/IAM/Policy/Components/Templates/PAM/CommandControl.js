@@ -7,6 +7,7 @@ import TemplateElement from '../Outline/TemplateElement';
 import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import {DRAGGABLE_KEY} from '../../../../../../Constants/Table/keys';
 import TableContainer from '../../../../../Table/TableContainer';
+import Resource from './Resource/Resource';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -50,6 +51,7 @@ const CommandControl = () => {
 			{label: '허용(White)', key: 'white'},
 		],
 	});
+	const [resourceData, setResourceData] = useState({});
 
 	// 세션 타임아웃 테이블 컬럼
 	const columns = useMemo(
@@ -140,6 +142,11 @@ const CommandControl = () => {
 					)}
 				/>
 			)}
+			<Resource
+				//TODO: default 데이터 있으면 넘겨주면 되는데 어떤 형식으로 올지 몰라서 command out
+				// data={defaultData && defaultData.resource}
+				setTemplateData={setResourceData}
+			/>
 		</div>
 	);
 };

@@ -34,7 +34,7 @@ const PolicySummary = ({policy, setPolicy}) => {
 		name: 'description',
 		regex: /^.{0,200}$/,
 	});
-	console.log(policy);
+
 	/**************************************************
 	 * ambacc244 - 정책 상세 설명 변경
 	 **************************************************/
@@ -68,7 +68,6 @@ const PolicySummary = ({policy, setPolicy}) => {
 		setDescription(policy?.description || '');
 	}, [policy?.description]);
 
-	console.log(policy);
 	return (
 		<SummaryList>
 			<LiText>

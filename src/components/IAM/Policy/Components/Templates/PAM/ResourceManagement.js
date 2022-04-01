@@ -16,6 +16,7 @@ import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
 import Table from '../../../../../Table/Table';
 import PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../../reducers/api/PAM/TemplateManagement/ActionManagement/actionTemplateDetail';
 import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/PAM/TemplateManagement/ActionManagement/actionTemplate';
+import Resource from './Resource/Resource';
 
 const constants = {
 	main: '자원 관리 권한',
@@ -59,6 +60,7 @@ const ResourceManagement = ({templateId, name, description, categoryType}) => {
 		{Header: '부여', accessor: 'grant'},
 		{Header: '회수', accessor: 'revoke'},
 	];
+	const [resourceData, setResourceData] = useState({});
 	const columns = useMemo(() => {
 		let columnsArr = [];
 		tableColumns.map((v) => {
@@ -141,24 +143,31 @@ const ResourceManagement = ({templateId, name, description, categoryType}) => {
 		tableData,
 		templateId,
 	]);
-	console.log('tableData:', tableData);
+
 	return (
-		<TemplateLayout
-			title={name}
-			description={description}
-			render={() => {
-				return (
-					<div>
-						<Table
-							tableKey={'TemplateExample-key1'}
-							data={tableData}
-							columns={columns}
-							setData={setTableData}
-						/>
-					</div>
-				);
-			}}
-		/>
+		<div>
+			<TemplateLayout
+				title={name}
+				description={description}
+				render={() => {
+					return (
+						<div>
+							<Table
+								tableKey={'TemplateExample-key1'}
+								data={tableData}
+								columns={columns}
+								setData={setTableData}
+							/>
+						</div>
+					);
+				}}
+			/>
+			<Resource
+				//TODO: default 데이터 있으면 넘겨주면 되는데 어떤 형식으로 올지 몰라서 command out
+				// data={defaultData && defaultData.resource}
+				setTemplateData={setResourceData}
+			/>
+		</div>
 	);
 };
 ResourceManagement.propTypes = {
