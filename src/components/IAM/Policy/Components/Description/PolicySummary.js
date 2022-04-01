@@ -7,7 +7,7 @@ import React, {useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 import {useDispatch} from 'react-redux';
-import {NavLink} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 
 import useTextArea from '../../../../../hooks/useTextArea';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
@@ -28,6 +28,7 @@ export const policySummary = {
 
 const PolicySummary = ({policy, setPolicy}) => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 	//description: 정책 상세 설명
 	const [description, setDescription, descriptionTextArea] = useTextArea({
 		name: 'description',
@@ -53,6 +54,13 @@ const PolicySummary = ({policy, setPolicy}) => {
 		}
 	}, [description, policy]);
 
+	const conCLickLinkToUserDescriptionPage = useCallback(
+		(userUid) => () => {
+			history.push(`/users/${userUid}`);
+		},
+		[],
+	);
+
 	/**************************************************
 	 * ambacc244 - 정책 상세 설명 변경으로 인한 업데이트
 	 **************************************************/
@@ -60,6 +68,7 @@ const PolicySummary = ({policy, setPolicy}) => {
 		setDescription(policy?.description || '');
 	}, [policy?.description]);
 
+	console.log(policy);
 	return (
 		<SummaryList>
 			<LiText>
@@ -85,19 +94,18 @@ const PolicySummary = ({policy, setPolicy}) => {
 				{policySummary.createdTime}
 				{policy?.createdTag?.createdTime}{' '}
 				{policy?.createdTag?.userName && policy?.createdTag?.userUid && (
-					<>
+					<div
+						onClick={conCLickLinkToUserDescriptionPage(
+							policy.createdTag.userUid,
+						)}
+					>
 						{squareBrackets.left}
-						<NavLink
-							to={`/user/${policy?.createdTag?.userUid}`}
-							key={'user'}
-						>
-							{policy?.createdTag?.userName}
-							{parentheses.left}
-							{policy?.createdTag?.userId}
-							{parentheses.right}
-						</NavLink>
+						{policy?.createdTag?.userName}
+						{parentheses.left}
+						{policy?.createdTag?.userId}
+						{parentheses.right}
 						{squareBrackets.right}
-					</>
+					</div>
 				)}
 			</LiText>
 			<LiText>
@@ -109,19 +117,18 @@ const PolicySummary = ({policy, setPolicy}) => {
 				{policy?.lastEventLog?.category}{' '}
 				{policy?.lastEventLog?.userName &&
 					policy?.lastEventLog?.userUid && (
-						<>
+						<div
+							onClick={conCLickLinkToUserDescriptionPage(
+								policy.lastEventLog.userUid,
+							)}
+						>
 							{squareBrackets.left}
-							<NavLink
-								to={`/user/${policy.lastEventLog.userUid}`}
-								key={'user'}
-							>
-								{policy.lastEventLog.userName}
-								{parentheses.left}
-								{policy.lastEventLog.userId}
-								{parentheses.right}
-							</NavLink>
+							{policy.lastEventLog.userName}
+							{parentheses.left}
+							{policy.lastEventLog.userId}
+							{parentheses.right}
 							{squareBrackets.right}
-						</>
+						</div>
 					)}
 			</LiText>
 		</SummaryList>

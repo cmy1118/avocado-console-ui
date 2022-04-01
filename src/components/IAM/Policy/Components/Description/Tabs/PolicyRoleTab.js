@@ -189,6 +189,8 @@ const PolicyRoleTab = ({policyId}) => {
 				includedKey={tableKeys.policy.summary.tabs.role.include}
 				excludedData={exRoles}
 				includedData={inRoles}
+				joinFunction={onClickGrantRoles}
+				disjointFunction={onClickRevokeRoles}
 			>
 				<Table
 					isDraggable
