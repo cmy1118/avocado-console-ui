@@ -20,15 +20,14 @@ import PAGINATION from '../../../../../reducers/pagination';
 import * as _ from 'lodash';
 import {CollapsbleContent} from '../../../../../styles/components/style';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
+import IAM_USER_GROUP_MEMBER from '../../../../../reducers/api/IAM/User/Group/groupMember';
+import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 
 const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
-	const {page} = useSelector(PAGINATION.selector);
-	const [roles, setRoles] = useState([]);
-	const {userRoles} = useSelector(IAM_ROLES_GRANT_ROLE_USER.selector);
-	const [includedRoles, setIncludedRoles] = useState([]);
-	const [excluedeRoles, setExcluedeRoles] = useState([]);
-	const [includedDataIds, setIncludedDataIds] = useState(userRoles || []);
+	const [includedDataIds, setIncludedDataIds] = useState([]);
+	const [excludedDataIds, setExcludedDataIds] = useState([]);
 
 	const [includeSelect, includeColumns] = useSelectColumn(
 		tableColumns[tableKeys.users.summary.tabs.roles.include],
@@ -39,180 +38,123 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const [selected, setSelected] = useState({});
 
 	const includedData = useMemo(() => {
-		return includedRoles
-			? _.uniqBy(includedRoles.concat(excluedeRoles), 'id')
-					.filter((v) => includedDataIds?.includes(v.id))
-					.map((v) => ({
-						...v,
-						// numberOfUsers: v.users?.length,
-						createdTime: v.createdTime,
-						[DRAGGABLE_KEY]: v.id,
-					}))
+		return includedDataIds
+			? includedDataIds.map((v) => ({
+					...v,
+				type: v.type?v.type.name:'',
+					// numberOfUsers: v.users?.length,
+					createdTime: v.createdTime,
+					[DRAGGABLE_KEY]: v.id,
+			  }))
 			: [];
-	}, [excluedeRoles, includedDataIds, includedRoles]);
+	}, [includedDataIds]);
 	const excludedData = useMemo(() => {
-		return excluedeRoles
-			? excluedeRoles
-					.filter((v) => !includedDataIds?.includes(v.id))
-					.map((v) => ({
-						...v,
-						// numberOfUsers: v.users?.length,
-						createdTime: v.createdTime,
-						[DRAGGABLE_KEY]: v.id,
-					}))
+		return excludedDataIds
+			? excludedDataIds.map((v) => ({
+					...v,
+					applicationCode: '',
+					type: v.type.name?v.type.name:'',
+					// numberOfUsers: v.users?.length,
+					createdTime: v.createdTime,
+					[DRAGGABLE_KEY]: v.id,
+			  }))
 			: [];
-	}, [excluedeRoles, includedDataIds]);
-
-	const onClickAddRolesToUser = useCallback(
-		(data) => {
-			data &&
-				dispatch(
-					IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
-						roleIds: data,
-						userUid: userUid,
-					}),
-				);
-			// dispatch(
-			// 	IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
-			// 		userUid: userUid,
-			// 		range: page[tableKeys.users.summary.tabs.roles.include],
-			// 	}),
-			// );
-			setIncludedDataIds(includedDataIds.concat(data));
-		},
-		[dispatch, includedDataIds, userUid],
-	);
+	}, [excludedDataIds]);
 
 	const onClickDeleteRolesFromUser = useCallback(
-		(data) => {
-			data &&
-				dispatch(
+		async (data) => {
+			try{
+				data &&
+				await dispatch(
 					IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
-						roleId: data,
 						userUid: userUid,
+						roleId: data,
 					}),
+				).unwrap();
+
+				await setIncludedDataIds(
+					includedDataIds.filter((v) => !data.includes(v.id)),
 				);
-
-			setIncludedDataIds(
-				includedDataIds.filter((v) => !data.includes(v)),
-			);
-		},
-		[dispatch, includedDataIds, userUid],
-	);
-
-	const getExcludedRolespData = useCallback((roles) => {
-		const arr = [];
-		roles.forEach((role) => {
-			arr.push({
-				...role,
-				id: role.id,
-				name: role.name,
-				description: role.description,
-				type: role.maxGrants === '1' ? 'Private' : 'Public',
-			});
-			if (arr.length === roles.length) {
-				setExcluedeRoles(arr);
+				await setExcludedDataIds([
+					...includedDataIds.filter((v) => data.includes(v.id)),
+					...excludedData,
+				]);
+				await alert('삭제 완료');
+			}catch(err){
+				alert('삭제 오류');
+				console.log(err)
 			}
-		});
-	}, []);
-
-	const getIncludedRolesData = useCallback(
-		(userRoles) => {
-			const arr = [];
-			const userRolesId = userRoles.map((v) => v.roleId);
-
-			userRoles.map((v) => {
-				arr.push(v.roleId);
-				if (userRoles.length === arr.length) {
-					setIncludedDataIds(arr);
-					userRolesId.forEach((v) =>
-						dispatch(
-							IAM_ROLES.asyncAction.findByIdAction({
-								id: v,
-							}),
-						)
-							.unwrap()
-							.then((role) => {
-								arr.push({
-									id: role.id,
-									name: role.name,
-									numberOfUsers: role.grantedCount,
-									description: role.description,
-									createdTime: role.createdTag.createdTime,
-									type:
-										role.maxGrants === '1'
-											? 'Private'
-											: 'Public',
-								});
-								if (userRoles.length === arr.length) {
-									setIncludedRoles(arr);
-								}
-							}),
-					);
-				}
-			});
 		},
-		[dispatch],
+		[dispatch, excludedData, includedDataIds, userUid],
 	);
 
-	const GetUserExcludeRolesApi = useCallback(() => {
-		const arr = [];
-		if (
-			!isSummaryOpened &&
-			page[tableKeys.users.summary.tabs.roles.include]
-		) {
-			dispatch(
-				IAM_ROLES.asyncAction.getsAction({
-					range: page[tableKeys.users.summary.tabs.roles.include],
-				}),
-			)
-				.unwrap()
-				.then((res) => {
-					console.log('res:', res);
-					res.data.map((v) =>
-						arr.push({
-							id: v.id,
-							name: v.name,
-							description: v.description,
-							numberOfUsers: v.grantedCount,
-							createdTime: v.createdTag.createdTime,
-							type: v.maxGrants === '1' ? 'Private' : 'Public',
-						}),
-					);
-					if (arr.length === res.data.length) {
-						setRoles(arr);
-					}
-				});
-		}
-	}, [dispatch, isSummaryOpened, page]);
+	const onClickAddRolesToUser = useCallback(
+		async (data) => {
+			try {
+				if (data) {
+					await dispatch(
+						IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction(
+							{
+								roleIds: data,
+								userUid: userUid,
+							},
+						),
+					).unwrap();
 
-	const GetUserIncludeRolesApi = useCallback(() => {
-		if (page[tableKeys.users.summary.tabs.roles.include]) {
-			dispatch(
+					await setIncludedDataIds([
+						...excludedDataIds.filter((v) => data.includes(v.id)),
+						...includedDataIds,
+					]);
+					await setExcludedDataIds(
+						excludedDataIds.filter((v) => !data.includes(v.id)),
+					);
+					alert('추가 완료');
+				}
+			} catch (err) {
+				alert('추가 오류');
+				console.log(err)
+			}
+		},
+		[dispatch, excludedDataIds, includedDataIds, userUid],
+	);
+
+	//그룹에 부여된 사용자 조회
+	// ToDO: 포함안함 api - 기능 없음 추가 요청 예정
+	const userRolesApi = useCallback(async () => {
+		try {
+			//포함
+			const includeData = await dispatch(
 				IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
 					userUid: userUid,
-					range: page[tableKeys.users.summary.tabs.roles.include],
+					range: `elements=0-50`,
+					// range: page[tableKeys.users.summary.tabs.groups.include],
 				}),
-			)
-				.unwrap()
-				.then((res) => {
-					res.data.length
-						? getIncludedRolesData(res.data)
-						: setIncludedRoles([]);
-				});
+			).unwrap();
+			//포함안함
+			const excludeData = await dispatch(
+				IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
+					userUid: userUid,
+					exclude: true,
+					range: `elements=0-50`,
+					// range: page[tableKeys.users.summary.tabs.groups.include],
+				}),
+			).unwrap();
+			//api 요청 데이터 (포함/비포함)테이블 삽입
+			console.log('includeData:', includeData);
+			console.log('excludeData:', excludeData);
+			await setIncludedDataIds(includeData.data);
+			await setExcludedDataIds(excludeData.data);
+		} catch (err) {
+			alert('조회 오류');
+			console.log(err);
 		}
-	}, [dispatch, getIncludedRolesData, page, userUid]);
+	}, [dispatch, userUid]);
 
 	useEffect(() => {
-		GetUserExcludeRolesApi();
-		GetUserIncludeRolesApi();
-	}, [GetUserExcludeRolesApi, GetUserIncludeRolesApi, page]);
-
-	useEffect(() => {
-		if (roles && roles[0]) {
-			getExcludedRolespData(roles);
+		if (!isSummaryOpened) {
+			userRolesApi();
 		}
-	}, [getExcludedRolespData, roles]);
+	}, [isSummaryOpened, userRolesApi]);
 
 	useEffect(() => {
 		setSelected({

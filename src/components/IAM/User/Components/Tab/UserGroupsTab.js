@@ -111,11 +111,9 @@ const UserGroupsTab = ({
 		},
 		[dispatch, excludedData, includedDataIds, userUid],
 	);
-
 	//그룹추가
 	const onClickAddGroupToUser = useCallback(
 		async (data) => {
-			console.log('data:', data);
 			try {
 				if (data) {
 					// for (const groupId of data) {
@@ -165,9 +163,8 @@ const UserGroupsTab = ({
 					// range: page[tableKeys.users.summary.tabs.groups.include],
 				}),
 			).unwrap();
+
 			//api 요청 데이터 (포함/비포함)테이블 삽입
-			console.log('includeData:', includeData);
-			console.log('excludeData:', excludeData);
 			await setIncludedDataIds(includeData.data);
 			await setExcludedDataIds(excludeData.data);
 		} catch (err) {
@@ -175,6 +172,7 @@ const UserGroupsTab = ({
 			console.log(err);
 		}
 	}, [dispatch, userUid]);
+
 	//사용자 그룹 데이터 api 호출 (포함/비포함)
 	useEffect(() => {
 		if (!isSummaryOpened) {

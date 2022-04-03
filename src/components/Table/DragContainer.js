@@ -141,7 +141,7 @@ const DragContainer = ({
 	);
 
 	const onDragEnd = useCallback(
-		(result) => {
+		async (result) => {
 			const {source, destination} = result;
 			if (!destination) {
 				return;
@@ -162,13 +162,15 @@ const DragContainer = ({
 				//	console.log('selectedItems :: ', selectedItems);
 				//	console.log('data:', data);
 				if (destination.droppableId === includedKey) {
-					joinFunction && joinFunction(selectedItems);
-					data
-						? setData([...data, ...selectedItems])
-						: setData([...selectedItems]);
+					 joinFunction &&  joinFunction(selectedItems);
+					 //:TODO joinFunction 내부에서 데이터 처리해줌
+					//  data
+					// 	? setData([...data, ...selectedItems])
+					// 	: setData([...selectedItems]);
 				} else {
-					disjointFunction && disjointFunction(selectedItems);
-					setData(data.filter((v) => !selectedItems.includes(v)));
+					 disjointFunction &&  disjointFunction(selectedItems);
+					//:TODO disjointFunction 내부에서 데이터 처리해줌
+					// await setData(data.filter((v) => !selectedItems.includes(v)));
 				}
 			}
 		},
