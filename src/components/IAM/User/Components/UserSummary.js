@@ -184,92 +184,94 @@ const UserSummary = ({userUid}) => {
 				.then((res) => setUser({...res}));
 	}, [dispatch, isSummaryOpened, userUid]);
 
+	//:TODO 수정예정
 	useEffect(() => {
-		const templatesArr = [];
-		isSummaryOpened &&
-			dispatch(
-				IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
-					userUid,
-					range: initialPage,
-				}),
-			)
-				.unwrap()
-				.then((roles) => {
-					if (!roles.data[0]) setRoles([]);
-					roles.data.forEach((role) => {
-						console.log(role);
-						dispatch(
-							IAM_ROLES.asyncAction.findByIdAction({
-								id: role.roleId,
-							}),
-						)
-							.unwrap()
-							.then((detailRole) => {
-								console.log(detailRole);
-								dispatch(
-									IAM_USER.asyncAction.findByUidAction({
-										userUid:
-											detailRole.createdTag.actorTag
-												.userUid,
-									}),
-								)
-									.unwrap()
-									.then((grantUser) => {
-										dispatch(
-											IAM_GRANT_POLICY_BY_ROLE.asyncAction.getsAction(
-												{
-													roleId: detailRole.id,
-													range: `elements=0-50`,
-												},
-											),
-										)
-											.unwrap()
-											.then((policies) => {
-												console.log(
-													'policies ::',
-													policies,
-												);
-												const arr = [];
-												if (!policies.data) {
-													arr.push({
-														role: detailRole,
-														grantUser: {
-															...grantUser,
-															createdTag:
-																role.createdTag,
-														},
-													});
-												} else {
-													policies.data.forEach(
-														(policy) => {
-															console.log(policy);
-															arr.push({
-																role: detailRole,
-																policy: policy,
-																grantUser: {
-																	...grantUser,
-																	createdTag:
-																		role.createdTag,
-																},
-															});
-														},
-													);
-												}
-												templatesArr.push(arr);
-												if (
-													templatesArr.length ===
-													roles.data.length
-												) {
-													console.log(templatesArr);
-													setRoles(
-														_.flatten(templatesArr),
-													);
-												}
-											});
-									});
-							});
-					});
-				});
+		// const templatesArr = [];
+		// isSummaryOpened &&
+		// 	dispatch(
+		// 		IAM_ROLES_GRANT_ROLE_USER.asyncAction.getsAction({
+		// 			userUid,
+		// 			range: initialPage,
+		// 		}),
+		// 	)
+		// 		.unwrap()
+		// 		.then((roles) => {
+		// 			console.log('roles:',roles)
+		// 			if (!roles.data[0]) setRoles([]);
+		// 			roles.data.forEach((role) => {
+		// 				console.log(role);
+		// 				dispatch(
+		// 					IAM_ROLES.asyncAction.findByIdAction({
+		// 						id: role.roleId,
+		// 					}),
+		// 				)
+		// 					.unwrap()
+		// 					.then((detailRole) => {
+		// 						console.log(detailRole);
+		// 						dispatch(
+		// 							IAM_USER.asyncAction.findByUidAction({
+		// 								userUid:
+		// 									detailRole.createdTag.actorTag
+		// 										.userUid,
+		// 							}),
+		// 						)
+		// 							.unwrap()
+		// 							.then((grantUser) => {
+		// 								dispatch(
+		// 									IAM_GRANT_POLICY_BY_ROLE.asyncAction.getsAction(
+		// 										{
+		// 											roleId: detailRole.id,
+		// 											range: `elements=0-50`,
+		// 										},
+		// 									),
+		// 								)
+		// 									.unwrap()
+		// 									.then((policies) => {
+		// 										console.log(
+		// 											'policies ::',
+		// 											policies,
+		// 										);
+		// 										const arr = [];
+		// 										if (!policies.data) {
+		// 											arr.push({
+		// 												role: detailRole,
+		// 												grantUser: {
+		// 													...grantUser,
+		// 													createdTag:
+		// 														role.createdTag,
+		// 												},
+		// 											});
+		// 										} else {
+		// 											policies.data.forEach(
+		// 												(policy) => {
+		// 													console.log(policy);
+		// 													arr.push({
+		// 														role: detailRole,
+		// 														policy: policy,
+		// 														grantUser: {
+		// 															...grantUser,
+		// 															createdTag:
+		// 																role.createdTag,
+		// 														},
+		// 													});
+		// 												},
+		// 											);
+		// 										}
+		// 										templatesArr.push(arr);
+		// 										if (
+		// 											templatesArr.length ===
+		// 											roles.data.length
+		// 										) {
+		// 											console.log(templatesArr);
+		// 											setRoles(
+		// 												_.flatten(templatesArr),
+		// 											);
+		// 										}
+		// 									});
+		// 							});
+		// 					});
+		// 			});
+		// 		});
 	}, [dispatch, initialPage, isSummaryOpened, userUid]);
 
 	useEffect(() => {

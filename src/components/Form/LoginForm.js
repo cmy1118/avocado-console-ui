@@ -89,7 +89,7 @@ const LoginForm = () => {
 				.unwrap()
 				.then((val) => {
 					if (
-						val?.policyParameter?.policies[0]?.type ===
+						val?.policyParameters[0]?.policies[0]?.type   ===
 						'idAndPassword'
 					) {
 						dispatch(
