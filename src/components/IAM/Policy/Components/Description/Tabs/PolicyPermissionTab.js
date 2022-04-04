@@ -6,6 +6,8 @@ import {TabContentContainer} from '../../../../../../styles/components/iam/iamTa
 import Table from '../../../../../Table/Table';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
 import {tableKeys} from '../../../../../../Constants/Table/keys';
+import {useDispatch} from 'react-redux';
+import IAM_GRANTED_POLICY from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantedPolicy';
 
 const policyPermissionTab = {
 	title: '이 정책의 탬플릿',
@@ -16,6 +18,7 @@ const policyPermissionTab = {
  * ambacc244 - 현 정책이 가지는 규칙/권한을 보여주는 탭 컴포넌트
  **************************************************/
 const PolicyPermissionTab = ({policyId}) => {
+	const dispatch = useDispatch();
 	const [permission, setPermission] = useState([]);
 
 	/**************************************************
@@ -26,7 +29,17 @@ const PolicyPermissionTab = ({policyId}) => {
 	/**************************************************
 	 * ambacc244 - 현재 정책이 가지는 규칙/권한을 요청
 	 **************************************************/
-	useEffect(() => {}, [policyId]);
+	useEffect(() => {
+		//TODO: 정책 상세~ 작성하는곳
+		const getPolicyDetail = async () => {
+			const thisIs = await dispatch(
+				IAM_GRANTED_POLICY.asyncAction.getDetailsByPolicy,
+			);
+			console.log(thisIs);
+		};
+
+		getPolicyDetail();
+	}, []);
 
 	return (
 		<TabContentContainer>

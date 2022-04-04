@@ -48,8 +48,6 @@ const policyDescriptionSpace = {
 };
 
 const PolicyDescriptionSpace = ({policyId, type}) => {
-	console.log('RERERER');
-
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const location = useLocation();
