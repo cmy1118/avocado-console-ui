@@ -6,6 +6,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import RHF_Textbox from '../components/RecycleComponents/ReactHookForm/RHF_Textbox';
 import RHF_Combobox from '../components/RecycleComponents/ReactHookForm/RHF_Combobox';
 import RHF_Checkbox from '../components/RecycleComponents/ReactHookForm/RHF_Checkbox';
+import RHF_Radio from '../components/RecycleComponents/ReactHookForm/RHF_Radio';
 
 const FormExample = () => {
 	const validationSchema = Yup.object()
@@ -27,6 +28,7 @@ const FormExample = () => {
 			name: 'Session policy',
 			number: '2',
 			checked: ['1', '2'],
+			radio: '2',
 		},
 		resolver: yupResolver(validationSchema), // 외부 유효성 검사 라이브러리 사용
 		// context: undefined,
@@ -89,7 +91,13 @@ const FormExample = () => {
 				<RHF_Checkbox
 					name={'checked'}
 					options={checkboxOptions}
-					// isDisabled
+					isDisabled
+				/>
+
+				<RHF_Radio
+					name={'radio'}
+					options={checkboxOptions}
+					isDisabled
 				/>
 			</FormProvider>
 

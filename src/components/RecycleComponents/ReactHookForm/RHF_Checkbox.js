@@ -82,6 +82,7 @@ const NestedInput = memo(
 								name={name}
 								{...register(name)}
 								onChange={(e) => {
+									if (isDisabled) return;
 									const {value} = e.target;
 									setValues((prev) =>
 										prev.includes(value)
