@@ -83,7 +83,7 @@ export const GROUP_ADD_ROLES_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '역할 유형',
-		accessor: 'type',
+		accessor: 'temptype',
 	},
 	{
 		Header: '설명',
@@ -111,7 +111,7 @@ export const GROUP_ADD_ROLES_INCLUDE_COLUMN = [
 	},
 	{
 		Header: '역할 유형',
-		accessor: 'type',
+		accessor: 'temptype',
 	},
 ];
 

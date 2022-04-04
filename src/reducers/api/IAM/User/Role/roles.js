@@ -108,7 +108,10 @@ const getsAction = createAsyncThunk(
 		const response = await Axios.get(`/open-api/v1/iam/roles`, {
 			params: {
 				keyword: payload.keyword,
-				// maxGrants 임시 설정 : 0
+				id: payload.ids,
+				typeCode: payload.typeCode,
+				fromTime: payload.fromTime,
+				toTime: payload.toTime,
 				maxGrants: payload.maxGrants,
 			},
 			headers: {
@@ -118,8 +121,8 @@ const getsAction = createAsyncThunk(
 
 			baseURL: baseURL.openApi,
 		});
-		//	console.log('ROLE_getsAction:', response.data);
-		return {data: response.data, headers: response.headers};
+		console.log(response);
+		return response;
 	},
 );
 
@@ -255,6 +258,8 @@ const slice = createSlice({
 });
 
 const selectAllState = createSelector(
+	(state) => state.policy,
+	(state) => state.role,
 	(state) => state.roles,
 	(state) => state.error,
 	(state) => state.loading,
