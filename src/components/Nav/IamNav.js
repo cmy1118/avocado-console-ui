@@ -106,34 +106,39 @@ const _IamNavClose = styled.div`
 	transition: transform 0.5s ease-in-out;
 `;
 
+const iamNav = {
+	title: 'IAM 관리자',
+	contents: {
+		dashboard: {title: '대시보드'},
+		iam: {
+			title: '접근관리',
+			contents: {
+				user: 'user',
+				group: 'group',
+				role: '역할',
+				policy: '정책',
+			},
+		},
+	},
+};
+
 const IamNav = ({isOpened, setIsOpened, leftSize}) => {
-	const dispatch = useDispatch();
 	const location = useLocation();
 	const pathname = qs.parse(location).pathname;
 	const [isUnfolded, setIsUnfolded] = useState(false);
 
-	/********************************************************************/
 	const onClickOpenOrCloseNav = useCallback(() => {
 		setIsOpened(!isOpened);
 	}, [setIsOpened, isOpened]);
-	/********************************************************************/
 
 	const onClickFoldFolder = useCallback(() => {
 		setIsUnfolded(!isUnfolded);
 	}, [isUnfolded]);
 
-	const onClickDeveloping = useCallback(() => {
-		// dispatch(
-		// 	DIALOG_BOX.action.openAlert({
-		// 		key: confirmAlertMessages.developing.key,
-		// 	}),
-		// );
-	}, []);
-
 	return isOpened ? (
 		<NavContainer className={isOpened ? 'nav' : 'nav close'}>
 			<NavHeader>
-				<div>IAM</div>
+				<div>{iamNav.title}</div>
 				<HoverIconButton
 					margin={'0px 0px 0px 0px'}
 					onClick={onClickOpenOrCloseNav}
@@ -155,7 +160,7 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 						<ResourceItemTitle
 							left={(leftSize * 2 + 10).toString() + 'px'}
 						>
-							대시보드
+							{iamNav.contents.iam.title}
 						</ResourceItemTitle>
 					</_NavItem>
 				</NavItem>

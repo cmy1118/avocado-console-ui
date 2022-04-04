@@ -14,7 +14,7 @@ const _Container = styled.div`
 
 const _UserContainer = styled.div`
 	display: flex;
-	// border-right: 1px #e3e5e5 solid;
+
 	padding-right: 8px;
 `;
 
@@ -51,15 +51,16 @@ const MenuButtons = () => {
 				<_UserId>{userAuth?.user_id}</_UserId>
 			</_UserContainer>
 			<_Settings>
-				<HoverIconButton color={'#D7D7D7'}>
+				<HoverIconButton size='sm' color={'rgba(255, 255, 255, 0.6)'}>
 					{notificationIcon}
 				</HoverIconButton>
-				<HoverIconButton color={'#D7D7D7'}>
+				<HoverIconButton size='sm' color={'rgba(255, 255, 255, 0.6)'}>
 					{settingIcon}
 				</HoverIconButton>
-				<HoverIconButton color={'#D7D7D7'}>{helpIcon}</HoverIconButton>
+				<HoverIconButton size='sm' color={'rgba(255, 255, 255, 0.6)'}>
+					{helpIcon}
+				</HoverIconButton>
 			</_Settings>
-			{/*<HoverIconButton onClick={onClickCloseAside}>Q</HoverIconButton>*/}
 		</_Container>
 	);
 };
