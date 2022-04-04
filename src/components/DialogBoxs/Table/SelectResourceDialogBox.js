@@ -11,7 +11,7 @@ import {
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {tableKeys} from '../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../Constants/Table/keys';
 import Table from '../../Table/Table';
 import {Icon, IconButton} from '../../../styles/components/icons';
 import {closeIcon, searchIcon} from '../../../icons/icons';
@@ -94,16 +94,19 @@ const SelectResourceDialogBox = ({isOpened, setIsOpened, setSelected}) => {
 					}),
 				);
 				//요청에 대한 응답 성공
-				if (isFulfilled(res))
+				if (isFulfilled(res)) {
+					console.log(res.payload);
 					setResources(
 						res.payload.map((v) => ({
 							id: v.id,
+							[DRAGGABLE_KEY]: v.id,
 							group: v.group.namePath,
 							name: v.name,
 							address: v.defaultAddress,
 							protocol: v.servicePorts[0].serviceType.name,
 						})) || [],
 					);
+				}
 			}
 		},
 		[dispatch],
