@@ -23,30 +23,33 @@ const findResourceByIdAction = createAsyncThunk(
 	},
 );
 
-const findAllResourceAction = createAsyncThunk(
+const findAllResourcebByUserUidAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
 
-		const response = await Axios.get(`/open-api/v1/pam/remote-resources`, {
-			params: {
-				type: payload.type,
-				osType: payload.osType,
-				serviceType: payload.serviceType,
-				parentGroupId: payload.parentId,
-				keyword: payload.keyword,
-				keyword2: payload.keyword2,
-				includeChildNode: payload.includeChildNode,
-				includeAccount: payload.includeAccount,
-				excludeGroupIds: payload.excludeGroupIds,
+		const response = await Axios.get(
+			`/open-api/v1/pam/users/${userAuth.user_uid}/remote-resources`,
+			{
+				params: {
+					type: payload.type,
+					osType: payload.osType,
+					serviceType: payload.serviceType,
+					parentGroupId: payload.parentId,
+					keyword: payload.keyword,
+					keyword2: payload.keyword2,
+					includeChildNode: payload.includeChildNode,
+					includeAccount: payload.includeAccount,
+					excludeGroupIds: payload.excludeGroupIds,
+				},
+				headers: {
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+					'Content-Type': 'application/json',
+					Range: payload.range || `elements=0-50`,
+				},
+				baseURL: baseURL.openApi,
 			},
-			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				'Content-Type': 'application/json',
-				Range: payload.range || `elements=0-50`,
-			},
-			baseURL: baseURL.openApi,
-		});
+		);
 
 		return response.data;
 	},
@@ -125,7 +128,7 @@ const RRM_RESOURCE = {
 		findResourceByIdAction,
 		findAllServicePortAction,
 		findAllAccountAction,
-		findAllResourceAction,
+		findAllResourcebByUserUidAction,
 	},
 };
 

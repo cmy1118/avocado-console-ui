@@ -104,7 +104,7 @@ const Resources = ({
 		async (search, selectProtocol) => {
 			try {
 				const response = await dispatch(
-					RRM_RESOURCE.asyncAction.findAllResourceAction({
+					RRM_RESOURCE.asyncAction.findAllResourcebByUserUidAction({
 						keyword2: search ? search : '',
 						serviceType: selectProtocol ? selectProtocol : '',
 					}),

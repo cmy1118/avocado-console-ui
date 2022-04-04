@@ -88,7 +88,7 @@ const SelectResourceDialogBox = ({isOpened, setIsOpened, setSelected}) => {
 			//검색 입력값의 길이가 2 이상
 			if (v?.search.length > 1) {
 				const res = await dispatch(
-					RRM_RESOURCE.asyncAction.findAllResourceAction({
+					RRM_RESOURCE.asyncAction.findAllResourcebByUserUidAction({
 						serviceType: v?.protocol,
 						keyword2: v.search.trim(),
 					}),
