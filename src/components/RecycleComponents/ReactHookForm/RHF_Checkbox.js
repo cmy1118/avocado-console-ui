@@ -1,5 +1,5 @@
-import {Controller, useFormContext} from 'react-hook-form';
-import React, {memo, useState} from 'react';
+import {useFormContext} from 'react-hook-form';
+import React, {memo, useEffect, useState} from 'react';
 import {ErrorMessage} from '@hookform/error-message';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
@@ -60,61 +60,36 @@ const NestedInput = memo(
 		getValues,
 	}) => {
 		const [indeterminate, setIndeterminate] = useState(false);
-		const values = getValues(name);
-		console.log(values);
+		const [values, setValues] = useState([]);
+
+		useEffect(() => {
+			setValues(getValues(name));
+		}, [getValues, name]);
+
 		return (
 			<div>
-				{/*<SubContainer*/}
-				{/*	error={Object.keys(errors).includes(name)}*/}
-				{/*	isFocused={isFocused}*/}
-				{/*	disabled={isDisabled}*/}
-				{/*>*/}
-				{/*	<Input*/}
-				{/*		{...register(name)}*/}
-				{/*		onBlur={(e) => {*/}
-				{/*			register(name).onBlur(e);*/}
-				{/*			setIsFocused(false);*/}
-				{/*		}}*/}
-				{/*		onFocus={() => setIsFocused(true)}*/}
-				{/*		disabled={isDisabled}*/}
-				{/*	/>*/}
-				{/*</SubContainer>*/}
-				{/*{options.map((v) => (*/}
-				{/*	<CheckBox label={v.label} />*/}
-				{/*))}*/}
-
 				{options.map((item) => {
 					return (
-						// <Controller
-						// 	key={item.value}
-						// 	name={name}
-						// 	control={control}
-						// 	render={({
-						// 		field: {onChange, name, value},
-						// 		fieldState: {
-						// 			invalid,
-						// 			isTouched,
-						// 			isDirty,
-						// 			error,
-						// 		},
-						// 		formState,
-						// 	}) => {
-						// 		// console.log(getValues(name));
-						// 		// console.log(value);
-						// 		return (
 						<_Container
-							// margin={props.margin}
 							key={item.value}
 							opacity={isDisabled.toString()}
 							label={item.label}
 							className='pretty p-svg p-curve p-plain p-toggle p-thick'
 						>
 							<input
-								ref={register({})}
 								type={'checkbox'}
 								value={item.value}
 								name={name}
-								// onChange={(e) => onChange(e)}
+								{...register(name)}
+								onChange={(e) => {
+									const {value} = e.target;
+									setValues((prev) =>
+										prev.includes(value)
+											? prev.filter((v) => v !== value)
+											: [...prev, value],
+									);
+									register(name).onChange(e);
+								}}
 							/>
 							{indeterminate ? (
 								<InputContainer
@@ -125,7 +100,7 @@ const NestedInput = memo(
 									{indeterminateIcon}
 									<label>{item.label}</label>
 								</InputContainer>
-							) : values ? (
+							) : values.includes(item.value) ? (
 								<InputContainer
 									type={'check'}
 									className='state'
@@ -143,9 +118,6 @@ const NestedInput = memo(
 								</InputContainer>
 							)}
 						</_Container>
-						// );
-						// }}
-						// />
 					);
 				})}
 

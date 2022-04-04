@@ -26,6 +26,7 @@ const FormExample = () => {
 			// G: 'hello',
 			name: 'Session policy',
 			number: '2',
+			checked: ['1', '2'],
 		},
 		resolver: yupResolver(validationSchema), // 외부 유효성 검사 라이브러리 사용
 		// context: undefined,
