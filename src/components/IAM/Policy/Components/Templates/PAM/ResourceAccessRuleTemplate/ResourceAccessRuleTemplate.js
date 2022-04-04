@@ -1,22 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import useRadio from '../../../../../../../hooks/useRadio';
-import {
-	policyOption,
-	resourceOptions,
-	restrictionOptions,
-} from '../../../../../../../utils/policyOptions';
-import TemplateLayout from '../../Outline/TemplateLayout';
-import TemplateElement from '../../Outline/TemplateElement';
-import TimeInterval from '../../../../../../RecycleComponents/Templates/TimeInterval';
-import {DayOfTheWeek} from '../ConnectReasonTemplate/ConnectReasonTemplate';
-import ResourceSelectionContainer from '../Resource/ResourceSelectionContainer';
 import PAM_RULE_TEMPLATE_DETAIL from '../../../../../../../reducers/api/PAM/TemplateManagement/RuleTemplate/ruleTemplateDetail';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import Resource from '../Resource/Resource';
 import PAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../../reducers/api/PAM/TemplateManagement/RuleTemplate/ruleTemplate';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
-import AllowReasonTime from '../ConnectReasonTemplate/AllowReasonTime';
 import AllowServiceTime from './AllowServiceTime';
 
 /**************************************************
@@ -79,7 +67,8 @@ const ResourceAccessRuleTemplate = ({templateId, name, description}) => {
 				setTemplateData={setAllowServiceTimeData}
 			/>
 			<Resource
-				data={defaultData && defaultData.resource}
+				//TODO: default 데이터 있으면 넘겨주면 되는데 어떤 형식으로 올지 몰라서 command out
+				// data={defaultData && defaultData.resource}
 				setTemplateData={setResourceData}
 			/>
 		</div>

@@ -43,7 +43,6 @@ export const Icon = styled.div`
 			: '24px'};
 
 	span {
-		//if icon is span, font-size does not apply
 		font-size: ${(props) =>
 			props?.size
 				? props.size === 'sm'
@@ -100,7 +99,8 @@ export const IconButton = styled(Icon)`
 `;
 export const HoverIconButton = styled(Icon)`
 	cursor: pointer;
-	background: ${(props) => props.background? props.background : 'transparent'};
+	background: ${(props) =>
+		props.background ? props.background : 'transparent'};
 	&:hover {
 		color: ${(props) => props?.hover_color || '#556367'};
 		svg {

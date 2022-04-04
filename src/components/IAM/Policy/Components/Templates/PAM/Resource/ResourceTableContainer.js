@@ -65,7 +65,6 @@ const ResourceTableContainer = ({selected, setSelected}) => {
 			<SelectResourceDialogBox
 				setIsOpened={setIsOpened}
 				isOpened={isOpened}
-				selected={selected}
 				setSelected={setSelected}
 			/>
 		</div>

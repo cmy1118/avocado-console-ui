@@ -4,7 +4,7 @@ import Table from '../../../../../../Table/Table';
 import {tableKeys} from '../../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../../Constants/Table/columns';
 import AddAcessResourceAccountDialogBox from '../../../../../../DialogBoxs/Form/AddAcessResourceAccountDialogBox';
-import RRM_RESOURCE from '../../../../../../../reducers/api/RRM/Resource/resource';
+import RRM_RESOURCE from '../../../../../../../reducers/api/PAM/Resource/resource';
 import {AllreplaceStr} from '../../../../../../../utils/dataFitering';
 import {useDispatch} from 'react-redux';
 import useRadio from '../../../../../../../hooks/useRadio';
@@ -35,7 +35,7 @@ const ResourceAccessTemplate = ({isShow}) => {
 		async (search, selectProtocol) => {
 			try {
 				const response = await dispatch(
-					RRM_RESOURCE.asyncAction.findAllResourceAction({
+					RRM_RESOURCE.asyncAction.findAllResourcebByUserUidAction({
 						keyword2: search ? search : '',
 						serviceType: selectProtocol ? selectProtocol : '',
 					}),

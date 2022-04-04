@@ -30,6 +30,34 @@ const getDetailsByRole = createAsyncThunk(
 	},
 );
 
+/**************************************************
+ * ambacc244 - IAM policy에 부여된 규칙/정책을 조회
+ **************************************************/
+const getDetailsByPolicy = createAsyncThunk(
+	`${NAME}/GET_DETAIL_BY_POLICY`,
+	async (payload, {getState}) => {
+		const {userAuth} = getState().AUTH;
+
+		const response = await Axios.get(
+			`/open-api/v1/iam/roles/${payload.policyId}/policy-details`,
+			{
+				params: {
+					resource: payload.resource,
+					action: payload.action,
+					effect: payload.effect,
+					ruleType: payload.ruleType,
+				},
+				headers: {
+					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+					range: 'elements=0-50',
+				},
+				baseURL: baseURL.openApi,
+			},
+		);
+		return response.data;
+	},
+);
+
 const selectAllState = createSelector(
 	(state) => state.creatingPolicyMode,
 	(creatingPolicyMode) => {
@@ -49,7 +77,7 @@ const IAM_GRANTED_POLICY = {
 	reducer: slice.reducer,
 	selector: (state) => selectAllState(state[slice.name]),
 	action: slice.actions,
-	asyncAction: {getDetailsByRole},
+	asyncAction: {getDetailsByRole, getDetailsByPolicy},
 };
 
 export default IAM_GRANTED_POLICY;

@@ -11,7 +11,7 @@ import {
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {tableKeys} from '../../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../../Constants/Table/keys';
 import Table from '../../Table/Table';
 import {Icon, IconButton} from '../../../styles/components/icons';
 import {closeIcon, searchIcon} from '../../../icons/icons';
@@ -21,7 +21,7 @@ import {useDispatch} from 'react-redux';
 import ComboBox from '../../RecycleComponents/New/ComboBox';
 import {RowDiv} from '../../../styles/components/style';
 import {isFulfilled} from '../../../utils/redux';
-import RRM_RESOURCE from '../../../reducers/api/RRM/Resource/resource';
+import RRM_RESOURCE from '../../../reducers/api/PAM/Resource/resource';
 import useSelectColumn from '../../../hooks/table/useSelectColumn';
 
 const _DialogBox = styled(DialogBox)`
@@ -52,19 +52,13 @@ const protocolOptions = [
 	{value: 'SFTP', label: 'SFTP'},
 ];
 
-const SelectResourceDialogBox = ({
-	isOpened,
-	setIsOpened,
-	selected,
-	setSelected,
-}) => {
+const SelectResourceDialogBox = ({isOpened, setIsOpened, setSelected}) => {
 	const dispatch = useDispatch();
 	const searchRef = useRef(null);
 	//resources: 검색된 자원 리스트
 	const [resources, setResources] = useState([]);
 	//addedSelection: 추가로 선택될 자원
-	// const [addedSelection, setAddedSelection] = useState([]);
-	const [select, columns] = useSelectColumn(
+	const [addedSelection, columns] = useSelectColumn(
 		tableColumns[tableKeys.policy.add.pamTemplate.resource],
 	);
 
@@ -81,10 +75,10 @@ const SelectResourceDialogBox = ({
 	 **************************************************/
 	const onClickAddSelection = useCallback(() => {
 		//선택된 자원에 추가로 선택된 자원 추가
-		setSelected([...selected, ...select]);
+		setSelected((prev) => [...prev, ...addedSelection]);
 		//다이얼로그박스 닫기
 		setIsOpened(false);
-	}, [select, selected, setIsOpened, setSelected]);
+	}, [addedSelection, setIsOpened, setSelected]);
 
 	/**************************************************
 	 * ambacc244 - 자원 그룹 검색
@@ -94,22 +88,25 @@ const SelectResourceDialogBox = ({
 			//검색 입력값의 길이가 2 이상
 			if (v?.search.length > 1) {
 				const res = await dispatch(
-					RRM_RESOURCE.asyncAction.findAllResourceAction({
-						serviceType: v?.protocol || '',
+					RRM_RESOURCE.asyncAction.findAllResourcebByUserUidAction({
+						serviceType: v?.protocol,
 						keyword2: v.search.trim(),
 					}),
 				);
 				//요청에 대한 응답 성공
-				if (isFulfilled(res))
+				if (isFulfilled(res)) {
+					console.log(res.payload);
 					setResources(
 						res.payload.map((v) => ({
 							id: v.id,
+							[DRAGGABLE_KEY]: v.id,
 							group: v.group.namePath,
 							name: v.name,
 							address: v.defaultAddress,
 							protocol: v.servicePorts[0].serviceType.name,
 						})) || [],
 					);
+				}
 			}
 		},
 		[dispatch],
@@ -190,7 +187,6 @@ const SelectResourceDialogBox = ({
 SelectResourceDialogBox.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
-	selected: PropTypes.array.isRequired,
 	setSelected: PropTypes.func.isRequired,
 };
 

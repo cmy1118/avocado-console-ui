@@ -40,7 +40,7 @@ import PAM_ROLE_USER from './api/PAM/Role/user';
 import PAM_ROLE_USER_GROUP from './api/PAM/Role/userGroup';
 import PAM_SESSION from './api/PAM/session';
 
-import RRM_RESOURCE from './api/RRM/Resource/resource';
+import RRM_RESOURCE from './api/PAM/Resource/resource';
 import RRM_GROUP from './api/RRM/Group/group';
 import RRM_GROUP_TYPE from './api/RRM/Group/groupType';
 

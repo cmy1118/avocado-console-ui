@@ -2,7 +2,7 @@ import React, {memo, useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import RRM_RESOURCE from '../../../../../../../reducers/api/RRM/Resource/resource';
+import RRM_RESOURCE from '../../../../../../../reducers/api/PAM/Resource/resource';
 import {ColDiv} from '../../../../../../../styles/components/style';
 import Table from '../../../../../../Table/Table';
 import {configs as authSelector} from 'eslint-plugin-react';

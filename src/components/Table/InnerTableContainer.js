@@ -3,7 +3,7 @@ import Table from './Table';
 import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
 import PAM_POLICY from '../../reducers/api/PAM/Role/policy';
-import RRM_RESOURCE from '../../reducers/api/RRM/Resource/resource';
+import RRM_RESOURCE from '../../reducers/api/PAM/Resource/resource';
 import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
 import {TableMode} from '../../Constants/Table/mode';
 
@@ -96,9 +96,11 @@ const InnerTableContainer = ({policyId, attributes}) => {
 							});
 
 							dispatch(
-								RRM_RESOURCE.asyncAction.findByIdAction({
-									id: resourceId,
-								}),
+								RRM_RESOURCE.asyncAction.findResourceByIdAction(
+									{
+										id: resourceId,
+									},
+								),
 							)
 								.unwrap()
 								.then((r) => {

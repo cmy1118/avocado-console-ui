@@ -16,10 +16,10 @@ const _Container = styled.div`
 	flex: 1 1 auto;
 
 	.mainContainer {
-		// transition: all 0.5s ease-in-out;
+		transition: all 0.5s ease-in-out;
 	}
 	.mainContainer.close {
-		// transition: 0.5s ease-in-out;
+		transition: 0.5s ease-in-out;
 	}
 
 	.nav {
@@ -27,7 +27,7 @@ const _Container = styled.div`
 		transition: all 0.5s ease-in-out;
 	}
 	.nav.close {
-		// transition: all 0.5s ease-in-out;
+		transition: all 0.5s ease-in-out;
 	}
 `;
 

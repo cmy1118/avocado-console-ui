@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import Connect from '../ConnectResourceTemplate/Connect';
 import ResourceSelectionContainer from './ResourceSelectionContainer';
 import {
 	policyOption,

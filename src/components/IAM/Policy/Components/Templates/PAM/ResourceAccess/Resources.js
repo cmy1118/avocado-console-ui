@@ -18,7 +18,7 @@ import {searchIcon} from '../../../../../../../icons/icons';
 import Table from '../../../../../../Table/Table';
 import checkboxColumn from '../../../../../../Table/tableCheckboxColumn';
 import {AllreplaceStr} from '../../../../../../../utils/dataFitering';
-import RRM_RESOURCE from '../../../../../../../reducers/api/RRM/Resource/resource';
+import RRM_RESOURCE from '../../../../../../../reducers/api/PAM/Resource/resource';
 import TableCheckBox from '../../../../../../Table/ColumnCells/TableCheckBox';
 import {DRAGGABLE_KEY} from '../../../../../../../Constants/Table/keys';
 
@@ -104,7 +104,7 @@ const Resources = ({
 		async (search, selectProtocol) => {
 			try {
 				const response = await dispatch(
-					RRM_RESOURCE.asyncAction.findAllResourceAction({
+					RRM_RESOURCE.asyncAction.findAllResourcebByUserUidAction({
 						keyword2: search ? search : '',
 						serviceType: selectProtocol ? selectProtocol : '',
 					}),

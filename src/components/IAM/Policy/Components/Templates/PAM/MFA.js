@@ -5,6 +5,7 @@ import useRadio from '../../../../../../hooks/useRadio';
 import useCheckBox from '../../../../../../hooks/useCheckBox';
 import TemplateElement from '../Outline/TemplateElement';
 import useTextBox from '../../../../../../hooks/useTextBox';
+import Resource from './Resource/Resource';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -71,6 +72,7 @@ const MFA = () => {
 	] = useTextBox({
 		regex: /^[0-9]+$/,
 	});
+	const [resourceData, setResourceData] = useState({});
 
 	/**************************************************
 	 * seob - 규칙 템플릿 id에 해당하는 데이터 detail findAll
@@ -107,6 +109,11 @@ const MFA = () => {
 						/>
 					</div>
 				)}
+			/>
+			<Resource
+				//TODO: default 데이터 있으면 넘겨주면 되는데 어떤 형식으로 올지 몰라서 command out
+				// data={defaultData && defaultData.resource}
+				setTemplateData={setResourceData}
 			/>
 		</div>
 	);

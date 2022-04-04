@@ -80,36 +80,19 @@ const LoginForm = () => {
 			if (!v.id || !v.password) return;
 
 			dispatch(
-				AUTH.asyncAction.authPolicyVerificationAction({
+				AUTH.asyncAction.userAuthAction({
 					username: v.id,
 					password: v.password,
 					companyId: companyId,
 				}),
-			)
-				.unwrap()
-				.then((val) => {
-					if (
-						val?.policyParameters[0]?.policies[0]?.type ===
-						'idAndPassword'
-					) {
-						dispatch(
-							AUTH.asyncAction.userAuthAction({
-								username: v.id,
-								password: v.password,
-								companyId: companyId,
-							}),
-						);
-					} //TODO: 대체인증
-				});
+			);
 
 			if (rememberMe) {
 				localStorage.setItem('rememberMe', true);
 				localStorage.setItem('id', v.id);
-				localStorage.setItem('password', v.password);
 			} else {
 				localStorage.setItem('rememberMe', false);
 				localStorage.removeItem('id');
-				localStorage.removeItem('password');
 			}
 		},
 		[dispatch, companyId, rememberMe],

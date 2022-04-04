@@ -15,6 +15,7 @@ import TemplateLayout from '../Outline/TemplateLayout';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
 import Table from '../../../../../Table/Table';
+import Resource from './Resource/Resource';
 
 const constants = {
 	main: '자원 수집 관리 권한 템플릿',
@@ -52,6 +53,7 @@ const ResourceCollectManagement = ({
 	const checkboxRefs = useRef([]);
 	const [tableData, setTableData] = useState([]);
 	const [lastCheckedKey, setLastCheckedKey] = useState(null);
+	const [resourceData, setResourceData] = useState({});
 
 	//테이블 컬럼 데이터
 	const tableColumns = [
@@ -164,13 +166,11 @@ const ResourceCollectManagement = ({
 					);
 				}}
 			/>
-			<TemplateLayout
-				title={'적용예정'}
-				description={'적용예정'}
-				render={() => {
-					return <div>영애님 컴포넌트 생성시 적용예정..</div>;
-				}}
-			></TemplateLayout>
+			<Resource
+				//TODO: default 데이터 있으면 넘겨주면 되는데 어떤 형식으로 올지 몰라서 command out
+				// data={defaultData && defaultData.resource}
+				setTemplateData={setResourceData}
+			/>
 		</div>
 	);
 };

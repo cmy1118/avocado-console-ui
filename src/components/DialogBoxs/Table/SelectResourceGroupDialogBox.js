@@ -66,9 +66,9 @@ const SelectResourceGroupDialogBox = ({
 	 * ambacc244 - 선택한 자원 그룹들을 추가
 	 **************************************************/
 	const onSubmitAddSelection = useCallback(() => {
-		setSelected([...selected, ...addedSelection]);
+		setSelected((prev) => [...prev, ...addedSelection]);
 		setIsOpened(false);
-	}, [selected, addedSelection]);
+	}, [addedSelection]);
 
 	/**************************************************
 	 * ambacc244 - 자원 그룹 검색
