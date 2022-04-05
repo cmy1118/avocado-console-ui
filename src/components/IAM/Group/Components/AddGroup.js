@@ -21,7 +21,6 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import RHF_Textbox from '../../../RecycleComponents/ReactHookForm/RHF_Textbox';
 import RHF_Combobox from '../../../RecycleComponents/ReactHookForm/RHF_Combobox';
 import {RowDiv} from '../../../../styles/components/style';
-import IAM_RULE_TEMPLATE_DETAIL from '../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
 
 const AddGroup = ({groupMembers}) => {
 	const dispatch = useDispatch();

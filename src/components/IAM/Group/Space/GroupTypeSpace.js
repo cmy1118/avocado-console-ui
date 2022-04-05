@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {useHistory} from 'react-router-dom';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import Table from '../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
@@ -32,11 +31,11 @@ const GroupTypeSpace = () => {
 	const [select, columns] = useSelectColumn(
 		tableColumns[tableKeys.groups.type],
 	);
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	// const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [initialGroupTypes, setInitialGroupTypes] = useState([]);
-	console.log('groups => ', groups);
-	console.log('groupTypes => ', groupTypes);
+	const [deleteList, setDeleteList] = useState([]);
+
 	const [data, setData] = useState(groupTypes);
 	const tableData = useMemo(
 		() =>
@@ -93,22 +92,42 @@ const GroupTypeSpace = () => {
 				}
 			}
 		});
-	}, [data, dispatch, initialGroupTypes]);
+		deleteList.forEach((v) => {
+			console.log(v);
+			dispatch(
+				IAM_USER_GROUP_TYPE.asyncAction.deleteAction({
+					id: v.id,
+				}),
+			);
+		});
+	}, [data, deleteList, dispatch, initialGroupTypes]);
+
+	console.log(data);
 
 	const onClickDeleteGroupTypes = useCallback(() => {
 		//	console.log(select);
 		if (select.length) {
-			select.forEach((v) => {
-				dispatch(
-					IAM_USER_GROUP_TYPE.asyncAction.deleteAction({
-						id: v.id,
-					}),
-				);
-			});
+			console.log(select);
+			setDeleteList((prev) => [...prev, ...select]);
+			const selectedIds = select.map((s) => s.id);
+			console.log(selectedIds);
+			setData((prev) => prev.filter((v) => !selectedIds.includes(v.id)));
+			// select.forEach((v) => {
+			// 	dispatch(
+			// 		IAM_USER_GROUP_TYPE.asyncAction.deleteAction({
+			// 			id: v.id,
+			// 		}),
+			// 	);
+			// });
+			// dispatch(
+			// 	IAM_USER_GROUP_TYPE.asyncAction.findAllAction({
+			// 		range: 'elements=0-50',
+			// 	}),
+			// );
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
-	}, [dispatch, select]);
+	}, [select]);
 
 	useEffect(() => {
 		dispatch(
@@ -117,7 +136,7 @@ const GroupTypeSpace = () => {
 			}),
 		);
 	}, [dispatch]);
-	//
+
 	// useEffect(() => {
 	// 	const fetchData = async () => {
 	// 		try {
@@ -135,6 +154,7 @@ const GroupTypeSpace = () => {
 	// }, [dispatch]);
 
 	useEffect(() => {
+		console.log(groupTypes);
 		if (groupTypes) {
 			setData(
 				groupTypes.map((v) => ({
