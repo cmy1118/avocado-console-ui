@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
@@ -21,12 +21,14 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import RHF_Textbox from '../../../RecycleComponents/ReactHookForm/RHF_Textbox';
 import RHF_Combobox from '../../../RecycleComponents/ReactHookForm/RHF_Combobox';
 import {RowDiv} from '../../../../styles/components/style';
+import IAM_RULE_TEMPLATE_DETAIL from '../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
 
 const AddGroup = ({groupMembers}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
+	const [groups, setGroups] = useState([]);
+	// const {groups} = useSelector(IAM_USER_GROUP.selector);
 
 	const validationSchema = Yup.object()
 		.shape({
@@ -39,6 +41,8 @@ const AddGroup = ({groupMembers}) => {
 		// mode: 'onSubmit', // memo 유효성 검사가 trriger되는 시점 => onChange를 사용하면 바로 검사
 		resolver: yupResolver(validationSchema), // 외부 유효성 검사 라이브러리 사용
 	});
+
+	const type = methods.watch('type');
 
 	const onClickManageGroupType = useCallback(() => {
 		history.push('/groups/types');
@@ -72,12 +76,23 @@ const AddGroup = ({groupMembers}) => {
 	}, [dispatch]);
 
 	useEffect(() => {
-		dispatch(
-			IAM_USER_GROUP.asyncAction.findAllAction({
-				range: 'elements=0-50',
-			}),
-		);
-	}, [dispatch]);
+		const fetchData = async () => {
+			try {
+				const res = await dispatch(
+					IAM_USER_GROUP.asyncAction.findAllAction({
+						range: 'elements=0-50',
+						groupTypeId: type,
+					}),
+				);
+				console.log(res.payload.data);
+				setGroups(res.payload.data);
+			} catch (err) {
+				console.log('error => ', err);
+				setGroups([]);
+			}
+		};
+		type && fetchData();
+	}, [dispatch, methods, type]);
 
 	return (
 		<>
@@ -117,6 +132,7 @@ const AddGroup = ({groupMembers}) => {
 							options={groups.map((v) => {
 								return {value: v.id, label: v.name};
 							})}
+							width={300}
 						/>
 					</RowDiv>
 					<RowDiv alignItems={'center'}>

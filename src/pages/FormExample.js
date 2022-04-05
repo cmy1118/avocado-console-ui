@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {useForm, FormProvider} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -67,6 +67,16 @@ const FormExample = () => {
 	];
 
 	const onSubmit = (data) => console.log(data);
+
+	// memo : form의 input의 렌더링 되고있는 values가 필요한 경우
+	const name = methods.watch('name');
+	const allValues = methods.watch();
+	useEffect(() => {
+		console.log(name);
+		console.log(allValues);
+		// memo : form의 특정 input의 현재 value가 필요한 경우
+		console.log(methods.getValues('name'));
+	}, [allValues, methods, name]);
 
 	return (
 		<div>
