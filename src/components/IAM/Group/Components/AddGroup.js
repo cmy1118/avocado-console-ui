@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
@@ -7,33 +7,38 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../styles/components/buttons';
-import ComboBox from '../../../RecycleComponents/New/ComboBox';
-import TextBox from '../../../RecycleComponents/New/TextBox';
-import Form from '../../../RecycleComponents/New/Form';
-import {ColDiv, Label, RowDiv} from '../../../../styles/components/style';
 import * as yup from 'yup';
-import {
-	AddPageContent,
-	TextBoxDescription,
-} from '../../../../styles/components/iam/addPage';
+import * as Yup from 'yup';
+import {AddPageContent} from '../../../../styles/components/iam/addPage';
 import {
 	TitleBar,
 	TitleBarButtons,
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
+import {FormProvider, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import RHF_Textbox from '../../../RecycleComponents/ReactHookForm/RHF_Textbox';
+import RHF_Combobox from '../../../RecycleComponents/ReactHookForm/RHF_Combobox';
+import {RowDiv} from '../../../../styles/components/style';
 
-const AddGroup = ({values, groupMembers, setValues}) => {
+const AddGroup = ({groupMembers}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const formRef = useRef(null);
 
-	const validation = {
-		type: yup.string().required('그룹 유형은 필수값입니다.'),
-		name: yup.string().required('그룹명은 필수값입니다.'),
-	};
+	const validationSchema = Yup.object()
+		.shape({
+			type: yup.string().required('그룹 유형은 필수값입니다.'),
+			name: yup.string().required('그룹명은 필수값입니다.'),
+		})
+		.required();
+
+	const methods = useForm({
+		// mode: 'onSubmit', // memo 유효성 검사가 trriger되는 시점 => onChange를 사용하면 바로 검사
+		resolver: yupResolver(validationSchema), // 외부 유효성 검사 라이브러리 사용
+	});
 
 	const onClickManageGroupType = useCallback(() => {
 		history.push('/groups/types');
@@ -84,7 +89,9 @@ const AddGroup = ({values, groupMembers, setValues}) => {
 					</NormalButton>
 					<NormalButton
 						type={'button'}
-						onClick={() => formRef.current.handleSubmit()}
+						onClick={methods.handleSubmit((data) =>
+							console.log(data),
+						)}
 					>
 						그룹 생성
 					</NormalButton>
@@ -97,61 +104,39 @@ const AddGroup = ({values, groupMembers, setValues}) => {
 				</TitleBarButtons>
 			</TitleBar>
 			<AddPageContent>
-				<Form
-					initialValues={values}
-					setValues={setValues}
-					onSubmit={onSubmitCreateGroup}
-					innerRef={formRef}
-					validation={validation}
-				>
-					<RowDiv style={{marginBottom: '16px'}}>
-						<ColDiv style={{marginRight: '10px'}}>
-							<Label htmlFor='type'>그룹 유형 선택</Label>
-							<ComboBox
-								name='type'
-								header={'그룹 유형 선택'}
-								options={groupTypes.map((v) => {
-									return {value: v.id, label: v.name};
-								})}
-							/>
-						</ColDiv>
-						{values.type !== 'KR-2020-0001:001' && (
-							<ColDiv>
-								<Label htmlFor={'parentId'}>
-									상위 그룹 선택
-								</Label>
-								{/*<TextBox name={'id'} />*/}
-								<ComboBox
-									name='parentId'
-									header={'상위 그룹 선택'}
-									options={groups.map((v) => {
-										return {value: v.id, label: v.name};
-									})}
-								/>
-							</ColDiv>
-						)}
+				<FormProvider {...methods}>
+					<RowDiv>
+						<RHF_Combobox
+							name={'type'}
+							placeholder={'조직'}
+							options={groupTypes.map((v) => {
+								return {value: v.id, label: v.name};
+							})}
+						/>
+						<RHF_Combobox
+							name={'color'}
+							placeholder={'상위 그룹선택'}
+							options={groups.map((v) => {
+								return {value: v.id, label: v.name};
+							})}
+						/>
 					</RowDiv>
-					<ColDiv>
-						<Label htmlFor={'name'}>그룹 명</Label>
-						<RowDiv margin={'0px 0px 12px 0px'}>
-							<TextBox
-								name={'name'}
-								placeholder={'그룹명을 입력하세요'}
-							/>
-							<TextBoxDescription>
-								최대 120자, 영문 숫자 사용 가능합니다.
-							</TextBoxDescription>
-						</RowDiv>
-					</ColDiv>
-				</Form>
+					<RowDiv alignItems={'center'}>
+						<RHF_Textbox
+							name={'name'}
+							placeholder={'그룹 이름작성'}
+							description={
+								'최대 120자, 영문 숫자 사용 가능합니다.'
+							}
+						/>
+					</RowDiv>
+				</FormProvider>
 			</AddPageContent>
 		</>
 	);
 };
 
 AddGroup.propTypes = {
-	values: PropTypes.object.isRequired,
-	setValues: PropTypes.func.isRequired,
 	groupMembers: PropTypes.array.isRequired,
 };
 

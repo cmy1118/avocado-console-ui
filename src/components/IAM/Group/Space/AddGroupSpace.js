@@ -20,11 +20,7 @@ const paths = [
 const AddGroupSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
-	const [values, setValues] = useState({
-		type: '',
-		parentId: '',
-		name: '',
-	});
+
 	const [groupMembers, setGroupMembers] = useState([]);
 
 	return (
@@ -34,9 +30,7 @@ const AddGroupSpace = () => {
 			<AddPageContainer>
 				<AddGroup
 					setIsOpened={setIsOpened}
-					values={values}
 					groupMembers={groupMembers}
-					setValues={setValues}
 				/>
 				<UsersIncludedInGroup
 					space={'UsersIncludedInGroup'}
