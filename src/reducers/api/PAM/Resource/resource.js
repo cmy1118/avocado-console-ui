@@ -7,7 +7,7 @@ const NAME = 'RRM_RESOURCE';
 const findResourceByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(
 			`/open-api/v1/pam/remote-resources/${payload.id}`,
@@ -58,7 +58,7 @@ const findAllResourcebByUserUidAction = createAsyncThunk(
 const findAllAccountAction = createAsyncThunk(
 	`${NAME}/findAllAccount`,
 	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 		//	console.log(payload);
 		const response = await Axios.get(
 			`/open-api/v1/pam/remote-resources/users`,

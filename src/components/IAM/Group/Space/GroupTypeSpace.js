@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {useHistory} from 'react-router-dom';
@@ -35,11 +35,16 @@ const GroupTypeSpace = () => {
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [initialGroupTypes, setInitialGroupTypes] = useState([]);
-	const [data, setData] = useState(
-		groupTypes.map((v) => ({
-			...v,
-			[DRAGGABLE_KEY]: v.id,
-		})),
+	console.log('groups => ', groups);
+	console.log('groupTypes => ', groupTypes);
+	const [data, setData] = useState(groupTypes);
+	const tableData = useMemo(
+		() =>
+			data.map((v) => ({
+				...v,
+				[DRAGGABLE_KEY]: v.id,
+			})),
+		[data],
 	);
 
 	const onClickAddGroups = useCallback(() => {
@@ -51,6 +56,7 @@ const GroupTypeSpace = () => {
 			...data,
 			{
 				id: tableKeys.groups.type + data.length,
+				[DRAGGABLE_KEY]: tableKeys.groups.type + data.length,
 				name: '',
 				numberOfGroups: 0,
 				description: '',
@@ -64,6 +70,7 @@ const GroupTypeSpace = () => {
 		data.forEach((v) => {
 			//	console.log(v);
 			if (v.new) {
+				console.log(v);
 				dispatch(
 					IAM_USER_GROUP_TYPE.asyncAction.createAction({
 						name: v.name,
@@ -110,6 +117,22 @@ const GroupTypeSpace = () => {
 			}),
 		);
 	}, [dispatch]);
+	//
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			const res = await dispatch(
+	// 				IAM_USER_GROUP_TYPE.asyncAction.findAllAction({
+	// 					range: 'elements=0-50',
+	// 				}),
+	// 			);
+	// 			console.log(res);
+	// 		} catch (err) {
+	// 			console.log('error => ', err);
+	// 		}
+	// 	};
+	// 	fetchData();
+	// }, [dispatch]);
 
 	useEffect(() => {
 		if (groupTypes) {
@@ -152,7 +175,7 @@ const GroupTypeSpace = () => {
 			<Table
 				tableKey={tableKeys.groups.type}
 				columns={columns}
-				data={data}
+				data={tableData}
 				setData={setData}
 			/>
 		</IamContainer>

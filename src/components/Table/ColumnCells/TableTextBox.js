@@ -6,6 +6,7 @@ const _Input = styled.input`
 	outline: none;
 	border: none;
 	background: transparent;
+	width: 100%;
 `;
 
 const TableTextBox = ({cell, isFocus}) => {

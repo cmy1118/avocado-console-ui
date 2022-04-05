@@ -15,6 +15,7 @@ const FormExample = () => {
 	// https://github.com/jquense/yup/tree/pre-v1
 
 	// 유효성 검사 schema 작성방법
+	// memo : 주의사항 => 현재 폼에 없는 name값을 입력하시고 require하시면 submit이 정상 동작하지 않습니다.
 	const validationSchema = Yup.object()
 		.shape({
 			name: Yup.string()

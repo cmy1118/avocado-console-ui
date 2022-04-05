@@ -89,9 +89,7 @@ const AddGroup = ({groupMembers}) => {
 					</NormalButton>
 					<NormalButton
 						type={'button'}
-						onClick={methods.handleSubmit((data) =>
-							console.log(data),
-						)}
+						onClick={methods.handleSubmit(onSubmitCreateGroup)}
 					>
 						그룹 생성
 					</NormalButton>
@@ -114,7 +112,7 @@ const AddGroup = ({groupMembers}) => {
 							})}
 						/>
 						<RHF_Combobox
-							name={'color'}
+							name={'parentId'}
 							placeholder={'상위 그룹선택'}
 							options={groups.map((v) => {
 								return {value: v.id, label: v.name};
