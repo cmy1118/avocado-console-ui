@@ -21,6 +21,8 @@ import {
 	RowDiv,
 } from '../../styles/components/style';
 import {HoverIconButton, IconButton} from '../../styles/components/icons';
+import useModal from "../../hooks/useModal";
+import Modal from "./Modal";
 
 const _Container = styled(ColDiv)`
 	display: flex;
@@ -140,7 +142,37 @@ const TableOptionsBar = ({
 		setIsColumnFilterContextMenuOpened(true);
 	}, [setIsColumnFilterContextMenuOpened]);
 	/****************************************************************************************/
-
+	const Form = () => {
+		return (
+			<form>
+				<input placeholder="입력바람" />
+			</form>
+		)
+	}
+	const [modalOption, showModal] = useModal();
+	const onClick = useCallback(() => {
+		showModal(
+			true,
+			"",
+			() => console.log("모달 on"),
+			null,
+			<SearchOptionsContextMenu
+				isOpened={
+					isSearchFilterContextMenuOpened
+				}
+				setIsOpened={
+					setIsSearchFilterContextMenuOpened
+				}
+				allColumns={allColumns}
+				selectedOptions={selectedSearchFilters}
+				setSelectedOptions={
+					setSelectedSearchFilters
+				}
+				filters={filters}
+				setAllFilters={setAllFilters}
+			/>
+		)
+	}, [modalOption])
 	return (
 		<_Container>
 			<RowDiv justifyContent={'space-between'} margin={'0px 16px'}>
@@ -158,12 +190,14 @@ const TableOptionsBar = ({
 					{isSearchFilterable && (
 						<div>
 							<_FilterButton
-								onClick={onClickOpenSearchFilterContextMenu}
+								onClick={onClick}
+								// onClick={onClickOpenSearchFilterContextMenu}
 							>
 								{filterListIcon}
 								<_FilterText>필터 추가</_FilterText>
 							</_FilterButton>
 							<PositionRelativeDiv>
+								<Modal modalOption={modalOption} />
 								{/*검색필터 기능 사용시 모달창*/}
 								{isSearchFilterContextMenuOpened && (
 									<SearchOptionsContextMenu

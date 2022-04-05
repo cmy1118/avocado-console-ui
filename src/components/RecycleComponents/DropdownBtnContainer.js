@@ -71,14 +71,14 @@ const DropdownBtnContainer = ({
 					return child;
 				})}
 			</_Content>
-			<_Footer>
-				<TransparentBorderButton onClick={onClickCancelBtn}>
-					취소
-				</TransparentBorderButton>
-				<NormalBorderButton onClick={onClickOkBtn}>
-					확인
-				</NormalBorderButton>
-			</_Footer>
+			{/*<_Footer>*/}
+			{/*	<TransparentBorderButton onClick={onClickCancelBtn}>*/}
+			{/*		취소*/}
+			{/*	</TransparentBorderButton>*/}
+			{/*	<NormalBorderButton onClick={onClickOkBtn}>*/}
+			{/*		확인*/}
+			{/*	</NormalBorderButton>*/}
+			{/*</_Footer>*/}
 		</_Container>
 	);
 };
