@@ -17,6 +17,7 @@ import {
 } from '../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
+let TAG_NUMBER = 0;
 const AddTagToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
@@ -33,6 +34,7 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 		setData([
 			...data,
 			{
+				id: `${TAG_NUMBER++}`,
 				name: '',
 				value: '',
 				permissions: [],

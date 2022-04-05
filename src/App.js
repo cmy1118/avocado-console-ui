@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import AUTH from './reducers/api/Auth/auth';
 import {useIdleTimer} from 'react-idle-timer';
 import TemplateExample from './pages/TemplateExample';
+import FormExample from './pages/FormExample';
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -168,6 +169,13 @@ const App = () => {
 					component={TemplateExample}
 					layout={IamLayout}
 				/>
+				{/* todo : formik 예시 (FormExample) 삭제예정 */}
+				<PrivateRouteWithLayout
+					path='/form'
+					component={FormExample}
+					layout={IamLayout}
+				/>
+
 				<PublicRoute path='/login/:companyId' component={Login} />
 				<PublicRoute
 					path={'/altauthredirect'}

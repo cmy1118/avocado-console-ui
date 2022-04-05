@@ -9,6 +9,7 @@ import {
 	AddSpaceContainer,
 } from '../../../../styles/components/iam/addPage';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import AssignRoleToGroup from '../Components/AssignRoleToGroup';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -43,11 +44,11 @@ const AddGroupSpace = () => {
 					setIsFold={setIsTableFold}
 					setValue={setGroupMembers}
 				/>
-				{/*<AssignRoleToGroup*/}
-				{/*	space={'AssignRoleToGroup'}*/}
-				{/*	isFold={isTableFold}*/}
-				{/*	setIsFold={setIsTableFold}*/}
-				{/*/>*/}
+				<AssignRoleToGroup
+					space={'AssignRoleToGroup'}
+					isFold={isTableFold}
+					setIsFold={setIsTableFold}
+				/>
 				<AddTagToGroup
 					space={'AddTagToGroup'}
 					isFold={isTableFold}
