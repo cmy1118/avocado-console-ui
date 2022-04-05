@@ -47,6 +47,7 @@ const NestedInput = memo(
 		const brandColor = '#4ca6a8';
 
 		const colourStyles = {
+			// menuPortal: (base) => ({...base, zIndex: 9999}),
 			control: (base, state) => ({
 				...base,
 				background: state.isDisabled ? '#f8f9fa' : 'white',

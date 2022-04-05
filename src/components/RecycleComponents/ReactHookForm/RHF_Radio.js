@@ -4,6 +4,10 @@ import {ErrorMessage} from '@hookform/error-message';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
+const Container = styled.div`
+	display: flex;
+`;
+
 const Label = styled.label`
 	display: inline-flex;
 	align-items: center;
@@ -45,20 +49,22 @@ const NestedInput = memo(
 
 		return (
 			<div>
-				{options.map((item, index) => {
-					return (
-						<Label key={item.value}>
-							<input
-								{...register(name)}
-								type='radio'
-								name={name}
-								value={item.value}
-								disabled={isDisabled}
-							/>
-							{item.label}
-						</Label>
-					);
-				})}
+				<Container>
+					{options.map((item, index) => {
+						return (
+							<Label key={item.value}>
+								<input
+									{...register(name)}
+									type='radio'
+									name={name}
+									value={item.value}
+									disabled={isDisabled}
+								/>
+								{item.label}
+							</Label>
+						);
+					})}
+				</Container>
 
 				<ErrorMessage
 					errors={errors}

@@ -9,18 +9,20 @@ import {
 	indeterminateIcon,
 } from '../../../icons/icons';
 
-const _Container = styled.div`
-	z-index: 0;
-	margin: ${(props) => props.margin || 'auto'};
+const Container = styled.div`
+	display: flex;
+`;
+
+const Label = styled.label`
 	display: flex !important;
 	align-items: center;
-	width: ${(props) => props.label === '' && '15px'};
 	cursor: pointer;
-	opacity: ${(props) => (props.opacity === 'true' ? 0.24 : 1)};
+	z-index: 0;
 `;
 
 const InputContainer = styled.div`
 	line-height: 17px !important;
+	margin-right: 2px;
 	width: 15px;
 	height: 15px;
 	svg {
@@ -63,65 +65,67 @@ const NestedInput = memo(
 		const [values, setValues] = useState([]);
 
 		useEffect(() => {
-			setValues(getValues(name));
+			setValues(getValues(name) ? getValues(name) : []);
 		}, [getValues, name]);
 
 		return (
 			<div>
-				{options.map((item) => {
-					return (
-						<_Container
-							key={item.value}
-							opacity={isDisabled.toString()}
-							label={item.label}
-							className='pretty p-svg p-curve p-plain p-toggle p-thick'
-						>
-							<input
-								type={'checkbox'}
-								value={item.value}
-								name={name}
-								{...register(name)}
-								onChange={(e) => {
-									if (isDisabled) return;
-									const {value} = e.target;
-									setValues((prev) =>
-										prev.includes(value)
-											? prev.filter((v) => v !== value)
-											: [...prev, value],
-									);
-									register(name).onChange(e);
-								}}
-							/>
-							{indeterminate ? (
-								<InputContainer
-									type={'indeterminate'}
+				<Container>
+					{options.map((item) => {
+						return (
+							<Label
+								key={item.value}
+								// opacity={isDisabled.toString()}
+								label={item.label}
+								className='pretty p-svg p-curve p-plain p-toggle p-thick'
+							>
+								<input
+									type={'checkbox'}
+									value={item.value}
 									disabled={isDisabled}
-									className='state'
-								>
-									{indeterminateIcon}
-									<label>{item.label}</label>
-								</InputContainer>
-							) : values.includes(item.value) ? (
-								<InputContainer
-									type={'check'}
-									className='state'
-								>
-									{checkIcon}
-									<label>{item.label}</label>
-								</InputContainer>
-							) : (
-								<InputContainer
-									type={'checkout'}
-									className='state'
-								>
-									{checkOutlineIcon}
-									<label>{item.label}</label>
-								</InputContainer>
-							)}
-						</_Container>
-					);
-				})}
+									{...register(name)}
+									onChange={(e) => {
+										if (isDisabled) return;
+										const {value} = e.target;
+										setValues((prev) =>
+											prev.includes(value)
+												? prev.filter(
+														(v) => v !== value,
+												  )
+												: [...prev, value],
+										);
+										register(name).onChange(e);
+									}}
+								/>
+								{indeterminate ? (
+									<InputContainer
+										type={'indeterminate'}
+										disabled={isDisabled}
+										className='state'
+									>
+										{indeterminateIcon}
+									</InputContainer>
+								) : values.includes(item.value) ? (
+									<InputContainer
+										type={'check'}
+										className='state'
+									>
+										{checkIcon}
+									</InputContainer>
+								) : (
+									<InputContainer
+										type={'checkout'}
+										className='state'
+									>
+										{checkOutlineIcon}
+									</InputContainer>
+								)}
 
+								{item.label}
+							</Label>
+						);
+					})}
+				</Container>
 				<ErrorMessage
 					errors={errors}
 					name={name}
