@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import styled from 'styled-components';
 
 import SearchOptionsContextMenu from '../ContextMenu/SearchOptionsContextMenu';
@@ -21,8 +21,8 @@ import {
 	RowDiv,
 } from '../../styles/components/style';
 import {HoverIconButton, IconButton} from '../../styles/components/icons';
-import useModal from "../../hooks/useModal";
-import Modal from "./Modal";
+import useModal from '../../hooks/useModal';
+import Modal from './Modal';
 
 const _Container = styled(ColDiv)`
 	display: flex;
@@ -81,51 +81,25 @@ const TableOptionsBar = ({
 	getToggleHideAllColumnsProps,
 	setHiddenColumns,
 	headerGroups,
+	isPaginable,
 	isSearchable,
 	isSearchFilterable,
 	isColumnFilterable,
 	setSearch,
 }) => {
+	//검색필터 선택 요소들
 	const [selectedSearchFilters, setSelectedSearchFilters] = useState([]);
+	//검색필터 모달 훅스
+	const [searchFilterModal, showSearchFilterModal] = useModal();
+	//컬럼필터 모달 훅스
+	const [columnFilterModal, showColumnFilter] = useModal();
+
+	const searchFilterForm = useRef();
+	const columnFilterForm = useRef();
+
 	// console.log('headerGroups:', headerGroups);
 	// console.log('isSearchFilterable:', isSearchFilterable);
 	// console.log('selectedSearchFilters:', selectedSearchFilters);
-
-	/****************************************************************************************
-	 * 검색필터 기능
-	 ****************************************************************************************/
-	//검색필터 컨텍스트 메뉴 열기 상태 관리 훅스
-	const [
-		isSearchFilterContextMenuOpened,
-		setIsSearchFilterContextMenuOpened,
-	] = useState(false);
-
-	//검색필터 컨텍스트 메뉴 열기
-	const onClickOpenSearchFilterContextMenu = useCallback(() => {
-		console.log('onClickOpenSearchFilterContextMenu:');
-		setIsSearchFilterContextMenuOpened(true);
-	}, []);
-
-	//검색필터 닫기 버튼 핸들러
-	const onClickCloseFilter = useCallback(
-		(v) => () => {
-			console.log('onClickCloseFilter:', v);
-			setSelectedSearchFilters(
-				selectedSearchFilters.filter((val) => val !== v),
-			);
-			setAllFilters(filters.filter((val) => val.id !== v));
-		},
-		[selectedSearchFilters, setAllFilters, filters],
-	);
-
-	//검색필터 '모두삭제' 버튼 핸들러
-	const onClickResetFilters = useCallback(() => {
-		console.log('onClickResetFilters:');
-		setSelectedSearchFilters([]);
-		setAllFilters([]);
-	}, [setAllFilters]);
-
-	/****************************************************************************************/
 
 	/****************************************************************************************
 	 * 컬럼필터 기능
@@ -136,43 +110,63 @@ const TableOptionsBar = ({
 		setIsColumnFilterContextMenuOpened,
 	] = useState(false);
 
-	//컬럼필터 컨텍스트 메뉴 열기
-	const onClickOpenSelectColumnsContextMenu = useCallback(() => {
-		console.log('onClickOpenSelectColumnsContextMenu:');
-		setIsColumnFilterContextMenuOpened(true);
-	}, [setIsColumnFilterContextMenuOpened]);
 	/****************************************************************************************/
-	const Form = () => {
-		return (
-			<form>
-				<input placeholder="입력바람" />
-			</form>
-		)
-	}
-	const [modalOption, showModal] = useModal();
-	const onClick = useCallback(() => {
-		showModal(
+
+	/****************************************************************************************
+	 * 검색 필터 기능 모달 핸들러
+	 ****************************************************************************************/
+	const onClickSearchFilter = useCallback(() => {
+		showSearchFilterModal(
 			true,
-			"",
-			() => console.log("모달 on"),
-			null,
+			'조회 필터 추가',
+			() => searchFilterForm.current.onClickApplyFilters,
+			() => console.log('모달 off'),
 			<SearchOptionsContextMenu
-				isOpened={
-					isSearchFilterContextMenuOpened
-				}
-				setIsOpened={
-					setIsSearchFilterContextMenuOpened
-				}
+				ref={searchFilterForm}
 				allColumns={allColumns}
 				selectedOptions={selectedSearchFilters}
-				setSelectedOptions={
-					setSelectedSearchFilters
-				}
+				setSelectedOptions={setSelectedSearchFilters}
 				filters={filters}
 				setAllFilters={setAllFilters}
-			/>
-		)
-	}, [modalOption])
+			/>,
+		);
+	}, [
+		allColumns,
+		filters,
+		selectedSearchFilters,
+		setAllFilters,
+		showSearchFilterModal,
+	]);
+
+	/****************************************************************************************
+	 * 컬럼 필터 기능 모달 핸들러
+	 ****************************************************************************************/
+	const onClickColumnFilter = useCallback(() => {
+		showColumnFilter(
+			true,
+			'표시되는 열',
+			() => console.log('모달 on'),
+			() => console.log('모달 off'),
+			<TableColumnFilterContextMenu
+				allColumns={allColumns}
+				getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
+				setHiddenColumns={setHiddenColumns}
+				selectedOptions={selectedSearchFilters}
+				setSelectedOptions={setSelectedSearchFilters}
+				filters={filters}
+				setAllFilters={setAllFilters}
+			/>,
+		);
+	}, [
+		allColumns,
+		filters,
+		getToggleHideAllColumnsProps,
+		selectedSearchFilters,
+		setAllFilters,
+		setHiddenColumns,
+		showColumnFilter,
+	]);
+
 	return (
 		<_Container>
 			<RowDiv justifyContent={'space-between'} margin={'0px 16px'}>
@@ -189,140 +183,127 @@ const TableOptionsBar = ({
 					{/*검색필터 기능 사용시*/}
 					{isSearchFilterable && (
 						<div>
-							<_FilterButton
-								onClick={onClick}
-								// onClick={onClickOpenSearchFilterContextMenu}
-							>
+							<_FilterButton onClick={onClickSearchFilter}>
 								{filterListIcon}
 								<_FilterText>필터 추가</_FilterText>
 							</_FilterButton>
-							<PositionRelativeDiv>
-								<Modal modalOption={modalOption} />
-								{/*검색필터 기능 사용시 모달창*/}
-								{isSearchFilterContextMenuOpened && (
-									<SearchOptionsContextMenu
-										isOpened={
-											isSearchFilterContextMenuOpened
-										}
-										setIsOpened={
-											setIsSearchFilterContextMenuOpened
-										}
-										allColumns={allColumns}
-										selectedOptions={selectedSearchFilters}
-										setSelectedOptions={
-											setSelectedSearchFilters
-										}
-										filters={filters}
-										setAllFilters={setAllFilters}
-									/>
-								)}
-							</PositionRelativeDiv>
+							{/*검색필터 모달창*/}
+							<Modal modalOption={searchFilterModal} />
 						</div>
 					)}
 				</_OptionContainer>
-				<_OptionContainer>
-					<IconButton
-						size={'sm'}
-						onClick={() => console.log('데이터 새로 불러오기')}
-					>
-						{autoRenewIcon}
-					</IconButton>
-					<Pagination
-						gotoPage={gotoPage}
-						canPreviousPage={canPreviousPage}
-						previousPage={previousPage}
-						nextPage={nextPage}
-						canNextPage={canNextPage}
-						pageCount={pageIndex}
-						pageOptions={pageOptions}
-						pageSize={pageSize}
-						tableKey={tableKey}
-					/>
-					<PageSizing pageSize={pageSize} setPageSize={setPageSize} />
 
-					{/*컬럼필터 기능 사용시*/}
-					{isColumnFilterable && (
+				<_OptionContainer>
+					{isPaginable && (
 						<div>
 							<IconButton
-								onClick={onClickOpenSelectColumnsContextMenu}
 								size={'sm'}
+								onClick={() =>
+									console.log('데이터 새로 불러오기')
+								}
 							>
-								{ListIcon}
+								{autoRenewIcon}
 							</IconButton>
-							<PositionRelativeDiv>
-								<TableColumnFilterContextMenu
-									isOpened={isColumnFilterContextMenuOpened}
-									setIsOpened={
-										setIsColumnFilterContextMenuOpened
-									}
-									allColumns={allColumns}
-									getToggleHideAllColumnsProps={
-										getToggleHideAllColumnsProps
-									}
-									setHiddenColumns={setHiddenColumns}
-									selectedOptions={selectedSearchFilters}
-									setSelectedOptions={
-										setSelectedSearchFilters
-									}
-									filters={filters}
-									setAllFilters={setAllFilters}
-								/>
-							</PositionRelativeDiv>
+							{/*페이지*/}
+							<Pagination
+								gotoPage={gotoPage}
+								canPreviousPage={canPreviousPage}
+								previousPage={previousPage}
+								nextPage={nextPage}
+								canNextPage={canNextPage}
+								pageCount={pageIndex}
+								pageOptions={pageOptions}
+								pageSize={pageSize}
+								tableKey={tableKey}
+							/>
+							{/*페이지 행 사이즈*/}
+							<PageSizing
+								pageSize={pageSize}
+								setPageSize={setPageSize}
+							/>
+
+							{/*컬럼필터 기능 사용시*/}
+							{isColumnFilterable && (
+								<div>
+									<IconButton
+										onClick={onClickColumnFilter}
+										size={'sm'}
+									>
+										{ListIcon}
+									</IconButton>
+									{/*컬럼필터 모달창*/}
+									<Modal
+										modalOption={columnFilterModal}
+										direction={'left'}
+									/>
+								</div>
+							)}
 						</div>
 					)}
 				</_OptionContainer>
 			</RowDiv>
-			{/*검색필터 선택했을때*/}
-			{selectedSearchFilters[0] &&
-				headerGroups.map((headerGroup, i) => (
-					<FiltersContainer
-						justifyContent={'space-between'}
-						key={i}
-						height={'84px'}
-						padding={'11px 0px'}
-						// padding={'11px 0px 16px'}
-						{...headerGroup.getHeaderGroupProps()}
-					>
-						<RowDiv alignItems={'center'}>
-							{headerGroup.headers.map(
-								(column, i) =>
-									column.canFilter &&
-									selectedSearchFilters.includes(
-										column.id,
-									) && (
-										<ColDiv key={i}>
-											<Label>
-												{placeholders[column.id]}
-												{/*{column.id}*/}
-											</Label>
-											<RowDiv alignItems={'center'}>
-												{column.render('Filter')}
-												<HoverIconButton
-													size={'sm'}
-													onClick={onClickCloseFilter(
-														column.id,
-													)}
-												>
-													{cancelIcon}
-												</HoverIconButton>
-											</RowDiv>
-										</ColDiv>
-									),
-							)}
-						</RowDiv>
 
-						{selectedSearchFilters.length !== 0 && (
-							<RowDiv alignItems={'flex-end'}>
-								<NormalBorderButton
-									margin={'0px 0px 0px 10px'}
-									onClick={onClickResetFilters}
-								>
-									모두 삭제
-								</NormalBorderButton>
-							</RowDiv>
-						)}
-					</FiltersContainer>
-				))}
+			{/*검색필터 체크박스 선택시 선택요소 조회 컴포넌트*/}
+			{selectedSearchFilters[0] && (
+				<searchFiltersBox
+					headerGroups={headerGroups}
+					selected={selectedSearchFilters}
+					setSelected={setSelectedSearchFilters}
+					filters={filters}
+					setAllFilters={setAllFilters}
+				/>
+			)}
+
+			{/*{selectedSearchFilters[0] &&*/}
+			{/*	headerGroups.map((headerGroup, i) => (*/}
+			{/*		<FiltersContainer*/}
+			{/*			justifyContent={'space-between'}*/}
+			{/*			key={i}*/}
+			{/*			height={'84px'}*/}
+			{/*			padding={'11px 0px'}*/}
+			{/*			// padding={'11px 0px 16px'}*/}
+			{/*			{...headerGroup.getHeaderGroupProps()}*/}
+			{/*		>*/}
+			{/*			<RowDiv alignItems={'center'}>*/}
+			{/*				{headerGroup.headers.map(*/}
+			{/*					(column, i) =>*/}
+			{/*						column.canFilter &&*/}
+			{/*						selectedSearchFilters.includes(*/}
+			{/*							column.id,*/}
+			{/*						) && (*/}
+			{/*							<ColDiv key={i}>*/}
+			{/*								<Label>*/}
+			{/*									{placeholders[column.id]}*/}
+			{/*									/!*{column.id}*!/*/}
+			{/*								</Label>*/}
+			{/*								<RowDiv alignItems={'center'}>*/}
+			{/*									{column.render('Filter')}*/}
+			{/*									<HoverIconButton*/}
+			{/*										size={'sm'}*/}
+			{/*										onClick={onClickCloseFilter(*/}
+			{/*											column.id,*/}
+			{/*										)}*/}
+			{/*									>*/}
+			{/*										{cancelIcon}*/}
+			{/*									</HoverIconButton>*/}
+			{/*								</RowDiv>*/}
+			{/*							</ColDiv>*/}
+			{/*						),*/}
+			{/*				)}*/}
+			{/*			</RowDiv>*/}
+
+			{/*			{selectedSearchFilters.length !== 0 && (*/}
+			{/*				<RowDiv alignItems={'flex-end'}>*/}
+			{/*					<NormalBorderButton*/}
+			{/*						margin={'0px 0px 0px 10px'}*/}
+			{/*						onClick={onClickResetFilters}*/}
+			{/*					>*/}
+			{/*						모두 삭제*/}
+			{/*					</NormalBorderButton>*/}
+			{/*				</RowDiv>*/}
+			{/*			)}*/}
+			{/*		</FiltersContainer>*/}
+			{/*	))}*/}
 		</_Container>
 	);
 };
@@ -355,6 +336,7 @@ TableOptionsBar.propTypes = {
 	setHiddenColumns: PropTypes.func,
 	tableOptions: PropTypes.object,
 	isSearchable: PropTypes.bool,
+	isPaginable: PropTypes.bool,
 	isSearchFilterable: PropTypes.bool,
 	setSearch: PropTypes.func,
 };

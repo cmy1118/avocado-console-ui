@@ -717,6 +717,7 @@ const Table = ({
 			{(isPaginable || isSearchable) && (
 				<TableOptionsBar
 					isSearchable={isSearchable}
+					isPaginable={isPaginable}
 					isColumnFilterable={isColumnFilterable}
 					isSearchFilterable={isSearchFilterable}
 					tableKey={tableKey}

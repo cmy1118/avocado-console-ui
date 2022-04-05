@@ -75,13 +75,14 @@ const TableColumnFilterContextMenu = ({
 	);
 
 	return isOpened ? (
-		<DropdownBtnContainer
-			title={'표시되는 열'}
-			isOpened={isOpened}
-			onClickOkBtn={onClickOkBtn}
-			onClickCancelBtn={onClickCancelBtn}
-			direction={'left'}
-		>
+		// <DropdownBtnContainer
+		// 	title={'표시되는 열'}
+		// 	isOpened={isOpened}
+		// 	onClickOkBtn={onClickOkBtn}
+		// 	onClickCancelBtn={onClickCancelBtn}
+		// 	direction={'left'}
+		// >
+		<>
 			<_CheckboxContainer>
 				<CheckBox
 					margin={'inherit'}
@@ -110,7 +111,9 @@ const TableColumnFilterContextMenu = ({
 					/>
 				</_CheckboxContainer>
 			))}
-		</DropdownBtnContainer>
+
+			{/*</DropdownBtnContainer>*/}
+		</>
 	) : (
 		<></>
 	);
