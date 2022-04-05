@@ -7,6 +7,10 @@ import {Icon} from '../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
 import PropTypes from 'prop-types';
 
+const BoxContainer = styled.div`
+	margin: 6px;
+`;
+
 const ErrorMessageText = styled.span`
 	font-size: 12px;
 	font-weight: normal;
@@ -27,6 +31,7 @@ const NestedInput = memo(
 		options,
 		isDisabled,
 		placeholder,
+		width = 200,
 	}) => {
 		const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -47,7 +52,8 @@ const NestedInput = memo(
 		const brandColor = '#4ca6a8';
 
 		const colourStyles = {
-			// menuPortal: (base) => ({...base, zIndex: 9999}),
+			menu: (base) => ({...base, width: width}),
+
 			control: (base, state) => ({
 				...base,
 				background: state.isDisabled ? '#f8f9fa' : 'white',
@@ -58,6 +64,7 @@ const NestedInput = memo(
 						? brandColor
 						: base.borderColor,
 				},
+				width: width,
 			}),
 			option: (styles, {data, isDisabled, isFocused, isSelected}) => {
 				// const color = chroma(data.color);
@@ -102,7 +109,7 @@ const NestedInput = memo(
 		const onMenuClose = () => setIsMenuOpen(false);
 
 		return (
-			<div>
+			<BoxContainer>
 				<Controller
 					name={name}
 					control={control}
@@ -143,7 +150,7 @@ const NestedInput = memo(
 						<ErrorMessageText>{message}</ErrorMessageText>
 					)}
 				/>
-			</div>
+			</BoxContainer>
 		);
 	},
 );
@@ -156,9 +163,10 @@ NestedInput.propTypes = {
 	isDisabled: PropTypes.bool,
 	placeholder: PropTypes.string,
 	setValue: PropTypes.func,
+	width: PropTypes.number,
 };
 
-const RHF_Combobox = ({name, options, placeholder, isDisabled}) => {
+const RHF_Combobox = ({name, options, placeholder, width, isDisabled}) => {
 	const methods = useFormContext();
 	return (
 		<NestedInput
@@ -167,6 +175,7 @@ const RHF_Combobox = ({name, options, placeholder, isDisabled}) => {
 			options={options}
 			placeholder={placeholder}
 			isDisabled={isDisabled}
+			width={width}
 		/>
 	);
 };
@@ -176,6 +185,7 @@ RHF_Combobox.propTypes = {
 	options: PropTypes.array,
 	isDisabled: PropTypes.bool,
 	placeholder: PropTypes.string,
+	width: PropTypes.number,
 };
 
 export default RHF_Combobox;

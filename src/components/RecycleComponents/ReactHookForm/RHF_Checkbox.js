@@ -9,6 +9,10 @@ import {
 	indeterminateIcon,
 } from '../../../icons/icons';
 
+const BoxContainer = styled.div`
+	margin: 6px;
+`;
+
 const Container = styled.div`
 	display: flex;
 `;
@@ -69,7 +73,7 @@ const NestedInput = memo(
 		}, [getValues, name]);
 
 		return (
-			<div>
+			<BoxContainer>
 				<Container>
 					{options.map((item) => {
 						return (
@@ -133,7 +137,7 @@ const NestedInput = memo(
 						<ErrorMessageText>{message}</ErrorMessageText>
 					)}
 				/>
-			</div>
+			</BoxContainer>
 		);
 	},
 );

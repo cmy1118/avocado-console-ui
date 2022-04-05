@@ -77,17 +77,23 @@ const FormExample = () => {
 			<FormProvider {...methods}>
 				<h3>TextBox</h3>
 				{/* memo : 태그의 name 속성을 통해 각 태그를 구분합니다.*/}
-				<RHF_Textbox name={'name'} placeholder={'name'} />
+				<RHF_Textbox
+					name={'name'}
+					placeholder={'name'}
+					description={'이름을 입력하세요.'}
+				/>
 				<RHF_Textbox
 					name={'description'}
 					placeholder={'description'}
 					isDisabled
+					width={400}
 				/>
 				<h3>ComboBox</h3>
 				<RHF_Combobox
 					name={'color'}
 					placeholder={'what color?'}
 					options={colourOptions}
+					width={500}
 				/>
 				<RHF_Combobox
 					name={'number'}

@@ -3,6 +3,12 @@ import React, {memo, useState} from 'react';
 import {ErrorMessage} from '@hookform/error-message';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import {TextBoxDescription} from '../../../styles/components/iam/addPage';
+import {RowDiv} from '../../../styles/components/style';
+
+const BoxContainer = styled.div`
+	margin: 6px;
+`;
 
 const Input = styled.input`
 	display: flex;
@@ -40,7 +46,7 @@ const SubContainer = styled.div`
 	border-color: ${(props) =>
 		props.error ? '#d45959' : props.isFocused ? '#4ca6a8' : '#e3e5e5'};
 	height: 34px;
-	width: ${(props) => props.width || '394px'};
+	width: ${(props) => props.width + 'px'};
 	background: ${(props) => (props.disabled ? '#f8f9fa' : 'white')};
 `;
 
@@ -57,26 +63,39 @@ const ErrorMessageText = styled.span`
 
 // eslint-disable-next-line react/display-name
 const NestedInput = memo(
-	({name, register, formState: {errors}, isDisabled, placeholder = ''}) => {
+	({
+		name,
+		register,
+		formState: {errors},
+		isDisabled,
+		width = 300,
+		placeholder = '',
+		description = '',
+	}) => {
 		const [isFocused, setIsFocused] = useState(false);
 		return (
-			<div>
-				<SubContainer
-					error={Object.keys(errors).includes(name)}
-					isFocused={isFocused}
-					disabled={isDisabled}
-				>
-					<Input
-						{...register(name)}
-						onBlur={(e) => {
-							register(name).onBlur(e);
-							setIsFocused(false);
-						}}
-						onFocus={() => setIsFocused(true)}
-						placeholder={placeholder}
+			<BoxContainer>
+				<RowDiv alignItems={'center'}>
+					<SubContainer
+						error={Object.keys(errors).includes(name)}
+						isFocused={isFocused}
 						disabled={isDisabled}
-					/>
-				</SubContainer>
+						width={width}
+					>
+						<Input
+							{...register(name)}
+							onBlur={(e) => {
+								register(name).onBlur(e);
+								setIsFocused(false);
+							}}
+							onFocus={() => setIsFocused(true)}
+							placeholder={placeholder}
+							disabled={isDisabled}
+							width={width}
+						/>
+					</SubContainer>
+					<TextBoxDescription>{description}</TextBoxDescription>
+				</RowDiv>
 				<ErrorMessage
 					errors={errors}
 					name={name}
@@ -84,7 +103,7 @@ const NestedInput = memo(
 						<ErrorMessageText>{message}</ErrorMessageText>
 					)}
 				/>
-			</div>
+			</BoxContainer>
 		);
 	},
 );
@@ -95,9 +114,11 @@ NestedInput.propTypes = {
 	formState: PropTypes.object,
 	isDisabled: PropTypes.bool,
 	placeholder: PropTypes.string,
+	width: PropTypes.number,
+	description: PropTypes.string,
 };
 
-const RHF_Textbox = ({name, placeholder, isDisabled}) => {
+const RHF_Textbox = ({name, placeholder, description, width, isDisabled}) => {
 	const methods = useFormContext();
 	return (
 		<NestedInput
@@ -105,6 +126,8 @@ const RHF_Textbox = ({name, placeholder, isDisabled}) => {
 			name={name}
 			placeholder={placeholder}
 			isDisabled={isDisabled}
+			width={width}
+			description={description}
 		/>
 	);
 };
@@ -113,6 +136,8 @@ RHF_Textbox.propTypes = {
 	name: PropTypes.string,
 	isDisabled: PropTypes.bool,
 	placeholder: PropTypes.string,
+	width: PropTypes.number,
+	description: PropTypes.string,
 };
 
 export default RHF_Textbox;
