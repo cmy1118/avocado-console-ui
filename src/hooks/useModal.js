@@ -1,4 +1,5 @@
-import {useState, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
+import Modal from '../components/Table/Modal';
 
 const OPTION = {
 	show: false, // 모달을 키고 끄는 옵션
@@ -28,10 +29,12 @@ const useModal = () => {
 				element,
 			}));
 		},
-		[modalOption],
+		[],
 	);
 
-	return [modalOption, showModal];
+	const Modals = (props) => <Modal modalOption={modalOption} {...props} />;
+
+	return [Modals, showModal];
 };
 
 export default useModal;
