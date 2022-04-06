@@ -1,13 +1,6 @@
-import React, {
-	forwardRef,
-	useCallback,
-	useImperativeHandle,
-	useMemo,
-	useState,
-} from 'react';
+import React, {forwardRef, useCallback, useImperativeHandle, useMemo, useState,} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import DropdownBtnContainer from '../RecycleComponents/DropdownBtnContainer';
 import CheckBox from '../RecycleComponents/New/CheckBox';
 
 const _CheckboxContainer = styled.div`
@@ -20,12 +13,9 @@ const _CheckboxContainer = styled.div`
 	}
 	cursor: pointer;
 `;
-
 // eslint-disable-next-line react/display-name
 const SearchOptionsContextMenu = forwardRef(
 	(
-		props,
-		ref,
 		{
 			allColumns,
 			selectedOptions, //선택된 필터 옵션들
@@ -33,16 +23,8 @@ const SearchOptionsContextMenu = forwardRef(
 			filters, // 필터링될 값
 			setAllFilters,
 		},
+		ref,
 	) => {
-		// isOpened,
-		// setIsOpened,
-		// allColumns,
-		// selectedOptions, //선택된 필터 옵션들
-		// setSelectedOptions,
-		// filters, // 필터링될 값
-		// setAllFilters,
-		// }) => {
-		//선택한 필터 정보들
 		const [tempSelectedOptions, setTempSelectedOptions] = useState(
 			selectedOptions,
 		);
@@ -53,13 +35,10 @@ const SearchOptionsContextMenu = forwardRef(
 					v.isVisible === true,
 			);
 		}, [allColumns]);
-		console.log('allOptions:', allOptions);
 
-		console.log('tempSelectedOptions:', tempSelectedOptions);
 		//columns : 현재 선택된 컬럼 id
 		const onClickSelectFilter = useCallback(
 			(columns) => (e) => {
-				console.log('onClickSelectFilter:', columns);
 				e.stopPropagation();
 				//필터 설정값 두번 클릭할시 기존 선택된 요소 제거
 				if (tempSelectedOptions.includes(columns))
@@ -70,43 +49,24 @@ const SearchOptionsContextMenu = forwardRef(
 			},
 			[tempSelectedOptions],
 		);
-		//
-		// const onClickCloseContextMenu = useCallback(() => {
-		// 	setIsOpened(false);
-		// }, [setIsOpened]);
 
-		//필더 추가 확인 버튼 이벤트 핸들러
-		// const onClickApplyFilters = useCallback(() => {
-		// 	setSelectedOptions(tempSelectedOptions);
-		// 	setAllFilters(
-		// 		filters.filter((v) => tempSelectedOptions.includes(v.id)),
-		// 	);
-		// 	//닫기
-		// 	// onClickCloseContextMenu();
-		// }, [
-		// 	setSelectedOptions,
-		// 	tempSelectedOptions,
-		// 	setAllFilters,
-		// 	filters,
-		// 	// onClickCloseContextMenu,
-		// ]);
+		// 필더 추가 확인 버튼 이벤트 핸들러
+		const onClickApplyFilters = useCallback(() => {
+			setSelectedOptions(tempSelectedOptions);
+			setAllFilters(
+				filters.filter((v) => tempSelectedOptions.includes(v.id)),
+			);
+		}, [
+			setSelectedOptions,
+			tempSelectedOptions,
+			setAllFilters,
+			filters,
+		]);
 		useImperativeHandle(ref, () => ({
-			onClickApplyFilters() {
-				console.log('🔻hi');
-				setSelectedOptions(tempSelectedOptions);
-				setAllFilters(
-					filters.filter((v) => tempSelectedOptions.includes(v.id)),
-				);
-			},
+			onClickApplyFilters
 		}));
 
 		return (
-			// <DropdownBtnContainer
-			// 	title={'조회 필터 추가'}
-			// 	isOpened={isOpened}
-			// 	onClickOkBtn={onClickApplyFilters}
-			// 	onClickCancelBtn={onClickCloseContextMenu}
-			// >
 			<>
 				{allOptions.map((column) => (
 					<_CheckboxContainer
@@ -122,7 +82,6 @@ const SearchOptionsContextMenu = forwardRef(
 					</_CheckboxContainer>
 				))}
 			</>
-			// </DropdownBtnContainer>
 		);
 	},
 );

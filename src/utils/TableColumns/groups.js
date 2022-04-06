@@ -1,7 +1,7 @@
 import TableTextBox from '../../components/Table/ColumnCells/TableTextBox';
 import React from 'react';
 import TableLink from '../../components/Table/ColumnCells/TableLink';
-import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
+import CalenderOption from '../../components/Table/Options/Search/searchFilters/CalenderOption';
 import {statusConverter} from '../tableDataConverter';
 import {RowDiv} from '../../styles/components/style';
 

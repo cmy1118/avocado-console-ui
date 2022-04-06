@@ -1,10 +1,6 @@
 import React, {useRef} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import {
-	NormalBorderButton,
-	TransparentBorderButton,
-} from '../../styles/components/buttons';
 import {useRootClose} from 'react-overlays';
 
 const _Container = styled.div`

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import SelectionOption from '../../components/Table/Options/Search/SelectionOption';
-import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
+import SelectionOption from '../../components/Table/Options/Search/searchFilters/SelectionOption';
+import CalenderOption from '../../components/Table/Options/Search/searchFilters/CalenderOption';
 import TableLink from '../../components/Table/ColumnCells/TableLink';
 import {statusConverter} from '../tableDataConverter';
 import {PermissionName, RowDiv} from '../../styles/components/style';

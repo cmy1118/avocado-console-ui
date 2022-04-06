@@ -1,11 +1,11 @@
 import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
-import Form from '../../RecycleComponents/New/Form';
-import ComboBox from '../../RecycleComponents/New/ComboBox';
+import Form from '../../../RecycleComponents/New/Form';
+import ComboBox from '../../../RecycleComponents/New/ComboBox';
 import styled from 'styled-components';
-import {RowDiv, Span} from '../../../styles/components/style';
-import {Icon} from '../../../styles/components/icons';
-import {arrowDownIcon, arrowUpIcon} from '../../../icons/icons';
+import {RowDiv, Span} from '../../../../styles/components/style';
+import {Icon} from '../../../../styles/components/icons';
+import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
 
 const Border = styled.div`
 	width: 1px;

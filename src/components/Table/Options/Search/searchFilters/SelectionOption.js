@@ -1,21 +1,15 @@
 import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
 
-import {tableSearchSelectOptions} from '../../../../utils/data';
-import Form from '../../../RecycleComponents/New/Form';
-import ComboBox from '../../../RecycleComponents/New/ComboBox';
+import Form from '../../../../RecycleComponents/New/Form';
+import ComboBox from '../../../../RecycleComponents/New/ComboBox';
+import {placeholders, tableSearchSelectOptions} from "./searchFiltersBox";
 
-const placeholders = {
-	status: '계정상태',
-	authType: '인증유형',
-	MFA: 'MFA',
-	passwordExpiryTime: '비밀번호 수명',
-	roleType: '역할 유형',
-	manageCategory:'관리 구분',
-	policyType:'정책 구분',
-
-};
-
+/****************************************************************************************
+ * 컬럼 필터 사용하기위한 요소 추가 옵션
+ *
+ * path : src/components/Table/Options/Search/searchFiltersBox.js
+ ****************************************************************************************/
 const SelectionOption = ({column: {setFilter, id}}) => {
 	const ref = useRef(null);
 
