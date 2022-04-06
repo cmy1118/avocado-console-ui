@@ -13,11 +13,11 @@ const useModal = () => {
 	const [modalOption, setModalOption] = useState(OPTION);
 
 	const showModal = useCallback(
-		(show, title, onSubmitCallback, onCloseCallback, element) => {
+		({show, title, onSubmitCallback, onCloseCallback, element}) => {
 			setModalOption((prev) => ({
 				...prev,
 				show,
-				title,
+				...(title && {title}),
 				onSubmit: () => {
 					if (onSubmitCallback) onSubmitCallback();
 					setModalOption((prev) => ({...prev, show: false}));

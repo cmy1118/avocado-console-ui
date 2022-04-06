@@ -93,20 +93,23 @@ const TableOptionsBar = ({
 	 * 검색 필터 기능 모달 핸들러
 	 ****************************************************************************************/
 	const onClickSearchFilter = useCallback(() => {
-		showSearchFilterModal(
-			true,
-			'조회 필터 추가',
-			() => searchFilterForm.current.onClickApplyFilters(),
-			() => console.log('모달 off'),
-			<SearchOptionsContextMenu
-				ref={searchFilterForm}
-				allColumns={allColumns}
-				selectedOptions={selectedSearchFilters}
-				setSelectedOptions={setSelectedSearchFilters}
-				filters={filters}
-				setAllFilters={setAllFilters}
-			/>,
-		);
+		showSearchFilterModal({
+			show: true,
+			title: '조회 필터 추가',
+			onSubmitCallback: () =>
+				searchFilterForm.current.onClickApplyFilters(),
+			onCloseCallback: () => console.log('모달 off'),
+			element: (
+				<SearchOptionsContextMenu
+					ref={searchFilterForm}
+					allColumns={allColumns}
+					selectedOptions={selectedSearchFilters}
+					setSelectedOptions={setSelectedSearchFilters}
+					filters={filters}
+					setAllFilters={setAllFilters}
+				/>
+			),
+		});
 	}, [
 		allColumns,
 		filters,
@@ -119,22 +122,24 @@ const TableOptionsBar = ({
 	 * 컬럼 필터 기능 모달 핸들러
 	 ****************************************************************************************/
 	const onClickColumnFilter = useCallback(() => {
-		showColumnFilter(
-			true,
-			'표시되는 열',
-			() => columnFilterForm.current.onClickOkBtn(),
-			() => columnFilterForm.current.onClickCancelBtn(),
-			<TableColumnFilterContextMenu
-				ref={columnFilterForm}
-				allColumns={allColumns}
-				getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
-				setHiddenColumns={setHiddenColumns}
-				selectedOptions={selectedSearchFilters}
-				setSelectedOptions={setSelectedSearchFilters}
-				filters={filters}
-				setAllFilters={setAllFilters}
-			/>,
-		);
+		showColumnFilter({
+			show: true,
+			title: '표시되는 열',
+			onSubmitCallback: () => columnFilterForm.current.onClickOkBtn(),
+			onCloseCallback: () => columnFilterForm.current.onClickCancelBtn(),
+			element: (
+				<TableColumnFilterContextMenu
+					ref={columnFilterForm}
+					allColumns={allColumns}
+					getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
+					setHiddenColumns={setHiddenColumns}
+					selectedOptions={selectedSearchFilters}
+					setSelectedOptions={setSelectedSearchFilters}
+					filters={filters}
+					setAllFilters={setAllFilters}
+				/>
+			),
+		});
 	}, [
 		allColumns,
 		filters,

@@ -20,19 +20,26 @@ import {FormProvider, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import RHF_Textbox from '../../../RecycleComponents/ReactHookForm/RHF_Textbox';
 import RHF_Combobox from '../../../RecycleComponents/ReactHookForm/RHF_Combobox';
-import {RowDiv} from '../../../../styles/components/style';
+import {ColDiv, RowDiv} from '../../../../styles/components/style';
+import useModal from '../../../../hooks/useModal';
+import ParentGroupDialogBox from '../../../DialogBoxs/Form/ParentGroupDialogBox';
 
 const AddGroup = ({groupMembers}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [groups, setGroups] = useState([]);
+	const [parentGroupId, setParentGroupId] = useState(null);
 	// const {groups} = useSelector(IAM_USER_GROUP.selector);
+
+	// 상위그룹 선택하는 모달
+	const [ParentGroupModal, showParentGroupModal] = useModal();
 
 	const validationSchema = Yup.object()
 		.shape({
 			type: yup.string().required('그룹 유형은 필수값입니다.'),
 			name: yup.string().required('그룹명은 필수값입니다.'),
+			parentGroup: yup.string().required('상위 그룹은 필수값입니다.'),
 		})
 		.required();
 
@@ -41,6 +48,7 @@ const AddGroup = ({groupMembers}) => {
 		resolver: yupResolver(validationSchema), // 외부 유효성 검사 라이브러리 사용
 	});
 
+	// 그룹의 타입!!
 	const type = methods.watch('type');
 
 	const onClickManageGroupType = useCallback(() => {
@@ -54,17 +62,34 @@ const AddGroup = ({groupMembers}) => {
 	const onSubmitCreateGroup = useCallback(
 		(data) => {
 			//	console.log(data);
-			dispatch(
-				IAM_USER_GROUP.asyncAction.createAction({
-					userGroupTypeId: data.type,
-					parentId: data.parentId,
-					name: data.name,
-					members: groupMembers,
-				}),
-			);
+			if (parentGroupId) {
+				dispatch(
+					IAM_USER_GROUP.asyncAction.createAction({
+						userGroupTypeId: data.type,
+						parentId: parentGroupId,
+						name: data.name,
+						members: groupMembers,
+					}),
+				);
+			}
 		},
-		[dispatch, groupMembers],
+		[dispatch, groupMembers, parentGroupId],
 	);
+
+	const handleFocus = useCallback(() => {
+		showParentGroupModal({
+			show: true,
+			element: (
+				<ParentGroupDialogBox
+					groups={groups}
+					{...methods}
+					name={'parentGroup'}
+					showParentGroupModal={showParentGroupModal}
+					setParentGroupId={setParentGroupId}
+				/>
+			),
+		});
+	}, [groups, methods, showParentGroupModal]);
 
 	useEffect(() => {
 		dispatch(
@@ -126,10 +151,16 @@ const AddGroup = ({groupMembers}) => {
 							})}
 						/>
 
-						<RHF_Textbox
-							name={'parentGroup'}
-							placeholder={'상위 그룹선택'}
-						/>
+						{type && (
+							<ColDiv>
+								<RHF_Textbox
+									name={'parentGroup'}
+									placeholder={'상위 그룹선택'}
+									onFocus={handleFocus}
+								/>
+								<ParentGroupModal hiddenFooter width={300} />
+							</ColDiv>
+						)}
 						{/*<RHF_Combobox*/}
 						{/*	name={'parentId'}*/}
 						{/*	placeholder={'상위 그룹선택'}*/}

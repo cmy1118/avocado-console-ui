@@ -11,10 +11,11 @@ import {PositionRelativeDiv} from '../../styles/components/style';
 const _Container = styled.div`
 	z-index: 99;
 	position: absolute;
-	top: 10px;
+	// top: 10px;
+	margin: 4px 8px;
 	right: ${(props) => (props?.position.x === 'right' ? 'initial' : '0px')};
 	left: ${(props) => (props.position.x === 'left' ? 'initial' : '0px')};
-	width: 230px;
+	width: ${(props) => props.width + 'px'};
 	border-radius: 4px;
 	box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.22);
 	border: solid 1px #e3e5e5;
@@ -61,7 +62,7 @@ const Background = styled.div`
 /**************************************************
  * roberto - 주석 작성해주세요!
  ***************************************************/
-const Modal = ({modalOption, hiddenFooter = false}) => {
+const Modal = ({modalOption, hiddenFooter = false, width = 230}) => {
 	// element의 위치를 읽어오기 위한 ref
 	const ref = useRef(null);
 
@@ -125,10 +126,10 @@ const Modal = ({modalOption, hiddenFooter = false}) => {
 	return (
 		<PositionRelativeDiv>
 			{modalOption?.show && (
-				<_Container ref={ref} position={position}>
+				<_Container ref={ref} position={position} width={width}>
 					<Background onClick={() => modalOption.onClose()} />
 
-					{modalOption.title && (
+					{modalOption.title !== '' && (
 						<_Header>
 							<span>{modalOption.title}</span>
 						</_Header>
@@ -156,6 +157,7 @@ const Modal = ({modalOption, hiddenFooter = false}) => {
 Modal.propTypes = {
 	modalOption: PropTypes.object.isRequired,
 	hiddenFooter: PropTypes.bool,
+	width: PropTypes.number,
 };
 
 export default Modal;
