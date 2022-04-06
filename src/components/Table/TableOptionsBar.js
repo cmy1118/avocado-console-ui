@@ -3,17 +3,16 @@ import styled from 'styled-components';
 
 import SearchOptionsContextMenu from '../ContextMenu/SearchOptionsContextMenu';
 import {NormalBorderButton} from '../../styles/components/buttons';
-import {autoRenewIcon, filterListIcon, ListIcon,} from '../../icons/icons';
+import {autoRenewIcon, filterListIcon, ListIcon} from '../../icons/icons';
 import PageSizing from './Options/paging/PageSizing';
 import * as PropTypes from 'prop-types';
 import Pagination from './Options/paging/Pagination';
 import TableColumnFilterContextMenu from '../ContextMenu/TableColumnFilterContextMenu';
 import Search from './Options/Search';
-import {ColDiv, RowDiv,} from '../../styles/components/style';
+import {ColDiv, RowDiv} from '../../styles/components/style';
 import {IconButton} from '../../styles/components/icons';
 import useModal from '../../hooks/useModal';
-import Modal from './Modal';
-import SearchFiltersBox from "./Options/Search/searchFilters/searchFiltersBox";
+import SearchFiltersBox from './Options/Search/searchFilters/searchFiltersBox';
 
 const _Container = styled(ColDiv)`
 	display: flex;
@@ -80,16 +79,15 @@ const TableOptionsBar = ({
 }) => {
 	//검색필터 선택 요소들
 	const [selectedSearchFilters, setSelectedSearchFilters] = useState([]);
-	console.log('🚀selectedSearchFilters:',selectedSearchFilters);
+	console.log('🚀selectedSearchFilters:', selectedSearchFilters);
 	//검색필터 모달 훅스
-	const [searchFilterModal, showSearchFilterModal] = useModal();
+	const [SearchFilterModal, showSearchFilterModal] = useModal();
 	//컬럼필터 모달 훅스
-	const [columnFilterModal, showColumnFilter] = useModal();
+	const [ColumnFilterModal, showColumnFilter] = useModal();
 
 	//부모에서 자식 함수호출을 위한 ref 훅
 	const searchFilterForm = useRef();
 	const columnFilterForm = useRef();
-
 
 	/****************************************************************************************
 	 * 검색 필터 기능 모달 핸들러
@@ -168,7 +166,7 @@ const TableOptionsBar = ({
 								<_FilterText>필터 추가</_FilterText>
 							</_FilterButton>
 							{/*검색필터 모달창*/}
-							<Modal modalOption={searchFilterModal} />
+							<SearchFilterModal />
 						</div>
 					)}
 				</_OptionContainer>
@@ -212,10 +210,7 @@ const TableOptionsBar = ({
 										{ListIcon}
 									</IconButton>
 									{/*컬럼필터 모달창*/}
-									<Modal
-										modalOption={columnFilterModal}
-										direction={'left'}
-									/>
+									<ColumnFilterModal />
 								</div>
 							)}
 						</>

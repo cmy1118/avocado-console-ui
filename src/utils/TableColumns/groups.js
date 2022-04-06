@@ -13,6 +13,7 @@ export const GROUP_COLUMN = [
 			return <TableLink cell={cell} />;
 		},
 		disableFilters: true,
+		disableChangeVisible: true,
 	},
 	{
 		Header: '그룹 유형',
