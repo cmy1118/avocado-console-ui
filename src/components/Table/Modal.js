@@ -57,19 +57,28 @@ const Background = styled.div`
 	height: 100vh;
 	// background-color: rgba(0, 0, 0, 0.3);
 `;
+
+/**************************************************
+ * roberto - 주석 작성해주세요!
+ ***************************************************/
 const Modal = ({modalOption, hiddenFooter = false}) => {
+	// element의 위치를 읽어오기 위한 ref
 	const ref = useRef(null);
 
+	// 스크린 넓이와 element의 위치를 계산한 element가 위치할 position
 	const [position, setPosition] = useState({x: '', y: ''});
+	// element의 현재위치를 결정하기 위한 초기 element의 위치
 	const [initial, setInitial] = useState(null);
-
+	// window의 width, height
 	const [windowSize, setWindowSize] = useState({
 		width: window.innerWidth,
 		height: window.innerHeight,
 	});
 
-	// handleResize 함수를 debounce로 감싸고, 시간을 설정한다
-	// 1000ms = 1sec
+	/**************************************************
+	 * seob - 윈도우 크기 변경시 setWindowSize하는 함수
+	 * (디바운스 적용으로 px단위로 호출하지 않음)
+	 ***************************************************/
 	const handleResize = _.debounce(() => {
 		setWindowSize({
 			width: window.innerWidth,
@@ -77,6 +86,9 @@ const Modal = ({modalOption, hiddenFooter = false}) => {
 		});
 	}, 1000);
 
+	/**************************************************
+	 * seob - window 사이즈를 계산하는 effect
+	 ***************************************************/
 	useEffect(() => {
 		window.addEventListener('resize', handleResize);
 		return () => {
@@ -85,28 +97,21 @@ const Modal = ({modalOption, hiddenFooter = false}) => {
 		};
 	}, [handleResize]);
 
+	/**************************************************
+	 * seob - window 사이즈 변화를 감지하여 element 위치 설정
+	 ***************************************************/
 	useEffect(() => {
-		// if (!ref.current) return;
-		// window.addEventListener('scroll', yScrollEvent);
-		// return () => {
-		// 	window.removeEventListener('scroll', yScrollEvent);
-		// };
-		console.log(windowSize);
-
-		// if (ref.current) {
-		// 	const domRect = ref.current;
-		// 	const position = domRect.getBoundingClientRect();
-
-		// console.log(position);
 		if (initial) {
 			const x = initial.right > windowSize.width ? 'left' : 'right';
 			const y = initial.bottom > windowSize.height ? 'top' : 'bottom';
 
 			setPosition({x, y});
 		}
-		// }
 	}, [initial, windowSize]);
 
+	/**************************************************
+	 * seob - 초기 element위치 설정
+	 ***************************************************/
 	useEffect(() => {
 		if (!initial) {
 			if (ref.current) {
