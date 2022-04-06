@@ -125,14 +125,19 @@ const AddGroup = ({groupMembers}) => {
 								return {value: v.id, label: v.name};
 							})}
 						/>
-						<RHF_Combobox
-							name={'parentId'}
+
+						<RHF_Textbox
+							name={'parentGroup'}
 							placeholder={'상위 그룹선택'}
-							options={groups.map((v) => {
-								return {value: v.id, label: v.name};
-							})}
-							width={300}
 						/>
+						{/*<RHF_Combobox*/}
+						{/*	name={'parentId'}*/}
+						{/*	placeholder={'상위 그룹선택'}*/}
+						{/*	options={groups.map((v) => {*/}
+						{/*		return {value: v.id, label: v.name};*/}
+						{/*	})}*/}
+						{/*	width={300}*/}
+						{/*/>*/}
 					</RowDiv>
 					<RowDiv alignItems={'center'}>
 						<RHF_Textbox

@@ -14,7 +14,7 @@ const Input = styled.input`
 	display: flex;
 	width: 100%;
 	align-items: center;
-	font-size: 14px;
+	font-size: 13px;
 	height: 32px;
 	border: none;
 	background: ${(props) => (props.disabled ? '#f8f9fa' : 'transparent')};
@@ -45,7 +45,7 @@ const SubContainer = styled.div`
 	border: solid 1px;
 	border-color: ${(props) =>
 		props.error ? '#d45959' : props.isFocused ? '#4ca6a8' : '#e3e5e5'};
-	height: 34px;
+	height: 32px;
 	width: ${(props) => props.width + 'px'};
 	background: ${(props) => (props.disabled ? '#f8f9fa' : 'white')};
 `;
