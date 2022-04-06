@@ -5,7 +5,7 @@ import TemplateLayout from '../../Outline/TemplateLayout';
 import TemplateElement from '../../Outline/TemplateElement';
 import {RowDiv} from '../../../../../../../styles/components/style';
 import {
-	accountBlockingTypeOptions,
+	blockingTypeOptions,
 	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
@@ -53,7 +53,7 @@ const Dormant = ({data, setTemplateData}) => {
 	//blockingType : 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'dormantBlockingType',
-		options: accountBlockingTypeOptions,
+		options: blockingTypeOptions,
 		disabled: usage === policyOption.usage.none.key,
 	});
 	// unconnectedDays: 연속 미접속 기간

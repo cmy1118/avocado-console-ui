@@ -5,7 +5,6 @@ import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'IAM_USER_GROUP_TYPE';
 
-//todo : this function requires id, companyId, name, password, email, telephone and mobile
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
@@ -27,7 +26,7 @@ const createAction = createAsyncThunk(
 		return response.data;
 	},
 );
-//todo : this function requires uid, name and password
+
 const updateAction = createAsyncThunk(
 	`${NAME}/UPDATE`,
 	async (payload, {getState}) => {
@@ -51,11 +50,10 @@ const updateAction = createAsyncThunk(
 	},
 );
 
-//todo : this function requires uid
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.delete(
 			`/open-api/v1/iam/user-group-types/${payload.id}`,
@@ -71,11 +69,10 @@ const deleteAction = createAsyncThunk(
 	},
 );
 
-//todo : this function requires id
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(
 			`/open-api/v1/iam/user-group-types/${payload.id}`,
@@ -91,15 +88,15 @@ const findByIdAction = createAsyncThunk(
 	},
 );
 
-//todo : this function requires companyId, first range and last range
 const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(`/open-api/v1/iam/user-group-types`, {
 			params: {
 				name: payload.name,
+				id: payload.id,
 			},
 			headers: {
 				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
@@ -161,18 +158,6 @@ const slice = createSlice({
 			state.loading = false;
 		},
 		[findByIdAction.rejected]: (state, action) => {
-			state.error = action.payload;
-			state.loading = false;
-		},
-
-		[findAllAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[findAllAction.fulfilled]: (state, action) => {
-			state.loading = false;
-			state.groupTypes = action.payload.data;
-		},
-		[findAllAction.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
 		},

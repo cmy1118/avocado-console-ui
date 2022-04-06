@@ -1,22 +1,24 @@
 import React, {useEffect} from 'react';
-import TemplateLayout from '../../Outline/TemplateLayout';
-import TemplateElement from '../../Outline/TemplateElement';
+import PropTypes from 'prop-types';
+import useRadio from '../../../../../../../hooks/useRadio';
 import {
 	blockingTypeOptions,
+	blockingInitTypeOptions,
 	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
 } from '../../../../../../../utils/policyOptions';
-import useRadio from '../../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../../hooks/useTextBox';
+import TemplateLayout from '../../Outline/TemplateLayout';
+import TemplateElement from '../../Outline/TemplateElement';
 import {RowDiv} from '../../../../../../../styles/components/style';
-import PropTypes from 'prop-types';
 
-const accountActivePeriod = {
-	title: '계정 사용 기간',
+const passwordExpired = {
+	title: '비밀번호 사용 기간',
 	description: [
-		'사용자의 계정으로 애플리케이션을 접속할 수 있는 기간을 제어하는 정책을 설정합니다.',
-		'관리자 정상화 후 기간 연장합니다.',
+		'사용자의 계정의 비밀번호 사용기간을 제어하는 정책을 설정합니다.',
+		'정상화 후에는 반드시 비밀번호를 변경해햐 합니다.',
+		'비밀번호 사용기간은 최대 1000일을 초과하여 설정 할 수 없습니다.',
 	],
 	contents: {
 		usage: {
@@ -31,18 +33,17 @@ const accountActivePeriod = {
 		},
 		accountNormalization: {
 			title: '계정 정상화',
-			message: '관리자 해제',
 		},
 	},
 };
 
 /**************************************************
- * ambacc244 - 사용자 계정 처리(계정 사용 기간) 폼
+ * ambacc244 - 사용자 계정 처리(비밀번호 사용 기간) 폼
  **************************************************/
-const AccountActivePeriod = ({data, setTemplateData}) => {
-	//usage : 계정 사용 기간 사용 여부
+const PasswordExpired = ({data, setTemplateData}) => {
+	//usage : 비밀번호 사용 기간 사용 여부
 	const [usage, usageRadioButton, setUsage] = useRadio({
-		name: 'accountActivePeriodUsage',
+		name: 'passwordExpiredUsage',
 		options: usageOptions,
 	});
 	//expiryDays : 계정 사용 기간
@@ -52,13 +53,23 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 	});
 	//blockingType : 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
-		name: 'accountActivePeriodBlockingType',
+		name: 'passwordExpiredBlockingType',
 		options: blockingTypeOptions,
+		disabled: usage === policyOption.usage.none.key,
+	});
+	// accountNormalization : 계정 정상화
+	const [
+		blockingInitType,
+		blockingInitTypeButton,
+		setBlockingInitType,
+	] = useRadio({
+		name: 'passwordExpiredBlockingInitType',
+		options: blockingInitTypeOptions,
 		disabled: usage === policyOption.usage.none.key,
 	});
 
 	/**************************************************
-	 * ambacc244 - 계정 사용 기간 데이터가 바뀌면 정책 생성을 위한 값을 변경
+	 * ambacc244 - 퇴사/탈퇴 데이터가 바뀌면 정책 생성을 위한 값을 변경
 	 **************************************************/
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
@@ -68,10 +79,10 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 			};
 			//사용 여부 true
 			if (usage === policyOption.usage.use.key) {
-				attributes.expiryDays = expiryDays;
 				attributes.blockingType = blockingType;
+				attributes.expiryDays = expiryDays;
+				attributes.blockingInitType = blockingInitType;
 			}
-
 			setTemplateData({
 				resource: data?.resource,
 				attribute: {ruleType: data?.attribute.ruleType, ...attributes},
@@ -83,6 +94,7 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
+		//비밀번호 사용 여부 세팅
 		setUsage(
 			setUsageOptionByAttribute(
 				data?.attribute,
@@ -91,67 +103,59 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 				policyOption.usage.none.key,
 			),
 		);
-		//계정 사용 기간 default value 존재
-		if (data?.attribute?.expiryDays) {
-			//계정 사용 기간 세팅
-			setExpiryDays(data?.attribute.expiryDays);
+		//사용 기간
+		if (
+			data?.attribute &&
+			Object.prototype.hasOwnProperty.call(data.attribute, 'expiryDays')
+		) {
+			console.log(data.attribute.expiryDays);
+			setExpiryDays(data.attribute.expiryDays);
 		}
-		//계정 처리 방법 default value 존재
+		//계정 처리 방법
 		if (data?.attribute?.blockingType) {
-			//계정 처리 방법 세팅
-			setBlockingType(data?.attribute.blockingType);
+			setBlockingType(data.attribute.blockingType);
 		}
-	}, [data, setBlockingType, setExpiryDays, setUsage]);
+
+		if (data?.attribute?.blockingInitType) {
+			setBlockingInitType(data.attribute.admin_temp_password);
+		}
+	}, [data]);
 
 	return (
 		<TemplateLayout
-			title={accountActivePeriod.title}
-			description={accountActivePeriod.description}
+			title={passwordExpired.title}
+			description={passwordExpired.description}
 			render={() => {
 				return (
 					<div>
 						<TemplateElement
-							title={accountActivePeriod.contents.usage.title}
+							title={passwordExpired.contents.usage.title}
 							render={usageRadioButton}
 						/>
 						<TemplateElement
-							title={
-								accountActivePeriod.contents.expiryDays.title
-							}
+							title={passwordExpired.contents.expiryDays.title}
 							render={() => {
 								return (
 									<RowDiv>
 										{expiryDaysTextBox()}
 										{
-											accountActivePeriod.contents
-												.expiryDays.message
+											passwordExpired.contents.expiryDays
+												.message
 										}
 									</RowDiv>
 								);
 							}}
 						/>
 						<TemplateElement
-							title={
-								accountActivePeriod.contents.blockingType.title
-							}
+							title={passwordExpired.contents.blockingType.title}
 							render={blockingTypeRadioButton}
 						/>
-
 						<TemplateElement
 							title={
-								accountActivePeriod.contents
-									.accountNormalization.title
+								passwordExpired.contents.accountNormalization
+									.title
 							}
-							render={() => {
-								return (
-									<RowDiv>
-										{
-											accountActivePeriod.contents
-												.accountNormalization.message
-										}
-									</RowDiv>
-								);
-							}}
+							render={blockingInitTypeButton}
 						/>
 					</div>
 				);
@@ -160,8 +164,9 @@ const AccountActivePeriod = ({data, setTemplateData}) => {
 	);
 };
 
-AccountActivePeriod.propTypes = {
+PasswordExpired.propTypes = {
 	data: PropTypes.object,
 	setTemplateData: PropTypes.func,
 };
-export default AccountActivePeriod;
+
+export default PasswordExpired;

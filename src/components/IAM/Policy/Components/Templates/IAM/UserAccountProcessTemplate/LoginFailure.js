@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 
 import TemplateElement from '../../Outline/TemplateElement';
 import {
-	accountBlockingTypeOptions,
+	blockingTypeOptions,
 	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
@@ -18,7 +18,8 @@ const loginFailure = {
 	title: '로그인 실패',
 	description: [
 		'사용자 로그인 실패 횟수에 따라 계정을 처리하기 위해 정책을 설정합니다.',
-		'정상화 후 재로그인 시에 패스워드를 변경해야 합니다.',
+		'정상화 시 오류 횟수는 자동 초기화 되며 정상화 후 재로그인 시에 패스워드를 변경해야 합니다.',
+		'로그인 실패 횟수는 최소 1회, 최대 10회 로 제한하고, 계정 정상화 시간은 최소 24시간 이상 입력 해야 합니다.',
 	],
 	contents: {
 		usage: {
@@ -30,10 +31,6 @@ const loginFailure = {
 		},
 		blockingType: {
 			title: '계정 처리 방법',
-		},
-		resetErrorCount: {
-			title: '오류 횟수 초기화',
-			message: '시간 후',
 		},
 		accountNormalization: {
 			title: '계정 정상화',
@@ -61,27 +58,16 @@ const LoginFailure = ({data, setTemplateData}) => {
 	//blockingType: 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'loginFailureBlockingType',
-		options: accountBlockingTypeOptions,
-		disabled: usage === policyOption.usage.none.key,
-	});
-	//failedCountInitDays: 오류 횟수 초기화
-	const [
-		failedCountInitDays,
-		failedCountInitDaysTextBox,
-		setFailedCountInitDays,
-	] = useTextBox({
-		name: 'failedCountInitDays',
-		//1 ~
-		regex: /^([1-9]|[1-9][0-9]*)$/,
+		options: blockingTypeOptions,
 		disabled: usage === policyOption.usage.none.key,
 	});
 	//accountNormalization: 계정 정상화
 	const [
-		unblockedDays,
-		accountUnblockedDaysTextBox,
-		setUnblockedDays,
+		unblockedHours,
+		accountUnblockedHoursTextBox,
+		setUnblockedHours,
 	] = useTextBox({
-		name: 'accountUnblockedDays',
+		name: 'accountUnblockedHours',
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
 		disabled: usage === policyOption.usage.none.key,
@@ -100,8 +86,7 @@ const LoginFailure = ({data, setTemplateData}) => {
 			if (usage === policyOption.usage.use.key) {
 				attributes.failedCount = failedCount;
 				attributes.blockingType = blockingType;
-				attributes.failedCountInitDays = failedCountInitDays;
-				attributes.unblockedDays = unblockedDays;
+				attributes.unblockedHours = unblockedHours;
 			}
 
 			setTemplateData({
@@ -113,9 +98,8 @@ const LoginFailure = ({data, setTemplateData}) => {
 		blockingType,
 		data,
 		failedCount,
-		failedCountInitDays,
 		setTemplateData,
-		unblockedDays,
+		unblockedHours,
 		usage,
 	]);
 
@@ -142,23 +126,11 @@ const LoginFailure = ({data, setTemplateData}) => {
 			//계정 처리 방법 세팅
 			setBlockingType(data?.attribute.blockingType);
 		}
-		//오류 횟수 초기화 default value 있음
-		if (data?.attribute?.failedCountInitDays) {
-			//오류 횟수 초기화 세팅
-			setFailedCountInitDays(data?.attribute.failedCountInitDays);
-		}
 		// 계정 정상화 default value 있음
-		if (data?.attribute?.unblockedDays) {
-			setUnblockedDays(data?.attribute.unblockedDays);
+		if (data?.attribute?.unblockedHours) {
+			setUnblockedHours(data?.attribute.unblockedHours);
 		}
-	}, [
-		data,
-		setBlockingType,
-		setFailedCount,
-		setFailedCountInitDays,
-		setUnblockedDays,
-		setUsage,
-	]);
+	}, [data, setBlockingType, setFailedCount, setUnblockedHours, setUsage]);
 
 	return (
 		<TemplateLayout
@@ -192,27 +164,13 @@ const LoginFailure = ({data, setTemplateData}) => {
 							render={blockingTypeRadioButton}
 						/>
 						<TemplateElement
-							title={loginFailure.contents.resetErrorCount.title}
-							render={() => {
-								return (
-									<RowDiv>
-										{failedCountInitDaysTextBox()}
-										{
-											loginFailure.contents
-												.resetErrorCount.message
-										}
-									</RowDiv>
-								);
-							}}
-						/>
-						<TemplateElement
 							title={
 								loginFailure.contents.accountNormalization.title
 							}
 							render={() => {
 								return (
 									<RowDiv>
-										{accountUnblockedDaysTextBox()}
+										{accountUnblockedHoursTextBox()}
 										{
 											loginFailure.contents
 												.accountNormalization.message

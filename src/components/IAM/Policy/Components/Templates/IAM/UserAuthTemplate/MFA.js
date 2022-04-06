@@ -61,13 +61,17 @@ const MFA = ({data, setTemplateData}) => {
 	const [required1, required1ComboBox, setRequired1] = useComboBox({
 		options: requiredOptions,
 		//1차 추가인증 사용 여부 false일때 disabled
-		disabled: authUsage1 === policyOption.authUsage.none.key,
+		disabled:
+			usage === policyOption.usage.none.key ||
+			authUsage1 === policyOption.authUsage.none.key,
 	});
 	//authMethod1: 1차 추가인증 수단
 	const [authMethod1, authMethod1CheckBox, setAuthMethod1] = useCheckBox({
 		options: additionalAuthMethodOptions,
 		//1차 추가인증 사용 여부 false일때 disabled
-		disabled: required1 === policyOption.required.none.key,
+		disabled:
+			usage === policyOption.usage.none.key ||
+			authUsage1 === policyOption.authUsage.none.key,
 	});
 	//authUsage2: 2차 추가인증 사용 여부
 	const [authUsage2, authUsage2ComboBox, setAuthUsage2] = useComboBox({
@@ -79,13 +83,17 @@ const MFA = ({data, setTemplateData}) => {
 	const [required2, required2ComboBox, setRequired2] = useComboBox({
 		options: requiredOptions,
 		//2차 추가인증 사용 여부 false일때 disabled
-		disabled: authUsage2 === policyOption.authUsage.none.key,
+		disabled:
+			usage === policyOption.usage.none.key ||
+			authUsage2 === policyOption.authUsage.none.key,
 	});
 	//authMethod2: 2차 추가인증 수단
 	const [authMethod2, authMethod2CheckBox, setAuthMethod2] = useCheckBox({
 		options: additionalAuthMethodOptions,
 		//2차 추가인증 사용 여부 false일때 disabled
-		disabled: required2 === policyOption.required.none.key,
+		disabled:
+			usage === policyOption.usage.none.key ||
+			authUsage2 === policyOption.authUsage.none.key,
 	});
 	//authUsage3: 3차 추가인증 사용 여부
 	const [authUsage3, authUsage3ComboBox, setAuthUsage3] = useComboBox({
@@ -97,13 +105,17 @@ const MFA = ({data, setTemplateData}) => {
 	const [required3, required3ComboBox, setRequired3] = useComboBox({
 		options: requiredOptions,
 		//3차 추가인증 사용 여부 false일때 disabled
-		disabled: authUsage3 === policyOption.authUsage.none.key,
+		disabled:
+			usage === policyOption.usage.none.key ||
+			authUsage3 === policyOption.authUsage.none.key,
 	});
 	//authMethod3: 3차 추가인증 수단
 	const [authMethod3, authMethod3CheckBox, setAuthMethod3] = useCheckBox({
 		options: additionalAuthMethodOptions,
 		//3차 추가인증 사용 여부 false일때 disabled
-		disabled: required3 === policyOption.required.none.key,
+		disabled:
+			usage === policyOption.usage.none.key ||
+			authUsage3 === policyOption.authUsage.none.key,
 	});
 	//timeoutSeconds: 입력 대기 시간
 	const [
@@ -243,11 +255,11 @@ const MFA = ({data, setTemplateData}) => {
 			//mfa 인증 여부 false || 추가인증 default value 없음
 		} else {
 			setAuthUsage1(policyOption.authUsage.none.key);
-			setRequired1(policyOption.required.none.key);
+			// setRequired1(policyOption.required.none.key);
 			setAuthUsage2(policyOption.authUsage.none.key);
-			setRequired2(policyOption.required.none.key);
+			// setRequired2(policyOption.required.none.key);
 			setAuthUsage3(policyOption.authUsage.none.key);
-			setRequired3(policyOption.required.none.key);
+			// setRequired3(policyOption.required.none.key);
 		}
 		//입력 대기 시간 default value 있음
 		if (data?.attribute?.timoutSeconds) {

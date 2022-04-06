@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import TemplateLayout from '../../Outline/TemplateLayout';
 import TemplateElement from '../../Outline/TemplateElement';
 import {
-	accountBlockingType2Options,
+	blockingTypeOptions,
 	groupPermissionTypeOptions,
 	policyOption,
 	setUsageOptionByAttribute,
@@ -12,6 +12,8 @@ import useRadio from '../../../../../../../hooks/useRadio';
 import useComboBox from '../../../../../../../hooks/useComboBox';
 import {RowDiv} from '../../../../../../../styles/components/style';
 import PropTypes from 'prop-types';
+import IAM_USER_GROUP_TYPE from '../../../../../../../reducers/api/IAM/User/Group/groupType';
+import {useDispatch} from 'react-redux';
 
 const modifyingGroup = {
 	title: '그룹 변경',
@@ -46,6 +48,7 @@ const tempOption = [{key: 'select', label: '선택'}];
  * ambacc244 - 사용자 계정 처리(그룹 변경) 폼
  **************************************************/
 const ModifyingGroup = ({data, setTemplateData}) => {
+	const dispatch = useDispatch();
 	//usage : 그룹 변경 사용 여부
 	const [usage, usageRadioButton, setUsage] = useRadio({
 		name: 'modifyingGroupUsage',
@@ -69,7 +72,7 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	//blockingType: 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'modifyingGroupBlockingType',
-		options: accountBlockingType2Options,
+		options: blockingTypeOptions,
 		disabled: usage === policyOption.usage.none.key,
 	});
 	//permissionType: 그룹 권한 처리
@@ -105,6 +108,7 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
 	 **************************************************/
 	useEffect(() => {
+		console.log(data?.attribute);
 		setUsage(
 			setUsageOptionByAttribute(
 				data?.attribute,
@@ -126,6 +130,23 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 			setPermissionType(data?.attribute?.permissionType);
 		}
 	}, [data, setBlockingType, setPermissionType, setUsage]);
+
+	// useEffect(() => {
+	// 	const getGroupTypes = async () => {
+	// 		try {
+	// 			const res = await dispatch(
+	// 				IAM_USER_GROUP_TYPE.asyncAction.findAllAction({
+	// 					range: 'elements=0-50',
+	// 				}),
+	// 			);
+	// 			console.log(res);
+	// 		} catch (err) {
+	// 			console.log(err);
+	// 		}
+	// 	};
+	//
+	// 	getGroupTypes();
+	// }, []);
 
 	return (
 		<TemplateLayout
