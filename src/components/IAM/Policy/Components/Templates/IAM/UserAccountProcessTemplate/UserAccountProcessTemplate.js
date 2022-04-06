@@ -8,8 +8,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
-import {policyTypes} from '../../../../../../../utils/data';
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
+import PasswordExpired from './PasswordExpired';
 
 /**************************************************
  * ambacc244 - 사용자 계정 처리 컴포넌트
@@ -21,11 +21,12 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 	);
 	//defaultData: 템플릿의 default value
 	const [defaultData, setDefaultData] = useState([]);
-	const [LoginFailureData, setLoginFailureData] = useState({});
-	const [DormantData, setDormantData] = useState({});
-	const [AccountActivePeriodData, setAccountActivePeriodData] = useState({});
-	const [ModifyingGroupData, setModifyingGroupData] = useState({});
-	const [ResignationData, setResignationData] = useState({});
+	const [loginFailureData, setLoginFailureData] = useState({});
+	const [dormantData, setDormantData] = useState({});
+	const [accountActivePeriodData, setAccountActivePeriodData] = useState({});
+	const [passwordExpiredData, setPasswordExpiredData] = useState({});
+	const [modifyingGroupData, setModifyingGroupData] = useState({});
+	const [resignationData, setResignationData] = useState({});
 
 	/**************************************************
 	 * ambacc244 - 정책 생성 액션 요청으로 템플릿 데이터를 redux에 저장
@@ -37,21 +38,22 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 					name: name,
 					description: description,
 					details: [
-						LoginFailureData,
-						DormantData,
-						AccountActivePeriodData,
-						ModifyingGroupData,
-						ResignationData,
+						loginFailureData,
+						dormantData,
+						accountActivePeriodData,
+						passwordExpiredData,
+						modifyingGroupData,
+						resignationData,
 					],
 				}),
 			);
 		}
 	}, [
-		AccountActivePeriodData,
-		DormantData,
-		LoginFailureData,
-		ModifyingGroupData,
-		ResignationData,
+		accountActivePeriodData,
+		dormantData,
+		loginFailureData,
+		modifyingGroupData,
+		resignationData,
 		creatingPolicyMode,
 		description,
 		dispatch,
@@ -72,12 +74,13 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 				);
 
 				let defaultData = {};
-
+				console.log(res.payload.data);
 				res.payload.data.map((v) => {
 					defaultData[v.attribute.ruleType] = v;
 				});
 
 				setDefaultData(defaultData);
+				console.log(defaultData);
 			} catch (err) {
 				console.log('error => ', err);
 			}
@@ -99,7 +102,10 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 				data={defaultData && defaultData.account_expired}
 				setTemplateData={setAccountActivePeriodData}
 			/>
-
+			<PasswordExpired
+				data={defaultData && defaultData.password_expired}
+				setTemplateData={setPasswordExpiredData}
+			/>
 			<ModifyingGroup
 				data={defaultData && defaultData.group_modifying}
 				setTemplateData={setModifyingGroupData}

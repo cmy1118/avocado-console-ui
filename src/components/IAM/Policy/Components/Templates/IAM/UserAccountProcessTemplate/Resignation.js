@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import TemplateLayout from '../../Outline/TemplateLayout';
 import TemplateElement from '../../Outline/TemplateElement';
 import {
-	accountBlockingTypeOptions,
+	blockingTypeOptions,
 	gracePeriodUsageOptions,
 	policyOption,
 	setUsageOptionByAttribute,
@@ -32,7 +32,7 @@ const resignation = {
 		},
 		accountNormalization: {
 			title: '계정 정상화',
-			message: '관리자 해제',
+			message: '관리자에 의한 정상화',
 		},
 	},
 };
@@ -49,7 +49,7 @@ const Resignation = ({data, setTemplateData}) => {
 	//accountStatus: 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'resignationBlockingType',
-		options: accountBlockingTypeOptions,
+		options: blockingTypeOptions,
 		disabled: usage === policyOption.usage.none.key,
 	});
 	//gracePeriodUsage: 유예 기간 사용 유무

@@ -14,7 +14,6 @@ export const policyOption = {
 	required: {
 		all: {key: 'all', label: '필수'},
 		select: {key: 'select', label: '선택'},
-		none: {key: 'no', label: '없음'},
 	},
 
 	additionalAuthMethod: {
@@ -52,20 +51,19 @@ export const policyOption = {
 		locked: {key: 'locked', label: '잠금'},
 		deleted: {key: 'deleted', label: '삭제'},
 	},
-	accountNormalization: {
-		identityVerification: {
-			key: 'identityVerification',
+	blockingType2: {
+		logout: {key: 'logout', label: '로그아웃'},
+		'screen-lock': {key: 'screen-lock', label: '화면잠금'},
+	},
+	blockingInitType: {
+		identity_verification: {
+			key: 'identity_verification',
 			label: '본인 확인 인증',
 		},
-		manager: {
-			key: 'manager',
+		admin_temp_password: {
+			key: 'admin_temp_password',
 			label: '관리자에 의한 정상화(임시 패스워드 발급)',
 		},
-	},
-	blockingType2: {
-		locked: {key: 'locked', label: '잠금'},
-		deleted: {key: 'deleted', label: '삭제'},
-		none: {key: 'none', label: '안함'},
 	},
 	groupPermissionType: {
 		revoke: {key: 'revoke', label: '회수'},
@@ -149,10 +147,6 @@ export const requiredOptions = [
 		key: policyOption.required.select.key,
 		label: policyOption.required.select.label,
 	},
-	{
-		key: policyOption.required.none.key,
-		label: policyOption.required.none.label,
-	},
 ];
 
 export const additionalAuthMethodOptions = [
@@ -208,7 +202,7 @@ export const identityVerificationMethodOptions = [
 	},
 ];
 
-export const accountBlockingTypeOptions = [
+export const blockingTypeOptions = [
 	{
 		key: policyOption.blockingType.locked.key,
 		label: policyOption.blockingType.locked.label,
@@ -219,18 +213,25 @@ export const accountBlockingTypeOptions = [
 	},
 ];
 
-export const accountBlockingType2Options = [
+export const blockingType2Options = [
 	{
-		key: policyOption.blockingType2.locked.key,
-		label: policyOption.blockingType2.locked.label,
+		key: policyOption.blockingType2.logout.key,
+		label: policyOption.blockingType2.logout.label,
 	},
 	{
-		key: policyOption.blockingType2.deleted.key,
-		label: policyOption.blockingType2.deleted.label,
+		key: policyOption.blockingType2['screen-lock'].key,
+		label: policyOption.blockingType2['screen-lock'].label,
+	},
+];
+
+export const blockingInitTypeOptions = [
+	{
+		key: policyOption.blockingInitType.identity_verification.key,
+		label: policyOption.blockingInitType.identity_verification.label,
 	},
 	{
-		key: policyOption.blockingType2.none.key,
-		label: policyOption.blockingType2.none.label,
+		key: policyOption.blockingInitType.admin_temp_password.key,
+		label: policyOption.blockingInitType.admin_temp_password.label,
 	},
 ];
 

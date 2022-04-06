@@ -143,16 +143,12 @@ export const POLICY_SUMMARY_PERMISSION_TAB_COLUMN = [
 		Header: '정책 이름',
 	},
 	{
-		accessor: 'description',
-		Header: '상세',
+		accessor: 'permission',
+		Header: '규칙/권한',
 	},
 	{
 		accessor: 'value',
 		Header: '설정값',
-	},
-	{
-		accessor: 'numberOfPolicy',
-		Header: '정책 연결 수',
 	},
 ];
 

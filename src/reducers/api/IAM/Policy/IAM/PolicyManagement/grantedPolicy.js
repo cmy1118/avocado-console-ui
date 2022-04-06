@@ -39,7 +39,7 @@ const getDetailsByPolicy = createAsyncThunk(
 		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(
-			`/open-api/v1/iam/roles/${payload.policyId}/policy-details`,
+			`/open-api/v1/iam/policies/${payload.policyId}/policy-details`,
 			{
 				params: {
 					resource: payload.resource,
