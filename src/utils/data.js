@@ -33,42 +33,6 @@ export const controlTypes = {
 
 //페이지 범위
 export const selectedPageSize = [3, 7, 100, 200];
-//계정 상태
-export const tableSearchSelectOptions = {
-	status: [
-		{value: status.NORMAL, label: '정상'},
-		{value: status.LOCKED, label: '잠김'},
-		{value: status.WAITING, label: '대기'},
-		{value: status.DELETED, label: '삭제'},
-		{value: status.UNAUTHORIZED, label: '미승인'},
-	],
-	authType: [
-		{value: authType.ID, label: 'ID/PWD'},
-		{value: authType.GOOGLE, label: '대체인증(Google)'},
-		{value: authType.APPLE, label: '대체인증(Apple)'},
-		{value: authType.NAVER, label: '대체인증(Naver)'},
-		{value: authType.KAKAO, label: '대체인증(Kakao)'},
-	],
-	MFA: [
-		{value: mfa.EMAIL, label: 'Email(OTP)'},
-		{value: mfa.SMS, label: 'SMS(OTP)'},
-		{value: mfa.MOBILE, label: 'Mobile(OTP)'},
-		{value: mfa.FINGER_PRINT, label: 'Finger Print'},
-		{value: mfa.FACE_ID, label: 'Face ID'},
-	],
-	roleType: [
-		{value: 'Public', label: 'Public'},
-		{value: 'Private', label: 'Private'},
-	],
-	manageCategory: [
-		{value: 'Avocado 관리형', label: 'Avocado 관리형'},
-		{value: '고객 관리형', label: '고객 관리형'},
-	],
-	policyType: [
-		{value: 'IAM', label: 'IAM'},
-		{value: 'PAM', label: 'PAM'},
-	],
-};
 
 //Link Columns 설정값
 export const LINK = 'link';

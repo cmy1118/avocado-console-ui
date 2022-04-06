@@ -1,6 +1,5 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {forwardRef, useCallback, useImperativeHandle, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import DropdownBtnContainer from '../RecycleComponents/DropdownBtnContainer';
 import CheckBox from '../RecycleComponents/New/CheckBox';
 import styled from 'styled-components';
 
@@ -15,16 +14,19 @@ const _CheckboxContainer = styled.div`
 	cursor: pointer;
 `;
 
-const TableColumnFilterContextMenu = ({
-	isOpened,
-	setIsOpened,
-	allColumns,
-	setHiddenColumns,
-	selectedOptions,
-	setSelectedOptions,
-	filters,
-	setAllFilters,
-}) => {
+// eslint-disable-next-line react/display-name
+const TableColumnFilterContextMenu = forwardRef(
+	(
+{
+		allColumns,
+		setHiddenColumns,
+		selectedOptions,
+		setSelectedOptions,
+		filters,
+		setAllFilters,
+},
+ref,
+) => {
 	const filteredList = useMemo(() => {
 		return allColumns.filter((v) => !v.disableChangeVisible);
 	}, [allColumns]);
@@ -35,8 +37,7 @@ const TableColumnFilterContextMenu = ({
 
 	const onClickCancelBtn = useCallback(() => {
 		setCheck(filteredList.filter((v) => v.isVisible).map((v) => v.id));
-		setIsOpened(false);
-	}, [filteredList, setIsOpened]);
+	}, [filteredList]);
 
 	const onClickOkBtn = useCallback(() => {
 		setHiddenColumns(
@@ -47,7 +48,6 @@ const TableColumnFilterContextMenu = ({
 			selectedOptions.filter((v) => !check.includes(v.id)),
 		);
 		setAllFilters(filters.filter((v) => check.includes(v.id)));
-		setIsOpened(false);
 	}, [
 		setHiddenColumns,
 		filteredList,
@@ -55,7 +55,6 @@ const TableColumnFilterContextMenu = ({
 		selectedOptions,
 		setAllFilters,
 		filters,
-		setIsOpened,
 		check,
 	]);
 
@@ -74,14 +73,13 @@ const TableColumnFilterContextMenu = ({
 		[check],
 	);
 
-	return isOpened ? (
-		<DropdownBtnContainer
-			title={'표시되는 열'}
-			isOpened={isOpened}
-			onClickOkBtn={onClickOkBtn}
-			onClickCancelBtn={onClickCancelBtn}
-			direction={'left'}
-		>
+		useImperativeHandle(ref, () => ({
+			onClickOkBtn,
+			onClickCancelBtn,
+		}));
+
+	return (
+		<>
 			<_CheckboxContainer>
 				<CheckBox
 					margin={'inherit'}
@@ -110,11 +108,10 @@ const TableColumnFilterContextMenu = ({
 					/>
 				</_CheckboxContainer>
 			))}
-		</DropdownBtnContainer>
-	) : (
-		<></>
+		</>
 	);
-};
+},
+);
 TableColumnFilterContextMenu.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,

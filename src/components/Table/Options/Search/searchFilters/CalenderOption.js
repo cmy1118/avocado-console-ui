@@ -4,13 +4,13 @@ import 'moment/locale/ko';
 import PropTypes from 'prop-types';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import '../../../../styles/calendar.scss';
+import '../../../../../styles/calendar.scss';
 import {DateRangePicker} from 'react-dates';
 import {
 	NormalBorderButton,
 	TransparentBorderButton,
-} from '../../../../styles/components/buttons';
-import {DialogBoxFooter} from '../../../../styles/components/dialogBox';
+} from '../../../../../styles/components/buttons';
+import {DialogBoxFooter} from '../../../../../styles/components/dialogBox';
 
 const CalenderOption = ({column: {filterValue = [], setFilter, id}}) => {
 	const [tempStartDate, setTempStartDate] = useState(

@@ -1,10 +1,10 @@
 import React from 'react';
 import TableTextBox from '../../components/Table/ColumnCells/TableTextBox';
 import TableLink from '../../components/Table/ColumnCells/TableLink';
-import SelectionOption from '../../components/Table/Options/Search/SelectionOption';
+import SelectionOption from '../../components/Table/Options/Search/searchFilters/SelectionOption';
 import TextBoxOption from '../../components/Table/Options/Search/TextBoxOption';
 import {statusConverter} from '../tableDataConverter';
-import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
+import CalenderOption from '../../components/Table/Options/Search/searchFilters/CalenderOption';
 import {RowDiv} from '../../styles/components/style';
 
 export const USER_COLUMN = [

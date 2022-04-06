@@ -1,5 +1,5 @@
-import SelectionOption from '../../components/Table/Options/Search/SelectionOption';
-import CalenderOption from '../../components/Table/Options/Search/CalenderOption';
+import SelectionOption from '../../components/Table/Options/Search/searchFilters/SelectionOption';
+import CalenderOption from '../../components/Table/Options/Search/searchFilters/CalenderOption';
 import React from 'react';
 import checkboxColumn from '../../components/Table/tableCheckboxColumn';
 import TableLink from '../../components/Table/ColumnCells/TableLink';
