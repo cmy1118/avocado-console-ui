@@ -90,7 +90,7 @@ const getAllRolesAction = createAsyncThunk(
 	`${NAME}/GET_ALL_ROLES`,
 	async (payload, {getState}) => {
 		//로그인 처리
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(`/open-api/v1/pam/roles`, {
 			params: {
@@ -110,7 +110,7 @@ const getAllRolesAction = createAsyncThunk(
 const getEventsAction = createAsyncThunk(
 	`${NAME}/GET_EVENTS`,
 	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(`/open-api/v1/pam/roles/events`, {
 			params: {

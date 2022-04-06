@@ -6,7 +6,7 @@ const NAME = 'PAM_ROLE_USER_GROUP';
 const createAction = createAsyncThunk(
 	`${NAME}/CREATE`,
 	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.post(
 			`/open-api/v1/pam/users-group/${payload.id}/roles/`,
@@ -28,7 +28,7 @@ const createAction = createAsyncThunk(
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.delete(
 			`/open-api/v1/pam/users-group/${payload.id}/roles/${payload.roleId}`,
@@ -46,7 +46,7 @@ const deleteAction = createAsyncThunk(
 const findRoleByIdAction = createAsyncThunk(
 	`${NAME}/FIND_ROLE_BY_ID`,
 	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 		// roleIds: payload.roleIds,
 		const response = await Axios.get(
 			`/open-api/v1/pam/users-group/${payload.id}/roles`,
@@ -66,7 +66,7 @@ const findRoleByIdAction = createAsyncThunk(
 const getEventsAction = createAsyncThunk(
 	`${NAME}/GET_EVENTS`,
 	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(
 			`/open-api/v1/pam/user-group/roles/events`,

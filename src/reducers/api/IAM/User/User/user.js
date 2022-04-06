@@ -124,6 +124,7 @@ const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
+		console.log(userAuth);
 
 		const response = await Axios.get(`/open-api/v1/iam/users`, {
 			params: {

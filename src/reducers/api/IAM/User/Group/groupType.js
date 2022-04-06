@@ -55,7 +55,7 @@ const updateAction = createAsyncThunk(
 const deleteAction = createAsyncThunk(
 	`${NAME}/DELETE`,
 	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.delete(
 			`/open-api/v1/iam/user-group-types/${payload.id}`,
@@ -75,7 +75,7 @@ const deleteAction = createAsyncThunk(
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(
 			`/open-api/v1/iam/user-group-types/${payload.id}`,
@@ -95,7 +95,7 @@ const findByIdAction = createAsyncThunk(
 const findAllAction = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
 	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH_USER;
+		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.get(`/open-api/v1/iam/user-group-types`, {
 			params: {
@@ -108,6 +108,7 @@ const findAllAction = createAsyncThunk(
 			},
 			baseURL: baseURL.openApi,
 		});
+		console.log(response);
 		return {data: response.data, headers: response.headers};
 	},
 );

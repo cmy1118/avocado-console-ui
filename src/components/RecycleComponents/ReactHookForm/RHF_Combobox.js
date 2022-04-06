@@ -65,6 +65,7 @@ const NestedInput = memo(
 						: base.borderColor,
 				},
 				width: width,
+				minHeight: '32px',
 			}),
 			option: (styles, {data, isDisabled, isFocused, isSelected}) => {
 				// const color = chroma(data.color);
@@ -98,11 +99,15 @@ const NestedInput = memo(
 							: // : color.alpha(0.3).css()
 							  undefined,
 					},
+					height: '32px',
 				};
 			},
 			input: (styles) => ({...styles, ...dot()}),
 			placeholder: (styles) => ({...styles, ...dot('#ccc')}),
-			singleValue: (styles, {data}) => ({...styles, ...dot(data.color)}),
+			singleValue: (styles, {data}) => ({
+				...styles,
+				...dot(data.color),
+			}),
 		};
 
 		const onMenuOpen = () => setIsMenuOpen(true);
