@@ -17,11 +17,8 @@ import DragContainer from '../../../Table/DragContainer';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
-import {usePrevState} from '../../../../hooks/usePrevState';
 import PAGINATION from '../../../../reducers/pagination';
-import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
-import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 
 const GroupUsersTab = ({
 	groupId,

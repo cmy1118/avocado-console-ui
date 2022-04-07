@@ -12,7 +12,7 @@ import {
 } from '../../utils/dataFitering';
 import styled from 'styled-components';
 import {confirmAlertMessages} from '../../utils/alertMessage';
-import {DRAGGABLE_KEY, tableKeys} from '../../Constants/Table/keys';
+import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
 
 const Container = styled(DragDropContext)`
 	height: 300px;
@@ -162,15 +162,15 @@ const DragContainer = ({
 				//	console.log('selectedItems :: ', selectedItems);
 				//	console.log('data:', data);
 				if (destination.droppableId === includedKey) {
-					 joinFunction &&  joinFunction(selectedItems);
-					 //:TODO joinFunction 내부에서 데이터 처리해줌
-					//  data
-					// 	? setData([...data, ...selectedItems])
-					// 	: setData([...selectedItems]);
+					joinFunction && joinFunction(selectedItems);
+					//:TODO joinFunction 내부에서 데이터 처리해줌
+					data
+						? setData([...data, ...selectedItems])
+						: setData([...selectedItems]);
 				} else {
-					 disjointFunction &&  disjointFunction(selectedItems);
+					disjointFunction && disjointFunction(selectedItems);
 					//:TODO disjointFunction 내부에서 데이터 처리해줌
-					// await setData(data.filter((v) => !selectedItems.includes(v)));
+					setData(data.filter((v) => !selectedItems.includes(v)));
 				}
 			}
 		},
