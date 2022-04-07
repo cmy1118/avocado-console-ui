@@ -1,5 +1,5 @@
 import React from 'react';
-import {HoverIconButton} from '../../styles/components/icons';
+import {HoverIconButton, IconButton} from '../../styles/components/icons';
 import {helpIcon, notificationIcon, settingIcon} from '../../icons/icons';
 import styled from 'styled-components';
 import {useSelector} from 'react-redux';
@@ -14,27 +14,20 @@ const _Container = styled.div`
 
 const _UserContainer = styled.div`
 	display: flex;
-
 	padding-right: 8px;
 `;
 
 const _UserId = styled.div`
 	line-height: 1.54;
-	letter-spacing: 0.25px;
-	color: #d7d7d7;
 	display: flex;
-	font-size: 14px;
-	padding-right: 8px;
+	font-size: 13px;
 	align-items: center;
+	color: rgba(255, 255, 255, 0.87);
 `;
 
 const _Settings = styled.div`
-	background-color: #3f7e81;
 	display: flex;
 	padding-left: 8px;
-`;
-const _AccountContextMenu = styled(AccountContextMenu)`
-	background: #3f7e81;
 `;
 
 const MenuButtons = () => {
@@ -51,15 +44,27 @@ const MenuButtons = () => {
 				<_UserId>{userAuth?.user_id}</_UserId>
 			</_UserContainer>
 			<_Settings>
-				<HoverIconButton size='sm' color={'rgba(255, 255, 255, 0.6)'}>
+				<IconButton
+					size='sm'
+					margin={'0px 4px 0px 16px'}
+					color={'rgba(255, 255, 255, 0.6)'}
+				>
 					{notificationIcon}
-				</HoverIconButton>
-				<HoverIconButton size='sm' color={'rgba(255, 255, 255, 0.6)'}>
+				</IconButton>
+				<IconButton
+					size='sm'
+					margin={'0px 4px'}
+					color={'rgba(255, 255, 255, 0.6)'}
+				>
 					{settingIcon}
-				</HoverIconButton>
-				<HoverIconButton size='sm' color={'rgba(255, 255, 255, 0.6)'}>
+				</IconButton>
+				<IconButton
+					size='sm'
+					margin={'0px 8px 0px 4px'}
+					color={'rgba(255, 255, 255, 0.6)'}
+				>
 					{helpIcon}
-				</HoverIconButton>
+				</IconButton>
 			</_Settings>
 		</_Container>
 	);

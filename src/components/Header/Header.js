@@ -9,11 +9,12 @@ import {NavItem} from '../../styles/components/nav';
 
 const _Container = styled.div`
 	height: 44px;
-	background: #3f7e81;
+	background: #178082;
 	display: flex;
 	justify-content: space-between;
 	padding: 0px 16px;
 	align-items: center;
+	box-shadow: 0 3.5px 5.5px 0 rgba(0, 0, 0, 0.13);
 `;
 
 const _Title = styled.div`
@@ -25,6 +26,8 @@ const _Logo = styled.div`
 	display: flex;
 	justify-content: flex-start;
 `;
+
+const header = {search: {placeholder: '제품 및 리소스 검색'}};
 
 const Header = () => {
 	const ref = useRef(null);
@@ -42,14 +45,15 @@ const Header = () => {
 				initialValues={{search: ''}}
 			>
 				<TextBox
-					placeholder_text_color={'#D7D7D7'}
-					border_color={'#0B6365'}
-					placeholder={'제품 및 리소스 검색'}
-					background={'#0B6365'}
+					// placeholder_text_color={'#D7D7D7'}
+					// border_color={'#0B6365'}
+					placeholder={header.search.placeholder}
+					placeholder_text_color={'rgba(255, 255, 255, 0.6)'}
+					background={'rgba(0, 0, 0, 0.22)'}
 					front={
 						<Icon
-							color={'#D7D7D7'}
-							size={'sm'}
+							color={'rgba(255, 255, 255, 0.6)'}
+							size={'14.2px'}
 							margin_right={'0px'}
 						>
 							{searchIcon}

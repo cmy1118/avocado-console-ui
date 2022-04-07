@@ -1,8 +1,8 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import ComboBox from '../RecycleComponents/New/ComboBox';
 import Form from '../RecycleComponents/New/Form';
-import {userIcon} from '../../icons/icons';
-import {HoverIconButton} from '../../styles/components/icons';
+import {accountCircleIcon} from '../../icons/icons';
+import {HoverIconButton, IconButton} from '../../styles/components/icons';
 import {useDispatch} from 'react-redux';
 import AUTH from '../../reducers/api/Auth/auth';
 
@@ -35,9 +35,9 @@ const AccountContextMenu = () => {
 				innerRef={formRef}
 				name='account'
 				header={
-					<HoverIconButton color={'#D7D7D7'}>
-						{userIcon}
-					</HoverIconButton>
+					<IconButton size='sm' color={'rgba(255, 255, 255, 0.6)'}>
+						{accountCircleIcon}
+					</IconButton>
 				}
 				type='drop'
 				options={contextMenuOptions}
