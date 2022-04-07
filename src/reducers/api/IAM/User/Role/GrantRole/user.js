@@ -104,14 +104,21 @@ const findUsersByIdAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
 		const response = await Axios.get(
-			`/open-api/v1/iam/roles/${payload.id}/users`,
+			`/open-api/v1/iam/roles/${payload.roleId}/users`,
 			{
+				params: {
+					exclude: payload.exclude,
+					keyword: payload.keyword,
+				},
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+					Range: payload.range,
+					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
 			},
 		);
+		console.log('response:',response)
 		return response.data;
 	},
 );
