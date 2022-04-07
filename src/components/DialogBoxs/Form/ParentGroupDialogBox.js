@@ -25,7 +25,7 @@ const ParentGroupDialogBox = ({
 
 	const handleClick = useCallback(
 		(item) => {
-			setValue(name, item.name);
+			setValue(name, item.name, {shouldValidate: true});
 			setParentGroupId(item.id);
 			showParentGroupModal({
 				show: false,
