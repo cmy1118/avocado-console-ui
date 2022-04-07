@@ -8,102 +8,96 @@ import {
 	arrowRightIcon,
 	burgerMenuIcon,
 	dashboardIcon,
-	groupsIcon,
-	moreVertIcon,
-	policyIcon,
-	roleIcon,
 	securityIcon,
-	userIcon,
 } from '../../icons/icons';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import {NavContainer, NavItem, NavItemList} from '../../styles/components/nav';
-import {useDispatch} from 'react-redux';
 
-const _NavItem = styled.div`
-	box-sizing: border-box;
+const _NavHeader = styled.div`
+	font-family: NotoSansCJKKR;
+	font-size: 15px;
+	font-weight: bold;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.33;
+	letter-spacing: -0.25px;
+	color: #1e2a42;
+	height: 48px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0px 8px 0px 17px;
+	border-bottom: 1px solid;
+	border-color: #e3e5e5;
+`;
 
+const _ResourceItemText = styled.div`
+	flex: 1;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-style: normal;
+	line-height: 1.31;
+	letter-spacing: 0.1px;
+	color: #212121;
+	padding-left: ${(props) => props?.left};
+`;
+
+const _ResourceItemTitle = styled.div`
+	flex: 1;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+`;
+
+const _ResourceItem = styled.div`
+	font-size: 14px;
+	display: flex;
 	align-items: center;
 	cursor: pointer;
 	justify-content: space-between;
 	height: 34px;
-	padding: 7px 11px 7px 16px;
-	display: flex;
 	border-left: 3px solid;
-	border-color: ${(props) => (props.selected ? '#4ca6a8' : '#ffffff')};
-	background: ${(props) => (props.selected ? '#e4f3f4' : '#ffffff')};
-`;
-
-export const NavHeader = styled.div`
-	font-size: 16px;
-	line-height: 1.25;
-	letter-spacing: 0.25px;
-	font-style: normal;
-
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 7px 12px 7px 16px;
-	height: 50px;
-	border-bottom: 1px solid;
-	border-color: #e3e5e5;
-	background: #fffff;
-`;
-export const ResourceItemTitle = styled.div`
-	flex: 1;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	// font-size: 14px;
-	font-weight: 500;
-
-	font-size: 14px;
-	font-style: normal;
-	line-height: 1.31;
-	letter-spacing: 0.1px;
-	color: #212121;
-
-	padding-left: ${(props) => props?.left};
-`;
-export const ResourceItemText = styled.div`
-	flex: 1;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	font-weight: normal;
-	font-size: 14px;
-	font-style: normal;
-	line-height: 1.31;
-	letter-spacing: 0.1px;
-	color: #212121;
-	padding-left: ${(props) => props?.left};
-`;
-export const ResourceItem = styled.div`
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	height: 34px;
-	border-left: 3px solid;
-	padding: 7px 28px 7px 16px;
+	padding: 0px 17px 0px 12px;
 	padding-left: ${(props) => props?.left};
 	border-color: ${(props) => (props.selected ? '#4ca6a8' : '#ffffff')};
+	font-weight: ${(props) => (props.selected ? 'bold' : 'normal')};
 	background: ${(props) => (props.selected ? '#e4f3f4' : '#ffffff')};
+
+	&:hover {
+		background-color: ${(props) => !props.selected && '#f8f9fa'};
+	}
 `;
 
-export const _NavContents = styled.div`
+const _NavContents = styled.div`
 	padding: 8px 0px;
 `;
 
-const _IamNavClose = styled.div`
-	border-right: 1px #e3e5e5 solid;
-	display: flex;
-	width: 17px;
-	cursor: pointer;
+const _ClosedNavContainer = styled(NavContainer)`
+	width: 52px;
+	min-width: 52px;
+	align-items: center;
+`;
 
-	background: #f0f3f6;
-	transition: transform 0.5s ease-in-out;
+const _ClosedNavHeader = styled(_NavHeader)`
+	padding: 0px;
+`;
+
+const _HoverIcon = styled.div`
+	width: 34px;
+	height: 34px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 4px;
+
+	&:hover {
+		background-color: #e4f3f4;
+		.closed-nav-icon {
+			color: #4ca6a8;
+		}
+	}
 `;
 
 const iamNav = {
@@ -111,10 +105,10 @@ const iamNav = {
 	contents: {
 		dashboard: {title: '대시보드'},
 		iam: {
-			title: '접근관리',
+			title: '접근 관리',
 			contents: {
-				user: 'user',
-				group: 'group',
+				user: '사용자',
+				group: '사용자 그룹',
 				role: '역할',
 				policy: '정책',
 			},
@@ -122,12 +116,12 @@ const iamNav = {
 	},
 };
 
-const IamNav = ({isOpened, setIsOpened, leftSize}) => {
+const IamNav = ({isOpened, setIsOpened}) => {
 	const location = useLocation();
 	const pathname = qs.parse(location).pathname;
 	const [isUnfolded, setIsUnfolded] = useState(false);
 
-	const onClickOpenOrCloseNav = useCallback(() => {
+	const onClickFoldNav = useCallback(() => {
 		setIsOpened(!isOpened);
 	}, [setIsOpened, isOpened]);
 
@@ -137,161 +131,128 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 
 	return isOpened ? (
 		<NavContainer className={isOpened ? 'nav' : 'nav close'}>
-			<NavHeader>
+			<_NavHeader>
 				<div>{iamNav.title}</div>
-				<HoverIconButton
-					margin={'0px 0px 0px 0px'}
-					onClick={onClickOpenOrCloseNav}
-				>
+				<HoverIconButton onClick={onClickFoldNav}>
 					{burgerMenuIcon}
 				</HoverIconButton>
-			</NavHeader>
+			</_NavHeader>
 
 			<_NavContents>
 				<NavItem to='/iam'>
-					<_NavItem selected={pathname === '/iam' ? 1 : 0}>
+					<_ResourceItem selected={pathname === '/iam' ? 1 : 0}>
+						<Icon size={'micro'} margin={'0px'}>
+							{arrowRightIcon}
+						</Icon>
 						<Icon
-							margin={'0px'}
+							margin={'0px 8px 0px 1px'}
 							size={'sm'}
 							itype={pathname === '/iam' ? 'selected' : 0}
 						>
 							{dashboardIcon}
 						</Icon>
-						<ResourceItemTitle
-							left={(leftSize * 2 + 10).toString() + 'px'}
-						>
-							{iamNav.contents.iam.title}
-						</ResourceItemTitle>
-					</_NavItem>
+						<_ResourceItemTitle>
+							{iamNav.contents.dashboard.title}
+						</_ResourceItemTitle>
+					</_ResourceItem>
 				</NavItem>
-				<_NavItem>
-					<Icon margin={'0px'} size={'sm'}>
-						{securityIcon}
-					</Icon>
-					<ResourceItemTitle
-						left={(leftSize * 2 + 10).toString() + 'px'}
-					>
-						접근 관리
-					</ResourceItemTitle>
-					<IconButton
-						size={'sm'}
-						margin={'0px 0px 0px 12px'}
-						onClick={onClickFoldFolder}
-					>
+
+				<_ResourceItem onClick={onClickFoldFolder}>
+					<IconButton size={'micro'} margin={'0px'}>
 						{isUnfolded ? arrowDownIcon : arrowRightIcon}
 					</IconButton>
-				</_NavItem>
+					<Icon margin={'0px 8px 0px 1px'} size={'sm'}>
+						{securityIcon}
+					</Icon>
+					<_ResourceItemTitle>
+						{iamNav.contents.iam.title}
+					</_ResourceItemTitle>
+				</_ResourceItem>
 				{isUnfolded && (
 					<NavItemList>
 						<NavItem to='/users'>
-							<ResourceItem
-								left={(leftSize * 11 + 8).toString() + 'px'}
+							<_ResourceItem
+								left={'58px'}
 								selected={pathname.includes('users')}
 							>
-								<Icon
-									size={'sm'}
-									margin_right={'12px'}
-									itype={
-										pathname.includes('users')
-											? 'selected'
-											: 0
-									}
-								>
-									{userIcon}
-								</Icon>
-								<ResourceItemText
-									left={(leftSize * 2 + 6).toString() + 'px'}
-								>
-									사용자
-								</ResourceItemText>
-							</ResourceItem>
+								<_ResourceItemText>
+									{iamNav.contents.iam.contents.user}
+								</_ResourceItemText>
+							</_ResourceItem>
 						</NavItem>
 						<NavItem to='/groups'>
-							<ResourceItem
-								left={(leftSize * 11 + 8).toString() + 'px'}
+							<_ResourceItem
+								left={'58px'}
 								selected={pathname.includes('groups') ? 1 : 0}
 							>
-								<Icon
-									size={'sm'}
-									margin_right={'12px'}
-									itype={
-										pathname.includes('groups')
-											? 'selected'
-											: 0
-									}
-								>
-									{groupsIcon}
-								</Icon>
-								<ResourceItemText
-									left={(leftSize * 2 + 6).toString() + 'px'}
-								>
-									사용자 그룹
-								</ResourceItemText>
-							</ResourceItem>
+								<_ResourceItemText>
+									{iamNav.contents.iam.contents.group}
+								</_ResourceItemText>
+							</_ResourceItem>
 						</NavItem>
 
 						<NavItem to='/roles'>
-							<ResourceItem
-								left={(leftSize * 11 + 8).toString() + 'px'}
+							<_ResourceItem
+								left={'58px'}
 								selected={pathname.includes('roles') ? 1 : 0}
 							>
-								<Icon
-									size={'sm'}
-									margin_right={'12px'}
-									itype={
-										pathname.includes('roles')
-											? 'selected'
-											: 0
-									}
-								>
-									{roleIcon}
-								</Icon>
-								<ResourceItemText
-									left={(leftSize * 2 + 6).toString() + 'px'}
-								>
-									역할
-								</ResourceItemText>
-							</ResourceItem>
+								<_ResourceItemText>
+									{iamNav.contents.iam.contents.role}
+								</_ResourceItemText>
+							</_ResourceItem>
 						</NavItem>
 						<NavItem to='/policies'>
-							<ResourceItem
-								left={(leftSize * 11 + 8).toString() + 'px'}
+							<_ResourceItem
+								left={'58px'}
 								selected={pathname.includes('policies') ? 1 : 0}
 							>
-								<Icon
-									size={'sm'}
-									margin_right={'12px'}
-									itype={
-										pathname.includes('policies')
-											? 'selected'
-											: 0
-									}
-								>
-									{policyIcon}
-								</Icon>
-								<ResourceItemText
-									left={(leftSize * 2 + 6).toString() + 'px'}
-								>
-									정책
-								</ResourceItemText>
-							</ResourceItem>
+								<_ResourceItemText>
+									{iamNav.contents.iam.contents.policy}
+								</_ResourceItemText>
+							</_ResourceItem>
 						</NavItem>
 					</NavItemList>
 				)}
 			</_NavContents>
 		</NavContainer>
 	) : (
-		<_IamNavClose onClick={onClickOpenOrCloseNav}>
-			<div
-				style={{
-					display: 'flex',
-					alignItems: 'center',
-					height: '100%',
-				}}
-			>
-				{moreVertIcon}
-			</div>
-		</_IamNavClose>
+		<_ClosedNavContainer>
+			<_ClosedNavHeader>
+				<_HoverIcon onClick={onClickFoldNav}>
+					<HoverIconButton
+						margin={'0px'}
+						className={'closed-nav-icon'}
+					>
+						{burgerMenuIcon}
+					</HoverIconButton>
+				</_HoverIcon>
+			</_ClosedNavHeader>
+
+			<_NavContents>
+				<NavItem to='/iam'>
+					<_HoverIcon>
+						<HoverIconButton
+							size={'sm'}
+							margin={'0px'}
+							className={'closed-nav-icon'}
+						>
+							{dashboardIcon}
+						</HoverIconButton>
+					</_HoverIcon>
+				</NavItem>
+				<NavItem to='/users'>
+					<_HoverIcon>
+						<HoverIconButton
+							size={'sm'}
+							margin={'0px'}
+							className={'closed-nav-icon'}
+						>
+							{securityIcon}
+						</HoverIconButton>
+					</_HoverIcon>
+				</NavItem>
+			</_NavContents>
+		</_ClosedNavContainer>
 	);
 };
 
