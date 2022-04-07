@@ -278,6 +278,8 @@ const useSelection = () => {
 	const [lastCheckedKey, setLastCheckedKey] = useState(null);
 	const refs = useRef([]);
 
+	const clear = () => setSelect([]);
+
 	const selectionColumn = useMemo(
 		() => ({
 			id: 'selection',
@@ -311,7 +313,7 @@ const useSelection = () => {
 		[lastCheckedKey, select],
 	);
 
-	return [select, selectionColumn];
+	return [select, clear, selectionColumn];
 };
 
 export default useSelection;

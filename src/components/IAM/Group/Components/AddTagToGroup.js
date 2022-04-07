@@ -42,9 +42,14 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 		]);
 	}, [data]);
 
+	console.log(data);
+
 	const onClickDeleteRow = useCallback(() => {
 		//	console.log(select[tableKeys.groups.add.tag]);
 		console.log(select);
+		setData((prev) =>
+			prev.filter((v) => !select.map((s) => s.id).includes(v.id)),
+		);
 		//	console.log('삭제 처리 필요');
 	}, [select]);
 
@@ -52,7 +57,7 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 		return data.map((v) => {
 			return {
 				...v,
-				id: v?.name,
+				// id: v?.name,
 				// numberOfPermissions: v?.permissions.length,
 				[DRAGGABLE_KEY]: v.id,
 				numberOfRoles: v?.permissions.length,

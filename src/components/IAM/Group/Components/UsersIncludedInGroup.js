@@ -16,6 +16,7 @@ import PAGINATION from '../../../../reducers/pagination';
 import {
 	expiredConverter,
 	groupsConverter,
+	totalNumberConverter,
 } from '../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
@@ -23,14 +24,9 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {page} = useSelector(PAGINATION.selector);
+
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
-	const [includeSelect, includeColumns] = useSelectColumn(
-		tableColumns[tableKeys.groups.add.users.include],
-	);
-	const [excludeSelect, excludeColumns] = useSelectColumn(
-		tableColumns[tableKeys.groups.add.users.exclude],
-	);
 	const [selected, setSelected] = useState({});
 
 	console.log(users);
@@ -43,7 +39,7 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 				.map((v) => ({
 					...v,
 					groupIds: groupsConverter(v.groups || []),
-					numberOfGroups: v.groups ? v.groups.length : 0,
+					grantedCount: v.groups ? v.groups.length : 0,
 					status: v.status.code,
 					createdTime: v.createdTag.createdTime,
 					passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
@@ -68,6 +64,15 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 		);
 	}, [includedDataIds, users]);
 
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.groups.add.users.include],
+		includedData,
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.groups.add.users.exclude],
+		excludedData,
+	);
+
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
@@ -83,7 +88,18 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 				IAM_USER.asyncAction.findAllAction({
 					range: page[tableKeys.groups.add.users.exclude],
 				}),
-			);
+			)
+				.unwrap()
+				.then((res) => {
+					dispatch(
+						PAGINATION.action.setTotal({
+							tableKey: tableKeys.groups.add.users.exclude,
+							element: totalNumberConverter(
+								res.headers['content-range'],
+							),
+						}),
+					);
+				});
 	}, [dispatch, page]);
 
 	useEffect(() => {
@@ -92,8 +108,8 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 
 	useEffect(() => {
 		setSelected({
-			[tableKeys.roles.add.users.include]: includeSelect,
-			[tableKeys.roles.add.users.exclude]: excludeSelect,
+			[tableKeys.groups.add.users.include]: includeSelect,
+			[tableKeys.groups.add.users.exclude]: excludeSelect,
 		});
 	}, [excludeSelect, includeSelect]);
 
@@ -124,7 +140,7 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 								columns={excludeColumns}
 								isPaginable
 								isSearchable
-								isSearchFilterable
+								// isSearchFilterable
 								isColumnFilterable
 							/>
 							<RowDiv alignItems={'center'}>

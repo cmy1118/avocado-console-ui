@@ -79,7 +79,7 @@ const TableOptionsBar = ({
 }) => {
 	//검색필터 선택 요소들
 	const [selectedSearchFilters, setSelectedSearchFilters] = useState([]);
-	console.log('🚀selectedSearchFilters:', selectedSearchFilters);
+	// console.log('🚀selectedSearchFilters:', selectedSearchFilters);
 	//검색필터 모달 훅스
 	const [SearchFilterModal, showSearchFilterModal] = useModal();
 	//컬럼필터 모달 훅스
