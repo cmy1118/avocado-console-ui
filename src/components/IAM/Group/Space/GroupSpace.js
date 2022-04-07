@@ -66,6 +66,9 @@ const GroupSpace = () => {
 					}),
 				);
 			});
+			setGroups((prev) =>
+				prev.filter((v) => !select.map((s) => s.id).includes(v.id)),
+			);
 		}
 	}, [dispatch, select]);
 

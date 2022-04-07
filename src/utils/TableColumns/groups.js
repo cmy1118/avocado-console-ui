@@ -53,10 +53,10 @@ export const GROUP_TYPE_COLUMN = [
 	},
 	{
 		Header: '그룹 수',
-		accessor: 'numberOfGroups',
-		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} />;
-		},
+		accessor: 'groupCount',
+		// Cell: function Component(cell) {
+		// 	return <TableTextBox cell={cell} />;
+		// },
 	},
 	{
 		Header: '설명',
