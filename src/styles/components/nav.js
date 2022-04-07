@@ -3,22 +3,17 @@ import {NavLink} from 'react-router-dom';
 
 export const NavContainer = styled.div`
 	border-right: 1px solid;
-	border-color: #e3e5e5;
+	border-color: #e1e5eb;
 	z-index: 5;
 	display: flex;
 	flex-direction: column;
 	transform: translateX(1px);
-	// transition: transform 0.5s ease-in-out;
-	width: 255px;
+	width: 256px;
+	min-width: 256px;
 	height: 100%;
-	min-width: 255px;
 	background: #ffffff;
 	z-index: 75;
-
-	// &.close {
-	// 	display: none;
-	// 	transform: translateX(-255px);
-	// }
+	box-shadow: 3.5px 0 7.5px 0 rgba(0, 0, 0, 0.06);
 `;
 
 export const NavItemList = styled.div`
@@ -31,7 +26,7 @@ export const NavItem = styled(NavLink)`
 	font-style: normal;
 	line-height: 1.31;
 	letter-spacing: 0.1px;
-	color: ${(props) => props?.color || '#212121'};
+	color: ${(props) => (props?.selected ? '#e4f3f4' : '#212121')};
 	text-decoration: none;
 	align-items: center;
 `;

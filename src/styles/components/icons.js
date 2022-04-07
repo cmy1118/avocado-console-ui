@@ -13,7 +13,7 @@ export const Icon = styled.div`
 				: props.size === 'xs'
 				? '0px 5px'
 				: props.size === 'micro'
-				? '0px  4px'
+				? '0px 4px'
 				: props.size
 			: '0px 8px')};
 
@@ -27,7 +27,7 @@ export const Icon = styled.div`
 			? '#212121'
 			: props?.itype === 'selected'
 			? '#178082'
-			: '#959ea1')};
+			: '#8493a5')};
 
 	font-size: ${(props) =>
 		props?.size
@@ -66,7 +66,7 @@ export const Icon = styled.div`
 				? '#212121'
 				: props?.itype === 'selected'
 				? '#178082'
-				: '#959ea1')};
+				: '#8493a5')};
 
 		width: ${(props) =>
 			props?.size

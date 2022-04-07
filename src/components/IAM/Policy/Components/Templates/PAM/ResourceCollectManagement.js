@@ -16,12 +16,13 @@ import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/P
 import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
 import Table from '../../../../../Table/Table';
 import Resource from './Resource/Resource';
+import PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../../reducers/api/PAM/TemplateManagement/ActionManagement/actionTemplateDetail';
 
 const constants = {
 	main: '자원 수집 관리 권한 템플릿',
 	title: '',
 	templates: {},
-	templatesId: 'KR-2020-0001:202202:0001',
+	templatesId: 'KR-2020-0001:202202:0003',
 	//체크박스 컬럼 정보
 	column: [
 		'항목',
@@ -94,9 +95,9 @@ const ResourceCollectManagement = ({
 
 	useEffect(() => {
 		const res = dispatch(
-			IAM_ACTION_MANAGEMENT_TEMPLATE.asyncAction.findByIdAction({
+			PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction({
 				range: 'elements=0-50',
-				templateId: templateId,
+				templateId: constants.templatesId,
 			}),
 		)
 			.unwrap()
