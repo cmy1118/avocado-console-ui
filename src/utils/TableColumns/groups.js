@@ -53,10 +53,10 @@ export const GROUP_TYPE_COLUMN = [
 	},
 	{
 		Header: '그룹 수',
-		accessor: 'numberOfGroups',
-		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} />;
-		},
+		accessor: 'groupCount',
+		// Cell: function Component(cell) {
+		// 	return <TableTextBox cell={cell} />;
+		// },
 	},
 	{
 		Header: '설명',
@@ -84,7 +84,7 @@ export const GROUP_ADD_ROLES_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '역할 유형',
-		accessor: 'temptype',
+		accessor: 'roleType',
 	},
 	{
 		Header: '설명',
@@ -93,7 +93,7 @@ export const GROUP_ADD_ROLES_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '사용자 수',
-		accessor: 'numberOfUsers',
+		accessor: 'grantedCount',
 	},
 	{
 		Header: '생성 일시',
@@ -112,7 +112,7 @@ export const GROUP_ADD_ROLES_INCLUDE_COLUMN = [
 	},
 	{
 		Header: '역할 유형',
-		accessor: 'temptype',
+		accessor: 'roleType',
 	},
 ];
 
@@ -308,11 +308,11 @@ export const GROUP_ADD_USERS_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '그룹 수',
-		accessor: 'numberOfGroups',
+		accessor: 'grantedCount',
 	},
 	{
 		Header: '마지막 콘솔 로그인 ',
-		accessor: 'lastConsoleLogin',
+		accessor: 'lastConsoleLoginTime',
 	},
 	{
 		Header: '생성 일시',

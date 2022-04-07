@@ -174,9 +174,23 @@ const DropButton = ({
 	//데이터 회수
 	const onClickRightDropButton = useCallback(() => {
 		const UESRS = 'users';
+		let selectId;
 		//TODO: users 의 uid 데이터 처리 수정
-		const selectId =
-			select[RightTableKey] && select[RightTableKey].map((v) => v.id);
+		console.log(CheckDropDataType(RightTableKey));
+		if (CheckDropDataType(RightTableKey) === UESRS) {
+			selectId =
+				select[RightTableKey] &&
+				select[RightTableKey].map((v) => v.userUid);
+		} else {
+			selectId =
+				select[RightTableKey] && select[RightTableKey].map((v) => v.id);
+		}
+		console.log(RightTableKey);
+
+		console.log(select);
+		console.log(select);
+		console.log(selectId);
+		console.log(rightDataIds);
 
 		rightDataIds &&
 			selectId &&

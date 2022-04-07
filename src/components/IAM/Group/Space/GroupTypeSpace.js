@@ -41,6 +41,7 @@ const GroupTypeSpace = () => {
 		() =>
 			data.map((v) => ({
 				...v,
+				createdTime: v.createdTag.createdTime,
 				[DRAGGABLE_KEY]: v.id,
 			})),
 		[data],
@@ -51,15 +52,20 @@ const GroupTypeSpace = () => {
 	}, [history]);
 
 	const onClickOpenAddGroupTypeDialogBox = useCallback(() => {
+		const now = new Date(); // Fri Feb 20 2015 19:29:31 GMT+0530 (India Standard Time)
+		const isoDate = new Date(
+			now.getTime() - now.getTimezoneOffset() * 60000,
+		).toISOString(); //OUTPUT : 2015-02-20T19:29:31.238Z
+
 		setData([
 			...data,
 			{
 				id: tableKeys.groups.type + data.length,
 				[DRAGGABLE_KEY]: tableKeys.groups.type + data.length,
 				name: '',
-				numberOfGroups: 0,
+				groupCount: 0,
 				description: '',
-				createdTime: new Date().toLocaleString(),
+				createdTag: {createdTime: isoDate},
 				new: true,
 			},
 		]);
@@ -101,8 +107,6 @@ const GroupTypeSpace = () => {
 			);
 		});
 	}, [data, deleteList, dispatch, initialGroupTypes]);
-
-	console.log(data);
 
 	const onClickDeleteGroupTypes = useCallback(() => {
 		//	console.log(select);

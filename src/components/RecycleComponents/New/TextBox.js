@@ -32,25 +32,24 @@ const SubContainer = styled.div`
 		props.direction === 'col' ? 'initial' : 'center'};
 	flex-direction: ${(props) =>
 		props.direction === 'col' ? 'column' : 'row'};
-	padding: 6px 10px;
-	font-size: 14px;
+	padding: 5px 10px;
+	font-size: 13px;
 	font-weight: normal;
 	font-stretch: normal;
 	font-style: normal;
-	line-height: 1.43;
+	line-height: normal;
 	letter-spacing: 0.25px;
 	text-align: left;
 	font-color: #757575;
-	box-sizing: border-box;
 	border-radius: 4px;
-	border: solid 1px;
+	border: solid 1px #e1e5eb;
 	border-color: ${(props) =>
 		props.border_color
 			? props.border_color
 			: props.error
 			? '#d45959'
 			: '#e3e5e5'};
-	height: 34px;
+	height: 32px;
 	width: ${(props) => props.width || '394px'};
 	background: ${(props) => props.background || '#ffffff'};
 `;

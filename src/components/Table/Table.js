@@ -24,15 +24,14 @@ import {
 } from 'react-table';
 
 const Styles = styled.div`
-	// padding: 1rem;
+	// min-height: ${(props) => !props.isDraggable && '240px'};
+	// height: ${(props) => !props.isDraggable && '0'};
 
 	table {
 		width: 100%;
-		// table-layout: fixed;
-
-		// overflow-x: scroll;
-		// display: grid;
-		// grid-template-rows: 40px;
+		table-layout: fixed;
+		display: grid;
+		grid-template-rows: 40px;
 
 		box-sizing: border-box;
 		border-left: ${(props) => props.inner && '3px solid #4ca6a8'};
@@ -60,6 +59,7 @@ const Styles = styled.div`
 		}
 		tbody {
 			border-bottom: 1px solid #e3e5e5;
+			overflow: scroll;
 		}
 
 		tr {
@@ -92,11 +92,6 @@ const Styles = styled.div`
 			padding: 0px;
 			margin: 0px 16px;
 		}
-		.hello {
-			padding: 0 !important;
-			width: 40px !important;
-			text-align: center;
-		}
 	}
 `;
 
@@ -104,9 +99,9 @@ const TableStyledContainer = styled.div`
 	margin: ${(props) => (props.readOnly ? '0px' : ' 0px 16px')};
 	display: flex;
 	min-width: 380px;
+	flex: ${(props) => !props.readOnly && '1 1 auto'};
 	min-height: ${(props) => !props.readOnly && '240px'};
 	height: ${(props) => !props.readOnly && '0'};
-	flex: ${(props) => !props.readOnly && '1 1 auto'};
 
 	.table {
 		width: 100%;

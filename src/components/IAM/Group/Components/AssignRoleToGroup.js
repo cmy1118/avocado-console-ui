@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import Table from '../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
-import {roleTypeConverter} from '../../../../utils/tableDataConverter';
+import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../../reducers/currentTarget';
@@ -23,40 +23,43 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
-	const [excludeSelect, excludeColumns] = useSelectColumn(
-		tableColumns[tableKeys.groups.add.roles.exclude],
-	);
-	const [includeSelect, includeColumns] = useSelectColumn(
-		tableColumns[tableKeys.groups.add.roles.include],
-	);
-
 	console.log(roles);
 
 	const [selected, setSelected] = useState({});
 
-	const excludedData = useMemo(() => {
+	const iamExcludedData = useMemo(() => {
 		return (
 			roles
 				.filter((v) => !includedDataIds.includes(v.id))
 				.map((v) => ({
 					...v,
-					// numberOfUsers: v.users.length,
+					roleType: 'IAM',
+					createdTime: v.createdTag.createdTime,
 					[DRAGGABLE_KEY]: v.id,
 				})) || []
 		);
 	}, [roles, includedDataIds]);
 
-	const includedData = useMemo(() => {
+	const iamIncludedData = useMemo(() => {
 		return (
 			roles
 				.filter((v) => includedDataIds.includes(v.id))
 				.map((v) => ({
 					...v,
-					// type: roleTypeConverter(v.companyId),
+					roleType: 'IAM',
 					[DRAGGABLE_KEY]: v.id,
 				})) || []
 		);
 	}, [roles, includedDataIds]);
+
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.groups.add.roles.exclude],
+		iamExcludedData,
+	);
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.groups.add.roles.include],
+		iamIncludedData,
+	);
 
 	// const onClickDeleteRolesFromGroup = useCallback(() => {
 	// 	alert('에러 있어서 막아놨습니다.');
@@ -74,10 +77,10 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
 				title: tableKeys.groups.add.roles.include,
-				data: includedData,
+				data: iamIncludedData,
 			}),
 		);
-	}, [includedData, dispatch]);
+	}, [iamIncludedData, dispatch]);
 
 	useEffect(() => {
 		page[tableKeys.groups.add.roles.exclude] &&
@@ -85,7 +88,18 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 				IAM_ROLES.asyncAction.getsAction({
 					range: page[tableKeys.groups.add.roles.exclude],
 				}),
-			);
+			)
+				.unwrap()
+				.then((res) => {
+					dispatch(
+						PAGINATION.action.setTotal({
+							tableKey: tableKeys.groups.add.roles.exclude,
+							element: totalNumberConverter(
+								res.headers['content-range'],
+							),
+						}),
+					);
+				});
 	}, [dispatch, page]);
 
 	useEffect(() => {
@@ -111,13 +125,13 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 						data={includedDataIds}
 						setData={setIncludedDataIds}
 						includedKey={tableKeys.groups.add.roles.include}
-						excludedData={excludedData}
-						includedData={includedData}
+						excludedData={iamExcludedData}
+						includedData={iamIncludedData}
 					>
 						<RowDiv>
 							<Table
 								isDraggable
-								data={excludedData}
+								data={iamExcludedData}
 								tableKey={tableKeys.groups.add.roles.exclude}
 								columns={excludeColumns}
 								isPaginable
@@ -134,7 +148,8 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 										tableKeys.groups.add.roles.include
 									}
 									select={selected}
-									dataRight={includedData}
+									dataRight={iamIncludedData}
+									dataLeft={iamExcludedData}
 									rightDataIds={includedDataIds}
 									setRightDataIds={setIncludedDataIds}
 								/>
@@ -145,7 +160,7 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 								</TableHeader>
 								<Table
 									isDraggable
-									data={includedData}
+									data={iamIncludedData}
 									tableKey={
 										tableKeys.groups.add.roles.include
 									}
