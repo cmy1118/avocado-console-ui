@@ -14,6 +14,8 @@ import {
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import {TableMode} from '../../../../Constants/Table/mode';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import {roleTypeConverter} from '../../../../utils/tableDataConverter';
 
 const GroupSummary = ({groupId}) => {
 	const history = useHistory();
@@ -21,6 +23,7 @@ const GroupSummary = ({groupId}) => {
 	const location = useLocation();
 	const {page} = useSelector(PAGINATION.selector);
 	const [groupUserMembers, setGroupUserMembers] = useState([]);
+	const [groupRoleData, setGroupRoleData] = useState([]);
 
 	const isSummaryOpened = useMemo(() => {
 		if (location.search) return false;
@@ -40,6 +43,18 @@ const GroupSummary = ({groupId}) => {
 			[DRAGGABLE_KEY]: v.userUid,
 		}));
 	}, [groupUserMembers]);
+
+	const groupData = useMemo(() => {
+		return groupRoleData
+			? groupRoleData.map((v) => ({
+					...v,
+					type: roleTypeConverter(v.companyId),
+					numberOfUsers: '',
+					createdTime: v.createdTag ? v.createdTag.createdTime : '',
+					[DRAGGABLE_KEY]: v.id,
+			  }))
+			: [];
+	}, [groupRoleData]);
 
 	const roleData = useMemo(() => [], []);
 
@@ -63,40 +78,71 @@ const GroupSummary = ({groupId}) => {
 		},
 		[history, location],
 	);
-
-	useEffect(() => {
-		isSummaryOpened &&
-			dispatch(
-				IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
-					groupId: groupId,
-					range: 'elements=0-50', // todo : 상세 페이지는 페이지네이션이 없음 => how?
+	const groupRolesApi = useCallback(async () => {
+		try {
+			//포함
+			const includeData = await dispatch(
+				IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction({
+					id: groupId,
 				}),
-			)
-				.unwrap()
-				.then((member) => {
-					//	console.log(member.data);
-					return member.data.map((x) => x.userUid);
-				})
-				.then((uids) => {
-					const arr = [];
-					//	console.log(uids);
-					if (!uids) return;
-					uids.forEach((uid) => {
-						dispatch(
-							IAM_USER.asyncAction.findByUidAction({
-								userUid: uid,
-							}),
-						)
-							.unwrap()
-							.then((data) => {
-								console.log(data);
-								arr.push(data);
-								if (arr.length === uids.length)
-									setGroupUserMembers(arr);
-							});
+			).unwrap();
+			console.log('includeData:', includeData);
+			await setGroupRoleData(includeData.data);
+		} catch (err) {
+			alert('조회 오류');
+			console.log(err);
+		}
+	}, [dispatch, groupId]);
+
+	const groupUserApi = useCallback(async () => {
+		try {
+			isSummaryOpened &&
+				dispatch(
+					IAM_USER_GROUP_MEMBER.asyncAction.findAllAction({
+						groupId: groupId,
+						range: 'elements=0-50', // todo : 상세 페이지는 페이지네이션이 없음 => how?
+					}),
+				)
+					.unwrap()
+					.then((member) => {
+						//	console.log(member.data);
+						return member.data.map((x) => x.userUid);
+					})
+					.then((uids) => {
+						const arr = [];
+						//	console.log(uids);
+						if (!uids) return;
+						uids.forEach((uid) => {
+							dispatch(
+								IAM_USER.asyncAction.findByUidAction({
+									userUid: uid,
+								}),
+							)
+								.unwrap()
+								.then((data) => {
+									console.log(data);
+									arr.push(data);
+									if (arr.length === uids.length)
+										setGroupUserMembers(arr);
+								});
+						});
 					});
-				});
+		} catch (err) {
+			alert('조회 오류');
+			console.log(err);
+		}
 	}, [dispatch, groupId, isSummaryOpened]);
+
+	//TODO : 유섭님 Tag  관련
+	const groupTagApi = useCallback(async () => {}, []);
+
+	useEffect(async () => {
+		await Promise.all([
+			await groupUserApi(),
+			await groupRolesApi(),
+			// await groupTagApi()
+		]);
+	}, [groupRolesApi, groupUserApi]);
 
 	return (
 		<SummaryTablesContainer>
@@ -116,7 +162,7 @@ const GroupSummary = ({groupId}) => {
 			</SummaryTableTitle>
 			<Table
 				readOnly
-				data={roleData}
+				data={groupData}
 				tableKey={tableKeys.groups.summary.permission}
 				columns={tableColumns[tableKeys.groups.summary.permission]}
 			/>
