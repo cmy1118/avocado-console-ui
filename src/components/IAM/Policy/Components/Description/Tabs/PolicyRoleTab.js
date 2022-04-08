@@ -6,12 +6,7 @@ import {
 	NormalButton,
 } from '../../../../../../styles/components/buttons';
 import React, {useCallback, useEffect, useState} from 'react';
-import TableFold from '../../../../../Table/Options/TableFold';
-import {
-	FoldableContainer,
-	TitleBarButtons,
-} from '../../../../../../styles/components/iam/iam';
-import {CollapsbleContent} from '../../../../../../styles/components/style';
+import {TitleBarButtons} from '../../../../../../styles/components/iam/iam';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
 import Table from '../../../../../Table/Table';
@@ -20,6 +15,7 @@ import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 import IAM_GRAN_REVOKE_ROLE from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeRole';
 import {isFulfilled} from '../../../../../../utils/redux';
 import {useDispatch} from 'react-redux';
+import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
 
 const policyRoleTab = {
 	include: {
@@ -54,7 +50,6 @@ const convertTableData = (data) => {
 const PolicyRoleTab = ({policyId}) => {
 	const dispatch = useDispatch();
 
-	const [isFold, setIsFold] = useState({});
 	const [inRoleIds, setInRoleIds] = useState([]);
 	//inRoles : 현 정책이 부여된 roles
 	const [inRoles, setInRoles] = useState([]);
@@ -203,38 +198,30 @@ const PolicyRoleTab = ({policyId}) => {
 					isColumnFilterable
 				/>
 
-				<FoldableContainer>
-					<TableFold
-						title={policyRoleTab.include.title + exRoles.length}
-						space={'RoleUserTab'}
-						isFold={isFold}
-						setIsFold={setIsFold}
-					>
+				<FoldableContainer
+					title={policyRoleTab.include.title + exRoles.length}
+					buttons={(isDisabled) => (
 						<TitleBarButtons>
 							<NormalButton
 								onClick={onClickGrantRoles}
 								margin={'0px 0px 0px 5px'}
+								disabled={isDisabled}
 							>
 								{policyRoleTab.exclude.button.add}
 							</NormalButton>
 						</TitleBarButtons>
-					</TableFold>
-					<CollapsbleContent
-						height={isFold['RoleUserTab'] ? '374px' : '0px'}
-					>
-						<Table
-							isDraggable
-							data={exRoles}
-							tableKey={
-								tableKeys.policy.summary.tabs.role.exclude
-							}
-							columns={excludeColumns}
-							isPaginable
-							isSearchable
-							isSearchFilterable
-							isColumnFilterable
-						/>
-					</CollapsbleContent>
+					)}
+				>
+					<Table
+						isDraggable
+						data={exRoles}
+						tableKey={tableKeys.policy.summary.tabs.role.exclude}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>

@@ -10,14 +10,10 @@ import {tableKeys} from '../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
 import DragContainer from '../../../../../Table/DragContainer';
 import {TableTitle} from '../../../../../../styles/components/table';
-import TableFold from '../../../../../Table/Options/TableFold';
+import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
 import TableOptionText from '../../../../../Table/Options/TableOptionText';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
-import {
-	FoldableContainer,
-	TitleBarButtons,
-} from '../../../../../../styles/components/iam/iam';
-import {CollapsbleContent} from '../../../../../../styles/components/style';
+import {TitleBarButtons} from '../../../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 
 const roleGroupTab = {
@@ -31,7 +27,7 @@ const roleGroupTab = {
 /**************************************************
  * ambacc244 - 이 역할을 가지는 그룹과, 가지지 않는 그룹을 보여줌
  **************************************************/
-const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
+const RoleGroupTab = ({roleId}) => {
 	const [includeSelect, includeColumns] = useSelectColumn(
 		tableColumns[tableKeys.roles.summary.tabs.groups.include],
 	);
@@ -82,37 +78,33 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 					isSearchFilterable
 					isColumnFilterable
 				/>
-				<FoldableContainer>
-					<TableFold
-						title={roleGroupTab.exclude.title + excludedData.length}
-						space={'RoleGroupTab'}
-						isFold={isFold}
-						setIsFold={setIsFold}
-					>
+				<FoldableContainer
+					title={roleGroupTab.exclude.title + excludedData.length}
+					buttons={(isDisabled) => (
 						<TitleBarButtons>
-							<NormalButton>
+							<NormalButton disabled={isDisabled}>
 								{roleGroupTab.exclude.button.create}
 							</NormalButton>
-							<NormalButton margin={'0px 0px 0px 5px'}>
+							<NormalButton
+								margin={'0px 0px 0px 5px'}
+								disabled={isDisabled}
+							>
 								{roleGroupTab.exclude.button.add}
 							</NormalButton>
 						</TitleBarButtons>
-					</TableFold>
-					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
-						<TableOptionText data={'groups'} />
-						<Table
-							isDraggable
-							data={excludedData}
-							tableKey={
-								tableKeys.roles.summary.tabs.groups.exclude
-							}
-							columns={excludeColumns}
-							isPaginable
-							isSearchable
-							isSearchFilterable
-							isColumnFilterable
-						/>
-					</CollapsbleContent>
+					)}
+				>
+					<TableOptionText data={'groups'} />
+					<Table
+						isDraggable
+						data={excludedData}
+						tableKey={tableKeys.roles.summary.tabs.groups.exclude}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>
@@ -121,9 +113,6 @@ const RoleGroupTab = ({roleId, space, isFold, setIsFold}) => {
 
 RoleGroupTab.propTypes = {
 	roleId: PropTypes.string.isRequired,
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
 };
 
 export default RoleGroupTab;

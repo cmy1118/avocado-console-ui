@@ -3,7 +3,6 @@ import {
 	AddPageContainer,
 	AddSpaceContainer,
 } from '../../../../styles/components/iam/addPage';
-import {FOLD_DATA} from '../../../../utils/data';
 import ConnectPolicyToRole from '../Components/Add/ConnectPolicyToRole';
 import ConnectUserToRole from '../Components/Add/ConnectUserToRole';
 import ConnectGroupToRole from '../Components/Add/ConnectGroupToRole';
@@ -18,7 +17,6 @@ const paths = [
 
 const AddRoleSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
-	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 	const [values, setValues] = useState({
 		type: '',
 		parentId: '',
@@ -38,24 +36,9 @@ const AddRoleSpace = () => {
 					setValues={setValues}
 				/>
 
-				<ConnectPolicyToRole
-					space={'RolePolicyTab'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-					setValue={setGroupMembers}
-				/>
-				<ConnectUserToRole
-					space={'RoleUserTab'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-					setValue={setGroupMembers}
-				/>
-				<ConnectGroupToRole
-					space={'RoleGroupTab'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-					setValue={setGroupMembers}
-				/>
+				<ConnectPolicyToRole setValue={setGroupMembers} />
+				<ConnectUserToRole setValue={setGroupMembers} />
+				<ConnectGroupToRole setValue={setGroupMembers} />
 			</AddPageContainer>
 		</AddSpaceContainer>
 	);

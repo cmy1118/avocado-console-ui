@@ -27,7 +27,7 @@ import * as _ from 'lodash';
 import {CollapsbleContent} from '../../../../../../styles/components/style';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 
-const UserGroupTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
+const UserGroupTab = ({userUid, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 
 	const [includeSelect, includeColumns] = useSelectColumn(
@@ -217,15 +217,9 @@ const UserGroupTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					isColumnFilterable
 					setSearch={setSearch}
 				/>
-				<FoldableContainer>
-					<TableFold
-						title={
-							<>이 사용자의 다른그룹 : {excludedData.length}</>
-						}
-						space={'UserGroupsTab'}
-						isFold={isFold}
-						setIsFold={setIsFold}
-					>
+				<FoldableContainer
+					title={<>이 사용자의 다른그룹 : {excludedData.length}</>}
+					buttons={(isDisabled) => (
 						<NormalButton
 							margin='0px 0px 0px 5px'
 							onClick={() =>
@@ -233,25 +227,23 @@ const UserGroupTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 									excludeSelect.map((v) => v.id),
 								)
 							}
+							disabled={isDisabled}
 						>
 							그룹 추가
 						</NormalButton>
-					</TableFold>
-					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
-						<TableOptionText data={'groups'} />
-						<Table
-							isDraggable
-							data={excludedData}
-							tableKey={
-								tableKeys.users.summary.tabs.groups.exclude
-							}
-							columns={excludeColumns}
-							isPaginable
-							isSearchable
-							isSearchFilterable
-							isColumnFilterable
-						/>
-					</CollapsbleContent>
+					)}
+				>
+					<TableOptionText data={'groups'} />
+					<Table
+						isDraggable
+						data={excludedData}
+						tableKey={tableKeys.users.summary.tabs.groups.exclude}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>
@@ -260,9 +252,6 @@ const UserGroupTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 
 UserGroupTab.propTypes = {
 	userUid: PropTypes.string.isRequired,
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
 	isSummaryOpened: PropTypes.bool,
 };
 

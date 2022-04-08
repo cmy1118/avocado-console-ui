@@ -15,7 +15,7 @@ const Input = styled.input`
 	width: 100%;
 	align-items: center;
 	font-size: 13px;
-	height: 32px;
+	// height: 32px;
 	border: none;
 	background: ${(props) => (props.disabled ? '#f8f9fa' : 'transparent')};
 	box-sizing: border-box;

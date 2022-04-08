@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import PropTypes from 'prop-types';
 import {TabContentSpace} from '../../../../../styles/components/iam/iamTab';
@@ -7,40 +7,20 @@ import RolePolicyTab from './Tabs/RolePolicyTab';
 import RoleUserTab from './Tabs/RoleUserTab';
 import RoleGroupTab from './Tabs/RoleGroupTab';
 import {useLocation} from 'react-router-dom';
-import {FOLD_DATA} from '../../../../../utils/data';
 
 const RoleTabContents = ({roleId, isOpened}) => {
 	const {search} = useLocation();
-	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
 	return (
 		<TabContentSpace>
 			{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'role' && (
-				<RolePolicyTab
-					roleId={roleId}
-					space={'RolePolicyTab'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-					isSummaryOpened={isOpened}
-				/>
+				<RolePolicyTab roleId={roleId} isSummaryOpened={isOpened} />
 			)}
 			{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'user' && (
-				<RoleUserTab
-					roleId={roleId}
-					space={'RoleUserTab'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-					isSummaryOpened={isOpened}
-				/>
+				<RoleUserTab roleId={roleId} isSummaryOpened={isOpened} />
 			)}
 			{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'group' && (
-				<RoleGroupTab
-					roleId={roleId}
-					space={'RoleGroupTab'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-					isSummaryOpened={isOpened}
-				/>
+				<RoleGroupTab roleId={roleId} isSummaryOpened={isOpened} />
 			)}
 		</TabContentSpace>
 	);

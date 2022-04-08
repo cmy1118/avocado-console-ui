@@ -13,9 +13,8 @@ import {
 } from '../../../../../styles/components/style';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import TableFold from '../../../../Table/Options/TableFold';
+import FoldableContainer from '../../../../Table/Options/FoldableContainer';
 import DragContainer from '../../../../Table/DragContainer';
-import {FoldableContainer} from '../../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../../reducers/pagination';
 import {
 	expiredConverter,
@@ -23,7 +22,7 @@ import {
 } from '../../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 
-const ConnectUserToRole = ({space, isFold, setValue, setIsFold}) => {
+const ConnectUserToRole = ({setValue}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {page} = useSelector(PAGINATION.selector);
@@ -101,72 +100,55 @@ const ConnectUserToRole = ({space, isFold, setValue, setIsFold}) => {
 	}, [excludeSelect, includeSelect]);
 
 	return (
-		<FoldableContainer>
-			<TableFold
-				title={'역할에 사용자 연결'}
-				space={'RoleUserTab'}
-				isFold={isFold}
-				setIsFold={setIsFold}
-			/>
-			{isFold[space] && (
-				<>
-					<TableOptionText data={'rolePolicy'} />
-					<DragContainer
-						selected={selected}
-						data={includedDataIds}
-						setData={setIncludedDataIds}
-						includedKey={tableKeys.roles.add.users.include}
-						excludedData={excludedData}
-						includedData={includedData}
-					>
-						<RowDiv>
-							<Table
-								isDraggable
-								data={excludedData}
-								tableKey={tableKeys.roles.add.users.exclude}
-								columns={excludeColumns}
-								isPaginable
-								isSearchable
-								isSearchFilterable
-								isColumnFilterable
-							/>
-							<RowDiv alignItems={'center'}>
-								<DropButton
-									leftTableKey={
-										tableKeys.roles.add.users.exclude
-									}
-									RightTableKey={
-										tableKeys.roles.add.users.include
-									}
-									select={selected}
-									dataLeft={excludedData}
-									dataRight={includedData}
-									rightDataIds={includedDataIds}
-									setRightDataIds={setIncludedDataIds}
-								/>
-							</RowDiv>
-							<ColDiv>
-								<TableHeader>
-									추가 사용자: {includedDataIds.length}건
-								</TableHeader>
-								<Table
-									isDraggable
-									data={includedData}
-									tableKey={tableKeys.roles.add.users.include}
-									columns={includeColumns}
-								/>
-							</ColDiv>
-						</RowDiv>
-					</DragContainer>
-				</>
-			)}
+		<FoldableContainer title={'역할에 사용자 연결'}>
+			<TableOptionText data={'rolePolicy'} />
+			<DragContainer
+				selected={selected}
+				data={includedDataIds}
+				setData={setIncludedDataIds}
+				includedKey={tableKeys.roles.add.users.include}
+				excludedData={excludedData}
+				includedData={includedData}
+			>
+				<RowDiv>
+					<Table
+						isDraggable
+						data={excludedData}
+						tableKey={tableKeys.roles.add.users.exclude}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
+					<RowDiv alignItems={'center'}>
+						<DropButton
+							leftTableKey={tableKeys.roles.add.users.exclude}
+							RightTableKey={tableKeys.roles.add.users.include}
+							select={selected}
+							dataLeft={excludedData}
+							dataRight={includedData}
+							rightDataIds={includedDataIds}
+							setRightDataIds={setIncludedDataIds}
+						/>
+					</RowDiv>
+					<ColDiv>
+						<TableHeader>
+							추가 사용자: {includedDataIds.length}건
+						</TableHeader>
+						<Table
+							isDraggable
+							data={includedData}
+							tableKey={tableKeys.roles.add.users.include}
+							columns={includeColumns}
+						/>
+					</ColDiv>
+				</RowDiv>
+			</DragContainer>
 		</FoldableContainer>
 	);
 };
 ConnectUserToRole.propTypes = {
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
 	setValue: PropTypes.func,
-	space: PropTypes.string,
 };
 export default ConnectUserToRole;

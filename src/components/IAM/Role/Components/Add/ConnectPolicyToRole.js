@@ -13,16 +13,15 @@ import {
 } from '../../../../../styles/components/style';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import TableFold from '../../../../Table/Options/TableFold';
+import FoldableContainer from '../../../../Table/Options/FoldableContainer';
 import DragContainer from '../../../../Table/DragContainer';
-import {FoldableContainer} from '../../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../../reducers/pagination';
 import {
 	expiredConverter,
 	groupsConverter,
 } from '../../../../../utils/tableDataConverter';
 
-const ConnectPolicyToRole = ({space, isFold, setValue, setIsFold}) => {
+const ConnectPolicyToRole = ({setValue}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {page} = useSelector(PAGINATION.selector);
@@ -84,84 +83,63 @@ const ConnectPolicyToRole = ({space, isFold, setValue, setIsFold}) => {
 	}, [includedDataIds, setValue]);
 
 	return (
-		<FoldableContainer>
-			<TableFold
-				title={'역할에 정책 연결'}
-				space={'RolePolicyTab'}
-				isFold={isFold}
-				setIsFold={setIsFold}
-			/>
-			{isFold[space] && (
-				<>
-					<TableOptionText data={'rolePolicy'} />
-					<DragContainer
-						selected={select}
-						data={includedDataIds}
-						setData={setIncludedDataIds}
-						includedKey={tableKeys.roles.add.policies.include}
-						excludedData={excludedData}
-						includedData={includedData}
-					>
-						<RowDiv>
-							<Table
-								setSelect={setSelect}
-								isDraggable
-								data={excludedData}
-								tableKey={tableKeys.roles.add.policies.exclude}
-								columns={
-									tableColumns[
-										tableKeys.roles.add.policies.exclude
-									]
-								}
-								isPaginable
-								isSearchable
-								isSearchFilterable
-								isColumnFilterable
-							/>
-							<RowDiv alignItems={'center'}>
-								<DropButton
-									leftTableKey={
-										tableKeys.roles.add.policies.exclude
-									}
-									RightTableKey={
-										tableKeys.roles.add.policies.include
-									}
-									select={select}
-									dataLeft={excludedData}
-									dataRight={includedData}
-									rightDataIds={includedDataIds}
-									setRightDataIds={setIncludedDataIds}
-								/>
-							</RowDiv>
-							<ColDiv>
-								<TableHeader>
-									추가 사용자: {includedDataIds.length}건
-								</TableHeader>
-								<Table
-									setSelect={setSelect}
-									isDraggable
-									data={includedData}
-									tableKey={
-										tableKeys.roles.add.policies.include
-									}
-									columns={
-										tableColumns[
-											tableKeys.roles.add.policies.include
-										]
-									}
-								/>
-							</ColDiv>
-						</RowDiv>
-					</DragContainer>
-				</>
-			)}
+		<FoldableContainer title={'역할에 정책 연결'}>
+			<TableOptionText data={'rolePolicy'} />
+			<DragContainer
+				selected={select}
+				data={includedDataIds}
+				setData={setIncludedDataIds}
+				includedKey={tableKeys.roles.add.policies.include}
+				excludedData={excludedData}
+				includedData={includedData}
+			>
+				<RowDiv>
+					<Table
+						setSelect={setSelect}
+						isDraggable
+						data={excludedData}
+						tableKey={tableKeys.roles.add.policies.exclude}
+						columns={
+							tableColumns[tableKeys.roles.add.policies.exclude]
+						}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
+					<RowDiv alignItems={'center'}>
+						<DropButton
+							leftTableKey={tableKeys.roles.add.policies.exclude}
+							RightTableKey={tableKeys.roles.add.policies.include}
+							select={select}
+							dataLeft={excludedData}
+							dataRight={includedData}
+							rightDataIds={includedDataIds}
+							setRightDataIds={setIncludedDataIds}
+						/>
+					</RowDiv>
+					<ColDiv>
+						<TableHeader>
+							추가 사용자: {includedDataIds.length}건
+						</TableHeader>
+						<Table
+							setSelect={setSelect}
+							isDraggable
+							data={includedData}
+							tableKey={tableKeys.roles.add.policies.include}
+							columns={
+								tableColumns[
+									tableKeys.roles.add.policies.include
+								]
+							}
+						/>
+					</ColDiv>
+				</RowDiv>
+			</DragContainer>
 		</FoldableContainer>
 	);
 };
 ConnectPolicyToRole.propTypes = {
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
 	setValue: PropTypes.func,
-	space: PropTypes.string,
 };
 export default ConnectPolicyToRole;

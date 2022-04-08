@@ -29,12 +29,3 @@ export const TitleBarText = styled.div`
 export const TitleBarButtons = styled.div`
 	display: flex;
 `;
-export const FoldableContainer = styled.div`
-	.fold-title {
-		border-bottom: 2px transparent dotted;
-	}
-
-	.fold-title.close {
-		border-bottom: 2px #e3e5e5 dotted;
-	}
-`;

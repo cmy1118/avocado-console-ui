@@ -10,7 +10,6 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../styles/components/buttons';
-import {FOLD_DATA} from '../../../../utils/data';
 import {LiText} from '../../../../styles/components/text';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import TabBar from '../../TabBar';
@@ -49,7 +48,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const {members} = useSelector(IAM_USER_GROUP_MEMBER.selector);
 	const [isOpened, setIsOpened] = useState(true);
-	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 	const [group, setGroup] = useState(null);
 
 	const isSummaryOpened = useMemo(() => {
@@ -186,9 +184,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 							.tabs === groupTabs.user && (
 							<GroupUsersTab
 								groupId={groupId}
-								space={'GroupUsersTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
@@ -196,9 +191,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 							.tabs === groupTabs.role && (
 							<GroupRolesTab
 								groupId={groupId}
-								space={'GroupRolesTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
@@ -206,9 +198,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 							.tabs === groupTabs.tag && (
 							<GroupOnDescPageTags
 								groupId={groupId}
-								space={'GroupOnDescPageTags'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}

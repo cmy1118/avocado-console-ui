@@ -9,20 +9,13 @@ import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
 import DragContainer from '../../../../../Table/DragContainer';
 import {TableTitle} from '../../../../../../styles/components/table';
-import TableFold from '../../../../../Table/Options/TableFold';
+import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
 import TableOptionText from '../../../../../Table/Options/TableOptionText';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
-import {
-	FoldableContainer,
-	TitleBarButtons,
-} from '../../../../../../styles/components/iam/iam';
-import {CollapsbleContent} from '../../../../../../styles/components/style';
+import {TitleBarButtons} from '../../../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
-import IAM_ROLES_GRANT_ROLE_USER from "../../../../../../reducers/api/IAM/User/Role/GrantRole/user";
-import IAM_USER_GROUP_MEMBER from "../../../../../../reducers/api/IAM/User/Group/groupMember";
-import IAM_USER from "../../../../../../reducers/api/IAM/User/User/user";
-import {useDispatch} from "react-redux";
-import {parentGroupConverter} from "../../../../../../utils/tableDataConverter";
+import IAM_ROLES_GRANT_ROLE_USER from '../../../../../../reducers/api/IAM/User/Role/GrantRole/user';
+import {useDispatch} from 'react-redux';
 
 const roleUserTab = {
 	include: {title: '이 역할의 사용자 : ', button: {delete: '연결 해제'}},
@@ -32,7 +25,7 @@ const roleUserTab = {
 	},
 };
 // IAM_ROLES_GRANT_ROLE_USER
-const RoleUserTab = ({roleId, space, isFold, setIsFold,isSummaryOpened}) => {
+const RoleUserTab = ({roleId, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 
 	const [includeSelect, includeColumns] = useSelectColumn(
@@ -49,33 +42,40 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold,isSummaryOpened}) => {
 	const includedData = useMemo(() => {
 		return includedDataIds
 			? includedDataIds.map((v) => ({
-				...v,
-				id:v.userId ? v.userId : '',
-				name: v.userName ? v.userName : '',
-				createdTime: v.createdTime? v.createdTime : '',
-				grantUser: v.grantedCreateUserId ? `${v.grantedCreateUserId}(${v.grantedCreateUserName})`:'',
-				numberOfGroups:v.groupCount?v.groupCount:'',
-				lastConsoleLogin:v.lastConsoleLogin?v.lastConsoleLogin:'',
-				[DRAGGABLE_KEY]: v.userId,
-			}))
+					...v,
+					id: v.userId ? v.userId : '',
+					name: v.userName ? v.userName : '',
+					createdTime: v.createdTime ? v.createdTime : '',
+					grantUser: v.grantedCreateUserId
+						? `${v.grantedCreateUserId}(${v.grantedCreateUserName})`
+						: '',
+					numberOfGroups: v.groupCount ? v.groupCount : '',
+					lastConsoleLogin: v.lastConsoleLogin
+						? v.lastConsoleLogin
+						: '',
+					[DRAGGABLE_KEY]: v.userId,
+			  }))
 			: [];
 	}, [includedDataIds]);
 	//excludedData : 이 역할을 할당받지 않은 사용자
 	const excludedData = useMemo(() => {
 		return excludedDataIds
 			? excludedDataIds.map((v) => ({
-				...v,
-				id:v.userId ? v.userId : '',
-				name: v.userName ? v.userName : '',
-				createdTime: v.createdTime? v.createdTime : '',
-				grantUser: v.grantedCreateUserId? `${v.grantedCreateUserId}(${v.grantedCreateUserName})`:'',
-				numberOfGroups:v.groupCount?v.groupCount:'',
-				lastConsoleLogin:v.lastConsoleLogin?v.lastConsoleLogin:'',
-				[DRAGGABLE_KEY]: v.userId,
-			}))
+					...v,
+					id: v.userId ? v.userId : '',
+					name: v.userName ? v.userName : '',
+					createdTime: v.createdTime ? v.createdTime : '',
+					grantUser: v.grantedCreateUserId
+						? `${v.grantedCreateUserId}(${v.grantedCreateUserName})`
+						: '',
+					numberOfGroups: v.groupCount ? v.groupCount : '',
+					lastConsoleLogin: v.lastConsoleLogin
+						? v.lastConsoleLogin
+						: '',
+					[DRAGGABLE_KEY]: v.userId,
+			  }))
 			: [];
 	}, [excludedDataIds]);
-
 
 	// // 삭제
 	// const onClickDeleteTableData = useCallback(
@@ -153,7 +153,7 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold,isSummaryOpened}) => {
 					// range: page[tableKeys.users.summary.tabs.groups.include],
 				}),
 			).unwrap();
-			console.log('includeData:',includeData)
+			console.log('includeData:', includeData);
 			//포함안함
 			const excludeData = await dispatch(
 				IAM_ROLES_GRANT_ROLE_USER.asyncAction.findUsersByIdAction({
@@ -163,7 +163,7 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold,isSummaryOpened}) => {
 					// range: page[tableKeys.users.summary.tabs.groups.include],
 				}),
 			).unwrap();
-			console.log('excludeData:',excludeData)
+			console.log('excludeData:', excludeData);
 			//api 요청 데이터 (포함/비포함)테이블 삽입
 			await setIncludedDataIds(includeData);
 			await setExcludedDataIds(excludeData);
@@ -179,7 +179,6 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold,isSummaryOpened}) => {
 			getApi();
 		}
 	}, [getApi, isSummaryOpened]);
-
 
 	useEffect(() => {
 		setSelected({
@@ -215,38 +214,33 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold,isSummaryOpened}) => {
 					isSearchFilterable
 					isColumnFilterable
 				/>
-				<FoldableContainer>
-					<TableFold
-						title={roleUserTab.include.title + excludedData.length}
-						space={'RoleUserTab'}
-						isFold={isFold}
-						setIsFold={setIsFold}
-					>
+				<FoldableContainer
+					title={roleUserTab.include.title + excludedData.length}
+					buttons={(isDisabled) => (
 						<TitleBarButtons>
-							<NormalButton>
+							<NormalButton disabled={isDisabled}>
 								{roleUserTab.exclude.button.create}
 							</NormalButton>
-							<NormalButton margin={'0px 0px 0px 5px'}>
+							<NormalButton
+								margin={'0px 0px 0px 5px'}
+								disabled={isDisabled}
+							>
 								{roleUserTab.exclude.button.add}
 							</NormalButton>
 						</TitleBarButtons>
-					</TableFold>
-					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
-						<TableOptionText data={'usersRoles'} />
-
-						<Table
-							isDraggable
-							data={excludedData}
-							tableKey={
-								tableKeys.roles.summary.tabs.users.exclude
-							}
-							columns={excludeColumns}
-							isPaginable
-							isSearchable
-							isSearchFilterable
-							isColumnFilterable
-						/>
-					</CollapsbleContent>
+					)}
+				>
+					<TableOptionText data={'usersRoles'} />
+					<Table
+						isDraggable
+						data={excludedData}
+						tableKey={tableKeys.roles.summary.tabs.users.exclude}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>
@@ -255,9 +249,6 @@ const RoleUserTab = ({roleId, space, isFold, setIsFold,isSummaryOpened}) => {
 
 RoleUserTab.propTypes = {
 	roleId: PropTypes.string.isRequired,
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
 	isSummaryOpened: PropTypes.bool,
 };
 

@@ -24,7 +24,7 @@ import IAM_USER_GROUP_MEMBER from '../../../../../../reducers/api/IAM/User/Group
 import IAM_USER from '../../../../../../reducers/api/IAM/User/User/user';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 
-const UserRoleTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
+const UserRoleTab = ({userUid, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [excludedDataIds, setExcludedDataIds] = useState([]);
@@ -196,17 +196,12 @@ const UserRoleTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					isSearchFilterable
 					isColumnFilterable
 				/>
-				<FoldableContainer>
-					<TableFold
-						title={
-							<>이 사용자의 다른권한 : {excludedData.length}</>
-						}
-						space={'UserRoleTab'}
-						isFold={isFold}
-						setIsFold={setIsFold}
-					>
+				<FoldableContainer
+					title={<>이 사용자의 다른권한 : {excludedData.length}</>}
+					buttons={(isDisabled) => (
 						<NormalButton
 							margin='0px 0px 0px 5px'
+							disabled={isDisabled}
 							onClick={() =>
 								onClickAddRolesToUser(
 									excludeSelect.map((v) => v.id),
@@ -215,23 +210,20 @@ const UserRoleTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 						>
 							권한 추가
 						</NormalButton>
-					</TableFold>
-					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
-						<TableOptionText data={'roles'} />
+					)}
+				>
+					<TableOptionText data={'roles'} />
 
-						<Table
-							isDraggable
-							data={excludedData}
-							tableKey={
-								tableKeys.users.summary.tabs.roles.exclude
-							}
-							columns={excludeColumns}
-							isPaginable
-							isSearchable
-							isSearchFilterable
-							isColumnFilterable
-						/>
-					</CollapsbleContent>
+					<Table
+						isDraggable
+						data={excludedData}
+						tableKey={tableKeys.users.summary.tabs.roles.exclude}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>
@@ -240,9 +232,6 @@ const UserRoleTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 
 UserRoleTab.propTypes = {
 	userUid: PropTypes.string.isRequired,
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
 	isSummaryOpened: PropTypes.bool,
 };
 

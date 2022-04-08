@@ -13,16 +13,15 @@ import {
 } from '../../../../../styles/components/style';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import TableFold from '../../../../Table/Options/TableFold';
+import FoldableContainer from '../../../../Table/Options/FoldableContainer';
 import DragContainer from '../../../../Table/DragContainer';
-import {FoldableContainer} from '../../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../../reducers/pagination';
 import {
 	expiredConverter,
 	groupsConverter,
 } from '../../../../../utils/tableDataConverter';
 
-const ConnectGroupToRole = ({space, isFold, setValue, setIsFold}) => {
+const ConnectGroupToRole = ({setValue}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {page} = useSelector(PAGINATION.selector);
@@ -84,84 +83,61 @@ const ConnectGroupToRole = ({space, isFold, setValue, setIsFold}) => {
 	}, [includedDataIds, setValue]);
 
 	return (
-		<FoldableContainer>
-			<TableFold
-				title={'역할에 사용자 그룹 연결'}
-				space={'RoleGroupTab'}
-				isFold={isFold}
-				setIsFold={setIsFold}
-			/>
-			{isFold[space] && (
-				<>
-					<TableOptionText data={'rolePolicy'} />
-					<DragContainer
-						selected={select}
-						data={includedDataIds}
-						setData={setIncludedDataIds}
-						includedKey={tableKeys.roles.add.groups.include}
-						excludedData={excludedData}
-						includedData={includedData}
-					>
-						<RowDiv>
-							<Table
-								setSelect={setSelect}
-								isDraggable
-								data={excludedData}
-								tableKey={tableKeys.roles.add.groups.exclude}
-								columns={
-									tableColumns[
-										tableKeys.roles.add.groups.exclude
-									]
-								}
-								isPaginable
-								isSearchable
-								isSearchFilterable
-								isColumnFilterable
-							/>
-							<RowDiv alignItems={'center'}>
-								<DropButton
-									leftTableKey={
-										tableKeys.roles.add.groups.exclude
-									}
-									RightTableKey={
-										tableKeys.roles.add.groups.include
-									}
-									select={select}
-									dataLeft={excludedData}
-									dataRight={includedData}
-									rightDataIds={includedDataIds}
-									setRightDataIds={setIncludedDataIds}
-								/>
-							</RowDiv>
-							<ColDiv>
-								<TableHeader>
-									추가 사용자: {includedDataIds.length}건
-								</TableHeader>
-								<Table
-									setSelect={setSelect}
-									isDraggable
-									data={includedData}
-									tableKey={
-										tableKeys.roles.add.groups.include
-									}
-									columns={
-										tableColumns[
-											tableKeys.roles.add.groups.include
-										]
-									}
-								/>
-							</ColDiv>
-						</RowDiv>
-					</DragContainer>
-				</>
-			)}
+		<FoldableContainer title={'역할에 사용자 그룹 연결'}>
+			<TableOptionText data={'rolePolicy'} />
+			<DragContainer
+				selected={select}
+				data={includedDataIds}
+				setData={setIncludedDataIds}
+				includedKey={tableKeys.roles.add.groups.include}
+				excludedData={excludedData}
+				includedData={includedData}
+			>
+				<RowDiv>
+					<Table
+						setSelect={setSelect}
+						isDraggable
+						data={excludedData}
+						tableKey={tableKeys.roles.add.groups.exclude}
+						columns={
+							tableColumns[tableKeys.roles.add.groups.exclude]
+						}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
+					<RowDiv alignItems={'center'}>
+						<DropButton
+							leftTableKey={tableKeys.roles.add.groups.exclude}
+							RightTableKey={tableKeys.roles.add.groups.include}
+							select={select}
+							dataLeft={excludedData}
+							dataRight={includedData}
+							rightDataIds={includedDataIds}
+							setRightDataIds={setIncludedDataIds}
+						/>
+					</RowDiv>
+					<ColDiv>
+						<TableHeader>
+							추가 사용자: {includedDataIds.length}건
+						</TableHeader>
+						<Table
+							setSelect={setSelect}
+							isDraggable
+							data={includedData}
+							tableKey={tableKeys.roles.add.groups.include}
+							columns={
+								tableColumns[tableKeys.roles.add.groups.include]
+							}
+						/>
+					</ColDiv>
+				</RowDiv>
+			</DragContainer>
 		</FoldableContainer>
 	);
 };
 ConnectGroupToRole.propTypes = {
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
 	setValue: PropTypes.func,
-	space: PropTypes.string,
 };
 export default ConnectGroupToRole;

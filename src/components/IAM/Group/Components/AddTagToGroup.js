@@ -10,15 +10,12 @@ import {
 } from '../../../../styles/components/buttons';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import TableFold from '../../../Table/Options/TableFold';
-import {
-	FoldableContainer,
-	TitleBarButtons,
-} from '../../../../styles/components/iam/iam';
+import {TitleBarButtons} from '../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+import FoldableContainer from '../../../Table/Options/FoldableContainer';
 
 let TAG_NUMBER = 0;
-const AddTagToGroup = ({space, isFold, setIsFold, setValue}) => {
+const AddTagToGroup = ({setValue}) => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
 	const [select, columns] = useSelectColumn(
@@ -79,43 +76,34 @@ const AddTagToGroup = ({space, isFold, setIsFold, setValue}) => {
 	}, [data, setValue]);
 
 	return (
-		<FoldableContainer>
-			<TableFold
-				title={'태그 추가'}
-				space={'AddTagToGroup'}
-				isFold={isFold}
-				setIsFold={setIsFold}
-			>
+		<FoldableContainer
+			title={'태그 추가'}
+			buttons={(isDisabled) => (
 				<TitleBarButtons>
-					<NormalButton onClick={onClickAddRow}>
+					<NormalButton onClick={onClickAddRow} disabled={isDisabled}>
 						태그 추가
 					</NormalButton>
 					<TransparentButton
 						margin='0xp 0px 0p 5px'
 						onClick={onClickDeleteRow}
+						disabled={isDisabled}
 					>
 						태그 삭제
 					</TransparentButton>
 				</TitleBarButtons>
-			</TableFold>
-			{isFold[space] && (
-				<>
-					<TableOptionText data={'tags'} />
-					<Table
-						tableKey={tableKeys.groups.add.tag}
-						data={tagData}
-						setData={setData}
-						columns={columns}
-					/>
-				</>
 			)}
+		>
+			<TableOptionText data={'tags'} />
+			<Table
+				tableKey={tableKeys.groups.add.tag}
+				data={tagData}
+				setData={setData}
+				columns={columns}
+			/>
 		</FoldableContainer>
 	);
 };
 AddTagToGroup.propTypes = {
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
 	setValue: PropTypes.func,
-	space: PropTypes.string,
 };
 export default AddTagToGroup;

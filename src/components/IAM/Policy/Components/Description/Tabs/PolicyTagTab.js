@@ -10,12 +10,8 @@ import {tableKeys} from '../../../../../../Constants/Table/keys';
 import DragContainer from '../../../../../Table/DragContainer';
 import Table from '../../../../../Table/Table';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
-import {
-	FoldableContainer,
-	TitleBarButtons,
-} from '../../../../../../styles/components/iam/iam';
-import TableFold from '../../../../../Table/Options/TableFold';
-import {CollapsbleContent} from '../../../../../../styles/components/style';
+import {TitleBarButtons} from '../../../../../../styles/components/iam/iam';
+import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 
 const policyTagTab = {
@@ -31,7 +27,6 @@ const policyTagTab = {
 
 const PolicyTagTab = ({policyId}) => {
 	const onClickDeleteTag = useCallback(() => {}, []);
-	const [isFold, setIsFold] = useState({});
 	const [inTagIds, setInTagIds] = useState([]);
 
 	const [inTag, setInTag] = useState([]);
@@ -83,35 +78,29 @@ const PolicyTagTab = ({policyId}) => {
 					isColumnFilterable
 				/>
 
-				<FoldableContainer>
-					<TableFold
-						title={policyTagTab.include.title + exTag.length}
-						space={'RoleUserTab'}
-						isFold={isFold}
-						setIsFold={setIsFold}
-					>
+				<FoldableContainer
+					title={policyTagTab.include.title + exTag.length}
+					buttons={(isDisabled) => (
 						<TitleBarButtons>
-							<NormalButton margin={'0px 0px 0px 5px'}>
+							<NormalButton
+								margin={'0px 0px 0px 5px'}
+								disabled={isDisabled}
+							>
 								{policyTagTab.exclude.button.add}
 							</NormalButton>
 						</TitleBarButtons>
-					</TableFold>
-					<CollapsbleContent
-						height={isFold['RoleUserTab'] ? '374px' : '0px'}
-					>
-						<Table
-							isDraggable
-							data={exTag}
-							tableKey={
-								tableKeys.policy.summary.tabs.role.exclude
-							}
-							columns={excludeColumns}
-							isPaginable
-							isSearchable
-							isSearchFilterable
-							isColumnFilterable
-						/>
-					</CollapsbleContent>
+					)}
+				>
+					<Table
+						isDraggable
+						data={exTag}
+						tableKey={tableKeys.policy.summary.tabs.role.exclude}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>

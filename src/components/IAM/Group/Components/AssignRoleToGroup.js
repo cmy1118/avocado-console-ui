@@ -9,14 +9,13 @@ import DropButton from '../../../Table/DropButton';
 import {ColDiv, RowDiv, TableHeader} from '../../../../styles/components/style';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import TableFold from '../../../Table/Options/TableFold';
+import FoldableContainer from '../../../Table/Options/FoldableContainer';
 import DragContainer from '../../../Table/DragContainer';
-import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 
-const AssignRoleToGroup = ({space, isFold, setIsFold, setValue}) => {
+const AssignRoleToGroup = ({setValue}) => {
 	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const {page} = useSelector(PAGINATION.selector);
@@ -114,74 +113,55 @@ const AssignRoleToGroup = ({space, isFold, setIsFold, setValue}) => {
 	}, [excludeSelect, includeSelect]);
 
 	return (
-		<FoldableContainer>
-			<TableFold
-				title={'권한 추가'}
-				space={'AssignRoleToGroup'}
-				isFold={isFold}
-				setIsFold={setIsFold}
-			/>
-			{isFold[space] && (
-				<>
-					<TableOptionText data={'roles'} />
-					<DragContainer
-						selected={selected}
-						data={includedDataIds}
-						setData={setIncludedDataIds}
-						includedKey={tableKeys.groups.add.roles.include}
-						excludedData={iamExcludedData}
-						includedData={iamIncludedData}
-					>
-						<RowDiv>
-							<Table
-								isDraggable
-								data={iamExcludedData}
-								tableKey={tableKeys.groups.add.roles.exclude}
-								columns={excludeColumns}
-								isPaginable
-								isSearchable
-								// isSearchFilterable
-								// isColumnFilterable
-							/>
-							<RowDiv alignItems={'center'}>
-								<DropButton
-									leftTableKey={
-										tableKeys.groups.add.roles.exclude
-									}
-									RightTableKey={
-										tableKeys.groups.add.roles.include
-									}
-									select={selected}
-									dataRight={iamIncludedData}
-									dataLeft={iamExcludedData}
-									rightDataIds={includedDataIds}
-									setRightDataIds={setIncludedDataIds}
-								/>
-							</RowDiv>
-							<ColDiv>
-								<TableHeader>
-									추가 Roles: {includedDataIds.length}건
-								</TableHeader>
-								<Table
-									isDraggable
-									data={iamIncludedData}
-									tableKey={
-										tableKeys.groups.add.roles.include
-									}
-									columns={includeColumns}
-								/>
-							</ColDiv>
-						</RowDiv>
-					</DragContainer>
-				</>
-			)}
+		<FoldableContainer title={'권한 추가'}>
+			<TableOptionText data={'roles'} />
+			<DragContainer
+				selected={selected}
+				data={includedDataIds}
+				setData={setIncludedDataIds}
+				includedKey={tableKeys.groups.add.roles.include}
+				excludedData={iamExcludedData}
+				includedData={iamIncludedData}
+			>
+				<RowDiv>
+					<Table
+						isDraggable
+						data={iamExcludedData}
+						tableKey={tableKeys.groups.add.roles.exclude}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						// isSearchFilterable
+						// isColumnFilterable
+					/>
+					<RowDiv alignItems={'center'}>
+						<DropButton
+							leftTableKey={tableKeys.groups.add.roles.exclude}
+							RightTableKey={tableKeys.groups.add.roles.include}
+							select={selected}
+							dataRight={iamIncludedData}
+							dataLeft={iamExcludedData}
+							rightDataIds={includedDataIds}
+							setRightDataIds={setIncludedDataIds}
+						/>
+					</RowDiv>
+					<ColDiv>
+						<TableHeader>
+							추가 Roles: {includedDataIds.length}건
+						</TableHeader>
+						<Table
+							isDraggable
+							data={iamIncludedData}
+							tableKey={tableKeys.groups.add.roles.include}
+							columns={includeColumns}
+						/>
+					</ColDiv>
+				</RowDiv>
+			</DragContainer>
 		</FoldableContainer>
 	);
 };
 AssignRoleToGroup.propTypes = {
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
 	setValue: PropTypes.func,
 };
 export default AssignRoleToGroup;

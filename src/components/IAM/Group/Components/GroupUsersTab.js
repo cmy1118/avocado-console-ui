@@ -12,21 +12,14 @@ import {
 	TransparentButton,
 } from '../../../../styles/components/buttons';
 import TableOptionText from '../../../Table/Options/TableOptionText';
-import TableFold from '../../../Table/Options/TableFold';
 import DragContainer from '../../../Table/DragContainer';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
-import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import PAGINATION from '../../../../reducers/pagination';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+import FoldableContainer from '../../../Table/Options/FoldableContainer';
 
-const GroupUsersTab = ({
-	groupId,
-	space,
-	isFold,
-	setIsFold,
-	isSummaryOpened,
-}) => {
+const GroupUsersTab = ({groupId, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {page} = useSelector(PAGINATION.selector);
@@ -208,15 +201,9 @@ const GroupUsersTab = ({
 					isColumnFilterable
 					setSearch={setSearch}
 				/>
-				<FoldableContainer>
-					<TableFold
-						title={
-							<>이 그룹의 다른 사용자 : {excludedData.length}</>
-						}
-						space={'GroupUsersTab'}
-						isFold={isFold}
-						setIsFold={setIsFold}
-					>
+				<FoldableContainer
+					title={<>이 그룹의 다른 사용자 : {excludedData.length}</>}
+					buttons={(isDisabled) => (
 						<NormalButton
 							margin='0px 0px 0px 5px'
 							onClick={() =>
@@ -224,29 +211,24 @@ const GroupUsersTab = ({
 									excludeSelect.map((v) => v.userUid),
 								)
 							}
+							disabled={isDisabled}
 						>
 							사용자 추가
 						</NormalButton>
-					</TableFold>
-					{isFold[space] && (
-						<>
-							<TableOptionText data={'usersGroups'} />
-
-							<Table
-								isDraggable
-								data={excludedData}
-								tableKey={
-									tableKeys.groups.summary.tabs.users.exclude
-								}
-								columns={excludeColumns}
-								isPaginable
-								isSearchable
-								isSearchFilterable
-								isColumnFilterable
-								setSearch={setSearch}
-							/>
-						</>
 					)}
+				>
+					<TableOptionText data={'usersGroups'} />
+					<Table
+						isDraggable
+						data={excludedData}
+						tableKey={tableKeys.groups.summary.tabs.users.exclude}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+						setSearch={setSearch}
+					/>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>
@@ -255,9 +237,6 @@ const GroupUsersTab = ({
 
 GroupUsersTab.propTypes = {
 	groupId: PropTypes.string.isRequired,
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
 	isSummaryOpened: PropTypes.bool,
 };
 
