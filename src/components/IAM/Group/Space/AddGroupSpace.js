@@ -22,6 +22,8 @@ const AddGroupSpace = () => {
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
 	const [groupMembers, setGroupMembers] = useState([]);
+	const [groupRoles, setGroupRoles] = useState([]);
+	const [groupTags, setGroupTags] = useState([]);
 
 	return (
 		<AddSpaceContainer>
@@ -31,6 +33,8 @@ const AddGroupSpace = () => {
 				<AddGroup
 					setIsOpened={setIsOpened}
 					groupMembers={groupMembers}
+					groupRoles={groupRoles}
+					groupTags={groupTags}
 				/>
 				<UsersIncludedInGroup
 					space={'UsersIncludedInGroup'}
@@ -42,11 +46,13 @@ const AddGroupSpace = () => {
 					space={'AssignRoleToGroup'}
 					isFold={isTableFold}
 					setIsFold={setIsTableFold}
+					setValue={setGroupRoles}
 				/>
 				<AddTagToGroup
 					space={'AddTagToGroup'}
 					isFold={isTableFold}
 					setIsFold={setIsTableFold}
+					setValue={setGroupTags}
 				/>
 			</AddPageContainer>
 			<ReadOnly isOpened={isOpened} setIsOpened={setIsOpened} />

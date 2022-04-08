@@ -108,8 +108,8 @@ const GroupRolesTab = ({
 					await dispatch(
 						IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.grantAction({
 							id: groupId,
-							roleld: data,
-							// roleld: excludeSelect.map((v) => v.id),
+							roleId: data,
+							// roleId: excludeSelect.map((v) => v.id),
 						}),
 					).unwrap();
 

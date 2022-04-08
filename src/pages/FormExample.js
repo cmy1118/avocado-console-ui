@@ -32,7 +32,7 @@ const FormExample = () => {
 		.required();
 
 	const methods = useForm({
-		// mode: 'onSubmit', // memo 유효성 검사가 trriger되는 시점 => onChange를 사용하면 바로 검사
+		mode: 'onChange', // memo 유효성 검사가 trriger되는 시점 => onChange를 사용하면 바로 검사
 		defaultValues: {
 			name: '',
 			number: '2',

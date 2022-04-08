@@ -16,7 +16,7 @@ import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 
-const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
+const AssignRoleToGroup = ({space, isFold, setIsFold, setValue}) => {
 	const dispatch = useDispatch();
 	const {roles} = useSelector(IAM_ROLES.selector);
 	const {page} = useSelector(PAGINATION.selector);
@@ -103,6 +103,10 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 	}, [dispatch, page]);
 
 	useEffect(() => {
+		setValue(includedDataIds);
+	}, [includedDataIds, setValue]);
+
+	useEffect(() => {
 		setSelected({
 			[tableKeys.groups.add.roles.exclude]: excludeSelect,
 			[tableKeys.groups.add.roles.include]: includeSelect,
@@ -178,5 +182,6 @@ AssignRoleToGroup.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
+	setValue: PropTypes.func,
 };
 export default AssignRoleToGroup;
