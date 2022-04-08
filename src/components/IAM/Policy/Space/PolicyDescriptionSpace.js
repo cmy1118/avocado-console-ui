@@ -70,9 +70,9 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 	);
 
 	const TabBarInfo = [
-		{name: '규칙/권한', href: 'detail'},
-		{name: '역할', href: 'role'},
-		{name: '태그', href: 'tag'},
+		{name: '규칙/권한', href: policyTabs.detail},
+		{name: '역할', href: policyTabs.role},
+		{name: '태그', href: policyTabs.tag},
 	];
 
 	/**************************************************

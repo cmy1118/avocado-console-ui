@@ -1,28 +1,28 @@
 import PropTypes from 'prop-types';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
-import Table from '../../../Table/Table';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../Constants/Table/columns';
+import Table from '../../../../Table/Table';
 import {useHistory, useLocation} from 'react-router-dom';
 import {
 	SummaryTablesContainer,
 	SummaryTableTitle,
-} from '../../../../styles/components/iam/descriptionPage';
-import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
-import PAGINATION from '../../../../reducers/pagination';
-import IAM_ROLES_GRANT_ROLE_USER from '../../../../reducers/api/IAM/User/Role/GrantRole/user';
-import IAM_USER_TAG from '../../../../reducers/api/IAM/User/Tag/tags';
+} from '../../../../../styles/components/iam/descriptionPage';
+import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import PAGINATION from '../../../../../reducers/pagination';
+import IAM_ROLES_GRANT_ROLE_USER from '../../../../../reducers/api/IAM/User/Role/GrantRole/user';
+import IAM_USER_TAG from '../../../../../reducers/api/IAM/User/Tag/tags';
 import {
 	descriptionConverter,
 	descValues,
-} from '../../../../utils/tableDataConverter';
-import IAM_GRANT_POLICY_BY_ROLE from '../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
-import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
+} from '../../../../../utils/tableDataConverter';
+import IAM_GRANT_POLICY_BY_ROLE from '../../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
+import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
 import * as _ from 'lodash';
-import AUTH from '../../../../reducers/api/Auth/auth';
-import {account} from '../../../../utils/auth';
+import AUTH from '../../../../../reducers/api/Auth/auth';
+import {account} from '../../../../../utils/auth';
 
 const UserSummary = ({userUid}) => {
 	const dispatch = useDispatch();

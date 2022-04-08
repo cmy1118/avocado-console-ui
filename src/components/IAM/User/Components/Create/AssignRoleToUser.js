@@ -1,25 +1,25 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import Table from '../../../Table/Table';
+import Table from '../../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
-import {roleTypeConverter} from '../../../../utils/tableDataConverter';
-import DropButton from '../../../Table/DropButton';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
-import TableOptionText from '../../../Table/Options/TableOptionText';
-import TableFold from '../../../Table/Options/TableFold';
+import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
+import {roleTypeConverter} from '../../../../../utils/tableDataConverter';
+import DropButton from '../../../../Table/DropButton';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../Constants/Table/columns';
+import TableOptionText from '../../../../Table/Options/TableOptionText';
+import TableFold from '../../../../Table/Options/TableFold';
 import PropTypes from 'prop-types';
 import {
 	ColDiv,
 	CollapsbleContent,
 	RowDiv,
 	TableHeader,
-} from '../../../../styles/components/style';
-import DragContainer from '../../../Table/DragContainer';
-import {FoldableContainer} from '../../../../styles/components/iam/iam';
-import PAGINATION from '../../../../reducers/pagination';
-import CURRENT_TARGET from '../../../../reducers/currentTarget';
-import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+} from '../../../../../styles/components/style';
+import DragContainer from '../../../../Table/DragContainer';
+import {FoldableContainer} from '../../../../../styles/components/iam/iam';
+import PAGINATION from '../../../../../reducers/pagination';
+import CURRENT_TARGET from '../../../../../reducers/currentTarget';
+import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 
 const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();

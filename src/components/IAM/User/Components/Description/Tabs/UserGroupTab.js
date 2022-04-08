@@ -1,39 +1,33 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
-import Table from '../../../../Table/Table';
-import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../../Constants/Table/columns';
-import {TableTitle} from '../../../../../styles/components/table';
+import IAM_USER from '../../../../../../reducers/api/IAM/User/User/user';
+import Table from '../../../../../Table/Table';
+import IAM_USER_GROUP from '../../../../../../reducers/api/IAM/User/Group/group';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../../Constants/Table/columns';
+import {TableTitle} from '../../../../../../styles/components/table';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../../styles/components/buttons';
-import TableOptionText from '../../../../Table/Options/TableOptionText';
-import TableFold from '../../../../Table/Options/TableFold';
-import DragContainer from '../../../../Table/DragContainer';
-import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
-import {FoldableContainer} from '../../../../../styles/components/iam/iam';
-import PAGINATION from '../../../../../reducers/pagination';
-import IAM_USER_GROUP_MEMBER from '../../../../../reducers/api/IAM/User/Group/groupMember';
-import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
+} from '../../../../../../styles/components/buttons';
+import TableOptionText from '../../../../../Table/Options/TableOptionText';
+import TableFold from '../../../../../Table/Options/TableFold';
+import DragContainer from '../../../../../Table/DragContainer';
+import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
+import {FoldableContainer} from '../../../../../../styles/components/iam/iam';
+import PAGINATION from '../../../../../../reducers/pagination';
+import IAM_USER_GROUP_MEMBER from '../../../../../../reducers/api/IAM/User/Group/groupMember';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {
 	parentGroupConverter,
 	roleTypeConverter,
-} from '../../../../../utils/tableDataConverter';
+} from '../../../../../../utils/tableDataConverter';
 import * as _ from 'lodash';
-import {CollapsbleContent} from '../../../../../styles/components/style';
-import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
+import {CollapsbleContent} from '../../../../../../styles/components/style';
+import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 
-const UserGroupsTab = ({
-	userUid,
-	space,
-	isFold,
-	setIsFold,
-	isSummaryOpened,
-}) => {
+const UserGroupTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 
 	const [includeSelect, includeColumns] = useSelectColumn(
@@ -264,7 +258,7 @@ const UserGroupsTab = ({
 	);
 };
 
-UserGroupsTab.propTypes = {
+UserGroupTab.propTypes = {
 	userUid: PropTypes.string.isRequired,
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
@@ -272,4 +266,4 @@ UserGroupsTab.propTypes = {
 	isSummaryOpened: PropTypes.bool,
 };
 
-export default UserGroupsTab;
+export default UserGroupTab;

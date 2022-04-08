@@ -1,28 +1,28 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import Table from '../../../Table/Table';
+import Table from '../../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
-import DropButton from '../../../Table/DropButton';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
-import CURRENT_TARGET from '../../../../reducers/currentTarget';
+import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
+import DropButton from '../../../../Table/DropButton';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../Constants/Table/columns';
+import CURRENT_TARGET from '../../../../../reducers/currentTarget';
 import {
 	ColDiv,
 	CollapsbleContent,
 	RowDiv,
 	TableHeader,
-} from '../../../../styles/components/style';
-import TableOptionText from '../../../Table/Options/TableOptionText';
+} from '../../../../../styles/components/style';
+import TableOptionText from '../../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import TableFold from '../../../Table/Options/TableFold';
-import DragContainer from '../../../Table/DragContainer';
-import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
-import {FoldableContainer} from '../../../../styles/components/iam/iam';
-import PAGINATION from '../../../../reducers/pagination';
-import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
-import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
-import {totalNumberConverter} from '../../../../utils/tableDataConverter';
-import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+import TableFold from '../../../../Table/Options/TableFold';
+import DragContainer from '../../../../Table/DragContainer';
+import IAM_USER_GROUP_TYPE from '../../../../../reducers/api/IAM/User/Group/groupType';
+import {FoldableContainer} from '../../../../../styles/components/iam/iam';
+import PAGINATION from '../../../../../reducers/pagination';
+import IAM_USER_GROUP_MEMBER from '../../../../../reducers/api/IAM/User/Group/groupMember';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import {totalNumberConverter} from '../../../../../utils/tableDataConverter';
+import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 
 const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();

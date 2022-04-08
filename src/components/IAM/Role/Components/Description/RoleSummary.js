@@ -20,6 +20,7 @@ import {
 import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
 import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
 import PAM_SESSION from '../../../../../reducers/api/PAM/session';
+import {roleTabs} from '../../../../../utils/tabs';
 
 const roleSummary = {
 	policy: '권한/정책 : ',
@@ -215,7 +216,7 @@ const RoleSummary = ({roleId}) => {
 
 	return (
 		<SummaryTablesContainer>
-			<SummaryTableTitle onClick={onClickChangeTab('role')}>
+			<SummaryTableTitle onClick={onClickChangeTab(roleTabs.policy)}>
 				{roleSummary.policy}
 				{permissionData?.length}
 			</SummaryTableTitle>
@@ -227,7 +228,7 @@ const RoleSummary = ({roleId}) => {
 				columns={tableColumns[tableKeys.roles.summary.permission]}
 			/>
 
-			<SummaryTableTitle onClick={onClickChangeTab('user')}>
+			<SummaryTableTitle onClick={onClickChangeTab(roleTabs.user)}>
 				{roleSummary.user}
 				{user?.length}
 			</SummaryTableTitle>
@@ -242,7 +243,7 @@ const RoleSummary = ({roleId}) => {
 				isColumnFilterable
 			/>
 
-			<SummaryTableTitle onClick={onClickChangeTab('group')}>
+			<SummaryTableTitle onClick={onClickChangeTab(roleTabs.group)}>
 				{roleSummary.group}
 				{groupData?.length}
 			</SummaryTableTitle>

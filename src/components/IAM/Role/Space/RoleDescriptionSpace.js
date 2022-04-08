@@ -33,6 +33,7 @@ import useTextArea from '../../../../hooks/useTextArea';
 import {RowDiv} from '../../../../styles/components/style';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import RoleTabContents from '../Components/Description/RoleTabContents';
+import {roleTabs} from '../../../../utils/tabs';
 
 const roleDescriptionSpace = {
 	title: '요약',
@@ -82,9 +83,9 @@ const RoleDescriptionSpace = ({roleId}) => {
 		regex: /^.{0,200}$/,
 	});
 	const TabBarInfo = [
-		{name: '권한', href: 'role'},
-		{name: '사용자', href: 'user'},
-		{name: '사용자 그룹', href: 'group'},
+		{name: '권한', href: roleTabs.policy},
+		{name: '사용자', href: roleTabs.user},
+		{name: '사용자 그룹', href: roleTabs.group},
 	];
 
 	/**************************************************
@@ -94,7 +95,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 		if (isSummaryOpened) {
 			history.push({
 				pathname: location.pathname,
-				search: 'tabs=role',
+				search: `tabs=${roleTabs.policy}`,
 			});
 		} else {
 			history.push({

@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import UserSpace from '../components/IAM/User/Space/UserSpace';
-import AddUserSpace from '../components/IAM/User/Space/AddUserSpace';
+import CreateUserSpace from '../components/IAM/User/Space/CreateUserSpace';
 import UserDescriptionSpace from '../components/IAM/User/Space/UserDescriptionSpace';
 
 const User = ({match}) => {
 	return match.path === '/users/add' ? (
-		<AddUserSpace />
+		<CreateUserSpace />
 	) : match.params?.id ? (
 		<UserDescriptionSpace userUid={match.params.id} />
 	) : (

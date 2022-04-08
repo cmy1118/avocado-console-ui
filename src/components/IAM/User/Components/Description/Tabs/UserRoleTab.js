@@ -1,30 +1,30 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
-import Table from '../../../../Table/Table';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../../Constants/Table/columns';
+import IAM_ROLES from '../../../../../../reducers/api/IAM/User/Role/roles';
+import Table from '../../../../../Table/Table';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../../Constants/Table/columns';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../../styles/components/buttons';
-import {TableTitle} from '../../../../../styles/components/table';
-import TableOptionText from '../../../../Table/Options/TableOptionText';
-import TableFold from '../../../../Table/Options/TableFold';
-import DragContainer from '../../../../Table/DragContainer';
-import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
-import {FoldableContainer} from '../../../../../styles/components/iam/iam';
-import IAM_ROLES_GRANT_ROLE_USER from '../../../../../reducers/api/IAM/User/Role/GrantRole/user';
-import PAGINATION from '../../../../../reducers/pagination';
+} from '../../../../../../styles/components/buttons';
+import {TableTitle} from '../../../../../../styles/components/table';
+import TableOptionText from '../../../../../Table/Options/TableOptionText';
+import TableFold from '../../../../../Table/Options/TableFold';
+import DragContainer from '../../../../../Table/DragContainer';
+import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
+import {FoldableContainer} from '../../../../../../styles/components/iam/iam';
+import IAM_ROLES_GRANT_ROLE_USER from '../../../../../../reducers/api/IAM/User/Role/GrantRole/user';
+import PAGINATION from '../../../../../../reducers/pagination';
 import * as _ from 'lodash';
-import {CollapsbleContent} from '../../../../../styles/components/style';
-import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
-import IAM_USER_GROUP_MEMBER from '../../../../../reducers/api/IAM/User/Group/groupMember';
-import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
-import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import {CollapsbleContent} from '../../../../../../styles/components/style';
+import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
+import IAM_USER_GROUP_MEMBER from '../../../../../../reducers/api/IAM/User/Group/groupMember';
+import IAM_USER from '../../../../../../reducers/api/IAM/User/User/user';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 
-const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
+const UserRoleTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [excludedDataIds, setExcludedDataIds] = useState([]);
@@ -41,7 +41,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 		return includedDataIds
 			? includedDataIds.map((v) => ({
 					...v,
-				type: v.type?v.type.name:'',
+					type: v.type ? v.type.name : '',
 					// numberOfUsers: v.users?.length,
 					createdTime: v.createdTime,
 					[DRAGGABLE_KEY]: v.id,
@@ -53,7 +53,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 			? excludedDataIds.map((v) => ({
 					...v,
 					applicationCode: '',
-					type: v.type.name?v.type.name:'',
+					type: v.type.name ? v.type.name : '',
 					// numberOfUsers: v.users?.length,
 					createdTime: v.createdTime,
 					[DRAGGABLE_KEY]: v.id,
@@ -63,14 +63,14 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	const onClickDeleteRolesFromUser = useCallback(
 		async (data) => {
-			try{
+			try {
 				data &&
-				await dispatch(
-					IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
-						userUid: userUid,
-						roleId: data,
-					}),
-				).unwrap();
+					(await dispatch(
+						IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
+							userUid: userUid,
+							roleId: data,
+						}),
+					).unwrap());
 
 				await setIncludedDataIds(
 					includedDataIds.filter((v) => !data.includes(v.id)),
@@ -80,9 +80,9 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					...excludedData,
 				]);
 				await alert('삭제 완료');
-			}catch(err){
+			} catch (err) {
 				alert('삭제 오류');
-				console.log(err)
+				console.log(err);
 			}
 		},
 		[dispatch, excludedData, includedDataIds, userUid],
@@ -93,12 +93,10 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 			try {
 				if (data) {
 					await dispatch(
-						IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction(
-							{
-								roleIds: data,
-								userUid: userUid,
-							},
-						),
+						IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
+							roleIds: data,
+							userUid: userUid,
+						}),
 					).unwrap();
 
 					await setIncludedDataIds([
@@ -112,7 +110,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				}
 			} catch (err) {
 				alert('추가 오류');
-				console.log(err)
+				console.log(err);
 			}
 		},
 		[dispatch, excludedDataIds, includedDataIds, userUid],
@@ -203,7 +201,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 						title={
 							<>이 사용자의 다른권한 : {excludedData.length}</>
 						}
-						space={'UserRolesTab'}
+						space={'UserRoleTab'}
 						isFold={isFold}
 						setIsFold={setIsFold}
 					>
@@ -240,7 +238,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 	);
 };
 
-UserRolesTab.propTypes = {
+UserRoleTab.propTypes = {
 	userUid: PropTypes.string.isRequired,
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
@@ -248,4 +246,4 @@ UserRolesTab.propTypes = {
 	isSummaryOpened: PropTypes.bool,
 };
 
-export default UserRolesTab;
+export default UserRoleTab;

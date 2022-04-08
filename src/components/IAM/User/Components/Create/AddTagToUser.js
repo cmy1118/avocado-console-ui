@@ -1,22 +1,22 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import Table from '../../../Table/Table';
-import CURRENT_TARGET from '../../../../reducers/currentTarget';
+import Table from '../../../../Table/Table';
+import CURRENT_TARGET from '../../../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../Constants/Table/columns';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../styles/components/buttons';
-import TableOptionText from '../../../Table/Options/TableOptionText';
+} from '../../../../../styles/components/buttons';
+import TableOptionText from '../../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import TableFold from '../../../Table/Options/TableFold';
+import TableFold from '../../../../Table/Options/TableFold';
 import {
 	FoldableContainer,
 	TitleBarButtons,
-} from '../../../../styles/components/iam/iam';
-import {CollapsbleContent} from '../../../../styles/components/style';
-import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+} from '../../../../../styles/components/iam/iam';
+import {CollapsbleContent} from '../../../../../styles/components/style';
+import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 
 const AddTagToUser = ({space, isFold, setIsFold}) => {
 	const dispatch = useDispatch();

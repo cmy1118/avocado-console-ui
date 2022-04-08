@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 
-import AddTagToUser from '../Components/AddTagToUser';
-import AssignRoleToUser from '../Components/AssignRoleToUser';
-import AddUserToGroup from '../Components/AddUserToGroup';
-import AddUser from '../Components/AddUser';
+import AddTagToUser from '../Components/Create/AddTagToUser';
+import AssignRoleToUser from '../Components/Create/AssignRoleToUser';
+import AddUserToGroup from '../Components/Create/AddUserToGroup';
+import AddUser from '../Components/Create/AddUser';
 import UserPreviewDialogBox from '../../../DialogBoxs/Preview/UserPreviewDialogBox';
 import {FOLD_DATA} from '../../../../utils/data';
 import {
@@ -18,7 +18,7 @@ const paths = [
 	{url: '/users/add', label: '사용자 추가'},
 ];
 
-const AddUserSpace = () => {
+const CreateUserSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
@@ -53,4 +53,4 @@ const AddUserSpace = () => {
 	);
 };
 
-export default AddUserSpace;
+export default CreateUserSpace;

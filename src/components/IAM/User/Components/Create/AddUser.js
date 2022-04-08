@@ -1,26 +1,26 @@
 import React, {useCallback, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
 import * as yup from 'yup';
-import CURRENT_TARGET from '../../../../reducers/currentTarget';
+import CURRENT_TARGET from '../../../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../styles/components/buttons';
-import Form from '../../../RecycleComponents/New/Form';
-import TextBox from '../../../RecycleComponents/New/TextBox';
-import {RowDiv} from '../../../../styles/components/style';
-import TableOptionText from '../../../Table/Options/TableOptionText';
+} from '../../../../../styles/components/buttons';
+import Form from '../../../../RecycleComponents/New/Form';
+import TextBox from '../../../../RecycleComponents/New/TextBox';
+import {RowDiv} from '../../../../../styles/components/style';
+import TableOptionText from '../../../../Table/Options/TableOptionText';
 import {
 	AddPageContent,
 	TextBoxDescription,
-} from '../../../../styles/components/iam/addPage';
+} from '../../../../../styles/components/iam/addPage';
 import {
 	TitleBar,
 	TitleBarButtons,
 	TitleBarText,
-} from '../../../../styles/components/iam/iam';
+} from '../../../../../styles/components/iam/iam';
 
 const AddUser = ({setIsOpened}) => {
 	const history = useHistory();

@@ -1,21 +1,21 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import Table from '../../../Table/Table';
+import Table from '../../../../Table/Table';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
-import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
+import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../Constants/Table/columns';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../styles/components/buttons';
-import {TableTitle} from '../../../../styles/components/table';
-import TableOptionText from '../../../Table/Options/TableOptionText';
+} from '../../../../../styles/components/buttons';
+import {TableTitle} from '../../../../../styles/components/table';
+import TableOptionText from '../../../../Table/Options/TableOptionText';
 import styled from 'styled-components';
-import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
-import {TitleBarButtons} from '../../../../styles/components/iam/iam';
-import IAM_USER_TAG from '../../../../reducers/api/IAM/User/Tag/tags';
-import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
+import {TitleBarButtons} from '../../../../../styles/components/iam/iam';
+import IAM_USER_TAG from '../../../../../reducers/api/IAM/User/Tag/tags';
+import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 
 const _TableSpace = styled(TableTitle)`
 	margin-top: 30px;
@@ -92,7 +92,6 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 	}, [data, dispatch, basicSelect, userUid]);
 
 	useEffect(() => {
-		console.log(user);
 		if (!user && !isSummaryOpened) {
 			dispatch(
 				IAM_USER.asyncAction.findByUidAction({

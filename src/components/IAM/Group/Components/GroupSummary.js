@@ -16,6 +16,7 @@ import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/group
 import {TableMode} from '../../../../Constants/Table/mode';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {roleTypeConverter} from '../../../../utils/tableDataConverter';
+import {groupTabs} from '../../../../utils/tabs';
 
 const GroupSummary = ({groupId}) => {
 	const history = useHistory();
@@ -146,7 +147,7 @@ const GroupSummary = ({groupId}) => {
 
 	return (
 		<SummaryTablesContainer>
-			<SummaryTableTitle onClick={onClickChangeTab('user')}>
+			<SummaryTableTitle onClick={onClickChangeTab(groupTabs.user)}>
 				사용자 : {userData.length}
 			</SummaryTableTitle>
 
@@ -157,7 +158,7 @@ const GroupSummary = ({groupId}) => {
 				columns={tableColumns[tableKeys.groups.summary.user]}
 			/>
 
-			<SummaryTableTitle onClick={onClickChangeTab('role')}>
+			<SummaryTableTitle onClick={onClickChangeTab(groupTabs.role)}>
 				권한 : {roleData.length}
 			</SummaryTableTitle>
 			<Table
@@ -167,7 +168,7 @@ const GroupSummary = ({groupId}) => {
 				columns={tableColumns[tableKeys.groups.summary.permission]}
 			/>
 
-			<SummaryTableTitle onClick={onClickChangeTab('tag')}>
+			<SummaryTableTitle onClick={onClickChangeTab(groupTabs.tag)}>
 				태그 : {tagData.length}
 			</SummaryTableTitle>
 			<Table

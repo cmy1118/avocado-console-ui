@@ -39,6 +39,7 @@ import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/group
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
+import {groupTabs} from '../../../../utils/tabs';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const dispatch = useDispatch();
@@ -66,9 +67,9 @@ const GroupDescriptionSpace = ({groupId}) => {
 	);
 
 	const TabBarInfo = [
-		{name: '사용자', href: 'user'},
-		{name: '권한', href: 'role'},
-		{name: '태그', href: 'tag'},
+		{name: '사용자', href: groupTabs.user},
+		{name: '권한', href: groupTabs.role},
+		{name: '태그', href: groupTabs.tag},
 	];
 
 	let onClickFoldSummary;
@@ -76,7 +77,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 		if (isSummaryOpened) {
 			history.push({
 				pathname: location.pathname,
-				search: 'tabs=user',
+				search: `tabs=${groupTabs.user}`,
 			});
 		} else {
 			history.push({
@@ -182,7 +183,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 					<TabBar Tabs={TabBarInfo} />
 					<TabContentSpace>
 						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === 'user' && (
+							.tabs === groupTabs.user && (
 							<GroupUsersTab
 								groupId={groupId}
 								space={'GroupUsersTab'}
@@ -192,7 +193,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 							/>
 						)}
 						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === 'role' && (
+							.tabs === groupTabs.role && (
 							<GroupRolesTab
 								groupId={groupId}
 								space={'GroupRolesTab'}
@@ -202,7 +203,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 							/>
 						)}
 						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === 'tag' && (
+							.tabs === groupTabs.tag && (
 							<GroupOnDescPageTags
 								groupId={groupId}
 								space={'GroupOnDescPageTags'}

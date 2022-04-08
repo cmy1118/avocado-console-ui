@@ -4,12 +4,12 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import qs from 'qs';
 
-import UserInfoTab from '../Components/Tab/UserInfoTab';
-import UserGroupsTab from '../Components/Tab/UserGroupsTab';
+import UserInfoTab from '../Components/Description/Tabs/UserInfoTab';
+import UserGroupTab from '../Components/Description/Tabs/UserGroupTab';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import UserOnDescPageTags from '../Components/UserOnDescPageTags';
-import UserSummary from '../Components/UserSummary';
-import UserRolesTab from '../Components/Tab/UserRolesTab';
+import UserOnDescPageTags from '../Components/Description/UserOnDescPageTags';
+import UserSummary from '../Components/Description/UserSummary';
+import UserRoleTab from '../Components/Description/Tabs/UserRoleTab';
 import {HoverIconButton} from '../../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
 import TabBar from '../../TabBar';
@@ -39,6 +39,7 @@ import {
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import {userTabs} from '../../../../utils/tabs';
 
 const UserDescriptionSpace = ({userUid}) => {
 	const dispatch = useDispatch();
@@ -60,11 +61,12 @@ const UserDescriptionSpace = ({userUid}) => {
 		],
 		[user, userUid],
 	);
+
 	const TabBarInfo = [
-		{name: '정보', href: 'user'},
-		{name: '그룹', href: 'group'},
-		{name: '권한', href: 'role'},
-		{name: '태그', href: 'tag'},
+		{name: '정보', href: userTabs.user},
+		{name: '그룹', href: userTabs.group},
+		{name: '권한', href: userTabs.role},
+		{name: '태그', href: userTabs.tag},
 	];
 
 	const onClickFoldSummary = useCallback(() => {
@@ -72,7 +74,7 @@ const UserDescriptionSpace = ({userUid}) => {
 			history.push({
 				pathname: location.pathname,
 
-				search: 'tabs=user',
+				search: `tabs=${userTabs.user}`,
 			});
 		} else {
 			history.push({
@@ -176,12 +178,12 @@ const UserDescriptionSpace = ({userUid}) => {
 
 					<TabContentSpace>
 						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === 'user' && (
+							.tabs === userTabs.user && (
 							<UserInfoTab user={user} userUid={userUid} />
 						)}
 						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === 'group' && (
-							<UserGroupsTab
+							.tabs === userTabs.group && (
+							<UserGroupTab
 								title
 								userUid={userUid}
 								space={'UserGroupsTab'}
@@ -191,17 +193,17 @@ const UserDescriptionSpace = ({userUid}) => {
 							/>
 						)}
 						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === 'role' && (
-							<UserRolesTab
+							.tabs === userTabs.role && (
+							<UserRoleTab
 								userUid={userUid}
-								space={'UserRolesTab'}
+								space={'UserRoleTab'}
 								isFold={isTableFold}
 								setIsFold={setIsTableFold}
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
 						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === 'tag' && (
+							.tabs === userTabs.tag && (
 							<UserOnDescPageTags
 								userUid={userUid}
 								space={'UserOnDescPageTags'}

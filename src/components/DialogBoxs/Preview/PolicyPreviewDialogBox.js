@@ -346,9 +346,12 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	 **********************************************************/
 	useEffect(() => {
 		//TODO:정책 생성을 눌렀을시 렌더링 실행되도록
-
+		let previewAllData = [];
 		//IAM - 규칙 템플릿 데이터 처리
-		setPreviewData(iamPolicyRuleDetailsPreviewConverter(ruleTemplates));
+		previewAllData = [
+			...previewAllData,
+			...iamPolicyRuleDetailsPreviewConverter(ruleTemplates),
+		];
 
 		//IAM - 권한(action) 템플릿 데이터 처리
 		//TODO 함수로 모듈화할 예정입니다
@@ -367,7 +370,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 
 		//PAM - 권한(action) 템플릿 데이터 처리
 
-		// setPreviewData(previewAllData);
+		setPreviewData(previewAllData);
 	}, [actionTemplates, ruleTemplates]);
 
 	return (
