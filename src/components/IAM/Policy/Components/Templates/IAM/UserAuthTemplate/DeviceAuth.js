@@ -51,10 +51,10 @@ const DeviceAuth = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.attribute?.ruleType) {
 			const attributes = {
-				usage: usage === policyOption.usage.use,
+				usage: usage === policyOption.usage.use.key,
 			};
 			//사용 여부 true
-			if (usage === policyOption.usage.use) {
+			if (usage === policyOption.usage.use.key) {
 				attributes.resource = application;
 			}
 

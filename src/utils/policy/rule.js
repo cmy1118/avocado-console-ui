@@ -91,6 +91,7 @@ export const iamRuleAttributeConverterByRuleType = (attribute) => {
 
 	switch (attribute.ruleType) {
 		case ruleTypes.device_authentication: {
+			console.log(attribute);
 			string += printUsage(attribute);
 
 			if (attribute?.usage) {
