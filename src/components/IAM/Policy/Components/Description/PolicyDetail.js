@@ -12,6 +12,8 @@ import Table from '../../../../Table/Table';
 import {tableColumns} from '../../../../../Constants/Table/columns';
 import {isFulfilled} from '../../../../../utils/redux';
 import IAM_GRAN_REVOKE_ROLE from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeRole';
+import IAM_GRANTED_POLICY from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantedPolicy';
+import {iamPolicyRuleDetailsConverter} from '../../../../../utils/policy/rule';
 
 const policyDetail = {
 	permission: '규칙/권한 : ',
@@ -45,7 +47,7 @@ const PolicyDetail = ({policyId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const location = useLocation();
-	const [permissionData, setPermissionData] = useState([]);
+	const [detailData, setDetailData] = useState([]);
 	const [roleData, setRoleData] = useState([]);
 	const [tagData, setTagData] = useState([]);
 
@@ -64,17 +66,15 @@ const PolicyDetail = ({policyId}) => {
 	 **************************************************/
 	useEffect(() => {
 		const getPolicyDetail = async () => {
-			const res = await dispatch(
-				IAM_GRAN_REVOKE_ROLE.asyncAction.findAllRoleByPolicyId({
+			const policyDetail = await dispatch(
+				IAM_GRANTED_POLICY.asyncAction.getDetailsByPolicy({
 					policyId: policyId,
 				}),
 			);
-
-			if (isFulfilled(res)) {
-				const roles = convertRoleTableData(res.payload);
-				setRoleData(roles);
-			}
+			console.log(policyDetail.payload);
+			setDetailData(iamPolicyRuleDetailsConverter(policyDetail.payload));
 		};
+
 		getPolicyDetail();
 	}, [policyId]);
 
@@ -109,11 +109,11 @@ const PolicyDetail = ({policyId}) => {
 		<SummaryTablesContainer>
 			<SummaryTableTitle onClick={onClickChangeTab('permission')}>
 				{policyDetail.permission}
-				{permissionData.length}
+				{detailData.length}
 			</SummaryTableTitle>
 			<Table
 				readOnly
-				data={permissionData}
+				data={detailData}
 				tableKey={tableKeys.policy.summary.permission}
 				columns={tableColumns[tableKeys.policy.summary.permission]}
 			/>

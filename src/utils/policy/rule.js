@@ -84,9 +84,9 @@ const printMfa = (attribute, num) => {
 };
 
 /**************************************************
- * ambacc244 - ruleType에 따라 rule attribute 데이터 변경
+ * ambacc244 - IAM ruleType에 따라 rule attribute 데이터 변경
  **************************************************/
-export const ruleAttributeConverterByRuleType = (attribute) => {
+export const iamRuleAttributeConverterByRuleType = (attribute) => {
 	let string = '';
 
 	switch (attribute.ruleType) {
@@ -400,7 +400,7 @@ export const ruleAttributeConverterByRuleType = (attribute) => {
 /**************************************************
  * ambacc244 - 정책에 할당된 rule을 화면에 표현하기 위한 함수
  **************************************************/
-export const policyDetailsConverter = (data) => {
+export const iamPolicyRuleDetailsConverter = (data) => {
 	let dataArray = [];
 
 	for (let i = 0; i < data.length; i++) {
@@ -413,16 +413,17 @@ export const policyDetailsConverter = (data) => {
 			data[i].attribute.ruleType + data[i].resource;
 
 		if (data[i].attribute.ruleType === ruleTypes.allowed_service_time) {
-			singleData.permission =
+			singleData.detail =
 				ruleTypeDescription[
 					data[i].attribute.ruleType + data[i].resource
 				];
 		} else {
-			singleData.permission =
-				ruleTypeDescription[data[i].attribute.ruleType];
+			singleData.detail = ruleTypeDescription[data[i].attribute.ruleType];
 		}
 
-		singleData.value = ruleAttributeConverterByRuleType(data[i].attribute);
+		singleData.value = iamRuleAttributeConverterByRuleType(
+			data[i].attribute,
+		);
 		dataArray.push(singleData);
 	}
 
@@ -432,7 +433,7 @@ export const policyDetailsConverter = (data) => {
 /**************************************************
  * ambacc244 - 정책에 할당된 rule을 preview 화면에 표현하기 위한 함수
  **************************************************/
-export const policyDetailsPreviewConverter = (data) => {
+export const iamPolicyRuleDetailsPreviewConverter = (data) => {
 	let dataArray = [];
 
 	data.map((v) => {
@@ -458,7 +459,7 @@ export const policyDetailsPreviewConverter = (data) => {
 					ruleTypeDescription[v.details[i].attribute.ruleType];
 			}
 
-			singleData.value = ruleAttributeConverterByRuleType(
+			singleData.value = iamRuleAttributeConverterByRuleType(
 				v.details[i].attribute,
 			);
 			dataArray.push(singleData);

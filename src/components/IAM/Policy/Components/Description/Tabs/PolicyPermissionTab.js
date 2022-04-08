@@ -8,7 +8,7 @@ import {tableColumns} from '../../../../../../Constants/Table/columns';
 import {tableKeys} from '../../../../../../Constants/Table/keys';
 import {useDispatch} from 'react-redux';
 import IAM_GRANTED_POLICY from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantedPolicy';
-import {policyDetailsConverter} from '../../../../../../utils/policy/rule';
+import {iamPolicyRuleDetailsConverter} from '../../../../../../utils/policy/rule';
 
 const policyPermissionTab = {
 	title: '이 정책의 탬플릿',
@@ -38,7 +38,7 @@ const PolicyPermissionTab = ({policyId}) => {
 				}),
 			);
 
-			setPermission(policyDetailsConverter(policyDetail.payload));
+			setPermission(iamPolicyRuleDetailsConverter(policyDetail.payload));
 		};
 
 		getPolicyDetail();

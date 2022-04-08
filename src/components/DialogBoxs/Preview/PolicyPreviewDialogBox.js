@@ -19,8 +19,8 @@ import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/R
 import POLICY_MANAGEMENT_ACTION_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policyActionTemplate';
 import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/PAM/TemplateManagement/ActionManagement/actionTemplate';
 import {
-	policyDetailsConverter,
-	policyDetailsPreviewConverter,
+	iamPolicyRuleDetailsConverter,
+	iamPolicyRuleDetailsPreviewConverter,
 } from '../../../utils/policy/rule';
 
 const policyPreviewDialogBox = {
@@ -348,7 +348,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 		//TODO:정책 생성을 눌렀을시 렌더링 실행되도록
 
 		//IAM - 규칙 템플릿 데이터 처리
-		setPreviewData(policyDetailsPreviewConverter(ruleTemplates));
+		setPreviewData(iamPolicyRuleDetailsPreviewConverter(ruleTemplates));
 
 		//IAM - 권한(action) 템플릿 데이터 처리
 		//TODO 함수로 모듈화할 예정입니다
