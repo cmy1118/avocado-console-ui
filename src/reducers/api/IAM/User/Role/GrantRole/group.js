@@ -106,10 +106,16 @@ const findUserGroupsById = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
 		const response = await Axios.get(
-			`/open-api/v1/iam/roles/${payload.id}/user-groups`,
+			`/open-api/v1/iam/roles/${payload.roleId}/user-groups`,
 			{
+				params: {
+					exclude: payload.exclude,
+					keyword: payload.keyword,
+				},
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
+					Range: payload.range,
+					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
 			},

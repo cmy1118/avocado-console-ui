@@ -118,23 +118,22 @@ const RoleDescriptionSpace = ({roleId}) => {
 	/**************************************************
 	 * roberto6385 - 이 역할의 정보 불러오기
 	 **************************************************/
-	useEffect(() => {
-		//이 역할의 정보 호출
-		dispatch(
-			IAM_ROLES.asyncAction.findByIdAction({
-				id: roleId,
-			}),
-		)
-			.unwrap()
-			.then((res) => {
-				setRole(res);
-				setDescription(res.description);
-			})
-			//역할의 id가 유효하지 않음
-			.catch((err) => {
-				console.log(err);
-				history.push('/404');
-			});
+	useEffect(async () => {
+		try {
+			//이 역할의 정보 호출
+			const roleData = await dispatch(
+				IAM_ROLES.asyncAction.findByIdAction({
+					id: roleId,
+				}),
+			).unwrap();
+			console.log('roleData:', roleData);
+			await setRole(roleData);
+			await setDescription(roleData.description);
+		} catch (err) {
+			alert('역할 상세 정보 오류');
+			console.log(err);
+			history.push('/roles');
+		}
 	}, [dispatch, history, roleId, setDescription]);
 
 	return (
@@ -198,19 +197,20 @@ const RoleDescriptionSpace = ({roleId}) => {
 						</LiText>
 						<LiText>
 							{roleDescriptionSpace.detail.createdDate}
-							{role?.createdTag.createdTime}
+							{/*{role.createdTag ? role.createdTag.createdTime : ''}*/}
 						</LiText>
-						<LiText>
-							{roleDescriptionSpace.detail.createdUser}
-						</LiText>
+
 						<LiText>
 							{roleDescriptionSpace.detail.getLastActiveTime}
+							{/*{role.lastEventLog*/}
+							{/*	? role.lastEventLog.eventTime*/}
+							{/*	: ''}*/}
 						</LiText>
 						<LiText>
 							{roleDescriptionSpace.detail.lastAction}
-						</LiText>
-						<LiText>
-							{roleDescriptionSpace.detail.lastActiveUser}
+							{/*{role.lastEventLog*/}
+							{/*	? `${role.lastEventLog.eventTime}[${role.lastEventLog.userName}(${role.lastEventLog.userId})]`*/}
+							{/*	: ''}*/}
 						</LiText>
 					</SummaryList>
 				</div>

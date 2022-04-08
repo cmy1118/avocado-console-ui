@@ -86,8 +86,9 @@ const GroupDescriptionSpace = ({groupId}) => {
 	}, [isSummaryOpened, location]);
 
 	const onClickChangeGroupName = useCallback(() => {
+		history.push('/groups/add');
 		setIsOpened(true);
-	}, [setIsOpened]);
+	}, [history]);
 
 	//그룹 삭제 이벤트 핸들러 함수
 	const onClickDeleteGroup = useCallback(async () => {

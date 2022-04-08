@@ -164,13 +164,13 @@ const DragContainer = ({
 				if (destination.droppableId === includedKey) {
 					joinFunction && joinFunction(selectedItems);
 					//:TODO joinFunction 내부에서 데이터 처리해줌
-					data
-						? setData([...data, ...selectedItems])
-						: setData([...selectedItems]);
+					// data
+					// 	? setData([...data, ...selectedItems])
+					// 	: setData([...selectedItems]);
 				} else {
 					disjointFunction && disjointFunction(selectedItems);
 					//:TODO disjointFunction 내부에서 데이터 처리해줌
-					setData(data.filter((v) => !selectedItems.includes(v)));
+					// setData(data.filter((v) => !selectedItems.includes(v)));
 				}
 			}
 		},

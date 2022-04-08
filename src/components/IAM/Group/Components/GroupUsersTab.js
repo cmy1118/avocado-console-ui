@@ -74,6 +74,7 @@ const GroupUsersTab = ({
 			: [];
 	}, [excludedDataIds]);
 
+	//삭제
 	const onClickDeleteUsersFromGroup = useCallback(
 		async (data) => {
 			try {
@@ -100,6 +101,7 @@ const GroupUsersTab = ({
 		[dispatch, excludedData, groupId, includedDataIds],
 	);
 
+	//추가
 	const onClickAddUsersToGroup = useCallback(
 		async (data) => {
 			try {

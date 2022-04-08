@@ -41,7 +41,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 		return includedDataIds
 			? includedDataIds.map((v) => ({
 					...v,
-				type: v.type?v.type.name:'',
+					type: v.type ? v.type.name : '',
 					// numberOfUsers: v.users?.length,
 					createdTime: v.createdTime,
 					[DRAGGABLE_KEY]: v.id,
@@ -53,7 +53,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 			? excludedDataIds.map((v) => ({
 					...v,
 					applicationCode: '',
-					type: v.type.name?v.type.name:'',
+					type: v.type.name ? v.type.name : '',
 					// numberOfUsers: v.users?.length,
 					createdTime: v.createdTime,
 					[DRAGGABLE_KEY]: v.id,
@@ -63,14 +63,14 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	const onClickDeleteRolesFromUser = useCallback(
 		async (data) => {
-			try{
+			try {
 				data &&
-				await dispatch(
-					IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
-						userUid: userUid,
-						roleId: data,
-					}),
-				).unwrap();
+					(await dispatch(
+						IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
+							userUid: userUid,
+							roleId: data,
+						}),
+					).unwrap());
 
 				await setIncludedDataIds(
 					includedDataIds.filter((v) => !data.includes(v.id)),
@@ -80,9 +80,9 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					...excludedData,
 				]);
 				await alert('삭제 완료');
-			}catch(err){
+			} catch (err) {
 				alert('삭제 오류');
-				console.log(err)
+				console.log(err);
 			}
 		},
 		[dispatch, excludedData, includedDataIds, userUid],
@@ -93,12 +93,10 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 			try {
 				if (data) {
 					await dispatch(
-						IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction(
-							{
-								roleIds: data,
-								userUid: userUid,
-							},
-						),
+						IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
+							roleIds: data,
+							userUid: userUid,
+						}),
 					).unwrap();
 
 					await setIncludedDataIds([
@@ -112,7 +110,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				}
 			} catch (err) {
 				alert('추가 오류');
-				console.log(err)
+				console.log(err);
 			}
 		},
 		[dispatch, excludedDataIds, includedDataIds, userUid],
