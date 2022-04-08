@@ -3,7 +3,6 @@ import AddGroup from '../Components/AddGroup';
 import AddTagToGroup from '../Components/AddTagToGroup';
 import UsersIncludedInGroup from '../Components/UsersIncludedInGroup';
 import ReadOnly from '../Components/ReadOnly';
-import {FOLD_DATA} from '../../../../utils/data';
 import {
 	AddPageContainer,
 	AddSpaceContainer,
@@ -19,7 +18,6 @@ const paths = [
 
 const AddGroupSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
-	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
 	const [groupMembers, setGroupMembers] = useState([]);
 	const [groupRoles, setGroupRoles] = useState([]);
@@ -36,24 +34,9 @@ const AddGroupSpace = () => {
 					groupRoles={groupRoles}
 					groupTags={groupTags}
 				/>
-				<UsersIncludedInGroup
-					space={'UsersIncludedInGroup'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-					setValue={setGroupMembers}
-				/>
-				<AssignRoleToGroup
-					space={'AssignRoleToGroup'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-					setValue={setGroupRoles}
-				/>
-				<AddTagToGroup
-					space={'AddTagToGroup'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-					setValue={setGroupTags}
-				/>
+				<UsersIncludedInGroup setValue={setGroupMembers} />
+				<AssignRoleToGroup setValue={setGroupRoles} />
+				<AddTagToGroup setValue={setGroupTags} />
 			</AddPageContainer>
 			<ReadOnly isOpened={isOpened} setIsOpened={setIsOpened} />
 		</AddSpaceContainer>

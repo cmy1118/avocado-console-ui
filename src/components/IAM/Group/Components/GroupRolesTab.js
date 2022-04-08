@@ -13,21 +13,13 @@ import {
 } from '../../../../styles/components/buttons';
 import {TableTitle} from '../../../../styles/components/table';
 import TableOptionText from '../../../Table/Options/TableOptionText';
-import TableFold from '../../../Table/Options/TableFold';
 import DragContainer from '../../../Table/DragContainer';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
-import {FoldableContainer} from '../../../../styles/components/iam/iam';
-import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import FoldableContainer from '../../../Table/Options/FoldableContainer';
 
-const GroupRolesTab = ({
-	groupId,
-	space,
-	isFold,
-	setIsFold,
-	isSummaryOpened,
-}) => {
+const GroupRolesTab = ({groupId, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const group = useMemo(() => groups.find((v) => v.id === groupId), [
@@ -204,15 +196,12 @@ const GroupRolesTab = ({
 					tableKey={tableKeys.groups.summary.tabs.roles.include}
 					columns={includeColumns}
 				/>
-				<FoldableContainer>
-					<TableFold
-						title={<>이 그룹의 다른권한 : {excludedData.length}</>}
-						space={'GroupRolesTab'}
-						isFold={isFold}
-						setIsFold={setIsFold}
-					>
+				<FoldableContainer
+					title={<>이 그룹의 다른권한 : {excludedData.length}</>}
+					buttons={(isDisabled) => (
 						<NormalButton
 							margin='0px 0px 0px 5px'
+							disabled={isDisabled}
 							onClick={() =>
 								onClickAddRolesToGroup(
 									excludeSelect.map((v) => v.id),
@@ -221,31 +210,23 @@ const GroupRolesTab = ({
 						>
 							권한 추가
 						</NormalButton>
-					</TableFold>
-					{isFold[space] && (
-						<>
-							<TableOptionText data={'roles'} />
-							<Table
-								isDraggable
-								data={excludedData}
-								tableKey={
-									tableKeys.groups.summary.tabs.roles.exclude
-								}
-								columns={excludeColumns}
-							/>
-						</>
 					)}
+				>
+					<TableOptionText data={'roles'} />
+					<Table
+						isDraggable
+						data={excludedData}
+						tableKey={tableKeys.groups.summary.tabs.roles.exclude}
+						columns={excludeColumns}
+					/>
 				</FoldableContainer>
-			</DragContainer>{' '}
+			</DragContainer>
 		</TabContentContainer>
 	);
 };
 
 GroupRolesTab.propTypes = {
 	groupId: PropTypes.string.isRequired,
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
 	isSummaryOpened: PropTypes.bool,
 };
 

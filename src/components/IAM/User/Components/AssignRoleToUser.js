@@ -7,21 +7,14 @@ import DropButton from '../../../Table/DropButton';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import TableOptionText from '../../../Table/Options/TableOptionText';
-import TableFold from '../../../Table/Options/TableFold';
-import PropTypes from 'prop-types';
-import {
-	ColDiv,
-	CollapsbleContent,
-	RowDiv,
-	TableHeader,
-} from '../../../../styles/components/style';
+import FoldableContainer from '../../../Table/Options/FoldableContainer';
+import {ColDiv, RowDiv, TableHeader} from '../../../../styles/components/style';
 import DragContainer from '../../../Table/DragContainer';
-import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import CURRENT_TARGET from '../../../../reducers/currentTarget';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
-const AssignRoleToUser = ({space, isFold, setIsFold}) => {
+const AssignRoleToUser = () => {
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
 	const [includedDataIds, setIncludedDataIds] = useState([]);
@@ -104,69 +97,54 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 	}, [excludeSelect, includeSelect]);
 
 	return (
-		<FoldableContainer>
-			<TableFold
-				title={'권한 추가'}
-				space={'AssignRoleToUser'}
-				isFold={isFold}
-				setIsFold={setIsFold}
-			/>
-
-			<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
-				<TableOptionText data={'roles'} />
-				<DragContainer
-					selected={selected}
-					data={includedDataIds}
-					setData={setIncludedDataIds}
-					includedKey={tableKeys.users.add.roles.include}
-					excludedData={excludedData}
-					includedData={includedData}
-				>
-					<RowDiv>
+		<FoldableContainer title={'권한 추가'}>
+			<TableOptionText data={'roles'} />
+			<DragContainer
+				selected={selected}
+				data={includedDataIds}
+				setData={setIncludedDataIds}
+				includedKey={tableKeys.users.add.roles.include}
+				excludedData={excludedData}
+				includedData={includedData}
+			>
+				<RowDiv>
+					<Table
+						isDraggable
+						data={excludedData}
+						tableKey={tableKeys.users.add.roles.exclude}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
+					<RowDiv alignItems={'center'}>
+						<DropButton
+							leftTableKey={tableKeys.users.add.roles.exclude}
+							RightTableKey={tableKeys.users.add.roles.include}
+							select={selected}
+							dataLeft={excludedData}
+							dataRight={includedData}
+							rightDataIds={includedDataIds}
+							setRightDataIds={setIncludedDataIds}
+						/>
+					</RowDiv>
+					<ColDiv>
+						<TableHeader>
+							추가 Roles: {includedDataIds.length}건
+						</TableHeader>
 						<Table
 							isDraggable
-							data={excludedData}
-							tableKey={tableKeys.users.add.roles.exclude}
-							columns={excludeColumns}
-							isPaginable
-							isSearchable
-							isSearchFilterable
-							isColumnFilterable
+							data={includedData}
+							tableKey={tableKeys.users.add.roles.include}
+							columns={includeColumns}
 						/>
-						<RowDiv alignItems={'center'}>
-							<DropButton
-								leftTableKey={tableKeys.users.add.roles.exclude}
-								RightTableKey={
-									tableKeys.users.add.roles.include
-								}
-								select={selected}
-								dataLeft={excludedData}
-								dataRight={includedData}
-								rightDataIds={includedDataIds}
-								setRightDataIds={setIncludedDataIds}
-							/>
-						</RowDiv>
-						<ColDiv>
-							<TableHeader>
-								추가 Roles: {includedDataIds.length}건
-							</TableHeader>
-							<Table
-								isDraggable
-								data={includedData}
-								tableKey={tableKeys.users.add.roles.include}
-								columns={includeColumns}
-							/>
-						</ColDiv>
-					</RowDiv>
-				</DragContainer>
-			</CollapsbleContent>
+					</ColDiv>
+				</RowDiv>
+			</DragContainer>
 		</FoldableContainer>
 	);
 };
-AssignRoleToUser.propTypes = {
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
-};
+AssignRoleToUser.propTypes = {};
 
 export default AssignRoleToUser;

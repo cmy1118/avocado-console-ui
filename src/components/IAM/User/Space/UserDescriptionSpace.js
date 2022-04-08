@@ -17,7 +17,6 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../styles/components/buttons';
-import {FOLD_DATA} from '../../../../utils/data';
 import {LiText} from '../../../../styles/components/text';
 import {
 	expiredConverter,
@@ -51,7 +50,6 @@ const UserDescriptionSpace = ({userUid}) => {
 		if (location.search) return false;
 		else return true;
 	}, [location.search]);
-	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 	const paths = useMemo(
 		() => [
 			{url: '/iam', label: 'IAM'},
@@ -184,9 +182,6 @@ const UserDescriptionSpace = ({userUid}) => {
 							<UserGroupsTab
 								title
 								userUid={userUid}
-								space={'UserGroupsTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
@@ -194,9 +189,6 @@ const UserDescriptionSpace = ({userUid}) => {
 							.tabs === 'role' && (
 							<UserRolesTab
 								userUid={userUid}
-								space={'UserRolesTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
@@ -204,9 +196,6 @@ const UserDescriptionSpace = ({userUid}) => {
 							.tabs === 'tag' && (
 							<UserOnDescPageTags
 								userUid={userUid}
-								space={'UserOnDescPageTags'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}

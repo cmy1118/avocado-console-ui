@@ -1,8 +1,7 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../../Table/Table';
-import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {TableTitle} from '../../../../styles/components/table';
@@ -14,50 +13,48 @@ import TableOptionText from '../../../Table/Options/TableOptionText';
 import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {TitleBarButtons} from '../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+import IAM_USER_GROUP_TAG from '../../../../reducers/api/IAM/User/Group/tags';
+
+const TAG_TABLE_KEY = tableKeys.groups.summary.tabs.tags.basic;
+let index = 0;
 
 const GroupOnDescPageTags = ({groupId}) => {
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const group = useMemo(() => groups.find((v) => v.id === groupId), [
-		groupId,
-		groups,
-	]);
+	const dispatch = useDispatch();
+	const [tags, setTags] = useState([]);
 
-	const [data, setData] = useState(
-		group.tags.map((v) => {
-			return {
+	const tableData = useMemo(
+		() =>
+			tags.map((v) => ({
 				...v,
 				id: v.name,
-				// numberOfPermissions: v.permissions.length,
-				[DRAGGABLE_KEY]: v.id,
-				numberOfRoles: v.permissions.length,
-			};
-		}) || [],
+				[DRAGGABLE_KEY]: v.name || v[DRAGGABLE_KEY],
+			})),
+		[tags],
 	);
 
-	const [select, columns] = useSelectColumn(
-		tableColumns[tableKeys.groups.summary.tabs.tags.basic],
-	);
+	const [select, columns] = useSelectColumn(tableColumns[TAG_TABLE_KEY]);
 
 	const onClickAddRow = useCallback(() => {
-		const lastValues = data.slice().pop();
+		const lastValues = tags.slice().pop();
 		//	console.log(lastValues);
 		if (lastValues.name === '' || lastValues.value === '') {
 			alert('입력하지 않은 값이 있습니다.');
 			return;
 		}
-		setData([
-			...data,
+		setTags((prev) => [
+			...prev,
 			{
+				[DRAGGABLE_KEY]: `${TAG_TABLE_KEY}` + index++,
 				name: '',
 				value: '',
 				permissions: [],
 			},
 		]);
-	}, [data]);
+	}, [tags]);
 
 	const onClickSaveRow = useCallback(() => {
-		//	console.log(data);
-	}, [data]);
+		console.log(tags);
+	}, [tags]);
 
 	const onClickDeleteRow = useCallback(() => {
 		if (select.length) {
@@ -66,6 +63,25 @@ const GroupOnDescPageTags = ({groupId}) => {
 			alert('선택된 값이 없습니다.');
 		}
 	}, [select]);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const res = await dispatch(
+					IAM_USER_GROUP_TAG.asyncAction.getsAction({
+						groupId: groupId,
+						range: 'elements=0-50',
+					}),
+				);
+
+				setTags(res.payload.data);
+				// setTags(dummy);
+			} catch (err) {
+				console.error(err);
+			}
+		};
+		fetchData();
+	}, [dispatch, groupId]);
 
 	return (
 		<TabContentContainer>
@@ -88,10 +104,10 @@ const GroupOnDescPageTags = ({groupId}) => {
 			</TableTitle>
 			<TableOptionText data={'tags'} />
 			<Table
-				tableKey={tableKeys.groups.summary.tabs.tags.basic}
-				data={data}
+				tableKey={TAG_TABLE_KEY}
+				data={tableData}
 				columns={columns}
-				setData={setData}
+				setData={setTags}
 			/>
 		</TabContentContainer>
 	);

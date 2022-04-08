@@ -10,7 +10,6 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../styles/components/buttons';
-import {FOLD_DATA} from '../../../../utils/data';
 import {LiText} from '../../../../styles/components/text';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import TabBar from '../../TabBar';
@@ -37,8 +36,6 @@ import {
 } from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
-import {tableKeys} from '../../../../Constants/Table/keys';
-import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const dispatch = useDispatch();
@@ -48,7 +45,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const {members} = useSelector(IAM_USER_GROUP_MEMBER.selector);
 	const [isOpened, setIsOpened] = useState(true);
-	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 	const [group, setGroup] = useState(null);
 
 	const isSummaryOpened = useMemo(() => {
@@ -185,9 +181,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 							.tabs === 'user' && (
 							<GroupUsersTab
 								groupId={groupId}
-								space={'GroupUsersTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
@@ -195,9 +188,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 							.tabs === 'role' && (
 							<GroupRolesTab
 								groupId={groupId}
-								space={'GroupRolesTab'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
@@ -205,9 +195,6 @@ const GroupDescriptionSpace = ({groupId}) => {
 							.tabs === 'tag' && (
 							<GroupOnDescPageTags
 								groupId={groupId}
-								space={'GroupOnDescPageTags'}
-								isFold={isTableFold}
-								setIsFold={setIsTableFold}
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}

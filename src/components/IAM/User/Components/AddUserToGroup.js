@@ -6,25 +6,19 @@ import DropButton from '../../../Table/DropButton';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../../reducers/currentTarget';
-import {
-	ColDiv,
-	CollapsbleContent,
-	RowDiv,
-	TableHeader,
-} from '../../../../styles/components/style';
+import {ColDiv, RowDiv, TableHeader} from '../../../../styles/components/style';
 import TableOptionText from '../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import TableFold from '../../../Table/Options/TableFold';
+import FoldableContainer from '../../../Table/Options/FoldableContainer';
 import DragContainer from '../../../Table/DragContainer';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
-import {FoldableContainer} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
-const AddUserToGroup = ({space, isFold, setIsFold}) => {
+const AddUserToGroup = () => {
 	const dispatch = useDispatch();
 	const [groups, setGroups] = useState([]);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
@@ -147,70 +141,54 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 	}, [excludeSelect, includeSelect]);
 
 	return (
-		<FoldableContainer>
-			<TableFold
-				title={'그룹에 사용자에 추가'}
-				space={space}
-				isFold={isFold}
-				setIsFold={setIsFold}
-			/>
-			<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
-				<TableOptionText data={'groups'} />
-				<DragContainer
-					selected={selected}
-					data={includedDataIds}
-					setData={setIncludedDataIds}
-					includedKey={tableKeys.users.add.groups.include}
-					excludedData={excludedData}
-					includedData={includedData}
-				>
-					<RowDiv>
+		<FoldableContainer title={'그룹에 사용자에 추가'}>
+			<TableOptionText data={'groups'} />
+			<DragContainer
+				selected={selected}
+				data={includedDataIds}
+				setData={setIncludedDataIds}
+				includedKey={tableKeys.users.add.groups.include}
+				excludedData={excludedData}
+				includedData={includedData}
+			>
+				<RowDiv>
+					<Table
+						isDraggable
+						tableKey={tableKeys.users.add.groups.exclude}
+						columns={excludeColumns}
+						data={excludedData}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+						setSearch={setSearch}
+					/>
+					<RowDiv alignItems={'center'}>
+						<DropButton
+							leftTableKey={tableKeys.users.add.groups.exclude}
+							RightTableKey={tableKeys.users.add.groups.include}
+							select={selected}
+							dataLeft={excludedData}
+							dataRight={includedData}
+							rightDataIds={includedDataIds}
+							setRightDataIds={setIncludedDataIds}
+						/>
+					</RowDiv>
+					<ColDiv>
+						<TableHeader>
+							추가 그룹: {includedDataIds.length}건
+						</TableHeader>
 						<Table
 							isDraggable
-							tableKey={tableKeys.users.add.groups.exclude}
-							columns={excludeColumns}
-							data={excludedData}
-							isPaginable
-							isSearchable
-							isSearchFilterable
-							isColumnFilterable
-							setSearch={setSearch}
+							tableKey={tableKeys.users.add.groups.include}
+							columns={includeColumns}
+							data={includedData}
 						/>
-						<RowDiv alignItems={'center'}>
-							<DropButton
-								leftTableKey={
-									tableKeys.users.add.groups.exclude
-								}
-								RightTableKey={
-									tableKeys.users.add.groups.include
-								}
-								select={selected}
-								dataLeft={excludedData}
-								dataRight={includedData}
-								rightDataIds={includedDataIds}
-								setRightDataIds={setIncludedDataIds}
-							/>
-						</RowDiv>
-						<ColDiv>
-							<TableHeader>
-								추가 그룹: {includedDataIds.length}건
-							</TableHeader>
-							<Table
-								isDraggable
-								tableKey={tableKeys.users.add.groups.include}
-								columns={includeColumns}
-								data={includedData}
-							/>
-						</ColDiv>
-					</RowDiv>
-				</DragContainer>
-			</CollapsbleContent>
+					</ColDiv>
+				</RowDiv>
+			</DragContainer>
 		</FoldableContainer>
 	);
 };
-AddUserToGroup.propTypes = {
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
-};
+AddUserToGroup.propTypes = {};
 export default AddUserToGroup;

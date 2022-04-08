@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import {useDispatch, useSelector} from 'react-redux';
-import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
+import {useDispatch} from 'react-redux';
 import Table from '../../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
@@ -11,20 +10,13 @@ import {
 } from '../../../../../styles/components/buttons';
 import {TableTitle} from '../../../../../styles/components/table';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
-import TableFold from '../../../../Table/Options/TableFold';
+import FoldableContainer from '../../../../Table/Options/FoldableContainer';
 import DragContainer from '../../../../Table/DragContainer';
 import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
-import {FoldableContainer} from '../../../../../styles/components/iam/iam';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../../reducers/api/IAM/User/Role/GrantRole/user';
-import PAGINATION from '../../../../../reducers/pagination';
-import * as _ from 'lodash';
-import {CollapsbleContent} from '../../../../../styles/components/style';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
-import IAM_USER_GROUP_MEMBER from '../../../../../reducers/api/IAM/User/Group/groupMember';
-import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
-import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 
-const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
+const UserRolesTab = ({userUid, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [excludedDataIds, setExcludedDataIds] = useState([]);
@@ -41,7 +33,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 		return includedDataIds
 			? includedDataIds.map((v) => ({
 					...v,
-				type: v.type?v.type.name:'',
+					type: v.type ? v.type.name : '',
 					// numberOfUsers: v.users?.length,
 					createdTime: v.createdTime,
 					[DRAGGABLE_KEY]: v.id,
@@ -53,7 +45,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 			? excludedDataIds.map((v) => ({
 					...v,
 					applicationCode: '',
-					type: v.type.name?v.type.name:'',
+					type: v.type.name ? v.type.name : '',
 					// numberOfUsers: v.users?.length,
 					createdTime: v.createdTime,
 					[DRAGGABLE_KEY]: v.id,
@@ -63,14 +55,14 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 
 	const onClickDeleteRolesFromUser = useCallback(
 		async (data) => {
-			try{
+			try {
 				data &&
-				await dispatch(
-					IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
-						userUid: userUid,
-						roleId: data,
-					}),
-				).unwrap();
+					(await dispatch(
+						IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
+							userUid: userUid,
+							roleId: data,
+						}),
+					).unwrap());
 
 				await setIncludedDataIds(
 					includedDataIds.filter((v) => !data.includes(v.id)),
@@ -80,9 +72,9 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					...excludedData,
 				]);
 				await alert('삭제 완료');
-			}catch(err){
+			} catch (err) {
 				alert('삭제 오류');
-				console.log(err)
+				console.log(err);
 			}
 		},
 		[dispatch, excludedData, includedDataIds, userUid],
@@ -93,12 +85,10 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 			try {
 				if (data) {
 					await dispatch(
-						IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction(
-							{
-								roleIds: data,
-								userUid: userUid,
-							},
-						),
+						IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
+							roleIds: data,
+							userUid: userUid,
+						}),
 					).unwrap();
 
 					await setIncludedDataIds([
@@ -112,7 +102,7 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 				}
 			} catch (err) {
 				alert('추가 오류');
-				console.log(err)
+				console.log(err);
 			}
 		},
 		[dispatch, excludedDataIds, includedDataIds, userUid],
@@ -198,17 +188,12 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 					isSearchFilterable
 					isColumnFilterable
 				/>
-				<FoldableContainer>
-					<TableFold
-						title={
-							<>이 사용자의 다른권한 : {excludedData.length}</>
-						}
-						space={'UserRolesTab'}
-						isFold={isFold}
-						setIsFold={setIsFold}
-					>
+				<FoldableContainer
+					title={<>이 사용자의 다른권한 : {excludedData.length}</>}
+					buttons={(isDisabled) => (
 						<NormalButton
 							margin='0px 0px 0px 5px'
+							disabled={isDisabled}
 							onClick={() =>
 								onClickAddRolesToUser(
 									excludeSelect.map((v) => v.id),
@@ -217,23 +202,20 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 						>
 							권한 추가
 						</NormalButton>
-					</TableFold>
-					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
-						<TableOptionText data={'roles'} />
+					)}
+				>
+					<TableOptionText data={'roles'} />
 
-						<Table
-							isDraggable
-							data={excludedData}
-							tableKey={
-								tableKeys.users.summary.tabs.roles.exclude
-							}
-							columns={excludeColumns}
-							isPaginable
-							isSearchable
-							isSearchFilterable
-							isColumnFilterable
-						/>
-					</CollapsbleContent>
+					<Table
+						isDraggable
+						data={excludedData}
+						tableKey={tableKeys.users.summary.tabs.roles.exclude}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>
@@ -242,9 +224,6 @@ const UserRolesTab = ({userUid, space, isFold, setIsFold, isSummaryOpened}) => {
 
 UserRolesTab.propTypes = {
 	userUid: PropTypes.string.isRequired,
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
 	isSummaryOpened: PropTypes.bool,
 };
 

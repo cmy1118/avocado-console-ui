@@ -1,9 +1,8 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
 import Table from '../../../../Table/Table';
-import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
 import {TableTitle} from '../../../../../styles/components/table';
@@ -12,28 +11,14 @@ import {
 	TransparentButton,
 } from '../../../../../styles/components/buttons';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
-import TableFold from '../../../../Table/Options/TableFold';
 import DragContainer from '../../../../Table/DragContainer';
 import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
-import {FoldableContainer} from '../../../../../styles/components/iam/iam';
-import PAGINATION from '../../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../../reducers/api/IAM/User/Group/groupMember';
-import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
-import {
-	parentGroupConverter,
-	roleTypeConverter,
-} from '../../../../../utils/tableDataConverter';
-import * as _ from 'lodash';
-import {CollapsbleContent} from '../../../../../styles/components/style';
+import {parentGroupConverter} from '../../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
+import FoldableContainer from '../../../../Table/Options/FoldableContainer';
 
-const UserGroupsTab = ({
-	userUid,
-	space,
-	isFold,
-	setIsFold,
-	isSummaryOpened,
-}) => {
+const UserGroupsTab = ({userUid, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 
 	const [includeSelect, includeColumns] = useSelectColumn(
@@ -223,15 +208,9 @@ const UserGroupsTab = ({
 					isColumnFilterable
 					setSearch={setSearch}
 				/>
-				<FoldableContainer>
-					<TableFold
-						title={
-							<>이 사용자의 다른그룹 : {excludedData.length}</>
-						}
-						space={'UserGroupsTab'}
-						isFold={isFold}
-						setIsFold={setIsFold}
-					>
+				<FoldableContainer
+					title={<>이 사용자의 다른그룹 : {excludedData.length}</>}
+					buttons={(isDisabled) => (
 						<NormalButton
 							margin='0px 0px 0px 5px'
 							onClick={() =>
@@ -239,25 +218,23 @@ const UserGroupsTab = ({
 									excludeSelect.map((v) => v.id),
 								)
 							}
+							disabled={isDisabled}
 						>
 							그룹 추가
 						</NormalButton>
-					</TableFold>
-					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
-						<TableOptionText data={'groups'} />
-						<Table
-							isDraggable
-							data={excludedData}
-							tableKey={
-								tableKeys.users.summary.tabs.groups.exclude
-							}
-							columns={excludeColumns}
-							isPaginable
-							isSearchable
-							isSearchFilterable
-							isColumnFilterable
-						/>
-					</CollapsbleContent>
+					)}
+				>
+					<TableOptionText data={'groups'} />
+					<Table
+						isDraggable
+						data={excludedData}
+						tableKey={tableKeys.users.summary.tabs.groups.exclude}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>
@@ -266,9 +243,6 @@ const UserGroupsTab = ({
 
 UserGroupsTab.propTypes = {
 	userUid: PropTypes.string.isRequired,
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
 	isSummaryOpened: PropTypes.bool,
 };
 

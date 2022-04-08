@@ -5,7 +5,6 @@ import AssignRoleToUser from '../Components/AssignRoleToUser';
 import AddUserToGroup from '../Components/AddUserToGroup';
 import AddUser from '../Components/AddUser';
 import UserPreviewDialogBox from '../../../DialogBoxs/Preview/UserPreviewDialogBox';
-import {FOLD_DATA} from '../../../../utils/data';
 import {
 	AddPageContainer,
 	AddSpaceContainer,
@@ -20,7 +19,6 @@ const paths = [
 
 const AddUserSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
-	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
 
 	return (
 		<AddSpaceContainer>
@@ -28,21 +26,9 @@ const AddUserSpace = () => {
 
 			<AddPageContainer>
 				<AddUser setIsOpened={setIsOpened} />
-				<AddUserToGroup
-					space={'AddUserToGroup'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-				/>
-				<AssignRoleToUser
-					space={'AssignRoleToUser'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-				/>
-				<AddTagToUser
-					space={'AddTagToUser'}
-					isFold={isTableFold}
-					setIsFold={setIsTableFold}
-				/>
+				<AddUserToGroup />
+				<AssignRoleToUser />
+				<AddTagToUser />
 			</AddPageContainer>
 
 			<UserPreviewDialogBox

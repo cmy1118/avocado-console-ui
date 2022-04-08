@@ -9,16 +9,11 @@ import {
 	TransparentButton,
 } from '../../../../styles/components/buttons';
 import TableOptionText from '../../../Table/Options/TableOptionText';
-import PropTypes from 'prop-types';
-import TableFold from '../../../Table/Options/TableFold';
-import {
-	FoldableContainer,
-	TitleBarButtons,
-} from '../../../../styles/components/iam/iam';
-import {CollapsbleContent} from '../../../../styles/components/style';
+import {TitleBarButtons} from '../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+import FoldableContainer from '../../../Table/Options/FoldableContainer';
 
-const AddTagToUser = ({space, isFold, setIsFold}) => {
+const AddTagToUser = () => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
 
@@ -78,41 +73,32 @@ const AddTagToUser = ({space, isFold, setIsFold}) => {
 	}, [tagData, dispatch]);
 
 	return (
-		<FoldableContainer>
-			<TableFold
-				title={'태그 추가'}
-				space={'AddTagToUser'}
-				isFold={isFold}
-				setIsFold={setIsFold}
-			>
+		<FoldableContainer
+			title={'태그 추가'}
+			buttons={(isDisabled) => (
 				<TitleBarButtons>
-					<NormalButton onClick={onClickAddRow}>
+					<NormalButton onClick={onClickAddRow} disabled={isDisabled}>
 						태그 추가
 					</NormalButton>
 					<TransparentButton
 						margin='0xp 0px 0p 5px'
+						disabled={isDisabled}
 						onClick={onClickDeleteRow}
 					>
 						태그 삭제
 					</TransparentButton>
 				</TitleBarButtons>
-			</TableFold>
-
-			<CollapsbleContent height={isFold[space] ? '358px' : '0px'}>
-				<TableOptionText data={'tags'} />
-				<Table
-					tableKey={tableKeys.users.add.tag}
-					data={tagData}
-					setData={setData}
-					columns={columns}
-				/>
-			</CollapsbleContent>
+			)}
+		>
+			<TableOptionText data={'tags'} />
+			<Table
+				tableKey={tableKeys.users.add.tag}
+				data={tagData}
+				setData={setData}
+				columns={columns}
+			/>
 		</FoldableContainer>
 	);
 };
-AddTagToUser.propTypes = {
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
-};
+AddTagToUser.propTypes = {};
 export default AddTagToUser;

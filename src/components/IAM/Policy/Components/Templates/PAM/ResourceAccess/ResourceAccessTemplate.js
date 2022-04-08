@@ -7,11 +7,8 @@ import AddAcessResourceAccountDialogBox from '../../../../../../DialogBoxs/Form/
 import RRM_RESOURCE from '../../../../../../../reducers/api/PAM/Resource/resource';
 import {AllreplaceStr} from '../../../../../../../utils/dataFitering';
 import {useDispatch} from 'react-redux';
-import useRadio from '../../../../../../../hooks/useRadio';
-import {resourceOptions} from '../../../../../../../utils/policyOptions';
 import PropTypes from 'prop-types';
-import ResourceSelectionContainer from '../Resource/ResourceSelectionContainer';
-import TableFold from '../../../../../../Table/Options/TableFold';
+import FoldableContainer from '../../../../../../Table/Options/FoldableContainer';
 
 /********************************************************************************************
  * 자원 접근 권한 하위 접근 목록 테이블 컴포넌트
@@ -97,66 +94,55 @@ const ResourceAccessTemplate = ({isShow}) => {
 		}
 	}, [findAllApi, isFold, isShow]);
 	return (
-		<div>
-			<TableFold
-				title={isShow ? `접근목록 : ${tableData.length}` : `접근목록: `}
-				space={'ResourceAcessTemplate'}
-				isFold={isFold}
-				setIsFold={setIsFold}
-				disabled={!isShow}
-				// setIsFold={setIsFold}
-			/>
-			{isFold['ResourceAcessTemplate'] ? (
-				<div>
-					{/*유섭님 컴포넌트 뺀다고 하심*/}
-					<RowDiv>
-						<button onClick={(e) => onClickAddReosource(e)}>
-							추가
-						</button>
-						<button onClick={(e) => onClickDeleteReosource(e)}>
-							삭제
-						</button>
-					</RowDiv>
-					{/*접근목록 테이블*/}
-					<Table
-						tableKey={
+		<FoldableContainer
+			title={isShow ? `접근목록 : ${tableData.length}` : `접근목록: `}
+			disabled={!isShow}
+		>
+			<div>
+				{/*유섭님 컴포넌트 뺀다고 하심*/}
+				<RowDiv>
+					<button onClick={(e) => onClickAddReosource(e)}>
+						추가
+					</button>
+					<button onClick={(e) => onClickDeleteReosource(e)}>
+						삭제
+					</button>
+				</RowDiv>
+				{/*접근목록 테이블*/}
+				<Table
+					tableKey={tableKeys.policy.add.pamTemplate.accessResource}
+					columns={
+						tableColumns[
 							tableKeys.policy.add.pamTemplate.accessResource
-						}
-						columns={
-							tableColumns[
-								tableKeys.policy.add.pamTemplate.accessResource
-							]
-						}
-						data={tableData}
-						rowClick={onClickSelectResource}
-						// isPaginable
-						// optionBarTitle={`자원 목록 : ${resources?.length}건`}
-						// isSearchable
-						isColumnFilterable
-						setSelect={setSelect}
-						// defaultClick={defaultClick}
-						// width={'855px'}
-					/>
+						]
+					}
+					data={tableData}
+					rowClick={onClickSelectResource}
+					// isPaginable
+					// optionBarTitle={`자원 목록 : ${resources?.length}건`}
+					// isSearchable
+					isColumnFilterable
+					setSelect={setSelect}
+					// defaultClick={defaultClick}
+					// width={'855px'}
+				/>
 
-					{/*접근 자원 계정 추가 모달*/}
-					<AddAcessResourceAccountDialogBox
-						isOpened={openDialogBox}
-						setIsOpened={setOpenDialogBox}
-						data={tableData}
-						// setResources={setConnectData}
-						select={select}
-						type={'resource'}
-						// currentProtocolIndex={currentProtocolIndex}
-						// setCurrentProtocolIndex={setCurrentProtocolIndex}
-						// currentAccountIndex={currentAccountIndex}
-						// setCurrentAccountIndex={setCurrentAccountIndex}
-						// setConnectData={setConnectData}
-					/>
-				</div>
-			) : (
-				''
-			)}
-		</div>
+				{/*접근 자원 계정 추가 모달*/}
+				<AddAcessResourceAccountDialogBox
+					isOpened={openDialogBox}
+					setIsOpened={setOpenDialogBox}
+					data={tableData}
+					// setResources={setConnectData}
+					select={select}
+					type={'resource'}
+					// currentProtocolIndex={currentProtocolIndex}
+					// setCurrentProtocolIndex={setCurrentProtocolIndex}
+					// currentAccountIndex={currentAccountIndex}
+					// setCurrentAccountIndex={setCurrentAccountIndex}
+					// setConnectData={setConnectData}
+				/>
+			</div>
+		</FoldableContainer>
 	);
 };
 

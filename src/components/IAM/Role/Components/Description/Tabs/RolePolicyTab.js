@@ -9,17 +9,13 @@ import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
 import DragContainer from '../../../../../Table/DragContainer';
 import {TableTitle} from '../../../../../../styles/components/table';
-import TableFold from '../../../../../Table/Options/TableFold';
+import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
 import TableOptionText from '../../../../../Table/Options/TableOptionText';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
-import {
-	FoldableContainer,
-	TitleBarButtons,
-} from '../../../../../../styles/components/iam/iam';
+import {TitleBarButtons} from '../../../../../../styles/components/iam/iam';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_ROLES from '../../../../../../reducers/api/IAM/User/Role/roles';
 import PAM_ROLES from '../../../../../../reducers/api/PAM/Role/roles';
-import {CollapsbleContent} from '../../../../../../styles/components/style';
 import {descValues} from '../../../../../../utils/tableDataConverter';
 import AUTH from '../../../../../../reducers/api/Auth/auth';
 import {account} from '../../../../../../utils/auth';
@@ -223,7 +219,7 @@ const rolePolicyTab = {
 /**************************************************
  * ambacc244 - 이 역할의 권한/정책과, 가지지 않는 권한/정책을 보여줌
  **************************************************/
-const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
+const RolePolicyTab = ({roleId, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const {companyId} = useSelector(AUTH.selector);
 	const [includedDataIds, setIncludedDataIds] = useState([]);
@@ -385,39 +381,35 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 					isSearchFilterable
 					isColumnFilterable
 				/>
-				<FoldableContainer>
-					<TableFold
-						title={
-							rolePolicyTab.exclude.title + excludedData.length
-						}
-						space={'RolePolicyTab'}
-						isFold={isFold}
-						setIsFold={setIsFold}
-					>
+				<FoldableContainer
+					title={rolePolicyTab.exclude.title + excludedData.length}
+					buttons={(isDisabled) => (
 						<TitleBarButtons>
-							<NormalButton>
+							<NormalButton disabled={isDisabled}>
 								{rolePolicyTab.exclude.button.create}
 							</NormalButton>
-							<NormalButton margin={'0px 0px 0px 5px'}>
+							<NormalButton
+								margin={'0px 0px 0px 5px'}
+								disabled={isDisabled}
+							>
 								{rolePolicyTab.exclude.button.add}
 							</NormalButton>
 						</TitleBarButtons>
-					</TableFold>
-					<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
-						<TableOptionText data={'policies'} />
-						<Table
-							isDraggable
-							data={excludedData}
-							tableKey={
-								tableKeys.roles.summary.tabs.permissions.exclude
-							}
-							columns={excludeColumns}
-							isPaginable
-							isSearchable
-							isSearchFilterable
-							isColumnFilterable
-						/>
-					</CollapsbleContent>
+					)}
+				>
+					<TableOptionText data={'policies'} />
+					<Table
+						isDraggable
+						data={excludedData}
+						tableKey={
+							tableKeys.roles.summary.tabs.permissions.exclude
+						}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>
@@ -426,9 +418,6 @@ const RolePolicyTab = ({roleId, space, isFold, setIsFold, isSummaryOpened}) => {
 
 RolePolicyTab.propTypes = {
 	roleId: PropTypes.string.isRequired,
-	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
-	space: PropTypes.string,
 	isSummaryOpened: PropTypes.bool,
 };
 
