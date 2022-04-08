@@ -10,7 +10,7 @@ import {useDispatch} from 'react-redux';
 import IAM_GRANTED_POLICY from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantedPolicy';
 import {iamPolicyRuleDetailsConverter} from '../../../../../../utils/policy/rule';
 
-const policyPermissionTab = {
+const policyDetailTab = {
 	title: '이 정책의 탬플릿',
 	button: {edit: '변경'},
 };
@@ -18,7 +18,7 @@ const policyPermissionTab = {
 /**************************************************
  * ambacc244 - 현 정책이 가지는 규칙/권한을 보여주는 탭 컴포넌트
  **************************************************/
-const PolicyPermissionTab = ({policyId}) => {
+const PolicyDetailTab = ({policyId}) => {
 	const dispatch = useDispatch();
 	const [permission, setPermission] = useState([]);
 
@@ -47,12 +47,12 @@ const PolicyPermissionTab = ({policyId}) => {
 	return (
 		<TabContentContainer>
 			<TableTitle>
-				{policyPermissionTab.title}
+				{policyDetailTab.title}
 				<NormalBorderButton
 					onClick={onClickEditPolicy}
 					margin={'0px 0px 0px 5px'}
 				>
-					{policyPermissionTab.button.edit}
+					{policyDetailTab.button.edit}
 				</NormalBorderButton>
 			</TableTitle>
 
@@ -65,6 +65,6 @@ const PolicyPermissionTab = ({policyId}) => {
 	);
 };
 
-PolicyPermissionTab.propTypes = {policyId: PropTypes.string.isRequired};
+PolicyDetailTab.propTypes = {policyId: PropTypes.string.isRequired};
 
-export default PolicyPermissionTab;
+export default PolicyDetailTab;

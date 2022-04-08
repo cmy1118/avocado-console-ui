@@ -407,7 +407,10 @@ export const iamPolicyRuleDetailsConverter = (data) => {
 	for (let i = 0; i < data.length; i++) {
 		let singleData = new Object();
 
-		if (i === 0 || data[i]?.category?.code !== data[i - 1]?.category?.code)
+		if (
+			i === 0 ||
+			data[i]?.categoryType?.code !== data[i - 1]?.categoryType?.code
+		)
 			singleData.name = data[i].policyName;
 		singleData.id = data[i].attribute.ruleType + data[i].resource;
 		singleData[DRAGGABLE_KEY] =

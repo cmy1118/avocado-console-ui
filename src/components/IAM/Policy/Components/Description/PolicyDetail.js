@@ -14,6 +14,7 @@ import {isFulfilled} from '../../../../../utils/redux';
 import IAM_GRAN_REVOKE_ROLE from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeRole';
 import IAM_GRANTED_POLICY from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantedPolicy';
 import {iamPolicyRuleDetailsConverter} from '../../../../../utils/policy/rule';
+import {policyTabs} from '../../../../../utils/tabs';
 
 const policyDetail = {
 	permission: '규칙/권한 : ',
@@ -107,7 +108,7 @@ const PolicyDetail = ({policyId}) => {
 
 	return (
 		<SummaryTablesContainer>
-			<SummaryTableTitle onClick={onClickChangeTab('permission')}>
+			<SummaryTableTitle onClick={onClickChangeTab(policyTabs.detail)}>
 				{policyDetail.permission}
 				{detailData.length}
 			</SummaryTableTitle>
@@ -118,7 +119,7 @@ const PolicyDetail = ({policyId}) => {
 				columns={tableColumns[tableKeys.policy.summary.permission]}
 			/>
 
-			<SummaryTableTitle onClick={onClickChangeTab('role')}>
+			<SummaryTableTitle onClick={onClickChangeTab(policyTabs.role)}>
 				{policyDetail.role} {roleData.length}
 			</SummaryTableTitle>
 			<Table
@@ -130,7 +131,7 @@ const PolicyDetail = ({policyId}) => {
 				isSearchable
 			/>
 
-			<SummaryTableTitle onClick={onClickChangeTab('tag')}>
+			<SummaryTableTitle onClick={onClickChangeTab(policyTabs.tag)}>
 				{policyDetail.tag}
 				{tagData.length}
 			</SummaryTableTitle>

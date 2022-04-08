@@ -29,6 +29,7 @@ import PolicyTabContents from '../Components/Description/PolicyTabContents';
 import PolicySummary from '../Components/Description/PolicySummary';
 import DIALOG_BOX from '../../../../reducers/dialogBoxs';
 import {deleteAlertMessages} from '../../../../utils/alertMessage';
+import {policyTabs} from '../../../../utils/tabs';
 
 const policyDescriptionSpace = {
 	button: {create: '정책 생성', delete: '삭제'},
@@ -69,7 +70,7 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 	);
 
 	const TabBarInfo = [
-		{name: '규칙/권한', href: 'permission'},
+		{name: '규칙/권한', href: 'detail'},
 		{name: '역할', href: 'role'},
 		{name: '태그', href: 'tag'},
 	];
@@ -81,7 +82,7 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 		if (isSummaryOpened) {
 			history.push({
 				pathname: location.pathname,
-				search: 'tabs=permission',
+				search: `tabs=${policyTabs.detail}`,
 			});
 		} else {
 			history.push({

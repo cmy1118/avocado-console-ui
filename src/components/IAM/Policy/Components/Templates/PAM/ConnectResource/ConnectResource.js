@@ -10,7 +10,7 @@ import Resource from '../Resource/Resource';
 /**************************************************
  * ambacc244 - 자원 접속 방식 템플릿 컴포넌트
  **************************************************/
-const ConnectResourceTemplate = ({
+const ConnectResource = ({
 	templateId = 'KR-2020-0001:202202:0001',
 	name = '자원 접속 방식',
 	description = '원격 자원에 접속하는 방식을 설정한다.',
@@ -78,10 +78,10 @@ const ConnectResourceTemplate = ({
 	);
 };
 
-ConnectResourceTemplate.propTypes = {
+ConnectResource.propTypes = {
 	templateId: PropTypes.string,
 	name: PropTypes.string,
 	description: PropTypes.string,
 };
 
-export default ConnectResourceTemplate;
+export default ConnectResource;

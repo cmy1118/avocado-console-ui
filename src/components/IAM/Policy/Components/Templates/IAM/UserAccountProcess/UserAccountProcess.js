@@ -15,7 +15,7 @@ import {ruleTypes} from '../../../../../../../utils/policy/rule';
 /**************************************************
  * ambacc244 - 사용자 계정 처리 컴포넌트
  **************************************************/
-const UserAccountProcessTemplate = ({templateId, name, description}) => {
+const UserAccountProcess = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
 	const {creatingPolicyMode} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
@@ -121,10 +121,10 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 	);
 };
 
-UserAccountProcessTemplate.propTypes = {
+UserAccountProcess.propTypes = {
 	templateId: PropTypes.string,
 	name: PropTypes.string,
 	description: PropTypes.string,
 };
 
-export default UserAccountProcessTemplate;
+export default UserAccountProcess;

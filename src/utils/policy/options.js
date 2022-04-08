@@ -1,4 +1,10 @@
+import {policyTypes} from '../data';
+
 export const policyOption = {
+	type: {
+		'iam*': {key: policyTypes.iam, label: 'IAM'},
+		'pam*': {key: policyTypes.pam, label: 'PAM'},
+	},
 	usage: {
 		use: {key: 'use', label: '사용함'},
 		none: {key: 'none', label: '사용 안함'},
@@ -104,6 +110,17 @@ export const policyOption = {
 		all: {key: 'all', label: '모든 자원'},
 	},
 };
+
+export const policyTypeOptions = [
+	{
+		key: policyOption.type['iam*'].key,
+		label: policyOption.type['iam*'].label,
+	},
+	{
+		key: policyOption.type['pam*'].key,
+		label: policyOption.type['pam*'].label,
+	},
+];
 
 export const usageOptions = [
 	{

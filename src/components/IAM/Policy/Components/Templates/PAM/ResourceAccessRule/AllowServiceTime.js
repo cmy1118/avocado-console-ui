@@ -2,21 +2,24 @@ import PropTypes from 'prop-types';
 import TemplateLayout from '../../Layout/TemplateLayout';
 import TemplateElement from '../../Layout/TemplateElement';
 import TimeInterval from '../../../../../../RecycleComponents/Templates/TimeInterval';
-import React, {useEffect, useState} from 'react';
-import {DayOfTheWeek} from './ConnectReasonTemplate';
+import React, {useState} from 'react';
 import useRadio from '../../../../../../../hooks/useRadio';
 import {restrictionOptions} from '../../../../../../../utils/policy/options';
+import {DayOfTheWeek} from '../ConnectReason/ConnectReason';
 
-const allowReasonTime = {
-	title: '사유 입력 시간',
-	description: ['원격자원 접속 시 사유 적용되는 시간대를 설정합니다.'],
+const allowServiceTime = {
+	title: '접속 가능 시간',
+	description: [
+		'접근 가능 시간을 제한 하지 않으면 언제든 제한 없이 접근 가능합니다..',
+		'접근 가능 시간을 제한할 경우 요일별 시간을 설정 합니다. 23:59까지만 설정 가능합니다.',
+	],
 	contents: {restriction: {titile: '제한 여부'}},
 };
 
 /**************************************************
- * ambacc244 - 접속 사유 정책(사유 입력 시간) 폼
+ * ambacc244 - 자원 접근 정책(접속 가능 시간) 폼
  **************************************************/
-const AllowReasonTime = ({data, setTemplateData}) => {
+const AllowServiceTime = ({data, setTemplateData}) => {
 	const [timezone, setTimezone] = useState({});
 	//timeoutRistriction: 사유 입력 시간제한 유무
 	const [
@@ -28,26 +31,15 @@ const AllowReasonTime = ({data, setTemplateData}) => {
 		options: restrictionOptions,
 	});
 
-	/**************************************************
-	 * ambacc244 - 로그인 방식 데이터가 바뀌면 정책 생성을 위한 값을 변경
-	 **************************************************/
-	useEffect(() => {
-		if (data?.attribute?.ruleType) {
-			setTemplateData({
-				applicationCode: data.applicationCode.code,
-			});
-		}
-	}, [data, setTemplateData]);
-
 	return (
 		<TemplateLayout
-			title={allowReasonTime.title}
-			description={allowReasonTime.description}
+			title={allowServiceTime.title}
+			description={allowServiceTime.description}
 			render={() => {
 				return (
 					<div>
 						<TemplateElement
-							title={allowReasonTime.contents.restriction.titile}
+							title={allowServiceTime.contents.restriction.titile}
 							render={timeoutRistrictionRadioButton}
 						/>
 						<div>----------------------------------</div>
@@ -80,9 +72,9 @@ const AllowReasonTime = ({data, setTemplateData}) => {
 	);
 };
 
-AllowReasonTime.propTypes = {
+AllowServiceTime.propTypes = {
 	data: PropTypes.object,
 	setTemplateData: PropTypes.func,
 };
 
-export default AllowReasonTime;
+export default AllowServiceTime;

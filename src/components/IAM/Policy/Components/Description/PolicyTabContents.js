@@ -4,9 +4,10 @@ import {useLocation} from 'react-router-dom';
 import qs from 'qs';
 
 import {TabContentSpace} from '../../../../../styles/components/iam/iamTab';
-import PolicyPermissionTab from './Tabs/PolicyPermissionTab';
+import PolicyDetailTab from './Tabs/PolicyDetailTab';
 import PolicyRoleTab from './Tabs/PolicyRoleTab';
 import PolicyTagTab from './Tabs/PolicyTagTab';
+import {policyTabs} from '../../../../../utils/tabs';
 
 const PolicyTabContents = ({policyId}) => {
 	const {search} = useLocation();
@@ -17,11 +18,11 @@ const PolicyTabContents = ({policyId}) => {
 
 	return (
 		<TabContentSpace>
-			{tab === 'permission' && (
-				<PolicyPermissionTab policyId={policyId} />
+			{tab === policyTabs.detail && (
+				<PolicyDetailTab policyId={policyId} />
 			)}
-			{tab === 'role' && <PolicyRoleTab policyId={policyId} />}
-			{tab === 'tag' && <PolicyTagTab policyId={policyId} />}
+			{tab === policyTabs.role && <PolicyRoleTab policyId={policyId} />}
+			{tab === policyTabs.tag && <PolicyTagTab policyId={policyId} />}
 		</TabContentSpace>
 	);
 };

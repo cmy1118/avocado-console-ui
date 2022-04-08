@@ -46,7 +46,7 @@ const contents = {
  * templateId : 해당 템플릿의 id
  ***************************************************/
 // todo : TableTextBox의 invalid 검사 기능 추가해야함.
-const UserSessionTemplate = ({templateId, name, description}) => {
+const UserSession = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
 	const {creatingPolicyMode} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
@@ -275,10 +275,10 @@ const UserSessionTemplate = ({templateId, name, description}) => {
 	);
 };
 
-UserSessionTemplate.propTypes = {
+UserSession.propTypes = {
 	templateId: PropTypes.string,
 	name: PropTypes.string,
 	description: PropTypes.string,
 };
 
-export default UserSessionTemplate;
+export default UserSession;

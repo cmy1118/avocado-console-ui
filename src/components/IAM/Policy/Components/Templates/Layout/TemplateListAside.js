@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
 import {policyTypes} from '../../../../../../utils/data';
 import {templateType} from '../../../../../../utils/template';
-import UserAuthTemplate from '../IAM/UserAuthTemplate/UserAuthTemplate';
-import UserAccountProcessTemplate from '../IAM/UserAccountProcessTemplate/UserAccountProcessTemplate';
-import UserAccessTemplate from '../IAM/UserAccessTemplate';
-import UserSessionTemplate from '../IAM/UserSessionTemplate';
+import UserAuth from '../IAM/UserAuth/UserAuth';
+import UserAccountProcess from '../IAM/UserAccountProcess/UserAccountProcess';
+import UserAccess from '../IAM/UserAccess';
+import UserSession from '../IAM/UserSession';
 import UserManagement from '../IAM/UserManagement';
 import PolicyManagement from '../IAM/PolicyManagement';
 import RoleManagement from '../IAM/RoleManagement';
-import ConnectResourceTemplate from '../PAM/ConnectResourceTemplate/ConnectResourceTemplate';
+import ConnectResource from '../PAM/ConnectResource/ConnectResource';
 import MFA from '../PAM/MFA';
-import ResourceAccessRuleTemplate from '../PAM/ResourceAccessRuleTemplate/ResourceAccessRuleTemplate';
-import ConnectReason from '../PAM/ConnectReasonTemplate/ConnectReasonTemplate';
+import ResourceAccessRule from '../PAM/ResourceAccessRule/ResourceAccessRule';
+import ConnectReason from '../PAM/ConnectReason/ConnectReason';
 import CommandControl from '../PAM/CommandControl';
 import FileAccess from '../PAM/FileAccess';
 import ResourceManagement from '../PAM/ResourceManagement';
@@ -45,15 +45,15 @@ const contents = {
 
 const templateComponents = {
 	//iam - rule
-	[categoryTypes.auth]: UserAuthTemplate,
-	[categoryTypes.account]: UserAccountProcessTemplate,
-	[categoryTypes.userAccess]: UserAccessTemplate,
-	[categoryTypes.session]: UserSessionTemplate,
-	[categoryTypes.pattern]: UserSessionTemplate,
+	[categoryTypes.auth]: UserAuth,
+	[categoryTypes.account]: UserAccountProcess,
+	[categoryTypes.userAccess]: UserAccess,
+	[categoryTypes.session]: UserSession,
+	[categoryTypes.pattern]: UserSession,
 	//pam - rule
-	[categoryTypes.categoryType1]: ConnectResourceTemplate,
+	[categoryTypes.categoryType1]: ConnectResource,
 	[categoryTypes.categoryType2]: MFA,
-	[categoryTypes.categoryType3]: ResourceAccessRuleTemplate,
+	[categoryTypes.categoryType3]: ResourceAccessRule,
 	[categoryTypes.categoryType4]: ConnectReason,
 	[categoryTypes.categoryType5]: CommandControl,
 	[categoryTypes.categoryType6]: FileAccess,

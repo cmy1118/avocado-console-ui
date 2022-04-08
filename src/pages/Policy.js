@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import PolicySpace from '../components/IAM/Policy/Space/PolicySpace';
-import AddPolicySpace from '../components/IAM/Policy/Space/AddPolicySpace';
+import CreatePolicySpace from '../components/IAM/Policy/Space/CreatePolicySpace';
 import PolicyDescriptionSpace from '../components/IAM/Policy/Space/PolicyDescriptionSpace';
 
 const Policy = ({match}) => {
 	return (
 		<>
 			{match.path === '/policies/add' ? (
-				<AddPolicySpace />
+				<CreatePolicySpace />
 			) : match.params?.id && match.params?.type ? (
 				<PolicyDescriptionSpace
 					policyId={match.params.id}

@@ -49,7 +49,7 @@ const contents = {
 /**************************************************
  * seob - 사용자 접근 템플릿
  ***************************************************/
-const UserAccessTemplate = ({templateId, name, description}) => {
+const UserAccess = ({templateId, name, description}) => {
 	const WEEK = [
 		'MONDAY',
 		'TUESDAY',
@@ -198,10 +198,10 @@ const UserAccessTemplate = ({templateId, name, description}) => {
 	);
 };
 
-UserAccessTemplate.propTypes = {
+UserAccess.propTypes = {
 	templateId: PropTypes.string,
 	name: PropTypes.string,
 	description: PropTypes.string,
 };
 
-export default UserAccessTemplate;
+export default UserAccess;

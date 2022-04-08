@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
-import Templates from './Templates/Layout/Templates';
+import Templates from '../Templates/Layout/Templates';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import {NormalButton} from '../../../../styles/components/buttons';
+import {NormalButton} from '../../../../../styles/components/buttons';
 import {
 	TitleBar,
 	TitleBarButtons,
 	TitleBarText,
-} from '../../../../styles/components/iam/iam';
-import {TextBoxDescription} from '../../../../styles/components/iam/addPage';
+} from '../../../../../styles/components/iam/iam';
+import {TextBoxDescription} from '../../../../../styles/components/iam/addPage';
 
 const Container = styled.div``;
 

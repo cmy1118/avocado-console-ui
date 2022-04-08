@@ -3,26 +3,27 @@ import {
 	TitleBar,
 	TitleBarButtons,
 	TitleBarText,
-} from '../../../../styles/components/iam/iam';
+} from '../../../../../styles/components/iam/iam';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../styles/components/buttons';
+} from '../../../../../styles/components/buttons';
 import {
 	AddPageContent,
 	TextBoxDescription,
-} from '../../../../styles/components/iam/addPage';
-import {RowDiv} from '../../../../styles/components/style';
+} from '../../../../../styles/components/iam/addPage';
+import {RowDiv} from '../../../../../styles/components/style';
 import WritePolicy from './WritePolicy';
 import {useDispatch} from 'react-redux';
-import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
-import {policyTypes} from '../../../../utils/data';
-import PolicyPreviewDialogBox from '../../../DialogBoxs/Preview/PolicyPreviewDialogBox';
-import useTextBox from '../../../../hooks/useTextBox';
-import useComboBox from '../../../../hooks/useComboBox';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
+import {policyTypes} from '../../../../../utils/data';
+import PolicyPreviewDialogBox from '../../../../DialogBoxs/Preview/PolicyPreviewDialogBox';
+import useTextBox from '../../../../../hooks/useTextBox';
+import useComboBox from '../../../../../hooks/useComboBox';
 import {useHistory, useLocation} from 'react-router-dom';
+import {policyTypeOptions} from '../../../../../utils/policy/options';
 
-const addPolicy = {
+const createPolicy = {
 	title: '정책 작성',
 	description: '정책 유형에 해당되는 탬플릿 5개까지만 추가 가능합니다.',
 };
@@ -30,7 +31,7 @@ const addPolicy = {
 /**************************************************
  * ambacc244 - 새로운 정책 추가를 위한 기본 정보을 입력받는 컴포넌트
  **************************************************/
-const AddPolicy = () => {
+const CreatePolicy = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const location = useLocation();
@@ -45,10 +46,7 @@ const AddPolicy = () => {
 	});
 
 	const [policyType, policyTypeComboBox, setPolicyType] = useComboBox({
-		options: [
-			{key: policyTypes.iam, label: 'IAM'},
-			{key: policyTypes.pam, label: 'PAM'},
-		],
+		options: policyTypeOptions,
 	});
 
 	/**************************************************
@@ -118,8 +116,8 @@ const AddPolicy = () => {
 				</RowDiv>
 			</AddPageContent>
 			<WritePolicy
-				title={addPolicy.title}
-				description={addPolicy.description}
+				title={createPolicy.title}
+				description={createPolicy.description}
 				policyType={policyType}
 			/>
 			<PolicyPreviewDialogBox
@@ -135,4 +133,4 @@ const AddPolicy = () => {
 	);
 };
 
-export default AddPolicy;
+export default CreatePolicy;

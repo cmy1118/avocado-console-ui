@@ -3,8 +3,8 @@ import TemplateElement from '../../Layout/TemplateElement';
 import React, {useEffect} from 'react';
 import useRadio from '../../../../../../../hooks/useRadio';
 import {
-	policyOption,
 	personalInfoRestrictionMethodOptions,
+	policyOption,
 	restrictionOptions,
 	setUsageOptionByAttribute,
 	usageOptions,

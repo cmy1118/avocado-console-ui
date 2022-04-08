@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import TemplateElement from '../../Layout/TemplateElement';
 import {
-	policyOption,
 	patternTypeOptions,
+	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
 } from '../../../../../../../utils/policy/options';
