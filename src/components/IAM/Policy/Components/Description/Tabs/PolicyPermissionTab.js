@@ -5,13 +5,10 @@ import {TableTitle} from '../../../../../../styles/components/table';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
 import Table from '../../../../../Table/Table';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
+import {tableKeys} from '../../../../../../Constants/Table/keys';
 import {useDispatch} from 'react-redux';
 import IAM_GRANTED_POLICY from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantedPolicy';
-import {
-	roleAttributeConvertor,
-	ruleTypeDescription,
-} from '../../../../../../utils/preview/policyPreview';
+import {policyDetailsConverter} from '../../../../../../utils/policy/rule';
 
 const policyPermissionTab = {
 	title: '이 정책의 탬플릿',
@@ -35,28 +32,13 @@ const PolicyPermissionTab = ({policyId}) => {
 	 **************************************************/
 	useEffect(() => {
 		const getPolicyDetail = async () => {
-			const thisIs = await dispatch(
+			const policyDetail = await dispatch(
 				IAM_GRANTED_POLICY.asyncAction.getDetailsByPolicy({
 					policyId: policyId,
 				}),
 			);
-			console.log(thisIs.payload);
-			let previewAllData = [];
-			for (let i = 0; i < thisIs.payload.length; i++) {
-				let object = new Object();
-				if (i === 0) object.name = thisIs.payload[i].policyName;
-				object.id = thisIs.payload[i].attribute.ruleType;
-				object[DRAGGABLE_KEY] = thisIs.payload[i].attribute.ruleType;
-				object.permission =
-					ruleTypeDescription[thisIs.payload[i].attribute.ruleType];
-				object.value = roleAttributeConvertor(
-					thisIs.payload[i].attribute,
-				);
-				previewAllData.push(object);
-			}
 
-			console.log(previewAllData);
-			setPermission(previewAllData);
+			setPermission(policyDetailsConverter(policyDetail.payload));
 		};
 
 		getPolicyDetail();

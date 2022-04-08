@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
-import TemplateLayout from '../../Outline/TemplateLayout';
-import TemplateElement from '../../Outline/TemplateElement';
+import TemplateLayout from '../../Layout/TemplateLayout';
+import TemplateElement from '../../Layout/TemplateElement';
 import {
 	applicationOptions,
 	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/policyOptions';
+} from '../../../../../../../utils/policy/options';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useCheckBox from '../../../../../../../hooks/useCheckBox';
 import PropTypes from 'prop-types';

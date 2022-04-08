@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import TemplateLayout from '../Outline/TemplateLayout';
+import TemplateLayout from '../Layout/TemplateLayout';
 import useRadio from '../../../../../../hooks/useRadio';
 import useCheckBox from '../../../../../../hooks/useCheckBox';
-import TemplateElement from '../Outline/TemplateElement';
+import TemplateElement from '../Layout/TemplateElement';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import Resource from './Resource/Resource';
 

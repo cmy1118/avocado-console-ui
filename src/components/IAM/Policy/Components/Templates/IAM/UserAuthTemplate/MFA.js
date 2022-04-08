@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import TemplateLayout from '../../Outline/TemplateLayout';
-import TemplateElement from '../../Outline/TemplateElement';
+import TemplateLayout from '../../Layout/TemplateLayout';
+import TemplateElement from '../../Layout/TemplateElement';
 import {
 	additionalAuthMethodOptions,
 	authUsageOptions,
@@ -8,7 +8,7 @@ import {
 	requiredOptions,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/policyOptions';
+} from '../../../../../../../utils/policy/options';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useComboBox from '../../../../../../../hooks/useComboBox';
 import useCheckBox from '../../../../../../../hooks/useCheckBox';

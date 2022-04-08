@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import TemplateElement from '../Outline/TemplateElement';
-import TemplateLayout from '../Outline/TemplateLayout';
+import TemplateElement from '../Layout/TemplateElement';
+import TemplateLayout from '../Layout/TemplateLayout';
 import useRadio from '../../../../../../hooks/useRadio';
 import {DRAGGABLE_KEY} from '../../../../../../Constants/Table/keys';
 import Table from '../../../../../Table/Table';
@@ -12,9 +12,10 @@ import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
-import {ruleTypes} from '../../../../../../utils/template';
+
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
-import {blockingType2Options} from '../../../../../../utils/policyOptions';
+import {blockingType2Options} from '../../../../../../utils/policy/options';
+import {ruleTypes} from '../../../../../../utils/policy/rule';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)

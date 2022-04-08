@@ -25,8 +25,7 @@ export const NavItem = styled(NavLink)`
 	font-size: 16px;
 	font-style: normal;
 	line-height: 1.31;
-	letter-spacing: 0.1px;
-	color: ${(props) => (props?.selected ? '#e4f3f4' : '#212121')};
+	color: ${(props) => (props?.selected ? '#1e2a42' : '#212121')};
 	text-decoration: none;
 	align-items: center;
 `;

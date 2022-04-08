@@ -9,6 +9,7 @@ import IdentityVerification from './IdentityVerification';
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
+import {ruleTypes} from '../../../../../../../utils/policy/rule';
 
 /**************************************************
  * ambacc244 - 사용자 인증 템플릿 컴포넌트
@@ -89,19 +90,26 @@ const UserAuthTemplate = ({templateId, name, description}) => {
 	return (
 		<div>
 			<DeviceAuth
-				data={defaultData && defaultData.device_authentication}
+				data={
+					defaultData && defaultData[ruleTypes.device_authentication]
+				}
 				setTemplateData={setDeviceAuthenticationData}
 			/>
 			<MFA
-				data={defaultData && defaultData.mfa}
+				data={defaultData && defaultData[ruleTypes.mfa]}
 				setTemplateData={setMfaData}
 			/>
 			<FailOver
-				data={defaultData && defaultData.alternative_authn_failover}
+				data={
+					defaultData &&
+					defaultData[ruleTypes.alternative_authn_failover]
+				}
 				setTemplateData={setAlternativeAuthNFailOverAuthData}
 			/>
 			<IdentityVerification
-				data={defaultData && defaultData.identity_verification}
+				data={
+					defaultData && defaultData[ruleTypes.identity_verification]
+				}
 				setTemplateData={setIdentityVerificationData}
 			/>
 		</div>

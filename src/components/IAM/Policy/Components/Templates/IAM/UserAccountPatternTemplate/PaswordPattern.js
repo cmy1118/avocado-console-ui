@@ -1,5 +1,5 @@
-import TemplateLayout from '../../Outline/TemplateLayout';
-import TemplateElement from '../../Outline/TemplateElement';
+import TemplateLayout from '../../Layout/TemplateLayout';
+import TemplateElement from '../../Layout/TemplateElement';
 import React, {useEffect} from 'react';
 import useRadio from '../../../../../../../hooks/useRadio';
 import {
@@ -8,7 +8,7 @@ import {
 	restrictionOptions,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/policyOptions';
+} from '../../../../../../../utils/policy/options';
 import useTextBox from '../../../../../../../hooks/useTextBox';
 import useCheckBox from '../../../../../../../hooks/useCheckBox';
 import {RowDiv} from '../../../../../../../styles/components/style';

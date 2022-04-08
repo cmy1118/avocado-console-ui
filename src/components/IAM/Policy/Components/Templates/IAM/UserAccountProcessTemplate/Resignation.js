@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
-import TemplateLayout from '../../Outline/TemplateLayout';
-import TemplateElement from '../../Outline/TemplateElement';
+import TemplateLayout from '../../Layout/TemplateLayout';
+import TemplateElement from '../../Layout/TemplateElement';
 import {
 	blockingTypeOptions,
 	gracePeriodUsageOptions,
 	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/policyOptions';
+} from '../../../../../../../utils/policy/options';
 import useRadio from '../../../../../../../hooks/useRadio';
 import PropTypes from 'prop-types';
 import useTextBox from '../../../../../../../hooks/useTextBox';

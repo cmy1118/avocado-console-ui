@@ -7,10 +7,10 @@ import {
 	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/policyOptions';
+} from '../../../../../../../utils/policy/options';
 import useTextBox from '../../../../../../../hooks/useTextBox';
-import TemplateLayout from '../../Outline/TemplateLayout';
-import TemplateElement from '../../Outline/TemplateElement';
+import TemplateLayout from '../../Layout/TemplateLayout';
+import TemplateElement from '../../Layout/TemplateElement';
 import {RowDiv} from '../../../../../../../styles/components/style';
 
 const passwordExpired = {

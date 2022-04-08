@@ -18,6 +18,10 @@ import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
 import POLICY_MANAGEMENT_ACTION_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policyActionTemplate';
 import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/PAM/TemplateManagement/ActionManagement/actionTemplate';
+import {
+	policyDetailsConverter,
+	policyDetailsPreviewConverter,
+} from '../../../utils/policy/rule';
 
 const policyPreviewDialogBox = {
 	IAM: 'iam*',
@@ -342,21 +346,10 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	 **********************************************************/
 	useEffect(() => {
 		//TODO:정책 생성을 눌렀을시 렌더링 실행되도록
-		let previewAllData = [];
-		//IAM - 규칙 템플릿 데이터 처리
-		console.log(ruleTemplates);
 
-		// Object.values(ruleTemplates).map((v) => {
-		// 	for (let i = 0; i < v.attributes.length; i++) {
-		// 		let object = new Object();
-		// 		if (i === 0) object.policy = v.name;
-		// 		object.id = v.attributes[i].ruleType;
-		// 		object.detail = policyDescription[v.attributes[i].ruleType];
-		// 		object.value = roleAttributeConvertor(v.attributes[i]);
-		// 		previewAllData.push(object);
-		// 	}
-		// });
-		console.log(actionTemplates);
+		//IAM - 규칙 템플릿 데이터 처리
+		setPreviewData(policyDetailsPreviewConverter(ruleTemplates));
+
 		//IAM - 권한(action) 템플릿 데이터 처리
 		//TODO 함수로 모듈화할 예정입니다
 
@@ -374,7 +367,7 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 
 		//PAM - 권한(action) 템플릿 데이터 처리
 
-		setPreviewData(previewAllData);
+		// setPreviewData(previewAllData);
 	}, [actionTemplates, ruleTemplates]);
 
 	return (

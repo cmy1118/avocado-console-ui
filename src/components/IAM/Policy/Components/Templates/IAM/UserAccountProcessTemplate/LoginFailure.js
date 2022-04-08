@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 
-import TemplateElement from '../../Outline/TemplateElement';
+import TemplateElement from '../../Layout/TemplateElement';
 import {
 	blockingTypeOptions,
 	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/policyOptions';
-import TemplateLayout from '../../Outline/TemplateLayout';
+} from '../../../../../../../utils/policy/options';
+import TemplateLayout from '../../Layout/TemplateLayout';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../../styles/components/style';

@@ -8,6 +8,7 @@ import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../../reducers/api/IAM/
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import {policyTypes} from '../../../../../../../utils/data';
+import {ruleTypes} from '../../../../../../../utils/policy/rule';
 
 /**************************************************
  * ambacc244 - 사용자 계정 패턴 컴포넌트
@@ -73,11 +74,11 @@ const UserAccountPatternTemplate = ({templateId, name, description}) => {
 	return (
 		<div>
 			<UserIdPattern
-				data={defaultData && defaultData.user_id_pattern}
+				data={defaultData && defaultData[ruleTypes.user_id_pattern]}
 				setTemplateData={setUserIdPatternData}
 			/>
 			<PaswordPattern
-				data={defaultData && defaultData.password_pattern}
+				data={defaultData && defaultData[ruleTypes.password_pattern]}
 				setTemplateData={setPaswordPatternData}
 			/>
 		</div>

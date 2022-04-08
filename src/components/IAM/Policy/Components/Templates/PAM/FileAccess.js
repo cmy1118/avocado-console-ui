@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import TableContainer from '../../../../../Table/TableContainer';
 import Table from '../../../../../Table/Table';
-import TemplateLayout from '../Outline/TemplateLayout';
+import TemplateLayout from '../Layout/TemplateLayout';
 import {DRAGGABLE_KEY} from '../../../../../../Constants/Table/keys';
 import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import TableComboBox from '../../../../../Table/ColumnCells/TableComboBox';

@@ -1,6 +1,5 @@
 import {SummaryList} from '../../../../../styles/components/iam/descriptionPage';
 import {LiText} from '../../../../../styles/components/text';
-import {policyManageType} from '../../../../../utils/policy';
 import {RowDiv} from '../../../../../styles/components/style';
 import {NormalButton} from '../../../../../styles/components/buttons';
 import React, {useCallback, useEffect} from 'react';
@@ -13,6 +12,7 @@ import useTextArea from '../../../../../hooks/useTextArea';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import {isFulfilled} from '../../../../../utils/redux';
 import {parentheses, squareBrackets} from '../../../../../utils/word';
+import {policyManageType} from '../../../../../utils/policy/policy';
 
 export const policySummary = {
 	name: '정책 이름 : ',

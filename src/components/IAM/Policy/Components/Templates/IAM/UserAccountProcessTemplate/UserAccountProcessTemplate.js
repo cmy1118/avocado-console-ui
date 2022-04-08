@@ -10,6 +10,7 @@ import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../../reducers/api/IAM/
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import IAM_RULE_TEMPLATE_DETAIL from '../../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplateDetail';
 import PasswordExpired from './PasswordExpired';
+import {ruleTypes} from '../../../../../../../utils/policy/rule';
 
 /**************************************************
  * ambacc244 - 사용자 계정 처리 컴포넌트
@@ -91,27 +92,29 @@ const UserAccountProcessTemplate = ({templateId, name, description}) => {
 	return (
 		<div>
 			<LoginFailure
-				data={defaultData && defaultData.sign_in_fail_blocking}
+				data={
+					defaultData && defaultData[ruleTypes.sign_in_fail_blocking]
+				}
 				setTemplateData={setLoginFailureData}
 			/>
 			<Dormant
-				data={defaultData && defaultData.dormant_blocking}
+				data={defaultData && defaultData[ruleTypes.dormant_blocking]}
 				setTemplateData={setDormantData}
 			/>
 			<AccountActivePeriod
-				data={defaultData && defaultData.account_expired}
+				data={defaultData && defaultData[ruleTypes.account_expired]}
 				setTemplateData={setAccountActivePeriodData}
 			/>
 			<PasswordExpired
-				data={defaultData && defaultData.password_expired}
+				data={defaultData && defaultData[ruleTypes.password_expired]}
 				setTemplateData={setPasswordExpiredData}
 			/>
 			<ModifyingGroup
-				data={defaultData && defaultData.group_modifying}
+				data={defaultData && defaultData[ruleTypes.group_modifying]}
 				setTemplateData={setModifyingGroupData}
 			/>
 			<Resignation
-				data={defaultData && defaultData.resigned}
+				data={defaultData && defaultData[ruleTypes.resigned]}
 				setTemplateData={setResignationData}
 			/>
 		</div>

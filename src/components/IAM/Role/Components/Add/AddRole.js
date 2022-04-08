@@ -22,12 +22,12 @@ import {
 	TitleBarText,
 } from '../../../../../styles/components/iam/iam';
 import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
-import TemplateElement from '../../../Policy/Components/Templates/Outline/TemplateElement';
+import TemplateElement from '../../../Policy/Components/Templates/Layout/TemplateElement';
 import useRadio from '../../../../../hooks/useRadio';
 import {
 	patternTypeOptions,
 	usageOptions,
-} from '../../../../../utils/policyOptions';
+} from '../../../../../utils/policy/options';
 import useTextBox from '../../../../../hooks/useTextBox';
 
 const AddRole = ({values, groupMembers, setValues}) => {

@@ -11,7 +11,7 @@ import {
 	actionTemplateFilter,
 	getActionTemplatesFilter,
 } from '../../../../../../utils/template';
-import TemplateLayout from '../Outline/TemplateLayout';
+import TemplateLayout from '../Layout/TemplateLayout';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
 import Table from '../../../../../Table/Table';

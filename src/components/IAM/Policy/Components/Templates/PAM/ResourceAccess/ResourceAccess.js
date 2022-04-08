@@ -1,11 +1,11 @@
 import React from 'react';
-import TemplateLayout from '../../Outline/TemplateLayout';
+import TemplateLayout from '../../Layout/TemplateLayout';
 import PropTypes from 'prop-types';
 import useRadio from '../../../../../../../hooks/useRadio';
 import {
 	policyOption,
 	resourceOptions,
-} from '../../../../../../../utils/policyOptions';
+} from '../../../../../../../utils/policy/options';
 import ResourceAccessTemplate from './ResourceAccessTemplate';
 
 /**********************************************************************

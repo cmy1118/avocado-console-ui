@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import TemplateLayout from '../../Outline/TemplateLayout';
-import TemplateElement from '../../Outline/TemplateElement';
+import TemplateLayout from '../../Layout/TemplateLayout';
+import TemplateElement from '../../Layout/TemplateElement';
 import TimeInterval from '../../../../../../RecycleComponents/Templates/TimeInterval';
 import React, {useEffect, useState} from 'react';
 import {DayOfTheWeek} from './ConnectReasonTemplate';
 import useRadio from '../../../../../../../hooks/useRadio';
-import {restrictionOptions} from '../../../../../../../utils/policyOptions';
+import {restrictionOptions} from '../../../../../../../utils/policy/options';
 
 const allowReasonTime = {
 	title: '사유 입력 시간',

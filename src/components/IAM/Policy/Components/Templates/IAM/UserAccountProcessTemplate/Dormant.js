@@ -1,15 +1,15 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 
-import TemplateLayout from '../../Outline/TemplateLayout';
-import TemplateElement from '../../Outline/TemplateElement';
+import TemplateLayout from '../../Layout/TemplateLayout';
+import TemplateElement from '../../Layout/TemplateElement';
 import {RowDiv} from '../../../../../../../styles/components/style';
 import {
 	blockingTypeOptions,
 	policyOption,
 	setUsageOptionByAttribute,
 	usageOptions,
-} from '../../../../../../../utils/policyOptions';
+} from '../../../../../../../utils/policy/options';
 import useTextBox from '../../../../../../../hooks/useTextBox';
 import useRadio from '../../../../../../../hooks/useRadio';
 

@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 
-import TemplateLayout from '../../Outline/TemplateLayout';
+import TemplateLayout from '../../Layout/TemplateLayout';
 import {
 	identityVerificationMethodOptions,
 	policyOption,
 	usageOptions,
-} from '../../../../../../../utils/policyOptions';
-import TemplateElement from '../../Outline/TemplateElement';
+} from '../../../../../../../utils/policy/options';
+import TemplateElement from '../../Layout/TemplateElement';
 import useRadio from '../../../../../../../hooks/useRadio';
 import useTextBox from '../../../../../../../hooks/useTextBox';
 import {RowDiv} from '../../../../../../../styles/components/style';
