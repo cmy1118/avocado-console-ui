@@ -138,7 +138,7 @@ const getEventsAction = createAsyncThunk(
 			params: {
 				fromTime: payload.fromTime,
 				toTime: payload.toTime,
-				roleld: payload.roleld,
+				roleId: payload.roleId,
 			},
 			baseURL: baseURL.openApi,
 		});

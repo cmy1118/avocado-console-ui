@@ -18,7 +18,7 @@ import {
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 
 let TAG_NUMBER = 0;
-const AddTagToGroup = ({space, isFold, setIsFold}) => {
+const AddTagToGroup = ({space, isFold, setIsFold, setValue}) => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
 	const [select, columns] = useSelectColumn(
@@ -74,6 +74,10 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 		);
 	}, [tagData, dispatch]);
 
+	useEffect(() => {
+		setValue(data);
+	}, [data, setValue]);
+
 	return (
 		<FoldableContainer>
 			<TableFold
@@ -111,6 +115,7 @@ const AddTagToGroup = ({space, isFold, setIsFold}) => {
 AddTagToGroup.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
+	setValue: PropTypes.func,
 	space: PropTypes.string,
 };
 export default AddTagToGroup;

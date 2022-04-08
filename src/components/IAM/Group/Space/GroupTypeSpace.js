@@ -28,15 +28,12 @@ const paths = [
 const GroupTypeSpace = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const [select, columns] = useSelectColumn(
-		tableColumns[tableKeys.groups.type],
-	);
 	// const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
+	// const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [initialGroupTypes, setInitialGroupTypes] = useState([]);
 	const [deleteList, setDeleteList] = useState([]);
 
-	const [data, setData] = useState(groupTypes);
+	const [data, setData] = useState([]);
 	const tableData = useMemo(
 		() =>
 			data.map((v) => ({
@@ -45,6 +42,11 @@ const GroupTypeSpace = () => {
 				[DRAGGABLE_KEY]: v.id,
 			})),
 		[data],
+	);
+
+	const [select, columns] = useSelectColumn(
+		tableColumns[tableKeys.groups.type],
+		tableData,
 	);
 
 	const onClickAddGroups = useCallback(() => {
@@ -71,12 +73,26 @@ const GroupTypeSpace = () => {
 		]);
 	}, [data]);
 
-	const onClickSaveGroupTypes = useCallback(() => {
-		data.forEach((v) => {
-			//	console.log(v);
+	const fetchData = useCallback(async () => {
+		try {
+			const res = await dispatch(
+				IAM_USER_GROUP_TYPE.asyncAction.findAllAction({
+					range: 'elements=0-50',
+				}),
+			).unwrap();
+			console.log(res);
+			setData(res.data);
+			setInitialGroupTypes(res.data);
+		} catch (err) {
+			console.error(err);
+		}
+	}, [dispatch]);
+
+	const onClickSaveGroupTypes = useCallback(async () => {
+		for await (let v of data) {
 			if (v.new) {
 				console.log(v);
-				dispatch(
+				await dispatch(
 					IAM_USER_GROUP_TYPE.asyncAction.createAction({
 						name: v.name,
 						description: v.description,
@@ -88,7 +104,7 @@ const GroupTypeSpace = () => {
 						initialGroupTypes.find((x) => x.id === v.id),
 					) !== JSON.stringify(v)
 				) {
-					dispatch(
+					await dispatch(
 						IAM_USER_GROUP_TYPE.asyncAction.updateAction({
 							id: v.id,
 							name: v.name,
@@ -97,49 +113,41 @@ const GroupTypeSpace = () => {
 					);
 				}
 			}
-		});
-		deleteList.forEach((v) => {
-			console.log(v);
+		}
+		for await (let v of deleteList) {
 			dispatch(
 				IAM_USER_GROUP_TYPE.asyncAction.deleteAction({
 					id: v.id,
 				}),
 			);
-		});
-	}, [data, deleteList, dispatch, initialGroupTypes]);
+		}
 
-	const onClickDeleteGroupTypes = useCallback(() => {
+		await setData((prev) =>
+			prev.map((v) => {
+				delete v.new;
+				return v;
+			}),
+		);
+
+		await setDeleteList([]);
+		await fetchData();
+	}, [data, deleteList, dispatch, fetchData, initialGroupTypes]);
+
+	const onClickDeleteGroupTypes = useCallback(async () => {
 		//	console.log(select);
 		if (select.length) {
-			console.log(select);
-			setDeleteList((prev) => [...prev, ...select]);
-			const selectedIds = select.map((s) => s.id);
-			console.log(selectedIds);
-			setData((prev) => prev.filter((v) => !selectedIds.includes(v.id)));
-			// select.forEach((v) => {
-			// 	dispatch(
-			// 		IAM_USER_GROUP_TYPE.asyncAction.deleteAction({
-			// 			id: v.id,
-			// 		}),
-			// 	);
-			// });
-			// dispatch(
-			// 	IAM_USER_GROUP_TYPE.asyncAction.findAllAction({
-			// 		range: 'elements=0-50',
-			// 	}),
-			// );
+			for await (let v of select) {
+				setData((prev) => prev.filter((x) => x.id !== v.id));
+			}
+			setDeleteList((prev) => [...prev, ...select.filter((v) => !v.new)]);
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
 	}, [select]);
 
 	useEffect(() => {
-		dispatch(
-			IAM_USER_GROUP_TYPE.asyncAction.findAllAction({
-				range: 'elements=0-50',
-			}),
-		);
-	}, [dispatch]);
+		fetchData();
+	}, [fetchData]);
 
 	// useEffect(() => {
 	// 	const fetchData = async () => {
@@ -157,21 +165,21 @@ const GroupTypeSpace = () => {
 	// 	fetchData();
 	// }, [dispatch]);
 
-	useEffect(() => {
-		console.log(groupTypes);
-		if (groupTypes) {
-			setData(
-				groupTypes.map((v) => ({
-					...v,
-				})),
-			);
-			setInitialGroupTypes(
-				groupTypes.map((v) => ({
-					...v,
-				})),
-			);
-		}
-	}, [groupTypes]);
+	// useEffect(() => {
+	// 	console.log(groupTypes);
+	// 	if (groupTypes) {
+	// 		setData(
+	// 			groupTypes.map((v) => ({
+	// 				...v,
+	// 			})),
+	// 		);
+	// 		setInitialGroupTypes(
+	// 			groupTypes.map((v) => ({
+	// 				...v,
+	// 			})),
+	// 		);
+	// 	}
+	// }, [groupTypes]);
 
 	return (
 		<IamContainer>

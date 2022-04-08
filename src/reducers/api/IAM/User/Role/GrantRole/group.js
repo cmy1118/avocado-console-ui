@@ -11,7 +11,7 @@ const grantAction = createAsyncThunk(
 		// eslint-disable-next-line no-console
 		const response = await Axios.post(
 			`/open-api/v1/iam/user-groups/${payload.id}/roles`,
-			[...payload.roleld],
+			[...payload.roleId],
 			{
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
@@ -30,7 +30,7 @@ const revokeAction = createAsyncThunk(
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
-		console.log('payload.roleld:', payload.roleId);
+		console.log('payload.roleId:', payload.roleId);
 		const response = await Axios.delete(
 			`/open-api/v1/iam/user-groups/${payload.id}/roles`,
 			{
