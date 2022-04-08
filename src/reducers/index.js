@@ -10,6 +10,7 @@ import IAM_USER_GROUP_TYPE from './api/IAM/User/Group/groupType';
 import IAM_USER_GROUP from './api/IAM/User/Group/group';
 import IAM_USER_GROUP_MEMBER from './api/IAM/User/Group/groupMember';
 import IAM_CLIENT from './api/IAM/Client/client';
+import IAM_USER_GROUP_TAG from './api/IAM/User/Group/tags';
 
 import PAGINATION from './pagination';
 import SETTING from './setting';
@@ -146,6 +147,7 @@ const rootReducer = combineReducers({
 	[IAM_GRANT_POLICY_BY_ROLE.name]: IAM_GRANT_POLICY_BY_ROLE.reducer,
 	[IAM_GRANT_POLICY_BY_USER.name]: IAM_GRANT_POLICY_BY_USER.reducer,
 	[IAM_POLICY_TEMPLATE.name]: IAM_POLICY_TEMPLATE.reducer,
+	[IAM_USER_GROUP_TAG.name]: IAM_USER_GROUP_TAG.reducer,
 	/******************************************/
 
 	/******************************************/

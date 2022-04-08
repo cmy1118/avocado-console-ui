@@ -25,6 +25,7 @@ import useModal from '../../../../hooks/useModal';
 import ParentGroupDialogBox from '../../../DialogBoxs/Form/ParentGroupDialogBox';
 import {getIdFormLocation} from '../../../../utils/tableDataConverter';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import IAM_USER_GROUP_TAG from '../../../../reducers/api/IAM/User/Group/tags';
 
 const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 	const dispatch = useDispatch();
@@ -33,6 +34,10 @@ const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 	const [groups, setGroups] = useState([]);
 	const [parentGroupId, setParentGroupId] = useState(null);
 	// const {groups} = useSelector(IAM_USER_GROUP.selector);
+
+	console.log(groupMembers);
+	console.log(groupRoles);
+	console.log(groupTags);
 
 	// 상위그룹 선택하는 모달
 	const [ParentGroupModal, showParentGroupModal] = useModal();
@@ -76,18 +81,32 @@ const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 						}),
 					).unwrap();
 
-					console.log(getIdFormLocation(response.headers.location));
-					dispatch(
+					const groupId = getIdFormLocation(
+						response.headers.location,
+					);
+
+					await dispatch(
 						IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.grantAction({
+							id: groupId,
 							roleId: groupRoles,
 						}),
 					);
+
+					for await (let v of groupTags) {
+						await dispatch(
+							IAM_USER_GROUP_TAG.asyncAction.createAction({
+								groupId: groupId,
+								name: v.name,
+								value: v.value,
+							}),
+						);
+					}
 				}
 			} catch (err) {
 				console.error(err);
 			}
 		},
-		[dispatch, groupMembers, groupRoles, parentGroupId],
+		[dispatch, groupMembers, groupRoles, groupTags, parentGroupId],
 	);
 
 	const handleFocus = useCallback(() => {
