@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import {useDispatch, useSelector} from 'react-redux';
-import IAM_ROLES from '../../../../../../reducers/api/IAM/User/Role/roles';
+import {useDispatch} from 'react-redux';
 import Table from '../../../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
@@ -11,18 +10,11 @@ import {
 } from '../../../../../../styles/components/buttons';
 import {TableTitle} from '../../../../../../styles/components/table';
 import TableOptionText from '../../../../../Table/Options/TableOptionText';
-import TableFold from '../../../../../Table/Options/TableFold';
 import DragContainer from '../../../../../Table/DragContainer';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
-import {FoldableContainer} from '../../../../../../styles/components/iam/iam';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../../../reducers/api/IAM/User/Role/GrantRole/user';
-import PAGINATION from '../../../../../../reducers/pagination';
-import * as _ from 'lodash';
-import {CollapsbleContent} from '../../../../../../styles/components/style';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
-import IAM_USER_GROUP_MEMBER from '../../../../../../reducers/api/IAM/User/Group/groupMember';
-import IAM_USER from '../../../../../../reducers/api/IAM/User/User/user';
-import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
 
 const UserRoleTab = ({userUid, isSummaryOpened}) => {
 	const dispatch = useDispatch();

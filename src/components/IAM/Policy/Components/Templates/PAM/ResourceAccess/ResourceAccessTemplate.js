@@ -7,8 +7,6 @@ import AddAcessResourceAccountDialogBox from '../../../../../../DialogBoxs/Form/
 import RRM_RESOURCE from '../../../../../../../reducers/api/PAM/Resource/resource';
 import {AllreplaceStr} from '../../../../../../../utils/dataFitering';
 import {useDispatch} from 'react-redux';
-import useRadio from '../../../../../../../hooks/useRadio';
-import {resourceOptions} from '../../../../../../../utils/policy/options';
 import PropTypes from 'prop-types';
 import FoldableContainer from '../../../../../../Table/Options/FoldableContainer';
 

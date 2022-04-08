@@ -7,19 +7,16 @@ import DropButton from '../../../../Table/DropButton';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
-import TableFold from '../../../../Table/Options/TableFold';
-import PropTypes from 'prop-types';
 import {
 	ColDiv,
-	CollapsbleContent,
 	RowDiv,
 	TableHeader,
 } from '../../../../../styles/components/style';
 import DragContainer from '../../../../Table/DragContainer';
-import {FoldableContainer} from '../../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../../reducers/pagination';
 import CURRENT_TARGET from '../../../../../reducers/currentTarget';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
+import FoldableContainer from '../../../../Table/Options/FoldableContainer';
 
 const AssignRoleToUser = () => {
 	const dispatch = useDispatch();

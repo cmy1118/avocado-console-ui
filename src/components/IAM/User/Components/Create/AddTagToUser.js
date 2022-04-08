@@ -1,17 +1,17 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import Table from '../../../Table/Table';
-import CURRENT_TARGET from '../../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
+import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../Constants/Table/columns';
+import CURRENT_TARGET from '../../../../../reducers/currentTarget';
+import FoldableContainer from '../../../../Table/Options/FoldableContainer';
+import {TitleBarButtons} from '../../../../../styles/components/iam/iam';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../styles/components/buttons';
-import TableOptionText from '../../../Table/Options/TableOptionText';
-import {TitleBarButtons} from '../../../../styles/components/iam/iam';
-import useSelectColumn from '../../../../hooks/table/useSelectColumn';
-import FoldableContainer from '../../../Table/Options/FoldableContainer';
+} from '../../../../../styles/components/buttons';
+import TableOptionText from '../../../../Table/Options/TableOptionText';
+import Table from '../../../../Table/Table';
 
 const AddTagToUser = () => {
 	const dispatch = useDispatch();

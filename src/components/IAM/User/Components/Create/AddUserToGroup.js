@@ -14,12 +14,12 @@ import {
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import DragContainer from '../../../../Table/DragContainer';
 import IAM_USER_GROUP_TYPE from '../../../../../reducers/api/IAM/User/Group/groupType';
-import {FoldableContainer} from '../../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../../reducers/api/IAM/User/Group/groupMember';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {totalNumberConverter} from '../../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
+import FoldableContainer from '../../../../Table/Options/FoldableContainer';
 
 const AddUserToGroup = () => {
 	const dispatch = useDispatch();
