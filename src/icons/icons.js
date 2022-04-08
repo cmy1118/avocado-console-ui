@@ -73,6 +73,21 @@ export const policyIcon = <span className='material-icons'>article</span>;
 export const folderIcon = <span className='material-icons'>folder</span>;
 export const dashboardIcon = <span className='material-icons'>dashboard</span>;
 
+export const nextPathIcon = (
+	<svg
+		width='12'
+		height='13'
+		viewBox='0 0 12 13'
+		fill='none'
+		xmlns='http://www.w3.org/2000/svg'
+	>
+		<path
+			d='M4.644 3.855a.498.498 0 0 0 0 .705l1.94 1.94-1.94 1.94a.498.498 0 1 0 .705.705L7.644 6.85a.498.498 0 0 0 0-.705L5.35 3.85a.503.503 0 0 0-.705.005z'
+			fill='#85919C'
+		/>
+	</svg>
+);
+
 export const fileIcon = (
 	<svg
 		xmlns='http://www.w3.org/2000/svg'

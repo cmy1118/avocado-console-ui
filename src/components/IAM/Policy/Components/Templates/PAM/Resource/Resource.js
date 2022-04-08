@@ -3,8 +3,8 @@ import ResourceSelectionContainer from './ResourceSelectionContainer';
 import {
 	policyOption,
 	resourceOptions,
-} from '../../../../../../../utils/policyOptions';
-import TemplateLayout from '../../Outline/TemplateLayout';
+} from '../../../../../../../utils/policy/options';
+import TemplateLayout from '../../Layout/TemplateLayout';
 import React, {useEffect, useState} from 'react';
 import useRadio from '../../../../../../../hooks/useRadio';
 

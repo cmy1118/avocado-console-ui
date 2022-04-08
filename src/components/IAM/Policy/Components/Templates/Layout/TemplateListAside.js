@@ -24,6 +24,7 @@ import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/P
 import styled from 'styled-components';
 import {dummyPamRule} from '../../../../../../utils/dummyData';
 import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/PAM/TemplateManagement/ActionManagement/actionTemplate';
+import {categoryTypes} from '../../../../../../utils/policy/policy';
 
 const _Title = styled.div``;
 
@@ -44,26 +45,26 @@ const contents = {
 
 const templateComponents = {
 	//iam - rule
-	auth: UserAuthTemplate,
-	account: UserAccountProcessTemplate,
-	userAccess: UserAccessTemplate,
-	session: UserSessionTemplate,
-	pattern: UserSessionTemplate,
-	//iam - pam
-	categoryType1: ConnectResourceTemplate,
-	categoryType2: MFA,
-	categoryType3: ResourceAccessRuleTemplate,
-	categoryType4: ConnectReason,
-	categoryType5: CommandControl,
-	categoryType6: FileAccess,
+	[categoryTypes.auth]: UserAuthTemplate,
+	[categoryTypes.account]: UserAccountProcessTemplate,
+	[categoryTypes.userAccess]: UserAccessTemplate,
+	[categoryTypes.session]: UserSessionTemplate,
+	[categoryTypes.pattern]: UserSessionTemplate,
+	//pam - rule
+	[categoryTypes.categoryType1]: ConnectResourceTemplate,
+	[categoryTypes.categoryType2]: MFA,
+	[categoryTypes.categoryType3]: ResourceAccessRuleTemplate,
+	[categoryTypes.categoryType4]: ConnectReason,
+	[categoryTypes.categoryType5]: CommandControl,
+	[categoryTypes.categoryType6]: FileAccess,
 	//iam - action
-	user: UserManagement,
-	policy: PolicyManagement,
-	role: RoleManagement,
+	[categoryTypes.user]: UserManagement,
+	[categoryTypes.policy]: PolicyManagement,
+	[categoryTypes.role]: RoleManagement,
 	//pam - action
-	resource: ResourceManagement,
-	collect: ResourceCollectManagement,
-	access: ResourceAccess,
+	[categoryTypes.resource]: ResourceManagement,
+	[categoryTypes.collect]: ResourceCollectManagement,
+	[categoryTypes.access]: ResourceAccess,
 };
 
 /**************************************************

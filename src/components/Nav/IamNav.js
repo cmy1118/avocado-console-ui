@@ -21,7 +21,6 @@ const _NavHeader = styled.div`
 	font-stretch: normal;
 	font-style: normal;
 	line-height: 1.33;
-	letter-spacing: -0.25px;
 	color: #1e2a42;
 	height: 48px;
 	display: flex;

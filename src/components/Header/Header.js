@@ -9,6 +9,7 @@ import {NavItem} from '../../styles/components/nav';
 
 const _Container = styled.div`
 	height: 44px;
+	min-height: 44px;
 	background: #178082;
 	display: flex;
 	justify-content: space-between;

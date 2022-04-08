@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import TemplateLayout from '../Outline/TemplateLayout';
+import TemplateLayout from '../Layout/TemplateLayout';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
-import TemplateElement from '../Outline/TemplateElement';
+import TemplateElement from '../Layout/TemplateElement';
 import TimeInterval from '../../../../../RecycleComponents/Templates/TimeInterval';
 import useRadio from '../../../../../../hooks/useRadio';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';

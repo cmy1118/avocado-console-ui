@@ -8,7 +8,7 @@ import RRM_RESOURCE from '../../../../../../../reducers/api/PAM/Resource/resourc
 import {AllreplaceStr} from '../../../../../../../utils/dataFitering';
 import {useDispatch} from 'react-redux';
 import useRadio from '../../../../../../../hooks/useRadio';
-import {resourceOptions} from '../../../../../../../utils/policyOptions';
+import {resourceOptions} from '../../../../../../../utils/policy/options';
 import PropTypes from 'prop-types';
 import ResourceSelectionContainer from '../Resource/ResourceSelectionContainer';
 import TableFold from '../../../../../../Table/Options/TableFold';

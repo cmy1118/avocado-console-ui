@@ -1,20 +1,53 @@
-import {policyOption} from '../policyOptions';
+import {policyOption} from './options';
+import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
+
+export const ruleTypes = {
+	//iam - 사용자 인증
+	device_authentication: 'device_authentication',
+	mfa: 'mfa',
+	alternative_authn_failover: 'alternative_authn_failover',
+	identity_verification: 'identity_verification',
+	//iam - 사용자 계정 처리
+	sign_in_fail_blocking: 'sign_in_fail_blocking',
+	dormant_blocking: 'dormant_blocking',
+	account_expired: 'account_expired',
+	password_expired: 'password_expired',
+	group_modifying: 'group_modifying',
+	resigned: 'resigned',
+	//iam - 사용자 접근
+	allowed_service_time: 'allowed_service_time',
+	//iam - 세션 정책
+	session_timeout: 'session_timeout',
+	screen_saver: 'screen_saver',
+	//iam - 패턴 정책
+	user_id_pattern: 'user_id_pattern',
+	password_pattern: 'password_pattern',
+};
 
 export const ruleTypeDescription = {
-	device_authentication: '단말기 인증',
-	mfa: 'MFA(다중 인증)',
-	alternative_authn_failover: 'Fail Over',
-	identity_verification: '본인 확인 인증',
-	sign_in_fail_blocking: '로그인 실패',
-	dormant_blocking: '휴먼',
-	account_expired: '계정 사용 기간',
-	password_expired: '비밀번호 사용 기간',
-	group_modifying: '그룹 변경',
-	resigned: '퇴사(탈퇴)',
-	user_id_pattern: '사용자 ID 패턴',
-	password_pattern: '비밀번호 패턴',
-	session_timeout: '세션 타임 아웃',
-	screen_saver: '화면 보호기',
+	//iam - 사용자 인증
+	[ruleTypes.device_authentication]: '단말기 인증',
+	[ruleTypes.mfa]: 'MFA(다중 인증)',
+	[ruleTypes.alternative_authn_failover]: 'Fail Over',
+	[ruleTypes.identity_verification]: '본인 확인 인증',
+	//iam - 사용자 계정 처리
+	[ruleTypes.sign_in_fail_blocking]: '로그인 실패',
+	[ruleTypes.dormant_blocking]: '휴먼',
+	[ruleTypes.account_expired]: '계정 사용 기간',
+	[ruleTypes.password_expired]: '비밀번호 사용 기간',
+	[ruleTypes.group_modifying]: '그룹 변경',
+	[ruleTypes.resigned]: '퇴사(탈퇴)',
+	//iam - 사용자 접근
+	[ruleTypes.allowed_service_time +
+	policyOption.application['console-ui:*'].key]: 'Management Console',
+	[ruleTypes.allowed_service_time +
+	policyOption.application['web-terminal-ui:*'].key]: 'Web Terminal',
+	//iam - 세션 정책
+	[ruleTypes.session_timeout]: '세션 타임 아웃',
+	[ruleTypes.screen_saver]: '화면 보호기',
+	//iam - 패턴 정책
+	[ruleTypes.user_id_pattern]: '사용자 ID 패턴',
+	[ruleTypes.password_pattern]: '비밀번호 패턴',
 };
 
 /**************************************************
@@ -51,13 +84,13 @@ const printMfa = (attribute, num) => {
 };
 
 /**************************************************
- * ambacc244 - 정책 생성 요약정보(규칙 데이터 필터링 함수)
+ * ambacc244 - IAM ruleType에 따라 rule attribute 데이터 변경
  **************************************************/
-export const roleAttributeConvertor = (attribute) => {
+export const iamRuleAttributeConverterByRuleType = (attribute) => {
 	let string = '';
 
 	switch (attribute.ruleType) {
-		case 'device_authentication': {
+		case ruleTypes.device_authentication: {
 			string += printUsage(attribute);
 
 			if (attribute?.usage) {
@@ -72,7 +105,8 @@ export const roleAttributeConvertor = (attribute) => {
 
 			break;
 		}
-		case 'mfa': {
+
+		case ruleTypes.mfa: {
 			string += printUsage(attribute);
 
 			if (attribute?.usage) {
@@ -86,7 +120,7 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
-		case 'alternative_authn_failover': {
+		case ruleTypes.alternative_authn_failover: {
 			string += printUsage(attribute);
 
 			if (attribute?.usage) {
@@ -106,7 +140,7 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
-		case 'identity_verification': {
+		case ruleTypes.identity_verification: {
 			string += printUsage(attribute);
 			if (attribute?.usage) {
 				string +=
@@ -123,7 +157,7 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
-		case 'sign_in_fail_blocking': {
+		case ruleTypes.sign_in_fail_blocking: {
 			string += printUsage(attribute);
 
 			if (attribute?.usage) {
@@ -138,7 +172,7 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
-		case 'dormant_blocking': {
+		case ruleTypes.dormant_blocking: {
 			string += printUsage(attribute);
 
 			if (attribute?.usage) {
@@ -156,7 +190,7 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
-		case 'account_expired': {
+		case ruleTypes.account_expired: {
 			string += printUsage(attribute);
 
 			if (attribute?.usage) {
@@ -171,7 +205,7 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
-		case 'password_expired': {
+		case ruleTypes.password_expired: {
 			string += printUsage(attribute);
 			console.log(attribute);
 			if (attribute?.usage) {
@@ -187,14 +221,14 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
-		case 'group_modifying': {
+		case ruleTypes.group_modifying: {
 			string += printUsage(attribute);
 
 			if (attribute?.usage) {
 				string += '\n\t제어 그룹 유형 : ';
 				string +=
 					'\n\t계정 처리 방법 : ' +
-					policyOption.blockingType2[attribute.blockingType].label;
+					policyOption.blockingType[attribute.blockingType].label;
 				string +=
 					'\n\t그룹 권한 처리 : ' +
 					policyOption.groupPermissionType[attribute.permissionType]
@@ -206,7 +240,7 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
-		case 'resigned': {
+		case ruleTypes.resigned: {
 			string += printUsage(attribute);
 
 			if (attribute?.usage) {
@@ -221,7 +255,7 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
-		case 'user_id_pattern': {
+		case ruleTypes.user_id_pattern: {
 			string += printUsage(attribute);
 
 			if (attribute?.usage) {
@@ -233,7 +267,7 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
-		case 'password_pattern': {
+		case ruleTypes.password_pattern: {
 			string +=
 				'비밀번호 길이 : 최소 ' +
 				attribute.minLength +
@@ -282,7 +316,7 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
-		case 'allowed_service_time': {
+		case ruleTypes.allowed_service_time: {
 			string += printRestrition(attribute);
 			console.log(attribute);
 			if (attribute?.usage) {
@@ -332,7 +366,7 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
-		case 'session_timeout': {
+		case ruleTypes.session_timeout: {
 			Object.entries(attribute.policies).map(([key, value], i) => {
 				if (i !== 0) string += '\n';
 				string += `${key}`;
@@ -351,7 +385,7 @@ export const roleAttributeConvertor = (attribute) => {
 			break;
 		}
 
-		case 'screen_saver': {
+		case ruleTypes.screen_saver: {
 			string += printUsage(attribute);
 			string += `\n\t유휴시간 : ${attribute.timeToIdle}초`;
 			break;
@@ -364,25 +398,72 @@ export const roleAttributeConvertor = (attribute) => {
 };
 
 /**************************************************
- *정책 생성 요약정보 - 권한(action) 데이터 필터링 함수
+ * ambacc244 - 정책에 할당된 rule을 화면에 표현하기 위한 함수
  **************************************************/
-//Todo:재사용 가능 하도록 리팩토링 예정
-export const actionPreviewfilter = (arr) => {
-	let newArr = [];
-	let item = '';
-	arr.map((v) => {
-		if (item === v.resource) {
-			const index = newArr.findIndex((s) => s.resource === v.resource);
-			newArr[index].value =
-				newArr[index].value + `\n\t${v.action} : ${v.effect}`;
-		} else if (item != v.resource) {
-			let obj = {};
-			obj.resource = v.resource;
-			obj.value = `\n\t${v.action} : ${v.effect}`;
-			item = v.resource;
-			newArr.push(obj);
+export const iamPolicyRuleDetailsConverter = (data) => {
+	let dataArray = [];
+
+	for (let i = 0; i < data.length; i++) {
+		let singleData = new Object();
+
+		if (i === 0 || data[i]?.category?.code !== data[i - 1]?.category?.code)
+			singleData.name = data[i].policyName;
+		singleData.id = data[i].attribute.ruleType + data[i].resource;
+		singleData[DRAGGABLE_KEY] =
+			data[i].attribute.ruleType + data[i].resource;
+
+		if (data[i].attribute.ruleType === ruleTypes.allowed_service_time) {
+			singleData.detail =
+				ruleTypeDescription[
+					data[i].attribute.ruleType + data[i].resource
+				];
+		} else {
+			singleData.detail = ruleTypeDescription[data[i].attribute.ruleType];
+		}
+
+		singleData.value = iamRuleAttributeConverterByRuleType(
+			data[i].attribute,
+		);
+		dataArray.push(singleData);
+	}
+
+	return dataArray;
+};
+
+/**************************************************
+ * ambacc244 - 정책에 할당된 rule을 preview 화면에 표현하기 위한 함수
+ **************************************************/
+export const iamPolicyRuleDetailsPreviewConverter = (data) => {
+	let dataArray = [];
+
+	data.map((v) => {
+		for (let i = 0; i < v.details.length; i++) {
+			let singleData = new Object();
+
+			if (i === 0) singleData.policy = v.name;
+			singleData.id =
+				v.details[i].attribute.ruleType + v.details[i].resource;
+			singleData[DRAGGABLE_KEY] =
+				v.details[i].attribute.ruleType + v.details[i].resource;
+
+			if (
+				v.details[i].attribute.ruleType ===
+				ruleTypes.allowed_service_time
+			) {
+				singleData.detail =
+					ruleTypeDescription[
+						v.details[i].attribute.ruleType + v.details[i].resource
+					];
+			} else {
+				singleData.detail =
+					ruleTypeDescription[v.details[i].attribute.ruleType];
+			}
+
+			singleData.value = iamRuleAttributeConverterByRuleType(
+				v.details[i].attribute,
+			);
+			dataArray.push(singleData);
 		}
 	});
-	console.log('결과:', newArr);
-	return newArr;
+	return dataArray;
 };

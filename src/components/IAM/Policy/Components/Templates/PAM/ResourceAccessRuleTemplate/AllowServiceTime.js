@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import TemplateLayout from '../../Outline/TemplateLayout';
-import TemplateElement from '../../Outline/TemplateElement';
+import TemplateLayout from '../../Layout/TemplateLayout';
+import TemplateElement from '../../Layout/TemplateElement';
 import TimeInterval from '../../../../../../RecycleComponents/Templates/TimeInterval';
 import React, {useState} from 'react';
 import useRadio from '../../../../../../../hooks/useRadio';
-import {restrictionOptions} from '../../../../../../../utils/policyOptions';
+import {restrictionOptions} from '../../../../../../../utils/policy/options';
 import {DayOfTheWeek} from '../ConnectReasonTemplate/ConnectReasonTemplate';
 
 const allowServiceTime = {

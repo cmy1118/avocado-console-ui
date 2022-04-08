@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import Table from '../../../../../Table/Table';
-import TemplateLayout from '../Outline/TemplateLayout';
+import TemplateLayout from '../Layout/TemplateLayout';
 import useRadio from '../../../../../../hooks/useRadio';
-import TemplateElement from '../Outline/TemplateElement';
+import TemplateElement from '../Layout/TemplateElement';
 import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import {DRAGGABLE_KEY} from '../../../../../../Constants/Table/keys';
 import TableContainer from '../../../../../Table/TableContainer';

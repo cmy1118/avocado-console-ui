@@ -1,7 +1,7 @@
-import TemplateLayout from '../../Outline/TemplateLayout';
+import TemplateLayout from '../../Layout/TemplateLayout';
 import React, {useEffect} from 'react';
 import useRadio from '../../../../../../../hooks/useRadio';
-import {inputTypeOptions} from '../../../../../../../utils/policyOptions';
+import {inputTypeOptions} from '../../../../../../../utils/policy/options';
 import PropTypes from 'prop-types';
 
 const connect = {
