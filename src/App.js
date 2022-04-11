@@ -23,20 +23,22 @@ import AUTH from './reducers/api/Auth/auth';
 import {useIdleTimer} from 'react-idle-timer';
 import TemplateExample from './pages/TemplateExample';
 import FormExample from './pages/FormExample';
+import {removeCookies} from './utils/cookies';
+import setAuthorizationToken from './utils/setAuthorizationToken';
+
+setAuthorizationToken();
 
 const App = () => {
 	const dispatch = useDispatch();
 	const {isLoggedIn, userAuth} = useSelector(AUTH.selector);
 
 	const logout = useCallback(() => {
-		console.log(' logout');
 		if (isLoggedIn) {
 			dispatch(AUTH.asyncAction.logoutAction());
 		}
 	}, [dispatch, isLoggedIn]);
 
 	const refreshToken = useCallback(() => {
-		console.log('refresh checke');
 		if (isLoggedIn) {
 			reset(); // 사용자 감지동안은 timeout 1시간 유지
 			const remainingTime =
@@ -66,6 +68,13 @@ const App = () => {
 			pause();
 		}
 	}, [isLoggedIn]);
+
+	useEffect(() => {
+		return () => {
+			removeCookies('refresh_token');
+			localStorage.removeItem('access_token');
+		};
+	}, []);
 
 	return (
 		<BrowserRouter>

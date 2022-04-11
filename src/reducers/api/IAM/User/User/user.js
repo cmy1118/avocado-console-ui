@@ -5,90 +5,69 @@ import {baseURL, Axios} from '../../../../../api/constants';
 const NAME = 'IAM_USER';
 
 //todo : this function requires id, companyId, name, password, email, telephone and mobile
-const createAction = createAsyncThunk(
-	`${NAME}/CREATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.post(
-			`/open-api/v1/iam/users`,
-			{
-				id: payload.id,
-				name: payload.name,
-				password: payload.password,
-				email: payload.email,
-				telephone: payload.telephone,
-				mobile: payload.mobile,
+const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
+	const response = await Axios.post(
+		`/open-api/v1/iam/users`,
+		{
+			id: payload.id,
+			name: payload.name,
+			password: payload.password,
+			email: payload.email,
+			telephone: payload.telephone,
+			mobile: payload.mobile,
+		},
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return {data: response.data, headers: response.headers};
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return {data: response.data, headers: response.headers};
+});
 //todo : this function requires uid, name and password
-const updateAction = createAsyncThunk(
-	`${NAME}/UPDATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.put(
-			`/open-api/v1/iam/users/${payload.userUid}`,
-			{
-				name: payload.name,
-				password: payload.password,
-				email: payload.email,
-				telephone: payload.telephone,
-				mobile: payload.mobile,
+const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
+	const response = await Axios.put(
+		`/open-api/v1/iam/users/${payload.userUid}`,
+		{
+			name: payload.name,
+			password: payload.password,
+			email: payload.email,
+			telephone: payload.telephone,
+			mobile: payload.mobile,
+		},
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
 //todo : this function requires uid
-const deleteAction = createAsyncThunk(
-	`${NAME}/DELETE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.delete(
-			`/open-api/v1/iam/users/${payload.userUid}`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
+const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
+	const response = await Axios.delete(
+		`/open-api/v1/iam/users/${payload.userUid}`,
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
 //todo : this function requires id
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/iam/user-ids/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -102,14 +81,11 @@ const findByIdAction = createAsyncThunk(
 //사용자 등록 정보를 UID 기반으로 조회
 const findByUidAction = createAsyncThunk(
 	`${NAME}/FIND_BY_UID`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/iam/users/${payload.userUid}`,
 			{
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -120,38 +96,29 @@ const findByUidAction = createAsyncThunk(
 );
 
 //todo : this function requires companyId, first range and last range
-const findAllAction = createAsyncThunk(
-	`${NAME}/FIND_ALL`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		console.log(userAuth);
-
-		const response = await Axios.get(`/open-api/v1/iam/users`, {
-			params: {
-				keyword: payload.keyword,
-				userUid: payload.userUid,
-				id: payload.id,
-				accountExpiryTime: payload.accountExpiryTime,
-				passwordExpiryTime: payload.passwordExpiryTime,
-				createdTime: payload.createdTime,
-			},
-			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				Range: payload.range,
-			},
-			baseURL: baseURL.openApi,
-		});
-		//	console.log(response);
-		return {data: response.data, headers: response.headers};
-	},
-);
+const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
+	const response = await Axios.get(`/open-api/v1/iam/users`, {
+		params: {
+			keyword: payload.keyword,
+			userUid: payload.userUid,
+			id: payload.id,
+			accountExpiryTime: payload.accountExpiryTime,
+			passwordExpiryTime: payload.passwordExpiryTime,
+			createdTime: payload.createdTime,
+		},
+		headers: {
+			Range: payload.range,
+		},
+		baseURL: baseURL.openApi,
+	});
+	//	console.log(response);
+	return {data: response.data, headers: response.headers};
+});
 
 //todo : this function requires companyId, first range and last range
 const getUserGroupsAction = createAsyncThunk(
 	`${NAME}/GET_INCLUDE_GROUPS`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/iam/users/${payload.userUid}/user-groups`,
 			{
@@ -160,7 +127,6 @@ const getUserGroupsAction = createAsyncThunk(
 					includeGroup: payload.includeGroup,
 				},
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					Range: payload.range,
 				},
 				baseURL: baseURL.openApi,
@@ -183,7 +149,7 @@ const slice = createSlice({
 		[createAction.pending]: (state) => {
 			state.loading = true;
 		},
-		[createAction.fulfilled]: (state, action) => {
+		[createAction.fulfilled]: (state) => {
 			state.loading = false;
 		},
 		[createAction.rejected]: (state, action) => {
@@ -194,7 +160,7 @@ const slice = createSlice({
 		[updateAction.pending]: (state) => {
 			state.loading = true;
 		},
-		[updateAction.fulfilled]: (state, action) => {
+		[updateAction.fulfilled]: (state) => {
 			state.loading = false;
 		},
 		[updateAction.rejected]: (state, action) => {
@@ -205,7 +171,7 @@ const slice = createSlice({
 		[deleteAction.pending]: (state) => {
 			state.loading = true;
 		},
-		[deleteAction.fulfilled]: (state, action) => {
+		[deleteAction.fulfilled]: (state) => {
 			state.loading = false;
 		},
 		[deleteAction.rejected]: (state, action) => {
@@ -216,7 +182,7 @@ const slice = createSlice({
 		[findByIdAction.pending]: (state) => {
 			state.loading = true;
 		},
-		[findByIdAction.fulfilled]: (state, action) => {
+		[findByIdAction.fulfilled]: (state) => {
 			state.loading = false;
 		},
 		[findByIdAction.rejected]: (state, action) => {
@@ -227,8 +193,7 @@ const slice = createSlice({
 		[findByUidAction.pending]: (state) => {
 			state.loading = true;
 		},
-		[findByUidAction.fulfilled]: (state, action) => {
-			// state.user = action.payload;
+		[findByUidAction.fulfilled]: (state) => {
 			state.loading = false;
 		},
 		[findByUidAction.rejected]: (state, action) => {

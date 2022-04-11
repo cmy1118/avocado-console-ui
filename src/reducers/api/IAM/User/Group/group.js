@@ -4,89 +4,69 @@ import {Axios, baseURL} from '../../../../../api/constants';
 const NAME = 'IAM_USER_GROUP';
 
 //todo : this function requires id, companyId, name, password, email, telephone and mobile
-const createAction = createAsyncThunk(
-	`${NAME}/CREATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		const response = await Axios.post(
-			`/open-api/v1/iam/user-groups`,
-			{
-				name: payload.name,
-				userGroupTypeId: payload.userGroupTypeId,
-				parentId: payload.parentId,
-				members: payload.members || [],
+const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
+	const response = await Axios.post(
+		`/open-api/v1/iam/user-groups`,
+		{
+			name: payload.name,
+			userGroupTypeId: payload.userGroupTypeId,
+			parentId: payload.parentId,
+			members: payload.members || [],
+		},
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
+			baseURL: baseURL.openApi,
+		},
+	);
 
-		console.log(response);
+	console.log(response);
 
-		return response;
-	},
-);
+	return response;
+});
 //todo : this function requires uid, name and password
-const updateAction = createAsyncThunk(
-	`${NAME}/UPDATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.put(
-			`/open-api/v1/iam/user-groups/${payload.id}`,
-			{
-				name: payload.name,
-				userGroupTypeId: payload.userGroupTypeId,
-				members: payload.members, // uid
-				targetParentId: payload.targetParentId,
+const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
+	const response = await Axios.put(
+		`/open-api/v1/iam/user-groups/${payload.id}`,
+		{
+			name: payload.name,
+			userGroupTypeId: payload.userGroupTypeId,
+			members: payload.members, // uid
+			targetParentId: payload.targetParentId,
+		},
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
 //todo : this function requires uid
-const deleteAction = createAsyncThunk(
-	`${NAME}/DELETE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.delete(
-			`/open-api/v1/iam/user-groups/${payload.id}`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
+const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
+	const response = await Axios.delete(
+		`/open-api/v1/iam/user-groups/${payload.id}`,
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
 //todo : this function requires id
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/iam/user-groups/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -97,32 +77,26 @@ const findByIdAction = createAsyncThunk(
 );
 
 //todo : this function requires uid
-const findAllAction = createAsyncThunk(
-	`${NAME}/FIND_ALL`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
+const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
+	const response = await Axios.get(`/open-api/v1/iam/user-groups`, {
+		params: {
+			name: payload.name,
+			groupTypeId: payload.groupTypeId,
+			parentId: payload.parentId,
+			keyword: payload.keyword,
+			id: payload.ids,
+			createdTime: payload.createdTime,
+		},
+		headers: {
+			'Content-Type': 'application/json',
+			Range: payload.range,
+		},
+		baseURL: baseURL.openApi,
+	});
+	console.log(response);
 
-		const response = await Axios.get(`/open-api/v1/iam/user-groups`, {
-			params: {
-				name: payload.name,
-				groupTypeId: payload.groupTypeId,
-				parentId: payload.parentId,
-				keyword: payload.keyword,
-				id: payload.ids,
-				createdTime: payload.createdTime,
-			},
-			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				'Content-Type': 'application/json',
-				Range: payload.range,
-			},
-			baseURL: baseURL.openApi,
-		});
-		console.log(response);
-
-		return {data: response.data, headers: response.headers};
-	},
-);
+	return {data: response.data, headers: response.headers};
+});
 
 const slice = createSlice({
 	name: NAME,

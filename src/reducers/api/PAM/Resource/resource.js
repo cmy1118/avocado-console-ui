@@ -6,14 +6,11 @@ const NAME = 'RRM_RESOURCE';
 
 const findResourceByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/pam/remote-resources/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -43,7 +40,6 @@ const findAllResourcebByUserUidAction = createAsyncThunk(
 					excludeGroupIds: payload.excludeGroupIds,
 				},
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 					Range: payload.range || `elements=0-50`,
 				},
@@ -57,9 +53,7 @@ const findAllResourcebByUserUidAction = createAsyncThunk(
 
 const findAllAccountAction = createAsyncThunk(
 	`${NAME}/findAllAccount`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		//	console.log(payload);
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/pam/remote-resources/users`,
 			{
@@ -69,7 +63,6 @@ const findAllAccountAction = createAsyncThunk(
 					credentialType: 'Password',
 				},
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 					Range: 'elements=0-50',
 				},
@@ -83,14 +76,11 @@ const findAllAccountAction = createAsyncThunk(
 
 const findAllServicePortAction = createAsyncThunk(
 	`${NAME}/FIND_ALL_SERVICE_PORT`,
-	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/pam/remote-resources/${payload.id}/ports`,
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
 					'Content-Type': 'application/json',
 					Range: `elements=${payload.first}-${payload.last}`,
 				},

@@ -10,9 +10,7 @@ const NAME = 'RRM_GROUP';
  **************************************************/
 const findAllGroupAction = createAsyncThunk(
 	`${NAME}/FIND_ALL_GROUP`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(`/open-api/v1/rrm/groups`, {
 			params: {
 				name: payload.name,
@@ -21,7 +19,6 @@ const findAllGroupAction = createAsyncThunk(
 			},
 			headers: {
 				'Content-Type': contentType.JSON,
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				Range: 'elements=0-50',
 			},
 			baseURL: baseURL.openApi,

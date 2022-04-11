@@ -4,9 +4,7 @@ import {Axios, baseURL} from '../../../../../../api/constants';
 const NAME = 'POLICY_MANAGEMENT_ACTION_TEMPLATE';
 
 //정책에 권한 템플릿을 연결
-const join = createAsyncThunk(`${NAME}/JOIN`, async (payload, {getState}) => {
-	const {userAuth} = getState().AUTH;
-
+const join = createAsyncThunk(`${NAME}/JOIN`, async (payload) => {
 	const response = await Axios.post(
 		`/open-api/v1/iam/policies/${payload.policyId}/action-templates`,
 		{
@@ -14,7 +12,6 @@ const join = createAsyncThunk(`${NAME}/JOIN`, async (payload, {getState}) => {
 		},
 		{
 			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				policyId: payload.policyId,
 			},
 			baseURL: baseURL.openApi,

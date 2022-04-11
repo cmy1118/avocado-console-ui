@@ -8,55 +8,39 @@ const NAME = 'IAM_GRAN_REVOKE_ROLE';
 /**************************************************
  * ambacc244 - IAM role에 정책을 부여
  **************************************************/
-const grantRolePolicy = createAsyncThunk(
-	`${NAME}/GRANT`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.post(
-			`/open-api/v1/iam/roles/${payload.roleId}/policies/${payload.policyId}`,
-			{order: payload.order},
-			{
-				headers: {
-					'Content-Type': contentType.JSON,
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				},
-				baseURL: baseURL.openApi,
+const grantRolePolicy = createAsyncThunk(`${NAME}/GRANT`, async (payload) => {
+	const response = await Axios.post(
+		`/open-api/v1/iam/roles/${payload.roleId}/policies/${payload.policyId}`,
+		{order: payload.order},
+		{
+			headers: {
+				'Content-Type': contentType.JSON,
 			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
 /**************************************************
  * ambacc244 - IAM role에 정책을 부여 회수
  **************************************************/
-const revokeRolePolicy = createAsyncThunk(
-	`${NAME}/REVOKE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.delete(
-			`/open-api/v1/iam/roles/${payload.roleId}/policies/${payload.policyId}`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
+const revokeRolePolicy = createAsyncThunk(`${NAME}/REVOKE`, async (payload) => {
+	const response = await Axios.delete(
+		`/open-api/v1/iam/roles/${payload.roleId}/policies/${payload.policyId}`,
+		{
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
 /**************************************************
  * ambacc244 - IAM role에 부여된 규칙/정책을 조회
  **************************************************/
 const findAllRoleByPolicyId = createAsyncThunk(
 	`${NAME}/FIND_ALL_BY_POLIY_ID`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/iam/roles/policies/${payload.policyId}`,
 			{
@@ -65,7 +49,6 @@ const findAllRoleByPolicyId = createAsyncThunk(
 					exclude: payload.exclude,
 				},
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					Range: 'elements=0-50',
 				},
 				baseURL: baseURL.openApi,

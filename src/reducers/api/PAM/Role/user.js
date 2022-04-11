@@ -3,56 +3,40 @@ import {baseURL, Axios} from '../../../../api/constants';
 
 const NAME = 'PAM_ROLE_USER';
 
-const createAction = createAsyncThunk(
-	`${NAME}/CREATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.post(
-			`/open-api/v1/pam/users/${payload.userUid}/roles`,
-			{
-				roleId: payload.roleId,
+const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
+	const response = await Axios.post(
+		`/open-api/v1/pam/users/${payload.userUid}/roles`,
+		{
+			roleId: payload.roleId,
+		},
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
-const deleteAction = createAsyncThunk(
-	`${NAME}/DELETE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.delete(
-			`/open-api/v1/pam/users/${payload.userUid}/roles/${payload.roleId}`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
+const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
+	const response = await Axios.delete(
+		`/open-api/v1/pam/users/${payload.userUid}/roles/${payload.roleId}`,
+		{
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
 const findRoleByIdAction = createAsyncThunk(
 	`${NAME}/FIND_ROLE_BY_ID`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
+	async (payload) => {
 		// roleIds: payload.roleIds,
 		const response = await Axios.get(
 			`/open-api/v1/pam/users/${payload.id}/roles`,
 			{
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					Range: payload.range,
 				},
 				baseURL: baseURL.openApi,
@@ -64,9 +48,7 @@ const findRoleByIdAction = createAsyncThunk(
 
 const getEventsAction = createAsyncThunk(
 	`${NAME}/GET_EVENTS`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/pam/users/roles/events`,
 			{
@@ -81,7 +63,6 @@ const getEventsAction = createAsyncThunk(
 					userUid: payload.userUid,
 				},
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					Range: payload.range,
 				},
 				baseURL: baseURL.openApi,

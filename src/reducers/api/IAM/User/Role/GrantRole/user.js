@@ -4,80 +4,61 @@ import {Axios, baseURL} from '../../../../../../api/constants';
 const NAME = 'IAM_ROLES_GRANT_ROLE_USER';
 
 //사용자를 대상으로 Role 권한을 부여한다.
-const grantAction = createAsyncThunk(
-	`${NAME}/GRANT`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		// eslint-disable-next-line no-console
-		const response = await Axios.post(
-			`/open-api/v1/iam/users/${payload.userUid}/roles`,
-			[...payload.roleIds],
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
+const grantAction = createAsyncThunk(`${NAME}/GRANT`, async (payload) => {
+	const response = await Axios.post(
+		`/open-api/v1/iam/users/${payload.userUid}/roles`,
+		[...payload.roleIds],
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
 //사용자를 대상으로 부여된 Role 권한을 해제한다.
-const revokeAction = createAsyncThunk(
-	`${NAME}/REVOKE `,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		// eslint-disable-next-line no-console
-		const response = await Axios.delete(
-			`/open-api/v1/iam/users/${payload.userUid}/roles`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				params: {
-					roleId: [...payload.roleId],
-				},
-				baseURL: baseURL.openApi,
+const revokeAction = createAsyncThunk(`${NAME}/REVOKE `, async (payload) => {
+	const response = await Axios.delete(
+		`/open-api/v1/iam/users/${payload.userUid}/roles`,
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-		);
-		return response.data;
-	},
-);
+			params: {
+				roleId: [...payload.roleId],
+			},
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
 //사용자를 대상으로 부여된 Role 권한을 조회한다.
-const getsAction = createAsyncThunk(
-	`${NAME}/GETS`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		// eslint-disable-next-line no-console
-		const response = await Axios.get(
-			`/open-api/v1/iam/user-groups/${payload.userUid}/roles`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-					Range: 'elements=0-50',
-				},
-				params: {
-					exclude: payload.exclude,
-				},
-				baseURL: baseURL.openApi,
+const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
+	// eslint-disable-next-line no-console
+	const response = await Axios.get(
+		`/open-api/v1/iam/user-groups/${payload.userUid}/roles`,
+		{
+			headers: {
+				'Content-Type': 'application/json',
+				Range: 'elements=0-50',
 			},
-		);
-		console.log('IAM_ROLES_GRANT_ROLE_USER_getsAction', response);
-		return {data: response.data, headers: response.headers};
-	},
-);
+			params: {
+				exclude: payload.exclude,
+			},
+			baseURL: baseURL.openApi,
+		},
+	);
+	console.log('IAM_ROLES_GRANT_ROLE_USER_getsAction', response);
+	return {data: response.data, headers: response.headers};
+});
 
 //사용자를 대상으로 Role의 관계에 대한 이벤트 내역을 다양한 조건을 통해 조회한다.
 const getEventsAction = createAsyncThunk(
 	`${NAME}/GET_EVENTS`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		// eslint-disable-next-line no-console
+	async (payload) => {
 		const response = await Axios.get(
 			`//open-api/v1/iam/users/${payload.userUid}/roles/events`,
 			{
@@ -87,7 +68,6 @@ const getEventsAction = createAsyncThunk(
 					roleId: payload.roleId,
 				},
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					Range: payload.range,
 					'Content-Type': 'application/json',
 				},
@@ -101,8 +81,7 @@ const getEventsAction = createAsyncThunk(
 //사용자 등록 정보를 역할 ID를 기반으로 조회한다.
 const findUsersByIdAction = createAsyncThunk(
 	`${NAME}/FIND_USER_BY_ID`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/iam/roles/${payload.roleId}/users`,
 			{
@@ -111,14 +90,13 @@ const findUsersByIdAction = createAsyncThunk(
 					keyword: payload.keyword,
 				},
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					Range: payload.range,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
 			},
 		);
-		console.log('response:',response)
+		console.log('response:', response);
 		return response.data;
 	},
 );

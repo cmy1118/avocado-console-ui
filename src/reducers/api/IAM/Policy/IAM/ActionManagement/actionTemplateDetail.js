@@ -4,31 +4,25 @@ import {Axios, baseURL} from '../../../../../../api/constants';
 const NAME = 'IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL';
 
 //권한 템플릿 상세 정보를 조회
-const findAllAction = createAsyncThunk(
-	`${NAME}/FINDALL`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.get(
-			`/open-api/v1/iam/action-templates/details`,
-			{
-				params: {
-					templateId: payload.templateId,
-					resource: payload.resource,
-					action: payload.action,
-					effect: payload.effect,
-				},
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-					Range: payload.range,
-				},
-				baseURL: baseURL.openApi,
+const findAllAction = createAsyncThunk(`${NAME}/FINDALL`, async (payload) => {
+	const response = await Axios.get(
+		`/open-api/v1/iam/action-templates/details`,
+		{
+			params: {
+				templateId: payload.templateId,
+				resource: payload.resource,
+				action: payload.action,
+				effect: payload.effect,
 			},
-		);
-		return {data: response.data, headers: response.headers};
-	},
-);
+			headers: {
+				'Content-Type': 'application/json',
+				Range: payload.range,
+			},
+			baseURL: baseURL.openApi,
+		},
+	);
+	return {data: response.data, headers: response.headers};
+});
 
 const slice = createSlice({
 	name: NAME,

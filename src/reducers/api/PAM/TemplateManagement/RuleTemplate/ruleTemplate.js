@@ -8,46 +8,34 @@ const NAME = 'PAM_RULE_MANAGEMENT_TEMPLATE';
 /**************************************************
  * ambacc244 - PAM rule 템플릿 요청 액션
  **************************************************/
-const findAllRules = createAsyncThunk(
-	`${NAME}/FIND_ALL`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.get(`/open-api/v1/pam/rule-templates`, {
-			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				Range: payload.range,
-				'Content-Type': contentType.JSON,
-			},
-			baseURL: baseURL.openApi,
-		});
-		return {data: response.data};
-	},
-);
+const findAllRules = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
+	const response = await Axios.get(`/open-api/v1/pam/rule-templates`, {
+		headers: {
+			Range: payload.range,
+			'Content-Type': contentType.JSON,
+		},
+		baseURL: baseURL.openApi,
+	});
+	return {data: response.data};
+});
 
 /**************************************************
  * ambacc244 - PAM rule 생성 요청 액션
  **************************************************/
-const createRule = createAsyncThunk(
-	`${NAME}/CREATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.post(
-			`/open-api/v1/pam/rule-templates`,
-			{...payload},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': contentType.JSON,
-				},
-				baseURL: baseURL.openApi,
+const createRule = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
+	const response = await Axios.post(
+		`/open-api/v1/pam/rule-templates`,
+		{...payload},
+		{
+			headers: {
+				'Content-Type': contentType.JSON,
 			},
-		);
-		console.log(response);
-		return response;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	console.log(response);
+	return response;
+});
 
 const slice = createSlice({
 	name: NAME,

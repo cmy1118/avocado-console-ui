@@ -8,9 +8,7 @@ const NAME = 'IAM_GRANTED_POLICY';
  **************************************************/
 const getDetailsByRole = createAsyncThunk(
 	`${NAME}/GET_DETAIL_BY_ROLE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/iam/roles/${payload.roleId}/policy-details`,
 			{
@@ -20,9 +18,7 @@ const getDetailsByRole = createAsyncThunk(
 					effect: payload.effect,
 					ruleType: payload.ruleType,
 				},
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				},
+
 				baseURL: baseURL.openApi,
 			},
 		);
@@ -35,9 +31,7 @@ const getDetailsByRole = createAsyncThunk(
  **************************************************/
 const getDetailsByPolicy = createAsyncThunk(
 	`${NAME}/GET_DETAIL_BY_POLICY`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/iam/policies/${payload.policyId}/policy-details`,
 			{
@@ -48,7 +42,6 @@ const getDetailsByPolicy = createAsyncThunk(
 					ruleType: payload.ruleType,
 				},
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					range: 'elements=0-50',
 				},
 				baseURL: baseURL.openApi,

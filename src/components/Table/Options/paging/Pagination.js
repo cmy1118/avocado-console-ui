@@ -40,7 +40,7 @@ const Pagination = ({
 
 	const onClickGoToPage = useCallback(
 		(v) => {
-			console.log(v + 1);
+			// console.log(v + 1);
 			setCurrentPage(v);
 			dispatch(
 				PAGINATION.action.setPage({
@@ -55,7 +55,7 @@ const Pagination = ({
 	);
 
 	useEffect(() => {
-		console.log(Math.ceil(total[tableKey] / pageSize));
+		// console.log(Math.ceil(total[tableKey] / pageSize));
 		if (Math.ceil(total[tableKey] / pageSize)) {
 			setPage(
 				[...Array(Math.ceil(total[tableKey] / pageSize))].map(

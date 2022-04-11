@@ -8,23 +8,17 @@ const NAME = 'IAM_RULE_TEMPLATE_DETAIL';
 /**************************************************
  * ambacc244 - IAM rule 템플릿 디테일 정보 요청 액션
  **************************************************/
-const findAll = createAsyncThunk(
-	`${NAME}/FIND_ALL`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		return await Axios.get(
-			`/open-api/v1/iam/rule-templates/${payload.id}/details`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': contentType.JSON,
-				},
-				baseURL: baseURL.openApi,
+const findAll = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
+	return await Axios.get(
+		`/open-api/v1/iam/rule-templates/${payload.id}/details`,
+		{
+			headers: {
+				'Content-Type': contentType.JSON,
 			},
-		);
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+});
 
 const slice = createSlice({
 	name: NAME,

@@ -3,82 +3,55 @@ import {baseURL, Axios} from '../../../../api/constants';
 
 const NAME = 'PAM_ROLES';
 
-const createAction = createAsyncThunk(
-	`${NAME}/CREATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		// eslint-disable-next-line no-console
-		const response = await Axios.post(
-			`/open-api/v1/pam/roles`,
-			{
-				name: payload.name,
+const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
+	const response = await Axios.post(
+		`/open-api/v1/pam/roles`,
+		{
+			name: payload.name,
+		},
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
-const updateAction = createAsyncThunk(
-	`${NAME}/UPDATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.put(
-			`/open-api/v1/pam/role/${payload.id}`,
-			{
-				name: payload.name,
-				parentId: payload.parentId,
+const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
+	const response = await Axios.put(
+		`/open-api/v1/pam/role/${payload.id}`,
+		{
+			name: payload.name,
+			parentId: payload.parentId,
+		},
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
-const deleteAction = createAsyncThunk(
-	`${NAME}/DELETE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.delete(
-			`/open-api/v1/pam/role/${payload.id}`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
+const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
+	const response = await Axios.delete(`/open-api/v1/pam/role/${payload.id}`, {
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		baseURL: baseURL.openApi,
+	});
+	return response.data;
+});
 
 const findRolesByIdsAction = createAsyncThunk(
 	`${NAME}/FIND_ROLES_BY_ID`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/pam/roles/${payload.id}`,
 			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					// 'Content-Type': 'application/json',
-				},
 				baseURL: baseURL.openApi,
 			},
 		);
@@ -88,17 +61,13 @@ const findRolesByIdsAction = createAsyncThunk(
 
 const getAllRolesAction = createAsyncThunk(
 	`${NAME}/GET_ALL_ROLES`,
-	async (payload, {getState}) => {
-		//로그인 처리
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(`/open-api/v1/pam/roles`, {
 			params: {
 				name: payload.name || null,
 				id: payload.id || null,
 			},
 			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				Range: payload.range,
 			},
 			baseURL: baseURL.openApi,
@@ -109,9 +78,7 @@ const getAllRolesAction = createAsyncThunk(
 
 const getEventsAction = createAsyncThunk(
 	`${NAME}/GET_EVENTS`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(`/open-api/v1/pam/roles/events`, {
 			params: {
 				fromTime: payload.fromTime,
@@ -123,7 +90,6 @@ const getEventsAction = createAsyncThunk(
 				uid: payload.uid,
 			},
 			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				Range: payload.range,
 			},
 			baseURL: baseURL.openApi,

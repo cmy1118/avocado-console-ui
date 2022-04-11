@@ -1,6 +1,6 @@
-import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {baseURL, Axios} from '../../../../api/constants';
+import {Axios, baseURL} from '../../../../api/constants';
 
 const NAME = 'IAM_CLIENT';
 
@@ -16,7 +16,6 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 		},
 		{
 			headers: {
-				Authorization: `Bearer ${payload.access_token}`,
 				'Content-Type': 'application/json',
 			},
 			baseURL: baseURL.openApi,
@@ -35,7 +34,6 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 		},
 		{
 			headers: {
-				Authorization: `Bearer ${payload.access_token}`,
 				'Content-Type': 'application/json',
 			},
 			baseURL: baseURL.openApi,
@@ -47,9 +45,6 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 //todo : this function requires access_token and id
 const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 	const response = await Axios.delete(`/open/api/v1/clients/${payload.id}`, {
-		headers: {
-			Authorization: `Bearer ${payload.access_token}`,
-		},
 		baseURL: baseURL.openApi,
 	});
 	return response.data;
@@ -60,9 +55,6 @@ const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload) => {
 		const response = await Axios.get(`/open/api/v1/clients/${payload.id}`, {
-			headers: {
-				Authorization: `Bearer ${payload.access_token}`,
-			},
 			baseURL: baseURL.openApi,
 		});
 		return response.data;
@@ -76,7 +68,6 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 			companyId: payload.companyId,
 		},
 		headers: {
-			Authorization: `Bearer ${payload.access_token}`,
 			Range: `elements=${payload.first}-${payload.last}`,
 		},
 		baseURL: baseURL.openApi,

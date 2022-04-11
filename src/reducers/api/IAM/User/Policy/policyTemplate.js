@@ -8,14 +8,11 @@ const NAME = 'IAM_POLICY_TEMPLATE';
 //사용자 그룹을 대상으로 부여된 Role 권한을 조회한다.
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		// eslint-disable-next-line no-console
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/iam/policy-templates/${payload.templateId}`,
 			{
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,

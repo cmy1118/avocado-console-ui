@@ -25,6 +25,7 @@ import styled from 'styled-components';
 import {dummyPamRule} from '../../../../../../utils/dummyData';
 import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/PAM/TemplateManagement/ActionManagement/actionTemplate';
 import {categoryTypes} from '../../../../../../utils/policy/policy';
+import PAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/PAM/TemplateManagement/RuleTemplate/ruleTemplate';
 
 const _Title = styled.div``;
 
@@ -187,12 +188,12 @@ const TemplateListAside = ({
 		const fetchData = async () => {
 			try {
 				// 규칙 템플릿 findAll
-				// const ruleTemplates = await dispatch(
-				// 	.....asyncAction.findAll({
-				// 		range: `elements=0-50`,
-				// 	}),
-				// ).unwrap();
-				// console.log('ruleTemplates:', ruleTemplates);
+				const ruleTemplates = await dispatch(
+					PAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findAllRules({
+						range: `elements=0-50`,
+					}),
+				).unwrap();
+				console.log('ruleTemplates:', ruleTemplates);
 				// setRuleTemplates(ruleTemplates.data);
 				setRuleTemplates(dummyPamRule);
 

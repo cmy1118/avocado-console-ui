@@ -4,29 +4,22 @@ import {Axios, baseURL} from '../../../../../api/constants';
 const NAME = 'IAM_USER_POLICY';
 
 //사용자에게 부여된 Role 기반의 정책을 조회한다.
-const getsAction = createAsyncThunk(
-	`${NAME}/GETS`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.get(
-			`/open-api/v1/iam/users/${payload.userUid}/policies`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
+const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
+	const response = await Axios.get(
+		`/open-api/v1/iam/users/${payload.userUid}/policies`,
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-		);
-		return response.data || [];
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data || [];
+});
 
 const grantGetsAction = createAsyncThunk(
 	`${NAME}/GRANT_GETS`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
+	async (payload) => {
 		const response = await Axios.get(
 			'/open-api/v1/iam/roles/policy-templates',
 			{
@@ -34,7 +27,6 @@ const grantGetsAction = createAsyncThunk(
 					roleId: payload.roleId,
 				},
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 					Range: 'elements=0-50',
 				},
@@ -45,23 +37,18 @@ const grantGetsAction = createAsyncThunk(
 	},
 );
 
-const deleteAction = createAsyncThunk(
-	`${NAME}/DELETE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		const response = await Axios.delete(
-			`open-api/v1/iam/policies/${payload.id}`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-					Range: 'elements=0-50',
-				},
-				baseURL: baseURL.openApi,
+const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
+	const response = await Axios.delete(
+		`open-api/v1/iam/policies/${payload.id}`,
+		{
+			headers: {
+				'Content-Type': 'application/json',
+				Range: 'elements=0-50',
 			},
-		);
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+});
 
 const slice = createSlice({
 	name: NAME,

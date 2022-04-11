@@ -6,15 +6,10 @@ const NAME = 'PAM_POLICY';
 
 const findByRoleIdAction = createAsyncThunk(
 	`${NAME}/FindByRoleId`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/pam/roles/${payload.roleId}/policy-templates`,
 			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				},
 				baseURL: baseURL.openApi,
 			},
 		);
@@ -25,14 +20,11 @@ const findByRoleIdAction = createAsyncThunk(
 
 const FindByIdPermissionAction = createAsyncThunk(
 	`${NAME}/FindByIdPermission`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		// console.log(payload);
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/pam/roles/${payload.policyId}/permissions`,
 			{
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': contentType.JSON,
 					Range: payload.range,
 				},

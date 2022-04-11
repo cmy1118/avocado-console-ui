@@ -8,15 +8,12 @@ const NAME = 'IAM_POLICY_MANAGEMENT_RULE_TEMPLATE';
 /**************************************************
  * seob - 규칙 템플릿 정책과 연결 액션
  ***************************************************/
-const join = createAsyncThunk(`${NAME}/JOIN`, async (payload, {getState}) => {
-	const {userAuth} = getState().AUTH;
-
+const join = createAsyncThunk(`${NAME}/JOIN`, async (payload) => {
 	return await Axios.post(
 		`/open-api/v1/iam/policies/${payload.policyId}/rule-templates`,
 		[...payload.templateList],
 		{
 			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				'Content-Type': contentType.JSON,
 			},
 			baseURL: baseURL.openApi,

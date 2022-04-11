@@ -5,80 +5,56 @@ import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'IAM_USER_GROUP_TAG';
 
-const createAction = createAsyncThunk(
-	`${NAME}/CREATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		return await Axios.post(
-			`/open-api/v1/iam/user-groups/${payload.groupId}/tags`,
-			{
-				name: payload.name,
-				value: payload.value,
-			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': contentType.JSON,
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-	},
-);
-
-const updateAction = createAsyncThunk(
-	`${NAME}/UPDATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		return await Axios.put(
-			`/open-api/v1/iam/user-groups/${payload.groupId}/tags/${payload.name}`,
-			{
-				value: payload.value,
-			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-	},
-);
-
-const deleteAction = createAsyncThunk(
-	`${NAME}/DELETE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		return await Axios.delete(
-			`open-api/v1/iam/user-groups/${payload.groupId}/tags/${payload.name}`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-	},
-);
-
-const getsAction = createAsyncThunk(
-	`${NAME}/GETS`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		return await Axios.get(`open-api/v1/iam/user-groups/tags`, {
+const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
+	return await Axios.post(
+		`/open-api/v1/iam/user-groups/${payload.groupId}/tags`,
+		{
+			name: payload.name,
+			value: payload.value,
+		},
+		{
 			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				'Content-Type': 'application/json',
-				Range: payload.range,
+				'Content-Type': contentType.JSON,
 			},
-			params: {groupId: payload.groupId},
 			baseURL: baseURL.openApi,
-		});
-	},
-);
+		},
+	);
+});
+
+const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
+	return await Axios.put(
+		`/open-api/v1/iam/user-groups/${payload.groupId}/tags/${payload.name}`,
+		{
+			value: payload.value,
+		},
+		{
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			baseURL: baseURL.openApi,
+		},
+	);
+});
+
+const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
+	return await Axios.delete(
+		`open-api/v1/iam/user-groups/${payload.groupId}/tags/${payload.name}`,
+		{
+			baseURL: baseURL.openApi,
+		},
+	);
+});
+
+const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
+	return await Axios.get(`open-api/v1/iam/user-groups/tags`, {
+		headers: {
+			'Content-Type': 'application/json',
+			Range: payload.range,
+		},
+		params: {groupId: payload.groupId},
+		baseURL: baseURL.openApi,
+	});
+});
 
 const slice = createSlice({
 	name: NAME,
