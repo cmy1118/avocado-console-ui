@@ -5,36 +5,29 @@ import {Axios, baseURL} from '../../../../../api/constants';
 const NAME = 'IAM_USER_TREE';
 
 //todo : this function requires id, companyId, name, password, email, telephone and mobile
-const createAction = createAsyncThunk(
-	`${NAME}/CREATE`,
-	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
-		// eslint-disable-next-line no-console
-		//	console.log(client);
-		const response = await Axios.get(
-			`/open-api/v1/iam/user-trees`,
-			{
-				id: payload.id,
-				name: payload.name,
-				password: payload.password,
-				email: payload.email,
-				telephone: payload.telephone,
-				mobile: payload.mobile,
-			},
-			{
-				headers: {
-					params: {
-						groupId: payload.id,
-					},
-					Authorization: `${client.token_type} ${client.access_token}`,
-					'Content-Type': 'application/json',
+const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
+	const response = await Axios.get(
+		`/open-api/v1/iam/user-trees`,
+		{
+			id: payload.id,
+			name: payload.name,
+			password: payload.password,
+			email: payload.email,
+			telephone: payload.telephone,
+			mobile: payload.mobile,
+		},
+		{
+			headers: {
+				params: {
+					groupId: payload.id,
 				},
-				baseURL: baseURL.openApi,
+				'Content-Type': 'application/json',
 			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
 const slice = createSlice({
 	name: NAME,

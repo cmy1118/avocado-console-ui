@@ -9,120 +9,89 @@ const NAME = 'IAM_POLICY_MANAGEMENT_POLICIES';
 /**************************************************
  * ambacc244 - IAM policy 생성 요청 액션
  **************************************************/
-const createPolicy = createAsyncThunk(
-	`${NAME}/CREATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.post(
-			`/open-api/v1/iam/policies`,
-			{
-				name: payload.name,
-				description: payload.description,
-				type: payload.type,
-				controlTypes: payload.controlTypes,
-				maxGrants: payload.maxGrants,
+const createPolicy = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
+	const response = await Axios.post(
+		`/open-api/v1/iam/policies`,
+		{
+			name: payload.name,
+			description: payload.description,
+			type: payload.type,
+			controlTypes: payload.controlTypes,
+			maxGrants: payload.maxGrants,
+		},
+		{
+			headers: {
+				'Content-Type': contentType.JSON,
 			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': contentType.JSON,
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
+			baseURL: baseURL.openApi,
+		},
+	);
 
-		return getIdFormLocation(response.headers.location);
-	},
-);
+	return getIdFormLocation(response.headers.location);
+});
 
 /**************************************************
  * ambacc244 - IAM policy 생성 요청 액션
  **************************************************/
-const updatePolicy = createAsyncThunk(
-	`${NAME}/UPDATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.put(
-			`/open-api/v1/iam/policies/${payload.id}`,
-			{
-				name: payload?.name,
-				description: payload?.description,
-				maxGrants: payload?.maxGrants,
+const updatePolicy = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
+	const response = await Axios.put(
+		`/open-api/v1/iam/policies/${payload.id}`,
+		{
+			name: payload?.name,
+			description: payload?.description,
+			maxGrants: payload?.maxGrants,
+		},
+		{
+			headers: {
+				'Content-Type': contentType.JSON,
 			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': contentType.JSON,
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+});
 
 /**************************************************
  * ambacc244 - IAM policy 삭제 요청 액션
  **************************************************/
-const deletePolicy = createAsyncThunk(
-	`${NAME}/DELETE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		const response = await Axios.delete(
-			`/open-api/v1/iam/policies/${payload.id}`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-	},
-);
+const deletePolicy = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
+	const response = await Axios.delete(
+		`/open-api/v1/iam/policies/${payload.id}`,
+		{
+			baseURL: baseURL.openApi,
+		},
+	);
+});
 
 /**************************************************
  * ambacc244 - IAM policy 생성 요청 액션
  **************************************************/
-const findAll = createAsyncThunk(
-	`${NAME}/FIND_ALL`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.get(`/open-api/v1/iam/policies`, {
-			params: {
-				type: payload.type, // 관리타입
-				keyword: payload.keyword, // 검색 키워드
-				fromTime: payload.fromTime, // 생성일시 (시작)
-				toTime: payload.toTime, // 생성일시 (종료)
-				id: payload.id, // 정책 ID
-			},
-			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				Range: payload.range,
-				'Content-Type': contentType.JSON,
-			},
-			baseURL: baseURL.openApi,
-		});
-		return response;
-	},
-);
+const findAll = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
+	const response = await Axios.get(`/open-api/v1/iam/policies`, {
+		params: {
+			type: payload.type, // 관리타입
+			keyword: payload.keyword, // 검색 키워드
+			fromTime: payload.fromTime, // 생성일시 (시작)
+			toTime: payload.toTime, // 생성일시 (종료)
+			id: payload.id, // 정책 ID
+		},
+		headers: {
+			Range: payload.range,
+			'Content-Type': contentType.JSON,
+		},
+		baseURL: baseURL.openApi,
+	});
+	return response;
+});
 
 /**************************************************
  * ambacc244 - IAM policy id로 검색 요청 액션
  **************************************************/
 const findPolicyById = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/iam/policies/${payload.id}`,
 			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					// 'Content-Type': contentType.JSON,
-				},
 				baseURL: baseURL.openApi,
 			},
 		);

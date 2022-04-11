@@ -103,17 +103,17 @@ const UserSpace = () => {
 	);
 
 	const getUsersApi = useCallback(
-		(search) => {
+		async (search) => {
 			if (page[tableKeys.users.basic]) {
-				dispatch(
+				await dispatch(
 					IAM_USER.asyncAction.findAllAction({
 						range: page[tableKeys.users.basic],
 						...(search && {keyword: search}),
 					}),
 				)
 					.unwrap()
-					.then((res) => {
-						dispatch(
+					.then(async (res) => {
+						await dispatch(
 							PAGINATION.action.setTotal({
 								tableKey: tableKeys.users.basic,
 								element: totalNumberConverter(
@@ -125,9 +125,9 @@ const UserSpace = () => {
 							? getUsersDetailApi(res.data)
 							: setUsers([]);
 					})
-					.catch((error) => {
+					.catch(async (error) => {
 						console.error('error:', error);
-						dispatch(
+						await dispatch(
 							PAGINATION.action.setTotal({
 								tableKey: tableKeys.users.basic,
 								element: 0,

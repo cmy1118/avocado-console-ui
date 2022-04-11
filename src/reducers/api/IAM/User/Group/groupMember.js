@@ -5,66 +5,48 @@ import {Axios, baseURL} from '../../../../../api/constants';
 const NAME = 'IAM_USER_GROUP_MEMBER';
 
 //todo : this function requires id, companyId, name, password, email, telephone and mobile
-const joinAction = createAsyncThunk(
-	`${NAME}/JOIN`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.put(
-			`/open-api/v1/iam/user-group-sets/${payload.groupId}`,
-			[...payload.userUid],
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
-//todo : this function requires uid, name and password
-const disjointAction = createAsyncThunk(
-	`${NAME}/DISJOINT`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.delete(
-			`/open-api/v1/iam/user-group-sets/${payload.groupId}`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				params: {
-					userUid: payload.userUid,
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
-
-//todo : this function requires uid
-const findAllAction = createAsyncThunk(
-	`${NAME}/FINDALL`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.get(`/open-api/v1/iam/user-group-sets`, {
-			params: {groupId: payload.groupId},
+const joinAction = createAsyncThunk(`${NAME}/JOIN`, async (payload) => {
+	const response = await Axios.put(
+		`/open-api/v1/iam/user-group-sets/${payload.groupId}`,
+		[...payload.userUid],
+		{
 			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				'Content-Type': 'application/json',
-				Range: payload.range,
 			},
 			baseURL: baseURL.openApi,
-		});
-		return {data: response.data, headers: response.headers};
-	},
-);
+		},
+	);
+	return response.data;
+});
+//todo : this function requires uid, name and password
+const disjointAction = createAsyncThunk(`${NAME}/DISJOINT`, async (payload) => {
+	const response = await Axios.delete(
+		`/open-api/v1/iam/user-group-sets/${payload.groupId}`,
+		{
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			params: {
+				userUid: payload.userUid,
+			},
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
+
+//todo : this function requires uid
+const findAllAction = createAsyncThunk(`${NAME}/FINDALL`, async (payload) => {
+	const response = await Axios.get(`/open-api/v1/iam/user-group-sets`, {
+		params: {groupId: payload.groupId},
+		headers: {
+			'Content-Type': 'application/json',
+			Range: payload.range,
+		},
+		baseURL: baseURL.openApi,
+	});
+	return {data: response.data, headers: response.headers};
+});
 
 const slice = createSlice({
 	name: NAME,

@@ -8,6 +8,8 @@ import {
 	grantType,
 } from '../../../utils/auth';
 import base64 from 'base-64';
+import {getCookies, removeCookies, setCookies} from '../../../utils/cookies';
+import setAuthorizationToken from '../../../utils/setAuthorizationToken';
 
 const NAME = 'AUTH';
 
@@ -52,21 +54,15 @@ const userAuthAction = createAsyncThunk(
 	},
 );
 
-const logoutAction = createAsyncThunk(
-	`${NAME}/LOGOUT`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState()[NAME];
-
-		const response = await Axios.post(`/oauth2/v1/revoke`, null, {
-			headers: {
-				'Content-Type': contentType.URL_ENCODED,
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-			},
-			baseURL: baseURL.auth,
-		});
-		return response.data;
-	},
-);
+const logoutAction = createAsyncThunk(`${NAME}/LOGOUT`, async (payload) => {
+	const response = await Axios.post(`/oauth2/v1/revoke`, null, {
+		headers: {
+			'Content-Type': contentType.URL_ENCODED,
+		},
+		baseURL: baseURL.auth,
+	});
+	return response.data;
+});
 
 const clientAuthAction = createAsyncThunk(
 	`${NAME}/clientAuth`,
@@ -134,7 +130,6 @@ const altAuthVerificationAction = createAsyncThunk(
 				},
 				headers: {
 					'Content-Type': contentType.URL_ENCODED,
-					Authorization: `Bearer ${authState.clientAuth.access_token}`,
 					AlternativeAuthN: `google ${authState.alternativeAuth.access_token}`,
 					CompanyId: authState.companyId,
 					ApplicationCode: 'console-ui',
@@ -149,13 +144,12 @@ const altAuthVerificationAction = createAsyncThunk(
 const refreshTokenAction = createAsyncThunk(
 	`${NAME}/refresh`,
 	async (payload, {getState}) => {
-		const {userAuth, companyId} = getState().AUTH;
+		const {companyId} = getState().AUTH;
 
 		const response = await Axios.post('/oauth2/v1/token', null, {
 			params: {
 				grant_type: grantType.REFRESH_TOKEN,
-				refresh_token: userAuth.refresh_token,
-				// refresh_token: Cookies.get('refreshToken'),
+				refresh_token: getCookies('refresh_token'),
 			},
 			headers: {
 				'Content-Type': contentType.URL_ENCODED,
@@ -166,8 +160,6 @@ const refreshTokenAction = createAsyncThunk(
 			},
 			baseURL: baseURL.auth,
 		});
-
-		// setAuthorizationToken(response.data?.access_token);
 
 		return response.data;
 	},
@@ -202,15 +194,22 @@ const slice = createSlice({
 			state.companyId = action.meta.arg.companyId;
 		},
 		[userAuthAction.fulfilled]: (state, action) => {
-			console.log(action.payload);
+			//쿠키에  refresh token 저장
+			setCookies('refresh_token', action.payload.refresh_token, {
+				path: '/',
+				// secure: true,
+				// httpOnly: true,
+			});
+			//local storage에 access token 저장
+			localStorage.setItem('access_token', action.payload.access_token);
+			setAuthorizationToken();
+			//리덕스에 상태를 저장하기전 refresh token은 삭제
+			delete action.payload.refresh_token;
+			delete action.payload.access_token;
+
 			state.loading = false;
 			state.userAuth = action.payload;
 			state.isLoggedIn = true;
-			// Cookies.set('refreshToken', action.payload.refresh_token, {
-			// 	// secure: true,
-			// 	// httpOnly: true,
-			// });
-			// setTimeout(onSilentRefresh, action.payload.expires_in*1000 - 60000);
 		},
 		[userAuthAction.rejected]: (state, action) => {
 			state.loading = false;
@@ -224,12 +223,18 @@ const slice = createSlice({
 			state.loading = false;
 			state.userAuth = null;
 			state.isLoggedIn = false;
+
+			removeCookies('refresh_token');
+			localStorage.removeItem('access_token');
 		},
 		[logoutAction.rejected]: (state, action) => {
 			state.loading = false;
 			state.userAuth = null;
-			state.error = action.error;
 			state.isLoggedIn = false;
+			state.error = action.error;
+
+			removeCookies('refresh_token');
+			localStorage.removeItem('access_token');
 		},
 
 		[clientAuthAction.pending]: (state, action) => {
@@ -276,17 +281,14 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[refreshTokenAction.fulfilled]: (state, action) => {
+			//access token local storage에 저장
+			localStorage.setItem('access_token', action.payload.access_token);
+			setAuthorizationToken();
+			//리덕스에 상태를 저장하기전 refresh token은 삭제
+			delete action.payload.access_token;
+
 			state.loading = false;
 			state.userAuth = Object.assign(state.userAuth, action.payload);
-			// setAuthorizationToken(action.payload.access_token);
-			// sessionStorage.setItem(
-			// 	'refreshToken',
-			// 	action.payload.refresh_token,
-			// );
-			// Cookies.set('refreshToken', action.payload.refresh_token, {
-			// 	// secure: true,
-			// 	// httpOnly: true,
-			// });
 		},
 		[refreshTokenAction.rejected]: (state, action) => {
 			state.loading = false;

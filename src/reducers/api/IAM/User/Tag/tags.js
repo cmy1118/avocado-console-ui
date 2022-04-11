@@ -4,88 +4,65 @@ import {baseURL, Axios} from '../../../../../api/constants';
 const NAME = 'IAM_USER_TAG';
 
 //todo : this function requires id, companyId, name, password, email, telephone and mobile
-const createAction = createAsyncThunk(
-	`${NAME}/CREATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.post(
-			`/open-api/v1/iam/users/${payload.userUid}/tags`,
-			{
-				name: payload.name,
-				value: payload.value,
-			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return {data: response.data, headers: response.headers};
-	},
-);
-//todo : this function requires uid, name and password
-const updateAction = createAsyncThunk(
-	`${NAME}/UPDATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.put(
-			`/open-api/v1/iam/users/${payload.userUid}/tags/${payload.name}`,
-			{
-				value: payload.value,
-			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
-
-//todo : this function requires uid
-const deleteAction = createAsyncThunk(
-	`${NAME}/DELETE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.delete(
-			`/open-api/v1/iam/users/${payload.userUid}/tags/${payload.name}`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
-
-const getsAction = createAsyncThunk(
-	`${NAME}/GETS`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		const response = await Axios.get(`/open-api/v1/iam/users/tags`, {
-			params: {
-				userUid: payload.userUid,
-			},
+const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
+	const response = await Axios.post(
+		`/open-api/v1/iam/users/${payload.userUid}/tags`,
+		{
+			name: payload.name,
+			value: payload.value,
+		},
+		{
 			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				Range: payload.range,
+				'Content-Type': 'application/json',
 			},
 			baseURL: baseURL.openApi,
-		});
-		return {data: response.data, headers: response.headers};
-	},
-);
+		},
+	);
+	return {data: response.data, headers: response.headers};
+});
+//todo : this function requires uid, name and password
+const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
+	const response = await Axios.put(
+		`/open-api/v1/iam/users/${payload.userUid}/tags/${payload.name}`,
+		{
+			value: payload.value,
+		},
+		{
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
+
+//todo : this function requires uid
+const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
+	const response = await Axios.delete(
+		`/open-api/v1/iam/users/${payload.userUid}/tags/${payload.name}`,
+		{
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
+
+const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
+	const response = await Axios.get(`/open-api/v1/iam/users/tags`, {
+		params: {
+			userUid: payload.userUid,
+		},
+		headers: {
+			Range: payload.range,
+		},
+		baseURL: baseURL.openApi,
+	});
+	return {data: response.data, headers: response.headers};
+});
 
 const slice = createSlice({
 	name: NAME,

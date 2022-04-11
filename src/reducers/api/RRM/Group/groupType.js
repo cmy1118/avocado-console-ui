@@ -5,79 +5,59 @@ import {baseURL, Axios} from '../../../../api/constants';
 
 const NAME = 'RRM_GROUP_TYPE';
 
-const createAction = createAsyncThunk(
-	`${NAME}/CREATE`,
-	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
-		const response = await Axios.post(
-			`/open/api/v1/remote/resources/group-types`,
-			{
-				name: payload.name, //desc: 그룹 유형 명 / type: string
-				description: payload.description, //desc: 설명 / type: string
+const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
+	const response = await Axios.post(
+		`/open/api/v1/remote/resources/group-types`,
+		{
+			name: payload.name, //desc: 그룹 유형 명 / type: string
+			description: payload.description, //desc: 설명 / type: string
+		},
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-			{
-				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
+const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
+	const response = await Axios.put(
+		`/open/api/v1/remote/resources/group-types/${payload.id}`,
+		{
+			name: payload.name, //desc: 그룹 유형 명 / type: string
+			description: payload.description, //desc: 설명 / type: string
+		},
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-		);
-		return response.data;
-	},
-);
-const updateAction = createAsyncThunk(
-	`${NAME}/UPDATE`,
-	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
-		const response = await Axios.put(
-			`/open/api/v1/remote/resources/group-types/${payload.id}`,
-			{
-				name: payload.name, //desc: 그룹 유형 명 / type: string
-				description: payload.description, //desc: 설명 / type: string
+const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
+	const response = await Axios.delete(
+		`/open/api/v1/remote/resources/group-types/${payload.id}`,
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-			{
-				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
-
-const deleteAction = createAsyncThunk(
-	`${NAME}/DELETE`,
-	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
-
-		const response = await Axios.delete(
-			`/open/api/v1/remote/resources/group-types/${payload.id}`,
-			{
-				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
-	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open/api/v1/remote/resources/group-types/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -87,28 +67,22 @@ const findByIdAction = createAsyncThunk(
 	},
 );
 
-const findAllAction = createAsyncThunk(
-	`${NAME}/FIND_ALL`,
-	async (payload, {getState}) => {
-		const {client} = getState().IAM_CLIENT;
-
-		const response = await Axios.get(
-			`/open/api/v1/remote/resources/group-types`,
-			{
-				params: {
-					...(payload.name && {type: payload.name}),
-				},
-				headers: {
-					Authorization: `${client.token_type} ${client.access_token}`,
-					'Content-Type': 'application/json',
-					Range: `elements=${payload.first}-${payload.last}`,
-				},
-				baseURL: baseURL.openApi,
+const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
+	const response = await Axios.get(
+		`/open/api/v1/remote/resources/group-types`,
+		{
+			params: {
+				...(payload.name && {type: payload.name}),
 			},
-		);
-		return response.data;
-	},
-);
+			headers: {
+				'Content-Type': 'application/json',
+				Range: `elements=${payload.first}-${payload.last}`,
+			},
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
 const slice = createSlice({
 	name: NAME,

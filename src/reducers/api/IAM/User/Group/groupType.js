@@ -5,80 +5,60 @@ import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'IAM_USER_GROUP_TYPE';
 
-const createAction = createAsyncThunk(
-	`${NAME}/CREATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		const response = await Axios.post(
-			`/open-api/v1/iam/user-group-types`,
-			{
-				name: payload.name,
-				description: payload.description,
+const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
+	const response = await Axios.post(
+		`/open-api/v1/iam/user-group-types`,
+		{
+			name: payload.name,
+			description: payload.description,
+		},
+		{
+			headers: {
+				'Content-Type': contentType.JSON,
 			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': contentType.JSON,
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
-const updateAction = createAsyncThunk(
-	`${NAME}/UPDATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.put(
-			`/open-api/v1/iam/user-group-types/${payload.id}`,
-			{
-				name: payload.name,
-				description: payload.description,
+const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
+	const response = await Axios.put(
+		`/open-api/v1/iam/user-group-types/${payload.id}`,
+		{
+			name: payload.name,
+			description: payload.description,
+		},
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
-const deleteAction = createAsyncThunk(
-	`${NAME}/DELETE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.delete(
-			`/open-api/v1/iam/user-group-types/${payload.id}`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
+const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
+	const response = await Axios.delete(
+		`/open-api/v1/iam/user-group-types/${payload.id}`,
+		{
+			headers: {
+				'Content-Type': 'application/json',
 			},
-		);
-		return response.data;
-	},
-);
+			baseURL: baseURL.openApi,
+		},
+	);
+	return response.data;
+});
 
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/iam/user-group-types/${payload.id}`,
 			{
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
 				baseURL: baseURL.openApi,
@@ -88,27 +68,21 @@ const findByIdAction = createAsyncThunk(
 	},
 );
 
-const findAllAction = createAsyncThunk(
-	`${NAME}/FIND_ALL`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.get(`/open-api/v1/iam/user-group-types`, {
-			params: {
-				name: payload.name,
-				id: payload.id,
-			},
-			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				'Content-Type': 'application/json',
-				Range: payload.range,
-			},
-			baseURL: baseURL.openApi,
-		});
-		console.log(response);
-		return {data: response.data, headers: response.headers};
-	},
-);
+const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
+	const response = await Axios.get(`/open-api/v1/iam/user-group-types`, {
+		params: {
+			name: payload.name,
+			id: payload.id,
+		},
+		headers: {
+			'Content-Type': 'application/json',
+			Range: payload.range,
+		},
+		baseURL: baseURL.openApi,
+	});
+	console.log(response);
+	return {data: response.data, headers: response.headers};
+});
 
 const slice = createSlice({
 	name: NAME,

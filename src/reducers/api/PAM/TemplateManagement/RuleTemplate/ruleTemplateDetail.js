@@ -10,16 +10,12 @@ const NAME = 'PAM_RULE_TEMPLATE_DETAIL';
  **************************************************/
 const findAllRuleTemplateDetail = createAsyncThunk(
 	`${NAME}/FIND_ALL`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		return await Axios.get(`/open-api/v1/pam/rule-templates/details`, {
 			params: {
 				templateId: payload.templateId,
 			},
-			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-			},
+
 			baseURL: baseURL.openApi,
 		});
 	},

@@ -6,64 +6,49 @@ import {contentType} from '../../../../../utils/auth';
 const NAME = 'PAM_ACTION_MANAGEMENT_TEMPLATE';
 
 //권한 템플릿 상세 정보를 조회
-const createAction = createAsyncThunk(
-	`${NAME}/CREATE`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.post(
-			`/open-api/v1/pam/action-templates`,
-			{
-				name: payload.name,
-				description: payload.description,
-				details: payload.details,
-				categoryType: payload.categoryType,
-			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': contentType.JSON,
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		console.log('createAction:', response);
-		return response;
-	},
-);
-
-// 권한 템플릿 조회
-const findAllAction = createAsyncThunk(
-	`${NAME}/FIND_ALL`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		return await Axios.get(`/open-api/v1/pam/action-templates`, {
-			params: {
-				name: payload.name,
-				description: payload.description,
-			},
+const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
+	const response = await Axios.post(
+		`/open-api/v1/pam/action-templates`,
+		{
+			name: payload.name,
+			description: payload.description,
+			details: payload.details,
+			categoryType: payload.categoryType,
+		},
+		{
 			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-				Range: payload.range,
-				// 'Content-Type': contentType.JSON,
+				'Content-Type': contentType.JSON,
 			},
 			baseURL: baseURL.openApi,
-		});
-	},
-);
+		},
+	);
+	console.log('createAction:', response);
+	return response;
+});
+
+// 권한 템플릿 조회
+const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
+	return await Axios.get(`/open-api/v1/pam/action-templates`, {
+		params: {
+			name: payload.name,
+			description: payload.description,
+		},
+		headers: {
+			Range: payload.range,
+			// 'Content-Type': contentType.JSON,
+		},
+		baseURL: baseURL.openApi,
+	});
+});
 
 // 권한 템플릿을 ID로 조회한다.
 const findByIdAction = createAsyncThunk(
 	`${NAME}/FINDB_BY_ID`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
+	async (payload) => {
 		const response = await Axios.get(
 			`/open-api/v1/pam/action-templates/${payload.templateId}`,
 			{
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					Range: payload.range,
 					// 'Content-Type': contentType.JSON,
 				},
