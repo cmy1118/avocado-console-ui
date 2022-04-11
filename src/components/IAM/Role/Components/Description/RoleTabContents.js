@@ -13,7 +13,7 @@ const RoleTabContents = ({roleId, isOpened}) => {
 
 	return (
 		<TabContentSpace>
-			{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'role' && (
+			{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'policy' && (
 				<RolePolicyTab roleId={roleId} isSummaryOpened={isOpened} />
 			)}
 			{qs.parse(search, {ignoreQueryPrefix: true}).tabs === 'user' && (

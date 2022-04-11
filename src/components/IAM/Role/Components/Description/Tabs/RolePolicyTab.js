@@ -1,6 +1,9 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import {NormalButton, TransparentButton,} from '../../../../../../styles/components/buttons';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../../../../styles/components/buttons';
 import Table from '../../../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
@@ -362,79 +365,11 @@ const RolePolicyTab = ({roleId, isSummaryOpened}) => {
 	}, [dispatch, roleId]);
 
 	useEffect(() => {
+		console.log('getApi');
 		if (!isSummaryOpened) {
 			getApi();
 		}
 	}, [getApi, isSummaryOpened]);
-
-	// useEffect(() => {
-	// 	if (!isSummaryOpened) {
-	// 		let inPolicies = [];
-	//
-	// 		dispatch(
-	// 			IAM_ROLES.asyncAction.findTemplatesAction({
-	// 				roleId: roleId,
-	// 				range: 'elements=0-50',
-	// 				include: 't',
-	// 			}),
-	// 		)
-	// 			.unwrap()
-	// 			.then((res) => {
-	// 				inPolicies.push.apply(inPolicies, res.data);
-	// 			})
-	// 			.then(() => {
-	// 				dispatch(
-	// 					PAM_ROLES.asyncAction.getAllRolesAction({
-	// 						id: roleId,
-	// 						range: 'elements=0-50',
-	// 					}),
-	// 				)
-	// 					.unwrap()
-	// 					.then((r) => {
-	// 						if (r.data.length > 0) {
-	// 							inPolicies.push.apply(inPolicies, r.data);
-	// 							if (companyId === account.KT.companyId) {
-	// 								inPolicies.push({
-	// 									id: 'tempId',
-	// 									[DRAGGABLE_KEY]: 'tempId',
-	// 									name: 'commandContorl-policy',
-	// 								});
-	// 							}
-	// 							if (companyId === account.SK.companyId) {
-	// 								inPolicies.push({
-	// 									id: 'tempId',
-	// 									[DRAGGABLE_KEY]: 'tempId',
-	// 									name: 'commandContorl-policy',
-	// 								});
-	// 							}
-	// 						}
-	// 					})
-	// 					.then(() => {
-	// 						setInPolicy(inPolicies);
-	// 					});
-	// 			})
-	// 			.then(() => {
-	// 				dispatch(
-	// 					IAM_ROLES.asyncAction.findTemplatesAction({
-	// 						roleId: roleId,
-	// 						range: 'elements=0-50',
-	// 						include: 'f',
-	// 					}),
-	// 				)
-	// 					.unwrap()
-	// 					.then((res) => {
-	// 						setExPolicy(res.data);
-	// 					});
-	// 			});
-	// 	}
-	// }, [
-	// 	dispatch,
-	// 	roleId,
-	// 	isSummaryOpened,
-	// 	setInPolicy,
-	// 	setExPolicy,
-	// 	companyId,
-	// ]);
 
 	useEffect(() => {
 		setSelected({
@@ -481,8 +416,7 @@ const RolePolicyTab = ({roleId, isSummaryOpened}) => {
 					title={rolePolicyTab.exclude.title + excludedData.length}
 					buttons={(isDisabled) => (
 						<TitleBarButtons>
-							<NormalButton 								disabled={isDisabled}
-							>
+							<NormalButton disabled={isDisabled}>
 								{rolePolicyTab.exclude.button.create}
 							</NormalButton>
 							<NormalButton
