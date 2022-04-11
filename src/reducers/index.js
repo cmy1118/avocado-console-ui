@@ -52,6 +52,10 @@ import PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './api/PAM/TemplateManagement/
 import PAM_ACTION_MANAGEMENT_TEMPLATE from './api/PAM/TemplateManagement/ActionManagement/actionTemplate';
 import IAM_USER_POLICY_GRANT_REVOKE_ROLE from './api/IAM/User/Policy/GrantRevoke/role';
 import IAM_GRANT_REVOKE_TAG from './api/IAM/Policy/IAM/PolicyManagement/grantRevokeTag';
+import PAM_FILE_MANAGEMENT_TEMPLATE from './api/PAM/TemplateManagement/FileTemplate/fileTemplate';
+import PAM_FILE_MANAGEMENT_TEMPLATE_DETAIL from './api/PAM/TemplateManagement/FileTemplate/fileTemplateDetail';
+import PAM_COMMAND_MANAGEMENT_TEMPLATE_DETAIL from './api/PAM/TemplateManagement/CommandTemplate/commandTemplateDetail';
+import PAM_COMMAND_MANAGEMENT_TEMPLATE from './api/PAM/TemplateManagement/CommandTemplate/commandTemplate';
 
 const authFilter = createFilter(AUTH.name, [
 	'companyId',
@@ -134,6 +138,23 @@ const rootReducer = combineReducers({
 	[IAM_RULE_TEMPLATE_DETAIL.name]: IAM_RULE_TEMPLATE_DETAIL.reducer,
 	[IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.name]:
 		IAM_POLICY_MANAGEMENT_RULE_TEMPLATE.reducer,
+	/******************************************/
+
+	/******************************************/
+	/* IAM - File reducers
+    /******************************************/
+	[PAM_FILE_MANAGEMENT_TEMPLATE.name]: PAM_FILE_MANAGEMENT_TEMPLATE.reducer,
+	[PAM_FILE_MANAGEMENT_TEMPLATE_DETAIL.name]:
+		PAM_FILE_MANAGEMENT_TEMPLATE_DETAIL.reducer,
+	/******************************************/
+
+	/******************************************/
+	/* IAM - Command reducers
+    /******************************************/
+	[PAM_COMMAND_MANAGEMENT_TEMPLATE.name]:
+		PAM_COMMAND_MANAGEMENT_TEMPLATE.reducer,
+	[PAM_COMMAND_MANAGEMENT_TEMPLATE_DETAIL.name]:
+		PAM_COMMAND_MANAGEMENT_TEMPLATE_DETAIL.reducer,
 	/******************************************/
 
 	/******************************************/
