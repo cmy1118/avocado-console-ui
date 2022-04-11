@@ -1,9 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import {
-	NormalBorderButton,
-	NormalButton,
-} from '../../../../../../styles/components/buttons';
+import {NormalBorderButton, NormalButton,} from '../../../../../../styles/components/buttons';
 import Table from '../../../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
@@ -53,7 +50,7 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 					lastConsoleLogin: v.lastConsoleLogin
 						? v.lastConsoleLogin
 						: '',
-					[DRAGGABLE_KEY]: v.userId,
+					[DRAGGABLE_KEY]: v.userUid,
 			  }))
 			: [];
 	}, [includedDataIds]);
@@ -62,7 +59,6 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 		return excludedDataIds
 			? excludedDataIds.map((v) => ({
 					...v,
-					id: v.userId ? v.userId : '',
 					name: v.userName ? v.userName : '',
 					createdTime: v.createdTime ? v.createdTime : '',
 					grantUser: v.grantedCreateUserId
@@ -72,76 +68,84 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 					lastConsoleLogin: v.lastConsoleLogin
 						? v.lastConsoleLogin
 						: '',
-					[DRAGGABLE_KEY]: v.userId,
+					[DRAGGABLE_KEY]: v.userUid,
 			  }))
 			: [];
 	}, [excludedDataIds]);
 
-	// // 삭제
-	// const onClickDeleteTableData = useCallback(
-	// 	async (data) => {
-	// 		try {
-	// 			if (data) {
-	// 				await Promise.all([
-	// 					data.forEach((groupId) => {
-	// 						dispatch(
-	// 							IAM_USER_GROUP_MEMBER.asyncAction.disjointAction(
-	// 								{
-	// 									groupId: groupId,
-	// 									userUid: userUid,
-	// 								},
-	// 							),
-	// 						).unwrap();
-	// 					}),
-	// 				]);
-	// 				await setIncludedDataIds(
-	// 					includedDataIds.filter((v) => !data.includes(v.id)),
-	// 				);
-	// 				await setExcludedDataIds([
-	// 					...includedDataIds.filter((v) => data.includes(v.id)),
-	// 					...excludedData,
-	// 				]);
-	// 				await alert('삭제 완료');
-	// 			}
-	// 		} catch (err) {
-	// 			alert('삭제 오류');
-	// 			console.log(err);
-	// 		}
-	// 	},
-	// 	[],
-	// );
-	// // 추가
-	// const onClickAddTableData = useCallback(
-	// 	async (data) => {
-	// 		try {
-	// 			if (data) {
-	// 				// for (const groupId of data) {
-	// 				await Promise.all([
-	// 					data.forEach((groupId) => {
-	// 						dispatch(
-	// 							IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
-	// 								groupId: groupId,
-	// 								userUid: [userUid],
-	// 							}),
-	// 						).unwrap();
-	// 					}),
-	// 				]);
-	// 				await setIncludedDataIds([
-	// 					...excludedDataIds.filter((v) => data.includes(v.id)),
-	// 					...includedDataIds,
-	// 				]);
-	// 				await setExcludedDataIds(
-	// 					excludedDataIds.filter((v) => !data.includes(v.id)),
-	// 				);
-	// 				alert('추가 완료');
-	// 			}
-	// 		} catch (err) {
-	// 			alert('추가 오류');
-	// 			console.log(err);
-	// 		}
-	// 	},
-	// 	[],
-	// );
+	const onClickDeleteData = useCallback(
+		async (data) => {
+			try {
+				if (data) {
+					await Promise.all([
+						data.forEach((userUid) => {
+							dispatch(
+								IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction(
+									{
+										roleIds: [roleId],
+										userUid: userUid,
+									},
+								),
+							).unwrap();
+						}),
+					]);
+					await setIncludedDataIds(
+						includedDataIds.filter(
+							(v) => !data.includes(v.userUid),
+						),
+					);
+					await setExcludedDataIds([
+						...includedDataIds.filter((v) =>
+							data.includes(v.userUid),
+						),
+						...excludedData,
+					]);
+					await alert('삭제 완료');
+				}
+			} catch (err) {
+				alert('삭제 오류');
+				console.log(err);
+			}
+		},
+		[dispatch, excludedData, includedDataIds, roleId],
+	);
+
+	const onClickAddData = useCallback(
+		async (data) => {
+			try {
+				if (data) {
+					await Promise.all([
+						data.forEach((userUid) => {
+							dispatch(
+								IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction(
+									{
+										roleIds: [roleId],
+										userUid: userUid,
+									},
+								),
+							).unwrap();
+						}),
+					]);
+					await setIncludedDataIds([
+						...excludedDataIds.filter((v) =>
+							data.includes(v.userUid),
+						),
+						...includedDataIds,
+					]);
+					await setExcludedDataIds(
+						excludedDataIds.filter(
+							(v) => !data.includes(v.userUid),
+						),
+					);
+					alert('추가 완료');
+				}
+			} catch (err) {
+				alert('추가 오류');
+				console.log(err);
+			}
+		},
+		[dispatch, excludedDataIds, includedDataIds, roleId],
+	);
 
 	const getApi = useCallback(async () => {
 		try {
@@ -153,7 +157,6 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 					// range: page[tableKeys.users.summary.tabs.groups.include],
 				}),
 			).unwrap();
-			console.log('includeData:', includeData);
 			//포함안함
 			const excludeData = await dispatch(
 				IAM_ROLES_GRANT_ROLE_USER.asyncAction.findUsersByIdAction({
@@ -163,7 +166,6 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 					// range: page[tableKeys.users.summary.tabs.groups.include],
 				}),
 			).unwrap();
-			console.log('excludeData:', excludeData);
 			//api 요청 데이터 (포함/비포함)테이블 삽입
 			await setIncludedDataIds(includeData);
 			await setExcludedDataIds(excludeData);
@@ -173,7 +175,7 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 		}
 	}, [dispatch, roleId]);
 
-	//사용자 그룹 데이터 api 호출 (포함/비포함)
+	//테이블 데이터 api 호출 (포함/비포함)
 	useEffect(() => {
 		if (!isSummaryOpened) {
 			getApi();
@@ -192,7 +194,12 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 			<TableTitle>
 				{roleUserTab.include.title}
 				{includedData.length}
-				<NormalBorderButton margin={'0px 0px 0px 5px'}>
+				<NormalBorderButton
+					margin={'0px 0px 0px 5px'}
+					onClick={() =>
+						onClickDeleteData(includeSelect.map((v) => v.userUid))
+					}
+				>
 					{roleUserTab.include.button.delete}
 				</NormalBorderButton>
 			</TableTitle>
@@ -203,6 +210,8 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 				includedKey={tableKeys.roles.summary.tabs.users.include}
 				excludedData={excludedData}
 				includedData={includedData}
+				joinFunction={onClickAddData}
+				disjointFunction={onClickDeleteData}
 			>
 				<Table
 					isDraggable
@@ -224,6 +233,11 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 							<NormalButton
 								margin={'0px 0px 0px 5px'}
 								disabled={isDisabled}
+								onClick={() =>
+									onClickAddData(
+										excludeSelect.map((v) => v.userUid),
+									)
+								}
 							>
 								{roleUserTab.exclude.button.add}
 							</NormalButton>
@@ -249,6 +263,9 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 
 RoleUserTab.propTypes = {
 	roleId: PropTypes.string.isRequired,
+	isFold: PropTypes.object,
+	setIsFold: PropTypes.func,
+	space: PropTypes.string,
 	isSummaryOpened: PropTypes.bool,
 };
 
