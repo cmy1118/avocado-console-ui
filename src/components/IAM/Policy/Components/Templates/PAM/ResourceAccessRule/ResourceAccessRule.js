@@ -10,7 +10,11 @@ import AllowServiceTime from './AllowServiceTime';
 /**************************************************
  * ambacc244 - 자원 접근 정책 템플릿 컴포넌트
  **************************************************/
-const ResourceAccessRule = ({templateId, name, description}) => {
+const ResourceAccessRule = ({
+	templateId = 'KR-2020-0001:202202:0003',
+	name = '자원 접근 시간',
+	description = '접근 가능 시간을 설정한다.',
+}) => {
 	const dispatch = useDispatch();
 	const {creatingPolicyMode} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
@@ -46,7 +50,7 @@ const ResourceAccessRule = ({templateId, name, description}) => {
 						{templateId: templateId},
 					),
 				);
-
+				console.log(res.payload.data);
 				let defaultData = {};
 				res.payload.data.map((v) => {
 					defaultData[v.attribute.ruleType] = v;

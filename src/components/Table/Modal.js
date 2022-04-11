@@ -138,14 +138,14 @@ const Modal = ({modalOption, hiddenFooter = false, width = 230}) => {
 					{!hiddenFooter && (
 						<_Footer>
 							<TransparentBorderButton
+								onClick={() => modalOption.onClose()}
+							>
+								취소
+							</TransparentBorderButton>
+							<NormalBorderButton
 								onClick={() => modalOption.onSubmit()}
 							>
 								확인
-							</TransparentBorderButton>
-							<NormalBorderButton
-								onClick={() => modalOption.onClose()}
-							>
-								닫기
 							</NormalBorderButton>
 						</_Footer>
 					)}

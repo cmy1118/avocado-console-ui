@@ -44,6 +44,19 @@ const contents = {
 	},
 };
 
+const ruleTemplateComponents = {
+	//iam - rule
+	[categoryTypes.auth]: UserAuth,
+	[categoryTypes.account]: UserAccountProcess,
+	[categoryTypes.userAccess]: UserAccess,
+	[categoryTypes.session]: UserSession,
+	[categoryTypes.pattern]: UserSession,
+	//pam - rule
+	[categoryTypes.categoryType1]: ConnectResource,
+	[categoryTypes.categoryType2]: MFA,
+	[categoryTypes.categoryType3]: ResourceAccessRule,
+};
+
 const templateComponents = {
 	//iam - rule
 	[categoryTypes.auth]: UserAuth,

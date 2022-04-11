@@ -18,8 +18,9 @@ import Form from '../RecycleComponents/New/Form';
 import TextBox from '../RecycleComponents/New/TextBox';
 import {RowDiv} from '../../styles/components/style';
 import CheckBox from '../RecycleComponents/New/CheckBox';
-import {Google} from '../../utils/auth';
 import AUTH from '../../reducers/api/Auth/auth';
+import useModal from '../../hooks/useModal';
+import GetUserIdDialogBox from '../DialogBoxs/Form/GetUserIdDialogBox';
 
 const _CheckBoxContainer = styled.div`
 	display: flex;
@@ -73,7 +74,10 @@ const LoginForm = () => {
 		localStorage.getItem('rememberMe'),
 	);
 
+	const [GetUserIdModal, showGeetUserIdModal] = useModal();
+
 	const formRef = useRef(null);
+	const getUserIdDialogBoxModalRef = useRef(null);
 
 	const onSubmitLogin = useCallback(
 		(v) => {
@@ -103,8 +107,16 @@ const LoginForm = () => {
 	}, [rememberMe]);
 
 	const onClickGoogleAltAuth = useCallback(() => {
-		localStorage.setItem('companyId', companyId);
-		location.href = Google.location;
+		// localStorage.setItem('companyId', companyId);
+		// location.href = Google.location;
+
+		showGeetUserIdModal({
+			show: true,
+			title: '아이디 입력',
+			onSubmitCallback: () =>
+				getUserIdDialogBoxModalRef.current.onSubmitUserId(),
+			element: <GetUserIdDialogBox ref={getUserIdDialogBoxModalRef} />,
+		});
 	}, []);
 
 	return (
@@ -180,6 +192,7 @@ const LoginForm = () => {
 					<img src={appleButton} alt='appleButton' />
 				</_AlternativeAuthButton>
 			</_AlternativeAuthContainer>
+			<GetUserIdModal width={400} />
 		</LogInContainer>
 	);
 };
