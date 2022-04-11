@@ -26,8 +26,8 @@ export const Icon = styled.div`
 			: props?.itype === 'font'
 			? '#212121'
 			: props?.itype === 'selected'
-			? '#178082'
-			: '#8493a5')};
+			? '#4ca6a8'
+			: '#8e95a0')};
 
 	font-size: ${(props) =>
 		props?.size
@@ -65,8 +65,8 @@ export const Icon = styled.div`
 				: props?.itype === 'font'
 				? '#212121'
 				: props?.itype === 'selected'
-				? '#178082'
-				: '#8493a5')};
+				? '#4ca6a8'
+				: '#8e95a0')};
 
 		width: ${(props) =>
 			props?.size
@@ -102,9 +102,9 @@ export const HoverIconButton = styled(Icon)`
 	background: ${(props) =>
 		props.background ? props.background : 'transparent'};
 	&:hover {
-		color: ${(props) => props?.hover_color || '#556367'};
+		color: ${(props) => props?.hover_color || '#616a7b'};
 		svg {
-			fill: ${(props) => props?.hover_color || '#556367'};
+			fill: ${(props) => props?.hover_color || '#616a7b'};
 		}
 	}
 `;
