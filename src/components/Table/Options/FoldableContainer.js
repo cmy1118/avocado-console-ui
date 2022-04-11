@@ -79,8 +79,8 @@ const FoldableContainer = ({disabled = false, buttons, children, title}) => {
 	);
 };
 FoldableContainer.propTypes = {
-	children: PropTypes.object,
-	buttons: PropTypes.object,
+	children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+	buttons: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 	title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 	isFold: PropTypes.object,
 	setIsOpened: PropTypes.func,

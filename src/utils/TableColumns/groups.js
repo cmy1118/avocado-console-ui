@@ -466,7 +466,7 @@ export const GROUP_SUMMARY_TABS_PERMISSION_COLUMN = [
 	},
 ];
 
-export const GROUP_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
+export const GROUP_SUMMARY_TABS_TAG_PERMISSIONS_INCLUDE_COLUMN = [
 	{
 		Header: '정책 이름',
 		accessor: 'name',
@@ -481,7 +481,7 @@ export const GROUP_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
 		width: 400,
 	},
 	{
-		Header: '권한 부여 수',
+		Header: '권한 연결 수',
 		accessor: 'numberOfPermissions',
 	},
 	{
@@ -490,7 +490,7 @@ export const GROUP_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
 	},
 ];
 
-export const GROUP_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
+export const GROUP_SUMMARY_TABS_TAG_PERMISSIONS_EXCLUDE_COLUMN = [
 	{
 		Header: '정책 이름',
 		accessor: 'name',
@@ -505,7 +505,7 @@ export const GROUP_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
 		width: 400,
 	},
 	{
-		Header: '권한 부여 수',
+		Header: '권한 연결 수',
 		accessor: 'numberOfPermissions',
 	},
 	{

@@ -16,6 +16,10 @@ import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
 import {TitleBarButtons} from '../../../../../styles/components/iam/iam';
 import IAM_USER_TAG from '../../../../../reducers/api/IAM/User/Tag/tags';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
+import DragContainer from '../../../../Table/DragContainer';
+import FoldableContainer from '../../../../Table/Options/FoldableContainer';
+import IAM_GRANT_REVOKE_TAG from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeTag';
+import {ATTRIBUTE_TYPES} from '../../../../../utils/policy/policy';
 
 const _TableSpace = styled(TableTitle)`
 	margin-top: 30px;
@@ -30,6 +34,10 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 	const [basicSelect, basicColumns] = useSelectColumn(
 		tableColumns[tableKeys.users.summary.tabs.tags.basic],
 	);
+
+	const [inTagIds, setInTagIds] = useState([]);
+	const [inTag, setInTag] = useState([]);
+	const [exTag, setExTag] = useState([]);
 
 	const [includeSelect, includeColumns] = useSelectColumn(
 		tableColumns[tableKeys.users.summary.tabs.tags.permissions.include],
@@ -115,6 +123,51 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 		}
 	}, [dispatch, isSummaryOpened, user, userUid]);
 
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const res = await dispatch(
+					IAM_GRANT_REVOKE_TAG.asyncAction.findAllAction({
+						tagName: 'tagName',
+						range: 'elements=0-50',
+						value: 'd',
+						attributeType: ATTRIBUTE_TYPES.USER,
+					}),
+				);
+
+				console.log(res.payload.data);
+				setInTag(res.payload.data);
+				// setTags(dummy);
+			} catch (err) {
+				console.error(err);
+			}
+		};
+		fetchData();
+	}, [dispatch]);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const res = await dispatch(
+					IAM_GRANT_REVOKE_TAG.asyncAction.findAllAction({
+						exclude: true,
+						tagName: 'tagName',
+						range: 'elements=0-50',
+						value: 'd',
+						attributeType: ATTRIBUTE_TYPES.USER,
+					}),
+				);
+
+				console.log(res.payload.data);
+				setExTag(res.payload.data);
+				// setTags(dummy);
+			} catch (err) {
+				console.error(err);
+			}
+		};
+		fetchData();
+	}, [dispatch]);
+
 	return (
 		<TabContentContainer>
 			<TableTitle>
@@ -142,47 +195,99 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 				setData={setData}
 				columns={basicColumns}
 			/>
+			<TableTitle>{`태그 [${333}] 의 정책 : ${3}`}</TableTitle>
+			<DragContainer
+				selected={selected}
+				data={inTagIds}
+				setData={setInTagIds}
+				includedKey={
+					tableKeys.users.summary.tabs.tags.permissions.include
+				}
+				excludedData={exTag}
+				includedData={inTag}
+			>
+				<Table
+					isDraggable
+					data={inTag}
+					tableKey={
+						tableKeys.users.summary.tabs.tags.permissions.include
+					}
+					columns={includeColumns}
+					isPaginable
+					isSearchable
+					isSearchFilterable
+					isColumnFilterable
+				/>
 
-			{basicSelect.length === 1 && (
-				<div>
-					<_TableSpace>
-						태그 [{basicSelect[0].name} : {basicSelect[0].value}
-						]의 정책 :
-						<TransparentButton margin='0px 0px 0px 5px'>
-							연결 해제
-						</TransparentButton>
-					</_TableSpace>
-
-					<Table
-						tableKey={
-							tableKeys.users.summary.tabs.tags.permissions
-								.include
-						}
-						data={[]}
-						columns={includeColumns}
-					/>
-
-					<_TableSpace>
-						태그 [{basicSelect[0].name} : {basicSelect[0].value}
-						]의 다른 정책 :
+				<FoldableContainer
+					title={`태그 [${333}] 의 다른 정책 : ${3}`}
+					buttons={(isDisabled) => (
 						<TitleBarButtons>
-							<NormalButton>정책 생성</NormalButton>
-							<NormalButton margin='0px 0px 0px 5px'>
-								정책 연결
+							<NormalButton
+								margin={'0px 0px 0px 5px'}
+								disabled={isDisabled}
+							>
+								{'추가'}
 							</NormalButton>
 						</TitleBarButtons>
-					</_TableSpace>
-
+					)}
+				>
 					<Table
+						isDraggable
+						data={exTag}
 						tableKey={
 							tableKeys.users.summary.tabs.tags.permissions
 								.exclude
 						}
-						data={[]}
 						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
 					/>
-				</div>
-			)}
+				</FoldableContainer>
+			</DragContainer>
+
+			{/*{basicSelect.length === 1 && (*/}
+			{/*	<div>*/}
+			{/*		<_TableSpace>*/}
+			{/*			태그 [{basicSelect[0].name} : {basicSelect[0].value}*/}
+			{/*			]의 정책 :*/}
+			{/*			<TransparentButton margin='0px 0px 0px 5px'>*/}
+			{/*				연결 해제*/}
+			{/*			</TransparentButton>*/}
+			{/*		</_TableSpace>*/}
+
+			{/*		<Table*/}
+			{/*			tableKey={*/}
+			{/*				tableKeys.users.summary.tabs.tags.permissions*/}
+			{/*					.include*/}
+			{/*			}*/}
+			{/*			data={[]}*/}
+			{/*			columns={includeColumns}*/}
+			{/*		/>*/}
+
+			{/*		<_TableSpace>*/}
+			{/*			태그 [{basicSelect[0].name} : {basicSelect[0].value}*/}
+			{/*			]의 다른 정책 :*/}
+			{/*			<TitleBarButtons>*/}
+			{/*				<NormalButton>정책 생성</NormalButton>*/}
+			{/*				<NormalButton margin='0px 0px 0px 5px'>*/}
+			{/*					정책 연결*/}
+			{/*				</NormalButton>*/}
+			{/*			</TitleBarButtons>*/}
+			{/*		</_TableSpace>*/}
+
+			{/*		<Table*/}
+			{/*			tableKey={*/}
+			{/*				tableKeys.users.summary.tabs.tags.permissions*/}
+			{/*					.exclude*/}
+			{/*			}*/}
+			{/*			data={[]}*/}
+			{/*			columns={excludeColumns}*/}
+			{/*		/>*/}
+			{/*	</div>*/}
+			{/*)}*/}
 		</TabContentContainer>
 	);
 };

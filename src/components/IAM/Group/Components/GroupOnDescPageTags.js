@@ -14,8 +14,14 @@ import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
 import {TitleBarButtons} from '../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 import IAM_USER_GROUP_TAG from '../../../../reducers/api/IAM/User/Group/tags';
+import DragContainer from '../../../Table/DragContainer';
+import FoldableContainer from '../../../Table/Options/FoldableContainer';
+import IAM_GRANT_REVOKE_TAG from '../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeTag';
+import {ATTRIBUTE_TYPES} from '../../../../utils/policy/policy';
 
 const TAG_TABLE_KEY = tableKeys.groups.summary.tabs.tags.basic;
+const ROLE_INCLUDE_KEY = tableKeys.groups.summary.tabs.tags.permissions.include;
+const ROLE_EXCLUDE_KEY = tableKeys.groups.summary.tabs.tags.permissions.exclude;
 let index = 0;
 
 const GroupOnDescPageTags = ({groupId}) => {
@@ -23,6 +29,18 @@ const GroupOnDescPageTags = ({groupId}) => {
 	const [tags, setTags] = useState([]);
 	const [initTags, setInitTags] = useState([]);
 	const [deleteTags, setDeleteTags] = useState([]);
+
+	const [inTagIds, setInTagIds] = useState([]);
+	const [inTag, setInTag] = useState([]);
+	const [exTag, setExTag] = useState([]);
+
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[ROLE_INCLUDE_KEY],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[ROLE_EXCLUDE_KEY],
+	);
+	const [selected, setSelected] = useState({});
 
 	const tableData = useMemo(
 		() =>
@@ -113,6 +131,13 @@ const GroupOnDescPageTags = ({groupId}) => {
 	}, [tags, select]);
 
 	useEffect(() => {
+		setSelected({
+			[ROLE_INCLUDE_KEY]: includeSelect,
+			[ROLE_EXCLUDE_KEY]: excludeSelect,
+		});
+	}, [excludeSelect, includeSelect]);
+
+	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const res = await dispatch(
@@ -132,6 +157,48 @@ const GroupOnDescPageTags = ({groupId}) => {
 		fetchData();
 	}, [dispatch, groupId]);
 
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const res = await dispatch(
+					IAM_GRANT_REVOKE_TAG.asyncAction.findAllAction({
+						tagName: 'a',
+						range: 'elements=0-50',
+						attributeType: ATTRIBUTE_TYPES.USER_GROUP,
+					}),
+				);
+
+				console.log(res.payload.data);
+				setInTag(res.payload.data);
+				// setTags(dummy);
+			} catch (err) {
+				console.error(err);
+			}
+		};
+		fetchData();
+	}, [dispatch]);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const res = await dispatch(
+					IAM_GRANT_REVOKE_TAG.asyncAction.findAllAction({
+						exclude: true,
+						tagName: 'a',
+						range: 'elements=0-50',
+						attributeType: ATTRIBUTE_TYPES.USER_GROUP,
+					}),
+				);
+
+				console.log(res.payload.data);
+				setExTag(res.payload.data);
+				// setTags(dummy);
+			} catch (err) {
+				console.error(err);
+			}
+		};
+		fetchData();
+	}, [dispatch]);
 	return (
 		<TabContentContainer>
 			<TableTitle>
@@ -158,6 +225,52 @@ const GroupOnDescPageTags = ({groupId}) => {
 				columns={columns}
 				setData={setTags}
 			/>
+
+			<TableTitle>{`태그 [${333}] 의 정책 : ${3}`}</TableTitle>
+			<DragContainer
+				selected={selected}
+				data={inTagIds}
+				setData={setInTagIds}
+				includedKey={ROLE_INCLUDE_KEY}
+				excludedData={exTag}
+				includedData={inTag}
+			>
+				<Table
+					isDraggable
+					data={inTag}
+					tableKey={ROLE_INCLUDE_KEY}
+					columns={includeColumns}
+					isPaginable
+					isSearchable
+					isSearchFilterable
+					isColumnFilterable
+				/>
+
+				<FoldableContainer
+					title={`태그 [${333}] 의 다른 정책 : ${3}`}
+					buttons={(isDisabled) => (
+						<TitleBarButtons>
+							<NormalButton
+								margin={'0px 0px 0px 5px'}
+								disabled={isDisabled}
+							>
+								{'추가'}
+							</NormalButton>
+						</TitleBarButtons>
+					)}
+				>
+					<Table
+						isDraggable
+						data={exTag}
+						tableKey={ROLE_EXCLUDE_KEY}
+						columns={excludeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
+				</FoldableContainer>
+			</DragContainer>
 		</TabContentContainer>
 	);
 };
