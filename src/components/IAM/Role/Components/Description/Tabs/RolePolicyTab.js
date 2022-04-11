@@ -17,6 +17,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import AUTH from '../../../../../../reducers/api/Auth/auth';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 import IAM_USER_POLICY_GRANT_REVOKE_ROLE from '../../../../../../reducers/api/IAM/User/Policy/GrantRevoke/role';
+import {useHistory} from 'react-router-dom';
 
 // const policyType = {
 // 	'KR-2020-0005:202111:0001': '사용자 인증',
@@ -215,6 +216,8 @@ const rolePolicyTab = {
 
 const RolePolicyTab = ({roleId, isSummaryOpened}) => {
 	const dispatch = useDispatch();
+	const history = useHistory();
+
 	const {companyId} = useSelector(AUTH.selector);
 
 	const [includeSelect, includeColumns] = useSelectColumn(
@@ -268,8 +271,7 @@ const RolePolicyTab = ({roleId, isSummaryOpened}) => {
 	const onClickDeleteData = useCallback(
 		async (data) => {
 			try {
-				console.log('data:', data);
-				if (data) {
+				if (data.length) {
 					await Promise.all([
 						data.forEach((policyId) => {
 							dispatch(
@@ -303,8 +305,7 @@ const RolePolicyTab = ({roleId, isSummaryOpened}) => {
 		async (data) => {
 			let order = 0;
 			try {
-				console.log('data:', data);
-				if (data) {
+				if (data.length) {
 					await Promise.all([
 						data.forEach((policyId) => {
 							dispatch(
@@ -416,7 +417,10 @@ const RolePolicyTab = ({roleId, isSummaryOpened}) => {
 					title={rolePolicyTab.exclude.title + excludedData.length}
 					buttons={(isDisabled) => (
 						<TitleBarButtons>
-							<NormalButton disabled={isDisabled}>
+							<NormalButton
+								disabled={isDisabled}
+								onClick={() => history.push('/policies/add')}
+							>
 								{rolePolicyTab.exclude.button.create}
 							</NormalButton>
 							<NormalButton

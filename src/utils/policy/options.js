@@ -1,5 +1,10 @@
 import {policyTypes} from '../data';
 
+export const GRANT_RESTRICT_OPTIONS = {
+	use: {key: 'use', label: '사용함'},
+	none: {key: 'none', label: '사용 안함'},
+};
+
 export const policyOption = {
 	type: {
 		'iam*': {key: policyTypes.iam, label: 'IAM'},
@@ -110,6 +115,17 @@ export const policyOption = {
 		all: {key: 'all', label: '모든 자원'},
 	},
 };
+
+export const grantRestrictOptions = [
+	{
+		key: GRANT_RESTRICT_OPTIONS.use.key,
+		label: GRANT_RESTRICT_OPTIONS.use.label,
+	},
+	{
+		key: GRANT_RESTRICT_OPTIONS.none.key,
+		label: GRANT_RESTRICT_OPTIONS.none.label,
+	},
+];
 
 export const policyTypeOptions = [
 	{

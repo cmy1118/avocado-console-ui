@@ -34,6 +34,15 @@ import {RowDiv} from '../../../../styles/components/style';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import RoleTabContents from '../Components/Description/RoleTabContents';
 import {roleTabs} from '../../../../utils/tabs';
+import TemplateElement from '../../Policy/Components/Templates/Layout/TemplateElement';
+import useRadio from '../../../../hooks/useRadio';
+import {
+	gracePeriodUsageOptions,
+	GRANT_RESTRICT_OPTIONS,
+	grantRestrictOptions,
+	policyOption,
+} from '../../../../utils/policy/options';
+import useTextBox from '../../../../hooks/useTextBox';
 
 const roleDescriptionSpace = {
 	title: '요약',
@@ -55,15 +64,42 @@ const roleDescriptionSpace = {
 	},
 };
 
-/**************************************************
- * ambacc244 - 이 역할을 상세 정보를 보여줌
- **************************************************/
 const RoleDescriptionSpace = ({roleId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const location = useLocation();
 	const [role, setRole] = useState(null);
 
+	/**************************************************
+	 * 부여제한 기능
+	 **************************************************/
+	const [
+		grantRestrict,
+		grantRestrictRadioButton,
+		setGrantRestrict,
+	] = useRadio({
+		name: 'grantRestrict',
+		options: grantRestrictOptions,
+		disabled: grantRestrict === GRANT_RESTRICT_OPTIONS.none.key,
+	});
+
+	const [
+		grantRestrictNum,
+		grantRestrictTextBox,
+		setGrantRestrictNum,
+	] = useTextBox({
+		name: 'gracePeriod',
+		//유예 기간 사용 유무 false일때 disabled
+		//1 ~
+		regex: /^([1-9]|[1-9][0-9]*)$/,
+		// disabled:
+		// 	grantRestrict === policyOption.gracePeriod.none.key ||
+		// 	usage === policyOption.usage.none.key,
+	});
+
+	/**************************************************
+	 * 요약정보 열고 닫기
+	 **************************************************/
 	const isSummaryOpened = useMemo(() => {
 		if (location.search) return false;
 		else return true;
@@ -130,12 +166,22 @@ const RoleDescriptionSpace = ({roleId}) => {
 			console.log('roleData:', roleData);
 			await setRole(roleData);
 			await setDescription(roleData.description);
+
+			await setGrantRestrict(false);
+			await setGrantRestrictNum(roleData.length);
 		} catch (err) {
 			alert('역할 상세 정보 오류');
 			console.log(err);
 			history.push('/roles');
 		}
-	}, [dispatch, history, roleId, setDescription]);
+	}, [
+		dispatch,
+		history,
+		roleId,
+		setDescription,
+		setGrantRestrict,
+		setGrantRestrictNum,
+	]);
 
 	return (
 		<IamContainer>
@@ -195,6 +241,16 @@ const RoleDescriptionSpace = ({roleId}) => {
 						</LiText>
 						<LiText>
 							{roleDescriptionSpace.detail.grantRegulation}
+							<TemplateElement
+								render={() => {
+									return (
+										<RowDiv>
+											{grantRestrictRadioButton()}
+											{grantRestrictTextBox()}
+										</RowDiv>
+									);
+								}}
+							/>
 						</LiText>
 						<LiText>
 							{roleDescriptionSpace.detail.createdDate}

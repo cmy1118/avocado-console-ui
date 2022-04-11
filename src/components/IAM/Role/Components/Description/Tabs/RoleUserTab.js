@@ -1,6 +1,9 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import {NormalBorderButton, NormalButton,} from '../../../../../../styles/components/buttons';
+import {
+	NormalBorderButton,
+	NormalButton,
+} from '../../../../../../styles/components/buttons';
 import Table from '../../../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
@@ -13,6 +16,7 @@ import {TitleBarButtons} from '../../../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import {useDispatch} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 
 const roleUserTab = {
 	include: {title: '이 역할의 사용자 : ', button: {delete: '연결 해제'}},
@@ -24,6 +28,7 @@ const roleUserTab = {
 // IAM_ROLES_GRANT_ROLE_USER
 const RoleUserTab = ({roleId, isSummaryOpened}) => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 
 	const [includeSelect, includeColumns] = useSelectColumn(
 		tableColumns[tableKeys.roles.summary.tabs.users.include],
@@ -76,7 +81,7 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 	const onClickDeleteData = useCallback(
 		async (data) => {
 			try {
-				if (data) {
+				if (data.length) {
 					await Promise.all([
 						data.forEach((userUid) => {
 							dispatch(
@@ -113,7 +118,7 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 	const onClickAddData = useCallback(
 		async (data) => {
 			try {
-				if (data) {
+				if (data.length) {
 					await Promise.all([
 						data.forEach((userUid) => {
 							dispatch(
@@ -227,7 +232,10 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 					title={roleUserTab.include.title + excludedData.length}
 					buttons={(isDisabled) => (
 						<TitleBarButtons>
-							<NormalButton disabled={isDisabled}>
+							<NormalButton
+								disabled={isDisabled}
+								onClick={() => history.push('/users/add')}
+							>
 								{roleUserTab.exclude.button.create}
 							</NormalButton>
 							<NormalButton

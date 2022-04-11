@@ -266,8 +266,8 @@ export const ROLE_SUMMARY_GROUP_COLUMN = [
 			return <TableLink cell={cell} />;
 		},
 	},
-	{accessor: 'groupType', Header: '그룹 유형'},
-	{accessor: 'numberOfRoles', Header: '권한 수'},
+	{accessor: 'type', Header: '그룹 유형'},
+	{accessor: 'numberOfPermissions', Header: '권한 수'},
 	{accessor: 'parentGroup', Header: '상위 그룹'},
 	{accessor: 'createdTime', Header: '생성 일시'},
 	{accessor: 'grantDate', Header: '부여 일시'},

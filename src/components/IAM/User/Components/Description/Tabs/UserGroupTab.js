@@ -67,7 +67,7 @@ const UserGroupTab = ({userUid, isSummaryOpened}) => {
 	const onClickDeleteGroupFromUser = useCallback(
 		async (data) => {
 			try {
-				if (data) {
+				if (data.length) {
 					await Promise.all([
 						data.forEach((groupId) => {
 							dispatch(
@@ -100,7 +100,7 @@ const UserGroupTab = ({userUid, isSummaryOpened}) => {
 	const onClickAddGroupToUser = useCallback(
 		async (data) => {
 			try {
-				if (data) {
+				if (data.length) {
 					// for (const groupId of data) {
 					await Promise.all([
 						data.forEach((groupId) => {
