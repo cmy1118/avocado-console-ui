@@ -80,36 +80,19 @@ const LoginForm = () => {
 			if (!v.id || !v.password) return;
 
 			dispatch(
-				AUTH.asyncAction.authPolicyVerificationAction({
+				AUTH.asyncAction.userAuthAction({
 					username: v.id,
 					password: v.password,
 					companyId: companyId,
 				}),
-			)
-				.unwrap()
-				.then((val) => {
-					if (
-						val?.policyParameter?.policies[0]?.type ===
-						'idAndPassword'
-					) {
-						dispatch(
-							AUTH.asyncAction.userAuthAction({
-								username: v.id,
-								password: v.password,
-								companyId: companyId,
-							}),
-						);
-					} //TODO: 대체인증
-				});
+			);
 
 			if (rememberMe) {
 				localStorage.setItem('rememberMe', true);
 				localStorage.setItem('id', v.id);
-				localStorage.setItem('password', v.password);
 			} else {
 				localStorage.setItem('rememberMe', false);
 				localStorage.removeItem('id');
-				localStorage.removeItem('password');
 			}
 		},
 		[dispatch, companyId, rememberMe],
@@ -133,9 +116,7 @@ const LoginForm = () => {
 			<Form
 				initialValues={{
 					id: rememberMe ? localStorage.getItem('id') : '',
-					password: rememberMe
-						? localStorage.getItem('password')
-						: '',
+					password: rememberMe ? localStorage.getItem('password') : '',
 				}}
 				onSubmit={onSubmitLogin}
 				innerRef={formRef}
@@ -185,14 +166,18 @@ const LoginForm = () => {
 				<_AlternativeAuthButton>
 					<img src={kakaoButton} alt='kakaoButton' />
 				</_AlternativeAuthButton>
+
 				<_AlternativeAuthButton>
 					<img src={naverButton} alt='naverButton' />
 				</_AlternativeAuthButton>
+
 			</_AlternativeAuthContainer>
+
 			<_AlternativeAuthContainer>
 				<_AlternativeAuthButton onClick={onClickGoogleAltAuth}>
 					<img src={googleButton} alt='googleButton' />
 				</_AlternativeAuthButton>
+
 				<_AlternativeAuthButton>
 					<img src={appleButton} alt='appleButton' />
 				</_AlternativeAuthButton>

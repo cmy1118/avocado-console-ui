@@ -33,7 +33,6 @@ export const tableDropDataType = [
 			'USER_SUMMARY_TABS_ROLES_INCLUDE',
 			'GROUP_ADD_ROLES_INCLUDE',
 			'GROUP_SUMMARY_TABS_ROLES_INCLUDE',
-
 		],
 	},
 
@@ -43,8 +42,6 @@ export const tableDropDataType = [
 			'ROLE_ADD_POLICIES_INCLUDE'
 		],
 	},
-
-
 ];
 export const CheckDropDataType = (tableKey) => {
 	let type;

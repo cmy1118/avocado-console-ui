@@ -81,7 +81,9 @@ const PolicySpace = () => {
 			description: v.description === '' ? '없음' : v.description,
 			createdTime: v.createdTag.createdTime,
 			[DRAGGABLE_KEY]: v.id,
-		}));
+		})
+
+		);
 		// 	{
 		// 		id: 'policy2',
 		// 		name: '정책 이름 2',
@@ -93,6 +95,8 @@ const PolicySpace = () => {
 		// 		[DRAGGABLE_KEY]: '2',
 		// 	},
 		// ];
+
+
 	}, [iamPolicies]);
 
 	const onClickLinkToAddPolicyPage = useCallback(() => {
@@ -101,7 +105,6 @@ const PolicySpace = () => {
 
 	const onClickDeletePolicies = useCallback(() => {
 		if (select[tableKeys.policy.basic]?.length) {
-			console.log(select[tableKeys.policy.basic]);
 			select[tableKeys.policy.basic].forEach((v) => {
 				// todo : 정책 삭제 api 들어오면 해당 처리
 				// dispatch(
@@ -199,8 +202,6 @@ const PolicySpace = () => {
 	);
 
 	const subComponentHandler = ({row, setData, setColumns, setLoading}) => {
-		console.log(row);
-
 		setLoading(false);
 
 		setData([
@@ -278,10 +279,7 @@ const PolicySpace = () => {
 						<NormalButton onClick={onClickLinkToAddPolicyPage}>
 							정책 생성
 						</NormalButton>
-						<TransparentButton
-							margin={'0px 0px 0px 5px'}
-							onClick={onClickDeletePolicies}
-						>
+						<TransparentButton margin={'0px 0px 0px 5px'} onClick={onClickDeletePolicies}>
 							삭제
 						</TransparentButton>
 					</TitleBarButtons>

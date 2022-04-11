@@ -41,7 +41,6 @@ const grantGetsAction = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
-		console.log(response);
 		return response.data || [];
 	},
 );
@@ -59,7 +58,6 @@ const slice = createSlice({
 			state.loading = true;
 		},
 		[getsAction.fulfilled]: (state, action) => {
-			state.policy = action.payload;
 			state.loading = false;
 		},
 		[grantGetsAction.rejected]: (state, action) => {

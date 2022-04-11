@@ -101,14 +101,8 @@ const TableOptionsBar = ({
 		setAllFilters([]);
 	}, [setAllFilters]);
 
-	const [
-		isSearchFilterContextMenuOpened,
-		setIsSearchFilterContextMenuOpened,
-	] = useState(false);
-	const [
-		isColumnFilterContextMenuOpened,
-		setIsColumnFilterContextMenuOpened,
-	] = useState(false);
+	const [isSearchFilterContextMenuOpened, setIsSearchFilterContextMenuOpened] = useState(false);
+	const [isColumnFilterContextMenuOpened, setIsColumnFilterContextMenuOpened] = useState(false);
 
 	const onClickOpenSearchFilterContextMenu = useCallback(() => {
 		setIsSearchFilterContextMenuOpened(true);
@@ -160,12 +154,10 @@ const TableOptionsBar = ({
 					)}
 				</_OptionContainer>
 				<_OptionContainer>
-					<IconButton
-						size={'sm'}
-						onClick={() => console.log('데이터 새로 불러오기')}
-					>
+					<IconButton size={'sm'} onClick={() => console.log('데이터 새로 불러오기')}>
 						{autoRenewIcon}
 					</IconButton>
+
 					<Pagination
 						gotoPage={gotoPage}
 						canPreviousPage={canPreviousPage}

@@ -52,6 +52,7 @@ const PolicyTemplateDialogBox = () => {
 				<NormalButton onClick={onSubmitForm}>Save</NormalButton>
 			</DialogBoxFooter>
 		</_DialogBox>
+	)
 };
 
 export default PolicyTemplateDialogBox;

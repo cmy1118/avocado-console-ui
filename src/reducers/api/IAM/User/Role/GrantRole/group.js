@@ -8,16 +8,14 @@ const grantAction = createAsyncThunk(
 	`${NAME}/GRANT`,
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
-		// eslint-disable-next-line no-console
+
 		const response = await Axios.post(
-			`/open-api/v1/iam/user-groups//${payload.id}/roles`,
+			`/open-api/v1/iam/user-groups/${payload.id}/roles`,
+			[...payload.roleIds],
 			{
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
-				},
-				params: {
-					roleld: payload.roleld,
 				},
 				baseURL: baseURL.openApi,
 			},
@@ -33,7 +31,7 @@ const revokeAction = createAsyncThunk(
 		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
 		const response = await Axios.put(
-			`/open-api/v1/iam/user-groups//${payload.id}/roles`,
+			`/open-api/v1/iam/user-groups/${payload.id}/roles`,
 			{
 				headers: {
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
@@ -77,7 +75,7 @@ const getEventsAction = createAsyncThunk(
 		const {userAuth} = getState().AUTH;
 		// eslint-disable-next-line no-console
 		const response = await Axios.get(
-			`//open-api/v1/iam/user-groups//${payload.id}/roles/events`,
+			`//open-api/v1/iam/user-groups/${payload.id}/roles/events`,
 			{
 				params: {
 					fromTime: payload.fromTime,
@@ -110,8 +108,6 @@ const findUserGroupsById = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
-		console.log(response);
-
 		return response.data;
 	},
 );

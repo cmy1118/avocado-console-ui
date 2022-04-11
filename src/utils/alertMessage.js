@@ -4,6 +4,10 @@ export const alertMessageTypes = {
 	alert: 'ALERT',
 };
 
+
+export const temp = (() => {
+
+})
 export const confirmAlertMessages = {
 	developing: {
 		key: 'developing',
@@ -39,7 +43,7 @@ export const confirmAlertMessages = {
 	maxNumberOfPolicy:{
 		key: 'maxNumberOfPolicy',
 		type: alertMessageTypes.alert,
-		message: '최대 5개의 정책만 추가 가능합니다.',
+		message: '유형별 최대 5개의 정책만 추가 가능합니다.',
 	},
 
 	maxNumberOfTags: {
@@ -48,6 +52,19 @@ export const confirmAlertMessages = {
 		message: '최대 10개의 태그만 등록 가능합니다.',
 	},
 
+	// 역할 > 역할생성 > 역할+사용자 연결 Table
+	limitedNumberOfUsers:{
+		key: 'limitedNumberOfUsers',
+		type: alertMessageTypes.alert,
+		message: '지정한 부여 제한 횟수 만큼 등록 가능 합니다.',
+	},
+
+	// 역할 > 역할생성 > 역할+사용자 연결 Table > 부여제한 횟수 미 입력 시
+	limitedNumberCheck:{
+		key: 'limitedNumberCheck',
+		type: alertMessageTypes.alert,
+		message: '부여 제한 횟수 를 입력해 주세요.',
+	},
 
 	//default 값
 	maxNumberOfDatas: {

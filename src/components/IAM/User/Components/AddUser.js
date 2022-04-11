@@ -4,23 +4,13 @@ import * as yup from 'yup';
 import CURRENT_TARGET from '../../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../../styles/components/buttons';
+import {NormalButton, TransparentButton } from '../../../../styles/components/buttons';
 import Form from '../../../RecycleComponents/New/Form';
 import TextBox from '../../../RecycleComponents/New/TextBox';
 import {RowDiv} from '../../../../styles/components/style';
 import TableOptionText from '../../../Table/Options/TableOptionText';
-import {
-	AddPageContent,
-	TextBoxDescription,
-} from '../../../../styles/components/iam/addPage';
-import {
-	TitleBar,
-	TitleBarButtons,
-	TitleBarText,
-} from '../../../../styles/components/iam/iam';
+import {AddPageContent, TextBoxDescription} from '../../../../styles/components/iam/addPage';
+import {TitleBar, TitleBarButtons, TitleBarText} from '../../../../styles/components/iam/iam';
 
 const AddUser = ({setIsOpened}) => {
 	const history = useHistory();
@@ -32,26 +22,11 @@ const AddUser = ({setIsOpened}) => {
 	const mobileRegex = /^[0-9]{3}[-]+[0-9]{4}[-]+[0-9]{4}$/;
 
 	const validation = {
-		id: yup
-			.string()
-			.min(5, '최소 길이는 5자 입니다.')
-			.max(40, '최대 길이는 40자 입니다.')
-			.required('아이디는 필수 입력 값입니다.'),
-		name: yup
-			.string()
-			.max(30, '최대 길이는 30자 입니다.')
-			.required('이름은 필수 입력 값입니다.'),
-		email: yup
-			.string()
-			.email('올바른 이메일 형식이 아닙니다.')
-			.required('이메일은 필수 입력 값입니다.'),
-		telephone: yup
-			.string()
-			.matches(telephoneRegex, '형식에 맞지 않습니다.'),
-		mobile: yup
-			.string()
-			.required('핸드폰 번호는 필수 입력 값입니다.')
-			.matches(mobileRegex, '형식에 맞지 않습니다.'),
+		id: yup.string().min(5, '최소 길이는 5자 입니다.').max(40, '최대 길이는 40자 입니다.').required('아이디는 필수 입력 값입니다.'),
+		name: yup.string().max(30, '최대 길이는 30자 입니다.').required('이름은 필수 입력 값입니다.'),
+		email: yup.string().email('올바른 이메일 형식이 아닙니다.').required('이메일은 필수 입력 값입니다.'),
+		telephone: yup.string().matches(telephoneRegex, '형식에 맞지 않습니다.'),
+		mobile: yup.string().required('핸드폰 번호는 필수 입력 값입니다.').matches(mobileRegex, '형식에 맞지 않습니다.'),
 	};
 
 	const onClickCancelAddUser = useCallback(() => {
@@ -76,16 +51,10 @@ const AddUser = ({setIsOpened}) => {
 			<TitleBar>
 				<TitleBarText>사용자 기본 정보</TitleBarText>
 				<TitleBarButtons>
-					<NormalButton
-						onClick={() => formRef.current.handleSubmit()}
-					>
+					<NormalButton onClick={() => formRef.current.handleSubmit()}>
 						사용자 생성
 					</NormalButton>
-					<TransparentButton
-						type={'button'}
-						margin='0px 0px 0px 5px'
-						onClick={onClickCancelAddUser}
-					>
+					<TransparentButton type={'button'} margin='0px 0px 0px 5px' onClick={onClickCancelAddUser}>
 						취소
 					</TransparentButton>
 				</TitleBarButtons>

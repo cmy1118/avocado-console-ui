@@ -15,19 +15,15 @@ const TableFold = ({children, title, space, isFold, setIsFold}) => {
 	const onClickFold = useCallback(() => {
 		setIsFold({...isFold, [space]: !isFold[space]});
 	}, [isFold, setIsFold, space]);
+
+
+
 	return (
 		<div>
-			<TableTitle
-				className={isFold[space] ? 'fold-title' : 'fold-title close'}
-			>
+			<TableTitle className={isFold[space] ? 'fold-title' : 'fold-title close'}>
 				<>
 					<_TableFoldTitle>
-						<HoverIconButton
-							color={'font'}
-							size={'m'}
-							margin={'0px'}
-							onClick={onClickFold}
-						>
+						<HoverIconButton color={'font'} size={'m'} margin={'0px'} onClick={onClickFold}>
 							{isFold[space] ? arrowDownIcon : arrowRightIcon}
 						</HoverIconButton>
 						{title}

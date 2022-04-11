@@ -15,6 +15,7 @@ const createAction = createAsyncThunk(
 				description: payload.description,
 				maxGrants: payload.maxGrants, //최대 승인 수 0 : 제한없음 N: 부여 가능 수
 				parentIds: payload.parentIds,
+				typeCode: payload.typeCode
 			},
 			{
 				headers: {
@@ -24,7 +25,7 @@ const createAction = createAsyncThunk(
 				baseURL: baseURL.openApi,
 			},
 		);
-		return response.data;
+		return {data: response.data, headers: response.headers};
 	},
 );
 
@@ -103,12 +104,12 @@ const getsAction = createAsyncThunk(
 	`${NAME}/GETS`,
 	async (payload, {getState}) => {
 		const {userAuth} = getState().AUTH;
-
+		console.log("=============")
+		console.log(`${userAuth.token_type} ${userAuth.access_token}`)
+		console.log("=============")
 		const response = await Axios.get(`/open-api/v1/iam/roles`, {
-			params: {
+			params:{
 				keyword: payload.keyword,
-				// maxGrants 임시 설정 : 0
-				maxGrants: payload.maxGrants,
 			},
 			headers: {
 				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
@@ -118,7 +119,10 @@ const getsAction = createAsyncThunk(
 			baseURL: baseURL.openApi,
 		});
 		//	console.log('ROLE_getsAction:', response.data);
-		return {data: response.data, headers: response.headers};
+		return {
+			data: response.data,
+			headers: response.headers
+		};
 	},
 );
 
@@ -177,16 +181,16 @@ const slice = createSlice({
 	},
 	reducers: {},
 	extraReducers: {
-		// [createAction.pending]: (state) => {
-		// 	state.loading = true;
-		// },
-		// [createAction.fulfilled]: (state, action) => {
-		// 	state.loading = false;
-		// },
-		// [createAction.rejected]: (state, action) => {
-		// 	state.error = action.payload;
-		// 	state.loading = false;
-		// },
+		[createAction.pending]: (state) => {
+			state.loading = true;
+		},
+		[createAction.fulfilled]: (state, action) => {
+			state.loading = false;
+		},
+		[createAction.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+		},
 		// [updateAction.pending]: (state) => {
 		// 	state.loading = true;
 		// },

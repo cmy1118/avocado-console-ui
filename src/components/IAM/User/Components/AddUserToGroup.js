@@ -34,20 +34,15 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 
 	const includedData = useMemo(() => {
 		return (
-			groups
-				.filter((v) => includedDataIds.includes(v.id))
-				.map((v) => ({
+			groups.filter((v) => includedDataIds.includes(v.id)).map((v) => ({
 					...v,
 					userGroupType: v.userGroupType.name,
 					[DRAGGABLE_KEY]: v.id,
 				})) || []
 		);
 	}, [groups, includedDataIds]);
-
 	const excludedData = useMemo(() => {
-		const types = groups
-			.filter((v) => includedDataIds?.includes(v.id))
-			.map((v) => v.userGroupType.name);
+		const types = groups.filter((v) => includedDataIds?.includes(v.id)).map((v) => v.userGroupType.name);
 
 		return (
 			groups
@@ -133,12 +128,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 
 	return (
 		<FoldableContainer>
-			<TableFold
-				title={'그룹에 사용자에 추가'}
-				space={space}
-				isFold={isFold}
-				setIsFold={setIsFold}
-			/>
+			<TableFold title={'그룹에 사용자에 추가'} space={space} isFold={isFold} setIsFold={setIsFold}/>
 			<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
 				<TableOptionText data={'groups'} />
 				<DragContainer
@@ -154,9 +144,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 							setSelect={setSelect}
 							isDraggable
 							tableKey={tableKeys.users.add.groups.exclude}
-							columns={
-								tableColumns[tableKeys.users.add.groups.exclude]
-							}
+							columns={tableColumns[tableKeys.users.add.groups.exclude]}
 							data={excludedData}
 							isPaginable
 							isSearchable
@@ -166,17 +154,13 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 						/>
 						<RowDiv alignItems={'center'}>
 							<DropButton
-								leftTableKey={
-									tableKeys.users.add.groups.exclude
-								}
-								RightTableKey={
-									tableKeys.users.add.groups.include
-								}
 								select={select}
-								dataLeft={excludedData}
 								dataRight={includedData}
 								rightDataIds={includedDataIds}
 								setRightDataIds={setIncludedDataIds}
+								leftTableKey={tableKeys.users.add.groups.exclude}
+								rightTableKey={tableKeys.users.add.groups.include}
+								dataLeft={excludedData}
 							/>
 						</RowDiv>
 						<ColDiv>
@@ -187,11 +171,7 @@ const AddUserToGroup = ({space, isFold, setIsFold}) => {
 								setSelect={setSelect}
 								isDraggable
 								tableKey={tableKeys.users.add.groups.include}
-								columns={
-									tableColumns[
-										tableKeys.users.add.groups.include
-									]
-								}
+								columns={tableColumns[tableKeys.users.add.groups.include]}
 								data={includedData}
 							/>
 						</ColDiv>

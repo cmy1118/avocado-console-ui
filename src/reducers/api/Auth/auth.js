@@ -41,8 +41,7 @@ const userAuthAction = createAsyncThunk(
 			},
 			headers: {
 				'Content-Type': contentType.URL_ENCODED,
-				Authorization:
-					'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
+				Authorization: 'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
 				CompanyId: payload.companyId,
 				ApplicationCode: 'console-ui',
 			},
@@ -152,7 +151,7 @@ const refreshTokenAction = createAsyncThunk(
 	`${NAME}/refresh`,
 	async (payload, {getState}) => {
 		const authState = getState()[NAME];
-		console.log(authState.userAuth.refresh_token);
+
 		const response = await Axios.post('/oauth2/v1/token', null, {
 			params: {
 				grant_type: grantType.REFRESH_TOKEN,

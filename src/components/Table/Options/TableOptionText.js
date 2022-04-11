@@ -44,7 +44,6 @@ const _TableOptionTextContainer = styled.div`
 	letter-spacing: 0.1px;
 	color: #212121;
 `;
-
 const _TableOptionTextContants = styled.div`
 	padding: 2px 2px;
 	display: flex;

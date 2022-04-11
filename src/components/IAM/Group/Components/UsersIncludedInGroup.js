@@ -122,7 +122,7 @@ const UsersIncludedInGroup = ({space, isFold, setValue, setIsFold}) => {
 									leftTableKey={
 										tableKeys.groups.add.users.exclude
 									}
-									RightTableKey={
+									rightTableKey={
 										tableKeys.groups.add.users.include
 									}
 									select={select}

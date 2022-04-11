@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
@@ -6,160 +6,159 @@ import DropButton from '../../../../Table/DropButton';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../../../reducers/currentTarget';
-import {
-	ColDiv,
-	RowDiv,
-	TableHeader,
-} from '../../../../../styles/components/style';
-import TableOptionText from '../../../../Table/Options/TableOptionText';
+import {ColDiv, CollapsbleContent, RowDiv, TableHeader} from '../../../../../styles/components/style';
 import PropTypes from 'prop-types';
 import TableFold from '../../../../Table/Options/TableFold';
 import DragContainer from '../../../../Table/DragContainer';
 import {FoldableContainer} from '../../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../../reducers/pagination';
-import {
-	expiredConverter,
-	groupsConverter,
-} from '../../../../../utils/tableDataConverter';
+import {isFulfilled} from "@reduxjs/toolkit";
+import {totalNumberConverter} from "../../../../../utils/tableDataConverter";
 
-const ConnectUserToRole = ({space, isFold, setValue, setIsFold}) => {
+const ConnectUserToRole = ({space, isFold, setIsFold, usage , maxGrants}) => {
 	const dispatch = useDispatch();
-	const {users} = useSelector(IAM_USER.selector);
 	const {page} = useSelector(PAGINATION.selector);
-	const [includedDataIds, setIncludedDataIds] = useState([]);
-	const [select, setSelect] = useState({});
+	const [search, setSearch] = useState('');
 
+	const [users,setUsers] = useState([]);
+
+	const [select, setSelect] = useState({});
+	const [includedDataIds, setIncludedDataIds] = useState([]);
+
+	const includedData = useMemo(() =>{
+		return (
+			users.filter((v) => includedDataIds.includes(v.userUid)).map((v) => ({
+				...v,
+				[DRAGGABLE_KEY]: v.userUid,
+			})) || []
+		)
+	},[users,includedDataIds]);
 	const excludedData = useMemo(() => {
 		return (
-			users
-				.filter((x) => !includedDataIds.includes(x.userUid))
-				.map((v) => ({
-					...v,
-					groupIds: groupsConverter(v.groups || []),
-					numberOfGroups: v.groups ? v.groups.length : 0,
-					status: v.status.code,
-					createdTime: v.createdTag.createdTime,
-					passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
-					[DRAGGABLE_KEY]: v.userUid,
-				})) || []
-		);
-	}, [includedDataIds, users]);
-
-	const includedData = useMemo(() => {
-		return (
-			users
-				.filter((x) => includedDataIds.includes(x.userUid))
-				.map((v) => ({
-					...v,
-					id: v.id,
-					groupIds: groupsConverter(v.groups || []),
-					status: v.status.code,
-					createdTime: v.createdTag.createdTime,
-					passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
-					[DRAGGABLE_KEY]: v.userUid,
-				})) || []
-		);
-	}, [includedDataIds, users]);
+			users.filter((v) => !includedDataIds.includes(v.userUid)).map((v) => ({
+				...v,
+				[DRAGGABLE_KEY]: v.userUid,
+			})) || []
+		)
+	},[users,includedDataIds])
 
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
-				title: tableKeys.groups.add.roles.include,
+				title: tableKeys.roles.add.users.exclude,
 				data: includedData,
 			}),
 		);
-	}, [includedData, dispatch]);
+	}, [dispatch, includedData]);
 
-	useEffect(() => {
-		page[tableKeys.groups.add.users.exclude] &&
-			dispatch(
+	const getUsersApi = useCallback( async (search) =>{
+		if(page[tableKeys.roles.add.users.exclude]){
+			const res = await dispatch(
 				IAM_USER.asyncAction.findAllAction({
-					range: page[tableKeys.groups.add.users.exclude],
+					range: page[tableKeys.roles.add.users.exclude],
+					...(search && {keyword: search}),
 				}),
-			);
-	}, [dispatch, page]);
+			)
 
-	useEffect(() => {
-		setValue(includedDataIds);
-	}, [includedDataIds, setValue]);
+			if(isFulfilled(res)){
+				dispatch(
+					PAGINATION.action.setTotal({
+						tableKey: tableKeys.roles.add.users.exclude,
+						element: totalNumberConverter(
+							res.payload.headers['content-range'],
+						),
+					}),
+				);
+				res.payload.data.length ? await getUsersDetailApi(res.payload) : setUsers([]);
+			}
+		}
+	},[dispatch, page])
+	const getUsersDetailApi = useCallback(async (res) => {
+		const arr = [];
+
+		await res.data.map(async (v) => {
+			arr.push({
+				...v,
+				lastConsoleLogin: v.lastConsoleLoginTime,
+				createdTime: v.createdTag.createdTime,
+				numberOfGroups: v.groups ? v.groups.length : 0
+			})
+		})
+		setUsers(arr)
+	},[])
+
+	useEffect (() => {
+		getUsersApi(search);
+	},[getUsersApi, page, search])
 
 	return (
+
 		<FoldableContainer>
-			<TableFold
-				title={'역할에 사용자 연결'}
-				space={'RoleUserTab'}
-				isFold={isFold}
-				setIsFold={setIsFold}
-			/>
-			{isFold[space] && (
-				<>
-					<TableOptionText data={'rolePolicy'} />
-					<DragContainer
-						selected={select}
-						data={includedDataIds}
-						setData={setIncludedDataIds}
-						includedKey={tableKeys.roles.add.users.include}
-						excludedData={excludedData}
-						includedData={includedData}
-					>
-						<RowDiv>
-							<Table
-								setSelect={setSelect}
-								isDraggable
-								data={excludedData}
-								tableKey={tableKeys.roles.add.users.exclude}
-								columns={
-									tableColumns[
-										tableKeys.roles.add.users.exclude
-									]
-								}
-								isPaginable
-								isSearchable
-								isSearchFilterable
-								isColumnFilterable
+			<TableFold title={'사용자 연결'} space={space} isFold={isFold} setIsFold={setIsFold}/>
+			<CollapsbleContent height={isFold[space] ? '374px' : '0px'}>
+
+				<DragContainer
+					selected={select}
+					data={includedDataIds}
+					setData={setIncludedDataIds}
+					includedKey={tableKeys.roles.add.users.include}
+					excludedData={excludedData}
+					includedData={includedData}
+					maxCount = {maxGrants}
+					usage = {usage}
+				>
+					<RowDiv>
+						<Table
+							setSelect={setSelect}
+							isDraggable
+							tableKey={tableKeys.roles.add.users.exclude}
+							columns={tableColumns[tableKeys.roles.add.users.exclude]}
+							data={excludedData}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+							setSearch={setSearch}
+						/>
+
+						<RowDiv alignItems={'center'}>
+							<DropButton
+								select={select}
+								dataRight={includedData}
+								rightDataIds={includedDataIds}
+								setRightDataIds={setIncludedDataIds}
+								leftTableKey={tableKeys.roles.add.users.exclude}
+								rightTableKey={tableKeys.roles.add.users.include}
+								dataLeft={excludedData}
+								maxCount = {maxGrants}
+								usage = {usage}
 							/>
-							<RowDiv alignItems={'center'}>
-								<DropButton
-									leftTableKey={
-										tableKeys.roles.add.users.exclude
-									}
-									RightTableKey={
-										tableKeys.roles.add.users.include
-									}
-									select={select}
-									dataLeft={excludedData}
-									dataRight={includedData}
-									rightDataIds={includedDataIds}
-									setRightDataIds={setIncludedDataIds}
-								/>
-							</RowDiv>
-							<ColDiv>
-								<TableHeader>
-									추가 사용자: {includedDataIds.length}건
-								</TableHeader>
-								<Table
-									setSelect={setSelect}
-									isDraggable
-									data={includedData}
-									tableKey={tableKeys.roles.add.users.include}
-									columns={
-										tableColumns[
-											tableKeys.roles.add.users.include
-										]
-									}
-								/>
-							</ColDiv>
 						</RowDiv>
-					</DragContainer>
-				</>
-			)}
+
+						<ColDiv>
+							<TableHeader>
+								추가 사용자 : {includedDataIds.length} <br/>
+							</TableHeader>
+						</ColDiv>
+
+						<Table
+							setSelect={setSelect}
+							isDraggable
+							tableKey={tableKeys.roles.add.users.include}
+							columns={tableColumns[tableKeys.roles.add.users.include]}
+							data={includedData}
+						/>
+					</RowDiv>
+				</DragContainer>
+			</CollapsbleContent>
 		</FoldableContainer>
 	);
 };
 ConnectUserToRole.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
-	setValue: PropTypes.func,
 	space: PropTypes.string,
+	usage:PropTypes.string,
+	maxGrants:PropTypes.number
 };
 export default ConnectUserToRole;

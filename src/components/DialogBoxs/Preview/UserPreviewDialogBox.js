@@ -94,9 +94,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	);
 
 	const roleData = useMemo(() => {
-		console.log(
-			readOnlyData[tableKeys.users.add.roles.exclude]?.map((v) => v.id),
-		);
+		console.log(readOnlyData[tableKeys.users.add.roles.exclude]?.map((v) => v.id),);
 		return (
 			permissions?.map((v) => ({
 				name: v.policy.details

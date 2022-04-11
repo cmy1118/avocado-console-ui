@@ -26,13 +26,13 @@ const Container = styled.div`
 `;
 
 const Pagination = ({
-	canPreviousPage,
-	previousPage,
-	nextPage,
-	canNextPage,
-	pageSize,
-	tableKey,
-}) => {
+						canPreviousPage,
+						previousPage,
+						nextPage,
+						canNextPage,
+						pageSize,
+						tableKey,
+					}) => {
 	const dispatch = useDispatch();
 	const {total} = useSelector(PAGINATION.selector);
 	const [page, setPage] = useState([]);
@@ -55,7 +55,6 @@ const Pagination = ({
 	);
 
 	useEffect(() => {
-		console.log(Math.ceil(total[tableKey] / pageSize));
 		if (Math.ceil(total[tableKey] / pageSize)) {
 			setPage(
 				[...Array(Math.ceil(total[tableKey] / pageSize))].map(

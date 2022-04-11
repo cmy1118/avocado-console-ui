@@ -154,34 +154,20 @@ const IamNav = ({isOpened, setIsOpened, leftSize}) => {
 			<_NavContents>
 				<NavItem to='/iam'>
 					<_NavItem selected={pathname === '/iam' ? 1 : 0}>
-						<Icon
-							margin={'0px'}
-							size={'sm'}
-							itype={pathname === '/iam' ? 'selected' : 0}
-						>
+						<Icon margin={'0px'} size={'sm'} itype={pathname === '/iam' ? 'selected' : 0}>
 							{dashboardIcon}
 						</Icon>
-						<ResourceItemTitle
-							left={(leftSize * 2 + 10).toString() + 'px'}
-						>
+						<ResourceItemTitle left={(leftSize * 2 + 10).toString() + 'px'}>
 							대시보드
 						</ResourceItemTitle>
 					</_NavItem>
 				</NavItem>
 				<_NavItem>
-					<Icon margin={'0px'} size={'sm'}>
-						{securityIcon}
-					</Icon>
-					<ResourceItemTitle
-						left={(leftSize * 2 + 10).toString() + 'px'}
-					>
+					<Icon margin={'0px'} size={'sm'}>{securityIcon}</Icon>
+					<ResourceItemTitle left={(leftSize * 2 + 10).toString() + 'px'}>
 						접근 관리
 					</ResourceItemTitle>
-					<IconButton
-						size={'sm'}
-						margin={'0px 0px 0px 12px'}
-						onClick={onClickFoldFolder}
-					>
+					<IconButton size={'sm'} margin={'0px 0px 0px 12px'} onClick={onClickFoldFolder}>
 						{isUnfolded ? arrowDownIcon : arrowRightIcon}
 					</IconButton>
 				</_NavItem>

@@ -98,8 +98,7 @@ const UserSpace = () => {
 		[dispatch],
 	);
 
-	const getUsersApi = useCallback(
-		(search) => {
+	const getUsersApi = useCallback((search) => {
 			if (page[tableKeys.users.basic]) {
 				dispatch(
 					IAM_USER.asyncAction.findAllAction({
@@ -117,9 +116,7 @@ const UserSpace = () => {
 								),
 							}),
 						);
-						res.data.length
-							? getUsersDetailApi(res.data)
-							: setUsers([]);
+						res.data.length ? getUsersDetailApi(res.data) : setUsers([]);
 					})
 					.catch((error) => {
 						console.error('error:', error);

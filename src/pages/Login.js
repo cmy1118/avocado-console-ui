@@ -70,6 +70,7 @@ const _LogoImage = styled.img`
 const Login = () => {
 	const history = useHistory();
 	const {isLoggedIn} = useSelector(AUTH.selector);
+
 	const URL = qs.parse(location).pathname;
 	const companyId = URL?.substring(URL.lastIndexOf('/') + 1);
 

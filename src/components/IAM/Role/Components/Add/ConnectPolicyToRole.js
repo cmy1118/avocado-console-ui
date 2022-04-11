@@ -5,11 +5,7 @@ import DropButton from '../../../../Table/DropButton';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../../../reducers/currentTarget';
-import {
-	ColDiv, CollapsbleContent,
-	RowDiv,
-	TableHeader,
-} from '../../../../../styles/components/style';
+import {ColDiv, CollapsbleContent, RowDiv, TableHeader} from '../../../../../styles/components/style';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
 import TableFold from '../../../../Table/Options/TableFold';
@@ -52,16 +48,6 @@ const ConnectPolicyToRole = ({space, isFold, setIsFold}) => {
 		)
 	},[policies,includedDataIds])
 
-	useEffect(() => {
-		dispatch(
-			CURRENT_TARGET.action.addReadOnlyData({
-				title: tableKeys.roles.add.policies.exclude,
-				data: includedData,
-			}),
-		);
-	}, [dispatch, includedData]);
-
-
 	const getPoliciesApi = useCallback(async (search) => {
 		if(page[tableKeys.roles.add.policies.exclude]){
 			const res = await dispatch(
@@ -100,6 +86,14 @@ const ConnectPolicyToRole = ({space, isFold, setIsFold}) => {
 		setPolicies(arr)
 	},[])
 
+	useEffect(() => {
+		dispatch(
+			CURRENT_TARGET.action.addReadOnlyData({
+				title: tableKeys.roles.add.policies.exclude,
+				data: includedData,
+			}),
+		);
+	}, [dispatch, includedData]);
 	useEffect (() => {
 		getPoliciesApi(search);
 	},[getPoliciesApi, page, search])
@@ -116,6 +110,7 @@ const ConnectPolicyToRole = ({space, isFold, setIsFold}) => {
 					includedKey={tableKeys.roles.add.policies.include}
 					excludedData={excludedData}
 					includedData={includedData}
+					maxCount={5}
 				>
 					<RowDiv>
 						<Table
@@ -138,8 +133,9 @@ const ConnectPolicyToRole = ({space, isFold, setIsFold}) => {
 								rightDataIds={includedDataIds}
 								setRightDataIds={setIncludedDataIds}
 								leftTableKey={tableKeys.roles.add.policies.exclude}
-								RightTableKey={tableKeys.roles.add.policies.include}
+								rightTableKey={tableKeys.roles.add.policies.include}
 								dataLeft={excludedData}
+								maxCount={5}
 							/>
 
 						</RowDiv>

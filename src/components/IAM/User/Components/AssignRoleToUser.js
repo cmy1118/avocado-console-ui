@@ -123,7 +123,7 @@ const AssignRoleToUser = ({space, isFold, setIsFold}) => {
 						<RowDiv alignItems={'center'}>
 							<DropButton
 								leftTableKey={tableKeys.users.add.roles.exclude}
-								RightTableKey={
+								rightTableKey={
 									tableKeys.users.add.roles.include
 								}
 								select={select}

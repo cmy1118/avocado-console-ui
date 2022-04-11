@@ -600,16 +600,11 @@ const Table = ({
 			if (isDraggable) {
 				let checkbox;
 				if (e.target.classList.contains('td')) {
-					checkbox =
-						e.target.parentNode.childNodes[0]?.childNodes[0]
-							?.childNodes[0];
-					if (checkbox.type === 'checkbox' && !checkbox.checked)
-						checkbox.click();
+					checkbox = e.target.parentNode.childNodes[0]?.childNodes[0]?.childNodes[0];
+					if (checkbox.type === 'checkbox' && !checkbox.checked) checkbox.click();
 				} else if (e.target.classList.contains('tr')) {
-					checkbox =
-						e.target.childNodes[0]?.childNodes[0]?.childNodes[0];
-					if (checkbox.type === 'checkbox' && !checkbox.checked)
-						checkbox.click();
+					checkbox = e.target.childNodes[0]?.childNodes[0]?.childNodes[0];
+					if (checkbox.type === 'checkbox' && !checkbox.checked) checkbox.click();
 				}
 				const x = e.pageX - 160 + 'px';
 				const y = e.pageY - 27 + 'px';
@@ -701,7 +696,7 @@ const Table = ({
 		} else {
 			setCheckRow(false);
 		}
-	}, [checkRow, defaultClick, prevSelectRow, selectRow, tableKey]);
+	}, [checkRow, defaultClick, prevSelectRow, selectRow, tableKey,isPaginable,data]);
 	useEffect(() => {
 		setSelect && selectedFlatRows && selectedDropButton(selectedFlatRows);
 	}, [selectedRowIds, setSelect, selectedDropButton, selectedFlatRows]);
@@ -737,6 +732,7 @@ const Table = ({
 					headerGroups={headerGroups}
 					setSearch={setSearch}
 				/>
+
 			)}
 			<Styles readOnly={readOnly} inner={inner}>
 				<Droppable

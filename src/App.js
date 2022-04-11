@@ -40,9 +40,7 @@ const App = () => {
 			reset(); // 사용자 감지동안은 timeout 1시간 유지
 			const remainingTime =
 				userAuth.expires_in -
-				Math.ceil(
-					(Date.now() - Date.parse(userAuth.create_date)) / 1000,
-				);
+				Math.ceil((Date.now() - Date.parse(userAuth.create_date)) / 1000);
 
 			if (remainingTime < 60 * 10) {
 				//10min = 10min * 60sec

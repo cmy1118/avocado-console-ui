@@ -96,7 +96,7 @@ const AssignRoleToGroup = ({space, isFold, setIsFold}) => {
 									leftTableKey={
 										tableKeys.groups.add.roles.exclude
 									}
-									RightTableKey={
+									rightTableKey={
 										tableKeys.groups.add.roles.include
 									}
 									select={select}

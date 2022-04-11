@@ -17,7 +17,7 @@ import IAM_ROLES_GRANT_ROLE_GROUP from "../../../../../reducers/api/IAM/User/Rol
 import IAM_USER_GROUP_MEMBER from "../../../../../reducers/api/IAM/User/Group/groupMember";
 import {isFulfilled} from "../../../../../utils/redux";
 
-const ConnectPolicyToRole = ({space, isFold, setIsFold}) => {
+const ConnectPolicyToRole = ({space, isFold, setIsFold, usage , maxGrants}) => {
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
 
@@ -133,6 +133,8 @@ const ConnectPolicyToRole = ({space, isFold, setIsFold}) => {
 					includedKey={tableKeys.roles.add.groups.include}
 					excludedData={excludedData}
 					includedData={includedData}
+					maxCount = {maxGrants}
+					usage = {usage}
 				>
 					<RowDiv>
 						<Table
@@ -155,8 +157,10 @@ const ConnectPolicyToRole = ({space, isFold, setIsFold}) => {
 								rightDataIds={includedDataIds}
 								setRightDataIds={setIncludedDataIds}
 								leftTableKey={tableKeys.roles.add.groups.exclude}
-								RightTableKey={tableKeys.roles.add.groups.include}
+								rightTableKey={tableKeys.roles.add.groups.include}
 								dataLeft={excludedData}
+								maxCount = {maxGrants}
+								usage = {usage}
 							/>
 
 						</RowDiv>
@@ -183,5 +187,7 @@ ConnectPolicyToRole.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
+	usage:PropTypes.string,
+	maxGrants:PropTypes.number
 };
 export default ConnectPolicyToRole;

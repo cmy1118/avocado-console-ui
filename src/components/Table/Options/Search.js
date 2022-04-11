@@ -39,6 +39,7 @@ function Search({tableKey, setGlobalFilter, setSearch}) {
 	const handleSubmit = (data) => {
 		//Api 검색
 		console.log("data['search'].trim():", data['search'].trim());
+
 		setSearch(data['search'].trim());
 		//setGlobalFilter  : React Table String Search 방법
 		//상세 Tab 검색시 사용

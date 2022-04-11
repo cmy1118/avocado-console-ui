@@ -29,6 +29,13 @@ export const ROLE_COLUMN = [
 		disableFilters: true,
 		width: 400,
 	},
+
+	{
+		accessor: 'maxGrants',
+		Header:'부여 제한',
+		disableFilters: false,
+	},
+
 	{
 		accessor: 'numberOfPermissions',
 		Header: '권한 부여수',

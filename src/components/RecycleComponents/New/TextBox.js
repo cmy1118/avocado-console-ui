@@ -105,6 +105,7 @@ TextBox.propTypes = {
 	textColor: PropTypes.string,
 	background: PropTypes.string,
 	direction: PropTypes.oneOf(['row', 'col']),
+	disabled: PropTypes.bool,
 };
 
 export default TextBox;

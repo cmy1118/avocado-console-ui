@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -33,12 +33,7 @@ const useRadio = ({name, options, disabled = false}) => {
 						name={name}
 						onChange={(e) => setValue(JSON.parse(e.target.value))}
 						value={JSON.stringify(ele.key)}
-						checked={
-							// initialValue
-							// 	? ele.key === initialValue
-							// 	:
-							JSON.stringify(ele.key) === JSON.stringify(value)
-						}
+						checked={JSON.stringify(ele.key) === JSON.stringify(value)}
 						disabled={disabled}
 					/>
 					{ele.label}

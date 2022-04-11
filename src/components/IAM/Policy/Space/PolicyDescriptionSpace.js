@@ -123,7 +123,6 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 			);
 
 			if (isFulfilled(res)) {
-				console.log(res.payload);
 				setPolicy(res.payload);
 				setDescription(res.payload.description);
 			}

@@ -17,59 +17,40 @@ const paths = [
 
 const AddRoleSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
-
 	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
+
+	const [usage , setUsage] = useState('restrict');
+	const [maxGrants , setMaxGrants] = useState(0);
 
 	return (
 		<AddSpaceContainer>
 			<CurrentPathBar paths={paths} />
-
 			<AddPageContainer>
-				<AddRole setIsOpened={setIsOpened}/>
+				<AddRole
+					setIsOpened={setIsOpened}
+					setUsage = {setUsage}
+					setMaxGrants = {setMaxGrants}
+				/>
 				<ConnectPolicyToRole space={'ConnectPolicyToRole'}
 									 isFold={isTableFold}
 									 setIsFold={setIsTableFold}/>
 
 				<ConnectUserToRole space={'ConnectUserToRole'}
 									 isFold={isTableFold}
-									 setIsFold={setIsTableFold}/>
+									 setIsFold={setIsTableFold}
+								   	 usage = {usage}
+								     maxGrants = {maxGrants}
+				/>
 
 				<ConnectGroupToRole space={'ConnectGroupToRole'}
-								   isFold={isTableFold}
-								   setIsFold={setIsTableFold}/>
+								    isFold={isTableFold}
+								    setIsFold={setIsTableFold}
+									usage = {usage}
+									maxGrants = {maxGrants}
+				/>
 
 				<RolePreviewDialogBox setIsOpened={setIsOpened} isOpened={isOpened}/>
 			</AddPageContainer>
-
-
-
-			{/*<AddPageContainer>*/}
-			{/*	<AddRole*/}
-			{/*		setIsOpened={setIsOpened}*/}
-			{/*		values={values}*/}
-			{/*		groupMembers={groupMembers}*/}
-			{/*		setValues={setValues}*/}
-			{/*	/>*/}
-
-			{/*	<ConnectPolicyToRole*/}
-			{/*		space={'RolePolicyTab'}*/}
-			{/*		isFold={isTableFold}*/}
-			{/*		setIsFold={setIsTableFold}*/}
-			{/*		setValue={setGroupMembers}*/}
-			{/*	/>*/}
-			{/*	<ConnectUserToRole*/}
-			{/*		space={'RoleUserTab'}*/}
-			{/*		isFold={isTableFold}*/}
-			{/*		setIsFold={setIsTableFold}*/}
-			{/*		setValue={setGroupMembers}*/}
-			{/*	/>*/}
-			{/*	<ConnectGroupToRole*/}
-			{/*		space={'RoleGroupTab'}*/}
-			{/*		isFold={isTableFold}*/}
-			{/*		setIsFold={setIsTableFold}*/}
-			{/*		setValue={setGroupMembers}*/}
-			{/*	/>*/}
-			{/*</AddPageContainer>*/}
 		</AddSpaceContainer>
 	);
 };
