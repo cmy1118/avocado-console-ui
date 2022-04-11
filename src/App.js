@@ -149,11 +149,11 @@ const App = () => {
 					component={Role}
 					layout={IamLayout}
 				/>
-				<PrivateRouteWithLayout
-					path='/roles/add'
-					component={Role}
-					layout={IamLayout}
-				/>
+				{/*<PrivateRouteWithLayout*/}
+				{/*	path='/roles/add'*/}
+				{/*	component={Role}*/}
+				{/*	layout={IamLayout}*/}
+				{/*/>*/}
 
 				<PrivateRouteWithLayout
 					path='/policies/add'

@@ -51,6 +51,7 @@ import PAM_RULE_MANAGEMENT_TEMPLATE from './api/PAM/TemplateManagement/RuleTempl
 import PAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL from './api/PAM/TemplateManagement/ActionManagement/actionTemplateDetail';
 import PAM_ACTION_MANAGEMENT_TEMPLATE from './api/PAM/TemplateManagement/ActionManagement/actionTemplate';
 import IAM_USER_POLICY_GRANT_REVOKE_ROLE from './api/IAM/User/Policy/GrantRevoke/role';
+import IAM_GRANT_REVOKE_TAG from './api/IAM/Policy/IAM/PolicyManagement/grantRevokeTag';
 
 const authFilter = createFilter(AUTH.name, [
 	'companyId',
@@ -151,6 +152,7 @@ const rootReducer = combineReducers({
 	[IAM_GRANT_POLICY_BY_USER.name]: IAM_GRANT_POLICY_BY_USER.reducer,
 	[IAM_POLICY_TEMPLATE.name]: IAM_POLICY_TEMPLATE.reducer,
 	[IAM_USER_GROUP_TAG.name]: IAM_USER_GROUP_TAG.reducer,
+	[IAM_GRANT_REVOKE_TAG.name]: IAM_GRANT_REVOKE_TAG.reducer,
 	/******************************************/
 
 	/******************************************/

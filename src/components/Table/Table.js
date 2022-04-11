@@ -24,14 +24,9 @@ import {
 } from 'react-table';
 
 const Styles = styled.div`
-	// min-height: ${(props) => !props.isDraggable && '240px'};
-	// height: ${(props) => !props.isDraggable && '0'};
-
 	table {
 		width: 100%;
-		table-layout: fixed;
-		display: grid;
-		grid-template-rows: 40px;
+		// table-layout: fixed;
 
 		box-sizing: border-box;
 		border-left: ${(props) => props.inner && '3px solid #4ca6a8'};
@@ -440,9 +435,8 @@ const Table = ({
 	);
 
 	const getRowId = useCallback((v) => {
-		if (!v) return;
-		if (v.userUid) return v.userUid;
-		return v.id;
+		// id, userUid가 아닌 DRAGGABLE_KEY가 key 역할을 함
+		if (v[DRAGGABLE_KEY]) return v[DRAGGABLE_KEY];
 	}, []);
 
 	const {

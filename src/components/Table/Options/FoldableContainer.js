@@ -33,18 +33,20 @@ const _ButtonContainer = styled.div`
 `;
 
 const FoldableContainer = ({disabled = false, buttons, children, title}) => {
-	const [isFold, setIsFold] = useState(false);
+	const [isOpened, setIsOpened] = useState(false);
 
 	const onClickFold = useCallback(() => {
 		console.log(disabled);
 		if (!disabled) {
-			setIsFold((prev) => !prev);
-			// setIsFold({...isFold, [space]: !isFold[space]});
+			setIsOpened((prev) => !prev);
+			// setIsOpened({...isOpened, [space]: !isOpened[space]});
 		}
-	}, [disabled, setIsFold]);
+	}, [disabled, setIsOpened]);
 	return (
 		<_Container>
-			<TableTitle className={isFold ? 'fold-title' : 'fold-title close'}>
+			<TableTitle
+				className={isOpened ? 'fold-title' : 'fold-title close'}
+			>
 				<>
 					<_TableFoldTitle>
 						<HoverIconButton
@@ -53,35 +55,35 @@ const FoldableContainer = ({disabled = false, buttons, children, title}) => {
 							margin={'0px'}
 							onClick={onClickFold}
 						>
-							{isFold ? arrowDownIcon : arrowRightIcon}
+							{isOpened ? arrowDownIcon : arrowRightIcon}
 						</HoverIconButton>
 						{title}
 					</_TableFoldTitle>
 					{buttons ? (
-						!isFold ? (
+						!isOpened ? (
 							<_ButtonContainer>
-								{buttons(!isFold)}
+								{buttons(!isOpened)}
 							</_ButtonContainer>
 						) : (
-							buttons(!isFold)
+							buttons(!isOpened)
 						)
 					) : (
 						''
 					)}
 				</>
 			</TableTitle>
-			<CollapsbleContent height={isFold ? '374px' : '0px'}>
+			<CollapsbleContent isOpened={isOpened}>
 				{children ? children : ''}
 			</CollapsbleContent>
 		</_Container>
 	);
 };
 FoldableContainer.propTypes = {
-	children: PropTypes.object,
-	buttons: PropTypes.object,
+	children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+	buttons: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 	title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 	isFold: PropTypes.object,
-	setIsFold: PropTypes.func,
+	setIsOpened: PropTypes.func,
 	space: PropTypes.string,
 	disabled: PropTypes.bool,
 };

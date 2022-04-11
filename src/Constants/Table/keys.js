@@ -82,8 +82,8 @@ export const tableKeys = Object.freeze({
 				tags: {
 					basic: 'GROUP_SUMMARY_TABS_TAG',
 					permissions: {
-						include: 'GROUP_SUMMARY_TABS_PERMISSIONS_INCLUDE',
-						exclude: 'GROUP_SUMMARY_TABS_PERMISSIONS_EXCLUDE',
+						include: 'GROUP_SUMMARY_TABS_TAG_PERMISSIONS_INCLUDE',
+						exclude: 'GROUP_SUMMARY_TABS_TAG_PERMISSIONS_EXCLUDE',
 					},
 				},
 			},

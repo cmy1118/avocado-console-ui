@@ -59,6 +59,7 @@ const GroupTypeSpace = () => {
 			now.getTime() - now.getTimezoneOffset() * 60000,
 		).toISOString(); //OUTPUT : 2015-02-20T19:29:31.238Z
 
+		console.log(data);
 		setData([
 			...data,
 			{
@@ -89,6 +90,11 @@ const GroupTypeSpace = () => {
 	}, [dispatch]);
 
 	const onClickSaveGroupTypes = useCallback(async () => {
+		if (data.find((v) => v.name === '')) {
+			alert('그룹 유형이 입력되지 않은 태그가 있습니다.');
+			return;
+		}
+
 		for await (let v of data) {
 			if (v.new) {
 				console.log(v);

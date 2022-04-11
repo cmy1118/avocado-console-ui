@@ -17,6 +17,7 @@ import {TableMode} from '../../../../Constants/Table/mode';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {roleTypeConverter} from '../../../../utils/tableDataConverter';
 import {groupTabs} from '../../../../utils/tabs';
+import IAM_USER_GROUP_TAG from '../../../../reducers/api/IAM/User/Group/tags';
 
 const GroupSummary = ({groupId}) => {
 	const history = useHistory();
@@ -25,6 +26,7 @@ const GroupSummary = ({groupId}) => {
 	const {page} = useSelector(PAGINATION.selector);
 	const [groupUserMembers, setGroupUserMembers] = useState([]);
 	const [groupRoleData, setGroupRoleData] = useState([]);
+	const [groupTags, setGroupTags] = useState([]);
 
 	const isSummaryOpened = useMemo(() => {
 		if (location.search) return false;
@@ -60,15 +62,18 @@ const GroupSummary = ({groupId}) => {
 	const roleData = useMemo(() => [], []);
 
 	const tagData = useMemo(() => {
-		return [];
-
+		return groupTags.map((v) => ({
+			...v,
+			createdTime: v.createdTag.createdTime,
+			[DRAGGABLE_KEY]: v.name,
+		}));
 		// return group.tags.map((v, i) => ({
 		// 	...v,
 		// 	id: v.name,
 		// 	numberOfPermissions: v.permissions.length,
 		// 	createdTime: dummyDates[i],
 		// }));
-	}, []);
+	}, [groupTags]);
 
 	const onClickChangeTab = useCallback(
 		(v) => () => {
@@ -135,15 +140,33 @@ const GroupSummary = ({groupId}) => {
 	}, [dispatch, groupId, isSummaryOpened]);
 
 	//TODO : 유섭님 Tag  관련
-	const groupTagApi = useCallback(async () => {}, []);
+	const groupTagApi = useCallback(async () => {
+		try {
+			if (isSummaryOpened) {
+				const res = await dispatch(
+					IAM_USER_GROUP_TAG.asyncAction.getsAction({
+						groupId: groupId,
+						range: 'elements=0-50', // todo : 상세 페이지는 페이지네이션이 없음 => how?
+					}),
+				).unwrap();
+
+				console.log(res.data);
+				await setGroupTags(res.data);
+			}
+		} catch (err) {
+			alert('조회 오류');
+			await setGroupTags([]);
+			console.error(err);
+		}
+	}, [dispatch, groupId, isSummaryOpened]);
 
 	useEffect(async () => {
 		await Promise.all([
 			await groupUserApi(),
 			await groupRolesApi(),
-			// await groupTagApi()
+			await groupTagApi(),
 		]);
-	}, [groupRolesApi, groupUserApi]);
+	}, [groupRolesApi, groupTagApi, groupUserApi]);
 
 	return (
 		<SummaryTablesContainer>
