@@ -68,7 +68,8 @@ export const PermissionName = styled.div`
 `;
 
 export const CollapsbleContent = styled.div`
-	height: ${(props) => (props.height ? props.height : '0px')};
+	height: ${(props) => (props.isOpened ? '474px' : '0px')};
+	// display: ${(props) => (props.isOpened ? 'block' : 'none')};
 	overflow: hidden;
 	transition: height 0.4s ease-out;
 `;

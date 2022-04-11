@@ -21,18 +21,22 @@ let index = 0;
 const GroupOnDescPageTags = ({groupId}) => {
 	const dispatch = useDispatch();
 	const [tags, setTags] = useState([]);
+	const [initTags, setInitTags] = useState([]);
+	const [deleteTags, setDeleteTags] = useState([]);
 
 	const tableData = useMemo(
 		() =>
 			tags.map((v) => ({
 				...v,
-				id: v.name,
 				[DRAGGABLE_KEY]: v.name || v[DRAGGABLE_KEY],
 			})),
 		[tags],
 	);
 
-	const [select, columns] = useSelectColumn(tableColumns[TAG_TABLE_KEY]);
+	const [select, columns] = useSelectColumn(
+		tableColumns[TAG_TABLE_KEY],
+		tableData,
+	);
 
 	const onClickAddRow = useCallback(() => {
 		const lastValues = tags.slice().pop();
@@ -52,17 +56,61 @@ const GroupOnDescPageTags = ({groupId}) => {
 		]);
 	}, [tags]);
 
-	const onClickSaveRow = useCallback(() => {
+	const onClickSaveRow = useCallback(async () => {
 		console.log(tags);
-	}, [tags]);
+		const newTags = tags.filter((v) => v[DRAGGABLE_KEY]);
+		const prevTags = tags.filter((v) => !v[DRAGGABLE_KEY]);
+
+		// memo 업데이트 api 보류
+		// const updatedTags = initTags.filter(v=>)
+		console.log(newTags);
+		if (newTags.find((v) => v.name === '' || v.value === '')) {
+			alert('입력하지 않은 값이 있습니다.');
+			return;
+		}
+		for await (let v of newTags) {
+			dispatch(
+				IAM_USER_GROUP_TAG.asyncAction.createAction({
+					groupId: groupId,
+					name: v.name,
+					value: v.value,
+				}),
+			);
+		}
+
+		console.log(deleteTags);
+
+		for await (let v of deleteTags) {
+			dispatch(
+				IAM_USER_GROUP_TAG.asyncAction.deleteAction({
+					groupId: groupId,
+					name: v.name,
+				}),
+			);
+		}
+
+		console.log(initTags);
+	}, [dispatch, deleteTags, groupId, initTags, tags]);
 
 	const onClickDeleteRow = useCallback(() => {
 		if (select.length) {
 			console.log(select);
+			console.log(tags);
+
+			setDeleteTags((prev) => [
+				...prev,
+				...select.filter((v) => v[DRAGGABLE_KEY]),
+			]);
+
+			const result = tags.filter(
+				(v) => !select.map((s) => s.name).includes(v.name),
+			);
+			console.log(result);
+			setTags(result);
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
-	}, [select]);
+	}, [tags, select]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -75,6 +123,7 @@ const GroupOnDescPageTags = ({groupId}) => {
 				);
 
 				setTags(res.payload.data);
+				setInitTags(res.payload.data);
 				// setTags(dummy);
 			} catch (err) {
 				console.error(err);

@@ -30,8 +30,9 @@ import IAM_USER_GROUP_TAG from '../../../../reducers/api/IAM/User/Group/tags';
 const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
+	// const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [groups, setGroups] = useState([]);
+	const [groupTypes, setGroupTypes] = useState([]);
 	const [parentGroupId, setParentGroupId] = useState(null);
 	// const {groups} = useSelector(IAM_USER_GROUP.selector);
 
@@ -125,11 +126,27 @@ const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 	}, [groups, methods, showParentGroupModal]);
 
 	useEffect(() => {
-		dispatch(
-			IAM_USER_GROUP_TYPE.asyncAction.findAllAction({
-				range: 'elements=0-50',
-			}),
-		);
+		const fetchData = async () => {
+			try {
+				const res = await dispatch(
+					IAM_USER_GROUP_TYPE.asyncAction.findAllAction({
+						range: 'elements=0-50',
+					}),
+				);
+				console.log(res.payload.data);
+				setGroupTypes(res.payload.data);
+			} catch (err) {
+				console.log('error => ', err);
+				setGroupTypes([]);
+			}
+		};
+		fetchData();
+
+		// dispatch(
+		// 	IAM_USER_GROUP_TYPE.asyncAction.findAllAction({
+		// 		range: 'elements=0-50',
+		// 	}),
+		// );
 	}, [dispatch]);
 
 	useEffect(() => {
