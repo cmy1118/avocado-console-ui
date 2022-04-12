@@ -6,13 +6,24 @@ import React, {
 } from 'react';
 import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
+import PropTypes from 'prop-types';
+import {GoogleAuth} from '../../../utils/auth';
 
-const GetUserIdDialogBox = forwardRef((props, ref) => {
+const GetUserIdDialogBox = forwardRef(({type}, ref) => {
 	const formRef = useRef(null);
 
 	const onSubmitUserId = useCallback((data) => {
-		console.log('ASDFasfs');
+		console.log('Form의 값을 어디 한번 출력해봅시다~');
 		console.log(data);
+
+		switch (type) {
+			//todo
+			case 'google':
+				location.href = GoogleAuth.location;
+				break;
+			default:
+				break;
+		}
 	}, []);
 
 	useImperativeHandle(ref, () => ({
@@ -27,7 +38,7 @@ const GetUserIdDialogBox = forwardRef((props, ref) => {
 				onSubmit={onSubmitUserId}
 				innerRef={formRef}
 			>
-				<TextBox name={'id'} />
+				<TextBox name={'id'} placeholder={'id'} />
 			</Form>
 		</div>
 	);
@@ -35,4 +46,7 @@ const GetUserIdDialogBox = forwardRef((props, ref) => {
 
 GetUserIdDialogBox.displayName = 'GetUserIdDialogBox';
 
+GetUserIdDialogBox.propTypes = {
+	type: PropTypes.string.isRequired,
+};
 export default GetUserIdDialogBox;

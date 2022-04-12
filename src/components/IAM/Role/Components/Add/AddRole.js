@@ -131,7 +131,6 @@ const AddRole = ({values, groupMembers, setValues}) => {
 					validation={validation}
 				>
 					<ColDiv>
-						{/*<Label htmlFor={'name'}>그룹 명</Label>*/}
 						<RowDiv margin={'0px 0px 12px 0px'}>
 							<TextBox name={'name'} placeholder={'역할 이름'} />
 							<TextBoxDescription>

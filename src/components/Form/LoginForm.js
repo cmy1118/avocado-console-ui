@@ -115,7 +115,12 @@ const LoginForm = () => {
 			title: '아이디 입력',
 			onSubmitCallback: () =>
 				getUserIdDialogBoxModalRef.current.onSubmitUserId(),
-			element: <GetUserIdDialogBox ref={getUserIdDialogBoxModalRef} />,
+			element: (
+				<GetUserIdDialogBox
+					ref={getUserIdDialogBoxModalRef}
+					type={'google'}
+				/>
+			),
 		});
 	}, []);
 

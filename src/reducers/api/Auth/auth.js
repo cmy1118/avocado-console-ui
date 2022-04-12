@@ -4,7 +4,7 @@ import {Axios, baseURL} from '../../../api/constants';
 import {
 	contentType,
 	getParameter,
-	Google,
+	GoogleAuth,
 	grantType,
 } from '../../../utils/auth';
 import base64 from 'base-64';
@@ -92,9 +92,9 @@ const GoogleAuthAction = createAsyncThunk(`${NAME}/GoogleAuth`, async () => {
 			params: {
 				code: decodeURIComponent(getParameter('code')),
 				grant_type: grantType.AUTHORIZATION_CODE,
-				redirect_uri: Google.redirectUri,
-				client_id: Google.clientId,
-				client_secret: Google.clientSecret,
+				redirect_uri: GoogleAuth.redirectUri,
+				client_id: GoogleAuth.clientId,
+				client_secret: GoogleAuth.clientSecret,
 			},
 			headers: {
 				'Content-Type': contentType,
@@ -237,30 +237,30 @@ const slice = createSlice({
 			localStorage.removeItem('access_token');
 		},
 
-		[clientAuthAction.pending]: (state, action) => {
-			state.loading = true;
-			state.companyId = action.meta.arg.companyId;
-		},
-		[clientAuthAction.fulfilled]: (state, action) => {
-			state.loading = false;
-			state.clientAuth = action.payload;
-		},
-		[clientAuthAction.rejected]: (state, action) => {
-			state.loading = false;
-			state.error = action.error;
-		},
+		// [clientAuthAction.pending]: (state, action) => {
+		// 	state.loading = true;
+		// 	state.companyId = action.meta.arg.companyId;
+		// },
+		// [clientAuthAction.fulfilled]: (state, action) => {
+		// 	state.loading = false;
+		// 	state.clientAuth = action.payload;
+		// },
+		// [clientAuthAction.rejected]: (state, action) => {
+		// 	state.loading = false;
+		// 	state.error = action.error;
+		// },
 
-		[GoogleAuthAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[GoogleAuthAction.fulfilled]: (state, action) => {
-			state.loading = false;
-			state.alternativeAuth = action.payload;
-		},
-		[GoogleAuthAction.rejected]: (state, action) => {
-			state.loading = false;
-			state.error = action.error;
-		},
+		// [GoogleAuthAction.pending]: (state) => {
+		// 	state.loading = true;
+		// },
+		// [GoogleAuthAction.fulfilled]: (state, action) => {
+		// 	state.loading = false;
+		// 	state.alternativeAuth = action.payload;
+		// },
+		// [GoogleAuthAction.rejected]: (state, action) => {
+		// 	state.loading = false;
+		// 	state.error = action.error;
+		// },
 
 		[altAuthVerificationAction.pending]: (state) => {
 			state.loading = true;

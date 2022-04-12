@@ -1,43 +1,24 @@
-import React, {useEffect} from 'react';
-import styled from 'styled-components';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import background from '../images/background/bg-img-1@2x.png';
-import {useDispatch, useSelector} from 'react-redux';
-import AUTH from '../reducers/api/Auth/auth';
+import Google from '../components/Redirect/Google';
+import Naver from '../components/Redirect/Naver';
+import Kakao from '../components/Redirect/Kakao';
 
-const _Container = styled.div`
-	width: 100%;
-	height: 100%;
-	background: #126466;
-	background-image: url(${background});
-	object-fit: contain;
-	background-size: cover;
-	background-position: center;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-`;
+const AltAuthRedirect = ({match}) => {
+	return match.path === '/altauthredirect/google' ? (
+		<Google />
+	) : match.path === '/altauthredirect/naver' ? (
+		<Naver />
+	) : (
+		match.path === '/altauthredirect/kakao' && <Kakao />
+	);
+};
 
-const AltAuthRedirect = () => {
-	const dispatch = useDispatch();
-	const {clientAuth, alternativeAuth} = useSelector(AUTH.selector);
-
-	useEffect(() => {
-		if (clientAuth && alternativeAuth) {
-			dispatch(AUTH.asyncAction.altAuthVerificationAction());
-		}
-	}, [clientAuth, alternativeAuth, dispatch]);
-
-	useEffect(() => {
-		dispatch(
-			AUTH.asyncAction.clientAuthAction({
-				companyId: localStorage.getItem('companyId'),
-			}),
-		);
-		dispatch(AUTH.asyncAction.GoogleAuthAction());
-	}, [dispatch]);
-
-	return <_Container></_Container>;
+AltAuthRedirect.propTypes = {
+	match: PropTypes.shape({
+		path: PropTypes.string.isRequired,
+	}),
 };
 
 export default AltAuthRedirect;
