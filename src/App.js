@@ -187,7 +187,15 @@ const App = () => {
 
 				<PublicRoute path='/login/:companyId' component={Login} />
 				<PublicRoute
-					path={'/altauthredirect'}
+					path={'/altauthredirect/google'}
+					component={AltAuthRedirect}
+				/>
+				<PublicRoute
+					path={'/altauthredirect/naver'}
+					component={AltAuthRedirect}
+				/>
+				<PublicRoute
+					path={'/altauthredirect/kakao'}
 					component={AltAuthRedirect}
 				/>
 				<PublicRoute component={NotFound} />

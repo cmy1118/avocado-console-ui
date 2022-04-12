@@ -43,9 +43,11 @@ const Google = () => {
 				console.log(err);
 			}
 		};
-
+		console.log('HERERERERE');
 		requestGoogleAuth();
 	}, [dispatch]);
+
+	console.log('HERERERERE');
 
 	return <_Container></_Container>;
 };
