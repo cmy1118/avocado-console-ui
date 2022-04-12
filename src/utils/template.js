@@ -1,6 +1,8 @@
 export const templateType = {
-	ACTION: 'action',
 	RULE: 'rule',
+	FILE: 'file',
+	COMMAND: 'command',
+	ACTION: 'action',
 };
 
 /*******************************************************

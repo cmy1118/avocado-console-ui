@@ -13,7 +13,6 @@ import RoleManagement from '../IAM/RoleManagement';
 import ConnectResource from '../PAM/ConnectResource/ConnectResource';
 import MFA from '../PAM/MFA';
 import ResourceAccessRule from '../PAM/ResourceAccessRule/ResourceAccessRule';
-import ConnectReason from '../PAM/ConnectReason/ConnectReason';
 import CommandControl from '../PAM/CommandControl';
 import FileAccess from '../PAM/FileAccess';
 import ResourceManagement from '../PAM/ResourceManagement';
@@ -22,10 +21,10 @@ import ResourceAccess from '../PAM/ResourceAccess/ResourceAccess';
 import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/IAM/RuleManagement/ruleTemplate';
 import IAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/IAM/Policy/IAM/ActionManagement/actionTemplate';
 import styled from 'styled-components';
-import {dummyPamRule} from '../../../../../../utils/dummyData';
 import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/PAM/TemplateManagement/ActionManagement/actionTemplate';
 import {categoryTypes} from '../../../../../../utils/policy/policy';
 import PAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../reducers/api/PAM/TemplateManagement/RuleTemplate/ruleTemplate';
+import UserAccountPattern from '../IAM/UserAccountPattern/UserAccountPattern';
 
 const _Title = styled.div``;
 
@@ -44,20 +43,29 @@ const contents = {
 	},
 };
 
-const templateComponents = {
+//MEMO: action과 rule의 키가 같은 값이 있어서 분리를 해야 합니다.
+const ruleTemplateComponents = {
 	//iam - rule
 	[categoryTypes.auth]: UserAuth,
 	[categoryTypes.account]: UserAccountProcess,
 	[categoryTypes.userAccess]: UserAccess,
 	[categoryTypes.session]: UserSession,
-	[categoryTypes.pattern]: UserSession,
+	[categoryTypes.pattern]: UserAccountPattern,
 	//pam - rule
-	[categoryTypes.categoryType1]: ConnectResource,
-	[categoryTypes.categoryType2]: MFA,
-	[categoryTypes.categoryType3]: ResourceAccessRule,
-	[categoryTypes.categoryType4]: ConnectReason,
-	[categoryTypes.categoryType5]: CommandControl,
+	[categoryTypes.authentication]: ConnectResource,
+	[categoryTypes.mfa]: MFA,
+	[categoryTypes.access]: ResourceAccessRule,
+};
+
+const fileTemplateComponents = {
 	[categoryTypes.categoryType6]: FileAccess,
+};
+
+const commandTemplateComponents = {
+	[categoryTypes.categoryType5]: CommandControl,
+};
+
+const actionTemplateComponents = {
 	//iam - action
 	[categoryTypes.user]: UserManagement,
 	[categoryTypes.policy]: PolicyManagement,
@@ -97,13 +105,21 @@ const TemplateListAside = ({
 			name: template.name,
 			description: template.description,
 		};
-		//템플릿이 액션 템플릿의 경우 categoryType 추가
+
 		if (type === templateType.ACTION) {
+			//템플릿이 액션 템플릿의 경우 categoryType 추가
 			componentProps.categoryType = template.categoryType.code;
 		}
 
 		return React.createElement(
-			templateComponents[template.categoryType.code],
+			type === templateType.RULE
+				? ruleTemplateComponents[template.categoryType.code]
+				: type === templateType.FILE
+				? fileTemplateComponents[template.categoryType.code]
+				: type === templateType.COMMAND
+				? commandTemplateComponents[template.categoryType.code]
+				: type === templateType.ACTION &&
+				  actionTemplateComponents[template.categoryType.code],
 			componentProps,
 		);
 	}, []);
@@ -194,8 +210,8 @@ const TemplateListAside = ({
 					}),
 				).unwrap();
 				console.log('ruleTemplates:', ruleTemplates);
-				// setRuleTemplates(ruleTemplates.data);
-				setRuleTemplates(dummyPamRule);
+				setRuleTemplates(ruleTemplates.data);
+				// setRuleTemplates(dummyPamRule);
 
 				// 액션 템플릿 findAll
 				const actionTemplates = await dispatch(

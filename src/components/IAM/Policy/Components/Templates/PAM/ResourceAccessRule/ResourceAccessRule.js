@@ -6,6 +6,7 @@ import Resource from '../Resource/Resource';
 import PAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../../reducers/api/PAM/TemplateManagement/RuleTemplate/ruleTemplate';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import AllowServiceTime from './AllowServiceTime';
+import {ruleTypes} from '../../../../../../../utils/policy/rule';
 
 /**************************************************
  * ambacc244 - 자원 접근 정책 템플릿 컴포넌트
@@ -29,7 +30,10 @@ const ResourceAccessRule = ({templateId, name, description}) => {
 				PAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
 					name: name,
 					description: description,
-					details: [allowServiceTimeData, resourceData],
+					details: [
+						allowServiceTimeData,
+						//, resourceData
+					],
 				}),
 			);
 		}
@@ -63,12 +67,13 @@ const ResourceAccessRule = ({templateId, name, description}) => {
 	return (
 		<div>
 			<AllowServiceTime
-				data={defaultData && defaultData.allowServiceTime}
+				data={
+					defaultData && defaultData[ruleTypes.allowed_service_time]
+				}
 				setTemplateData={setAllowServiceTimeData}
 			/>
 			<Resource
-				//TODO: default 데이터 있으면 넘겨주면 되는데 어떤 형식으로 올지 몰라서 command out
-				// data={defaultData && defaultData.resource}
+				data={defaultData && defaultData.resource}
 				setTemplateData={setResourceData}
 			/>
 		</div>

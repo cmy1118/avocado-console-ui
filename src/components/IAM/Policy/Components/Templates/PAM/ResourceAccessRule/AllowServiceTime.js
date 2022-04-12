@@ -1,11 +1,17 @@
 import PropTypes from 'prop-types';
 import TemplateLayout from '../../Layout/TemplateLayout';
 import TemplateElement from '../../Layout/TemplateElement';
-import TimeInterval from '../../../../../../RecycleComponents/Templates/TimeInterval';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useRadio from '../../../../../../../hooks/useRadio';
-import {restrictionOptions} from '../../../../../../../utils/policy/options';
-import {DayOfTheWeek} from '../ConnectReason/ConnectReason';
+import {
+	policyOption,
+	restrictionOptions,
+	setUsageOptionByAttribute,
+} from '../../../../../../../utils/policy/options';
+import TimeInterval, {
+	dayOfWeekKey,
+	timeIntervalDefaultValue,
+} from './TimeInterval';
 
 const allowServiceTime = {
 	title: '접속 가능 시간',
@@ -20,16 +26,75 @@ const allowServiceTime = {
  * ambacc244 - 자원 접근 정책(접속 가능 시간) 폼
  **************************************************/
 const AllowServiceTime = ({data, setTemplateData}) => {
-	const [timezone, setTimezone] = useState({});
 	//timeoutRistriction: 사유 입력 시간제한 유무
 	const [
 		timeoutRistriction,
 		timeoutRistrictionRadioButton,
-		setOldTimeoutRistriction,
+		setTimeoutRistriction,
 	] = useRadio({
 		name: 'timeoutRistriction',
 		options: restrictionOptions,
 	});
+	const [timezone, setTimezone] = useState({});
+
+	/**************************************************
+	 * ambacc244 - 접속 가능 시간 데이터가 바뀌면 정책 생성을 위한 값을 변경
+	 **************************************************/
+	useEffect(() => {
+		//rule 생성을 위한 ruleType이 존재
+		if (data?.attribute?.ruleType) {
+			const attributes = {
+				usage:
+					timeoutRistriction === policyOption.restrict.restrict.key,
+			};
+			//제한 여부 true
+			if (timeoutRistriction === policyOption.restrict.restrict.key) {
+				const tempTimezone = {};
+				Object.keys(timezone).map((v) => {
+					if (timezone[v].checked) {
+						tempTimezone[v] = timezone[v].val;
+					}
+				});
+				// console.log(tempTimezone);
+				attributes.policies = tempTimezone;
+			}
+			setTemplateData({
+				resource: data?.resource,
+				attribute: {ruleType: data?.attribute.ruleType, ...attributes},
+			});
+		}
+	}, [timeoutRistriction, data, setTemplateData, timezone]);
+
+	/**************************************************
+	 * ambacc244 - 서버로 부터 받아온 default 값 세팅
+	 **************************************************/
+	useEffect(() => {
+		//로그인 실패 사용 여부 세팅
+		setTimeoutRistriction(
+			setUsageOptionByAttribute(
+				data?.attribute,
+				'usage',
+				policyOption.usage.use.key,
+				policyOption.usage.none.key,
+			),
+		);
+
+		if (data?.attribute?.policies) {
+			const tempTimezone = {};
+			Object.keys(data.attribute.policies).map(
+				(v) =>
+					(tempTimezone[v] = {
+						checked: true,
+						val: data.attribute.policies[v],
+					}),
+			);
+
+			setTimezone({
+				...timeIntervalDefaultValue,
+				...tempTimezone,
+			});
+		}
+	}, [data]);
 
 	return (
 		<TemplateLayout
@@ -43,28 +108,14 @@ const AllowServiceTime = ({data, setTemplateData}) => {
 							render={timeoutRistrictionRadioButton}
 						/>
 						<div>----------------------------------</div>
-						{Object.keys(DayOfTheWeek).map((w) => (
-							<TimeInterval
-								key={w}
-								week={w}
-								title={DayOfTheWeek[w]}
-								data={{
-									attribute: {
-										usage: false,
-										policies: {
-											MONDAY: {
-												from: '09:00:00',
-												to: '18:00:00',
-											},
-											THURSDAY: {
-												from: '09:00:00',
-												to: '18:00:00',
-											},
-										},
-									},
-								}}
-							/>
-						))}
+						<TimeInterval
+							data={timezone}
+							setData={setTimezone}
+							disabled={
+								timeoutRistriction ===
+								policyOption.restrict.none.key
+							}
+						/>
 					</div>
 				);
 			}}

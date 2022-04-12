@@ -19,9 +19,10 @@ import IAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/R
 import POLICY_MANAGEMENT_ACTION_TEMPLATE from '../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policyActionTemplate';
 import PAM_ACTION_MANAGEMENT_TEMPLATE from '../../../reducers/api/PAM/TemplateManagement/ActionManagement/actionTemplate';
 import {
-	iamPolicyRuleDetailsConverter,
 	iamPolicyRuleDetailsPreviewConverter,
+	pamPolicyRuleDetailsPreviewConverter,
 } from '../../../utils/policy/rule';
+import PAM_RULE_MANAGEMENT_TEMPLATE from '../../../reducers/api/PAM/TemplateManagement/RuleTemplate/ruleTemplate';
 
 const policyPreviewDialogBox = {
 	IAM: 'iam*',
@@ -41,6 +42,10 @@ const policyPreviewDialogBox = {
 const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	const dispatch = useDispatch();
 	const {ruleTemplates} = useSelector(IAM_RULE_MANAGEMENT_TEMPLATE.selector);
+	const {pamRuleTemplates} = useSelector(
+		PAM_RULE_MANAGEMENT_TEMPLATE.selector,
+	);
+
 	//생성할 권한 템플릿
 	const {actionTemplates} = useSelector(
 		IAM_ACTION_MANAGEMENT_TEMPLATE.selector,
@@ -277,8 +282,10 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 		dispatch(IAM_ACTION_MANAGEMENT_TEMPLATE.action.initActionTemplates());
 		//IAM redux action데이터 초기화
 		dispatch(PAM_ACTION_MANAGEMENT_TEMPLATE.action.initActionTemplates());
-		//IAM 정책 생성을 위해 모아둔 template의 데이터를 삭제
+		//IAM 정책 생성을 위해 모아둔 template의 rule 데이터를 삭제
 		dispatch(IAM_RULE_MANAGEMENT_TEMPLATE.action.resetRuleTemplate());
+		//PAM 정책 생성을 위해 모아둔 template의 rule 데이터를 삭제
+		dispatch(PAM_RULE_MANAGEMENT_TEMPLATE.action.resetRuleTemplate());
 		//정책 생성 모드 off
 		dispatch(
 			IAM_POLICY_MANAGEMENT_POLICIES.action.changeCreatingPolicyMode({
@@ -347,31 +354,38 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 	useEffect(() => {
 		//TODO:정책 생성을 눌렀을시 렌더링 실행되도록
 		let previewAllData = [];
-		//IAM - 규칙 템플릿 데이터 처리
-		previewAllData = [
-			...previewAllData,
-			...iamPolicyRuleDetailsPreviewConverter(ruleTemplates),
-		];
+		if (formData.type === policyPreviewDialogBox.IAM) {
+			//IAM - 규칙 템플릿 데이터 처리
+			previewAllData = [
+				...previewAllData,
+				...iamPolicyRuleDetailsPreviewConverter(ruleTemplates),
+			];
 
-		//IAM - 권한(action) 템플릿 데이터 처리
-		//TODO 함수로 모듈화할 예정입니다
+			//IAM - 권한(action) 템플릿 데이터 처리
+			//TODO 함수로 모듈화할 예정입니다
 
-		// actionTemplates.map((v) => {
-		// 	actionPreviewfilter(v['details']).map((s, index) => {
-		// 		let object = {};
-		// 		index === 0 ? (object.policy = v.name) : (object.policy = '');
-		// 		object.id = s.resource;
-		// 		object.detail = s.resource;
-		// 		object.value = s.value;
-		// 		previewAllData.push(object);
-		// 	});
-		// });
-		//PAM - 규칙 템플릿 데이터 처리
+			// actionTemplates.map((v) => {
+			// 	actionPreviewfilter(v['details']).map((s, index) => {
+			// 		let object = {};
+			// 		index === 0 ? (object.policy = v.name) : (object.policy = '');
+			// 		object.id = s.resource;
+			// 		object.detail = s.resource;
+			// 		object.value = s.value;
+			// 		previewAllData.push(object);
+			// 	});
+			// });
+			//PAM - 규칙 템플릿 데이터 처리
 
-		//PAM - 권한(action) 템플릿 데이터 처리
-
+			//PAM - 권한(action) 템플릿 데이터 처리
+		} else if (formData.type === policyPreviewDialogBox.PAM) {
+			//PAM - 규칙 템플릿 데이터 처리
+			previewAllData = [
+				...previewAllData,
+				...pamPolicyRuleDetailsPreviewConverter(pamRuleTemplates),
+			];
+		}
 		setPreviewData(previewAllData);
-	}, [actionTemplates, ruleTemplates]);
+	}, [ruleTemplates, actionTemplates, pamRuleTemplates, formData.type]);
 
 	return (
 		formData && (

@@ -14,14 +14,17 @@ export const ruleTypes = {
 	password_expired: 'password_expired',
 	group_modifying: 'group_modifying',
 	resigned: 'resigned',
-	//iam - 사용자 접근
-	allowed_service_time: 'allowed_service_time',
 	//iam - 세션 정책
 	session_timeout: 'session_timeout',
 	screen_saver: 'screen_saver',
 	//iam - 패턴 정책
 	user_id_pattern: 'user_id_pattern',
 	password_pattern: 'password_pattern',
+	//pam - 자원 접속 방식
+	connect: 'connect',
+	//iam, pam (공통)
+	allowed_service_time: 'allowed_service_time',
+	resource: 'resource',
 };
 
 export const ruleTypeDescription = {
@@ -48,6 +51,10 @@ export const ruleTypeDescription = {
 	//iam - 패턴 정책
 	[ruleTypes.user_id_pattern]: '사용자 ID 패턴',
 	[ruleTypes.password_pattern]: '비밀번호 패턴',
+	//pam - 자원 접속 방식
+	[ruleTypes.connect]: '로그인 방식',
+	//pam - 자원 접근 정책
+	[ruleTypes.allowed_service_time]: '자원 접속 가능 시간',
 };
 
 /**************************************************
@@ -391,7 +398,10 @@ export const iamRuleAttributeConverterByRuleType = (attribute) => {
 			string += `\n\t유휴시간 : ${attribute.timeToIdle}초`;
 			break;
 		}
-
+		case ruleTypes.connect: {
+			string += policyOption.inputType[attribute.inputType].label;
+			break;
+		}
 		default:
 			break;
 	}
@@ -435,7 +445,7 @@ export const iamPolicyRuleDetailsConverter = (data) => {
 };
 
 /**************************************************
- * ambacc244 - 정책에 할당된 rule을 preview 화면에 표현하기 위한 함수
+ * ambacc244 - 정책에 할당된 iam rule을 preview 화면에 표현하기 위한 함수
  **************************************************/
 export const iamPolicyRuleDetailsPreviewConverter = (data) => {
 	let dataArray = [];
@@ -462,6 +472,31 @@ export const iamPolicyRuleDetailsPreviewConverter = (data) => {
 				singleData.detail =
 					ruleTypeDescription[v.details[i].attribute.ruleType];
 			}
+
+			singleData.value = iamRuleAttributeConverterByRuleType(
+				v.details[i].attribute,
+			);
+			dataArray.push(singleData);
+		}
+	});
+	return dataArray;
+};
+
+/**************************************************
+ * ambacc244 - 정책에 할당된 pam rule을 preview 화면에 표현하기 위한 함수
+ **************************************************/
+export const pamPolicyRuleDetailsPreviewConverter = (data) => {
+	let dataArray = [];
+
+	data.map((v) => {
+		for (let i = 0; i < v.details.length; i++) {
+			let singleData = new Object();
+
+			if (i === 0) singleData.policy = v.name;
+			singleData.id = v.details[i].attribute.ruleType;
+			singleData[DRAGGABLE_KEY] = v.details[i].attribute.ruleType;
+			singleData.detail =
+				ruleTypeDescription[v.details[i].attribute.ruleType];
 
 			singleData.value = iamRuleAttributeConverterByRuleType(
 				v.details[i].attribute,

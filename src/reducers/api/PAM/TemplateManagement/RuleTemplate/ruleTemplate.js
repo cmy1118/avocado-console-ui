@@ -39,22 +39,22 @@ const createRule = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 
 const slice = createSlice({
 	name: NAME,
-	initialState: {ruleTemplates: []},
+	initialState: {pamRuleTemplates: []},
 	reducers: {
 		gatherRulteTemplate: (state, {payload}) => {
-			state.ruleTemplates.push(payload);
+			state.pamRuleTemplates.push(payload);
 		},
 		resetRuleTemplate: (state, action) => {
-			state.ruleTemplates = [];
+			state.pamRuleTemplates = [];
 		},
 	},
 	extraReducers: {},
 });
 
 const selectAllState = createSelector(
-	(state) => state.ruleTemplates,
-	(ruleTemplates) => {
-		return {ruleTemplates};
+	(state) => state.pamRuleTemplates,
+	(pamRuleTemplates) => {
+		return {pamRuleTemplates};
 	},
 );
 

@@ -13,12 +13,8 @@ export const categoryTypes = {
 	session: 'session',
 	pattern: 'pattern',
 	//pam - rule
-	categoryType1: 'categoryType1',
-	categoryType2: 'categoryType2',
-	categoryType3: 'categoryType3',
-	categoryType4: 'categoryType4',
-	categoryType5: 'categoryType5',
-	categoryType6: 'categoryType6',
+	authentication: 'authentication',
+	mfa: 'mfa',
 	//iam - action
 	user: 'user',
 	policy: 'policy',
@@ -26,5 +22,6 @@ export const categoryTypes = {
 	//pam - action
 	resource: 'resource',
 	collect: 'collect',
+	//pam - rule & action
 	access: 'access',
 };
