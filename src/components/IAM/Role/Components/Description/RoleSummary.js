@@ -6,20 +6,9 @@ import {useHistory, useLocation} from 'react-router-dom';
 import Table from '../../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
-import {
-	SummaryTablesContainer,
-	SummaryTableTitle,
-} from '../../../../../styles/components/iam/descriptionPage';
+import {SummaryTablesContainer, SummaryTableTitle,} from '../../../../../styles/components/iam/descriptionPage';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../../reducers/api/IAM/User/Role/GrantRole/user';
-import {
-	descriptionConverter,
-	descValues,
-	expiredConverter,
-} from '../../../../../utils/tableDataConverter';
-import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
-import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
-import PAM_SESSION from '../../../../../reducers/api/PAM/session';
 import {roleTabs} from '../../../../../utils/tabs';
 import IAM_USER_POLICY_GRANT_REVOKE_ROLE from '../../../../../reducers/api/IAM/User/Policy/GrantRevoke/role';
 
@@ -32,15 +21,11 @@ const roleSummary = {
 /**************************************************
  * ambacc244 - 이 역할의 권한,정책 이 역할을 가지는 사용자,그룹들을 보여줌
  **************************************************/
-const RoleSummary = ({roleId}) => {
+const RoleSummary = ({roleId,setGrantUser,isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const location = useLocation();
 
-	const isSummaryOpened = useMemo(() => {
-		if (location.search) return false;
-		else return true;
-	}, [location.search]);
 	//permissions: 이 역할의 권한,정책
 	const [permissions, setPermissions] = useState(null);
 	//user: 이 역할을 가지는 사용자
@@ -49,9 +34,8 @@ const RoleSummary = ({roleId}) => {
 	const [group, setGroup] = useState([]);
 	//permissionData: 이 역할의 권한,정책(화면에 필요에 따라 수정)
 	const permissionData = useMemo(() => {
-		console.log('permissions:', permissions);
 		return (
-			permissions?.map((v) => ({
+			(permissions && permissions.length)?permissions.map((v) => ({
 				id: v.id,
 				name: v.name ? v.name : '',
 				type: v.type ? v.type.name : '',
@@ -64,14 +48,13 @@ const RoleSummary = ({roleId}) => {
 				// attributes: v.attributes
 				// 	? calculatettribute(v.attributes)
 				// 	: null,
-			})) || []
+			})) : []
 		);
 	}, [permissions]);
 	//userData: 이 역할을 가지는 사용자(화면에 필요에 따라 수정)
 	const userData = useMemo(() => {
-		console.log('user:', user);
 		return (
-			user?.map((v, i) => ({
+			(user && user.length)?user.map((v, i) => ({
 				...v,
 				id: v.userId ? v.userId : '',
 				name: v.userName ? v.userName : '',
@@ -82,14 +65,13 @@ const RoleSummary = ({roleId}) => {
 				numberOfGroups: v.groupCount ? v.groupCount : '',
 				lastConsoleLogin: v.lastConsoleLogin ? v.lastConsoleLogin : '',
 				[DRAGGABLE_KEY]: v.userUid,
-			})) || []
+			})) :[]
 		);
 	}, [user]);
 	//groupData: 이 역할을 가지는 그룹(화면에 필요에 따라 수정)
 	const groupData = useMemo(() => {
-		console.log('group:', group);
 		return (
-			group?.map((v) => ({
+			(group && group.length)?group.map((v) => ({
 				...v,
 				id: v.userGroupId ? v.userGroupId : '',
 				name: v.userGroupName ? v.userGroupName : '',
@@ -103,7 +85,7 @@ const RoleSummary = ({roleId}) => {
 				lastConsoleLogin: v.lastConsoleLogin ? v.lastConsoleLogin : '',
 				parentGroup: v.parentGroupName ? v.parentGroupName : '',
 				[DRAGGABLE_KEY]: v.userGroupId,
-			})) || []
+			})) : []
 		);
 	}, [group]);
 
@@ -153,11 +135,12 @@ const RoleSummary = ({roleId}) => {
 				}),
 			).unwrap();
 			await setUser(includeData);
+			await setGrantUser(includeData? includeData.length:0)
 		} catch (err) {
 			alert('역할에대한 사용자 오류');
 			console.log(err);
 		}
-	}, [dispatch, roleId]);
+	}, [dispatch, roleId, setGrantUser]);
 
 	/**************************************************
 	 * 역할에대한 그룹 조회
@@ -196,7 +179,7 @@ const RoleSummary = ({roleId}) => {
 			alert('역할에대한 기본정보 조회 오류');
 			console.error(err);
 		}
-	}, [getGroupApi, getPolicyApi, getUserApi]);
+	}, [isSummaryOpened,getGroupApi, getPolicyApi, getUserApi]);
 
 	return (
 		<SummaryTablesContainer>
@@ -247,5 +230,7 @@ const RoleSummary = ({roleId}) => {
 
 RoleSummary.propTypes = {
 	roleId: PropTypes.string.isRequired,
+	setGrantUser: PropTypes.func,
+	isSummaryOpened: PropTypes.bool,
 };
 export default RoleSummary;
