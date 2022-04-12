@@ -239,7 +239,7 @@ const SelectionCheckBox = ({
 				{...(refs && {
 					ref: (ele) =>
 						(refs.current[
-							`${cell.row.original.id}/${cell.column.id}`
+							`${cell.row.id}/${cell.column.id}`
 						] = ele),
 				})}
 			/>
