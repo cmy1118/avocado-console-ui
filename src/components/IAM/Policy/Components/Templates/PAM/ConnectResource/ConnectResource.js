@@ -6,15 +6,12 @@ import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../../../reducers/api/IA
 import PAM_RULE_MANAGEMENT_TEMPLATE from '../../../../../../../reducers/api/PAM/TemplateManagement/RuleTemplate/ruleTemplate';
 import Connect from './Connect';
 import Resource from '../Resource/Resource';
+import {ruleTypes} from '../../../../../../../utils/policy/rule';
 
 /**************************************************
  * ambacc244 - 자원 접속 방식 템플릿 컴포넌트
  **************************************************/
-const ConnectResource = ({
-	templateId = 'KR-2020-0001:202202:0001',
-	name = '자원 접속 방식',
-	description = '원격 자원에 접속하는 방식을 설정한다.',
-}) => {
+const ConnectResource = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
 	const {creatingPolicyMode} = useSelector(
 		IAM_POLICY_MANAGEMENT_POLICIES.selector,
@@ -33,7 +30,10 @@ const ConnectResource = ({
 				PAM_RULE_MANAGEMENT_TEMPLATE.action.gatherRulteTemplate({
 					name: name,
 					description: description,
-					details: [connectData, resourceData],
+					details: [
+						connectData,
+						// , resourceData
+					],
 				}),
 			);
 		}
@@ -67,11 +67,11 @@ const ConnectResource = ({
 	return (
 		<div>
 			<Connect
-				data={defaultData && defaultData.connect}
+				data={defaultData && defaultData[ruleTypes.connect]}
 				setTemplateData={setConnectData}
 			/>
 			<Resource
-				data={defaultData && defaultData.resource}
+				data={defaultData && defaultData[ruleTypes.resource]}
 				setTemplateData={setResourceData}
 			/>
 		</div>

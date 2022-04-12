@@ -102,8 +102,8 @@ export const policyOption = {
 	},
 	inputType: {
 		auto: {key: 'auto', label: '자동 로그인'},
-		chooseLoginType: {key: 'choose_login_type', label: '직접 로그인'},
-		idInput: {key: 'id_input', label: '수동 로그인'},
+		choose_login_type: {key: 'choose_login_type', label: '직접 로그인'},
+		id_input: {key: 'id_input', label: '수동 로그인'},
 	},
 	resource: {
 		certain: {key: 'certain', label: '특정 자원'},
@@ -321,12 +321,12 @@ export const inputTypeOptions = [
 		label: policyOption.inputType.auto.label,
 	},
 	{
-		key: policyOption.inputType.chooseLoginType.key,
-		label: policyOption.inputType.chooseLoginType.label,
+		key: policyOption.inputType.choose_login_type.key,
+		label: policyOption.inputType.choose_login_type.label,
 	},
 	{
-		key: policyOption.inputType.idInput.key,
-		label: policyOption.inputType.idInput.label,
+		key: policyOption.inputType.id_input.key,
+		label: policyOption.inputType.id_input.label,
 	},
 ];
 

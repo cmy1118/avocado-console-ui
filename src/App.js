@@ -71,8 +71,8 @@ const App = () => {
 
 	useEffect(() => {
 		return () => {
-			removeCookies('refresh_token');
-			localStorage.removeItem('access_token');
+			// removeCookies('refresh_token');
+			// localStorage.removeItem('access_token');
 		};
 	}, []);
 

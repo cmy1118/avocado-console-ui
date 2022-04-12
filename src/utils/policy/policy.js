@@ -10,7 +10,6 @@ export const categoryTypes = {
 	//pam - rule
 	authentication: 'authentication',
 	mfa: 'mfa',
-
 	//iam - action
 	user: 'user',
 	policy: 'policy',
@@ -18,5 +17,6 @@ export const categoryTypes = {
 	//pam - action
 	resource: 'resource',
 	collect: 'collect',
+	//pam - rule & action
 	access: 'access',
 };
