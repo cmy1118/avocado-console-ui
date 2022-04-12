@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Table from '../../../Table/Table';
 import {tableColumns} from '../../../../Constants/Table/columns';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
@@ -14,32 +14,27 @@ import {TitleBarButtons} from '../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 import FoldableContainer from '../../../Table/Options/FoldableContainer';
 
-let TAG_NUMBER = 0;
 const AddTagToGroup = ({setValue}) => {
+	const tableRefs = useRef([]);
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
 	const [select, columns] = useSelectColumn(
 		tableColumns[tableKeys.groups.add.tag],
+		data,
 	);
 	// const [select, setSelect] = useState({});
 	const onClickAddRow = useCallback(() => {
-		console.log(data);
-		const lastValues = data.slice().pop();
-		if (lastValues?.name === '' || lastValues?.value === '') {
-			alert('입력하지 않은 값이 있습니다.');
-		}
 		setData([
 			...data,
 			{
-				id: `${TAG_NUMBER++}`,
+				new: true,
 				name: '',
 				value: '',
 				permissions: [],
+				[DRAGGABLE_KEY]: `${tableKeys.groups.add.tag} ${data.length}1`,
 			},
 		]);
 	}, [data]);
-
-	console.log(data);
 
 	const onClickDeleteRow = useCallback(() => {
 		//	console.log(select[tableKeys.groups.add.tag]);
@@ -50,26 +45,26 @@ const AddTagToGroup = ({setValue}) => {
 		//	console.log('삭제 처리 필요');
 	}, [select]);
 
-	const tagData = useMemo(() => {
-		return data.map((v) => {
-			return {
-				...v,
-				// id: v?.name,
-				// numberOfPermissions: v?.permissions.length,
-				[DRAGGABLE_KEY]: v.id,
-				numberOfRoles: v?.permissions.length,
-			};
-		});
-	}, [data]);
+	// const tagData = useMemo(() => {
+	// 	return data.map((v) => {
+	// 		return {
+	// 			...v,
+	// 			// id: v?.name,
+	// 			// numberOfPermissions: v?.permissions.length,
+	// 			[DRAGGABLE_KEY]: v.,
+	// 			numberOfRoles: v?.permissions.length,
+	// 		};
+	// 	});
+	// }, [data]);
 
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
 				title: tableKeys.groups.add.tag,
-				data: tagData,
+				data: data,
 			}),
 		);
-	}, [tagData, dispatch]);
+	}, [data, dispatch]);
 
 	useEffect(() => {
 		setValue(data);
@@ -96,9 +91,10 @@ const AddTagToGroup = ({setValue}) => {
 			<TableOptionText data={'tags'} />
 			<Table
 				tableKey={tableKeys.groups.add.tag}
-				data={tagData}
+				data={data}
 				setData={setData}
 				columns={columns}
+				tableRefs={tableRefs}
 			/>
 		</FoldableContainer>
 	);

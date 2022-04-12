@@ -48,7 +48,7 @@ export const GROUP_TYPE_COLUMN = [
 		Header: '그룹 유형',
 		accessor: 'name',
 		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} isFocus />;
+			return <TableTextBox cell={cell} />;
 		},
 	},
 	{
@@ -121,7 +121,7 @@ export const GROUP_ADD_TAG_COLUMN = [
 		Header: 'Key(태그명)',
 		accessor: 'name',
 		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} isFocus />;
+			return <TableTextBox cell={cell} isEditable={false} />;
 		},
 	},
 	{
@@ -133,7 +133,7 @@ export const GROUP_ADD_TAG_COLUMN = [
 	},
 	{
 		Header: '권한 수',
-		accessor: 'numberOfPermissions',
+		accessor: 'grantCount',
 	},
 ];
 
@@ -248,16 +248,10 @@ export const GROUP_SUMMARY_TAG_COLUMN = [
 	{
 		Header: 'key(태그명)',
 		accessor: 'name',
-		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} isFocus />;
-		},
 	},
 	{
 		Header: '값(태그)',
 		accessor: 'value',
-		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} />;
-		},
 	},
 	{
 		Header: '권한 수',
@@ -273,7 +267,7 @@ export const GROUP_SUMMARY_TABS_TAG_COLUMN = [
 		Header: 'key(태그명)',
 		accessor: 'name',
 		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} isFocus />;
+			return <TableTextBox cell={cell} isEditable={false} />;
 		},
 	},
 	{
@@ -285,7 +279,7 @@ export const GROUP_SUMMARY_TABS_TAG_COLUMN = [
 	},
 	{
 		Header: '권한 수',
-		accessor: 'numberOfPermissions',
+		accessor: 'grantCount',
 	},
 	// {
 	// 	Header: '생성 일시',

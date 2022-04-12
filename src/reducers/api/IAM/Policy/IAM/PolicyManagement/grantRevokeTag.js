@@ -26,7 +26,6 @@ const grantAction = createAsyncThunk(
 			{
 				headers: {
 					'Content-Type': contentType.JSON,
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				},
 				baseURL: baseURL.openApi,
 			},
@@ -44,9 +43,7 @@ const revokeAction = createAsyncThunk(
 		const {userAuth} = getState().AUTH;
 
 		const response = await Axios.delete(`/open-api/v1/iam/tags/policies`, {
-			headers: {
-				Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-			},
+			headers: {},
 			params: {
 				configurationId: payload.configurationId,
 				policyId: payload.policyIds,
@@ -75,7 +72,6 @@ const findAllAction = createAsyncThunk(
 					value: payload.value,
 				},
 				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					Range: 'elements=0-50',
 				},
 				baseURL: baseURL.openApi,

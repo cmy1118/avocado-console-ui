@@ -295,6 +295,9 @@ const Table = ({
 	subComponentHandler,
 	inner = false,
 	rowClick,
+	tableRefs,
+	validationSchema,
+	cellClick,
 	defaultClick, //테이블 특정 row를 미리 클릭된 화면으로 보여주는 기능
 }) => {
 	const [skipPageReset, setSkipPageReset] = useState(false);
@@ -375,26 +378,26 @@ const Table = ({
 	// 		: cellLength * magicSpacing + 24 + 'px';
 	// };
 
-	const updateMyData = useCallback(
-		(rowIndex, columnId, value) => {
-			// We also turn on the flag to not reset the page
-			if (readOnly) return;
-			setSkipPageReset(true);
-			setData &&
-				setData((old) =>
-					old.map((row, index) => {
-						if (index === rowIndex) {
-							return {
-								...old[rowIndex],
-								[columnId]: value,
-							};
-						}
-						return row;
-					}),
-				);
-		},
-		[readOnly, setData],
-	);
+	// const updateMyData = useCallback(
+	// 	(rowIndex, columnId, value) => {
+	// 		// We also turn on the flag to not reset the page
+	// 		if (readOnly) return;
+	// 		setSkipPageReset(true);
+	// 		setData &&
+	// 			setData((old) =>
+	// 				old.map((row, index) => {
+	// 					if (index === rowIndex) {
+	// 						return {
+	// 							...old[rowIndex],
+	// 							[columnId]: value,
+	// 						};
+	// 					}
+	// 					return row;
+	// 				}),
+	// 			);
+	// 	},
+	// 	[readOnly, setData],
+	// );
 
 	function dateBetweenFilterFn(rows, id, filterValues) {
 		let sd = filterValues[0] ? new Date(filterValues[0]) : undefined;
@@ -466,14 +469,14 @@ const Table = ({
 			initialState: {pageSize: 50},
 			getRowId,
 			filterTypes,
-			autoResetPage: !skipPageReset,
-			autoResetExpanded: !skipPageReset,
-			autoResetGroupBy: !skipPageReset,
-			autoResetSelectedRows: !skipPageReset,
-			autoResetSortBy: !skipPageReset,
-			autoResetFilters: !skipPageReset,
-			autoResetRowState: !skipPageReset,
-			updateMyData,
+			// autoResetPage: !skipPageReset,
+			// autoResetExpanded: !skipPageReset,
+			// autoResetGroupBy: !skipPageReset,
+			// autoResetSelectedRows: !skipPageReset,
+			// autoResetSortBy: !skipPageReset,
+			// autoResetFilters: !skipPageReset,
+			// autoResetRowState: !skipPageReset,
+			// updateMyData,
 		},
 		useGlobalFilter,
 		useFilters,
@@ -889,6 +892,12 @@ const Table = ({
 																			// 		? 'td table-check-box'
 																			// 		: 'td'
 																			// }
+																			onClick={() =>
+																				cellClick &&
+																				cellClick(
+																					cell,
+																				)
+																			}
 																			width={
 																				cell
 																					.column
@@ -901,6 +910,11 @@ const Table = ({
 																		>
 																			{cell.render(
 																				'Cell',
+																				{
+																					tableRefs,
+																					setData,
+																					validationSchema,
+																				},
 																			)}
 																		</td>
 																	);
@@ -976,6 +990,9 @@ Table.propTypes = {
 	subComponentHandler: PropTypes.func,
 	defaultClick: PropTypes.bool,
 	rowClick: PropTypes.func,
+	cellClick: PropTypes.func,
+	tableRefs: PropTypes.object,
+	validationSchema: PropTypes.object,
 };
 
 export default Table;

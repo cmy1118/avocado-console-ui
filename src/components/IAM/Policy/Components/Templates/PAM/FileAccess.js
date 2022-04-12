@@ -8,6 +8,8 @@ import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import TableComboBox from '../../../../../Table/ColumnCells/TableComboBox';
 import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
 import useSelection from '../../../../../../hooks/table/useSelection';
+import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
+import Resource from './Resource/Resource';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -26,62 +28,55 @@ const contents = {
 
 const FileAccess = () => {
 	const dispatch = useDispatch();
-	const [data, setData] = useState([]);
-	const [select, selectionColumn] = useSelection();
 
 	// 세션 타임아웃 테이블 컬럼
-	const columns = useMemo(
-		() => [
-			selectionColumn,
-			{
-				Header: '구분',
-				accessor: 'type',
-				Cell: function Component(cell) {
-					return (
-						<TableComboBox
-							cell={cell}
-							options={[
-								{label: '디렉토리', key: 'directory'},
-								{label: '파일', key: 'file'},
-								{label: '확장자', key: 'extension'},
-							]}
-							setData={setTableData}
-						/>
-					);
-				},
-				width: 200,
+	const column = [
+		{
+			Header: '구분',
+			accessor: 'type',
+			Cell: function Component(cell) {
+				return (
+					<TableComboBox
+						cell={cell}
+						options={[
+							{label: '디렉토리', key: 'directory'},
+							{label: '파일', key: 'file'},
+							{label: '확장자', key: 'extension'},
+						]}
+						setData={setTableData}
+					/>
+				);
 			},
-			{
-				Header: '파일/디렉토리 이름',
-				accessor: 'name', //has to be changed
-				Cell: function Component(cell) {
-					return <TableTextBox cell={cell} />;
-				},
-				// width: 300,
+			width: 200,
+		},
+		{
+			Header: '파일/디렉토리 이름',
+			accessor: 'name', //has to be changed
+			Cell: function Component(cell) {
+				return <TableTextBox cell={cell} />;
 			},
-			{
-				Header: '읽기 제한',
-				accessor: 'read', //has to be changed
-				Cell: function Component(cell) {
-					return <TableCheckBox cell={cell} setData={setTableData} />;
-				},
-				width: 70,
+			// width: 300,
+		},
+		{
+			Header: '읽기 제한',
+			accessor: 'read', //has to be changed
+			Cell: function Component(cell) {
+				return <TableCheckBox cell={cell} setData={setTableData} />;
 			},
-			{
-				Header: '쓰기 제한',
-				accessor: 'write', //has to be changed
-				Cell: function Component(cell) {
-					return <TableCheckBox cell={cell} setData={setTableData} />;
-				},
-				width: 70,
+			width: 70,
+		},
+		{
+			Header: '쓰기 제한',
+			accessor: 'write', //has to be changed
+			Cell: function Component(cell) {
+				return <TableCheckBox cell={cell} setData={setTableData} />;
 			},
-		],
-		[selectionColumn],
-	);
+			width: 70,
+		},
+	];
 
 	const [tableData, setTableData] = useState([
 		{
-			id: 0,
 			[DRAGGABLE_KEY]: '0',
 			name: 'bin',
 			read: false,
@@ -89,7 +84,6 @@ const FileAccess = () => {
 			type: 'directory',
 		},
 		{
-			id: 1,
 			[DRAGGABLE_KEY]: '1',
 			name: 'config',
 			read: false,
@@ -97,7 +91,6 @@ const FileAccess = () => {
 			type: 'file',
 		},
 		{
-			id: 2,
 			[DRAGGABLE_KEY]: '2',
 			name: 'exe',
 			read: false,
@@ -105,7 +98,6 @@ const FileAccess = () => {
 			type: 'extension',
 		},
 		{
-			id: 3,
 			[DRAGGABLE_KEY]: '3',
 			name: 'exe',
 			read: false,
@@ -113,7 +105,6 @@ const FileAccess = () => {
 			type: 'extension',
 		},
 		{
-			id: 4,
 			[DRAGGABLE_KEY]: '4',
 			name: 'exe',
 			read: false,
@@ -121,7 +112,6 @@ const FileAccess = () => {
 			type: 'extension',
 		},
 		{
-			id: 5,
 			[DRAGGABLE_KEY]: '5',
 			name: 'exe',
 			read: false,
@@ -129,7 +119,6 @@ const FileAccess = () => {
 			type: 'extension',
 		},
 		{
-			id: 6,
 			[DRAGGABLE_KEY]: '6',
 			name: 'exe',
 			read: false,
@@ -137,6 +126,9 @@ const FileAccess = () => {
 			type: 'extension',
 		},
 	]);
+
+	const [select, columns] = useSelectColumn(column, tableData);
+	const [resourceData, setResourceData] = useState({});
 
 	/**************************************************
 	 * seob - 테이블 데이터 추가 함수
@@ -192,6 +184,11 @@ const FileAccess = () => {
 						}
 					/>
 				)}
+			/>
+			<Resource
+				//TODO: default 데이터 있으면 넘겨주면 되는데 어떤 형식으로 올지 몰라서 command out
+				// data={defaultData && defaultData.resource}
+				setTemplateData={setResourceData}
 			/>
 		</div>
 	);
