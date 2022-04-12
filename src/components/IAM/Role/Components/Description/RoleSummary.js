@@ -6,21 +6,11 @@ import {useHistory, useLocation} from 'react-router-dom';
 import Table from '../../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
-import {
-	SummaryTablesContainer,
-	SummaryTableTitle,
-} from '../../../../../styles/components/iam/descriptionPage';
+import {SummaryTablesContainer, SummaryTableTitle,} from '../../../../../styles/components/iam/descriptionPage';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../../reducers/api/IAM/User/Role/GrantRole/user';
-import {
-	descriptionConverter,
-	descValues,
-	expiredConverter,
-} from '../../../../../utils/tableDataConverter';
-import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
-import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
-import PAM_SESSION from '../../../../../reducers/api/PAM/session';
 import {roleTabs} from '../../../../../utils/tabs';
+import IAM_USER_POLICY_GRANT_REVOKE_ROLE from '../../../../../reducers/api/IAM/User/Policy/GrantRevoke/role';
 
 const roleSummary = {
 	policy: '권한/정책 : ',
@@ -31,15 +21,11 @@ const roleSummary = {
 /**************************************************
  * ambacc244 - 이 역할의 권한,정책 이 역할을 가지는 사용자,그룹들을 보여줌
  **************************************************/
-const RoleSummary = ({roleId}) => {
+const RoleSummary = ({roleId,setGrantUser,isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const location = useLocation();
 
-	const isSummaryOpened = useMemo(() => {
-		if (location.search) return false;
-		else return true;
-	}, [location.search]);
 	//permissions: 이 역할의 권한,정책
 	const [permissions, setPermissions] = useState(null);
 	//user: 이 역할을 가지는 사용자
@@ -49,49 +35,57 @@ const RoleSummary = ({roleId}) => {
 	//permissionData: 이 역할의 권한,정책(화면에 필요에 따라 수정)
 	const permissionData = useMemo(() => {
 		return (
-			permissions?.map((v) => ({
-				id: v.role.id + v.policy.templateId,
-				name: descValues(v.policy.details[0].policyType),
-				description: ` ${descriptionConverter(v.policy.details)}`,
-				policyName: v.policy.templateName,
-				roleName: v.role.name,
-				grantUser: v.user,
-				type: descValues(v.policy.details[0].policyType),
-				createdTime: v.policy.createdTag.createdTime,
-				[DRAGGABLE_KEY]: v.role.id + v.policy.templateId,
-			})) || []
+			(permissions && permissions.length)?permissions.map((v) => ({
+				id: v.id,
+				name: v.name ? v.name : '',
+				type: v.type ? v.type.name : '',
+				description: '',
+				// description:policyDescription[v.id] || pamPolicyDescription[v.id],
+				numberOfRoles: '',
+				// policyNmberOfRoles[v.id] || pamPolicyNmberOfRoles[v.id],
+				createdTime: v.createdTag ? v.createdTag.createdTime : '',
+				[DRAGGABLE_KEY]: v.id,
+				// attributes: v.attributes
+				// 	? calculatettribute(v.attributes)
+				// 	: null,
+			})) : []
 		);
-	}, [permissions, roleId]);
+	}, [permissions]);
 	//userData: 이 역할을 가지는 사용자(화면에 필요에 따라 수정)
 	const userData = useMemo(() => {
 		return (
-			user?.map((v, i) => ({
+			(user && user.length)?user.map((v, i) => ({
 				...v,
-				id: v.id,
-				numberOfGroups: v.groups?.length || 0,
-				status: v.status.code,
-				createdTime: v.createdTag.createdTime,
-				passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
-				grantDate: v.grantUser?.createdTag?.createdTime,
-				grantUser: v.grantUser,
-				lastConsoleLogin: v.sesstion.lastConsoleLoginTime,
+				id: v.userId ? v.userId : '',
+				name: v.userName ? v.userName : '',
+				createdTime: v.createdTime ? v.createdTime : '',
+				grantUser: v.grantedCreateUserId
+					? `${v.grantedCreateUserId}(${v.grantedCreateUserName})`
+					: '',
+				numberOfGroups: v.groupCount ? v.groupCount : '',
+				lastConsoleLogin: v.lastConsoleLogin ? v.lastConsoleLogin : '',
 				[DRAGGABLE_KEY]: v.userUid,
-			})) || []
+			})) :[]
 		);
 	}, [user]);
 	//groupData: 이 역할을 가지는 그룹(화면에 필요에 따라 수정)
 	const groupData = useMemo(() => {
 		return (
-			group?.map((v) => ({
+			(group && group.length)?group.map((v) => ({
 				...v,
-				groupType: v.userGroupType.name,
-				parentGroup: v.parentGroup.name ? v.parentGroup.name : '없음',
-				createdTime: v.createdTag.createdTime,
-				numberOfRoles: v.roles ? v.roles.length : 0,
-				grantDate: v.grantUser?.createdTag?.createdTime,
-				grantUser: v.grantUser,
-				[DRAGGABLE_KEY]: v.id,
-			})) || []
+				id: v.userGroupId ? v.userGroupId : '',
+				name: v.userGroupName ? v.userGroupName : '',
+				type: v.userGroupTypeName ? v.userGroupTypeName : '',
+				createdTime: v.createdTime ? v.createdTime : '',
+				grantDate: v.grantedTime ? v.grantedTime : '',
+				grantUser: v.grantedCreateUserId
+					? `${v.grantedCreateUserId}(${v.grantedCreateUserName})`
+					: '',
+				numberOfPermissions: v.grantedCount ? v.grantedCount : '',
+				lastConsoleLogin: v.lastConsoleLogin ? v.lastConsoleLogin : '',
+				parentGroup: v.parentGroupName ? v.parentGroupName : '',
+				[DRAGGABLE_KEY]: v.userGroupId,
+			})) : []
 		);
 	}, [group]);
 
@@ -107,112 +101,85 @@ const RoleSummary = ({roleId}) => {
 		},
 		[history],
 	);
-
 	/**************************************************
-	 * roberto6385 - 이 역할이 가진 권힌/정책을 불러옴
+	 * 역할에대한 권한/정책 조회
 	 **************************************************/
-	useEffect(() => {}, []);
-
+	const getPolicyApi = useCallback(async () => {
+		try {
+			//포함
+			const includeData = await dispatch(
+				IAM_USER_POLICY_GRANT_REVOKE_ROLE.asyncAction.findAllAction({
+					roleId: roleId,
+					range: `elements=0-50`,
+					// range: page[tableKeys.users.summary.tabs.groups.include],
+				}),
+			).unwrap();
+			console.log('includeData타입 : ', typeof includeData);
+			await setPermissions(includeData);
+		} catch (err) {
+			alert('역할에대한 권한/정책 조회 오류');
+			console.log(err);
+		}
+	}, [dispatch, roleId]);
 	/**************************************************
-	 * roberto6385 - 이 역할을 가진 사용자를 불러옴
+	 * 역할에대한 사용자 조회
 	 **************************************************/
-	useEffect(() => {
-		const arr = [];
-		isSummaryOpened &&
-			dispatch(
+	const getUserApi = useCallback(async () => {
+		try {
+			//포함
+			const includeData = await dispatch(
 				IAM_ROLES_GRANT_ROLE_USER.asyncAction.findUsersByIdAction({
-					id: roleId,
+					roleId: roleId,
+					range: `elements=0-50`,
+					// range: page[tableKeys.users.summary.tabs.groups.include],
 				}),
-			)
-				.unwrap()
-				.then((users) => {
-					if (!users[0]) {
-						setUser(users);
-						return;
-					}
-					dispatch(
-						PAM_SESSION.asyncAction.findSessionAction({
-							userUids: users,
-						}),
-					)
-						.unwrap()
-						.then((sesstions) => {
-							users.map((id) => {
-								dispatch(
-									IAM_USER.asyncAction.findByUidAction({
-										userUid: id,
-									}),
-								)
-									.unwrap()
-									.then((res) => {
-										arr.push({
-											...res,
-											grantUser: res,
-											sesstion: sesstions.data.find(
-												(x) =>
-													x.userUid === res.userUid,
-											),
-										});
-										if (users.length === arr.length) {
-											setUser(arr);
-										}
-									});
-							});
-						});
-				});
-	}, [roleId, dispatch, isSummaryOpened, setUser]);
+			).unwrap();
+			await setUser(includeData);
+			await setGrantUser(includeData? includeData.length:0)
+		} catch (err) {
+			alert('역할에대한 사용자 오류');
+			console.log(err);
+		}
+	}, [dispatch, roleId, setGrantUser]);
 
 	/**************************************************
-	 * roberto6385 - 이 역할을 가진 그룹을 불러옴
+	 * 역할에대한 그룹 조회
 	 **************************************************/
-	useEffect(() => {
-		const arr = [];
-		isSummaryOpened &&
-			dispatch(
+	const getGroupApi = useCallback(async () => {
+		try {
+			const includeData = await dispatch(
 				IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.findUserGroupsById({
-					id: roleId,
+					roleId: roleId,
+					range: `elements=0-50`,
+					// range: page[tableKeys.users.summary.tabs.groups.include],
 				}),
-			)
-				.unwrap()
-				.then((groups) => {
-					groups.map((id) => {
-						dispatch(
-							IAM_USER_GROUP.asyncAction.findByIdAction({
-								id: id,
-							}),
-						)
-							.unwrap()
-							.then((group) => {
-								dispatch(
-									IAM_USER.asyncAction.findByUidAction({
-										userUid:
-											group.createdTag.actorTag.userUid,
-									}),
-								)
-									.unwrap()
-									.then((user) => {
-										dispatch(
-											IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
-												{
-													id: group.id,
-													range: `elements=0-50`,
-												},
-											),
-										)
-											.unwrap()
-											.then((roles) => {
-												arr.push({
-													...group,
-													grantUser: user,
-													roles: roles.data,
-												});
-												setGroup(arr);
-											});
-									});
-							});
-					});
-				});
-	}, [roleId, dispatch, isSummaryOpened, setGroup]);
+			).unwrap();
+			if (includeData) {
+				await setGroup(includeData);
+			} else {
+				await setGroup([]);
+			}
+		} catch (err) {
+			alert('역할에대한 그룹 조회 오류');
+			console.log(err);
+		}
+	}, [dispatch, roleId]);
+
+	/**************************************************
+	 * 역할에대한 기본정보 조회 조회
+	 **************************************************/
+	useEffect(async () => {
+		try {
+			await Promise.all([
+				await getPolicyApi(),
+				await getUserApi(),
+				await getGroupApi(),
+			]);
+		} catch (err) {
+			alert('역할에대한 기본정보 조회 오류');
+			console.error(err);
+		}
+	}, [isSummaryOpened,getGroupApi, getPolicyApi, getUserApi]);
 
 	return (
 		<SummaryTablesContainer>
@@ -263,5 +230,7 @@ const RoleSummary = ({roleId}) => {
 
 RoleSummary.propTypes = {
 	roleId: PropTypes.string.isRequired,
+	setGrantUser: PropTypes.func,
+	isSummaryOpened: PropTypes.bool,
 };
 export default RoleSummary;

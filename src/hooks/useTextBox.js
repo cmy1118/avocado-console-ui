@@ -78,7 +78,7 @@ const SubContainer = styled.div`
  return <div>{textBox()}</div>; // 컴포넌트에 그리는 방법
  *
  ***************************************************/
-const useTextBox = ({name = '', regex, placeholder = '', disabled = false}) => {
+const useTextBox = ({name = '', regex, placeholder = '', disabled = false, checkFunc=false}) => {
 	const [value, setValue] = useState('');
 	const [isValid, setIsValid] = useState(false);
 	// const [lastValidValue, setLastValidValue] = useState('');
@@ -131,7 +131,11 @@ const useTextBox = ({name = '', regex, placeholder = '', disabled = false}) => {
 
 	useEffect(() => {
 		regex && setIsValid(regex.test(value));
-	}, [regex, value]);
+		if(checkFunc){
+			setIsValid(checkFunc(value))
+		}
+
+	}, [checkFunc, regex, value]);
 
 	const textBox = () => (
 		<Container error={value !== '' && !isValid}>
@@ -150,7 +154,7 @@ const useTextBox = ({name = '', regex, placeholder = '', disabled = false}) => {
 			</SubContainer>
 		</Container>
 	);
-	return [value, textBox, setValue];
+	return [value, textBox, setValue,isValid];
 };
 
 useTextBox.propTypes = {

@@ -71,21 +71,27 @@ const GroupUsersTab = ({groupId, isSummaryOpened}) => {
 	const onClickDeleteUsersFromGroup = useCallback(
 		async (data) => {
 			try {
-				await dispatch(
-					IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
-						groupId: groupId,
-						userUid: data,
-					}),
-				).unwrap();
-				await setIncludedDataIds(
-					includedDataIds.filter((v) => !data.includes(v.userUid)),
-				);
+				if (data.length) {
+					await dispatch(
+						IAM_USER_GROUP_MEMBER.asyncAction.disjointAction({
+							groupId: groupId,
+							userUid: data,
+						}),
+					).unwrap();
+					await setIncludedDataIds(
+						includedDataIds.filter(
+							(v) => !data.includes(v.userUid),
+						),
+					);
 
-				await setExcludedDataIds([
-					...includedDataIds.filter((v) => data.includes(v.userUid)),
-					...excludedData,
-				]);
-				alert('삭제 완료');
+					await setExcludedDataIds([
+						...includedDataIds.filter((v) =>
+							data.includes(v.userUid),
+						),
+						...excludedData,
+					]);
+					alert('삭제 완료');
+				}
 			} catch (err) {
 				await alert('삭제 오류');
 				console.error(err);
@@ -98,20 +104,26 @@ const GroupUsersTab = ({groupId, isSummaryOpened}) => {
 	const onClickAddUsersToGroup = useCallback(
 		async (data) => {
 			try {
-				await dispatch(
-					IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
-						groupId: groupId,
-						userUid: data,
-					}),
-				).unwrap();
-				await setIncludedDataIds([
-					...excludedDataIds.filter((v) => data.includes(v.userUid)),
-					...includedDataIds,
-				]);
-				await setExcludedDataIds(
-					excludedDataIds.filter((v) => !data.includes(v.userUid)),
-				);
-				alert('추가 완료');
+				if (data.length) {
+					await dispatch(
+						IAM_USER_GROUP_MEMBER.asyncAction.joinAction({
+							groupId: groupId,
+							userUid: data,
+						}),
+					).unwrap();
+					await setIncludedDataIds([
+						...excludedDataIds.filter((v) =>
+							data.includes(v.userUid),
+						),
+						...includedDataIds,
+					]);
+					await setExcludedDataIds(
+						excludedDataIds.filter(
+							(v) => !data.includes(v.userUid),
+						),
+					);
+					alert('추가 완료');
+				}
 			} catch (err) {
 				alert('추가 오류');
 				console.error(err);

@@ -18,6 +18,7 @@ import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {useDispatch} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 
 const roleGroupTab = {
 	include: {title: '이 역할의 그룹 : ', button: {delete: '연결 해제'}},
@@ -27,8 +28,9 @@ const roleGroupTab = {
 	},
 };
 
-const RoleGroupTab = ({roleId,  isSummaryOpened}) => {
+const RoleGroupTab = ({roleId, isSummaryOpened}) => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 
 	const [includeSelect, includeColumns] = useSelectColumn(
 		tableColumns[tableKeys.roles.summary.tabs.groups.include],
@@ -87,14 +89,14 @@ const RoleGroupTab = ({roleId,  isSummaryOpened}) => {
 	const onClickDeleteData = useCallback(
 		async (data) => {
 			try {
-				if (data) {
+				if (data.length) {
 					await Promise.all([
 						data.forEach((groupId) => {
 							dispatch(
 								IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.revokeAction(
 									{
 										id: groupId,
-										roleId: roleId,
+										roleId: [roleId],
 									},
 								),
 							).unwrap();
@@ -124,15 +126,14 @@ const RoleGroupTab = ({roleId,  isSummaryOpened}) => {
 	const onClickAddData = useCallback(
 		async (data) => {
 			try {
-				console.log('data:', data);
-				if (data) {
+				if (data.length) {
 					await Promise.all([
 						data.forEach((groupId) => {
 							dispatch(
 								IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.grantAction(
 									{
 										id: groupId,
-										roleId: roleId,
+										roleId: [roleId],
 									},
 								),
 							).unwrap();
@@ -226,6 +227,8 @@ const RoleGroupTab = ({roleId,  isSummaryOpened}) => {
 				includedKey={tableKeys.roles.summary.tabs.groups.include}
 				excludedData={excludedData}
 				includedData={includedData}
+				joinFunction={onClickAddData}
+				disjointFunction={onClickDeleteData}
 			>
 				<Table
 					isDraggable
@@ -241,7 +244,10 @@ const RoleGroupTab = ({roleId,  isSummaryOpened}) => {
 					title={roleGroupTab.exclude.title + excludedData.length}
 					buttons={(isDisabled) => (
 						<TitleBarButtons>
-							<NormalButton disabled={isDisabled}>
+							<NormalButton
+								disabled={isDisabled}
+								onClick={() => history.push('/groups/add')}
+							>
 								{roleGroupTab.exclude.button.create}
 							</NormalButton>
 							<NormalButton

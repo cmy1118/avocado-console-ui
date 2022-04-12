@@ -7,33 +7,22 @@ import {useDispatch} from 'react-redux';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import {HoverIconButton} from '../../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../../styles/components/buttons';
-import {FOLD_DATA} from '../../../../utils/data';
+import {NormalButton, TransparentButton,} from '../../../../styles/components/buttons';
 import {LiText} from '../../../../styles/components/text';
 
-import {
-	CoveredByTabContent,
-	TabContainer,
-} from '../../../../styles/components/iam/iamTab';
-import user from '../../../../reducers/api/IAM/User/User/user';
-import {
-	DescriptionPageContainer,
-	SummaryList,
-} from '../../../../styles/components/iam/descriptionPage';
-import {
-	IamContainer,
-	TitleBar,
-	TitleBarButtons,
-	TitleBarText,
-} from '../../../../styles/components/iam/iam';
+import {CoveredByTabContent, TabContainer,} from '../../../../styles/components/iam/iamTab';
+import {DescriptionPageContainer, SummaryList,} from '../../../../styles/components/iam/descriptionPage';
+import {IamContainer, TitleBar, TitleBarButtons, TitleBarText,} from '../../../../styles/components/iam/iam';
 import useTextArea from '../../../../hooks/useTextArea';
 import {RowDiv} from '../../../../styles/components/style';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import RoleTabContents from '../Components/Description/RoleTabContents';
 import {roleTabs} from '../../../../utils/tabs';
+import TemplateElement from '../../Policy/Components/Templates/Layout/TemplateElement';
+import useRadio from '../../../../hooks/useRadio';
+import {restrictionOptions,} from '../../../../utils/policy/options';
+import useTextBox from '../../../../hooks/useTextBox';
+import {TextBoxDescription} from "../../../../styles/components/iam/addPage";
 
 const roleDescriptionSpace = {
 	title: '요약',
@@ -55,15 +44,50 @@ const roleDescriptionSpace = {
 	},
 };
 
-/**************************************************
- * ambacc244 - 이 역할을 상세 정보를 보여줌
- **************************************************/
 const RoleDescriptionSpace = ({roleId}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const location = useLocation();
 	const [role, setRole] = useState(null);
+	const maxGrant = 10;
 
+	/**************************************************
+	 * 부여제한 기능
+	 **************************************************/
+	//현재 부여된 사용자
+	const [grantUser , setGrantUser] = useState(0);
+
+	const checkRestrict =(value)=>{
+		const maxRestrict = 10
+		if(Number(value) >= grantUser && Number(value) <= maxRestrict) {
+			return value
+		}else{
+			return false
+		}
+	}
+	//제한 여부 라디오버튼 훅
+	const [
+		usage,
+		usageRadioButton,
+		setUsage,
+	] = useRadio({
+		name: 'restrictRadio',
+		options: restrictionOptions,
+	});
+
+	//제한 범위 텍스트박스 훅
+	const [restrict, restrictTextBox, setRestrict,validRestrict] = useTextBox({
+		name: 'restrictText',
+		placeholder:`현재 부여된 사용자 : ${grantUser} 명`,
+		regex: /^([1-9]|[1-9][0-9]*)$/,
+		disabled:
+			usage === 'none',
+		checkFunc:checkRestrict
+	},[grantUser]);
+
+	/**************************************************
+	 * 요약정보 열고 닫기
+	 **************************************************/
 	const isSummaryOpened = useMemo(() => {
 		if (location.search) return false;
 		else return true;
@@ -102,7 +126,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 				pathname: location.pathname,
 			});
 		}
-	}, [isSummaryOpened]);
+	}, [history, isSummaryOpened, location.pathname]);
 
 	/**************************************************
 	 * ambacc244 - 역할 생성 페이지로 이동
@@ -127,7 +151,6 @@ const RoleDescriptionSpace = ({roleId}) => {
 					id: roleId,
 				}),
 			).unwrap();
-			console.log('roleData:', roleData);
 			await setRole(roleData);
 			await setDescription(roleData.description);
 		} catch (err) {
@@ -135,7 +158,12 @@ const RoleDescriptionSpace = ({roleId}) => {
 			console.log(err);
 			history.push('/roles');
 		}
-	}, [dispatch, history, roleId, setDescription]);
+	}, [
+		dispatch,
+		history,
+		roleId,
+		setDescription,
+	]);
 
 	return (
 		<IamContainer>
@@ -195,6 +223,18 @@ const RoleDescriptionSpace = ({roleId}) => {
 						</LiText>
 						<LiText>
 							{roleDescriptionSpace.detail.grantRegulation}
+							<TemplateElement
+								render={() => {
+									return (
+										<RowDiv>
+											{usageRadioButton()}
+											{restrictTextBox()}
+										</RowDiv>
+									);
+								}}
+							/>
+							{/*<TextBox name={'maxGrants'}  direction={'row'} disabled={(usage === 'none')}/>*/}
+							<TextBoxDescription>{`부여 제한시 부여수 입력 (권한 부여 최대 수 : ${maxGrant})`}</TextBoxDescription>
 						</LiText>
 						<LiText>
 							{roleDescriptionSpace.detail.createdDate}
@@ -217,7 +257,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 				</div>
 
 				<CoveredByTabContent isOpened={isSummaryOpened}>
-					<RoleSummary roleId={roleId} />
+					<RoleSummary roleId={roleId} setGrantUser={setGrantUser} isOpened={isSummaryOpened} />
 				</CoveredByTabContent>
 
 				<TabContainer isOpened={!isSummaryOpened}>
@@ -226,6 +266,9 @@ const RoleDescriptionSpace = ({roleId}) => {
 					<RoleTabContents
 						roleId={roleId}
 						isOpened={isSummaryOpened}
+						grantUser={grantUser}
+						setGrantUser={setGrantUser}
+						validRestrict={validRestrict}
 					/>
 				</TabContainer>
 			</DescriptionPageContainer>

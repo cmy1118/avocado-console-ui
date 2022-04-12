@@ -56,22 +56,23 @@ const UserRoleTab = ({userUid, isSummaryOpened}) => {
 	const onClickDeleteRolesFromUser = useCallback(
 		async (data) => {
 			try {
-				data &&
-					(await dispatch(
+				if (data.length) {
+					await dispatch(
 						IAM_ROLES_GRANT_ROLE_USER.asyncAction.revokeAction({
 							userUid: userUid,
 							roleId: data,
 						}),
-					).unwrap());
+					).unwrap();
 
-				await setIncludedDataIds(
-					includedDataIds.filter((v) => !data.includes(v.id)),
-				);
-				await setExcludedDataIds([
-					...includedDataIds.filter((v) => data.includes(v.id)),
-					...excludedData,
-				]);
-				await alert('삭제 완료');
+					await setIncludedDataIds(
+						includedDataIds.filter((v) => !data.includes(v.id)),
+					);
+					await setExcludedDataIds([
+						...includedDataIds.filter((v) => data.includes(v.id)),
+						...excludedData,
+					]);
+					await alert('삭제 완료');
+				}
 			} catch (err) {
 				alert('삭제 오류');
 				console.log(err);
@@ -83,7 +84,7 @@ const UserRoleTab = ({userUid, isSummaryOpened}) => {
 	const onClickAddRolesToUser = useCallback(
 		async (data) => {
 			try {
-				if (data) {
+				if (data.length) {
 					await dispatch(
 						IAM_ROLES_GRANT_ROLE_USER.asyncAction.grantAction({
 							roleIds: data,

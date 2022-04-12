@@ -13,6 +13,8 @@ import {TitleBarButtons} from '../../../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import {useDispatch} from 'react-redux';
+import {useHistory} from 'react-router-dom';
+import useModal from "../../../../../../hooks/useModal";
 
 const roleUserTab = {
 	include: {title: '이 역할의 사용자 : ', button: {delete: '연결 해제'}},
@@ -22,8 +24,9 @@ const roleUserTab = {
 	},
 };
 // IAM_ROLES_GRANT_ROLE_USER
-const RoleUserTab = ({roleId, isSummaryOpened}) => {
+const RoleUserTab = ({roleId, isSummaryOpened,setGrantUser,grantUser,validRestrict}) => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 
 	const [includeSelect, includeColumns] = useSelectColumn(
 		tableColumns[tableKeys.roles.summary.tabs.users.include],
@@ -34,6 +37,51 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 	const [selected, setSelected] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [excludedDataIds, setExcludedDataIds] = useState([]);
+	const [MaxRestrictModal, showMaxRestrictModal] = useModal();
+
+/*******************************************************************************
+ *  역할에 대한 사용자 데이터 추가시 데이터 처리에 따른 모달기능
+ *******************************************************************************/
+	const isValidRestrict = useCallback((data) => {
+		const maxRestrict=10;
+		const validText=(data)=>{
+			let isValid;
+			if (data=== "true"){
+				isValid = data
+			}else if (data === "false"){
+				isValid = data
+			}else if(!validRestrict){
+				isValid ='inputValid';
+			}else if (data && data.length && data.length + includedDataIds.length > maxRestrict ) {
+				isValid = 'maxRestrict';
+			}else if (data && data.length && data.length + includedDataIds.length > validRestrict ) {
+				isValid = 'isRestrict';
+			}
+			switch (isValid) {
+				//사용자 상세
+				case 'true':
+					return `추가 되었습니다`;
+				case 'false':
+					return `추가 오류`;
+				case 'inputValid':
+					return  `올바른 부여 제한수를 입력해 주세요`;
+				case 'maxRestrict':
+					return ` 권한 부여 최대수를 초과 하였습니다`;
+				case 'isRestrict':
+					return ` 입력한 부여 제한수를 초과할수 없습니다 (입력 부여 권환 횟수:${validRestrict})`;
+				default:
+					return `예상치 못한 오류 발생`;
+			}
+		};
+				showMaxRestrictModal({
+			show: true,
+			title: '',
+			onSubmitCallback: () => console.log('모달 on'),
+			onCloseCallback: () => console.log('모달 off'),
+			element:validText(data),
+		});
+
+	}, [includedDataIds.length, showMaxRestrictModal, validRestrict]);
 
 	//includedData : 이 역할을 할당받은 사용자
 	const includedData = useMemo(() => {
@@ -76,7 +124,7 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 	const onClickDeleteData = useCallback(
 		async (data) => {
 			try {
-				if (data) {
+				if (data.length) {
 					await Promise.all([
 						data.forEach((userUid) => {
 							dispatch(
@@ -100,6 +148,7 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 						),
 						...excludedData,
 					]);
+					await setGrantUser(includedDataIds.length - data.length)
 					await alert('삭제 완료');
 				}
 			} catch (err) {
@@ -113,7 +162,7 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 	const onClickAddData = useCallback(
 		async (data) => {
 			try {
-				if (data) {
+				if (validRestrict && data && data.length && data.length + includedDataIds.length <= validRestrict) {
 					await Promise.all([
 						data.forEach((userUid) => {
 							dispatch(
@@ -137,14 +186,18 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 							(v) => !data.includes(v.userUid),
 						),
 					);
-					alert('추가 완료');
+					await setGrantUser(data.length + includedDataIds.length)
+					await isValidRestrict('true');
+				}else{
+					isValidRestrict(data);
 				}
 			} catch (err) {
 				alert('추가 오류');
+				isValidRestrict('false');
 				console.log(err);
 			}
 		},
-		[dispatch, excludedDataIds, includedDataIds, roleId],
+		[includedDataIds, validRestrict, excludedDataIds, setGrantUser, isValidRestrict, dispatch, roleId],
 	);
 
 	const getApi = useCallback(async () => {
@@ -169,11 +222,13 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 			//api 요청 데이터 (포함/비포함)테이블 삽입
 			await setIncludedDataIds(includeData);
 			await setExcludedDataIds(excludeData);
+			//부여제한 초기화 
+			await setGrantUser(includeData.length?includeData.length:0)
 		} catch (err) {
 			alert('조회 오류');
 			console.log(err);
 		}
-	}, [dispatch, roleId]);
+	}, [dispatch, roleId, setGrantUser]);
 
 	//테이블 데이터 api 호출 (포함/비포함)
 	useEffect(() => {
@@ -188,6 +243,7 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 			[tableKeys.roles.summary.tabs.users.exclude]: excludeSelect,
 		});
 	}, [excludeSelect, includeSelect]);
+
 
 	return (
 		<TabContentContainer>
@@ -223,11 +279,15 @@ const RoleUserTab = ({roleId, isSummaryOpened}) => {
 					isSearchFilterable
 					isColumnFilterable
 				/>
+				<MaxRestrictModal />
 				<FoldableContainer
 					title={roleUserTab.include.title + excludedData.length}
 					buttons={(isDisabled) => (
 						<TitleBarButtons>
-							<NormalButton disabled={isDisabled}>
+							<NormalButton
+								disabled={isDisabled}
+								onClick={() => history.push('/users/add')}
+							>
 								{roleUserTab.exclude.button.create}
 							</NormalButton>
 							<NormalButton
@@ -267,6 +327,10 @@ RoleUserTab.propTypes = {
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
 	isSummaryOpened: PropTypes.bool,
+	grantUser: PropTypes.number,
+	setGrantUser: PropTypes.func,
+	validRestrict: PropTypes.string,
+
 };
 
 export default RoleUserTab;
