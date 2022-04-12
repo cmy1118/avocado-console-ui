@@ -85,7 +85,7 @@ export const USER_ADD_TAG_COLUMN = [
 		Header: 'Key(태그명)',
 		accessor: 'name',
 		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} isFocus />;
+			return <TableTextBox cell={cell} />;
 		},
 	},
 	{
@@ -106,7 +106,7 @@ export const USER_SUMMARY_TABS_TAG_COLUMN = [
 		Header: 'Key(태그명)',
 		accessor: 'name',
 		Cell: function Component(cell) {
-			return <TableTextBox cell={cell} isFocus />;
+			return <TableTextBox cell={cell} isEditable={false} />;
 		},
 	},
 	{
@@ -530,7 +530,7 @@ export const USER_SUMMARY_TABS_PERMISSIONS_INCLUDE_COLUMN = [
 	},
 	{
 		Header: '권한 부여 수',
-		accessor: 'numberOfRoles',
+		accessor: 'grantCount',
 	},
 	{
 		Header: '생성 일시',
@@ -554,7 +554,7 @@ export const USER_SUMMARY_TABS_PERMISSIONS_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '권한 부여 수',
-		accessor: 'numberOfRoles',
+		accessor: 'grantCount',
 	},
 	{
 		Header: '생성 일시',

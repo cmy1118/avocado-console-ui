@@ -8,6 +8,8 @@ import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import {DRAGGABLE_KEY} from '../../../../../../Constants/Table/keys';
 import TableContainer from '../../../../../Table/TableContainer';
 import Resource from './Resource/Resource';
+import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
+import TableComboBox from '../../../../../Table/ColumnCells/TableComboBox';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -34,14 +36,12 @@ let ID = 4;
 
 const CommandControl = () => {
 	const dispatch = useDispatch();
-	const [data, setData] = useState([]);
-	const [select, setSelect] = useState({});
 
 	const [tableData, setTableData] = useState([
-		{id: 0, [DRAGGABLE_KEY]: '0', controlCommand: 'kill'},
-		{id: 1, [DRAGGABLE_KEY]: '1', controlCommand: 'command1'},
-		{id: 2, [DRAGGABLE_KEY]: '2', controlCommand: 'command2'},
-		{id: 3, [DRAGGABLE_KEY]: '3', controlCommand: 'command3'},
+		{[DRAGGABLE_KEY]: '0', controlCommand: 'kill'},
+		{[DRAGGABLE_KEY]: '1', controlCommand: 'command1'},
+		{[DRAGGABLE_KEY]: '2', controlCommand: 'command2'},
+		{[DRAGGABLE_KEY]: '3', controlCommand: 'command3'},
 	]);
 
 	const [controlTypeValue, controlTypeRadio, setControlTypeValue] = useRadio({
@@ -54,7 +54,7 @@ const CommandControl = () => {
 	const [resourceData, setResourceData] = useState({});
 
 	// 세션 타임아웃 테이블 컬럼
-	const columns = useMemo(
+	const column = useMemo(
 		() => [
 			{
 				Header: '제어 명령어',
@@ -64,9 +64,30 @@ const CommandControl = () => {
 				},
 				width: 300,
 			},
+			{
+				Header: '보안 등급',
+				accessor: 'securityLevel', //has to be changed
+				Cell: function Component(cell) {
+					return (
+						<TableComboBox
+							cell={cell}
+							options={[
+								{label: '기본등급', key: 'normal'},
+								{label: '1등급', key: 'level1'},
+								{label: '2등급', key: 'level2'},
+								{label: '3등급', key: 'level3'},
+							]}
+							setData={setTableData}
+						/>
+					);
+				},
+				width: 300,
+			},
 		],
 		[],
 	);
+
+	const [select, columns] = useSelectColumn(column, tableData);
 
 	/**************************************************
 	 * seob - 테이블 데이터 추가 함수

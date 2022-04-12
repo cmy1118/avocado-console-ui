@@ -207,17 +207,17 @@ const FormExample = () => {
 					isDisabled
 				/>
 				<RHF_Radio name={'radio2'} options={checkboxOptions} />
-				<button onClick={handleAddData}>데이터 추가</button>
-				<button onClick={handleDeleteData}>데이터 삭제</button>
-				<Table
-					data={tableData}
-					columns={columns}
-					tableKey={'tableTextBoxTest'}
-					tableRefs={tableRefs}
-					setData={setData}
-					validationSchema={validationSchema}
-				/>
 			</FormProvider>
+			<button onClick={handleAddData}>데이터 추가</button>
+			<button onClick={handleDeleteData}>데이터 삭제</button>
+			<Table
+				data={tableData}
+				columns={columns}
+				tableKey={'tableTextBoxTest'}
+				tableRefs={tableRefs}
+				setData={setData}
+				validationSchema={validationSchema}
+			/>
 		</div>
 	);
 };

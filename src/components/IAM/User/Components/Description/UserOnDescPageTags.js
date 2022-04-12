@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Table from '../../../../Table/Table';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -11,7 +11,6 @@ import {
 } from '../../../../../styles/components/buttons';
 import {TableTitle} from '../../../../../styles/components/table';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
-import styled from 'styled-components';
 import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
 import {TitleBarButtons} from '../../../../../styles/components/iam/iam';
 import IAM_USER_TAG from '../../../../../reducers/api/IAM/User/Tag/tags';
@@ -20,24 +19,30 @@ import DragContainer from '../../../../Table/DragContainer';
 import FoldableContainer from '../../../../Table/Options/FoldableContainer';
 import IAM_GRANT_REVOKE_TAG from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeTag';
 import {ATTRIBUTE_TYPES} from '../../../../../utils/policy/policy';
-
-const _TableSpace = styled(TableTitle)`
-	margin-top: 30px;
-	height: 30px;
-`;
+import {totalNumberConverter} from '../../../../../utils/tableDataConverter';
 
 const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 	const dispatch = useDispatch();
+	const tableRefs = useRef([]);
 	const [user, setUser] = useState(null);
 	const [data, setData] = useState([]);
 
 	const [basicSelect, basicColumns] = useSelectColumn(
 		tableColumns[tableKeys.users.summary.tabs.tags.basic],
+		data,
 	);
 
-	const [inTagIds, setInTagIds] = useState([]);
-	const [inTag, setInTag] = useState([]);
-	const [exTag, setExTag] = useState([]);
+	const [deleteList, setDeleteList] = useState([]);
+
+	const [includePoliciesIds, setIncludePoliciesIds] = useState([]);
+	const [includePolicies, setIncludePolicies] = useState([]);
+	const [excludePolicies, setExcludePolicies] = useState([]);
+
+	const [policiesInfo, setPoliciesInfo] = useState({
+		name: '',
+		includeCount: 0,
+		excludeCount: 0,
+	});
 
 	const [includeSelect, includeColumns] = useSelectColumn(
 		tableColumns[tableKeys.users.summary.tabs.tags.permissions.include],
@@ -47,15 +52,75 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 	);
 	const [selected, setSelected] = useState({});
 
+	const handleCellClick = useCallback(
+		async (cell) => {
+			if (cell.row.original.new) return;
+
+			if (cell.column.id === 'name') {
+				console.log(cell);
+
+				try {
+					const includeRes = await dispatch(
+						IAM_GRANT_REVOKE_TAG.asyncAction.findAllAction({
+							tagName: cell.row.original.name,
+							range: 'elements=0-50',
+							value: cell.row.original.name,
+							attributeType: ATTRIBUTE_TYPES.USER,
+						}),
+					);
+
+					console.log(includeRes.payload.data);
+
+					setIncludePolicies(
+						includeRes.payload.data.map((v) => ({
+							...v,
+							type: 'IAM',
+							createdTime: v.createdTag.createdTime,
+							[DRAGGABLE_KEY]: v.id,
+						})),
+					);
+
+					const excludeRes = await dispatch(
+						IAM_GRANT_REVOKE_TAG.asyncAction.findAllAction({
+							exclude: true,
+							tagName: cell.row.original.name,
+							range: 'elements=0-50',
+							value: cell.row.original.name,
+							attributeType: ATTRIBUTE_TYPES.USER,
+						}),
+					);
+
+					setExcludePolicies(
+						excludeRes.payload.data.map((v) => ({
+							...v,
+							type: 'IAM',
+							createdTime: v.createdTag.createdTime,
+							[DRAGGABLE_KEY]: v.id,
+						})),
+					);
+
+					setPoliciesInfo({
+						name: cell.row.original.name,
+						includeCount: totalNumberConverter(
+							includeRes.payload.headers['content-range'],
+						),
+						excludeCount: totalNumberConverter(
+							excludeRes.payload.headers['content-range'],
+						),
+					});
+				} catch (err) {
+					console.error(err);
+				}
+			}
+		},
+		[dispatch],
+	);
+
 	const onClickAddRow = useCallback(() => {
-		const lastValues = data.slice().pop();
-		if (lastValues?.name === '' || lastValues?.value === '') {
-			alert('입력하지 않은 값이 있습니다.');
-			return;
-		}
 		setData([
 			...data,
 			{
+				new: true,
 				name: '',
 				value: '',
 				permissions: [],
@@ -66,38 +131,46 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 	}, [data]);
 
 	const onClickSaveRow = useCallback(() => {
-		if (data[0]) {
+		if (data.length) {
 			data.forEach((v) => {
+				if (v.new)
+					dispatch(
+						IAM_USER_TAG.asyncAction.createAction({
+							userUid,
+							name: v.name,
+							value: v.value,
+						}),
+					);
+			});
+			deleteList.forEach((v) => {
 				dispatch(
-					IAM_USER_TAG.asyncAction.createAction({
+					IAM_USER_TAG.asyncAction.deleteAction({
 						userUid,
 						name: v.name,
-						value: v.value,
 					}),
 				);
 			});
 		}
-	}, [data, dispatch, userUid]);
+	}, [data, deleteList, dispatch, userUid]);
 
 	const onClickDeleteRow = useCallback(() => {
 		if (basicSelect.length) {
-			basicSelect.forEach((tag) => {
-				dispatch(
-					IAM_USER_TAG.asyncAction.deleteAction({
-						userUid,
-						name: tag.name,
-					}),
-				);
-			});
+			setDeleteList((prev) => [
+				...prev,
+				...basicSelect.filter((v) => !v.new),
+			]);
 			setData(
 				data.filter(
-					(v) => !basicSelect.map((x) => x.name).includes(v.name),
+					(v) =>
+						!basicSelect
+							.map((x) => JSON.stringify(x))
+							.includes(JSON.stringify(v)),
 				),
 			);
 		} else {
 			alert('선택된 값이 없습니다.');
 		}
-	}, [data, dispatch, basicSelect, userUid]);
+	}, [data, basicSelect]);
 
 	useEffect(() => {
 		if (!user && !isSummaryOpened) {
@@ -123,50 +196,28 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 		}
 	}, [dispatch, isSummaryOpened, user, userUid]);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const res = await dispatch(
-					IAM_GRANT_REVOKE_TAG.asyncAction.findAllAction({
-						tagName: 'tagName',
-						range: 'elements=0-50',
-						value: 'd',
-						attributeType: ATTRIBUTE_TYPES.USER,
-					}),
-				);
-
-				console.log(res.payload.data);
-				setInTag(res.payload.data);
-				// setTags(dummy);
-			} catch (err) {
-				console.error(err);
-			}
-		};
-		fetchData();
-	}, [dispatch]);
-
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const res = await dispatch(
-					IAM_GRANT_REVOKE_TAG.asyncAction.findAllAction({
-						exclude: true,
-						tagName: 'tagName',
-						range: 'elements=0-50',
-						value: 'd',
-						attributeType: ATTRIBUTE_TYPES.USER,
-					}),
-				);
-
-				console.log(res.payload.data);
-				setExTag(res.payload.data);
-				// setTags(dummy);
-			} catch (err) {
-				console.error(err);
-			}
-		};
-		fetchData();
-	}, [dispatch]);
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			const res = await dispatch(
+	// 				IAM_GRANT_REVOKE_TAG.asyncAction.findAllAction({
+	// 					exclude: true,
+	// 					tagName: 'tagName',
+	// 					range: 'elements=0-50',
+	// 					value: 'd',
+	// 					attributeType: ATTRIBUTE_TYPES.USER,
+	// 				}),
+	// 			);
+	//
+	// 			console.log(res.payload.data);
+	// 			setExTag(res.payload.data);
+	// 			// setTags(dummy);
+	// 		} catch (err) {
+	// 			console.error(err);
+	// 		}
+	// 	};
+	// 	fetchData();
+	// }, [dispatch]);
 
 	return (
 		<TabContentContainer>
@@ -194,21 +245,23 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 				data={data}
 				setData={setData}
 				columns={basicColumns}
+				tableRefs={tableRefs}
+				cellClick={handleCellClick}
 			/>
-			<TableTitle>{`태그 [${333}] 의 정책 : ${3}`}</TableTitle>
+			<TableTitle>{`태그 [${policiesInfo.name}] 의 정책 : ${policiesInfo.includeCount}`}</TableTitle>
 			<DragContainer
 				selected={selected}
-				data={inTagIds}
-				setData={setInTagIds}
+				data={includePoliciesIds}
+				setData={setIncludePoliciesIds}
 				includedKey={
 					tableKeys.users.summary.tabs.tags.permissions.include
 				}
-				excludedData={exTag}
-				includedData={inTag}
+				excludedData={excludePolicies}
+				includedData={includePolicies}
 			>
 				<Table
 					isDraggable
-					data={inTag}
+					data={includePolicies}
 					tableKey={
 						tableKeys.users.summary.tabs.tags.permissions.include
 					}
@@ -220,7 +273,7 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 				/>
 
 				<FoldableContainer
-					title={`태그 [${333}] 의 다른 정책 : ${3}`}
+					title={`태그 [${policiesInfo.name}] 의 다른 정책 : ${policiesInfo.excludeCount}`}
 					buttons={(isDisabled) => (
 						<TitleBarButtons>
 							<NormalButton
@@ -234,7 +287,7 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 				>
 					<Table
 						isDraggable
-						data={exTag}
+						data={excludePolicies}
 						tableKey={
 							tableKeys.users.summary.tabs.tags.permissions
 								.exclude

@@ -56,7 +56,7 @@ const SubContainer = styled.div`
 	font-color: #757575;
 	box-sizing: border-box;
 	border-radius: 4px;
-	border: solid 1px;
+	border: ${(props) => props.isFocused && 'solid 1px'};
 	border-color: ${(props) =>
 		props.error ? '#d45959' : props.isFocused ? '#4ca6a8' : '#e3e5e5'};
 	height: 32px;
@@ -109,7 +109,7 @@ const TableTextBox = ({cell, isEditable = true, yup}) => {
 				}
 			}
 			console.log(key);
-			if (key !== '') cell.tableRefs.current[key].focus();
+			if (key !== '') cell.tableRefs.current[key].click();
 		},
 		[cell.column.id, cell.row.id, cell.tableRefs],
 	);
@@ -125,9 +125,7 @@ const TableTextBox = ({cell, isEditable = true, yup}) => {
 				});
 			}
 		};
-		if (yup) {
-			validate();
-		}
+		yup && validate();
 	}, [value, yup]);
 
 	return (

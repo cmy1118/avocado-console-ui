@@ -297,6 +297,7 @@ const Table = ({
 	rowClick,
 	tableRefs,
 	validationSchema,
+	cellClick,
 	defaultClick, //테이블 특정 row를 미리 클릭된 화면으로 보여주는 기능
 }) => {
 	const [skipPageReset, setSkipPageReset] = useState(false);
@@ -891,6 +892,12 @@ const Table = ({
 																			// 		? 'td table-check-box'
 																			// 		: 'td'
 																			// }
+																			onClick={() =>
+																				cellClick &&
+																				cellClick(
+																					cell,
+																				)
+																			}
 																			width={
 																				cell
 																					.column
@@ -983,6 +990,7 @@ Table.propTypes = {
 	subComponentHandler: PropTypes.func,
 	defaultClick: PropTypes.bool,
 	rowClick: PropTypes.func,
+	cellClick: PropTypes.func,
 	tableRefs: PropTypes.object,
 	validationSchema: PropTypes.object,
 };

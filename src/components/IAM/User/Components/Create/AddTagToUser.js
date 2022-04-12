@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
@@ -13,7 +13,10 @@ import {
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import Table from '../../../../Table/Table';
 
+let newRowIndex = 0;
 const AddTagToUser = () => {
+	const tableRefs = useRef([]);
+
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
 
@@ -27,28 +30,21 @@ const AddTagToUser = () => {
 				...v,
 				id: v.name,
 				numberOfPermissions: v.permissions.length,
-				[DRAGGABLE_KEY]: v.name
-					? v.name
-					: `${tableKeys.users.add.tag} ${data.length}`,
+				[DRAGGABLE_KEY]: v.name ? v.name : v[DRAGGABLE_KEY],
 			};
 		});
 	}, [data]);
 
 	const onClickAddRow = useCallback(() => {
 		console.log(data);
-		const lastValues = data.slice().pop();
-		if (lastValues) {
-			if (lastValues.name === '' || lastValues.value === '') {
-				alert('입력하지 않은 값이 있습니다.');
-				return;
-			}
-		}
 		setData([
 			...data,
 			{
+				new: true,
 				name: '',
 				value: '',
 				permissions: [],
+				[DRAGGABLE_KEY]: tableKeys.users.add.tag + newRowIndex++,
 			},
 		]);
 	}, [data]);
@@ -96,6 +92,7 @@ const AddTagToUser = () => {
 				data={tagData}
 				setData={setData}
 				columns={columns}
+				tableRefs={tableRefs}
 			/>
 		</FoldableContainer>
 	);
