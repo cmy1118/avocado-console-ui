@@ -80,14 +80,13 @@ const TableOptionsBar = ({
 }) => {
 	//검색필터 선택 요소들
 	const [selectedSearchFilters, setSelectedSearchFilters] = useState([]);
+
+	//컬럼필터 선택 요소들
+	const [selectedColumnFilters, setSelectedColumnFilters] = useState([]);
 	//검색필터 모달 훅스
 	const [SearchFilterModal, showSearchFilterModal] = useModal();
 	//컬럼필터 모달 훅스
 	const [ColumnFilterModal, showColumnFilter] = useModal();
-
-	//부모에서 자식 함수호출을 위한 ref 훅
-	// const searchFilterForm = useRef();
-	const columnFilterForm = useRef();
 
 	const methods = useForm({
 		defaultValues: {
@@ -121,27 +120,20 @@ const TableOptionsBar = ({
 		showColumnFilter({
 			show: true,
 			title: '표시되는 열',
-			onSubmitCallback: () => columnFilterForm.current.onClickOkBtn(),
-			onCloseCallback: () => columnFilterForm.current.onClickCancelBtn(),
-			element: (
-				<TableColumnFilterContextMenu
-					ref={columnFilterForm}
-					allColumns={allColumns}
-					getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
-					setHiddenColumns={setHiddenColumns}
-					selectedOptions={selectedSearchFilters}
-					setSelectedOptions={setSelectedSearchFilters}
-					filters={filters}
-					setAllFilters={setAllFilters}
-				/>
-			),
+			onSubmitCallback: methods.handleSubmit((data) => {
+				setHiddenColumns(data.columnFilters);
+				setSelectedColumnFilters(data.columnFilters);
+			}),
+			// () => columnFilterForm.current.onClickOkBtn(),
+
+			onCloseCallback: () =>
+				methods.setValue('columnFilters', selectedColumnFilters),
+			element: <TableColumnFilterContextMenu allColumns={allColumns} />,
 		});
 	}, [
 		allColumns,
-		filters,
-		getToggleHideAllColumnsProps,
-		selectedSearchFilters,
-		setAllFilters,
+		methods,
+		selectedColumnFilters,
 		setHiddenColumns,
 		showColumnFilter,
 	]);

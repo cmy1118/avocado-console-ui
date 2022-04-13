@@ -1,6 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useFormContext} from 'react-hook-form';
-import {checkIcon, checkOutlineIcon} from '../../../icons/icons';
+import {
+	checkIcon,
+	checkOutlineIcon,
+	indeterminateIcon,
+} from '../../../icons/icons';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -33,14 +37,42 @@ const InputContainer = styled.div`
 	}
 `;
 
-const CheckBox = ({name, value, label, isDisabled = false}) => {
+const AllCheckBox = ({name, values, label, isDisabled = false}) => {
 	const methods = useFormContext();
-	const {register, watch} = methods;
-	const [values, setValues] = useState([]);
+	const {watch, setValue} = methods;
+	const [indeterminate, setIndeterminate] = useState(false);
+
+	const [ischecked, setIschecked] = useState(false);
+
+	const handleChange = useCallback(() => {
+		if (indeterminate) {
+			setValue(name, values);
+			setIndeterminate(false);
+			setIschecked(true);
+		} else {
+			if (ischecked) {
+				setValue(name, []);
+			} else {
+				setValue(name, values);
+			}
+			//
+		}
+	}, [indeterminate, ischecked, name, setValue, values]);
 
 	useEffect(() => {
-		setValues(watch(name));
-	}, [name, watch]);
+		if (watch(name).length) {
+			if (watch(name).length === values.length) {
+				setIndeterminate(false);
+				setIschecked(true);
+			} else {
+				setIndeterminate(true);
+				setIschecked(false);
+			}
+		} else {
+			setIndeterminate(false);
+			setIschecked(false);
+		}
+	}, [name, values, watch]);
 
 	return (
 		<Label
@@ -49,12 +81,20 @@ const CheckBox = ({name, value, label, isDisabled = false}) => {
 			className='pretty p-svg p-curve p-plain p-toggle p-thick'
 		>
 			<input
-				{...register(name)}
 				type={'checkbox'}
-				value={value}
+				value={ischecked}
 				disabled={isDisabled}
+				onChange={handleChange}
 			/>
-			{values.includes(value) ? (
+			{indeterminate ? (
+				<InputContainer
+					type={'indeterminate'}
+					disabled={isDisabled}
+					className='state'
+				>
+					{indeterminateIcon}
+				</InputContainer>
+			) : ischecked ? (
 				<InputContainer type={'check'} className='state'>
 					{checkIcon}
 				</InputContainer>
@@ -68,11 +108,11 @@ const CheckBox = ({name, value, label, isDisabled = false}) => {
 	);
 };
 
-CheckBox.propTypes = {
+AllCheckBox.propTypes = {
 	name: PropTypes.string,
-	value: PropTypes.string,
+	values: PropTypes.array,
 	label: PropTypes.string,
 	isDisabled: PropTypes.bool,
 };
 
-export default CheckBox;
+export default AllCheckBox;
