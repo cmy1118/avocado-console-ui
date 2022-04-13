@@ -31,7 +31,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 		},
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
@@ -44,7 +44,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 		`/open-api/v1/iam/user-group-types/${payload.id}`,
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
@@ -59,7 +59,7 @@ const findByIdAction = createAsyncThunk(
 			`/open-api/v1/iam/user-group-types/${payload.id}`,
 			{
 				headers: {
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 				},
 				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
@@ -75,7 +75,7 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 			id: payload.id,
 		},
 		headers: {
-			'Content-Type': 'application/json',
+			'Content-Type': contentType.JSON,
 			Range: payload.range,
 		},
 		baseURL: process.env.REACT_APP_OPEN_API_URL,

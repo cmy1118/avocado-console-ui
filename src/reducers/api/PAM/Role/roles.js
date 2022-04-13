@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import {baseURL, Axios} from '../../../../api/constants';
+import {contentType} from '../../../../utils/auth';
 
 const NAME = 'PAM_ROLES';
 
@@ -11,7 +12,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 		},
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
@@ -28,7 +29,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 		},
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
@@ -39,7 +40,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 	const response = await Axios.delete(`/open-api/v1/pam/role/${payload.id}`, {
 		headers: {
-			'Content-Type': 'application/json',
+			'Content-Type': contentType.JSON,
 		},
 		aseURL: process.env.REACT_APP_OPEN_API_URL,
 	});

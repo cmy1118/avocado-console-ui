@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
 import {Axios} from '../../../../api/constants';
+import {contentType} from '../../../../utils/auth';
 
 const NAME = 'RRM_RESOURCE';
 
@@ -11,7 +12,7 @@ const findResourceByIdAction = createAsyncThunk(
 			`/open-api/v1/pam/remote-resources/${payload.id}`,
 			{
 				headers: {
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 				},
 				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
@@ -40,7 +41,7 @@ const findAllResourcebByUserUidAction = createAsyncThunk(
 					excludeGroupIds: payload.excludeGroupIds,
 				},
 				headers: {
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 					Range: payload.range || `elements=0-50`,
 				},
 				baseURL: process.env.REACT_APP_OPEN_API_URL,
@@ -63,7 +64,7 @@ const findAllAccountAction = createAsyncThunk(
 					credentialType: 'Password',
 				},
 				headers: {
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 					Range: 'elements=0-50',
 				},
 				baseURL: process.env.REACT_APP_OPEN_API_URL,
@@ -81,7 +82,7 @@ const findAllServicePortAction = createAsyncThunk(
 			`/open-api/v1/pam/remote-resources/${payload.id}/ports`,
 			{
 				headers: {
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 					Range: `elements=${payload.first}-${payload.last}`,
 				},
 				baseURL: process.env.REACT_APP_OPEN_API_URL,

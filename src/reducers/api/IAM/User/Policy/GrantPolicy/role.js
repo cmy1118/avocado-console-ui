@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import {Axios} from '../../../../../../api/constants';
+import {contentType} from '../../../../../../utils/auth';
 
 const NAME = 'IAM_GRANT_POLICY_BY_ROLE';
 
@@ -9,7 +10,7 @@ const grantAction = createAsyncThunk(`${NAME}/GRANT`, async (payload) => {
 		`/open-api/v1/iam/roles/${payload.roleId}/policy-templates`,
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
@@ -23,7 +24,7 @@ const revokeAction = createAsyncThunk(`${NAME}/REVOKE `, async (payload) => {
 		`/open-api/v1/iam/roles/${payload.roleId}/policy-templates`,
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			params: {
 				templateId: payload.templateId,
@@ -40,7 +41,7 @@ const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
 		`/open-api/v1/iam/roles/policy-templates`,
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 				Range: payload.range,
 			},
 			params: {

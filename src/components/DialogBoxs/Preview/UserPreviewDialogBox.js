@@ -30,13 +30,12 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	const [permissions, setPermissions] = useState(null);
 
 	const submitUserInfo = useCallback(() => {
-		//	console.log(readOnlyData);
 		// 나머지 그룹, 역할, 태그 맵핑은 이후에 처리..
 		dispatch(
 			IAM_USER.asyncAction.createAction({
 				id: readOnlyData['user'].id,
 				name: readOnlyData['user'].name,
-				password: 'Strict135', // 비밀번호는 생성 규칙에 따라 랜덤생성이며 사용자 이메일로 발송. 현재는 임의값.
+				password: process.env.REACT_APP_INIT_PASSWORD, // 비밀번호는 생성 규칙에 따라 랜덤생성이며 사용자 이메일로 발송. 현재는 임의값.
 				email: readOnlyData['user'].email,
 				telephone: readOnlyData['user'].telephone,
 				mobile: readOnlyData['user'].mobile,

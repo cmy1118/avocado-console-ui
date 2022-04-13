@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import {Axios} from '../../../../api/constants';
+import {contentType} from '../../../../utils/auth';
 
 const NAME = 'PAM_ROLE_SET';
 
@@ -11,7 +12,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 				parrentRoleId: payload.parrentRoleId,
 			},
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
@@ -79,7 +80,7 @@ const getEventsAction = createAsyncThunk(
 				},
 				headers: {
 					Range: payload.range,
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 				},
 				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},

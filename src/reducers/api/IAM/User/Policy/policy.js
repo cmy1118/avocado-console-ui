@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import {Axios} from '../../../../../api/constants';
+import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'IAM_USER_POLICY';
 
@@ -9,7 +10,7 @@ const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
 		`/open-api/v1/iam/users/${payload.userUid}/policies`,
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
@@ -27,7 +28,7 @@ const grantGetsAction = createAsyncThunk(
 					roleId: payload.roleId,
 				},
 				headers: {
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 					Range: 'elements=0-50',
 				},
 				baseURL: process.env.REACT_APP_OPEN_API_URL,
@@ -42,7 +43,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 		`open-api/v1/iam/policies/${payload.id}`,
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 				Range: 'elements=0-50',
 			},
 			baseURL: process.env.REACT_APP_OPEN_API_URL,

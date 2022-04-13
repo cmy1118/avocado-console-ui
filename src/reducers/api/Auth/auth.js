@@ -74,9 +74,6 @@ const googleAuthAction = createAsyncThunk(`${NAME}/googleAuth`, async () => {
 				client_id: googleAuth.clientId,
 				client_secret: googleAuth.clientSecret,
 			},
-			headers: {
-				'Content-Type': contentType,
-			},
 		},
 	);
 	return response.data;
@@ -95,9 +92,6 @@ const naverAuthAction = createAsyncThunk(`${NAME}/naverAuth`, async () => {
 				client_secret: naverAuth.clientSecret,
 				state: decodeURIComponent(getParameter('state')),
 			},
-			// headers: {
-			// 	'Content-Type': contentType,
-			// },
 		},
 	);
 	return response.data;
@@ -114,9 +108,6 @@ const kakaoAuthAction = createAsyncThunk(`${NAME}/kakaoAuth`, async () => {
 				redirect_uri: kakaoAuth.redirectUri,
 				client_id: kakaoAuth.clientId,
 				// client_secret: kakaoAuth.clientSecret,
-			},
-			headers: {
-				'Content-Type': contentType,
 			},
 		},
 	);

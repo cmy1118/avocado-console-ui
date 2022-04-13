@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
 import {Axios} from '../../../../../api/constants';
+import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'IAM_USER_GROUP_MEMBER';
 
@@ -11,7 +12,7 @@ const joinAction = createAsyncThunk(`${NAME}/JOIN`, async (payload) => {
 		[...payload.userUid],
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
@@ -24,7 +25,7 @@ const disjointAction = createAsyncThunk(`${NAME}/DISJOINT`, async (payload) => {
 		`/open-api/v1/iam/user-group-sets/${payload.groupId}`,
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			params: {
 				userUid: payload.userUid,
@@ -40,7 +41,7 @@ const findAllAction = createAsyncThunk(`${NAME}/FINDALL`, async (payload) => {
 	const response = await Axios.get(`/open-api/v1/iam/user-group-sets`, {
 		params: {groupId: payload.groupId},
 		headers: {
-			'Content-Type': 'application/json',
+			'Content-Type': contentType.JSON,
 			Range: payload.range,
 		},
 		baseURL: process.env.REACT_APP_OPEN_API_URL,

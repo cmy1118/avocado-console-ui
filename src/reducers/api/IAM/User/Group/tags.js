@@ -29,7 +29,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 		},
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
@@ -48,7 +48,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
 	return await Axios.get(`open-api/v1/iam/user-groups/tags`, {
 		headers: {
-			'Content-Type': 'application/json',
+			'Content-Type': contentType.JSON,
 			Range: payload.range,
 		},
 		params: {groupId: payload.groupId},

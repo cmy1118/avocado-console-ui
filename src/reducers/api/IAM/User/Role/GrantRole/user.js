@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import {Axios} from '../../../../../../api/constants';
+import {contentType} from '../../../../../../utils/auth';
 
 const NAME = 'IAM_ROLES_GRANT_ROLE_USER';
 
@@ -10,7 +11,7 @@ const grantAction = createAsyncThunk(`${NAME}/GRANT`, async (payload) => {
 		[...payload.roleIds],
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
@@ -24,7 +25,7 @@ const revokeAction = createAsyncThunk(`${NAME}/REVOKE `, async (payload) => {
 		`/open-api/v1/iam/users/${payload.userUid}/roles`,
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			params: {
 				roleId: [...payload.roleId],
@@ -37,12 +38,11 @@ const revokeAction = createAsyncThunk(`${NAME}/REVOKE `, async (payload) => {
 
 //사용자를 대상으로 부여된 Role 권한을 조회한다.
 const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
-	// eslint-disable-next-line no-console
 	const response = await Axios.get(
 		`/open-api/v1/iam/user-groups/${payload.userUid}/roles`,
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 				Range: 'elements=0-50',
 			},
 			params: {
@@ -69,7 +69,7 @@ const getEventsAction = createAsyncThunk(
 				},
 				headers: {
 					Range: payload.range,
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 				},
 				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
@@ -91,7 +91,7 @@ const findUsersByIdAction = createAsyncThunk(
 				},
 				headers: {
 					Range: payload.range,
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 				},
 				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
