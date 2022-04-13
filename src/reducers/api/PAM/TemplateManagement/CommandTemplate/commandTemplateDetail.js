@@ -99,14 +99,6 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 	const response = await Axios.get(
 		`/open-api/v1/pam/command-templates-detail/${payload.templateId}`,
 		{
-			headers: {
-				Range: payload.range,
-			},
-			params: {
-				templateId: payload.templateId,
-				effect: payload.effect,
-				pattern: payload.pattern,
-			},
 			baseURL: baseURL.openApi,
 		},
 	);

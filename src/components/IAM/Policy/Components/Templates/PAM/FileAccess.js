@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import TableContainer from '../../../../../Table/TableContainer';
 import Table from '../../../../../Table/Table';
@@ -7,9 +7,10 @@ import {DRAGGABLE_KEY} from '../../../../../../Constants/Table/keys';
 import TableTextBox from '../../../../../Table/ColumnCells/TableTextBox';
 import TableComboBox from '../../../../../Table/ColumnCells/TableComboBox';
 import TableCheckBox from '../../../../../Table/ColumnCells/TableCheckBox';
-import useSelection from '../../../../../../hooks/table/useSelection';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 import Resource from './Resource/Resource';
+import PAM_FILE_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../../reducers/api/PAM/TemplateManagement/FileTemplate/fileTemplateDetail';
+import PropTypes from 'prop-types';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -26,7 +27,7 @@ const contents = {
 	},
 };
 
-const FileAccess = () => {
+const FileAccess = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
 
 	// 세션 타임아웃 테이블 컬럼
@@ -151,19 +152,27 @@ const FileAccess = () => {
 	}, [select]);
 
 	/**************************************************
-	 * seob - 규칙 템플릿 id에 해당하는 데이터 detail findAll
+	 * seob - 파일 템플릿 id에 해당하는 데이터 detail findAll
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
-			console.log('api 작업');
 			try {
-				// await api
+				const res = await dispatch(
+					PAM_FILE_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction(
+						{
+							range: `elements=0-50`,
+							templateId: templateId,
+						},
+					),
+				);
+
+				console.log(res);
 			} catch (err) {
 				console.log(err);
 			}
 		};
 		fetchData();
-	}, [dispatch]);
+	}, [dispatch, templateId]);
 	return (
 		<div>
 			<TemplateLayout
@@ -192,6 +201,12 @@ const FileAccess = () => {
 			/>
 		</div>
 	);
+};
+
+FileAccess.propTypes = {
+	templateId: PropTypes.string,
+	name: PropTypes.string,
+	description: PropTypes.string,
 };
 
 export default FileAccess;
