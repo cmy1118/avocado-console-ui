@@ -289,6 +289,7 @@ const Table = ({
 	isSortable = false,
 	isPaginable = false,
 	isSearchable = false,
+	isStrSearchable = false,
 	isSearchFilterable = false,
 	isColumnFilterable = false,
 	setSearch,
@@ -706,9 +707,10 @@ const Table = ({
 	// }, []);
 	return (
 		<_Container>
-			{(isPaginable || isSearchable) && (
+			{(isPaginable || isSearchable || isStrSearchable) && (
 				<TableOptionsBar
 					isSearchable={isSearchable}
+					isStrSearchable={isStrSearchable}
 					isPaginable={isPaginable}
 					isColumnFilterable={isColumnFilterable}
 					isSearchFilterable={isSearchFilterable}
@@ -979,6 +981,7 @@ Table.propTypes = {
 	tableOptions: PropTypes.object,
 	expanded: PropTypes.object,
 	isPaginable: PropTypes.bool,
+	isStrSearchable: PropTypes.bool,
 	isSearchable: PropTypes.bool,
 	isColumnFilterable: PropTypes.bool,
 	isSearchFilterable: PropTypes.bool,

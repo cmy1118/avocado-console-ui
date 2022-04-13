@@ -8,11 +8,12 @@ import PageSizing from './Options/paging/PageSizing';
 import * as PropTypes from 'prop-types';
 import Pagination from './Options/paging/Pagination';
 import TableColumnFilterContextMenu from '../ContextMenu/TableColumnFilterContextMenu';
-import Search from './Options/Search';
+import Search from './Options/Search/Search';
 import {ColDiv, RowDiv} from '../../styles/components/style';
 import {IconButton} from '../../styles/components/icons';
 import useModal from '../../hooks/useModal';
 import SearchFiltersBox from './Options/Search/searchFilters/searchFiltersBox';
+import StrSearch from './Options/Search/StrSearch';
 
 const _Container = styled(ColDiv)`
 	display: flex;
@@ -72,6 +73,7 @@ const TableOptionsBar = ({
 	setHiddenColumns,
 	headerGroups,
 	isPaginable,
+	isStrSearchable,
 	isSearchable,
 	isSearchFilterable,
 	isColumnFilterable,
@@ -153,15 +155,17 @@ const TableOptionsBar = ({
 		<_Container>
 			<RowDiv justifyContent={'space-between'} margin={'0px 16px'}>
 				<_OptionContainer>
-					{/*검색 기능 사용시*/}
+					{/*API 검색 기능 사용시*/}
 					{isSearchable && (
-						<Search
-							setSearch={setSearch}
+						<Search setSearch={setSearch} tableKey={tableKey} />
+					)}
+					{/*String 검색 기능 사용시*/}
+					{isStrSearchable && (
+						<StrSearch
 							tableKey={tableKey}
 							setGlobalFilter={setGlobalFilter}
 						/>
 					)}
-
 					{/*검색필터 기능 사용시*/}
 					{isSearchFilterable && (
 						<div>
@@ -263,6 +267,7 @@ TableOptionsBar.propTypes = {
 	getToggleHideAllColumnsProps: PropTypes.func,
 	setHiddenColumns: PropTypes.func,
 	tableOptions: PropTypes.object,
+	isStrSearchable: PropTypes.bool,
 	isSearchable: PropTypes.bool,
 	isPaginable: PropTypes.bool,
 	isSearchFilterable: PropTypes.bool,

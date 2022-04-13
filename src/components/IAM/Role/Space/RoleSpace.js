@@ -120,9 +120,9 @@ const RoleSpace = () => {
 				data={data}
 				isPaginable
 				isSearchable
+				setSearch={setSearch}
 				isSearchFilterable
 				isColumnFilterable
-				setSearch={setSearch}
 			/>
 		</IamContainer>
 	);
