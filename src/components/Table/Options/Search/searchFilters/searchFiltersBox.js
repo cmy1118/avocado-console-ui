@@ -6,10 +6,17 @@ import {NormalBorderButton} from '../../../../../styles/components/buttons';
 import * as PropTypes from 'prop-types';
 
 import styled from 'styled-components';
-import {authType, mfa, status} from "../../../../../utils/data";
+import {authType, mfa, status} from '../../../../../utils/data';
+
+const _Container = styled(RowDiv)`
+	padding: 10px 16px 10px 10px;
+	border-radius: 2px;
+	background-color: #f8f9fa;
+	    margin-bottom: 10px;
+}
+`;
 
 const FiltersContainer = styled(RowDiv)`
-	border-top: 1px solid #e3e5e5;
 	box-sizing: border-box;
 `;
 
@@ -73,7 +80,7 @@ const SearchFiltersBox = ({
 	selected,
 	setSelected,
 	filters,
-							  setAllFilters,
+	setAllFilters,
 }) => {
 	//검색필터 닫기 버튼 핸들러
 	const onClickCloseFilter = useCallback(
@@ -91,12 +98,11 @@ const SearchFiltersBox = ({
 	}, [setAllFilters, setSelected]);
 
 	return (
-		<div>
+		<_Container>
 			{headerGroups.map((headerGroup, i) => (
 				<FiltersContainer
 					justifyContent={'space-between'}
 					key={i}
-					height={'84px'}
 					padding={'11px 0px'}
 					// padding={'11px 0px 16px'}
 					{...headerGroup.getHeaderGroupProps()}
@@ -106,7 +112,10 @@ const SearchFiltersBox = ({
 							(column, i) =>
 								column.canFilter &&
 								selected.includes(column.id) && (
-									<ColDiv key={i}>
+									<ColDiv
+										padding={'0px 17.6px 0px 0px'}
+										key={i}
+									>
 										<Label>
 											{placeholders[column.id]}
 											{/*{column.id}*/}
@@ -126,7 +135,6 @@ const SearchFiltersBox = ({
 								),
 						)}
 					</RowDiv>
-
 					{selected.length !== 0 && (
 						<RowDiv alignItems={'flex-end'}>
 							<NormalBorderButton
@@ -139,7 +147,7 @@ const SearchFiltersBox = ({
 					)}
 				</FiltersContainer>
 			))}
-		</div>
+		</_Container>
 	);
 };
 SearchFiltersBox.propTypes = {
@@ -150,6 +158,3 @@ SearchFiltersBox.propTypes = {
 	setAllFilters: PropTypes.func,
 };
 export default SearchFiltersBox;
-
-
-

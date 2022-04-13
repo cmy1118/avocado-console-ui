@@ -10,15 +10,17 @@ const _Container = styled.div`
 	height: 21px;
 	display: flex;
 	padding: 8px 24px 0px 24px;
-	border-color: #e3e5e5;
-	background: #fffff;
+	// border-color: #e3e5e5;
+	background: #ffffff;
 `;
 
 const CurrentPathBarLink = styled(NavItem)`
 	display: flex;
 	color: #1e2a42;
-	font-size: 10px;
+	font-size: 11px;
 	font-weight: 500;
+	line-height: 1.91;
+	letter-spacing: -0.25px;
 	align-items: center;
 
 	&:hover {

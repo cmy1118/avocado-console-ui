@@ -11,6 +11,8 @@ import {
 } from '../../../../styles/components/buttons';
 import {
 	IamContainer,
+	IamContents,
+	IamSection,
 	TitleBar,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
@@ -19,6 +21,7 @@ import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import {useHistory} from 'react-router-dom';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+import {RowDiv} from '../../../../styles/components/style';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -103,27 +106,36 @@ const RoleSpace = () => {
 			<CurrentPathBar paths={paths} />
 
 			<TitleBar>
-				<div>역할 : {total}</div>
-				<TitleBarButtons>
-					<NormalButton onClick={onCLickLinkToAddRole}>
-						역할 생성
-					</NormalButton>
-					<TransparentButton margin={'0px 0px 0px 5px'}>
-						삭제
-					</TransparentButton>
-				</TitleBarButtons>
+				<RowDiv
+					alignItems={'center'}
+					width={'100%'}
+					justifyContent={'space-between'}
+				>
+					<div>역할 : {total}</div>
+					<TitleBarButtons>
+						<NormalButton onClick={onCLickLinkToAddRole}>
+							역할 생성
+						</NormalButton>
+						<TransparentButton margin={'0px 0px 0px 5px'}>
+							삭제
+						</TransparentButton>
+					</TitleBarButtons>
+				</RowDiv>
 			</TitleBar>
-
-			<Table
-				tableKey={tableKeys.roles.basic}
-				columns={columns}
-				data={data}
-				isPaginable
-				isSearchable
-				setSearch={setSearch}
-				isSearchFilterable
-				isColumnFilterable
-			/>
+			<IamContents>
+				<IamSection>
+					<Table
+						tableKey={tableKeys.roles.basic}
+						columns={columns}
+						data={data}
+						isPaginable
+						isSearchable
+						setSearch={setSearch}
+						isSearchFilterable
+						isColumnFilterable
+					/>
+				</IamSection>
+			</IamContents>
 		</IamContainer>
 	);
 };

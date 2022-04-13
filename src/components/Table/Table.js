@@ -181,6 +181,7 @@ const _Container = styled.div`
 	// flex-direction: column;
 	// flex: 1 1 auto;
 	// width: 0;
+	padding: 11px 15px 16px 16px;
 `;
 
 const BodyContainer = styled.div`

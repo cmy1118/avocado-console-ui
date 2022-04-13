@@ -22,10 +22,11 @@ const _Container = styled(ColDiv)`
 `;
 
 const _OptionContainer = styled.div`
-	padding: 14px 0px;
+	// padding: 14px 0px;
 	display: flex;
 	align-items: center;
 	white-space: nowrap;
+	margin-bottom: 10px;
 `;
 
 const _FilterButton = styled(NormalBorderButton)`
@@ -153,7 +154,7 @@ const TableOptionsBar = ({
 
 	return (
 		<_Container>
-			<RowDiv justifyContent={'space-between'} margin={'0px 16px'}>
+			<RowDiv justifyContent={'space-between'}>
 				<_OptionContainer>
 					{/*API 검색 기능 사용시*/}
 					{isSearchable && (

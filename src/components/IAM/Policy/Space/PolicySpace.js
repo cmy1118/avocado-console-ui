@@ -2,6 +2,8 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {
 	IamContainer,
+	IamContents,
+	IamSection,
 	TitleBar,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
@@ -284,7 +286,11 @@ const PolicySpace = () => {
 		<IamContainer>
 			<CurrentPathBar paths={paths} />
 			<TitleBar>
-				<RowDiv width={'100%'} justifyContent={'space-between'}>
+				<RowDiv
+					alignItems={'center'}
+					width={'100%'}
+					justifyContent={'space-between'}
+				>
 					<div>정책 : {total[tableKeys.policy.basic] || 0}</div>
 					<TitleBarButtons>
 						<NormalButton onClick={onClickLinkToAddPolicyPage}>
@@ -299,18 +305,21 @@ const PolicySpace = () => {
 					</TitleBarButtons>
 				</RowDiv>
 			</TitleBar>
-
-			<Table
-				tableKey={tableKeys.policy.basic}
-				columns={columns}
-				data={policyData}
-				isPaginable
-				isSearchable
-				isSearchFilterable
-				isColumnFilterable
-				setSearch={setSearch}
-				subComponentHandler={subComponentHandler}
-			/>
+			<IamContents>
+				<IamSection>
+					<Table
+						tableKey={tableKeys.policy.basic}
+						columns={columns}
+						data={policyData}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+						setSearch={setSearch}
+						subComponentHandler={subComponentHandler}
+					/>
+				</IamSection>
+			</IamContents>
 		</IamContainer>
 	);
 };

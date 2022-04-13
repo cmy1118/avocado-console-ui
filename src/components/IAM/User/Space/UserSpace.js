@@ -17,6 +17,8 @@ import {
 import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
 import {
 	IamContainer,
+	IamContents,
+	IamSection,
 	TitleBar,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
@@ -147,9 +149,12 @@ const UserSpace = () => {
 	return (
 		<IamContainer>
 			<CurrentPathBar paths={paths} />
-
 			<TitleBar>
-				<RowDiv width={'100%'} justifyContent={'space-between'}>
+				<RowDiv
+					alignItems={'center'}
+					width={'100%'}
+					justifyContent={'space-between'}
+				>
 					<div>사용자 : {total[tableKeys.users.basic] || 0}</div>
 					<TitleBarButtons>
 						<NormalButton onClick={onClickLinkToAddUserPage}>
@@ -164,17 +169,20 @@ const UserSpace = () => {
 					</TitleBarButtons>
 				</RowDiv>
 			</TitleBar>
-
-			<Table
-				tableKey={tableKeys.users.basic}
-				columns={columns}
-				data={userData}
-				isPaginable
-				isSearchable
-				isSearchFilterable
-				isColumnFilterable
-				setSearch={setSearch}
-			/>
+			<IamContents>
+				<IamSection>
+					<Table
+						tableKey={tableKeys.users.basic}
+						columns={columns}
+						data={userData}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+						setSearch={setSearch}
+					/>
+				</IamSection>
+			</IamContents>
 		</IamContainer>
 	);
 };

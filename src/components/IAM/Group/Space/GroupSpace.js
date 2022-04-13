@@ -13,6 +13,8 @@ import {
 } from '../../../../styles/components/buttons';
 import {
 	IamContainer,
+	IamContents,
+	IamSection,
 	TitleBar,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
@@ -22,6 +24,7 @@ import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/G
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+import {RowDiv} from '../../../../styles/components/style';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -200,32 +203,40 @@ const GroupSpace = () => {
 	return (
 		<IamContainer>
 			<CurrentPathBar paths={paths} />
-
 			<TitleBar>
-				<div>사용자 그룹 : {total} </div>
-				<TitleBarButtons>
-					<NormalButton onClick={onCLickLinkToAddGroup}>
-						그룹 생성
-					</NormalButton>
-					<TransparentButton
-						margin={'0px 0px 0px 5px'}
-						onClick={onClickDeleteGroup}
-					>
-						삭제
-					</TransparentButton>
-				</TitleBarButtons>
+				<RowDiv
+					alignItems={'center'}
+					width={'100%'}
+					justifyContent={'space-between'}
+				>
+					<div>사용자 그룹 : {total} </div>
+					<TitleBarButtons>
+						<NormalButton onClick={onCLickLinkToAddGroup}>
+							그룹 생성
+						</NormalButton>
+						<TransparentButton
+							margin={'0px 0px 0px 5px'}
+							onClick={onClickDeleteGroup}
+						>
+							삭제
+						</TransparentButton>
+					</TitleBarButtons>
+				</RowDiv>
 			</TitleBar>
-
-			<Table
-				tableKey={tableKeys.groups.basic}
-				columns={columns}
-				data={data}
-				isPaginable
-				isSearchable
-				isSearchFilterable
-				isColumnFilterable
-				setSearch={setSearch}
-			/>
+			<IamContents>
+				<IamSection>
+					<Table
+						tableKey={tableKeys.groups.basic}
+						columns={columns}
+						data={data}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+						setSearch={setSearch}
+					/>
+				</IamSection>
+			</IamContents>
 		</IamContainer>
 	);
 };
