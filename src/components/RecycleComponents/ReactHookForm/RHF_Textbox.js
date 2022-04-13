@@ -74,6 +74,7 @@ const NestedInput = memo(
 		onFocus,
 		onBlur,
 		type,
+		readOnly,
 	}) => {
 		const [isFocused, setIsFocused] = useState(false);
 		return (
@@ -87,7 +88,6 @@ const NestedInput = memo(
 					>
 						<Input
 							{...register(name)}
-							type={type}
 							onBlur={(e) => {
 								register(name).onBlur(e);
 								setIsFocused(false);
@@ -100,6 +100,8 @@ const NestedInput = memo(
 							placeholder={placeholder}
 							disabled={isDisabled}
 							width={width}
+							type={type}
+							readOnly={readOnly}
 						/>
 					</SubContainer>
 					<TextBoxDescription>{description}</TextBoxDescription>
@@ -129,20 +131,32 @@ NestedInput.propTypes = {
 	type: PropTypes.string,
 };
 
-const RHF_Textbox = (props) => {
+const RHF_Textbox = (
+	props,
+	// {
+	// name,
+	// placeholder,
+	// description,
+	// width,
+	// isDisabled,
+	// onFocus,
+	// onBlur,
+	// type,
+	// }
+) => {
 	const methods = useFormContext();
 	return (
 		<NestedInput
 			{...methods}
 			{...props}
 			// name={name}
-			// type={type}
 			// placeholder={placeholder}
 			// isDisabled={isDisabled}
 			// width={width}
 			// description={description}
 			// onFocus={onFocus}
 			// onBlur={onBlur}
+			// type={type}
 		/>
 	);
 };
@@ -155,6 +169,7 @@ RHF_Textbox.propTypes = {
 	description: PropTypes.string,
 	onFocus: PropTypes.func,
 	onBlur: PropTypes.func,
+	type: PropTypes.string,
 };
 
 export default RHF_Textbox;

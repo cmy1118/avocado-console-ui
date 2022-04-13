@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {useDispatch} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -13,11 +13,12 @@ import Form from '../../../../../RecycleComponents/New/Form';
 import {ColDiv, Label, RowDiv} from '../../../../../../styles/components/style';
 import {TableTitle} from '../../../../../../styles/components/table';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
+import {FormProvider, useForm} from 'react-hook-form';
+import RHF_Textbox from '../../../../../RecycleComponents/ReactHookForm/RHF_Textbox';
 
 const UserInfoTab = ({user, userUid}) => {
 	const dispatch = useDispatch();
 	const [values, setValues] = useState({email: '', number: ''});
-	const saveRef = useRef(null);
 	const confirmAuthRef = useRef(null);
 	const changePasswordRef = useRef(null);
 
@@ -55,74 +56,118 @@ const UserInfoTab = ({user, userUid}) => {
 		[dispatch, userUid],
 	);
 
+	const methods = useForm({
+		defaultValues: {
+			id: user?.id,
+			name: user?.name,
+			password: '*********',
+			email: user?.email,
+			telephone: user?.telephone,
+			mobile: user?.mobile,
+		},
+	});
+
+	// textbox map으로 돌리기 위해서 생성
+	const infos = [
+		{name: 'id', label: '사용자 ID'},
+		{name: 'name', label: '사용자 이름'},
+		{name: 'password', label: '비밀번호'},
+		{name: 'email', label: '이메일 주소'},
+		{name: 'telephone', label: '전화번호'},
+		{name: 'mobile', label: '모바일 전화번호'},
+	];
+
 	return (
 		<TabContentContainer>
 			<TableTitle>
 				기본정보
 				<NormalButton
 					margin='0px 0px 0px 5px'
-					onClick={() => saveRef.current.handleSubmit()}
+					onClick={methods.handleSubmit(onSubmitChangedUserInfo)}
 				>
 					저장
 				</NormalButton>
 			</TableTitle>
 			<div style={{padding: '10px 10px 0px 30px'}}>
-				<Form
-					initialValues={{
-						id: user?.id,
-						name: user?.name,
-						password: '*********',
-						email: user?.email,
-						telephone: user?.telephone,
-						mobile: user?.mobile,
-					}}
-					onSubmit={onSubmitChangedUserInfo}
-					innerRef={saveRef}
-				>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<Label htmlFor={'id'}>
-							<li>사용자 ID</li>
-						</Label>
-						<TextBox name={'id'} readOnly />
-					</RowDiv>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<Label htmlFor={'name'}>
-							<li>사용자 이름</li>
-						</Label>
-						<TextBox name={'name'} />
-					</RowDiv>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<Label htmlFor={'password'}>
-							<li>비밀번호</li>
-						</Label>
-						<TextBox name={'password'} readOnly />
-						<NormalBorderButton
-							type={'button'}
-							margin='0px 0px 0px 10px'
-							onClick={onClickOpenIdentificationDialogBox}
-						>
-							비밀번호 변경
-						</NormalBorderButton>
-					</RowDiv>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<Label htmlFor={'email'}>
-							<li>이메일 주소</li>
-						</Label>
-						<TextBox name={'email'} />
-					</RowDiv>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<Label htmlFor={'telephone'}>
-							<li>전화번호</li>
-						</Label>
-						<TextBox name={'telephone'} />
-					</RowDiv>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<Label htmlFor={'mobile'}>
-							<li>모바일 전화번호</li>
-						</Label>
-						<TextBox name={'mobile'} />
-					</RowDiv>
-				</Form>
+				<FormProvider {...methods}>
+					{infos.map((v) => {
+						return (
+							<RowDiv key={v.name} margin={'0px 0px 12px 0px'}>
+								<Label htmlFor={v.name}>
+									<li>{v.label}</li>
+								</Label>
+								<RHF_Textbox name={v.name} readOnly />
+								{v.name === 'password' && (
+									<NormalBorderButton
+										type={'button'}
+										margin='0px 0px 0px 10px'
+										onClick={
+											onClickOpenIdentificationDialogBox
+										}
+									>
+										비밀번호 변경
+									</NormalBorderButton>
+								)}
+							</RowDiv>
+						);
+					})}
+				</FormProvider>
+				{/*<Form*/}
+				{/*	initialValues={{*/}
+				{/*		id: user?.id,*/}
+				{/*		name: user?.name,*/}
+				{/*		password: '*********',*/}
+				{/*		email: user?.email,*/}
+				{/*		telephone: user?.telephone,*/}
+				{/*		mobile: user?.mobile,*/}
+				{/*	}}*/}
+				{/*	onSubmit={onSubmitChangedUserInfo}*/}
+				{/*	innerRef={saveRef}*/}
+				{/*>*/}
+				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
+				{/*		<Label htmlFor={'id'}>*/}
+				{/*			<li>사용자 ID</li>*/}
+				{/*		</Label>*/}
+				{/*		<TextBox name={'id'} readOnly />*/}
+				{/*	</RowDiv>*/}
+				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
+				{/*		<Label htmlFor={'name'}>*/}
+				{/*			<li>사용자 이름</li>*/}
+				{/*		</Label>*/}
+				{/*		<TextBox name={'name'} />*/}
+				{/*	</RowDiv>*/}
+				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
+				{/*		<Label htmlFor={'password'}>*/}
+				{/*			<li>비밀번호</li>*/}
+				{/*		</Label>*/}
+				{/*		<TextBox name={'password'} readOnly />*/}
+				{/*		<NormalBorderButton*/}
+				{/*			type={'button'}*/}
+				{/*			margin='0px 0px 0px 10px'*/}
+				{/*			onClick={onClickOpenIdentificationDialogBox}*/}
+				{/*		>*/}
+				{/*			비밀번호 변경*/}
+				{/*		</NormalBorderButton>*/}
+				{/*	</RowDiv>*/}
+				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
+				{/*		<Label htmlFor={'email'}>*/}
+				{/*			<li>이메일 주소</li>*/}
+				{/*		</Label>*/}
+				{/*		<TextBox name={'email'} />*/}
+				{/*	</RowDiv>*/}
+				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
+				{/*		<Label htmlFor={'telephone'}>*/}
+				{/*			<li>전화번호</li>*/}
+				{/*		</Label>*/}
+				{/*		<TextBox name={'telephone'} />*/}
+				{/*	</RowDiv>*/}
+				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
+				{/*		<Label htmlFor={'mobile'}>*/}
+				{/*			<li>모바일 전화번호</li>*/}
+				{/*		</Label>*/}
+				{/*		<TextBox name={'mobile'} />*/}
+				{/*	</RowDiv>*/}
+				{/*</Form>*/}
 			</div>
 
 			<ModalFormContainer
