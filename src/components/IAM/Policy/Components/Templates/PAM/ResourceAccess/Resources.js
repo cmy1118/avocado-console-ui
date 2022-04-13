@@ -16,7 +16,6 @@ import ComboBox from '../../../../../../RecycleComponents/New/ComboBox';
 import {Icon} from '../../../../../../../styles/components/icons';
 import {searchIcon} from '../../../../../../../icons/icons';
 import Table from '../../../../../../Table/Table';
-import checkboxColumn from '../../../../../../Table/tableCheckboxColumn';
 import {AllreplaceStr} from '../../../../../../../utils/dataFitering';
 import RRM_RESOURCE from '../../../../../../../reducers/api/PAM/Resource/resource';
 import TableCheckBox from '../../../../../../Table/ColumnCells/TableCheckBox';

@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
-import CheckBox from '../../../../../../RecycleComponents/New/CheckBox';
-import React, {useCallback, useState} from 'react';
+import CheckBox from '../../../../../../RecycleComponents/ReactHookForm/CheckBox';
+import React, {useCallback, useEffect} from 'react';
 import styled from 'styled-components';
+import {useFormContext} from 'react-hook-form';
 
 const Container = styled.div`
 	display: flex;
@@ -93,18 +94,7 @@ const timeInterval = {
 };
 
 const TimeInterval = ({data, setData, disabled}) => {
-	const onChangeCheck = useCallback(
-		(v) => () => {
-			setData((prev) => ({
-				...prev,
-				[v]: {
-					...prev[v],
-					checked: !prev[v].checked,
-				},
-			}));
-		},
-		[],
-	);
+	const methods = useFormContext();
 
 	const onChangeTimezone = useCallback(
 		(v) => (e) => {
@@ -118,18 +108,29 @@ const TimeInterval = ({data, setData, disabled}) => {
 				},
 			}));
 		},
-		[data],
+		[setData],
 	);
+
+	const checked = methods.watch('checked');
+	useEffect(() => {
+		if (Object.keys(data).length) {
+			let newData = data;
+			console.log(newData);
+			for (let v of Object.values(dayOfWeekKey)) {
+				newData[v].checked = checked.includes(v);
+			}
+			setData(newData);
+		}
+	}, [checked, data, setData]);
 
 	return dayOfWeek.map((v) => (
 		<Container key={v}>
 			<CheckBoxContainer>
 				<CheckBox
+					name={'checked'}
+					value={v}
 					label={timeInterval.dayOfWeek[v]}
-					checked={data[v]?.checked}
-					onChange={onChangeCheck(v)}
-					disabled={disabled}
-					indeterminate={disabled}
+					isDisabled={disabled}
 				/>
 			</CheckBoxContainer>
 			<IntervalContainer>

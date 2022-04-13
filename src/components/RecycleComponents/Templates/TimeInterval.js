@@ -1,7 +1,9 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import CheckBox from '../New/CheckBox';
+// memo : 현재 New/CheckBox는 제거된 상태입니다.
+//  - 영애님 IAM 사용자 접근도 PAM TimeInterver로 수정 부탁드립니다.
+// import CheckBox from '../New/CheckBox';
 
 const Container = styled.div`
 	display: flex;
@@ -128,13 +130,13 @@ const TimeInterval = ({week, title, data, setData}) => {
 	return (
 		<Container>
 			<CheckBoxContainer>
-				<CheckBox
-					label={contents.dayOfWeek[title]}
-					checked={checked}
-					onChange={handleChangeChecked}
-					disabled={!data.attribute.usage}
-					indeterminate={!data.attribute.usage}
-				/>
+				{/*<CheckBox*/}
+				{/*	label={contents.dayOfWeek[title]}*/}
+				{/*	checked={checked}*/}
+				{/*	onChange={handleChangeChecked}*/}
+				{/*	disabled={!data.attribute.usage}*/}
+				{/*	indeterminate={!data.attribute.usage}*/}
+				{/*/>*/}
 			</CheckBoxContainer>
 			<IntervalContainer>
 				<input
