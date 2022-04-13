@@ -152,8 +152,8 @@ const SearchFiltersBox = ({
 	);
 };
 SearchFiltersBox.propTypes = {
-	headerGroups: PropTypes.object.isRequired,
-	selected: PropTypes.object.isRequired,
+	headerGroups: PropTypes.array.isRequired,
+	selected: PropTypes.array.isRequired,
 	setSelected: PropTypes.func.isRequired,
 	filters: PropTypes.array,
 	setAllFilters: PropTypes.func,

@@ -38,9 +38,11 @@ const CheckBox = ({name, value, label, isDisabled = false}) => {
 	const {register, watch} = methods;
 	const [values, setValues] = useState([]);
 
+	const currentValue = watch(name);
+
 	useEffect(() => {
-		setValues(watch(name));
-	}, [name, watch]);
+		setValues(currentValue ? currentValue : []);
+	}, [currentValue]);
 
 	return (
 		<Label

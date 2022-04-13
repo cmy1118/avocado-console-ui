@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 import {useParams} from 'react-router-dom';
@@ -17,10 +17,14 @@ import {
 import Form from '../RecycleComponents/New/Form';
 import TextBox from '../RecycleComponents/New/TextBox';
 import {RowDiv} from '../../styles/components/style';
-import CheckBox from '../RecycleComponents/New/CheckBox';
+import CheckBox from '../RecycleComponents/ReactHookForm/CheckBox';
 import AUTH from '../../reducers/api/Auth/auth';
 import useModal from '../../hooks/useModal';
 import GetUserIdDialogBox from '../DialogBoxs/Form/GetUserIdDialogBox';
+import {useForm, FormProvider} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import RHF_Textbox from '../RecycleComponents/ReactHookForm/RHF_Textbox';
+import * as Yup from 'yup';
 
 const _CheckBoxContainer = styled.div`
 	display: flex;
@@ -70,41 +74,34 @@ const LoginForm = () => {
 	const dispatch = useDispatch();
 	const {companyId} = useParams();
 
-	const [rememberMe, setRememberMe] = useState(
-		localStorage.getItem('rememberMe'),
-	);
-
 	const [GetUserIdModal, showGeetUserIdModal] = useModal();
 
-	const formRef = useRef(null);
 	const getUserIdDialogBoxModalRef = useRef(null);
 
 	const onSubmitLogin = useCallback(
-		(v) => {
-			if (!v.id || !v.password) return;
+		(data) => {
+			console.log(data);
+
+			if (!data.id || !data.password) return;
 
 			dispatch(
 				AUTH.asyncAction.userAuthAction({
-					username: v.id,
-					password: v.password,
+					username: data.id,
+					password: data.password,
 					companyId: companyId,
 				}),
 			);
 
-			if (rememberMe) {
+			if (data.rememberMe.length) {
 				localStorage.setItem('rememberMe', true);
-				localStorage.setItem('id', v.id);
+				localStorage.setItem('id', data.id);
 			} else {
 				localStorage.setItem('rememberMe', false);
 				localStorage.removeItem('id');
 			}
 		},
-		[dispatch, companyId, rememberMe],
+		[dispatch, companyId],
 	);
-
-	const onClickRememberPassword = useCallback(() => {
-		setRememberMe(!rememberMe);
-	}, [rememberMe]);
 
 	const onClickGoogleAltAuth = useCallback(() => {
 		// localStorage.setItem('companyId', companyId);
@@ -117,7 +114,24 @@ const LoginForm = () => {
 				getUserIdDialogBoxModalRef.current.onSubmitUserId(),
 			element: <GetUserIdDialogBox ref={getUserIdDialogBoxModalRef} />,
 		});
-	}, []);
+	}, [showGeetUserIdModal]);
+
+	// memo : 주의사항 => 현재 폼에 없는 name값을 입력하시고 require하시면 submit이 정상 동작하지 않습니다.
+	const validationSchema = Yup.object()
+		.shape({
+			id: Yup.string().required('아이디를 입력하세요.'),
+			password: Yup.string().required('비밀번호를 입력하세요.'),
+		})
+		.required();
+
+	const methods = useForm({
+		defaultValues: {
+			id: '',
+			password: '',
+			rememberMe: localStorage.getItem('rememberMe'),
+		},
+		resolver: yupResolver(validationSchema), // 외부 유효성 검사 라이브러리 사용
+	});
 
 	return (
 		<LogInContainer>
@@ -125,52 +139,39 @@ const LoginForm = () => {
 			<LogInTitleSpan>
 				계정이 없으신가요? <a href={'/signup'}> 회원가입 </a>
 			</LogInTitleSpan>
-			<Form
-				initialValues={{
-					id: rememberMe ? localStorage.getItem('id') : '',
-					password: rememberMe
-						? localStorage.getItem('password')
-						: '',
-				}}
-				onSubmit={onSubmitLogin}
-				innerRef={formRef}
-			>
+			<FormProvider {...methods}>
 				<RowDiv margin={'0px 0px 18px 0px'}>
-					<TextBox
+					<RHF_Textbox
 						name={'id'}
 						placeholder={'사용자 계정 ID'}
-						direction={'row'}
-						width={'360px'}
+						width={360}
 					/>
 				</RowDiv>
 				<RowDiv margin={'0px 0px 18px 0px'}>
-					<TextBox
+					<RHF_Textbox
 						name={'password'}
-						placeholder={'사용자 비밀번호'}
-						direction={'row'}
-						width={'360px'}
 						type={'password'}
+						placeholder={'사용자 비밀번호'}
+						width={360}
 					/>
 				</RowDiv>
 
 				<_CheckBoxContainer>
 					<CheckBox
-						onClick={onClickRememberPassword}
+						name={'rememberMe'}
+						value={'true'}
 						label={'비밀번호 기억하기'}
-						checked={rememberMe === 'true'}
-						onChange={() =>
-							setRememberMe(
-								rememberMe === 'true' ? 'true' : 'false',
-							)
-						}
 					/>
 					<a href={'/password'}>패스워드 찾기</a>
 				</_CheckBoxContainer>
 
-				<_UserSubmitButton type='submit' onClick={onSubmitLogin}>
+				<_UserSubmitButton
+					type='submit'
+					onClick={methods.handleSubmit(onSubmitLogin)}
+				>
 					로그인
 				</_UserSubmitButton>
-			</Form>
+			</FormProvider>
 
 			<_DividingLine>
 				<_DividingLineMessage /> 또는 <_DividingLineMessage />
