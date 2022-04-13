@@ -54,7 +54,7 @@ export const naverAuth = {
 		process.env.REACT_APP_NAVER_CLIENT_ID +
 		'&redirect_uri=' +
 		redirectUrl.naver +
-		'&response_type=code&state=myState',
+		'&response_type=token&state=myState',
 };
 
 export const kakaoAuth = {
@@ -71,9 +71,14 @@ export const kakaoAuth = {
 };
 
 export const getParameter = (name) => {
-	const list = location.search.substring(1).split('&');
+	const list = [
+		...location.search.substring(1).split('&'),
+		...location.hash.substring(1).split('&'),
+	];
+
 	for (let i = 0; i < list.length; i++) {
 		const data = list[i].split('=');
+
 		if (data.length === 2) {
 			if (data[0] === name) {
 				return data[1];

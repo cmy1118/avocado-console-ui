@@ -16,4 +16,11 @@ module.exports = (app) => {
 			exposedHedaers: ['*'],
 		}),
 	);
+	// app.use(
+	// 	createProxyMiddleware('/altauthredirect/naver', {
+	// 		target: 'https://nid.naver.com/oauth2.0/authorize',
+	// 		changeOrigin: true,
+	// 		exposedHedaers: ['*'],
+	// 	}),
+	// );
 };

@@ -80,7 +80,6 @@ const googleAuthAction = createAsyncThunk(`${NAME}/googleAuth`, async () => {
 });
 
 const naverAuthAction = createAsyncThunk(`${NAME}/naverAuth`, async () => {
-	console.log(decodeURIComponent(getParameter('code')));
 	const response = await Axios.post(
 		'https://nid.naver.com/oauth2.0/token',
 		null,
@@ -127,7 +126,7 @@ const altAuthVerificationAction = createAsyncThunk(
 				headers: {
 					Authorization: `Bearer ${payload.clientToken}`,
 					'Content-Type': contentType.URL_ENCODED,
-					AlternativeAuthN: `google ${payload.altAuthToken}`,
+					AlternativeAuthN: `${payload.altAuthType} ${payload.altAuthToken}`,
 					CompanyId: localStorage.getItem('companyId'),
 					ApplicationCode: 'console-ui',
 				},

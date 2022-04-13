@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import background from '../../images/background/bg-img-1@2x.png';
 import {useDispatch} from 'react-redux';
 import AUTH from '../../reducers/api/Auth/auth';
+import {altAuthType} from '../../utils/auth';
 
 const _Container = styled.div`
 	width: 100%;
@@ -31,6 +32,7 @@ const Google = () => {
 
 				await dispatch(
 					AUTH.asyncAction.altAuthVerificationAction({
+						altAuthType: altAuthType.google,
 						clientToken: clientAuth.payload.access_token,
 						altAuthToken: googleAuth.payload.access_token,
 					}),

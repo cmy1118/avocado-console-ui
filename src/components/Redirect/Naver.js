@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import background from '../../images/background/bg-img-1@2x.png';
 import {useDispatch} from 'react-redux';
 import AUTH from '../../reducers/api/Auth/auth';
+import {altAuthType, getParameter} from '../../utils/auth';
 
 const _Container = styled.div`
 	width: 100%;
@@ -26,15 +27,21 @@ const Naver = () => {
 				const clientAuth = await dispatch(
 					AUTH.asyncAction.clientAuthAction(),
 				);
-				const naverAuth = await dispatch(
-					AUTH.asyncAction.naverAuthAction(),
-				);
-				console.log(clientAuth, naverAuth);
+				// const naverAuth = await dispatch(
+				// 	AUTH.asyncAction.naverAuthAction(),
+				// );
+
+				console.log(decodeURIComponent(getParameter('access_token')));
+				// console.log(naverAuth);
+				// console.log(clientAuth, naverAuth);
 
 				await dispatch(
 					AUTH.asyncAction.altAuthVerificationAction({
+						altAuthType: altAuthType.naver,
 						clientToken: clientAuth.payload.access_token,
-						altAuthToken: naverAuth.payload.access_token,
+						altAuthToken: decodeURIComponent(
+							getParameter('access_token'),
+						),
 					}),
 				);
 			} catch (err) {

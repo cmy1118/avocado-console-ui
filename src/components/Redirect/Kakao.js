@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import background from '../../images/background/bg-img-1@2x.png';
 import {useDispatch} from 'react-redux';
 import AUTH from '../../reducers/api/Auth/auth';
+import {altAuthType} from '../../utils/auth';
 
 const _Container = styled.div`
 	width: 100%;
@@ -32,6 +33,7 @@ const Kakao = () => {
 				console.log(clientAuth, kakaoAuth);
 				await dispatch(
 					AUTH.asyncAction.altAuthVerificationAction({
+						altAuthType: altAuthType.kakao,
 						clientToken: clientAuth.payload.access_token,
 						altAuthToken: kakaoAuth.payload.access_token,
 					}),
