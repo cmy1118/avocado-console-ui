@@ -6,7 +6,8 @@ import {NormalBorderButton} from '../../../../../styles/components/buttons';
 import * as PropTypes from 'prop-types';
 
 import styled from 'styled-components';
-import {authType, mfa, status} from "../../../../../utils/data";
+import {authType, mfa, status} from '../../../../../utils/data';
+import {useFormContext} from 'react-hook-form';
 
 const FiltersContainer = styled(RowDiv)`
 	border-top: 1px solid #e3e5e5;
@@ -73,22 +74,30 @@ const SearchFiltersBox = ({
 	selected,
 	setSelected,
 	filters,
-							  setAllFilters,
+	setAllFilters,
 }) => {
 	//검색필터 닫기 버튼 핸들러
+
+	const methods = useFormContext();
+
 	const onClickCloseFilter = useCallback(
 		(v) => () => {
+			methods.setValue(
+				'searchFilters',
+				selected.filter((val) => val !== v),
+			);
 			setSelected(selected.filter((val) => val !== v));
 			setAllFilters(filters.filter((val) => val.id !== v));
 		},
-		[setSelected, selected, setAllFilters, filters],
+		[methods, selected, setSelected, setAllFilters, filters],
 	);
 
 	//검색필터 '모두삭제' 버튼 핸들러
 	const onClickResetFilters = useCallback(() => {
 		setSelected([]);
+		methods.setValue('searchFilters', []);
 		setAllFilters([]);
-	}, [setAllFilters, setSelected]);
+	}, [methods, setAllFilters, setSelected]);
 
 	return (
 		<div>
@@ -150,6 +159,3 @@ SearchFiltersBox.propTypes = {
 	setAllFilters: PropTypes.func,
 };
 export default SearchFiltersBox;
-
-
-
