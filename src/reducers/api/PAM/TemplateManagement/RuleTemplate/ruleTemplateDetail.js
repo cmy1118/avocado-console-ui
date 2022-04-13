@@ -1,7 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-
-import {contentType} from '../../../../../utils/auth';
-import {Axios, baseURL} from '../../../../../api/constants';
+import {Axios} from '../../../../../api/constants';
 
 const NAME = 'PAM_RULE_TEMPLATE_DETAIL';
 
@@ -16,7 +14,7 @@ const findAllRuleTemplateDetail = createAsyncThunk(
 				templateId: payload.templateId,
 			},
 
-			baseURL: baseURL.openApi,
+			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		});
 	},
 );

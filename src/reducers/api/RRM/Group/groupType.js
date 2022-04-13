@@ -16,7 +16,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -32,7 +32,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -45,7 +45,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -60,7 +60,7 @@ const findByIdAction = createAsyncThunk(
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;
@@ -78,7 +78,7 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 				'Content-Type': 'application/json',
 				Range: `elements=${payload.first}-${payload.last}`,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;

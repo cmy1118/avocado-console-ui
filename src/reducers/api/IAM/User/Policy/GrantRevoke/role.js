@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {Axios} from '../../../../../../api/constants';
 
 const NAME = 'IAM_USER_POLICY_GRANT_REVOKE_ROLE';
 
@@ -22,7 +22,7 @@ const findAllAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 					Range: 'elements=0-50',
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data || [];
@@ -45,7 +45,7 @@ const grantAction = createAsyncThunk(
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;
@@ -66,7 +66,7 @@ const revokeAction = createAsyncThunk(
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseURL.openApi,
+				aseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;

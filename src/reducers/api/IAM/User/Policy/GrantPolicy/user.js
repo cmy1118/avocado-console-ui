@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {Axios} from '../../../../../../api/constants';
 
 const NAME = 'IAM_GRANT_POLICY_BY_USER';
 
@@ -13,7 +13,7 @@ const grantAction = createAsyncThunk(`${NAME}/GRANT`, async (payload) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -30,7 +30,7 @@ const revokeAction = createAsyncThunk(`${NAME}/REVOKE `, async (payload) => {
 			params: {
 				templateId: payload.templateId,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -48,7 +48,7 @@ const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
 			params: {
 				userUid: payload.userUid,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return {data: response.data, headers: response.headers};

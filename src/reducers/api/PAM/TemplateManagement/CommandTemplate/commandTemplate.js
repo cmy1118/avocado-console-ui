@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
 import {contentType} from '../../../../../utils/auth';
-import {Axios, baseURL} from '../../../../../api/constants';
+import {Axios} from '../../../../../api/constants';
 
 const NAME = 'PAM_COMMAND_MANAGEMENT_TEMPLATE';
 
@@ -27,7 +27,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	console.log(response);
@@ -51,7 +51,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	console.log(response);
@@ -65,7 +65,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 	const response = await Axios.delete(
 		`/open-api/v1/pam/command-templates/${payload.templateId}`,
 		{
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	console.log(response);
@@ -81,7 +81,7 @@ const findByIdAction = createAsyncThunk(
 		const response = await Axios.get(
 			`/open-api/v1/pam/command-templates/${payload.templateId}`,
 			{
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		console.log(response);
@@ -97,7 +97,7 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 		headers: {
 			Range: payload.range,
 		},
-		baseURL: baseURL.openApi,
+		baseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 	console.log(response);
 	return response;
@@ -126,7 +126,7 @@ const getEventsAction = createAsyncThunk(
 					clientId: payload.clientId,
 					uid: payload.uid,
 				},
-				baseURL: baseURL.openApi,
+				aseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		console.log(response);

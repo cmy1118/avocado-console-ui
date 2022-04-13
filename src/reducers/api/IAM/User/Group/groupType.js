@@ -1,6 +1,6 @@
-import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {baseURL, Axios} from '../../../../../api/constants';
+import {Axios} from '../../../../../api/constants';
 import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'IAM_USER_GROUP_TYPE';
@@ -16,7 +16,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -33,7 +33,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -46,7 +46,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -61,7 +61,7 @@ const findByIdAction = createAsyncThunk(
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;
@@ -78,7 +78,7 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 			'Content-Type': 'application/json',
 			Range: payload.range,
 		},
-		baseURL: baseURL.openApi,
+		baseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 	console.log(response);
 	return {data: response.data, headers: response.headers};

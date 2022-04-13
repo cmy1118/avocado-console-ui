@@ -1,7 +1,8 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {Axios, baseURL} from '../../../api/constants';
+import {Axios} from '../../../api/constants';
 import {
+	basicAuthorization,
 	contentType,
 	getParameter,
 	googleAuth,
@@ -9,7 +10,6 @@ import {
 	kakaoAuth,
 	naverAuth,
 } from '../../../utils/auth';
-import base64 from 'base-64';
 import {getCookies, removeCookies, setCookies} from '../../../utils/cookies';
 import setAuthorizationToken from '../../../utils/setAuthorizationToken';
 
@@ -26,12 +26,11 @@ const userAuthAction = createAsyncThunk(
 			},
 			headers: {
 				'Content-Type': contentType.URL_ENCODED,
-				Authorization:
-					'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
+				Authorization: basicAuthorization,
 				CompanyId: payload.companyId,
 				ApplicationCode: 'console-ui',
 			},
-			baseURL: baseURL.auth,
+			baseURL: process.env.REACT_APP_AUTH_URL,
 		});
 		return response.data;
 	},
@@ -42,7 +41,7 @@ const logoutAction = createAsyncThunk(`${NAME}/LOGOUT`, async (payload) => {
 		headers: {
 			'Content-Type': contentType.URL_ENCODED,
 		},
-		baseURL: baseURL.auth,
+		baseURL: process.env.REACT_APP_AUTH_URL,
 	});
 	return response.data;
 });
@@ -54,11 +53,11 @@ const clientAuthAction = createAsyncThunk(`${NAME}/clientAuth`, async () => {
 		},
 		headers: {
 			'Content-Type': contentType.URL_ENCODED,
-			Authorization: 'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
+			Authorization: basicAuthorization,
 			CompanyId: localStorage.getItem('companyId'),
 			ApplicationCode: 'console-ui',
 		},
-		baseURL: baseURL.auth,
+		baseURL: process.env.REACT_APP_AUTH_URL,
 	});
 	return response.data;
 });
@@ -84,20 +83,21 @@ const googleAuthAction = createAsyncThunk(`${NAME}/googleAuth`, async () => {
 });
 
 const naverAuthAction = createAsyncThunk(`${NAME}/naverAuth`, async () => {
+	console.log(decodeURIComponent(getParameter('code')));
 	const response = await Axios.post(
-		'https://accounts.naver.com/o/oauth2/token',
+		'https://nid.naver.com/oauth2.0/token',
 		null,
 		{
 			params: {
 				code: decodeURIComponent(getParameter('code')),
 				grant_type: grantType.AUTHORIZATION_CODE,
-				redirect_uri: naverAuth.redirectUri,
 				client_id: naverAuth.clientId,
 				client_secret: naverAuth.clientSecret,
+				state: decodeURIComponent(getParameter('state')),
 			},
-			headers: {
-				'Content-Type': contentType,
-			},
+			// headers: {
+			// 	'Content-Type': contentType,
+			// },
 		},
 	);
 	return response.data;
@@ -105,7 +105,7 @@ const naverAuthAction = createAsyncThunk(`${NAME}/naverAuth`, async () => {
 
 const kakaoAuthAction = createAsyncThunk(`${NAME}/kakaoAuth`, async () => {
 	const response = await Axios.post(
-		'https://accounts.apple.com/o/oauth2/token',
+		'https://kauth.kakao.com/oauth/token',
 		null,
 		{
 			params: {
@@ -113,7 +113,7 @@ const kakaoAuthAction = createAsyncThunk(`${NAME}/kakaoAuth`, async () => {
 				grant_type: grantType.AUTHORIZATION_CODE,
 				redirect_uri: kakaoAuth.redirectUri,
 				client_id: kakaoAuth.clientId,
-				client_secret: kakaoAuth.clientSecret,
+				// client_secret: kakaoAuth.clientSecret,
 			},
 			headers: {
 				'Content-Type': contentType,
@@ -140,7 +140,7 @@ const altAuthVerificationAction = createAsyncThunk(
 					CompanyId: localStorage.getItem('companyId'),
 					ApplicationCode: 'console-ui',
 				},
-				baseURL: baseURL.auth,
+				baseURL: process.env.REACT_APP_AUTH_URL,
 			},
 		);
 		return response.data;
@@ -159,12 +159,11 @@ const refreshTokenAction = createAsyncThunk(
 			},
 			headers: {
 				'Content-Type': contentType.URL_ENCODED,
-				Authorization:
-					'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
+				Authorization: basicAuthorization,
 				CompanyId: companyId,
 				ApplicationCode: 'console-ui',
 			},
-			baseURL: baseURL.auth,
+			baseURL: process.env.REACT_APP_AUTH_URL,
 		});
 
 		return response.data;

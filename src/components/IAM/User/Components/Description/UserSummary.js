@@ -12,17 +12,12 @@ import {
 import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import PAGINATION from '../../../../../reducers/pagination';
-import IAM_ROLES_GRANT_ROLE_USER from '../../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_USER_TAG from '../../../../../reducers/api/IAM/User/Tag/tags';
 import {
 	descriptionConverter,
 	descValues,
 } from '../../../../../utils/tableDataConverter';
-import IAM_GRANT_POLICY_BY_ROLE from '../../../../../reducers/api/IAM/User/Policy/GrantPolicy/role';
-import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
-import * as _ from 'lodash';
 import AUTH from '../../../../../reducers/api/Auth/auth';
-import {account} from '../../../../../utils/auth';
 
 const UserSummary = ({userUid}) => {
 	const dispatch = useDispatch();
@@ -73,8 +68,6 @@ const UserSummary = ({userUid}) => {
 	}, [groups, user]);
 
 	const roleData = useMemo(() => {
-		console.log('ROELE', roles);
-
 		const temp = roles
 			.filter((v) => v.policy)
 			.map((v, i) => ({
@@ -90,77 +83,6 @@ const UserSummary = ({userUid}) => {
 				[DRAGGABLE_KEY]: v.role.id + '/' + i,
 			}));
 
-		if (
-			companyId === account.KT.companyId &&
-			roles.filter((v) => v.role.name === 'resource-policy').length > 0
-		) {
-			return [
-				...temp,
-				{
-					id: 'default',
-					permission: '접근 자원',
-					description:
-						'avocado-pam-server (ec2-13-124-198-15.ap-northeast-2.compute.amazonaws.com) / SSH / root\navocado-pam-connector (ec2-15-164-22-197.ap-northeast-2.compute.amazonaws.com) / SSH / root\nRabbitMQ (ec2-13-209-99-140.ap-northeast-2.compute.amazonaws.com) / SSH / root\navocado-console-ui (ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com) / SSH / root',
-					type: '접근자원',
-					roleName: 'resource-policy',
-					policyName: 'resource-permission',
-					authTarget: '사용자',
-					grantDate: '2021-11-26T19:13:21.266+09:00',
-					// grantUser: {value: {name: '김진우', id: 'jinwoo'}},
-					grantUser: '김진우(jinwoo)',
-					[DRAGGABLE_KEY]: 'default',
-				},
-				{
-					id: 'default2',
-					permission: '명령어',
-					description:
-						'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 1회\n 정책 : 세션차단\n초기화 : 10초',
-					type: '명령어 제어',
-					roleName: 'resource-policy',
-					policyName: 'commandControl-policy',
-					authTarget: '사용자',
-					grantDate: '2021-11-26T19:13:21.266+09:00',
-					grantUser: '김진우(jinwoo)',
-					[DRAGGABLE_KEY]: 'default2',
-				},
-			];
-		}
-
-		if (
-			companyId === account.SK.companyId &&
-			roles.filter((v) => v.role.name === 'resource-policy').length > 0
-		) {
-			return [
-				...temp,
-				{
-					id: 'default',
-					permission: '접근 자원',
-					description:
-						'key-server (ec2-13-124-198-15.ap-northeast-2.compute.amazonaws.com) / SSH / root\napp-dev-server (ec2-15-164-22-197.ap-northeast-2.compute.amazonaws.com) / SSH / root\nui-server (ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com) / SSH / root\nMessage Queue (ec2-13-209-99-140.ap-northeast-2.compute.amazonaws.com) / SSH / root',
-					type: '접근자원',
-					roleName: 'resource-policy',
-					policyName: 'resource-permission',
-					authTarget: '사용자',
-					grantDate: '2021-11-26T19:13:21.266+09:00',
-
-					grantUser: '김미희(myhee)',
-					[DRAGGABLE_KEY]: 'default',
-				},
-				{
-					id: 'default2',
-					permission: '명령어',
-					description:
-						'제어 유형 : Black\n제어 명령어 : kill\n 위반 횟수 : 1회\n 정책 : 세션차단\n초기화 : 10초',
-					type: '명령어 제어',
-					roleName: 'resource-policy',
-					policyName: 'commandControl-policy',
-					authTarget: '사용자',
-					grantDate: '2021-11-26T19:13:21.266+09:00',
-					grantUser: '김미희(myhee)',
-					[DRAGGABLE_KEY]: 'default2',
-				},
-			];
-		}
 		return temp;
 	}, [roles, companyId]);
 

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../api/constants';
+import {Axios} from '../../../../api/constants';
 
 const NAME = 'PAM_ROLE_SET';
 
@@ -13,7 +13,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -23,7 +23,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 	const response = await Axios.delete(
 		` /open-api/v1/pam/roles/${payload.id}/role-sets`,
 		{
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -38,7 +38,7 @@ const findRoleSetByIdAction = createAsyncThunk(
 				headers: {
 					Range: payload.range,
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return {data: response.data, headers: response.headers};
@@ -56,7 +56,7 @@ const getAllRoleSetsAction = createAsyncThunk(
 			headers: {
 				Range: payload.range,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		});
 		return {data: response.data, headers: response.headers};
 	},
@@ -81,7 +81,7 @@ const getEventsAction = createAsyncThunk(
 					Range: payload.range,
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return {data: response.data, headers: response.headers};

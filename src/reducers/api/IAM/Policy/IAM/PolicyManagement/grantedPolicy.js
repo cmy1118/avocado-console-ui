@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {Axios} from '../../../../../../api/constants';
 
 const NAME = 'IAM_GRANTED_POLICY';
 
@@ -19,7 +19,7 @@ const getDetailsByRole = createAsyncThunk(
 					ruleType: payload.ruleType,
 				},
 
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;
@@ -44,7 +44,7 @@ const getDetailsByPolicy = createAsyncThunk(
 				headers: {
 					range: 'elements=0-50',
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;

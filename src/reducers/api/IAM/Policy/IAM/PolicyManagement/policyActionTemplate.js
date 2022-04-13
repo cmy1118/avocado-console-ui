@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {Axios} from '../../../../../../api/constants';
 
 const NAME = 'POLICY_MANAGEMENT_ACTION_TEMPLATE';
 
@@ -14,7 +14,7 @@ const join = createAsyncThunk(`${NAME}/JOIN`, async (payload) => {
 			headers: {
 				policyId: payload.policyId,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	console.log(`${NAME}/join:`, response);

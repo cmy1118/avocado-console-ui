@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {Axios, baseURL} from '../../../../api/constants';
+import {Axios} from '../../../../api/constants';
 
 const NAME = 'RRM_RESOURCE';
 
@@ -13,7 +13,7 @@ const findResourceByIdAction = createAsyncThunk(
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;
@@ -43,7 +43,7 @@ const findAllResourcebByUserUidAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 					Range: payload.range || `elements=0-50`,
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 
@@ -66,7 +66,7 @@ const findAllAccountAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 					Range: 'elements=0-50',
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		// console.log(response);
@@ -84,7 +84,7 @@ const findAllServicePortAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 					Range: `elements=${payload.first}-${payload.last}`,
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return {id: payload.id, data: response.data};

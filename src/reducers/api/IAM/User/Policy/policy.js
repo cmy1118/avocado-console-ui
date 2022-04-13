@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../api/constants';
+import {Axios} from '../../../../../api/constants';
 
 const NAME = 'IAM_USER_POLICY';
 
@@ -11,7 +11,7 @@ const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data || [];
@@ -30,7 +30,7 @@ const grantGetsAction = createAsyncThunk(
 					'Content-Type': 'application/json',
 					Range: 'elements=0-50',
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data || [];
@@ -45,7 +45,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 				'Content-Type': 'application/json',
 				Range: 'elements=0-50',
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 });

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {Axios} from '../../../../../../api/constants';
 
 const NAME = 'IAM_ACTION_MANAGEMENT_TEMPLATE_DETAIL';
 
@@ -18,7 +18,7 @@ const findAllAction = createAsyncThunk(`${NAME}/FINDALL`, async (payload) => {
 				'Content-Type': 'application/json',
 				Range: payload.range,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return {data: response.data, headers: response.headers};

@@ -1,23 +1,10 @@
 import base64 from 'base-64';
 
-export const account = {
-	NETAND: {
-		companyId: 'KR-2020-0001',
-		username: 'user',
-		password: '123456789',
-	},
-	KT: {companyId: 'KR-2020-0005', username: 'jinwoo', password: '123456789'},
-	SK: {
-		companyId: 'KR-2020-0006',
-		username: 'myhee',
-		password: '123456789',
-	},
-};
-
-export const authorization = {
-	BASIC: 'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
-	BEARER: 'Bearer ',
-};
+export const basicAuthorization =
+	'Basic ' +
+	base64.encode(
+		`${process.env.REACT_APP_BASIC_AUTHORIZATION_ID}:${process.env.REACT_APP_BASIC_AUTHORIZATION_PASSWORD}`,
+	);
 
 export const altAuthType = {
 	google: 'google',
@@ -39,19 +26,6 @@ export const grantType = {
 	AUTHORIZATION_CODE: 'authorization_code',
 };
 
-const altAuthClientId = {
-	google:
-		'819744979674-dastdmj1j5k8coluu2vofclsi3kvo90h.apps.googleusercontent.com',
-	naver: 'nibcTe6r62XwD6twI7P7',
-	kakao: 'a802adefbb7e61bb24cae3f135d62007',
-};
-
-const altAuthClientSecret = {
-	google: 'LEVTqM7nBsyLPuSEbT-mPffx',
-	naver: '',
-	kakao: '',
-};
-
 const redirectUrl = {
 	google: 'http://localhost:3000/altauthredirect/google',
 	naver: 'http://localhost:3000/altauthredirect/naver',
@@ -59,38 +33,38 @@ const redirectUrl = {
 };
 
 export const googleAuth = {
-	clientId: altAuthClientId.google,
-	clientSecret: altAuthClientSecret.google,
+	clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+	clientSecret: 'LEVTqM7nBsyLPuSEbT-mPffx',
 	redirectUri: redirectUrl.google,
 	location:
 		'https://accounts.google.com/o/oauth2/v2/auth?client_id=' +
-		altAuthClientId.google +
+		process.env.REACT_APP_GOOGLE_CLIENT_ID +
 		'&redirect_uri=' +
 		redirectUrl.google +
 		'&response_type=code&scope=email%20profile&state=myState&access_type=offline&prompt=consent',
 };
 
 export const naverAuth = {
-	clientId: altAuthClientId.naver,
-	clientSecret: altAuthClientSecret.naver,
+	clientId: process.env.REACT_APP_NAVER_CLIENT_ID,
+	clientSecret: process.env.REACT_APP_NAVER_CLIENT_SECRET,
 	redirectUri: redirectUrl.naver,
 	location:
 		'https://nid.naver.com/oauth2.0/authorize' +
 		'?client_id=' +
-		altAuthClientId.naver +
+		process.env.REACT_APP_NAVER_CLIENT_ID +
 		'&redirect_uri=' +
 		redirectUrl.naver +
 		'&response_type=code&state=myState',
 };
 
 export const kakaoAuth = {
-	clientId: altAuthClientId.kakao,
-	clientSecret: altAuthClientSecret.kakao,
+	clientId: process.env.REACT_APP_KAKAO_CLIENT_ID,
+	clientSecret: process.env.REACT_APP_KAKAO_CLIENT_SECRET,
 	redirectUri: redirectUrl.kakao,
 	location:
 		'https://kauth.kakao.com/oauth/authorize' +
 		'?client_id=' +
-		altAuthClientId.kakao +
+		process.env.REACT_APP_KAKAO_CLIENT_ID +
 		'&redirect_uri=' +
 		redirectUrl.kakao +
 		'&response_type=code&state=myState',

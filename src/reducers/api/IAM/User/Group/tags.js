@@ -1,6 +1,6 @@
-import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {baseURL, Axios} from '../../../../../api/constants';
+import {Axios} from '../../../../../api/constants';
 import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'IAM_USER_GROUP_TAG';
@@ -16,7 +16,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 });
@@ -31,7 +31,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseURL.openApi,
+			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 });
@@ -40,7 +40,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 	return await Axios.delete(
 		`open-api/v1/iam/user-groups/${payload.groupId}/tags/${payload.name}`,
 		{
-			baseURL: baseURL.openApi,
+			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 });
@@ -52,7 +52,7 @@ const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
 			Range: payload.range,
 		},
 		params: {groupId: payload.groupId},
-		baseURL: baseURL.openApi,
+		aseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 });
 

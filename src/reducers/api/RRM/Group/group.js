@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {Axios, baseURL} from '../../../../api/constants';
+import {Axios} from '../../../../api/constants';
 import {contentType} from '../../../../utils/auth';
 
 const NAME = 'RRM_GROUP';
@@ -21,7 +21,7 @@ const findAllGroupAction = createAsyncThunk(
 				'Content-Type': contentType.JSON,
 				Range: 'elements=0-50',
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		});
 		return {id: payload.parentId, data: response.data};
 	},

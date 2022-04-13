@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../api/constants';
+import {Axios} from '../../../api/constants';
 
 const NAME = 'PAM_SESSION';
 
@@ -13,7 +13,7 @@ const findSessionAction = createAsyncThunk(
 			headers: {
 				Range: payload.range,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		});
 		return {data: response.data, headers: response.headers};
 	},

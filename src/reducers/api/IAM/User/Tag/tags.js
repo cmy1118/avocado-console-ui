@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {baseURL, Axios} from '../../../../../api/constants';
+import {Axios} from '../../../../../api/constants';
 
 const NAME = 'IAM_USER_TAG';
 
@@ -15,7 +15,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return {data: response.data, headers: response.headers};
@@ -31,7 +31,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -45,7 +45,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -59,7 +59,7 @@ const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
 		headers: {
 			Range: payload.range,
 		},
-		baseURL: baseURL.openApi,
+		baseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 	return {data: response.data, headers: response.headers};
 });

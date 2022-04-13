@@ -29,6 +29,7 @@ const Naver = () => {
 				const naverAuth = await dispatch(
 					AUTH.asyncAction.naverAuthAction(),
 				);
+				console.log(clientAuth, naverAuth);
 
 				await dispatch(
 					AUTH.asyncAction.altAuthVerificationAction({

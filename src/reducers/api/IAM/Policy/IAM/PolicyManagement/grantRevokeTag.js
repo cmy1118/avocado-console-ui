@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {Axios} from '../../../../../../api/constants';
 import {contentType} from '../../../../../../utils/auth';
 
 const NAME = 'IAM_GRANT_REVOKE_TAG';
@@ -28,7 +28,7 @@ const grantAction = createAsyncThunk(
 					'Content-Type': contentType.JSON,
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;
@@ -51,7 +51,7 @@ const revokeAction = createAsyncThunk(
 				configurationId: payload.configurationId,
 				policyId: payload.policyIds,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		});
 		return response.data;
 	},
@@ -78,7 +78,7 @@ const findAllAction = createAsyncThunk(
 					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
 					Range: 'elements=0-50',
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 	},
