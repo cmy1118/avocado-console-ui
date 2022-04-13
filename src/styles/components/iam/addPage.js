@@ -10,6 +10,8 @@ export const AddPageContainer = styled.div`
 	flex: 1 1 auto;
 	height: 0;
 	overflow: scroll;
+	padding: 16px;
+	backgounr-color: #f0f3f6;
 `;
 export const AddPageContent = styled.div`
 	padding: 0px 16px 30px 16px;

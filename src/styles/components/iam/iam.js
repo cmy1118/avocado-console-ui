@@ -6,6 +6,20 @@ export const IamContainer = styled.div`
 	flex-direction: column;
 `;
 
+export const Header = styled.div`
+	flex-grow: 0;
+	font-family: NotoSansCJKKR;
+	font-size: 18px;
+	font-weight: bold;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.17;
+	letter-spacing: -0.25px;
+	text-align: left;
+	color: #1e2a42;
+	padding: 12.5px 24px;
+`;
+
 export const TitleBar = styled.div`
 	border: none;
 	align-items: center;
