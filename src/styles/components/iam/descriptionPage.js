@@ -17,11 +17,24 @@ export const SummaryTableTitle = styled(TitleBar)`
 		text-decoration: underline;
 	}
 `;
-export const SummaryList = styled.ul`
-	margin: 0px 16px;
-	padding-left: 24px;
-	margin-bottom: ${(props) => (props.isOpened ? '40px' : '30px')};
+export const SummaryContainer = styled.div`
+	padding: 16px;
+	font-family: NotoSansCJKKR;
+	font-size: 13px;
+	font-weight: normal;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.8;
+	letter-spacing: -0.25px;
+	color: #343f55;
 `;
+
+export const SummaryList = styled.div`
+	padding: 0px 8px;
+`;
+
+export const SummaryText = styled.li``;
+
 export const SummaryTablesContainer = styled.div`
 	flex: 1;
 `;

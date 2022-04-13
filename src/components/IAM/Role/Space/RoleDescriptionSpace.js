@@ -7,12 +7,30 @@ import {useDispatch} from 'react-redux';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import {HoverIconButton} from '../../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
-import {NormalButton, TransparentButton,} from '../../../../styles/components/buttons';
-import {LiText} from '../../../../styles/components/text';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../../styles/components/buttons';
 
-import {CoveredByTabContent, TabContainer,} from '../../../../styles/components/iam/iamTab';
-import {DescriptionPageContainer, SummaryList,} from '../../../../styles/components/iam/descriptionPage';
-import {IamContainer, TitleBar, TitleBarButtons, TitleBarText,} from '../../../../styles/components/iam/iam';
+import {
+	CoveredByTabContent,
+	TabContainer,
+} from '../../../../styles/components/iam/iamTab';
+import {
+	DescriptionPageContainer,
+	SummaryContainer,
+	SummaryList,
+	SummaryText,
+} from '../../../../styles/components/iam/descriptionPage';
+import {
+	IamContainer,
+	IamContents,
+	IamSection,
+	IamSectionTitleBar,
+	TitleBar,
+	TitleBarButtons,
+	TitleBarText,
+} from '../../../../styles/components/iam/iam';
 import useTextArea from '../../../../hooks/useTextArea';
 import {RowDiv} from '../../../../styles/components/style';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
@@ -20,9 +38,9 @@ import RoleTabContents from '../Components/Description/RoleTabContents';
 import {roleTabs} from '../../../../utils/tabs';
 import TemplateElement from '../../Policy/Components/Templates/Layout/TemplateElement';
 import useRadio from '../../../../hooks/useRadio';
-import {restrictionOptions,} from '../../../../utils/policy/options';
+import {restrictionOptions} from '../../../../utils/policy/options';
 import useTextBox from '../../../../hooks/useTextBox';
-import {TextBoxDescription} from "../../../../styles/components/iam/addPage";
+import {TextBoxDescription} from '../../../../styles/components/iam/addPage';
 
 const roleDescriptionSpace = {
 	title: '요약',
@@ -55,39 +73,38 @@ const RoleDescriptionSpace = ({roleId}) => {
 	 * 부여제한 기능
 	 **************************************************/
 	//현재 부여된 사용자
-	const [grantUser , setGrantUser] = useState(0);
+	const [grantUser, setGrantUser] = useState(0);
 
-	const checkRestrict =(value)=>{
-		const maxRestrict = 10
-		if(Number(value) >= grantUser && Number(value) <= maxRestrict) {
-			return value
-		}else{
-			return false
+	const checkRestrict = (value) => {
+		const maxRestrict = 10;
+		if (Number(value) >= grantUser && Number(value) <= maxRestrict) {
+			return value;
+		} else {
+			return false;
 		}
-	}
+	};
 	//제한 여부 라디오버튼 훅
-	const [
-		usage,
-		usageRadioButton,
-		setUsage,
-	] = useRadio({
+	const [usage, usageRadioButton, setUsage] = useRadio({
 		name: 'restrictRadio',
 		options: restrictionOptions,
 	});
 
 	//제한 범위 텍스트박스 훅
-	const [restrict, restrictTextBox, setRestrict,validRestrict] = useTextBox({
-		name: 'restrictText',
-		placeholder:`현재 부여된 사용자 : ${grantUser} 명`,
-		regex: /^([1-9]|[1-9][0-9]*)$/,
-		disabled:
-			usage === 'none',
-		checkFunc:checkRestrict
-	},[grantUser]);
+	const [restrict, restrictTextBox, setRestrict, validRestrict] = useTextBox(
+		{
+			name: 'restrictText',
+			placeholder: `현재 부여된 사용자 : ${grantUser} 명`,
+			regex: /^([1-9]|[1-9][0-9]*)$/,
+			disabled: usage === 'none',
+			checkFunc: checkRestrict,
+		},
+		[grantUser],
+	);
 
 	/**************************************************
 	 * 요약정보 열고 닫기
 	 **************************************************/
+	console.log('location.search:', location.search);
 	const isSummaryOpened = useMemo(() => {
 		if (location.search) return false;
 		else return true;
@@ -158,20 +175,44 @@ const RoleDescriptionSpace = ({roleId}) => {
 			console.log(err);
 			history.push('/roles');
 		}
-	}, [
-		dispatch,
-		history,
-		roleId,
-		setDescription,
-	]);
+	}, [dispatch, history, roleId, setDescription]);
 
 	return (
 		<IamContainer>
 			<CurrentPathBar paths={paths} />
-
-			<DescriptionPageContainer>
-				<div>
-					<TitleBar>
+			{/*<TitleBar>*/}
+			{/*	<TitleBarText>*/}
+			{/*		<HoverIconButton*/}
+			{/*			color={'font'}*/}
+			{/*			size={'m'}*/}
+			{/*			margin={'0px'}*/}
+			{/*			onClick={onClickFoldSummary}*/}
+			{/*		>*/}
+			{/*			{isSummaryOpened ? arrowDownIcon : arrowUpIcon}*/}
+			{/*		</HoverIconButton>*/}
+			{/*		{roleDescriptionSpace.title} [ {role?.name} ]*/}
+			{/*	</TitleBarText>*/}
+			{/*	<TitleBarButtons>*/}
+			{/*		<NormalButton onClick={onClickLinkToAddRolePage}>*/}
+			{/*			{roleDescriptionSpace.button.create}*/}
+			{/*		</NormalButton>*/}
+			{/*		<TransparentButton margin={'0px 0px 0px 5px'}>*/}
+			{/*			{roleDescriptionSpace.button.delete}*/}
+			{/*		</TransparentButton>*/}
+			{/*	</TitleBarButtons>*/}
+			{/*</TitleBar>*/}
+			<TitleBar>
+				<RowDiv
+					alignItems={'center'}
+					width={'100%'}
+					justifyContent={'space-between'}
+				>
+					<div>{role ? role.name : ''}</div>
+				</RowDiv>
+			</TitleBar>
+			<IamContents>
+				<IamSection>
+					<IamSectionTitleBar>
 						<TitleBarText>
 							<HoverIconButton
 								color={'font'}
@@ -181,97 +222,106 @@ const RoleDescriptionSpace = ({roleId}) => {
 							>
 								{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
 							</HoverIconButton>
-							{roleDescriptionSpace.title} [ {role?.name} ]
+							{roleDescriptionSpace.title}
 						</TitleBarText>
-						<TitleBarButtons>
-							<NormalButton onClick={onClickLinkToAddRolePage}>
-								{roleDescriptionSpace.button.create}
-							</NormalButton>
-							<TransparentButton margin={'0px 0px 0px 5px'}>
-								{roleDescriptionSpace.button.delete}
-							</TransparentButton>
-						</TitleBarButtons>
-					</TitleBar>
+					</IamSectionTitleBar>
 
-					<SummaryList>
-						<LiText>
-							{roleDescriptionSpace.detail.name}
-							{role?.name}
-						</LiText>
-						<LiText>{roleDescriptionSpace.detail.type}</LiText>
-						<LiText>
-							<RowDiv>
-								{roleDescriptionSpace.detail.description.title}
-								<div>
-									<RowDiv>
-										{descriptionTextArea()}
-										<NormalButton
-											onClick={onClickChangeDescription}
-										>
-											{
-												roleDescriptionSpace.detail
-													.description.button.save
-											}
-										</NormalButton>
-									</RowDiv>
+					<SummaryContainer>
+						<SummaryList>
+							<SummaryText>
+								{roleDescriptionSpace.detail.name}
+								{role?.name}
+							</SummaryText>
+							<SummaryText>
+								{roleDescriptionSpace.detail.type}
+							</SummaryText>
+							<SummaryText>
+								<RowDiv>
 									{
 										roleDescriptionSpace.detail.description
-											.description
+											.title
 									}
-								</div>
-							</RowDiv>
-						</LiText>
-						<LiText>
-							{roleDescriptionSpace.detail.grantRegulation}
-							<TemplateElement
-								render={() => {
-									return (
+									<div>
 										<RowDiv>
-											{usageRadioButton()}
-											{restrictTextBox()}
+											{descriptionTextArea()}
+											<NormalButton
+												onClick={
+													onClickChangeDescription
+												}
+											>
+												{
+													roleDescriptionSpace.detail
+														.description.button.save
+												}
+											</NormalButton>
 										</RowDiv>
-									);
-								}}
+										{
+											roleDescriptionSpace.detail
+												.description.description
+										}
+									</div>
+								</RowDiv>
+							</SummaryText>
+							<SummaryText>
+								{roleDescriptionSpace.detail.grantRegulation}
+								<TemplateElement
+									render={() => {
+										return (
+											<RowDiv>
+												{usageRadioButton()}
+												{restrictTextBox()}
+											</RowDiv>
+										);
+									}}
+								/>
+								{/*<TextBox name={'maxGrants'}  direction={'row'} disabled={(usage === 'none')}/>*/}
+								<TextBoxDescription>{`부여 제한시 부여수 입력 (권한 부여 최대 수 : ${maxGrant})`}</TextBoxDescription>
+							</SummaryText>
+							<SummaryText>
+								{roleDescriptionSpace.detail.createdDate}
+								{/*{role.createdTag ? role.createdTag.createdTime : ''}*/}
+							</SummaryText>
+
+							<SummaryText>
+								{roleDescriptionSpace.detail.getLastActiveTime}
+								{/*{role.lastEventLog*/}
+								{/*	? role.lastEventLog.eventTime*/}
+								{/*	: ''}*/}
+							</SummaryText>
+							<SummaryText>
+								{roleDescriptionSpace.detail.lastAction}
+								{/*{role.lastEventLog*/}
+								{/*	? `${role.lastEventLog.eventTime}[${role.lastEventLog.userName}(${role.lastEventLog.userId})]`*/}
+								{/*	: ''}*/}
+							</SummaryText>
+						</SummaryList>
+					</SummaryContainer>
+					{/*기본 테이블 정보*/}
+					{isSummaryOpened && (
+						<CoveredByTabContent>
+							<RoleSummary
+								roleId={roleId}
+								setGrantUser={setGrantUser}
 							/>
-							{/*<TextBox name={'maxGrants'}  direction={'row'} disabled={(usage === 'none')}/>*/}
-							<TextBoxDescription>{`부여 제한시 부여수 입력 (권한 부여 최대 수 : ${maxGrant})`}</TextBoxDescription>
-						</LiText>
-						<LiText>
-							{roleDescriptionSpace.detail.createdDate}
-							{/*{role.createdTag ? role.createdTag.createdTime : ''}*/}
-						</LiText>
+						</CoveredByTabContent>
+					)}
+				</IamSection>
+			</IamContents>
+			<IamContents>
+				<IamSection>
+					<TabContainer isOpened={!isSummaryOpened}>
+						<TabBar Tabs={TabBarInfo} />
 
-						<LiText>
-							{roleDescriptionSpace.detail.getLastActiveTime}
-							{/*{role.lastEventLog*/}
-							{/*	? role.lastEventLog.eventTime*/}
-							{/*	: ''}*/}
-						</LiText>
-						<LiText>
-							{roleDescriptionSpace.detail.lastAction}
-							{/*{role.lastEventLog*/}
-							{/*	? `${role.lastEventLog.eventTime}[${role.lastEventLog.userName}(${role.lastEventLog.userId})]`*/}
-							{/*	: ''}*/}
-						</LiText>
-					</SummaryList>
-				</div>
-
-				<CoveredByTabContent isOpened={isSummaryOpened}>
-					<RoleSummary roleId={roleId} setGrantUser={setGrantUser} isOpened={isSummaryOpened} />
-				</CoveredByTabContent>
-
-				<TabContainer isOpened={!isSummaryOpened}>
-					<TabBar Tabs={TabBarInfo} />
-
-					<RoleTabContents
-						roleId={roleId}
-						isOpened={isSummaryOpened}
-						grantUser={grantUser}
-						setGrantUser={setGrantUser}
-						validRestrict={validRestrict}
-					/>
-				</TabContainer>
-			</DescriptionPageContainer>
+						<RoleTabContents
+							roleId={roleId}
+							isOpened={isSummaryOpened}
+							grantUser={grantUser}
+							setGrantUser={setGrantUser}
+							validRestrict={validRestrict}
+						/>
+					</TabContainer>
+				</IamSection>
+			</IamContents>
 		</IamContainer>
 	);
 };
