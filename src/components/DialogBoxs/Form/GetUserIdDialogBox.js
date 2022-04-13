@@ -7,20 +7,37 @@ import React, {
 import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
 import PropTypes from 'prop-types';
-import {GoogleAuth} from '../../../utils/auth';
+import {
+	altAuthType,
+	googleAuth,
+	kakaoAuth,
+	naverAuth,
+} from '../../../utils/auth';
 
 const GetUserIdDialogBox = forwardRef(({type}, ref) => {
 	const formRef = useRef(null);
 
 	const onSubmitUserId = useCallback((data) => {
-		console.log('Form의 값을 어디 한번 출력해봅시다~');
 		console.log(data);
+		localStorage.setItem('id', data.id);
 
 		switch (type) {
 			//todo
-			case 'google':
-				location.href = GoogleAuth.location;
+			case altAuthType.google:
+				location.href = googleAuth.location;
 				break;
+
+			case altAuthType.naver:
+				location.href = naverAuth.location;
+				break;
+
+			case altAuthType.kakao:
+				location.href = kakaoAuth.location;
+				break;
+
+			case altAuthType.apple:
+				break;
+
 			default:
 				break;
 		}

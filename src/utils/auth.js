@@ -19,6 +19,13 @@ export const authorization = {
 	BEARER: 'Bearer ',
 };
 
+export const altAuthType = {
+	google: 'google',
+	naver: 'naver',
+	kakao: 'kakao',
+	apple: 'apple',
+};
+
 export const contentType = {
 	URL_ENCODED: 'application/x-www-form-urlencoded',
 	JSON: 'application/json',
@@ -32,41 +39,61 @@ export const grantType = {
 	AUTHORIZATION_CODE: 'authorization_code',
 };
 
+const altAuthClientId = {
+	google:
+		'819744979674-dastdmj1j5k8coluu2vofclsi3kvo90h.apps.googleusercontent.com',
+	naver: 'nibcTe6r62XwD6twI7P7',
+	kakao: 'a802adefbb7e61bb24cae3f135d62007',
+};
+
+const altAuthClientSecret = {
+	google: 'LEVTqM7nBsyLPuSEbT-mPffx',
+	naver: '',
+	kakao: '',
+};
+
 const redirectUrl = {
 	google: 'http://localhost:3000/altauthredirect/google',
 	naver: 'http://localhost:3000/altauthredirect/naver',
 	kakao: 'http://localhost:3000/altauthredirect/kakao',
 };
 
-export const GoogleAuth = {
-	clientId:
-		'819744979674-dastdmj1j5k8coluu2vofclsi3kvo90h.apps.googleusercontent.com',
-	clientSecret: 'LEVTqM7nBsyLPuSEbT-mPffx',
+export const googleAuth = {
+	clientId: altAuthClientId.google,
+	clientSecret: altAuthClientSecret.google,
 	redirectUri: redirectUrl.google,
 	location:
-		'https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=819744979674-dastdmj1j5k8coluu2vofclsi3kvo90h.apps.googleusercontent.com&redirect_uri=' +
+		'https://accounts.google.com/o/oauth2/v2/auth?client_id=' +
+		altAuthClientId.google +
+		'&redirect_uri=' +
 		redirectUrl.google +
-		'&scope=email%20profile&state=myState&access_type=offline&prompt=consent',
+		'&response_type=code&scope=email%20profile&state=myState&access_type=offline&prompt=consent',
 };
 
-export const NaverAuth = {
-	clientId:
-		'819744979674-dastdmj1j5k8coluu2vofclsi3kvo90h.apps.googleusercontent.com',
-	clientSecret: 'LEVTqM7nBsyLPuSEbT-mPffx',
+export const naverAuth = {
+	clientId: altAuthClientId.naver,
+	clientSecret: altAuthClientSecret.naver,
 	redirectUri: redirectUrl.naver,
 	location:
-		'https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=819744979674-dastdmj1j5k8coluu2vofclsi3kvo90h.apps.googleusercontent.com&redirect_uri=' +
-		'http://ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com:3002/altauthredirect&scope=email%20profile&state=myState&access_type=offline&prompt=consent',
+		'https://nid.naver.com/oauth2.0/authorize' +
+		'?client_id=' +
+		altAuthClientId.naver +
+		'&redirect_uri=' +
+		redirectUrl.naver +
+		'&response_type=code&state=myState',
 };
 
-export const KakaoAuth = {
-	clientId:
-		'819744979674-dastdmj1j5k8coluu2vofclsi3kvo90h.apps.googleusercontent.com',
-	clientSecret: 'LEVTqM7nBsyLPuSEbT-mPffx',
+export const kakaoAuth = {
+	clientId: altAuthClientId.kakao,
+	clientSecret: altAuthClientSecret.kakao,
 	redirectUri: redirectUrl.kakao,
 	location:
-		'https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=819744979674-dastdmj1j5k8coluu2vofclsi3kvo90h.apps.googleusercontent.com&redirect_uri=' +
-		'http://ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com:3002/altauthredirect&scope=email%20profile&state=myState&access_type=offline&prompt=consent',
+		'https://kauth.kakao.com/oauth/authorize' +
+		'?client_id=' +
+		altAuthClientId.kakao +
+		'&redirect_uri=' +
+		redirectUrl.kakao +
+		'&response_type=code&state=myState',
 };
 
 export const getParameter = (name) => {

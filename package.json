@@ -20,6 +20,7 @@
 		"cookie-parser": "^1.4.6",
 		"cors": "^2.8.5",
 		"date-fns": "^2.25.0",
+		"dotenv": "^16.0.0",
 		"focus-formik-error": "^1.1.0",
 		"formik": "^2.2.9",
 		"formik-error-focus": "^1.1.0",

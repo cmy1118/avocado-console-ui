@@ -177,4 +177,5 @@ psd
 thumb
 sketch
 
+.env
 # End of https://www.toptal.com/developers/gitignore/api/macos,intellij,react,java

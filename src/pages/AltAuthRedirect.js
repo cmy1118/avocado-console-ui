@@ -6,7 +6,6 @@ import Naver from '../components/Redirect/Naver';
 import Kakao from '../components/Redirect/Kakao';
 
 const AltAuthRedirect = ({match}) => {
-	console.log(match.path);
 	return match.path === '/altauthredirect/google' ? (
 		<Google />
 	) : match.path === '/altauthredirect/naver' ? (

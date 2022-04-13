@@ -16,7 +16,7 @@ const grantRolePolicy = createAsyncThunk(`${NAME}/GRANT`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env['REACT_APP_OPEN_API _URL '],
 		},
 	);
 	return response.data;
