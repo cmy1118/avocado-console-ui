@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../api/constants';
+import {Axios} from '../../../../api/constants';
 import {contentType} from '../../../../utils/auth';
 
 const NAME = 'PAM_POLICY';
@@ -10,7 +10,7 @@ const findByRoleIdAction = createAsyncThunk(
 		const response = await Axios.get(
 			`/open-api/v1/pam/roles/${payload.roleId}/policy-templates`,
 			{
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 
@@ -28,7 +28,7 @@ const FindByIdPermissionAction = createAsyncThunk(
 					'Content-Type': contentType.JSON,
 					Range: payload.range,
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 

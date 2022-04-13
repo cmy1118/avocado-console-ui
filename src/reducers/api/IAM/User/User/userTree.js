@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {Axios, baseURL} from '../../../../../api/constants';
+import {Axios} from '../../../../../api/constants';
 
 const NAME = 'IAM_USER_TREE';
 
@@ -21,9 +21,9 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 				params: {
 					groupId: payload.id,
 				},
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;

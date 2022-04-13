@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
 import {contentType} from '../../../../../utils/auth';
-import {Axios, baseURL} from '../../../../../api/constants';
+import {Axios} from '../../../../../api/constants';
 
 const NAME = 'PAM_RULE_MANAGEMENT_TEMPLATE';
 
@@ -14,7 +14,7 @@ const findAllRules = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 			Range: payload.range,
 			'Content-Type': contentType.JSON,
 		},
-		baseURL: baseURL.openApi,
+		aseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 	return {data: response.data};
 });
@@ -30,7 +30,7 @@ const createRule = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	console.log(response);

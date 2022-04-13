@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
 import {contentType} from '../../../../../../utils/auth';
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {Axios} from '../../../../../../api/constants';
 import {getIdFormLocation} from '../../../../../../utils/tableDataConverter';
 
 const NAME = 'IAM_POLICY_MANAGEMENT_POLICIES';
@@ -23,7 +23,7 @@ const createPolicy = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 
@@ -45,7 +45,7 @@ const updatePolicy = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 });
@@ -57,7 +57,7 @@ const deletePolicy = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 	const response = await Axios.delete(
 		`/open-api/v1/iam/policies/${payload.id}`,
 		{
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 });
@@ -78,7 +78,7 @@ const findAll = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 			Range: payload.range,
 			'Content-Type': contentType.JSON,
 		},
-		baseURL: baseURL.openApi,
+		baseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 	return response;
 });
@@ -92,7 +92,7 @@ const findPolicyById = createAsyncThunk(
 		const response = await Axios.get(
 			`/open-api/v1/iam/policies/${payload.id}`,
 			{
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;

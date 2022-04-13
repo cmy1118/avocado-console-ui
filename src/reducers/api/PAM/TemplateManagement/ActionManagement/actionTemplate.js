@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../api/constants';
+import {Axios} from '../../../../../api/constants';
 import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'PAM_ACTION_MANAGEMENT_TEMPLATE';
@@ -18,7 +18,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	console.log('createAction:', response);
@@ -36,7 +36,7 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 			Range: payload.range,
 			// 'Content-Type': contentType.JSON,
 		},
-		baseURL: baseURL.openApi,
+		aseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 });
 
@@ -51,7 +51,7 @@ const findByIdAction = createAsyncThunk(
 					Range: payload.range,
 					// 'Content-Type': contentType.JSON,
 				},
-				baseURL: baseURL.openApi,
+				aseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		console.log('findByIdAction:', response);

@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {baseURL, Axios} from '../../../../api/constants';
+import {Axios} from '../../../../api/constants';
+import {contentType} from '../../../../utils/auth';
 
 const NAME = 'PAM_ROLE_USER_GROUP';
 
@@ -11,9 +12,9 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 		},
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -23,7 +24,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 	const response = await Axios.delete(
 		`/open-api/v1/pam/users-group/${payload.id}/roles/${payload.roleId}`,
 		{
-			baseURL: baseURL.openApi,
+			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -38,7 +39,7 @@ const findRoleByIdAction = createAsyncThunk(
 				headers: {
 					Range: payload.range,
 				},
-				baseURL: baseURL.openApi,
+				aseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 
@@ -65,7 +66,7 @@ const getEventsAction = createAsyncThunk(
 				headers: {
 					Range: payload.range,
 				},
-				baseURL: baseURL.openApi,
+				aseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return {data: response.data, headers: response.headers};

@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
 import {contentType} from '../../../../../../utils/auth';
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {Axios} from '../../../../../../api/constants';
 
 const NAME = 'IAM_RULE_TEMPLATE_DETAIL';
 
@@ -15,7 +15,7 @@ const findAll = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 });

@@ -6,6 +6,9 @@ import {Provider} from 'react-redux';
 import store, {persistor} from './store/configureStore';
 import './styles/default.scss';
 import {PersistGate} from 'redux-persist/integration/react';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 ReactDOM.render(
 	<Provider store={store}>

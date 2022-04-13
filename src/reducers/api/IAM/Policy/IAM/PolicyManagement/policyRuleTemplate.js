@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
 import {contentType} from '../../../../../../utils/auth';
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {Axios} from '../../../../../../api/constants';
 
 const NAME = 'IAM_POLICY_MANAGEMENT_RULE_TEMPLATE';
 
@@ -16,7 +16,7 @@ const join = createAsyncThunk(`${NAME}/JOIN`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 });

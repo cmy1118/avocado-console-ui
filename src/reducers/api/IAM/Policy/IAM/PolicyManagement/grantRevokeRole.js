@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {Axios} from '../../../../../../api/constants';
 import {contentType} from '../../../../../../utils/auth';
 
 const NAME = 'IAM_GRAN_REVOKE_ROLE';
@@ -16,7 +16,7 @@ const grantRolePolicy = createAsyncThunk(`${NAME}/GRANT`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -29,7 +29,7 @@ const revokeRolePolicy = createAsyncThunk(`${NAME}/REVOKE`, async (payload) => {
 	const response = await Axios.delete(
 		`/open-api/v1/iam/roles/${payload.roleId}/policies/${payload.policyId}`,
 		{
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -51,7 +51,7 @@ const findAllRoleByPolicyId = createAsyncThunk(
 				headers: {
 					Range: 'elements=0-50',
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;

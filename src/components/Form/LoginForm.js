@@ -21,6 +21,7 @@ import CheckBox from '../RecycleComponents/New/CheckBox';
 import AUTH from '../../reducers/api/Auth/auth';
 import useModal from '../../hooks/useModal';
 import GetUserIdDialogBox from '../DialogBoxs/Form/GetUserIdDialogBox';
+import {altAuthType} from '../../utils/auth';
 
 const _CheckBoxContainer = styled.div`
 	display: flex;
@@ -83,6 +84,8 @@ const LoginForm = () => {
 		(v) => {
 			if (!v.id || !v.password) return;
 
+			localStorage.setItem('companyId', companyId);
+
 			dispatch(
 				AUTH.asyncAction.userAuthAction({
 					username: v.id,
@@ -106,18 +109,25 @@ const LoginForm = () => {
 		setRememberMe(!rememberMe);
 	}, [rememberMe]);
 
-	const onClickGoogleAltAuth = useCallback(() => {
-		// localStorage.setItem('companyId', companyId);
-		// location.href = Google.location;
+	const onClickAltAuth = useCallback(
+		(v) => () => {
+			localStorage.setItem('companyId', companyId);
 
-		showGeetUserIdModal({
-			show: true,
-			title: '아이디 입력',
-			onSubmitCallback: () =>
-				getUserIdDialogBoxModalRef.current.onSubmitUserId(),
-			element: <GetUserIdDialogBox ref={getUserIdDialogBoxModalRef} />,
-		});
-	}, []);
+			showGeetUserIdModal({
+				show: true,
+				title: '아이디 입력',
+				onSubmitCallback: () =>
+					getUserIdDialogBoxModalRef.current.onSubmitUserId(),
+				element: (
+					<GetUserIdDialogBox
+						ref={getUserIdDialogBoxModalRef}
+						type={v}
+					/>
+				),
+			});
+		},
+		[],
+	);
 
 	return (
 		<LogInContainer>
@@ -177,15 +187,21 @@ const LoginForm = () => {
 			</_DividingLine>
 
 			<_AlternativeAuthContainer>
-				<_AlternativeAuthButton>
+				<_AlternativeAuthButton
+					onClick={onClickAltAuth(altAuthType.kakao)}
+				>
 					<img src={kakaoButton} alt='kakaoButton' />
 				</_AlternativeAuthButton>
-				<_AlternativeAuthButton>
+				<_AlternativeAuthButton
+					onClick={onClickAltAuth(altAuthType.naver)}
+				>
 					<img src={naverButton} alt='naverButton' />
 				</_AlternativeAuthButton>
 			</_AlternativeAuthContainer>
 			<_AlternativeAuthContainer>
-				<_AlternativeAuthButton onClick={onClickGoogleAltAuth}>
+				<_AlternativeAuthButton
+					onClick={onClickAltAuth(altAuthType.google)}
+				>
 					<img src={googleButton} alt='googleButton' />
 				</_AlternativeAuthButton>
 				<_AlternativeAuthButton>

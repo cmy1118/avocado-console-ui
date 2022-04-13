@@ -10,6 +10,7 @@ import {
 	AddSpaceContainer,
 } from '../../../../styles/components/iam/addPage';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import {Header} from '../../../../styles/components/iam/iam';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -23,6 +24,7 @@ const CreateUserSpace = () => {
 	return (
 		<AddSpaceContainer>
 			<CurrentPathBar paths={paths} />
+			<Header>사용자 추가</Header>
 
 			<AddPageContainer>
 				<AddUser setIsOpened={setIsOpened} />

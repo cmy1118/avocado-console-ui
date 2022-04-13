@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {Axios} from '../../../../../../api/constants';
+import {contentType} from '../../../../../../utils/auth';
 
 const NAME = 'IAM_ROLES_GRANT_ROLE_USER';
 
@@ -10,9 +11,9 @@ const grantAction = createAsyncThunk(`${NAME}/GRANT`, async (payload) => {
 		[...payload.roleIds],
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -24,12 +25,12 @@ const revokeAction = createAsyncThunk(`${NAME}/REVOKE `, async (payload) => {
 		`/open-api/v1/iam/users/${payload.userUid}/roles`,
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
 			params: {
 				roleId: [...payload.roleId],
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -37,18 +38,17 @@ const revokeAction = createAsyncThunk(`${NAME}/REVOKE `, async (payload) => {
 
 //사용자를 대상으로 부여된 Role 권한을 조회한다.
 const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
-	// eslint-disable-next-line no-console
 	const response = await Axios.get(
 		`/open-api/v1/iam/user-groups/${payload.userUid}/roles`,
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 				Range: 'elements=0-50',
 			},
 			params: {
 				exclude: payload.exclude,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	console.log('IAM_ROLES_GRANT_ROLE_USER_getsAction', response);
@@ -69,9 +69,9 @@ const getEventsAction = createAsyncThunk(
 				},
 				headers: {
 					Range: payload.range,
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return {data: response.data, headers: response.headers};
@@ -91,9 +91,9 @@ const findUsersByIdAction = createAsyncThunk(
 				},
 				headers: {
 					Range: payload.range,
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		console.log('response:', response);

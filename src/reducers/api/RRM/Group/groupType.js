@@ -2,6 +2,7 @@ import {createSelector, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 
 import * as _ from 'lodash';
 import {baseURL, Axios} from '../../../../api/constants';
+import {contentType} from '../../../../utils/auth';
 
 const NAME = 'RRM_GROUP_TYPE';
 
@@ -14,9 +15,9 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 		},
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -30,9 +31,9 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 		},
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -43,9 +44,9 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 		`/open/api/v1/remote/resources/group-types/${payload.id}`,
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -58,9 +59,9 @@ const findByIdAction = createAsyncThunk(
 			`/open/api/v1/remote/resources/group-types/${payload.id}`,
 			{
 				headers: {
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;
@@ -75,10 +76,10 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 				...(payload.name && {type: payload.name}),
 			},
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 				Range: `elements=${payload.first}-${payload.last}`,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;

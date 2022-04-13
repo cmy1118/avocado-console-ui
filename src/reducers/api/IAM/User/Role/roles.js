@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../api/constants';
+import {Axios} from '../../../../../api/constants';
+import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'IAM_ROLES';
 
@@ -14,9 +15,9 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 		},
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -46,9 +47,9 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 		},
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -58,7 +59,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 	const response = await Axios.delete(
 		`/open-api/v1/iam/roles/${payload.id}`,
 		{
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -70,7 +71,7 @@ const findByIdAction = createAsyncThunk(
 		const response = await Axios.get(
 			`/open-api/v1/iam/roles/${payload.id}`,
 			{
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;
@@ -91,7 +92,7 @@ const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
 			Range: payload.range,
 		},
 
-		baseURL: baseURL.openApi,
+		baseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 	console.log(response);
 	return response;
@@ -109,7 +110,7 @@ const getEventsAction = createAsyncThunk(
 				toTime: payload.toTime,
 				roleId: payload.roleId,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		});
 		return {data: response.data, headers: response.headers};
 	},
@@ -128,7 +129,7 @@ const findTemplatesAction = createAsyncThunk(
 				params: {
 					includea: payload.include,
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		//	console.log(response.data);

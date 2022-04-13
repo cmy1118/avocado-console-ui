@@ -1,77 +1,59 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../../api/constants';
+import {Axios} from '../../../../../../api/constants';
+import {contentType} from '../../../../../../utils/auth';
 
 const NAME = 'IAM_USER_POLICY_GRANT_REVOKE_ROLE';
 
 //역할에 부여된 정책 조회
-const findAllAction = createAsyncThunk(
-	`${NAME}/GETS`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-
-		const response = await Axios.get(
-			`/open-api/v1/iam/roles/${payload.roleId}/policies`,
-			{
-				params: {
-					exclude: payload.exclude,
-					type: payload.type,
-					keyword: payload.keyword,
-				},
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-					Range: 'elements=0-50',
-				},
-				baseURL: baseURL.openApi,
+const findAllAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
+	const response = await Axios.get(
+		`/open-api/v1/iam/roles/${payload.roleId}/policies`,
+		{
+			params: {
+				exclude: payload.exclude,
+				type: payload.type,
+				keyword: payload.keyword,
 			},
-		);
-		return response.data || [];
-	},
-);
+			headers: {
+				'Content-Type': contentType.JSON,
+				Range: 'elements=0-50',
+			},
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
+		},
+	);
+	return response.data || [];
+});
 
 //사용자 그룹을 대상으로 Role 권한을 부여한다.
-const grantAction = createAsyncThunk(
-	`${NAME}/GRANT`,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		// eslint-disable-next-line no-console
-		const response = await Axios.post(
-			`/open-api/v1/iam/roles/${payload.roleId}/policies/${payload.policyId}`,
-			{
-				order: payload.order,
+const grantAction = createAsyncThunk(`${NAME}/GRANT`, async (payload) => {
+	const response = await Axios.post(
+		`/open-api/v1/iam/roles/${payload.roleId}/policies/${payload.policyId}`,
+		{
+			order: payload.order,
+		},
+		{
+			headers: {
+				'Content-Type': contentType.JSON,
 			},
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
-			},
-		);
-		return response.data;
-	},
-);
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
+		},
+	);
+	return response.data;
+});
 
 //사용자 그룹을 대상으로 부여된 Role 권한을 해제한다.
-const revokeAction = createAsyncThunk(
-	`${NAME}/REVOKE `,
-	async (payload, {getState}) => {
-		const {userAuth} = getState().AUTH;
-		// eslint-disable-next-line no-console
-		console.log('payload.roleld:', payload.roleId);
-		const response = await Axios.delete(
-			`/open-api/v1/iam/roles/${payload.roleId}/policies/${payload.policyId}`,
-			{
-				headers: {
-					Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
-					'Content-Type': 'application/json',
-				},
-				baseURL: baseURL.openApi,
+const revokeAction = createAsyncThunk(`${NAME}/REVOKE `, async (payload) => {
+	const response = await Axios.delete(
+		`/open-api/v1/iam/roles/${payload.roleId}/policies/${payload.policyId}`,
+		{
+			headers: {
+				'Content-Type': contentType.JSON,
 			},
-		);
-		return response.data;
-	},
-);
+			aseURL: process.env.REACT_APP_OPEN_API_URL,
+		},
+	);
+	return response.data;
+});
 
 const slice = createSlice({
 	name: NAME,

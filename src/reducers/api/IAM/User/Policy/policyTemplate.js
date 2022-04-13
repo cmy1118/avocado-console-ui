@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Axios, baseURL} from '../../../../../api/constants';
+import {Axios} from '../../../../../api/constants';
+import {contentType} from '../../../../../utils/auth';
 
 const NAME = 'IAM_POLICY_TEMPLATE';
 
@@ -13,9 +14,9 @@ const findByIdAction = createAsyncThunk(
 			`/open-api/v1/iam/policy-templates/${payload.templateId}`,
 			{
 				headers: {
-					'Content-Type': 'application/json',
+					'Content-Type': contentType.JSON,
 				},
-				baseURL: baseURL.openApi,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return {data: response.data, headers: response.headers};

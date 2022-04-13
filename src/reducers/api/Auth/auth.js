@@ -1,36 +1,19 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {Axios, baseURL} from '../../../api/constants';
+import {Axios} from '../../../api/constants';
 import {
+	basicAuthorization,
 	contentType,
 	getParameter,
-	Google,
+	googleAuth,
 	grantType,
+	kakaoAuth,
+	naverAuth,
 } from '../../../utils/auth';
-import base64 from 'base-64';
 import {getCookies, removeCookies, setCookies} from '../../../utils/cookies';
 import setAuthorizationToken from '../../../utils/setAuthorizationToken';
 
 const NAME = 'AUTH';
-
-const authPolicyVerificationAction = createAsyncThunk(
-	`${NAME}/authPolicyVerification`,
-	async (payload) => {
-		const response = await Axios.post('/oauth2/v1/verify/user', null, {
-			headers: {
-				'Content-Type': contentType.URL_ENCODED,
-				Authorization:
-					'Basic ' +
-					base64.encode(`${payload.username}:${payload.password}`),
-				CompanyId: payload.companyId,
-				ApplicationCode: 'console-ui',
-			},
-			baseURL: baseURL.auth,
-		});
-
-		return response.data;
-	},
-);
 
 const userAuthAction = createAsyncThunk(
 	`${NAME}/USER_AUTH`,
@@ -43,12 +26,11 @@ const userAuthAction = createAsyncThunk(
 			},
 			headers: {
 				'Content-Type': contentType.URL_ENCODED,
-				Authorization:
-					'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
+				Authorization: basicAuthorization,
 				CompanyId: payload.companyId,
 				ApplicationCode: 'console-ui',
 			},
-			baseURL: baseURL.auth,
+			baseURL: process.env.REACT_APP_AUTH_URL,
 		});
 		return response.data;
 	},
@@ -59,32 +41,28 @@ const logoutAction = createAsyncThunk(`${NAME}/LOGOUT`, async (payload) => {
 		headers: {
 			'Content-Type': contentType.URL_ENCODED,
 		},
-		baseURL: baseURL.auth,
+		baseURL: process.env.REACT_APP_AUTH_URL,
 	});
 	return response.data;
 });
 
-const clientAuthAction = createAsyncThunk(
-	`${NAME}/clientAuth`,
-	async (payload) => {
-		const response = await Axios.post('/oauth2/v1/token', null, {
-			params: {
-				grant_type: grantType.CLIENT_CREDENTIALS,
-			},
-			headers: {
-				'Content-Type': contentType.URL_ENCODED,
-				Authorization:
-					'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
-				CompanyId: payload.companyId,
-				ApplicationCode: 'console-ui',
-			},
-			baseURL: baseURL.auth,
-		});
-		return response.data;
-	},
-);
+const clientAuthAction = createAsyncThunk(`${NAME}/clientAuth`, async () => {
+	const response = await Axios.post('/oauth2/v1/token', null, {
+		params: {
+			grant_type: grantType.CLIENT_CREDENTIALS,
+		},
+		headers: {
+			'Content-Type': contentType.URL_ENCODED,
+			Authorization: basicAuthorization,
+			CompanyId: localStorage.getItem('companyId'),
+			ApplicationCode: 'console-ui',
+		},
+		baseURL: process.env.REACT_APP_AUTH_URL,
+	});
+	return response.data;
+});
 
-const GoogleAuthAction = createAsyncThunk(`${NAME}/GoogleAuth`, async () => {
+const googleAuthAction = createAsyncThunk(`${NAME}/googleAuth`, async () => {
 	const response = await Axios.post(
 		'https://accounts.google.com/o/oauth2/token',
 		null,
@@ -92,49 +70,67 @@ const GoogleAuthAction = createAsyncThunk(`${NAME}/GoogleAuth`, async () => {
 			params: {
 				code: decodeURIComponent(getParameter('code')),
 				grant_type: grantType.AUTHORIZATION_CODE,
-				redirect_uri: Google.redirectUri,
-				client_id: Google.clientId,
-				client_secret: Google.clientSecret,
-			},
-			headers: {
-				'Content-Type': contentType,
+				redirect_uri: googleAuth.redirectUri,
+				client_id: googleAuth.clientId,
+				client_secret: googleAuth.clientSecret,
 			},
 		},
 	);
+	return response.data;
+});
 
-	const user = await Axios.get(
-		'https://www.googleapis.com/oauth2/v1/userinfo',
+const naverAuthAction = createAsyncThunk(`${NAME}/naverAuth`, async () => {
+	const response = await Axios.post(
+		'https://nid.naver.com/oauth2.0/token',
+		null,
 		{
 			params: {
-				alt: 'json',
-				access_token: response.data.access_token,
+				code: decodeURIComponent(getParameter('code')),
+				grant_type: grantType.AUTHORIZATION_CODE,
+				client_id: naverAuth.clientId,
+				client_secret: naverAuth.clientSecret,
+				state: decodeURIComponent(getParameter('state')),
 			},
 		},
 	);
-	return {...response.data, email: user.data.email};
+	return response.data;
+});
+
+const kakaoAuthAction = createAsyncThunk(`${NAME}/kakaoAuth`, async () => {
+	const response = await Axios.post(
+		'https://kauth.kakao.com/oauth/token',
+		null,
+		{
+			params: {
+				code: decodeURIComponent(getParameter('code')),
+				grant_type: grantType.AUTHORIZATION_CODE,
+				redirect_uri: kakaoAuth.redirectUri,
+				client_id: kakaoAuth.clientId,
+				// client_secret: kakaoAuth.clientSecret,
+			},
+		},
+	);
+	return response.data;
 });
 
 const altAuthVerificationAction = createAsyncThunk(
 	`${NAME}/alternativeAuth`,
-	async (payload, {getState}) => {
-		const authState = getState()[NAME];
-
+	async (payload) => {
 		const response = await Axios.post(
 			'/oauth2/v1/alternative/verify',
 			null,
 			{
 				params: {
-					username: authState.alternativeAuth.email.match(
-						/^.+(?=@)/,
-					)[0],
+					username: localStorage.getItem('id'),
 				},
 				headers: {
+					Authorization: `Bearer ${payload.clientToken}`,
 					'Content-Type': contentType.URL_ENCODED,
-					AlternativeAuthN: `google ${authState.alternativeAuth.access_token}`,
-					CompanyId: authState.companyId,
+					AlternativeAuthN: `${payload.altAuthType} ${payload.altAuthToken}`,
+					CompanyId: localStorage.getItem('companyId'),
 					ApplicationCode: 'console-ui',
 				},
-				baseURL: baseURL.auth,
+				baseURL: process.env.REACT_APP_AUTH_URL,
 			},
 		);
 		return response.data;
@@ -153,12 +149,11 @@ const refreshTokenAction = createAsyncThunk(
 			},
 			headers: {
 				'Content-Type': contentType.URL_ENCODED,
-				Authorization:
-					'Basic ' + base64.encode(`${'web'}:${'123456789'}`),
+				Authorization: basicAuthorization,
 				CompanyId: companyId,
 				ApplicationCode: 'console-ui',
 			},
-			baseURL: baseURL.auth,
+			baseURL: process.env.REACT_APP_AUTH_URL,
 		});
 
 		return response.data;
@@ -171,24 +166,11 @@ const slice = createSlice({
 		companyId: '',
 		isLoggedIn: false,
 		userAuth: null,
-		alternativeAuth: null,
-		clientAuth: null,
 		loading: false,
 		error: null,
 	},
 	reducers: {},
 	extraReducers: {
-		[authPolicyVerificationAction.pending]: (state, action) => {
-			state.loading = true;
-			state.companyId = action.meta.arg.companyId;
-		},
-		[authPolicyVerificationAction.fulfilled]: (state) => {
-			state.loading = false;
-		},
-		[authPolicyVerificationAction.rejected]: (state) => {
-			state.loading = false;
-		},
-
 		[userAuthAction.pending]: (state, action) => {
 			state.loading = true;
 			state.companyId = action.meta.arg.companyId;
@@ -237,38 +219,24 @@ const slice = createSlice({
 			localStorage.removeItem('access_token');
 		},
 
-		[clientAuthAction.pending]: (state, action) => {
-			state.loading = true;
-			state.companyId = action.meta.arg.companyId;
-		},
-		[clientAuthAction.fulfilled]: (state, action) => {
-			state.loading = false;
-			state.clientAuth = action.payload;
-		},
-		[clientAuthAction.rejected]: (state, action) => {
-			state.loading = false;
-			state.error = action.error;
-		},
-
-		[GoogleAuthAction.pending]: (state) => {
-			state.loading = true;
-		},
-		[GoogleAuthAction.fulfilled]: (state, action) => {
-			state.loading = false;
-			state.alternativeAuth = action.payload;
-		},
-		[GoogleAuthAction.rejected]: (state, action) => {
-			state.loading = false;
-			state.error = action.error;
-		},
-
 		[altAuthVerificationAction.pending]: (state) => {
 			state.loading = true;
 		},
 		[altAuthVerificationAction.fulfilled]: (state, action) => {
+			//쿠키에  refresh token 저장
+			setCookies('refresh_token', action.payload.refresh_token, {
+				path: '/',
+				// secure: true,
+				// httpOnly: true,
+			});
+			//local storage에 access token 저장
+			localStorage.setItem('access_token', action.payload.access_token);
+			setAuthorizationToken();
+			//리덕스에 상태를 저장하기전 refresh token은 삭제
+			delete action.payload.refresh_token;
+			delete action.payload.access_token;
+
 			state.loading = false;
-			state.clientAuth = null;
-			state.alternativeAuth = null;
 			state.userAuth = action.payload;
 			state.isLoggedIn = true;
 		},
@@ -301,25 +269,13 @@ const selectAllState = createSelector(
 	(state) => state.isLoggedIn,
 	(state) => state.companyId,
 	(state) => state.userAuth,
-	(state) => state.clientAuth,
-	(state) => state.alternativeAuth,
 	(state) => state.error,
 	(state) => state.loading,
-	(
-		isLoggedIn,
-		companyId,
-		userAuth,
-		clientAuth,
-		alternativeAuth,
-		error,
-		loading,
-	) => {
+	(isLoggedIn, companyId, userAuth, error, loading) => {
 		return {
 			isLoggedIn,
 			companyId,
 			userAuth,
-			clientAuth,
-			alternativeAuth,
 			error,
 			loading,
 		};
@@ -333,11 +289,12 @@ const AUTH = {
 	selector: (state) => selectAllState(state[slice.name]),
 	action: slice.actions,
 	asyncAction: {
-		authPolicyVerificationAction,
 		userAuthAction,
 		logoutAction,
 		clientAuthAction,
-		GoogleAuthAction,
+		googleAuthAction,
+		naverAuthAction,
+		kakaoAuthAction,
 		altAuthVerificationAction,
 		refreshTokenAction,
 	},

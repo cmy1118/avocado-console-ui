@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 
-import {Axios, baseURL} from '../../../../api/constants';
+import {Axios} from '../../../../api/constants';
+import {contentType} from '../../../../utils/auth';
 
 const NAME = 'IAM_CLIENT';
 
@@ -16,9 +17,9 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 		},
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -34,9 +35,9 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 		},
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -45,7 +46,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 //todo : this function requires access_token and id
 const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 	const response = await Axios.delete(`/open/api/v1/clients/${payload.id}`, {
-		baseURL: baseURL.openApi,
+		baseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 	return response.data;
 });
@@ -55,7 +56,7 @@ const findByIdAction = createAsyncThunk(
 	`${NAME}/FIND_BY_ID`,
 	async (payload) => {
 		const response = await Axios.get(`/open/api/v1/clients/${payload.id}`, {
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		});
 		return response.data;
 	},
@@ -70,7 +71,7 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 		headers: {
 			Range: `elements=${payload.first}-${payload.last}`,
 		},
-		baseURL: baseURL.openApi,
+		baseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 	return {
 		...response.data,

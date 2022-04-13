@@ -6,13 +6,41 @@ import React, {
 } from 'react';
 import Form from '../../RecycleComponents/New/Form';
 import TextBox from '../../RecycleComponents/New/TextBox';
+import PropTypes from 'prop-types';
+import {
+	altAuthType,
+	googleAuth,
+	kakaoAuth,
+	naverAuth,
+} from '../../../utils/auth';
 
-const GetUserIdDialogBox = forwardRef((props, ref) => {
+const GetUserIdDialogBox = forwardRef(({type}, ref) => {
 	const formRef = useRef(null);
 
 	const onSubmitUserId = useCallback((data) => {
-		console.log('ASDFasfs');
 		console.log(data);
+		localStorage.setItem('id', data.id);
+
+		switch (type) {
+			//todo
+			case altAuthType.google:
+				location.href = googleAuth.location;
+				break;
+
+			case altAuthType.naver:
+				location.href = naverAuth.location;
+				break;
+
+			case altAuthType.kakao:
+				location.href = kakaoAuth.location;
+				break;
+
+			case altAuthType.apple:
+				break;
+
+			default:
+				break;
+		}
 	}, []);
 
 	useImperativeHandle(ref, () => ({
@@ -27,7 +55,7 @@ const GetUserIdDialogBox = forwardRef((props, ref) => {
 				onSubmit={onSubmitUserId}
 				innerRef={formRef}
 			>
-				<TextBox name={'id'} />
+				<TextBox name={'id'} placeholder={'id'} />
 			</Form>
 		</div>
 	);
@@ -35,4 +63,7 @@ const GetUserIdDialogBox = forwardRef((props, ref) => {
 
 GetUserIdDialogBox.displayName = 'GetUserIdDialogBox';
 
+GetUserIdDialogBox.propTypes = {
+	type: PropTypes.string.isRequired,
+};
 export default GetUserIdDialogBox;

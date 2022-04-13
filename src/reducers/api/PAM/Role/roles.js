@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import {baseURL, Axios} from '../../../../api/constants';
+import {contentType} from '../../../../utils/auth';
 
 const NAME = 'PAM_ROLES';
 
@@ -11,9 +12,9 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 		},
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -28,9 +29,9 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 		},
 		{
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': contentType.JSON,
 			},
-			baseURL: baseURL.openApi,
+			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -39,9 +40,9 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 	const response = await Axios.delete(`/open-api/v1/pam/role/${payload.id}`, {
 		headers: {
-			'Content-Type': 'application/json',
+			'Content-Type': contentType.JSON,
 		},
-		baseURL: baseURL.openApi,
+		aseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 	return response.data;
 });
@@ -52,7 +53,7 @@ const findRolesByIdsAction = createAsyncThunk(
 		const response = await Axios.get(
 			`/open-api/v1/pam/roles/${payload.id}`,
 			{
-				baseURL: baseURL.openApi,
+				aseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;
@@ -70,7 +71,7 @@ const getAllRolesAction = createAsyncThunk(
 			headers: {
 				Range: payload.range,
 			},
-			baseURL: baseURL.openApi,
+			aseURL: process.env.REACT_APP_OPEN_API_URL,
 		});
 		return {data: response.data, headers: response.headers};
 	},
@@ -92,7 +93,7 @@ const getEventsAction = createAsyncThunk(
 			headers: {
 				Range: payload.range,
 			},
-			baseURL: baseURL.openApi,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		});
 		return {data: response.data, headers: response.headers};
 	},
