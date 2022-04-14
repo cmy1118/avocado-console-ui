@@ -176,14 +176,6 @@ const Tds = styled(RowDiv)`
 	min-width: ${(props) => props.width};
 `;
 
-const _Container = styled.div`
-	// display: flex;
-	// flex-direction: column;
-	// flex: 1 1 auto;
-	// width: 0;
-	padding: 11px 15px 16px 16px;
-`;
-
 const BodyContainer = styled.div`
 	flex: 1;
 	overflow-y: scroll;
@@ -707,7 +699,7 @@ const Table = ({
 	// defaultClick && setSelectRow(selectedFlatRows);
 	// }, []);
 	return (
-		<_Container>
+		<div>
 			{(isPaginable || isSearchable || isStrSearchable) && (
 				<TableOptionsBar
 					isSearchable={isSearchable}
@@ -959,7 +951,7 @@ const Table = ({
 					)}
 				</Droppable>
 			</Styles>
-		</_Container>
+		</div>
 	);
 };
 

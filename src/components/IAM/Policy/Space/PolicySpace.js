@@ -25,6 +25,7 @@ import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../reducers/api/IAM/Policy/
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 import {policyTypes} from '../../../../utils/data';
+import {CreatePageContainer} from '../../../../styles/components/iam/addPage';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -307,17 +308,19 @@ const PolicySpace = () => {
 			</TitleBar>
 			<IamContents>
 				<IamSection>
-					<Table
-						tableKey={tableKeys.policy.basic}
-						columns={columns}
-						data={policyData}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-						setSearch={setSearch}
-						subComponentHandler={subComponentHandler}
-					/>
+					<CreatePageContainer>
+						<Table
+							tableKey={tableKeys.policy.basic}
+							columns={columns}
+							data={policyData}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+							setSearch={setSearch}
+							subComponentHandler={subComponentHandler}
+						/>
+					</CreatePageContainer>
 				</IamSection>
 			</IamContents>
 		</IamContainer>

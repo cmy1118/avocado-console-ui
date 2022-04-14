@@ -27,6 +27,7 @@ import PAM_SESSION from '../../../../reducers/api/PAM/session';
 import {RowDiv} from '../../../../styles/components/style';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
+import {CreatePageContainer} from '../../../../styles/components/iam/addPage';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -169,18 +170,21 @@ const UserSpace = () => {
 					</TitleBarButtons>
 				</RowDiv>
 			</TitleBar>
+
 			<IamContents>
 				<IamSection>
-					<Table
-						tableKey={tableKeys.users.basic}
-						columns={columns}
-						data={userData}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-						setSearch={setSearch}
-					/>
+					<CreatePageContainer>
+						<Table
+							tableKey={tableKeys.users.basic}
+							columns={columns}
+							data={userData}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+							setSearch={setSearch}
+						/>
+					</CreatePageContainer>
 				</IamSection>
 			</IamContents>
 		</IamContainer>
