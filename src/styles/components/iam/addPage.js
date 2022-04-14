@@ -11,6 +11,10 @@ export const IamSectionContents = styled.div`
 	padding: 16px;
 `;
 
+export const IamTabSectionContents = styled.div`
+	margin: 16px 0xp 0px 0px;
+`;
+
 export const CreatePageContent = styled.div`
 	padding: 0px;
 `;

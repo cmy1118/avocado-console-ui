@@ -32,4 +32,5 @@ export const CoveredByTabContent = styled.div`
 
 export const TabContentContainer = styled.div`
 	width: 100%;
+	padding: 16px 24px 24px 24px;
 `;
