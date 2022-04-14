@@ -14,7 +14,7 @@ import {
 } from '../../../utils/tableDataConverter';
 import {SummaryList} from '../../../styles/components/iam/descriptionPage';
 import {TitleBar} from '../../../styles/components/iam/iam';
-import {AddPageDialogBoxTitle} from '../../../styles/components/iam/addPage';
+import {CreatePageDialogBoxTitle} from '../../../styles/components/iam/addPage';
 import IAM_USER from '../../../reducers/api/IAM/User/User/user';
 import IAM_USER_GROUP_MEMBER from '../../../reducers/api/IAM/User/Group/groupMember';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../reducers/api/IAM/User/Role/GrantRole/user';
@@ -464,10 +464,10 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 				</LiText>
 			</SummaryList>
 
-			<AddPageDialogBoxTitle>
+			<CreatePageDialogBoxTitle>
 				그룹 :{' '}
 				{readOnlyData[tableKeys.users.add.groups.exclude]?.length}
-			</AddPageDialogBoxTitle>
+			</CreatePageDialogBoxTitle>
 			<Table
 				readOnly
 				tableKey={tableKeys.users.add.groups.exclude}
@@ -475,7 +475,7 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 				columns={tableColumns[tableKeys.users.add.groups.exclude]}
 			/>
 
-			<AddPageDialogBoxTitle>권한 : {''}</AddPageDialogBoxTitle>
+			<CreatePageDialogBoxTitle>권한 : {''}</CreatePageDialogBoxTitle>
 			<Table
 				readOnly
 				tableKey={tableKeys.users.add.permissions}
@@ -483,9 +483,9 @@ const UserPreviewDialogBox = ({isOpened, setIsOpened}) => {
 				columns={tableColumns[tableKeys.users.add.permissions]}
 			/>
 
-			<AddPageDialogBoxTitle>
+			<CreatePageDialogBoxTitle>
 				태그 : {readOnlyData[tableKeys.users.add.tag].length}
-			</AddPageDialogBoxTitle>
+			</CreatePageDialogBoxTitle>
 			<Table
 				readOnly
 				tableKey={tableKeys.users.add.tag}

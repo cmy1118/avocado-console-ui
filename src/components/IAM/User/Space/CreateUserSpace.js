@@ -5,12 +5,9 @@ import AssignRoleToUser from '../Components/Create/AssignRoleToUser';
 import AddUserToGroup from '../Components/Create/AddUserToGroup';
 import AddUser from '../Components/Create/AddUser';
 import UserPreviewDialogBox from '../../../DialogBoxs/Preview/UserPreviewDialogBox';
-import {
-	AddPageContainer,
-	AddSpaceContainer,
-} from '../../../../styles/components/iam/addPage';
+import {CreateSpaceContainer} from '../../../../styles/components/iam/addPage';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
-import {Header} from '../../../../styles/components/iam/iam';
+import {IamContents, TitleBar} from '../../../../styles/components/iam/iam';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -22,22 +19,22 @@ const CreateUserSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
 
 	return (
-		<AddSpaceContainer>
+		<CreateSpaceContainer>
 			<CurrentPathBar paths={paths} />
-			<Header>사용자 추가</Header>
+			<TitleBar>사용자 생성</TitleBar>
 
-			<AddPageContainer>
+			<IamContents>
 				<AddUser setIsOpened={setIsOpened} />
 				<AddUserToGroup />
 				<AssignRoleToUser />
 				<AddTagToUser />
-			</AddPageContainer>
+			</IamContents>
 
 			<UserPreviewDialogBox
 				isOpened={isOpened}
 				setIsOpened={setIsOpened}
 			/>
-		</AddSpaceContainer>
+		</CreateSpaceContainer>
 	);
 };
 

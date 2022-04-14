@@ -1,25 +1,25 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
-import Table from '../../../Table/Table';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
-import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
-import {TableTitle} from '../../../../styles/components/table';
+import Table from '../../../../../Table/Table';
+import IAM_USER_GROUP from '../../../../../../reducers/api/IAM/User/Group/group';
+import IAM_USER from '../../../../../../reducers/api/IAM/User/User/user';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../../Constants/Table/columns';
+import {TableTitle} from '../../../../../../styles/components/table';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../styles/components/buttons';
-import TableOptionText from '../../../Table/Options/TableOptionText';
-import DragContainer from '../../../Table/DragContainer';
-import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
-import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
-import PAGINATION from '../../../../reducers/pagination';
-import useSelectColumn from '../../../../hooks/table/useSelectColumn';
-import FoldableContainer from '../../../Table/Options/FoldableContainer';
+} from '../../../../../../styles/components/buttons';
+import TableOptionText from '../../../../../Table/Options/TableOptionText';
+import DragContainer from '../../../../../Table/DragContainer';
+import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
+import IAM_USER_GROUP_MEMBER from '../../../../../../reducers/api/IAM/User/Group/groupMember';
+import PAGINATION from '../../../../../../reducers/pagination';
+import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
+import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
 
-const GroupUsersTab = ({groupId, isSummaryOpened}) => {
+const GroupUserTab = ({groupId, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const {page} = useSelector(PAGINATION.selector);
@@ -249,9 +249,9 @@ const GroupUsersTab = ({groupId, isSummaryOpened}) => {
 	);
 };
 
-GroupUsersTab.propTypes = {
+GroupUserTab.propTypes = {
 	groupId: PropTypes.string.isRequired,
 	isSummaryOpened: PropTypes.bool,
 };
 
-export default GroupUsersTab;
+export default GroupUserTab;

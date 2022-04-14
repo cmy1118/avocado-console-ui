@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
-import AddGroup from '../Components/AddGroup';
-import AddTagToGroup from '../Components/AddTagToGroup';
-import UsersIncludedInGroup from '../Components/UsersIncludedInGroup';
-import ReadOnly from '../Components/ReadOnly';
+import AddGroup from '../Components/Create/AddGroup';
+import AddTagToGroup from '../Components/Create/AddTagToGroup';
+import AddUsersToGroup from '../Components/Create/AddUsersToGroup';
+import GroprupPreviewDialogBox from '../../../DialogBoxs/Preview/GroprupPreviewDialogBox';
 import {
-	AddPageContainer,
-	AddSpaceContainer,
+	CreatePageContainer,
+	CreateSpaceContainer,
 } from '../../../../styles/components/iam/addPage';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
-import AssignRoleToGroup from '../Components/AssignRoleToGroup';
+import AssignRoleToGroup from '../Components/Create/AssignRoleToGroup';
+import {IamContents, TitleBar} from '../../../../styles/components/iam/iam';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -16,7 +17,7 @@ const paths = [
 	{url: '/groups/add', label: '사용자 그룹 생성'},
 ];
 
-const AddGroupSpace = () => {
+const CreateGroupSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
 
 	const [groupMembers, setGroupMembers] = useState([]);
@@ -24,23 +25,27 @@ const AddGroupSpace = () => {
 	const [groupTags, setGroupTags] = useState([]);
 
 	return (
-		<AddSpaceContainer>
+		<CreateSpaceContainer>
 			<CurrentPathBar paths={paths} />
+			<TitleBar>사용자 그룹 생성</TitleBar>
 
-			<AddPageContainer>
+			<IamContents>
 				<AddGroup
 					setIsOpened={setIsOpened}
 					groupMembers={groupMembers}
 					groupRoles={groupRoles}
 					groupTags={groupTags}
 				/>
-				<UsersIncludedInGroup setValue={setGroupMembers} />
+				<AddUsersToGroup setValue={setGroupMembers} />
 				<AssignRoleToGroup setValue={setGroupRoles} />
 				<AddTagToGroup setValue={setGroupTags} />
-			</AddPageContainer>
-			<ReadOnly isOpened={isOpened} setIsOpened={setIsOpened} />
-		</AddSpaceContainer>
+			</IamContents>
+			<GroprupPreviewDialogBox
+				isOpened={isOpened}
+				setIsOpened={setIsOpened}
+			/>
+		</CreateSpaceContainer>
 	);
 };
 
-export default AddGroupSpace;
+export default CreateGroupSpace;

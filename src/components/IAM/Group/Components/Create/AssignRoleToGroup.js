@@ -1,19 +1,24 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import Table from '../../../Table/Table';
+import Table from '../../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
-import {totalNumberConverter} from '../../../../utils/tableDataConverter';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
-import CURRENT_TARGET from '../../../../reducers/currentTarget';
-import DropButton from '../../../Table/DropButton';
-import {ColDiv, RowDiv, TableHeader} from '../../../../styles/components/style';
-import TableOptionText from '../../../Table/Options/TableOptionText';
+import {totalNumberConverter} from '../../../../../utils/tableDataConverter';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../Constants/Table/columns';
+import CURRENT_TARGET from '../../../../../reducers/currentTarget';
+import DropButton from '../../../../Table/DropButton';
+import {
+	ColDiv,
+	RowDiv,
+	TableHeader,
+} from '../../../../../styles/components/style';
+import TableOptionText from '../../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import FoldableContainer from '../../../Table/Options/FoldableContainer';
-import DragContainer from '../../../Table/DragContainer';
-import useSelectColumn from '../../../../hooks/table/useSelectColumn';
-import PAGINATION from '../../../../reducers/pagination';
-import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
+import FoldableContainer from '../../../../Table/Options/FoldableContainer';
+import DragContainer from '../../../../Table/DragContainer';
+import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
+import PAGINATION from '../../../../../reducers/pagination';
+import IAM_ROLES from '../../../../../reducers/api/IAM/User/Role/roles';
+import {CreatePageContainer} from '../../../../../styles/components/iam/addPage';
 
 const AssignRoleToGroup = ({setValue}) => {
 	const dispatch = useDispatch();
@@ -21,8 +26,6 @@ const AssignRoleToGroup = ({setValue}) => {
 	const {page} = useSelector(PAGINATION.selector);
 
 	const [includedDataIds, setIncludedDataIds] = useState([]);
-
-	console.log(roles);
 
 	const [selected, setSelected] = useState({});
 
@@ -113,8 +116,7 @@ const AssignRoleToGroup = ({setValue}) => {
 	}, [excludeSelect, includeSelect]);
 
 	return (
-		<FoldableContainer title={'권한 추가'}>
-			<TableOptionText data={'roles'} />
+		<FoldableContainer title={'권한 추가'} bottomMargin={true}>
 			<DragContainer
 				selected={selected}
 				data={includedDataIds}
@@ -123,40 +125,47 @@ const AssignRoleToGroup = ({setValue}) => {
 				excludedData={iamExcludedData}
 				includedData={iamIncludedData}
 			>
-				<RowDiv>
-					<Table
-						isDraggable
-						data={iamExcludedData}
-						tableKey={tableKeys.groups.add.roles.exclude}
-						columns={excludeColumns}
-						isPaginable
-						isSearchable
-						// isSearchFilterable
-						// isColumnFilterable
-					/>
-					<RowDiv alignItems={'center'}>
-						<DropButton
-							leftTableKey={tableKeys.groups.add.roles.exclude}
-							RightTableKey={tableKeys.groups.add.roles.include}
-							select={selected}
-							dataRight={iamIncludedData}
-							dataLeft={iamExcludedData}
-							rightDataIds={includedDataIds}
-							setRightDataIds={setIncludedDataIds}
-						/>
-					</RowDiv>
-					<ColDiv>
-						<TableHeader>
-							추가 Roles: {includedDataIds.length}건
-						</TableHeader>
+				<CreatePageContainer>
+					<TableOptionText data={'roles'} />
+					<RowDiv>
 						<Table
 							isDraggable
-							data={iamIncludedData}
-							tableKey={tableKeys.groups.add.roles.include}
-							columns={includeColumns}
+							data={iamExcludedData}
+							tableKey={tableKeys.groups.add.roles.exclude}
+							columns={excludeColumns}
+							isPaginable
+							isSearchable
+							// isSearchFilterable
+							// isColumnFilterable
 						/>
-					</ColDiv>
-				</RowDiv>
+						<RowDiv alignItems={'center'}>
+							<DropButton
+								leftTableKey={
+									tableKeys.groups.add.roles.exclude
+								}
+								RightTableKey={
+									tableKeys.groups.add.roles.include
+								}
+								select={selected}
+								dataRight={iamIncludedData}
+								dataLeft={iamExcludedData}
+								rightDataIds={includedDataIds}
+								setRightDataIds={setIncludedDataIds}
+							/>
+						</RowDiv>
+						<ColDiv>
+							<TableHeader>
+								추가 Roles: {includedDataIds.length}건
+							</TableHeader>
+							<Table
+								isDraggable
+								data={iamIncludedData}
+								tableKey={tableKeys.groups.add.roles.include}
+								columns={includeColumns}
+							/>
+						</ColDiv>
+					</RowDiv>{' '}
+				</CreatePageContainer>
 			</DragContainer>
 		</FoldableContainer>
 	);

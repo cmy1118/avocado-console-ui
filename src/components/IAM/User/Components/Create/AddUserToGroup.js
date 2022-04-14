@@ -13,18 +13,17 @@ import {
 } from '../../../../../styles/components/style';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import DragContainer from '../../../../Table/DragContainer';
-import IAM_USER_GROUP_TYPE from '../../../../../reducers/api/IAM/User/Group/groupType';
 import PAGINATION from '../../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../../reducers/api/IAM/User/Group/groupMember';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {totalNumberConverter} from '../../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 import FoldableContainer from '../../../../Table/Options/FoldableContainer';
+import {CreatePageContainer} from '../../../../../styles/components/iam/addPage';
 
 const AddUserToGroup = () => {
 	const dispatch = useDispatch();
 	const [groups, setGroups] = useState([]);
-	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const [search, setSearch] = useState('');
 	const {page} = useSelector(PAGINATION.selector);
@@ -144,8 +143,7 @@ const AddUserToGroup = () => {
 	}, [excludeSelect, includeSelect]);
 
 	return (
-		<FoldableContainer title={'그룹에 사용자에 추가'}>
-			<TableOptionText data={'groups'} />
+		<FoldableContainer title={'그룹에 사용자에 추가'} bottomMargin={true}>
 			<DragContainer
 				selected={selected}
 				data={includedDataIds}
@@ -154,44 +152,51 @@ const AddUserToGroup = () => {
 				excludedData={excludedData}
 				includedData={includedData}
 			>
-				<RowDiv>
-					<Table
-						isDraggable
-						tableKey={tableKeys.users.add.groups.exclude}
-						columns={excludeColumns}
-						data={excludedData}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-						setSearch={setSearch}
-					/>
-					<RowDiv alignItems={'center'}>
-						<DropButton
-							leftTableKey={tableKeys.users.add.groups.exclude}
-							RightTableKey={tableKeys.users.add.groups.include}
-							select={selected}
-							dataLeft={excludedData}
-							dataRight={includedData}
-							rightDataIds={includedDataIds}
-							setRightDataIds={setIncludedDataIds}
-						/>
-					</RowDiv>
-					<ColDiv>
-						<TableHeader>
-							추가 그룹: {includedDataIds.length}건
-						</TableHeader>
+				<CreatePageContainer>
+					<TableOptionText data={'groups'} />
+					<RowDiv>
 						<Table
 							isDraggable
-							tableKey={tableKeys.users.add.groups.include}
-							columns={includeColumns}
-							data={includedData}
+							tableKey={tableKeys.users.add.groups.exclude}
+							columns={excludeColumns}
+							data={excludedData}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+							setSearch={setSearch}
 						/>
-					</ColDiv>
-				</RowDiv>
+						<RowDiv alignItems={'center'}>
+							<DropButton
+								leftTableKey={
+									tableKeys.users.add.groups.exclude
+								}
+								RightTableKey={
+									tableKeys.users.add.groups.include
+								}
+								select={selected}
+								dataLeft={excludedData}
+								dataRight={includedData}
+								rightDataIds={includedDataIds}
+								setRightDataIds={setIncludedDataIds}
+							/>
+						</RowDiv>
+						<ColDiv>
+							<TableHeader>
+								추가 그룹: {includedDataIds.length}건
+							</TableHeader>
+							<Table
+								isDraggable
+								tableKey={tableKeys.users.add.groups.include}
+								columns={includeColumns}
+								data={includedData}
+							/>
+						</ColDiv>
+					</RowDiv>
+				</CreatePageContainer>
 			</DragContainer>
 		</FoldableContainer>
 	);
 };
-AddUserToGroup.propTypes = {};
+
 export default AddUserToGroup;

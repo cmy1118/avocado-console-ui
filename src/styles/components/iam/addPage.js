@@ -1,26 +1,26 @@
 import styled from 'styled-components';
 import {TitleBar} from './iam';
 
-export const AddSpaceContainer = styled.div`
+export const CreateSpaceContainer = styled.div`
 	display: flex;
 	flex: 1 1 auto;
 	flex-direction: column;
 `;
-export const AddPageContainer = styled.div`
-	flex: 1 1 auto;
-	height: 0;
-	overflow: scroll;
+
+export const CreatePageContainer = styled.div`
 	padding: 16px;
-	backgounr-color: #f0f3f6;
 `;
-export const AddPageContent = styled.div`
-	padding: 0px 16px 30px 16px;
+
+export const CreatePageContent = styled.div`
+	padding: 0px;
 `;
-export const AddPageDialogBoxTitle = styled(TitleBar)`
+
+export const CreatePageDialogBoxTitle = styled(TitleBar)`
 	width: fit-content;
 	padding: 30px 16px 13px 16px;
 	color: black;
 `;
+
 export const TextBoxDescription = styled.span`
 	color: #757575;
 	margin: 0 10px;

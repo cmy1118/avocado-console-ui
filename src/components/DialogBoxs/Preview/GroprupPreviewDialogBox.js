@@ -1,15 +1,14 @@
 import React, {useCallback} from 'react';
-import ModalTableContainer from '../../../RecycleComponents/ModalTableContainer';
-import {tableKeys} from '../../../../Constants/Table/keys';
-import Table from '../../../Table/Table';
-import {tableColumns} from '../../../../Constants/Table/columns';
+import ModalTableContainer from '../../RecycleComponents/ModalTableContainer';
+import {tableKeys} from '../../../Constants/Table/keys';
+import Table from '../../Table/Table';
+import {tableColumns} from '../../../Constants/Table/columns';
 import {useSelector} from 'react-redux';
-import CURRENT_TARGET from '../../../../reducers/currentTarget';
+import CURRENT_TARGET from '../../../reducers/currentTarget';
 import PropTypes from 'prop-types';
-import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
-import {TableMode} from '../../../../Constants/Table/mode';
+import IAM_USER_GROUP_TYPE from '../../../reducers/api/IAM/User/Group/groupType';
 
-const ReadOnly = ({isOpened, setIsOpened}) => {
+const GroprupPreviewDialogBox = ({isOpened, setIsOpened}) => {
 	const {readOnlyData} = useSelector(CURRENT_TARGET.selector);
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 
@@ -70,9 +69,9 @@ const ReadOnly = ({isOpened, setIsOpened}) => {
 	);
 };
 
-ReadOnly.propTypes = {
+GroprupPreviewDialogBox.propTypes = {
 	isOpened: PropTypes.bool.isRequired,
 	setIsOpened: PropTypes.func.isRequired,
 };
 
-export default ReadOnly;
+export default GroprupPreviewDialogBox;

@@ -12,6 +12,7 @@ import {
 } from '../../../../../styles/components/buttons';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import Table from '../../../../Table/Table';
+import {CreatePageContainer} from '../../../../../styles/components/iam/addPage';
 
 let newRowIndex = 0;
 const AddTagToUser = () => {
@@ -86,14 +87,16 @@ const AddTagToUser = () => {
 				</TitleBarButtons>
 			)}
 		>
-			<TableOptionText data={'tags'} />
-			<Table
-				tableKey={tableKeys.users.add.tag}
-				data={tagData}
-				setData={setData}
-				columns={columns}
-				tableRefs={tableRefs}
-			/>
+			<CreatePageContainer>
+				<TableOptionText data={'tags'} />
+				<Table
+					tableKey={tableKeys.users.add.tag}
+					data={tagData}
+					setData={setData}
+					columns={columns}
+					tableRefs={tableRefs}
+				/>
+			</CreatePageContainer>
 		</FoldableContainer>
 	);
 };

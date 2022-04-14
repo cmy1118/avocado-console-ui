@@ -1,31 +1,31 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import Table from '../../../Table/Table';
+import Table from '../../../../../Table/Table';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
-import {tableColumns} from '../../../../Constants/Table/columns';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
-import {TableTitle} from '../../../../styles/components/table';
+import {tableColumns} from '../../../../../../Constants/Table/columns';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
+import {TableTitle} from '../../../../../../styles/components/table';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../styles/components/buttons';
-import TableOptionText from '../../../Table/Options/TableOptionText';
-import {TabContentContainer} from '../../../../styles/components/iam/iamTab';
-import {TitleBarButtons} from '../../../../styles/components/iam/iam';
-import useSelectColumn from '../../../../hooks/table/useSelectColumn';
-import IAM_USER_GROUP_TAG from '../../../../reducers/api/IAM/User/Group/tags';
-import DragContainer from '../../../Table/DragContainer';
-import FoldableContainer from '../../../Table/Options/FoldableContainer';
-import IAM_GRANT_REVOKE_TAG from '../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeTag';
-import {ATTRIBUTE_TYPES} from '../../../../utils/policy/policy';
-import {totalNumberConverter} from '../../../../utils/tableDataConverter';
+} from '../../../../../../styles/components/buttons';
+import TableOptionText from '../../../../../Table/Options/TableOptionText';
+import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
+import {TitleBarButtons} from '../../../../../../styles/components/iam/iam';
+import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
+import IAM_USER_GROUP_TAG from '../../../../../../reducers/api/IAM/User/Group/tags';
+import DragContainer from '../../../../../Table/DragContainer';
+import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
+import IAM_GRANT_REVOKE_TAG from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeTag';
+import {ATTRIBUTE_TYPES} from '../../../../../../utils/policy/policy';
+import {totalNumberConverter} from '../../../../../../utils/tableDataConverter';
 
 const TAG_TABLE_KEY = tableKeys.groups.summary.tabs.tags.basic;
 const ROLE_INCLUDE_KEY = tableKeys.groups.summary.tabs.tags.permissions.include;
 const ROLE_EXCLUDE_KEY = tableKeys.groups.summary.tabs.tags.permissions.exclude;
 let index = 0;
 
-const GroupOnDescPageTags = ({groupId}) => {
+const GroupTagTab = ({groupId}) => {
 	const tableRefs = useRef([]);
 	const dispatch = useDispatch();
 	const [tags, setTags] = useState([]);
@@ -298,8 +298,8 @@ const GroupOnDescPageTags = ({groupId}) => {
 	);
 };
 
-GroupOnDescPageTags.propTypes = {
+GroupTagTab.propTypes = {
 	groupId: PropTypes.string,
 };
 
-export default GroupOnDescPageTags;
+export default GroupTagTab;
