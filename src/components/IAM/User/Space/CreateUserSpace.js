@@ -5,7 +5,6 @@ import AssignRoleToUser from '../Components/Create/AssignRoleToUser';
 import AddUserToGroup from '../Components/Create/AddUserToGroup';
 import AddUser from '../Components/Create/AddUser';
 import UserPreviewDialogBox from '../../../DialogBoxs/Preview/UserPreviewDialogBox';
-import {CreateSpaceContainer} from '../../../../styles/components/iam/addPage';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import {
 	IamContainer,

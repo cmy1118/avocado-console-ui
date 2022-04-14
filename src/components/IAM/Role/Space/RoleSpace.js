@@ -16,8 +16,6 @@ import {
 	TitleBar,
 	TitleBarButtons,
 } from '../../../../styles/components/iam/iam';
-import {NormalButton, TransparentButton} from '../../../../styles/components/buttons';
-import {IamContainer, TitleBar, TitleBarButtons} from '../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../reducers/pagination';
 import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import {useHistory} from 'react-router-dom';
@@ -25,8 +23,7 @@ import CurrentPathBar from '../../../Header/CurrentPathBar';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 import {RowDiv} from '../../../../styles/components/style';
 import {IamSectionContents} from '../../../../styles/components/iam/addPage';
-import {isFulfilled} from "../../../../utils/redux";
-import IAM_ROLES from "../../../../reducers/api/IAM/User/Role/roles";
+import {isFulfilled} from '../../../../utils/redux';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -34,7 +31,7 @@ const paths = [
 ];
 
 const RoleSpace = () => {
-	const [select, columns] = useSelectColumn(
+	const [selectColumns, columns] = useSelectColumn(
 		tableColumns[tableKeys.roles.basic],
 	);
 	const dispatch = useDispatch();
@@ -57,28 +54,37 @@ const RoleSpace = () => {
 		);
 	}, [roles]);
 
-	const getRoleApi = useCallback(async (search) =>{
-			if(page[tableKeys.roles.basic]){
+	const getRoleApi = useCallback(
+		async (search) => {
+			if (page[tableKeys.roles.basic]) {
 				const res = await dispatch(
 					IAM_ROLES.asyncAction.getsAction({
 						range: page[tableKeys.roles.basic],
 						...(search && {keyword: search}),
-					})
+					}),
 				);
-				if(isFulfilled(res)){
+				if (isFulfilled(res)) {
 					dispatch(
 						PAGINATION.action.setTotal({
 							tableKey: tableKeys.roles.basic,
 							element: totalNumberConverter(
 								res.payload.headers['content-range'],
 							),
-						})
-					)
-					setTotal( totalNumberConverter(res.payload.headers['content-range']))
-					res.payload.data.length ? await getRoleDetailApi(res.payload) : setRoles([])
+						}),
+					);
+					setTotal(
+						totalNumberConverter(
+							res.payload.headers['content-range'],
+						),
+					);
+					res.payload.data.length
+						? await getRoleDetailApi(res.payload)
+						: setRoles([]);
 				}
 			}
-	},[dispatch,page])
+		},
+		[dispatch, page],
+	);
 	const getRoleDetailApi = useCallback(async (res) => {
 		const arr = [];
 		res.data.map((v) => {
@@ -90,26 +96,25 @@ const RoleSpace = () => {
 				createdTime: v.createdTag.createdTime,
 				numberOfPermissions: v.grantedCount,
 				type: v.maxGrants === '1' ? 'Private' : 'Public',
-			})
-		})
-		setRoles(arr)
-	},[]);
-	const onClickLinkToAddRole = useCallback(() => {
+			});
+		});
+		setRoles(arr);
+	}, []);
+	const onCLickLinkToAddRole = useCallback(() => {
 		history.push('/roles/add');
 	}, [history]);
 
 	const onClickDeleteRoles = useCallback(() => {
-		if(select[tableKeys.roles.basic].length > 0) {
+		if (select[tableKeys.roles.basic].length > 0) {
 			select[tableKeys.roles.basic].forEach(async (v) => {
 				const res = await dispatch(
 					IAM_ROLES.asyncAction.deleteAction({
-						id: v.id
-					})
-				)
-
-			})
+						id: v.id,
+					}),
+				);
+			});
 		}
-	},[dispatch,select]);
+	}, [dispatch, select]);
 
 	useEffect(() => {
 		getRoleApi(search);
@@ -130,7 +135,10 @@ const RoleSpace = () => {
 						<NormalButton onClick={onCLickLinkToAddRole}>
 							역할 생성
 						</NormalButton>
-						<TransparentButton margin={'0px 0px 0px 5px'} onClick={onClickDeleteRoles}>
+						<TransparentButton
+							margin={'0px 0px 0px 5px'}
+							onClick={onClickDeleteRoles}
+						>
 							삭제
 						</TransparentButton>
 					</TitleBarButtons>
@@ -149,7 +157,6 @@ const RoleSpace = () => {
 							isSearchFilterable
 							isColumnFilterable
 							setSelect={setSelect}
-
 						/>
 					</IamSectionContents>
 				</IamSection>

@@ -6,45 +6,63 @@ import DropButton from '../../../../Table/DropButton';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../../../reducers/currentTarget';
-import {ColDiv, CollapsbleContent, RowDiv, TableHeader} from '../../../../../styles/components/style';
+import {
+	ColDiv,
+	CollapsbleContent,
+	RowDiv,
+	TableHeader,
+} from '../../../../../styles/components/style';
 import PropTypes from 'prop-types';
 import FoldableContainer from '../../../../Table/Options/FoldableContainer';
 import DragContainer from '../../../../Table/DragContainer';
 import PAGINATION from '../../../../../reducers/pagination';
-import {isFulfilled} from "@reduxjs/toolkit";
-import {totalNumberConverter} from "../../../../../utils/tableDataConverter";
+import {isFulfilled} from '@reduxjs/toolkit';
+import {totalNumberConverter} from '../../../../../utils/tableDataConverter';
 import {
 	expiredConverter,
 	groupsConverter,
 } from '../../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
+import TableOptionText from '../../../../Table/Options/TableOptionText';
 
-const ConnectUserToRole = ({setValue,usage , maxGrants}) => {
+const ConnectUserToRole = ({setValue, usage, maxGrants}) => {
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
 	const [search, setSearch] = useState('');
 
-	const [users,setUsers] = useState([]);
+	const [users, setUsers] = useState([]);
 
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
-	const includedData = useMemo(() =>{
+	const [includeSelect, includeColumns] = useSelectColumn(
+		tableColumns[tableKeys.roles.add.users.include],
+	);
+	const [excludeSelect, excludeColumns] = useSelectColumn(
+		tableColumns[tableKeys.roles.add.users.exclude],
+	);
+	const [selected, setSelected] = useState({});
+
+	const includedData = useMemo(() => {
 		return (
-			users.filter((v) => includedDataIds.includes(v.userUid)).map((v) => ({
-				...v,
-				[DRAGGABLE_KEY]: v.userUid,
-			})) || []
-		)
-	},[users,includedDataIds]);
+			users
+				.filter((v) => includedDataIds.includes(v.userUid))
+				.map((v) => ({
+					...v,
+					[DRAGGABLE_KEY]: v.userUid,
+				})) || []
+		);
+	}, [users, includedDataIds]);
 	const excludedData = useMemo(() => {
 		return (
-			users.filter((v) => !includedDataIds.includes(v.userUid)).map((v) => ({
-				...v,
-				[DRAGGABLE_KEY]: v.userUid,
-			})) || []
-		)
-	},[users,includedDataIds])
+			users
+				.filter((v) => !includedDataIds.includes(v.userUid))
+				.map((v) => ({
+					...v,
+					[DRAGGABLE_KEY]: v.userUid,
+				})) || []
+		);
+	}, [users, includedDataIds]);
 
 	useEffect(() => {
 		dispatch(
@@ -55,28 +73,33 @@ const ConnectUserToRole = ({setValue,usage , maxGrants}) => {
 		);
 	}, [dispatch, includedData]);
 
-	const getUsersApi = useCallback( async (search) =>{
-		if(page[tableKeys.roles.add.users.exclude]){
-			const res = await dispatch(
-				IAM_USER.asyncAction.findAllAction({
-					range: page[tableKeys.roles.add.users.exclude],
-					...(search && {keyword: search}),
-				}),
-			)
-
-			if(isFulfilled(res)){
-				dispatch(
-					PAGINATION.action.setTotal({
-						tableKey: tableKeys.roles.add.users.exclude,
-						element: totalNumberConverter(
-							res.payload.headers['content-range'],
-						),
+	const getUsersApi = useCallback(
+		async (search) => {
+			if (page[tableKeys.roles.add.users.exclude]) {
+				const res = await dispatch(
+					IAM_USER.asyncAction.findAllAction({
+						range: page[tableKeys.roles.add.users.exclude],
+						...(search && {keyword: search}),
 					}),
 				);
-				res.payload.data.length ? await getUsersDetailApi(res.payload) : setUsers([]);
+
+				if (isFulfilled(res)) {
+					dispatch(
+						PAGINATION.action.setTotal({
+							tableKey: tableKeys.roles.add.users.exclude,
+							element: totalNumberConverter(
+								res.payload.headers['content-range'],
+							),
+						}),
+					);
+					res.payload.data.length
+						? await getUsersDetailApi(res.payload)
+						: setUsers([]);
+				}
 			}
-		}
-	},[dispatch, page])
+		},
+		[dispatch, page],
+	);
 	const getUsersDetailApi = useCallback(async (res) => {
 		const arr = [];
 
@@ -85,15 +108,15 @@ const ConnectUserToRole = ({setValue,usage , maxGrants}) => {
 				...v,
 				lastConsoleLogin: v.lastConsoleLoginTime,
 				createdTime: v.createdTag.createdTime,
-				numberOfGroups: v.groups ? v.groups.length : 0
-			})
-		})
-		setUsers(arr)
-	},[])
+				numberOfGroups: v.groups ? v.groups.length : 0,
+			});
+		});
+		setUsers(arr);
+	}, []);
 
-	useEffect (() => {
+	useEffect(() => {
 		getUsersApi(search);
-	},[getUsersApi, page, search])
+	}, [getUsersApi, page, search]);
 
 	useEffect(() => {
 		setSelected({
@@ -112,8 +135,8 @@ const ConnectUserToRole = ({setValue,usage , maxGrants}) => {
 				includedKey={tableKeys.roles.add.users.include}
 				excludedData={excludedData}
 				includedData={includedData}
-				maxCount = {maxGrants}
-				usage = {usage}
+				maxCount={maxGrants}
+				usage={usage}
 			>
 				<RowDiv>
 					<Table
@@ -136,8 +159,8 @@ const ConnectUserToRole = ({setValue,usage , maxGrants}) => {
 							dataRight={includedData}
 							rightDataIds={includedDataIds}
 							setRightDataIds={setIncludedDataIds}
-							maxCount = {maxGrants}
-							usage = {usage}
+							maxCount={maxGrants}
+							usage={usage}
 						/>
 					</RowDiv>
 					<ColDiv>
@@ -161,8 +184,8 @@ ConnectUserToRole.propTypes = {
 	isFold: PropTypes.object,
 	setIsFold: PropTypes.func,
 	space: PropTypes.string,
-	usage:PropTypes.string,
-	maxGrants:PropTypes.number
+	usage: PropTypes.string,
+	maxGrants: PropTypes.number,
 	setValue: PropTypes.func,
 };
 export default ConnectUserToRole;

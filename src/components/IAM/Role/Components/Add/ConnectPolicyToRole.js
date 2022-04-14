@@ -5,20 +5,28 @@ import DropButton from '../../../../Table/DropButton';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../../../reducers/currentTarget';
-import {ColDiv, CollapsbleContent, RowDiv, TableHeader} from '../../../../../styles/components/style';
+import {
+	ColDiv,
+	CollapsbleContent,
+	RowDiv,
+	TableHeader,
+} from '../../../../../styles/components/style';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
 import TableFold from '../../../../Table/Options/TableFold';
 import DragContainer from '../../../../Table/DragContainer';
-import {FoldableContainer} from '../../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../../reducers/pagination';
+import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
+import {isFulfilled} from '../../../../../utils/redux';
+import {totalNumberConverter} from '../../../../../utils/tableDataConverter';
+import FoldableContainer from '../../../../Table/Options/FoldableContainer';
 
 const ConnectPolicyToRole = ({setValue}) => {
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
 	const [search, setSearch] = useState('');
 
-	const [policies,setPolicies] = useState([]);
+	const [policies, setPolicies] = useState([]);
 
 	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
@@ -27,45 +35,54 @@ const ConnectPolicyToRole = ({setValue}) => {
 		pam: 'PAM',
 	};
 
-	const includedData = useMemo(() =>{
+	const includedData = useMemo(() => {
 		return (
-			policies.filter((v) => includedDataIds.includes(v.id)).map((v) => ({
-				...v,
-				[DRAGGABLE_KEY]: v.id,
-			})) || []
-		)
-	},[policies,includedDataIds])
+			policies
+				.filter((v) => includedDataIds.includes(v.id))
+				.map((v) => ({
+					...v,
+					[DRAGGABLE_KEY]: v.id,
+				})) || []
+		);
+	}, [policies, includedDataIds]);
 	const excludedData = useMemo(() => {
 		return (
-			policies.filter((v) => !includedDataIds.includes(v.id)).map((v) => ({
-				...v,
-				[DRAGGABLE_KEY]: v.id,
-			})) || []
-		)
-	},[policies,includedDataIds])
+			policies
+				.filter((v) => !includedDataIds.includes(v.id))
+				.map((v) => ({
+					...v,
+					[DRAGGABLE_KEY]: v.id,
+				})) || []
+		);
+	}, [policies, includedDataIds]);
 
-	const getPoliciesApi = useCallback(async (search) => {
-		if(page[tableKeys.roles.add.policies.exclude]){
-			const res = await dispatch(
-				IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.findAll({
-					range: page[tableKeys.roles.add.policies.exclude],
-					...(search && {keyword: search})
-				})
-			)
-
-			if(isFulfilled(res)){
-				dispatch(
-					PAGINATION.action.setTotal({
-						tableKey: tableKeys.roles.add.policies.exclude,
-						element: totalNumberConverter(
-							res.payload.headers['content-range'],
-						),
+	const getPoliciesApi = useCallback(
+		async (search) => {
+			if (page[tableKeys.roles.add.policies.exclude]) {
+				const res = await dispatch(
+					IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.findAll({
+						range: page[tableKeys.roles.add.policies.exclude],
+						...(search && {keyword: search}),
 					}),
 				);
-				res.payload.data.length ? await getPoliciesDetailApi(res.payload) : setPolicies([])
+
+				if (isFulfilled(res)) {
+					dispatch(
+						PAGINATION.action.setTotal({
+							tableKey: tableKeys.roles.add.policies.exclude,
+							element: totalNumberConverter(
+								res.payload.headers['content-range'],
+							),
+						}),
+					);
+					res.payload.data.length
+						? await getPoliciesDetailApi(res.payload)
+						: setPolicies([]);
+				}
 			}
-		}
-	},[dispatch, page])
+		},
+		[dispatch, page],
+	);
 	const getPoliciesDetailApi = useCallback((res) => {
 		const arr = [];
 		res.data.map((v) => {
@@ -73,14 +90,14 @@ const ConnectPolicyToRole = ({setValue}) => {
 				id: v.id,
 				name: v.name,
 				type: APPLICATION_CODE.iam,
-				description:v.description === '' ? '없음' : v.description,
-				numberOfUsers:v.grantCount,
-				createdTime:v.createdTag.createdTime,
-			})
-		})
+				description: v.description === '' ? '없음' : v.description,
+				numberOfUsers: v.grantCount,
+				createdTime: v.createdTag.createdTime,
+			});
+		});
 
-		setPolicies(arr)
-	},[])
+		setPolicies(arr);
+	}, []);
 
 	useEffect(() => {
 		dispatch(
@@ -90,9 +107,9 @@ const ConnectPolicyToRole = ({setValue}) => {
 			}),
 		);
 	}, [dispatch, includedData]);
-	useEffect (() => {
+	useEffect(() => {
 		getPoliciesApi(search);
-	},[getPoliciesApi, page, search])
+	}, [getPoliciesApi, page, search]);
 
 	return (
 		<FoldableContainer title={'역할에 정책 연결'}>
@@ -131,7 +148,6 @@ const ConnectPolicyToRole = ({setValue}) => {
 							rightDataIds={includedDataIds}
 							setRightDataIds={setIncludedDataIds}
 							maxCount={5}
-
 						/>
 					</RowDiv>
 					<ColDiv>

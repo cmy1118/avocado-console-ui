@@ -42,35 +42,3 @@ export const formKeys = {
 	addGroupForm: 'add-group-form',
 	userInfoForm: 'userAuth-info-form',
 };
-
-//테이블 unfold 데이터
-export const FOLD_DATA = {
-	//ADD_USER_SPACE
-	AddUserToGroup: false,
-	AssignRoleToUser: false,
-	AddTagToUser: false,
-
-	//USER_TAP_SPACE
-	UserGroupsTab: false,
-	UserRolesTab: false,
-	UserOnDescPageTags: false,
-
-	//ADD_GROUP_SPACE
-	UsersIncludedInGroup: false,
-	AssignRoleToGroup: false,
-	AddTagToGroup: false,
-
-	//GROUP_TAP_SPACE
-	GroupUsersTab: false,
-	GroupRolesTab: false,
-	GroupOnDescPageTags: false,
-
-	//ADD_ROLE_SPACE
-	RolePolicyTab: false,
-	RoleUserTab: false,
-	RoleGroupTab: false,
-
-//=================================================
-	//ADD_ROLE_SPACE
-	ConnectPolicyToRole: false,
-};
