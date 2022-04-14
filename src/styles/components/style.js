@@ -56,9 +56,13 @@ export const ColDiv = styled(RowDiv)`
 `;
 //group, role add page 정리 후 삭제 예정
 export const TableHeader = styled.div`
-	height: 62px;
+	font-size: 13px;
+	font-weight: 500;
+	letter-spacing: -0.25px;
+	color: #1e2a42;
+	height: 32px;
+	margin: 0 0 10px;
 	display: flex;
-	padding: 14px 16px;
 	align-items: center;
 `;
 

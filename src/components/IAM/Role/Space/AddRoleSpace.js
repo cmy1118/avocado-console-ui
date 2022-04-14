@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {
-	CreatePageContainer,
+	IamSectionContents,
 	CreateSpaceContainer,
 } from '../../../../styles/components/iam/addPage';
 import ConnectPolicyToRole from '../Components/Add/ConnectPolicyToRole';
@@ -28,7 +28,7 @@ const AddRoleSpace = () => {
 		<CreateSpaceContainer>
 			<CurrentPathBar paths={paths} />
 
-			<CreatePageContainer>
+			<IamSectionContents>
 				<AddRole
 					setIsOpened={setIsOpened}
 					values={values}
@@ -39,7 +39,7 @@ const AddRoleSpace = () => {
 				<ConnectPolicyToRole setValue={setGroupMembers} />
 				<ConnectUserToRole setValue={setGroupMembers} />
 				<ConnectGroupToRole setValue={setGroupMembers} />
-			</CreatePageContainer>
+			</IamSectionContents>
 		</CreateSpaceContainer>
 	);
 };

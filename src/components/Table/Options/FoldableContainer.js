@@ -7,6 +7,8 @@ import {IamSectionTitleBar} from '../../../styles/components/iam/iam';
 
 export const _Container = styled.div`
 	background-color: #ffffff;
+	box-shadow: 0 3.5px 5.5px 0 rgba(0, 0, 0, 0.02);
+	border: solid 1px #e1e7eb;
 	margin-bottom: ${(props) => (props.bottomMargin ? '16px' : '0px')};
 `;
 
@@ -17,7 +19,7 @@ const _TableFoldTitle = styled.div`
 
 const _CollapsbleContent = styled.div`
 	height: ${(props) => (props.isOpened ? '474px' : '0px')};
-	overflow: hidden;
+	overflow: scroll;
 	transition: height 0.4s ease-out;
 `;
 

@@ -5,7 +5,7 @@ import {
 	TitleBar,
 } from '../../../../styles/components/iam/iam';
 import CreatePolicy from '../Components/Create/CreatePolicy';
-import {CreatePageContainer} from '../../../../styles/components/iam/addPage';
+import {IamSectionContents} from '../../../../styles/components/iam/addPage';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const paths = [

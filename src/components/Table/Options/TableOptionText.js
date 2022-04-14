@@ -37,17 +37,14 @@ const _TableOptionTextContainer = styled.div`
 `;
 
 const _TableOptionTextContants = styled.div`
-	padding: 2px 2px;
+	padding: 0px 4px;
 	display: flex;
 	align-items: center;
-	font-size: 12px;
-	font-weight: normal;
-	font-stretch: normal;
-	font-style: normal;
-	line-height: 1.6;
-	letter-spacing: 0.1px;
+	font-size: 13px;
+	line-height: 1.8;
+	letter-spacing: -0.25px;
 	text-align: left;
-	color: #959ea1;
+	color: #343f55;
 `;
 
 const TableOptionText = ({data}) => {

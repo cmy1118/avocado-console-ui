@@ -25,6 +25,7 @@ import {totalNumberConverter} from '../../../../utils/tableDataConverter';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 import {RowDiv} from '../../../../styles/components/style';
+import {IamSectionContents} from '../../../../styles/components/iam/addPage';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -225,16 +226,18 @@ const GroupSpace = () => {
 			</TitleBar>
 			<IamContents>
 				<IamSection>
-					<Table
-						tableKey={tableKeys.groups.basic}
-						columns={columns}
-						data={data}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-						setSearch={setSearch}
-					/>
+					<IamSectionContents>
+						<Table
+							tableKey={tableKeys.groups.basic}
+							columns={columns}
+							data={data}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+							setSearch={setSearch}
+						/>
+					</IamSectionContents>
 				</IamSection>
 			</IamContents>
 		</IamContainer>

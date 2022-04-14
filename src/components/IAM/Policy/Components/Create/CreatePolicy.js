@@ -11,7 +11,7 @@ import {
 	TransparentButton,
 } from '../../../../../styles/components/buttons';
 import {
-	CreatePageContainer,
+	IamSectionContents,
 	CreatePageContent,
 	TextBoxDescription,
 } from '../../../../../styles/components/iam/addPage';
@@ -99,7 +99,7 @@ const CreatePolicy = () => {
 						</TransparentButton>
 					</TitleBarButtons>
 				</IamSectionTitleBar>
-				<CreatePageContainer>
+				<IamSectionContents>
 					<RowDiv margin={'0px 0px 12px 0px'}>
 						{policyNameTextBox()}
 						<TextBoxDescription>
@@ -112,13 +112,13 @@ const CreatePolicy = () => {
 							최대 200자 가능합니다.
 						</TextBoxDescription>
 					</RowDiv>
-					<RowDiv margin={'0px 0px 12px 0px'}>
+					<RowDiv margin={'0px'}>
 						{policyTypeComboBox()}
 						<TextBoxDescription>
 							정책 유형을 선택 합니다.
 						</TextBoxDescription>
 					</RowDiv>
-				</CreatePageContainer>
+				</IamSectionContents>
 			</IamSectionBottomMargin>
 
 			<WritePolicy

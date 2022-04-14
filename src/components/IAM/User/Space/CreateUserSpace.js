@@ -7,7 +7,11 @@ import AddUser from '../Components/Create/AddUser';
 import UserPreviewDialogBox from '../../../DialogBoxs/Preview/UserPreviewDialogBox';
 import {CreateSpaceContainer} from '../../../../styles/components/iam/addPage';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
-import {IamContents, TitleBar} from '../../../../styles/components/iam/iam';
+import {
+	IamContainer,
+	IamContents,
+	TitleBar,
+} from '../../../../styles/components/iam/iam';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -19,7 +23,7 @@ const CreateUserSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
 
 	return (
-		<CreateSpaceContainer>
+		<IamContainer>
 			<CurrentPathBar paths={paths} />
 			<TitleBar>사용자 생성</TitleBar>
 
@@ -34,7 +38,7 @@ const CreateUserSpace = () => {
 				isOpened={isOpened}
 				setIsOpened={setIsOpened}
 			/>
-		</CreateSpaceContainer>
+		</IamContainer>
 	);
 };
 

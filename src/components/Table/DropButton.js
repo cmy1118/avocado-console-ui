@@ -15,7 +15,7 @@ import {arrowLeft, arrowRight} from '../../icons/icons';
 import styled from 'styled-components';
 import {confirmAlertMessages} from '../../utils/alertMessage';
 
-const BorderHoverIconButton = styled(IconButton)`
+const _BorderHoverIconButton = styled(IconButton)`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -23,7 +23,7 @@ const BorderHoverIconButton = styled(IconButton)`
 	height: 34px;
 	box-sizing: border-box;
 	padding: 2px;
-	margin: 6px;
+	margin: 4px 12px;
 	border-radius: 4px;
 	border: solid 1px #c2c2c2;
 	&:hover {
@@ -199,13 +199,16 @@ const DropButton = ({
 
 	return (
 		<ColDiv>
-			<BorderHoverIconButton size={'sm'} onClick={onClickLeftDropButton}>
+			<_BorderHoverIconButton size={'sm'} onClick={onClickLeftDropButton}>
 				{arrowRight}
-			</BorderHoverIconButton>
+			</_BorderHoverIconButton>
 
-			<BorderHoverIconButton size={'sm'} onClick={onClickRightDropButton}>
+			<_BorderHoverIconButton
+				size={'sm'}
+				onClick={onClickRightDropButton}
+			>
 				{arrowLeft}
-			</BorderHoverIconButton>
+			</_BorderHoverIconButton>
 		</ColDiv>
 	);
 };

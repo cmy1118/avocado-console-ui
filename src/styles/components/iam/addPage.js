@@ -7,7 +7,7 @@ export const CreateSpaceContainer = styled.div`
 	flex-direction: column;
 `;
 
-export const CreatePageContainer = styled.div`
+export const IamSectionContents = styled.div`
 	padding: 16px;
 `;
 
@@ -22,9 +22,11 @@ export const CreatePageDialogBoxTitle = styled(TitleBar)`
 `;
 
 export const TextBoxDescription = styled.span`
-	color: #757575;
+	color: #343f55;
 	margin: 0 10px;
-	font-size: 12px;
+	font-size: 11px;
 	display: inline-flex;
+	line-height: 1.91;
+	letter-spacing: -0.25px;
 	align-items: center;
 `;

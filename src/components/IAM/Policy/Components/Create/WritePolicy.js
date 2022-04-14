@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {NormalButton} from '../../../../../styles/components/buttons';
 import {
+	IamSectionBottomMargin,
+	IamSectionTitleBar,
 	TitleBar,
 	TitleBarButtons,
 	TitleBarText,
@@ -32,8 +34,8 @@ const WritePolicy = ({title, description, policyType}) => {
 	const [isOpened, setIsOpened] = useState(false);
 
 	return (
-		<Container>
-			<TitleBar>
+		<IamSectionBottomMargin>
+			<IamSectionTitleBar>
 				<TitleBarText>
 					{title}
 					<TextBoxDescription>{description}</TextBoxDescription>
@@ -48,7 +50,7 @@ const WritePolicy = ({title, description, policyType}) => {
 						{contents.add}
 					</NormalButton>
 				</TitleBarButtons>
-			</TitleBar>
+			</IamSectionTitleBar>
 			<Body>
 				<Templates
 					isOpened={isOpened}
@@ -56,7 +58,7 @@ const WritePolicy = ({title, description, policyType}) => {
 					policyType={policyType}
 				/>
 			</Body>
-		</Container>
+		</IamSectionBottomMargin>
 	);
 };
 

@@ -17,7 +17,7 @@ import PAGINATION from '../../../../../reducers/pagination';
 import CURRENT_TARGET from '../../../../../reducers/currentTarget';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 import FoldableContainer from '../../../../Table/Options/FoldableContainer';
-import {CreatePageContainer} from '../../../../../styles/components/iam/addPage';
+import {IamSectionContents} from '../../../../../styles/components/iam/addPage';
 
 const AssignRoleToUser = () => {
 	const dispatch = useDispatch();
@@ -111,7 +111,7 @@ const AssignRoleToUser = () => {
 				excludedData={excludedData}
 				includedData={includedData}
 			>
-				<CreatePageContainer>
+				<IamSectionContents>
 					<TableOptionText data={'roles'} />
 					<RowDiv>
 						<Table
@@ -149,7 +149,7 @@ const AssignRoleToUser = () => {
 							/>
 						</ColDiv>
 					</RowDiv>
-				</CreatePageContainer>
+				</IamSectionContents>
 			</DragContainer>
 		</FoldableContainer>
 	);

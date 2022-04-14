@@ -19,7 +19,7 @@ import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Rol
 import {totalNumberConverter} from '../../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 import FoldableContainer from '../../../../Table/Options/FoldableContainer';
-import {CreatePageContainer} from '../../../../../styles/components/iam/addPage';
+import {IamSectionContents} from '../../../../../styles/components/iam/addPage';
 
 const AddUserToGroup = () => {
 	const dispatch = useDispatch();
@@ -152,7 +152,7 @@ const AddUserToGroup = () => {
 				excludedData={excludedData}
 				includedData={includedData}
 			>
-				<CreatePageContainer>
+				<IamSectionContents>
 					<TableOptionText data={'groups'} />
 					<RowDiv>
 						<Table
@@ -193,7 +193,7 @@ const AddUserToGroup = () => {
 							/>
 						</ColDiv>
 					</RowDiv>
-				</CreatePageContainer>
+				</IamSectionContents>
 			</DragContainer>
 		</FoldableContainer>
 	);

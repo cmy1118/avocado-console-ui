@@ -4,12 +4,16 @@ import AddTagToGroup from '../Components/Create/AddTagToGroup';
 import AddUsersToGroup from '../Components/Create/AddUsersToGroup';
 import GroprupPreviewDialogBox from '../../../DialogBoxs/Preview/GroprupPreviewDialogBox';
 import {
-	CreatePageContainer,
+	IamSectionContents,
 	CreateSpaceContainer,
 } from '../../../../styles/components/iam/addPage';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import AssignRoleToGroup from '../Components/Create/AssignRoleToGroup';
-import {IamContents, TitleBar} from '../../../../styles/components/iam/iam';
+import {
+	IamContainer,
+	IamContents,
+	TitleBar,
+} from '../../../../styles/components/iam/iam';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -25,7 +29,7 @@ const CreateGroupSpace = () => {
 	const [groupTags, setGroupTags] = useState([]);
 
 	return (
-		<CreateSpaceContainer>
+		<IamContainer>
 			<CurrentPathBar paths={paths} />
 			<TitleBar>사용자 그룹 생성</TitleBar>
 
@@ -44,7 +48,7 @@ const CreateGroupSpace = () => {
 				isOpened={isOpened}
 				setIsOpened={setIsOpened}
 			/>
-		</CreateSpaceContainer>
+		</IamContainer>
 	);
 };
 
