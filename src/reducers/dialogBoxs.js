@@ -11,7 +11,7 @@ const slice = createSlice({
 		 * ambacc244 - 알림창 열기
 		 **************************************************/
 		openAlert: (state, {payload}) => {
-			state.alert = {open: true, key: payload.key};
+			state.alert = {open: true, value: payload.value};
 		},
 
 		/**************************************************
@@ -28,7 +28,7 @@ const slice = createSlice({
 			//알림창을 닫은후 처리해야 하는 action이 있음
 			if (payload?.isConfirmed) {
 				//action의 key를 저장
-				state.nextAction = state.alert.key;
+				state.nextAction = state.alert.value;
 			}
 			//알림창 닫기
 			state.alert = {open: false};

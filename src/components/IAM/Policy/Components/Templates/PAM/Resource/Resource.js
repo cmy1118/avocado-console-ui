@@ -62,7 +62,7 @@ const Resource = ({data, setTemplateData}) => {
 						<div>----------------------------------</div>
 						<ResourceSelectionContainer
 							disabled={
-								resourceType === policyOption.resource.all.key
+								resourceType === policyOption.resource.all.value
 							}
 							setSelected={setSelected}
 						/>

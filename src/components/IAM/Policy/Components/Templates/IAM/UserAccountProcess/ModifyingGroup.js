@@ -42,7 +42,7 @@ const modifyingGroup = {
 	},
 };
 
-const tempOption = [{key: 'select', label: '선택'}];
+const tempOption = [{value: 'select', label: '선택'}];
 
 /**************************************************
  * ambacc244 - 사용자 계정 처리(그룹 변경) 폼
@@ -57,23 +57,23 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	//group1: 제어 그룹 유형1
 	const [group1, group1ComboBox] = useComboBox({
 		options: tempOption,
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//group2: 제어 그룹 유형2
 	const [group2, group2ComboBox] = useComboBox({
 		options: tempOption,
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//group3: 제어 그룹 유형3
 	const [group3, group3ComboBox] = useComboBox({
 		options: tempOption,
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//blockingType: 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'modifyingGroupBlockingType',
 		options: blockingTypeOptions,
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//permissionType: 그룹 권한 처리
 	const [
@@ -83,7 +83,7 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	] = useRadio({
 		name: 'groupPermissionType',
 		options: groupPermissionTypeOptions,
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 
 	/**************************************************
@@ -91,9 +91,9 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 	 **************************************************/
 	useEffect(() => {
 		if (data?.attribute?.ruleType) {
-			let attributes = {usage: usage === policyOption.usage.use.key};
+			let attributes = {usage: usage === policyOption.usage.use.value};
 			//사용 여부 true
-			if (usage === policyOption.usage.use.key) {
+			if (usage === policyOption.usage.use.value) {
 				attributes.blockingType = blockingType;
 				attributes.permissionType = permissionType;
 			}
@@ -113,8 +113,8 @@ const ModifyingGroup = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data?.attribute,
 				'usage',
-				policyOption.usage.use.key,
-				policyOption.usage.none.key,
+				policyOption.usage.use.value,
+				policyOption.usage.none.value,
 			),
 		);
 		//TODO: 제어 그룹 유형

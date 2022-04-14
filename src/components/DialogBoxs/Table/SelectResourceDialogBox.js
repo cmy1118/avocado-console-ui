@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
 	DialogBox,
 	DialogBoxFooter,
@@ -11,18 +11,19 @@ import {
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {tableColumns} from '../../../Constants/Table/columns';
-import {DRAGGABLE_KEY, tableKeys} from '../../../Constants/Table/keys';
+import {tableKeys} from '../../../Constants/Table/keys';
 import Table from '../../Table/Table';
 import {Icon, IconButton} from '../../../styles/components/icons';
 import {closeIcon, searchIcon} from '../../../icons/icons';
-import Form from '../../RecycleComponents/New/Form';
-import TextBox from '../../RecycleComponents/New/TextBox';
 import {useDispatch} from 'react-redux';
-import ComboBox from '../../RecycleComponents/New/ComboBox';
 import {RowDiv} from '../../../styles/components/style';
-import {isFulfilled} from '../../../utils/redux';
 import RRM_RESOURCE from '../../../reducers/api/PAM/Resource/resource';
 import useSelectColumn from '../../../hooks/table/useSelectColumn';
+import {FormProvider, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import RHF_Textbox from '../../RecycleComponents/ReactHookForm/RHF_Textbox';
+import RHF_Combobox from '../../RecycleComponents/ReactHookForm/RHF_Combobox';
+import * as Yup from 'yup';
 
 const _DialogBox = styled(DialogBox)`
 	display: flex;
@@ -47,14 +48,13 @@ const selectResourceGroupDialogBox = {
 };
 
 const protocolOptions = [
-	{value: '', label: '프로토콜 전체'},
+	{value: null, label: '프로토콜 전체'},
 	{value: 'SSH', label: 'SSH'},
 	{value: 'SFTP', label: 'SFTP'},
 ];
 
 const SelectResourceDialogBox = ({isOpened, setIsOpened, setSelected}) => {
 	const dispatch = useDispatch();
-	const searchRef = useRef(null);
 	//resources: 검색된 자원 리스트
 	const [resources, setResources] = useState([]);
 	//addedSelection: 추가로 선택될 자원
@@ -84,33 +84,46 @@ const SelectResourceDialogBox = ({isOpened, setIsOpened, setSelected}) => {
 	 * ambacc244 - 자원 그룹 검색
 	 **************************************************/
 	const onSubmitSearchVal = useCallback(
-		async (v) => {
-			//검색 입력값의 길이가 2 이상
-			if (v?.search.length > 1) {
+		async (data) => {
+			try {
 				const res = await dispatch(
 					RRM_RESOURCE.asyncAction.findAllResourcebByUserUidAction({
-						serviceType: v?.protocol,
-						keyword2: v.search.trim(),
+						serviceType: data.protocol,
+						keyword2: data.search.trim(),
 					}),
 				);
 				//요청에 대한 응답 성공
-				if (isFulfilled(res)) {
-					console.log(res.payload);
-					setResources(
-						res.payload.map((v) => ({
-							id: v.id,
-							[DRAGGABLE_KEY]: v.id,
-							group: v.group.namePath,
-							name: v.name,
-							address: v.defaultAddress,
-							protocol: v.servicePorts[0].serviceType.name,
-						})) || [],
-					);
-				}
+				console.log(res.payload);
+				// setResources(
+				// 	res.payload.map((v) => ({
+				// 		id: v.id,
+				// 		[DRAGGABLE_KEY]: v.id,
+				// 		group: v.group.namePath,
+				// 		name: v.name,
+				// 		address: v.defaultAddress,
+				// 		protocol: v.servicePorts[0].serviceType.name,
+				// 	})) || [],
+				// );
+			} catch (err) {
+				console.error(err);
 			}
 		},
 		[dispatch],
 	);
+
+	const validationSchema = Yup.object()
+		.shape({
+			// search: Yup.string().matches('정규식'),
+			// .min(2, '2자 이상 입력하셔야 합니다.')
+			// .notRequired(),
+			// .required('name값은 필수입니다.'),
+			// protocol: Yup.string().nullable(true),
+		})
+		.required();
+
+	const methods = useForm({
+		resolver: yupResolver(validationSchema), // 외부 유효성 검사 라이브러리 사용
+	});
 
 	/**************************************************
 	 * ambacc244 - 다이얼로그 박스가 열리면
@@ -137,13 +150,10 @@ const SelectResourceDialogBox = ({isOpened, setIsOpened, setSelected}) => {
 			</DialogBoxHeader>
 
 			<_Contents>
-				<Form
-					onSubmit={onSubmitSearchVal}
-					innerRef={searchRef}
-					initialValues={{search: ''}}
-				>
+				<FormProvider {...methods}>
 					<RowDiv>
-						<TextBox
+						<RHF_Textbox
+							name={'search'}
 							placeholder={
 								selectResourceGroupDialogBox.searchBar
 									.placeholder
@@ -153,17 +163,44 @@ const SelectResourceDialogBox = ({isOpened, setIsOpened, setSelected}) => {
 									{searchIcon}
 								</Icon>
 							}
-							name={'search'}
+							onSubmit={methods.handleSubmit(onSubmitSearchVal)}
 						/>
-						<ComboBox
-							innerRef={searchRef}
-							width={'150px'}
-							name='protocol'
-							header={'프로토콜 전체'}
+						<RHF_Combobox
+							name={'protocol'}
+							placeholder={'프로토콜'}
 							options={protocolOptions}
+							width={150}
 						/>
 					</RowDiv>
-				</Form>
+				</FormProvider>
+
+				{/*<Form*/}
+				{/*	onSubmit={onSubmitSearchVal}*/}
+				{/*	innerRef={searchRef}*/}
+				{/*	initialValues={{search: ''}}*/}
+				{/*>*/}
+				{/*	<RowDiv>*/}
+				{/*		<TextBox*/}
+				{/*			placeholder={*/}
+				{/*				selectResourceGroupDialogBox.searchBar*/}
+				{/*					.placeholder*/}
+				{/*			}*/}
+				{/*			front={*/}
+				{/*				<Icon size={'sm'} margin_right={'0px'}>*/}
+				{/*					{searchIcon}*/}
+				{/*				</Icon>*/}
+				{/*			}*/}
+				{/*			name={'search'}*/}
+				{/*		/>*/}
+				{/*		<ComboBox*/}
+				{/*			innerRef={searchRef}*/}
+				{/*			width={'150px'}*/}
+				{/*			name='protocol'*/}
+				{/*			header={'프로토콜 전체'}*/}
+				{/*			options={protocolOptions}*/}
+				{/*		/>*/}
+				{/*	</RowDiv>*/}
+				{/*</Form>*/}
 
 				<Table
 					columns={columns}

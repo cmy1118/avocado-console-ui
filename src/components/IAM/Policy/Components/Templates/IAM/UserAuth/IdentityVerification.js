@@ -46,7 +46,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 		name: 'IdentityVerificationAuthMethod',
 		options: identityVerificationMethodOptions,
 		//본인 확인 인증 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//timeoutSeconds: 입력 대기 시간
 	const [
@@ -58,7 +58,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 		//1 - 180
 		regex: /^([1-9]|[1-9][0-9]|1[0-7][0-9]|180)$/,
 		//본인 확인 인증 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 
 	/**************************************************
@@ -67,9 +67,9 @@ const IdentityVerification = ({data, setTemplateData}) => {
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.attribute?.ruleType) {
-			let attributes = {usage: usage === policyOption.usage.use.key};
+			let attributes = {usage: usage === policyOption.usage.use.value};
 			//사용 여부 true
-			if (usage === policyOption.usage.use.key) {
+			if (usage === policyOption.usage.use.value) {
 				attributes.policies = {
 					[`${authMethod}`]: {timoutSeconds: timeoutSeconds},
 				};
@@ -91,7 +91,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 			Object.keys(data?.attribute.policies).length > 0
 		) {
 			//본인 확인 인증 사용 여부 세팅
-			setUsage(policyOption.usage.use.key);
+			setUsage(policyOption.usage.use.value);
 			//인증 수단
 			const method = Object.keys(data?.attribute.policies)[0];
 			//인증 수단 & 입력 대시 시간 세팅
@@ -107,7 +107,7 @@ const IdentityVerification = ({data, setTemplateData}) => {
 			//본인 확인 인증 정책이 존재하지 않음
 		} else {
 			//본인 확인 인증 사용 여부 세팅
-			setUsage(policyOption.usage.none.key);
+			setUsage(policyOption.usage.none.value);
 		}
 	}, [data, setAuthMethod, setTimeoutSeconds, setUsage]);
 

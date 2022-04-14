@@ -60,8 +60,8 @@ const UserSession = ({templateId, name, description}) => {
 	const [screenSaverValue, screenSaverRadio, setScreenSaverValue] = useRadio({
 		name: 'sessionTemplate-screenSaver-radio',
 		options: [
-			{label: '사용 함', key: 'yes'},
-			{label: '사용 안함', key: 'no'},
+			{label: '사용 함', value: 'yes'},
+			{label: '사용 안함', value: 'no'},
 		],
 	});
 
@@ -81,8 +81,8 @@ const UserSession = ({templateId, name, description}) => {
 						<TableComboBox
 							cell={cell}
 							options={[
-								{label: '사용 함', key: 'yes'},
-								{label: '사용 안함', key: 'no'},
+								{label: '사용 함', value: 'yes'},
+								{label: '사용 안함', value: 'no'},
 							]}
 							setData={setTableData}
 						/>

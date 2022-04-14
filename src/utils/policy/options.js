@@ -1,358 +1,358 @@
 import {policyTypes} from '../data';
 
 export const GRANT_RESTRICT_OPTIONS = {
-	use: {key: 'use', label: '사용함'},
-	none: {key: 'none', label: '사용 안함'},
+	use: {value: 'use', label: '사용함'},
+	none: {value: 'none', label: '사용 안함'},
 };
 
 export const policyOption = {
 	type: {
-		'iam*': {key: policyTypes.iam, label: 'IAM'},
-		'pam*': {key: policyTypes.pam, label: 'PAM'},
+		'iam*': {value: policyTypes.iam, label: 'IAM'},
+		'pam*': {value: policyTypes.pam, label: 'PAM'},
 	},
 	usage: {
-		use: {key: 'use', label: '사용함'},
-		none: {key: 'none', label: '사용 안함'},
+		use: {value: 'use', label: '사용함'},
+		none: {value: 'none', label: '사용 안함'},
 	},
 	application: {
-		'console-ui:*': {key: 'console-ui:*', label: 'Management Console'},
-		'web-terminal-ui:*': {key: 'web-terminal-ui:*', label: 'WebTerminal'},
+		'console-ui:*': {value: 'console-ui:*', label: 'Management Console'},
+		'web-terminal-ui:*': {value: 'web-terminal-ui:*', label: 'WebTerminal'},
 	},
 	authUsage: {
-		use: {key: 'use', label: '인증 함'},
-		none: {key: 'none', label: '인증 안함'},
+		use: {value: 'use', label: '인증 함'},
+		none: {value: 'none', label: '인증 안함'},
 	},
 	required: {
-		all: {key: 'all', label: '필수'},
-		select: {key: 'select', label: '선택'},
+		all: {value: 'all', label: '필수'},
+		select: {value: 'select', label: '선택'},
 	},
 
 	additionalAuthMethod: {
-		mail: {key: 'mail', label: '인증번호(Mail)'},
-		sms: {key: 'sms', label: '인증번호(SMS)'},
-		kakao: {key: 'kakao', label: '인증번호(Kakao)'},
+		mail: {value: 'mail', label: '인증번호(Mail)'},
+		sms: {value: 'sms', label: '인증번호(SMS)'},
+		kakao: {value: 'kakao', label: '인증번호(Kakao)'},
 	},
 
 	authMethod: {
-		none: {key: 'none', label: '없음'},
-		mail: {key: 'mail', label: '인증번호(Mail)'},
-		sms: {key: 'sms', label: '인증번호(SMS)'},
-		kakao: {key: 'kakao', label: '인증번호(Kakao)'},
+		none: {value: 'none', label: '없음'},
+		mail: {value: 'mail', label: '인증번호(Mail)'},
+		sms: {value: 'sms', label: '인증번호(SMS)'},
+		kakao: {value: 'kakao', label: '인증번호(Kakao)'},
 	},
 
 	identityVerificationMethod: {
 		idAndPassword: {
-			key: 'idAndPassword',
+			value: 'idAndPassword',
 			label: 'ID/Password',
 		},
 		mail: {
-			key: 'mail',
+			value: 'mail',
 			label: '인증번호(Mail)',
 		},
 		sms: {
-			key: 'sms',
+			value: 'sms',
 			label: '인증번호(SMS)',
 		},
 		kakao: {
-			key: 'kakao',
+			value: 'kakao',
 			label: '인증번호(Kakao)',
 		},
 	},
 	blockingType: {
-		locked: {key: 'locked', label: '잠금'},
-		deleted: {key: 'deleted', label: '삭제'},
+		locked: {value: 'locked', label: '잠금'},
+		deleted: {value: 'deleted', label: '삭제'},
 	},
 	blockingType2: {
-		logout: {key: 'logout', label: '로그아웃'},
-		'screen-lock': {key: 'screen-lock', label: '화면잠금'},
+		logout: {value: 'logout', label: '로그아웃'},
+		'screen-lock': {value: 'screen-lock', label: '화면잠금'},
 	},
 	blockingInitType: {
 		identity_verification: {
-			key: 'identity_verification',
+			value: 'identity_verification',
 			label: '본인 확인 인증',
 		},
 		admin_temp_password: {
-			key: 'admin_temp_password',
+			value: 'admin_temp_password',
 			label: '관리자에 의한 정상화(임시 패스워드 발급)',
 		},
 	},
 	groupPermissionType: {
-		revoke: {key: 'revoke', label: '회수'},
-		grant: {key: 'grant', label: '부여(변경후 그룹의 권한)'},
-		keeps: {key: 'keeps', label: '유지(기존 권한 유지)'},
+		revoke: {value: 'revoke', label: '회수'},
+		grant: {value: 'grant', label: '부여(변경후 그룹의 권한)'},
+		keeps: {value: 'keeps', label: '유지(기존 권한 유지)'},
 	},
 
 	accountNormalization2: {
-		revoke: {key: 'revoke', label: '회수'},
-		grant: {key: 'grant', label: '부여(변경후 그룹의 권한)'},
+		revoke: {value: 'revoke', label: '회수'},
+		grant: {value: 'grant', label: '부여(변경후 그룹의 권한)'},
 	},
 
 	gracePeriod: {
-		none: {key: 'none', label: '없음'},
-		use: {key: 'use', label: '있음'},
+		none: {value: 'none', label: '없음'},
+		use: {value: 'use', label: '있음'},
 	},
 	patternType: {
-		prefix: {key: 'prefix', label: '접두사'},
-		suffix: {key: 'suffix', label: '접미사'},
+		prefix: {value: 'prefix', label: '접두사'},
+		suffix: {value: 'suffix', label: '접미사'},
 	},
 
 	restrict: {
-		restrict: {key: 'restrict', label: '제한함'},
-		none: {key: 'none', label: '제한 안함'},
+		restrict: {value: 'restrict', label: '제한함'},
+		none: {value: 'none', label: '제한 안함'},
 	},
 	personalInfoRestrictionMethod: {
-		email: {key: 'email', label: 'Email'},
-		mobile: {key: 'mobile', label: '전화번호'},
-		userId: {key: 'userId', label: 'ID 동일 연속 문자 수(3)'},
+		email: {value: 'email', label: 'Email'},
+		mobile: {value: 'mobile', label: '전화번호'},
+		userId: {value: 'userId', label: 'ID 동일 연속 문자 수(3)'},
 	},
 	inputType: {
-		auto: {key: 'auto', label: '자동 로그인'},
-		choose_login_type: {key: 'choose_login_type', label: '직접 로그인'},
-		id_input: {key: 'id_input', label: '수동 로그인'},
+		auto: {value: 'auto', label: '자동 로그인'},
+		choose_login_type: {value: 'choose_login_type', label: '직접 로그인'},
+		id_input: {value: 'id_input', label: '수동 로그인'},
 	},
 	resource: {
-		certain: {key: 'certain', label: '특정 자원'},
-		all: {key: 'all', label: '모든 자원'},
+		certain: {value: 'certain', label: '특정 자원'},
+		all: {value: 'all', label: '모든 자원'},
 	},
 };
 
 export const grantRestrictOptions = [
 	{
-		key: GRANT_RESTRICT_OPTIONS.use.key,
+		value: GRANT_RESTRICT_OPTIONS.use.value,
 		label: GRANT_RESTRICT_OPTIONS.use.label,
 	},
 	{
-		key: GRANT_RESTRICT_OPTIONS.none.key,
+		value: GRANT_RESTRICT_OPTIONS.none.value,
 		label: GRANT_RESTRICT_OPTIONS.none.label,
 	},
 ];
 
 export const policyTypeOptions = [
 	{
-		key: policyOption.type['iam*'].key,
+		value: policyOption.type['iam*'].value,
 		label: policyOption.type['iam*'].label,
 	},
 	{
-		key: policyOption.type['pam*'].key,
+		value: policyOption.type['pam*'].value,
 		label: policyOption.type['pam*'].label,
 	},
 ];
 
 export const usageOptions = [
 	{
-		key: policyOption.usage.use.key,
+		value: policyOption.usage.use.value,
 		label: policyOption.usage.use.label,
 	},
 	{
-		key: policyOption.usage.none.key,
+		value: policyOption.usage.none.value,
 		label: policyOption.usage.none.label,
 	},
 ];
 
 export const applicationOptions = [
 	{
-		key: policyOption.application['console-ui:*'].key,
+		value: policyOption.application['console-ui:*'].value,
 		label: policyOption.application['console-ui:*'].label,
 	},
 	{
-		key: policyOption.application['web-terminal-ui:*'].key,
+		value: policyOption.application['web-terminal-ui:*'].value,
 		label: policyOption.application['web-terminal-ui:*'].label,
 	},
 ];
 
 export const authUsageOptions = [
 	{
-		key: policyOption.authUsage.use.key,
+		value: policyOption.authUsage.use.value,
 		label: policyOption.authUsage.use.label,
 	},
 	{
-		key: policyOption.authUsage.none.key,
+		value: policyOption.authUsage.none.value,
 		label: policyOption.authUsage.none.label,
 	},
 ];
 
 export const requiredOptions = [
 	{
-		key: policyOption.required.all.key,
+		value: policyOption.required.all.value,
 		label: policyOption.required.all.label,
 	},
 	{
-		key: policyOption.required.select.key,
+		value: policyOption.required.select.value,
 		label: policyOption.required.select.label,
 	},
 ];
 
 export const additionalAuthMethodOptions = [
 	{
-		key: policyOption.additionalAuthMethod.mail.key,
+		value: policyOption.additionalAuthMethod.mail.value,
 		label: policyOption.additionalAuthMethod.mail.label,
 	},
 	{
-		key: policyOption.additionalAuthMethod.sms.key,
+		value: policyOption.additionalAuthMethod.sms.value,
 		label: policyOption.additionalAuthMethod.sms.label,
 	},
 	{
-		key: policyOption.additionalAuthMethod.kakao.key,
+		value: policyOption.additionalAuthMethod.kakao.value,
 		label: policyOption.additionalAuthMethod.kakao.label,
 	},
 ];
 
 export const authMethodOptions = [
 	{
-		key: policyOption.authMethod.none.key,
+		value: policyOption.authMethod.none.value,
 		label: policyOption.authMethod.none.label,
 	},
 	{
-		key: policyOption.authMethod.mail.key,
+		value: policyOption.authMethod.mail.value,
 		label: policyOption.authMethod.mail.label,
 	},
 	{
-		key: policyOption.authMethod.sms.key,
+		value: policyOption.authMethod.sms.value,
 		label: policyOption.authMethod.sms.label,
 	},
 	{
-		key: policyOption.authMethod.kakao.key,
+		value: policyOption.authMethod.kakao.value,
 		label: policyOption.authMethod.kakao.label,
 	},
 ];
 
 export const identityVerificationMethodOptions = [
 	{
-		key: policyOption.identityVerificationMethod.idAndPassword.key,
+		value: policyOption.identityVerificationMethod.idAndPassword.value,
 		label: policyOption.identityVerificationMethod.idAndPassword.label,
 	},
 	{
-		key: policyOption.identityVerificationMethod.mail.key,
+		value: policyOption.identityVerificationMethod.mail.value,
 		label: policyOption.identityVerificationMethod.mail.label,
 	},
 	{
-		key: policyOption.identityVerificationMethod.sms.key,
+		value: policyOption.identityVerificationMethod.sms.value,
 		label: policyOption.identityVerificationMethod.sms.label,
 	},
 	{
-		key: policyOption.identityVerificationMethod.kakao.key,
+		value: policyOption.identityVerificationMethod.kakao.value,
 		label: policyOption.identityVerificationMethod.kakao.label,
 	},
 ];
 
 export const blockingTypeOptions = [
 	{
-		key: policyOption.blockingType.locked.key,
+		value: policyOption.blockingType.locked.value,
 		label: policyOption.blockingType.locked.label,
 	},
 	{
-		key: policyOption.blockingType.deleted.key,
+		value: policyOption.blockingType.deleted.value,
 		label: policyOption.blockingType.deleted.label,
 	},
 ];
 
 export const blockingType2Options = [
 	{
-		key: policyOption.blockingType2.logout.key,
+		value: policyOption.blockingType2.logout.value,
 		label: policyOption.blockingType2.logout.label,
 	},
 	{
-		key: policyOption.blockingType2['screen-lock'].key,
+		value: policyOption.blockingType2['screen-lock'].value,
 		label: policyOption.blockingType2['screen-lock'].label,
 	},
 ];
 
 export const blockingInitTypeOptions = [
 	{
-		key: policyOption.blockingInitType.identity_verification.key,
+		value: policyOption.blockingInitType.identity_verification.value,
 		label: policyOption.blockingInitType.identity_verification.label,
 	},
 	{
-		key: policyOption.blockingInitType.admin_temp_password.key,
+		value: policyOption.blockingInitType.admin_temp_password.value,
 		label: policyOption.blockingInitType.admin_temp_password.label,
 	},
 ];
 
 export const groupPermissionTypeOptions = [
 	{
-		key: policyOption.groupPermissionType.revoke.key,
+		value: policyOption.groupPermissionType.revoke.value,
 		label: policyOption.groupPermissionType.revoke.label,
 	},
 	{
-		key: policyOption.groupPermissionType.grant.key,
+		value: policyOption.groupPermissionType.grant.value,
 		label: policyOption.groupPermissionType.grant.label,
 	},
 	{
-		key: policyOption.groupPermissionType.keeps.key,
+		value: policyOption.groupPermissionType.keeps.value,
 		label: policyOption.groupPermissionType.keeps.label,
 	},
 ];
 
 export const gracePeriodUsageOptions = [
 	{
-		key: policyOption.gracePeriod.use.key,
+		value: policyOption.gracePeriod.use.value,
 		label: policyOption.gracePeriod.use.label,
 	},
 	{
-		key: policyOption.gracePeriod.none.key,
+		value: policyOption.gracePeriod.none.value,
 		label: policyOption.gracePeriod.none.label,
 	},
 ];
 
 export const patternTypeOptions = [
 	{
-		key: policyOption.patternType.prefix.key,
+		value: policyOption.patternType.prefix.value,
 		label: policyOption.patternType.prefix.label,
 	},
 	{
-		key: policyOption.patternType.suffix.key,
+		value: policyOption.patternType.suffix.value,
 		label: policyOption.patternType.suffix.label,
 	},
 ];
 
 export const restrictionOptions = [
 	{
-		key: policyOption.restrict.restrict.key,
+		value: policyOption.restrict.restrict.value,
 		label: policyOption.restrict.restrict.label,
 	},
 	{
-		key: policyOption.restrict.none.key,
+		value: policyOption.restrict.none.value,
 		label: policyOption.restrict.none.label,
 	},
 ];
 
 export const personalInfoRestrictionMethodOptions = [
 	{
-		key: policyOption.personalInfoRestrictionMethod.email.key,
+		value: policyOption.personalInfoRestrictionMethod.email.value,
 		label: policyOption.personalInfoRestrictionMethod.email.label,
 	},
 	{
-		key: policyOption.personalInfoRestrictionMethod.mobile.key,
+		value: policyOption.personalInfoRestrictionMethod.mobile.value,
 		label: policyOption.personalInfoRestrictionMethod.mobile.label,
 	},
 	{
-		key: policyOption.personalInfoRestrictionMethod.userId.key,
+		value: policyOption.personalInfoRestrictionMethod.userId.value,
 		label: policyOption.personalInfoRestrictionMethod.userId.label,
 	},
 ];
 
 export const inputTypeOptions = [
 	{
-		key: policyOption.inputType.auto.key,
+		value: policyOption.inputType.auto.value,
 		label: policyOption.inputType.auto.label,
 	},
 	{
-		key: policyOption.inputType.choose_login_type.key,
+		value: policyOption.inputType.choose_login_type.value,
 		label: policyOption.inputType.choose_login_type.label,
 	},
 	{
-		key: policyOption.inputType.id_input.key,
+		value: policyOption.inputType.id_input.value,
 		label: policyOption.inputType.id_input.label,
 	},
 ];
 
 export const resourceOptions = [
 	{
-		key: policyOption.resource.certain.key,
+		value: policyOption.resource.certain.value,
 		label: policyOption.resource.certain.label,
 	},
 	{
-		key: policyOption.resource.all.key,
+		value: policyOption.resource.all.value,
 		label: policyOption.resource.all.label,
 	},
 ];

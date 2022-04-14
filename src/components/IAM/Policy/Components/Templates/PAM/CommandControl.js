@@ -61,8 +61,8 @@ const CommandControl = ({templateId, name, description}) => {
 	const [controlTypeValue, controlTypeRadio, setControlTypeValue] = useRadio({
 		name: 'commandControlTemplate-controlType-Radio',
 		options: [
-			{label: '금지(Black)', key: 'black'},
-			{label: '허용(White)', key: 'white'},
+			{label: '금지(Black)', value: 'black'},
+			{label: '허용(White)', value: 'white'},
 		],
 	});
 	const [resourceData, setResourceData] = useState({});
@@ -86,10 +86,10 @@ const CommandControl = ({templateId, name, description}) => {
 						<TableComboBox
 							cell={cell}
 							options={[
-								{label: '기본등급', key: 'normal'},
-								{label: '1등급', key: 'level1'},
-								{label: '2등급', key: 'level2'},
-								{label: '3등급', key: 'level3'},
+								{label: '기본등급', value: 'normal'},
+								{label: '1등급', value: 'level1'},
+								{label: '2등급', value: 'level2'},
+								{label: '3등급', value: 'level3'},
 							]}
 							setData={setTableData}
 						/>

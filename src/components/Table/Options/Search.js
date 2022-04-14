@@ -1,10 +1,10 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import Form from '../../RecycleComponents/New/Form';
-import TextBox from '../../RecycleComponents/New/TextBox';
 import {searchIcon} from '../../../icons/icons';
 import {Icon} from '../../../styles/components/icons';
 import {tableKeys} from '../../../Constants/Table/keys';
+import {FormProvider, useForm} from 'react-hook-form';
+import RHF_Textbox from '../../RecycleComponents/ReactHookForm/RHF_Textbox';
 
 const placeholders = {
 	[tableKeys.users.basic]: '사용자 계정, 사용자 이름, 사용자 그룹, 태그명',
@@ -35,7 +35,6 @@ const placeholders = {
 };
 
 function Search({tableKey, setGlobalFilter, setSearch}) {
-	const ref = useRef(null);
 	const handleSubmit = (data) => {
 		//Api 검색
 		console.log("data['search'].trim():", data['search'].trim());
@@ -45,22 +44,22 @@ function Search({tableKey, setGlobalFilter, setSearch}) {
 		// setGlobalFilter(data['search'].trim());
 	};
 
+	const methods = useForm();
+
 	return (
-		<Form
-			onSubmit={handleSubmit}
-			innerRef={ref}
-			initialValues={{search: ''}}
-		>
-			<TextBox
-				placeholder={placeholders[tableKey]}
-				front={
-					<Icon size={'sm'} margin_right={'0px'}>
-						{searchIcon}
-					</Icon>
-				}
-				name={'search'}
-			/>
-		</Form>
+		<FormProvider {...methods}>
+			<form onSubmit={methods.handleSubmit(handleSubmit)}>
+				<RHF_Textbox
+					name={'search'}
+					placeholder={placeholders[tableKey]}
+					front={
+						<Icon size={'sm'} margin_right={'0px'}>
+							{searchIcon}
+						</Icon>
+					}
+				/>
+			</form>
+		</FormProvider>
 	);
 }
 Search.propTypes = {

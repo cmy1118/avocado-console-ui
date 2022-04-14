@@ -6,13 +6,12 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
+import {FormProvider, useForm} from 'react-hook-form';
+
 import styled from 'styled-components';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {ColDiv, RowDiv} from '../../../../../../../styles/components/style';
-import Form from '../../../../../../RecycleComponents/New/Form';
-import TextBox from '../../../../../../RecycleComponents/New/TextBox';
-import ComboBox from '../../../../../../RecycleComponents/New/ComboBox';
 import {Icon} from '../../../../../../../styles/components/icons';
 import {searchIcon} from '../../../../../../../icons/icons';
 import Table from '../../../../../../Table/Table';
@@ -20,6 +19,8 @@ import {AllreplaceStr} from '../../../../../../../utils/dataFitering';
 import RRM_RESOURCE from '../../../../../../../reducers/api/PAM/Resource/resource';
 import TableCheckBox from '../../../../../../Table/ColumnCells/TableCheckBox';
 import {DRAGGABLE_KEY} from '../../../../../../../Constants/Table/keys';
+import RHF_Textbox from '../../../../../../RecycleComponents/ReactHookForm/RHF_Textbox';
+import RHF_Combobox from '../../../../../../RecycleComponents/ReactHookForm/RHF_Combobox';
 
 const _TableContainer = styled.div`
 	flex: 1;
@@ -169,7 +170,7 @@ const Resources = ({
 	//         //테이블 선택된 자원이 없으면 경고창 dispatch
 	//     } else {
 	//         dispatch(
-	//             dialogBoxAction.openAlert({key: alertKey.SELECT_RESOURCES}),
+	//             dialogBoxAction.openAlert({value: alertKey.SELECT_RESOURCES}),
 	//         );
 	//     }
 	// }, [dispatch, resources, select, setConnectData, setIsOpened]);
@@ -181,31 +182,28 @@ const Resources = ({
 	}, [findAllApi]);
 	console.log('tableData:', tableData);
 	console.log('select:', select);
+
+	const methods = useForm();
+
 	return (
 		<_Container>
 			<RowDiv justifyContent={'space-between'} alignItems={'center'}>
 				<div style={{flex: '1'}}>
-					<Form
-						onSubmit={handleSubmit}
-						innerRef={ref}
-						initialValues={{search: '', protocol: ''}}
-					>
+					<FormProvider {...methods}>
 						<RowDiv>
-							<TextBox
+							<RHF_Textbox
+								name={'search'}
 								placeholder={'hi'}
-								width={'100%'}
 								front={
 									<Icon size={'sm'} margin_right={'0px'}>
 										{searchIcon}
 									</Icon>
 								}
-								name={'search'}
+								onSubmit={methods.handleSubmit(handleSubmit)}
 							/>
-							<ComboBox
-								innerRef={ref}
-								width={'150px'}
+							<RHF_Combobox
+								width={150}
 								name='protocol'
-								header={'프로토콜 전체'}
 								options={[
 									{value: '', label: '프로토콜 전체'},
 									{value: 'SSH', label: 'SSH'},
@@ -213,7 +211,7 @@ const Resources = ({
 								]}
 							/>
 						</RowDiv>
-					</Form>
+					</FormProvider>
 				</div>
 			</RowDiv>
 			<_TableContainer>

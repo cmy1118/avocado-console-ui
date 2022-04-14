@@ -40,9 +40,9 @@ const FileAccess = ({templateId, name, description}) => {
 					<TableComboBox
 						cell={cell}
 						options={[
-							{label: '디렉토리', key: 'directory'},
-							{label: '파일', key: 'file'},
-							{label: '확장자', key: 'extension'},
+							{label: '디렉토리', value: 'directory'},
+							{label: '파일', value: 'file'},
+							{label: '확장자', value: 'extension'},
 						]}
 						setData={setTableData}
 					/>

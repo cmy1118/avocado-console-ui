@@ -50,7 +50,7 @@ const Resignation = ({data, setTemplateData}) => {
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'resignationBlockingType',
 		options: blockingTypeOptions,
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//gracePeriodUsage: 유예 기간 사용 유무
 	const [
@@ -60,7 +60,7 @@ const Resignation = ({data, setTemplateData}) => {
 	] = useRadio({
 		name: 'gracePeriodUsage',
 		options: gracePeriodUsageOptions,
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//gracePeriod: 유예 기간
 	const [gracePeriod, gracePeriodTextBox, setGracePeriod] = useTextBox({
@@ -69,8 +69,8 @@ const Resignation = ({data, setTemplateData}) => {
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
 		disabled:
-			gracePeriodUsage === policyOption.gracePeriod.none.key ||
-			usage === policyOption.usage.none.key,
+			gracePeriodUsage === policyOption.gracePeriod.none.value ||
+			usage === policyOption.usage.none.value,
 	});
 
 	/**************************************************
@@ -80,10 +80,10 @@ const Resignation = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.attribute?.ruleType) {
 			const attributes = {
-				usage: usage === policyOption.usage.use.key,
+				usage: usage === policyOption.usage.use.value,
 			};
 			//사용 여부 true
-			if (usage === policyOption.usage.use.key) {
+			if (usage === policyOption.usage.use.value) {
 				attributes.blockingType = blockingType;
 				attributes.applyDays = gracePeriodUsage ? gracePeriod : 0;
 			}
@@ -109,8 +109,8 @@ const Resignation = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data?.attribute,
 				'usage',
-				policyOption.usage.use.key,
-				policyOption.usage.none.key,
+				policyOption.usage.use.value,
+				policyOption.usage.none.value,
 			),
 		);
 		//계정 처리 방법
@@ -119,11 +119,11 @@ const Resignation = ({data, setTemplateData}) => {
 		}
 		//유예기간 존재 && 유예기간이 0 보다 큼
 		if (data?.attribute?.applyDays && data?.attribute?.applyDays !== 0) {
-			setGracePeriodUsage(policyOption.gracePeriod.use.key);
+			setGracePeriodUsage(policyOption.gracePeriod.use.value);
 			setGracePeriod(data.attribute.applyDays);
 			//유예기간 존재 하지 않음
 		} else {
-			setGracePeriodUsage(policyOption.gracePeriod.none.key);
+			setGracePeriodUsage(policyOption.gracePeriod.none.value);
 		}
 	}, [data, setBlockingType, setGracePeriod, setGracePeriodUsage, setUsage]);
 

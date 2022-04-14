@@ -35,11 +35,11 @@ const MFA = () => {
 		options: [
 			{
 				label: '사용 함',
-				key: 'use',
+				value: 'use',
 			},
 			{
 				label: '사용 안함',
-				key: 'none',
+				value: 'none',
 			},
 		],
 	});
@@ -48,19 +48,19 @@ const MFA = () => {
 		options: [
 			{
 				label: '인증번호(Mail)',
-				key: 'mail',
+				value: 'mail',
 			},
 			{
 				label: '인증번호(SMS)',
-				key: 'sms',
+				value: 'sms',
 			},
 			{
 				label: '인증번호(Kakao)',
-				key: 'kakao',
+				value: 'kakao',
 			},
 			{
 				label: '지문인증',
-				key: 'fingerprint',
+				value: 'fingerprint',
 			},
 		],
 	});

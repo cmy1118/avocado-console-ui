@@ -49,14 +49,14 @@ const FailOver = ({data, setTemplateData}) => {
 		name: 'failOverBasicAuth',
 		options: authMethodOptions,
 		//Fail Over 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//mfa: mfa 수단
 	const [mfa, mfaRaddioButton, setMfa] = useRadio({
 		name: 'failOverMfa',
 		options: authMethodOptions,
 		//Fail Over 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//timeoutSeconds: 입력 대기 시간
 	const [
@@ -68,7 +68,7 @@ const FailOver = ({data, setTemplateData}) => {
 		//1 - 180
 		regex: /^([1-9]|[1-9][0-9]|1[0-7][0-9]|180)$/,
 		//Fail Over 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 
 	/**************************************************
@@ -77,14 +77,14 @@ const FailOver = ({data, setTemplateData}) => {
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.attribute?.ruleType) {
-			let attributes = {usage: usage === policyOption.usage.use.key};
+			let attributes = {usage: usage === policyOption.usage.use.value};
 			//사용 여부 true
-			if (usage === policyOption.usage.use.key) {
-				if (basicAuth !== policyOption.authMethod.none.key) {
+			if (usage === policyOption.usage.use.value) {
+				if (basicAuth !== policyOption.authMethod.none.value) {
 					attributes.auth = {type: basicAuth};
 				}
 
-				if (mfa !== policyOption.authMethod.none.key) {
+				if (mfa !== policyOption.authMethod.none.value) {
 					attributes.mfa = {type: mfa};
 				}
 
@@ -107,8 +107,8 @@ const FailOver = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data?.attribute,
 				'usage',
-				policyOption.usage.use.key,
-				policyOption.usage.none.key,
+				policyOption.usage.use.value,
+				policyOption.usage.none.value,
 			),
 		);
 		//Fail Over 인증 default value 있음

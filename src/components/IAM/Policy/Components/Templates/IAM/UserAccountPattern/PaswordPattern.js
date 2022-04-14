@@ -136,7 +136,7 @@ const PaswordPattern = ({data, setTemplateData}) => {
 		name: 'allowedDaysOfOldPasswords',
 		//0 - 90
 		regex: /^([0-9]|[1-8][0-9]|90)$/,
-		disabled: oldPasswordsRistriction === policyOption.restrict.none.key,
+		disabled: oldPasswordsRistriction === policyOption.restrict.none.value,
 	});
 
 	/**************************************************
@@ -153,16 +153,16 @@ const PaswordPattern = ({data, setTemplateData}) => {
 					maxLength: Number(maxPasswordLength),
 					numberOfConsecutiveNumerics: numberOfConsecutiveNumerics,
 					mixNumberAndAlpha:
-						mixNumberAndAlpha === policyOption.usage.use.key,
-					mixCase: mixCase === policyOption.usage.use.key,
+						mixNumberAndAlpha === policyOption.usage.use.value,
+					mixCase: mixCase === policyOption.usage.use.value,
 					repeatedAlpha:
-						repeatedAlpha === policyOption.restrict.restrict.key,
+						repeatedAlpha === policyOption.restrict.restrict.value,
 					includePersonalInfoList: personalInfoRestriction
 						? personalInfoRestrictionMethod
 						: [],
 					allowedDaysOfOldPasswords:
 						oldPasswordsRistriction ===
-						policyOption.restrict.restrict.key
+						policyOption.restrict.restrict.value
 							? allowedDaysOfOldPasswords
 							: 0,
 				},
@@ -210,8 +210,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data?.attribute,
 				'mixNumberAndAlpha',
-				policyOption.usage.use.key,
-				policyOption.usage.none.key,
+				policyOption.usage.use.value,
+				policyOption.usage.none.value,
 			),
 		);
 		//대소문자 혼합여부 세팅
@@ -219,8 +219,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data?.attribute,
 				'mixCase',
-				policyOption.usage.use.key,
-				policyOption.usage.none.key,
+				policyOption.usage.use.value,
+				policyOption.usage.none.value,
 			),
 		);
 		//반복문자 사용제한 유무 세팅
@@ -228,8 +228,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data?.attribute,
 				'repeatedAlpha',
-				policyOption.restrict.restrict.key,
-				policyOption.restrict.none.key,
+				policyOption.restrict.restrict.value,
+				policyOption.restrict.none.value,
 			),
 		);
 		//인적 사항 제한 default value 있음
@@ -245,8 +245,8 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			);
 			setPersonalInfoRestriction(
 				data?.attribute.includePersonalInfoList.length !== 0
-					? policyOption.restrict.restrict.key
-					: policyOption.restrict.none.key,
+					? policyOption.restrict.restrict.value
+					: policyOption.restrict.none.value,
 			);
 		}
 		//이전 비밀번호 재사용 제한 default value 있음 && 제한 일수가 0 보다 큼
@@ -258,13 +258,13 @@ const PaswordPattern = ({data, setTemplateData}) => {
 			) &&
 			data?.attribute.allowedDaysOfOldPasswords !== 0
 		) {
-			setOldPasswordsRistriction(policyOption.restrict.restrict.key);
+			setOldPasswordsRistriction(policyOption.restrict.restrict.value);
 			setAllowedDaysOfOldPasswords(
 				data?.attribute.allowedDaysOfOldPasswords,
 			);
 			//이전 비밀번호 사용 제한 default value 없음 || 제한 일수가 0
 		} else {
-			setOldPasswordsRistriction(policyOption.restrict.none.key);
+			setOldPasswordsRistriction(policyOption.restrict.none.value);
 		}
 	}, [
 		data,

@@ -106,7 +106,7 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 	const onClickDeletePolicy = useCallback(() => {
 		dispatch(
 			DIALOG_BOX.action.openAlert({
-				key: deleteAlertMessages.deletePolicy.key,
+				value: deleteAlertMessages.deletePolicy.value,
 			}),
 		);
 	}, [dispatch]);
@@ -129,7 +129,8 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 			}
 		};
 
-		if (nextAction === deleteAlertMessages.deletePolicy.key) deletePolicy();
+		if (nextAction === deleteAlertMessages.deletePolicy.value)
+			deletePolicy();
 	}, [nextAction, policyId]);
 
 	/**************************************************

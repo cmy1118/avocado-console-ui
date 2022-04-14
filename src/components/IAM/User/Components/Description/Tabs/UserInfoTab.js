@@ -8,8 +8,6 @@ import {
 	NormalBorderButton,
 	NormalButton,
 } from '../../../../../../styles/components/buttons';
-import TextBox from '../../../../../RecycleComponents/New/TextBox';
-import Form from '../../../../../RecycleComponents/New/Form';
 import {ColDiv, Label, RowDiv} from '../../../../../../styles/components/style';
 import {TableTitle} from '../../../../../../styles/components/table';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
@@ -18,7 +16,6 @@ import RHF_Textbox from '../../../../../RecycleComponents/ReactHookForm/RHF_Text
 
 const UserInfoTab = ({user, userUid}) => {
 	const dispatch = useDispatch();
-	const [values, setValues] = useState({email: '', number: ''});
 	const confirmAuthRef = useRef(null);
 	const changePasswordRef = useRef(null);
 
@@ -56,7 +53,7 @@ const UserInfoTab = ({user, userUid}) => {
 		[dispatch, userUid],
 	);
 
-	const methods = useForm({
+	const userInfoMethods = useForm({
 		defaultValues: {
 			id: user?.id,
 			name: user?.name,
@@ -66,6 +63,9 @@ const UserInfoTab = ({user, userUid}) => {
 			mobile: user?.mobile,
 		},
 	});
+
+	const confirmAuthMethods = useForm();
+	const changePasswordMethods = useForm();
 
 	// textbox map으로 돌리기 위해서 생성
 	const infos = [
@@ -77,19 +77,39 @@ const UserInfoTab = ({user, userUid}) => {
 		{name: 'mobile', label: '모바일 전화번호'},
 	];
 
+	const changes = [
+		{
+			name: 'current',
+			label: '현재 비밀번호',
+			placeholder: '현재 비밀번호를 입력하십시오.',
+		},
+		{
+			name: 'new',
+			label: '새로운 비밀번호',
+			placeholder: '새로운 비밀번호를 입력하십시오.',
+		},
+		{
+			name: 'confirm',
+			label: '비밀번호 확인',
+			placeholder: '새로운 비밀번호를 입력하십시오.',
+		},
+	];
+
 	return (
 		<TabContentContainer>
 			<TableTitle>
 				기본정보
 				<NormalButton
 					margin='0px 0px 0px 5px'
-					onClick={methods.handleSubmit(onSubmitChangedUserInfo)}
+					onClick={userInfoMethods.handleSubmit(
+						onSubmitChangedUserInfo,
+					)}
 				>
 					저장
 				</NormalButton>
 			</TableTitle>
 			<div style={{padding: '10px 10px 0px 30px'}}>
-				<FormProvider {...methods}>
+				<FormProvider {...userInfoMethods}>
 					{infos.map((v) => {
 						return (
 							<RowDiv key={v.name} margin={'0px 0px 12px 0px'}>
@@ -112,62 +132,6 @@ const UserInfoTab = ({user, userUid}) => {
 						);
 					})}
 				</FormProvider>
-				{/*<Form*/}
-				{/*	initialValues={{*/}
-				{/*		id: user?.id,*/}
-				{/*		name: user?.name,*/}
-				{/*		password: '*********',*/}
-				{/*		email: user?.email,*/}
-				{/*		telephone: user?.telephone,*/}
-				{/*		mobile: user?.mobile,*/}
-				{/*	}}*/}
-				{/*	onSubmit={onSubmitChangedUserInfo}*/}
-				{/*	innerRef={saveRef}*/}
-				{/*>*/}
-				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
-				{/*		<Label htmlFor={'id'}>*/}
-				{/*			<li>사용자 ID</li>*/}
-				{/*		</Label>*/}
-				{/*		<TextBox name={'id'} readOnly />*/}
-				{/*	</RowDiv>*/}
-				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
-				{/*		<Label htmlFor={'name'}>*/}
-				{/*			<li>사용자 이름</li>*/}
-				{/*		</Label>*/}
-				{/*		<TextBox name={'name'} />*/}
-				{/*	</RowDiv>*/}
-				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
-				{/*		<Label htmlFor={'password'}>*/}
-				{/*			<li>비밀번호</li>*/}
-				{/*		</Label>*/}
-				{/*		<TextBox name={'password'} readOnly />*/}
-				{/*		<NormalBorderButton*/}
-				{/*			type={'button'}*/}
-				{/*			margin='0px 0px 0px 10px'*/}
-				{/*			onClick={onClickOpenIdentificationDialogBox}*/}
-				{/*		>*/}
-				{/*			비밀번호 변경*/}
-				{/*		</NormalBorderButton>*/}
-				{/*	</RowDiv>*/}
-				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
-				{/*		<Label htmlFor={'email'}>*/}
-				{/*			<li>이메일 주소</li>*/}
-				{/*		</Label>*/}
-				{/*		<TextBox name={'email'} />*/}
-				{/*	</RowDiv>*/}
-				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
-				{/*		<Label htmlFor={'telephone'}>*/}
-				{/*			<li>전화번호</li>*/}
-				{/*		</Label>*/}
-				{/*		<TextBox name={'telephone'} />*/}
-				{/*	</RowDiv>*/}
-				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
-				{/*		<Label htmlFor={'mobile'}>*/}
-				{/*			<li>모바일 전화번호</li>*/}
-				{/*		</Label>*/}
-				{/*		<TextBox name={'mobile'} />*/}
-				{/*	</RowDiv>*/}
-				{/*</Form>*/}
 			</div>
 
 			<ModalFormContainer
@@ -176,36 +140,42 @@ const UserInfoTab = ({user, userUid}) => {
 				title={'본인 확인'}
 				innerRef={confirmAuthRef}
 			>
-				<Form
-					initialValues={values}
-					setValues={setValues}
-					onSubmit={onClickOkBtn}
-					innerRef={confirmAuthRef}
-				>
+				<FormProvider {...confirmAuthMethods}>
 					<Label htmlFor={'email'}>이메일 주소</Label>
 					<RowDiv margin={'0px 0px 12px 0px'}>
-						<TextBox name={'email'} placeholder={'E-mail 주소'} />
+						<RHF_Textbox
+							name={'email'}
+							placeholder={'E-mail 주소'}
+						/>
 						<NormalButton
 							type={'button'}
-							onClick={() => console.log(values.email)}
+							onClick={() =>
+								console.log(
+									confirmAuthMethods.getValues('email'),
+								)
+							}
 						>
 							인증번호 전송
 						</NormalButton>
 					</RowDiv>
 					<Label htmlFor={'number'}>인증번호</Label>
 					<RowDiv margin={'0px 0px 12px 0px'}>
-						<TextBox
+						<RHF_Textbox
 							name={'number'}
 							placeholder={'인증번호 입력'}
 						/>
 						<NormalButton
 							type={'button'}
-							onClick={() => console.log(values.number)}
+							onClick={() =>
+								console.log(
+									confirmAuthMethods.getValues('number'),
+								)
+							}
 						>
 							인증하기
 						</NormalButton>
 					</RowDiv>
-				</Form>
+				</FormProvider>
 			</ModalFormContainer>
 
 			<ModalFormContainer
@@ -214,33 +184,22 @@ const UserInfoTab = ({user, userUid}) => {
 				title={'비밀번호 변경'}
 				innerRef={changePasswordRef}
 			>
-				<Form
-					initialValues={{old: '', new: '', confirm: ''}}
-					onSubmit={onClickSaveChangedInfo}
-					innerRef={changePasswordRef}
+				<FormProvider
+					{...changePasswordMethods}
+					// memo : onSubmit={onClickSaveChangedInfo}
 				>
-					<ColDiv margin={'0px 0px 12px 0px'}>
-						<Label>현재 비밀번호</Label>
-						<TextBox
-							name={'old'}
-							placeholder={'현재 비밀번호를 입력하십시오.'}
-						/>
-					</ColDiv>
-					<ColDiv margin={'0px 0px 12px 0px'}>
-						<Label>새로운 비밀번호</Label>
-						<TextBox
-							name={'new'}
-							placeholder={'새로운 비밀번호를 입력하십시오'}
-						/>
-					</ColDiv>
-					<ColDiv margin={'0px 0px 12px 0px'}>
-						<Label>비밀번호 확인</Label>
-						<TextBox
-							name={'confirm'}
-							placeholder={'새로운 비밀번호를 입력하십시오'}
-						/>
-					</ColDiv>
-				</Form>
+					{changes.map((v) => {
+						return (
+							<ColDiv key={v.name} margin={'0px 0px 12px 0px'}>
+								<Label>{v.label}</Label>
+								<RHF_Textbox
+									name={v.name}
+									placeholder={v.placeholder}
+								/>
+							</ColDiv>
+						);
+					})}
+				</FormProvider>
 			</ModalFormContainer>
 		</TabContentContainer>
 	);

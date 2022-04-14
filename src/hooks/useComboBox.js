@@ -78,8 +78,8 @@ const OptionContainer = styled.div`
  * const [comboValue, ComboBox] = useComboBox({
 		header: '사용 여부', // 필수 아님
 		options: [ // 필수
-			{label: '사용 함', key: 'use'},
-			{label: '사용 안함', key: 'unuse'},
+			{label: '사용 함', value: 'use'},
+			{label: '사용 안함', value: 'unuse'},
 		],
 	});
  * 
@@ -91,12 +91,12 @@ const useComboBox = ({header, options, width = 150, disabled = false}) => {
 		// 초기값이 존재하는 경우
 		// initialValue
 		// 	? // options에서 해당 값으로 setValue
-		// 	  options.find((op) => op.key === initialValue)
+		// 	  options.find((op) => op.value === initialValue)
 		// 	: // 초기값이 존재하지 않고, header가 존제하면 선택값을 비워줌
 		header
 			? null
 			: // 초기값도, header도 없는경우 옵션의 첫번째 값을 기본값으로 설정
-			  options[0].key,
+			  options[0].value,
 	);
 
 	/**************************************************
@@ -131,7 +131,7 @@ const useComboBox = ({header, options, width = 150, disabled = false}) => {
 				<HeaderOption value={value}>
 					{!value
 						? header
-						: options.find((op) => op.key === value)?.label}
+						: options.find((op) => op.value === value)?.label}
 				</HeaderOption>
 				{/* 열림 상태에 따른 아이콘 표시 */}
 				{isOpened ? (
@@ -150,10 +150,10 @@ const useComboBox = ({header, options, width = 150, disabled = false}) => {
 								key={i}
 								// 현재값 선택 여부
 								isCurrent={
-									JSON.stringify(v.key) ===
+									JSON.stringify(v.value) ===
 									JSON.stringify(value)
 								}
-								value={JSON.stringify(v.key)}
+								value={JSON.stringify(v.value)}
 							>
 								{v.label}
 							</Option>

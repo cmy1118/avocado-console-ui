@@ -7,15 +7,9 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../../styles/components/buttons';
-import ComboBox from '../../../../RecycleComponents/New/ComboBox';
-import TextBox from '../../../../RecycleComponents/New/TextBox';
-import Form from '../../../../RecycleComponents/New/Form';
-import {ColDiv, Label, RowDiv} from '../../../../../styles/components/style';
-import * as yup from 'yup';
-import {
-	AddPageContent,
-	TextBoxDescription,
-} from '../../../../../styles/components/iam/addPage';
+import {ColDiv, RowDiv} from '../../../../../styles/components/style';
+import * as Yup from 'yup';
+import {AddPageContent} from '../../../../../styles/components/iam/addPage';
 import {
 	TitleBar,
 	TitleBarButtons,
@@ -24,18 +18,18 @@ import {
 import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
 import TemplateElement from '../../../Policy/Components/Templates/Layout/TemplateElement';
 import useRadio from '../../../../../hooks/useRadio';
-import {
-	patternTypeOptions,
-	usageOptions,
-} from '../../../../../utils/policy/options';
+import {usageOptions} from '../../../../../utils/policy/options';
 import useTextBox from '../../../../../hooks/useTextBox';
+import {FormProvider, useForm} from 'react-hook-form';
+import RHF_Textbox from '../../../../RecycleComponents/ReactHookForm/RHF_Textbox';
+import RHF_Radio from '../../../../RecycleComponents/ReactHookForm/RHF_Radio';
+import {yupResolver} from '@hookform/resolvers/yup';
 
 const AddRole = ({values, groupMembers, setValues}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const {groups} = useSelector(IAM_USER_GROUP.selector);
-	const formRef = useRef(null);
 
 	const constants = {
 		title: '사용자 ID 패턴',
@@ -46,7 +40,7 @@ const AddRole = ({values, groupMembers, setValues}) => {
 		contents: {
 			usage: {
 				title: '부여 제한',
-				options: {use: '제한 없음', nonuse: '제앟ㄴ 함'},
+				options: {use: '제한 없음', nonuse: '제한 함'},
 			},
 			patternInput: {
 				title: '',
@@ -63,29 +57,39 @@ const AddRole = ({values, groupMembers, setValues}) => {
 		name: 'patternInput',
 	});
 
-	const validation = {
-		type: yup.string().required('역할 이름은 필수값입니다.'),
-		name: yup.string().required('열할 설명은 필수값입니다.'),
-	};
+	const validationSchema = Yup.object()
+		.shape({
+			name: Yup.string().required('역할 이름은 필수입니다.'),
+			description: Yup.string().required('역할 설명은 필수값입니다.'),
+			grantCount: Yup.number()
+				.max(10, '10 이하로 작성 가능합니다.')
+				.nullable(),
+		})
+		.required();
 
 	const onClickCancelAddGroup = useCallback(() => {
 		history.push('/roles');
 	}, [history]);
 
-	const onSubmitCreateGroup = useCallback(
-		(data) => {
-			//	console.log(data);
-			dispatch(
-				IAM_USER_GROUP.asyncAction.createAction({
-					userGroupTypeId: data.type,
-					parentId: data.parentId,
-					name: data.name,
-					members: groupMembers,
-				}),
-			);
+	const onSubmitCreateGroup = useCallback((data) => {
+		console.log(data);
+		// dispatch(
+		// 	IAM_USER_GROUP.asyncAction.createAction({
+		// 		userGroupTypeId: data.type,
+		// 		parentId: data.parentId,
+		// 		name: data.name,
+		// 		members: groupMembers,
+		// 	}),
+		// );
+	}, []);
+
+	const methods = useForm({
+		defaultValues: {
+			usage: 'use',
+			grantCount: 0,
 		},
-		[dispatch, groupMembers],
-	);
+		resolver: yupResolver(validationSchema), // 외부 유효성 검사 라이브러리 사용
+	});
 
 	useEffect(() => {
 		dispatch(
@@ -110,7 +114,7 @@ const AddRole = ({values, groupMembers, setValues}) => {
 				<TitleBarButtons>
 					<NormalButton
 						type={'button'}
-						onClick={() => formRef.current.handleSubmit()}
+						onClick={methods.handleSubmit(onSubmitCreateGroup)}
 					>
 						역할 생성
 					</NormalButton>
@@ -123,43 +127,50 @@ const AddRole = ({values, groupMembers, setValues}) => {
 				</TitleBarButtons>
 			</TitleBar>
 			<AddPageContent>
-				<Form
-					initialValues={values}
-					setValues={setValues}
-					onSubmit={onSubmitCreateGroup}
-					innerRef={formRef}
-					validation={validation}
-				>
+				<FormProvider {...methods}>
 					<ColDiv>
 						{/*<Label htmlFor={'name'}>그룹 명</Label>*/}
 						<RowDiv margin={'0px 0px 12px 0px'}>
-							<TextBox name={'name'} placeholder={'역할 이름'} />
-							<TextBoxDescription>
-								최대 100자, 영문 대소문자로 생성 가능합니다.
-							</TextBoxDescription>
+							<RHF_Textbox
+								name={'name'}
+								placeholder={'역할 이름'}
+								description={
+									'최대 100자, 영문 대소문자로 생성 가능합니다.'
+								}
+							/>
 						</RowDiv>
 						<RowDiv margin={'0px 0px 12px 0px'}>
-							<TextBox name={'name'} placeholder={'설명'} />
-							<TextBoxDescription>
-								최대 200자 가능합니다.
-							</TextBoxDescription>
+							<RHF_Textbox
+								name={'description'}
+								placeholder={'역할 설명'}
+								description={'최대 200자 가능합니다.'}
+							/>
 						</RowDiv>
 						<RowDiv>
 							<TemplateElement
 								title={constants.contents.usage.title}
-								render={usageRadioButton}
+								render={() => (
+									<RHF_Radio
+										name={'usage'}
+										options={usageOptions}
+									/>
+								)}
 							/>
 							<TemplateElement
 								title={constants.contents.patternInput.title}
-								render={patternInputTextBox}
+								render={() => (
+									<RHF_Textbox
+										name={'grantCount'}
+										description={
+											'부여횟수를 제한할 경우 부여 가능 횟수를 입력합니다. (최대10)'
+										}
+										width={50}
+									/>
+								)}
 							/>
-							<TextBoxDescription>
-								부여횟수를 제한할 경우 부여 가능 횟수를 입력
-								합니다. (최대10)
-							</TextBoxDescription>
 						</RowDiv>
 					</ColDiv>
-				</Form>
+				</FormProvider>
 			</AddPageContent>
 		</>
 	);

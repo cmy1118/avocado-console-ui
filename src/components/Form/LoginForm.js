@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useRef} from 'react';
 import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 import {useParams} from 'react-router-dom';
@@ -14,14 +14,12 @@ import {
 	LogInTitle,
 	LogInTitleSpan,
 } from '../../styles/components/login';
-import Form from '../RecycleComponents/New/Form';
-import TextBox from '../RecycleComponents/New/TextBox';
 import {RowDiv} from '../../styles/components/style';
 import CheckBox from '../RecycleComponents/ReactHookForm/CheckBox';
 import AUTH from '../../reducers/api/Auth/auth';
 import useModal from '../../hooks/useModal';
 import GetUserIdDialogBox from '../DialogBoxs/Form/GetUserIdDialogBox';
-import {useForm, FormProvider} from 'react-hook-form';
+import {FormProvider, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import RHF_Textbox from '../RecycleComponents/ReactHookForm/RHF_Textbox';
 import * as Yup from 'yup';

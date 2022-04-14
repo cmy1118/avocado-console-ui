@@ -50,10 +50,10 @@ const AllowServiceTime = ({data, setTemplateData}) => {
 		if (data?.attribute?.ruleType) {
 			const attributes = {
 				usage:
-					timeoutRistriction === policyOption.restrict.restrict.key,
+					timeoutRistriction === policyOption.restrict.restrict.value,
 			};
 			//제한 여부 true
-			if (timeoutRistriction === policyOption.restrict.restrict.key) {
+			if (timeoutRistriction === policyOption.restrict.restrict.value) {
 				const tempTimezone = {};
 				Object.keys(timezone).map((v) => {
 					if (timezone[v].checked) {
@@ -79,8 +79,8 @@ const AllowServiceTime = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data?.attribute,
 				'usage',
-				policyOption.usage.use.key,
-				policyOption.usage.none.key,
+				policyOption.usage.use.value,
+				policyOption.usage.none.value,
 			),
 		);
 
@@ -120,7 +120,7 @@ const AllowServiceTime = ({data, setTemplateData}) => {
 								setData={setTimezone}
 								disabled={
 									timeoutRistriction ===
-									policyOption.restrict.none.key
+									policyOption.restrict.none.value
 								}
 							/>
 						</FormProvider>

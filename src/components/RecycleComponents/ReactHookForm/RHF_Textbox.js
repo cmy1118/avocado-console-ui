@@ -1,10 +1,12 @@
 import {useFormContext} from 'react-hook-form';
-import React, {memo, useState} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {ErrorMessage} from '@hookform/error-message';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {TextBoxDescription} from '../../../styles/components/iam/addPage';
 import {RowDiv} from '../../../styles/components/style';
+import {Icon} from '../../../styles/components/icons';
+import {searchIcon} from '../../../icons/icons';
 
 const BoxContainer = styled.div`
 	margin: 6px;
@@ -75,8 +77,21 @@ const NestedInput = memo(
 		onBlur,
 		type,
 		readOnly,
+		front,
+		onSubmit,
 	}) => {
 		const [isFocused, setIsFocused] = useState(false);
+
+		const handleKeyDown = useCallback(
+			(e) => {
+				// Enter를 입력한 경우
+				if (e.keyCode === 13) {
+					onSubmit();
+				}
+			},
+			[onSubmit],
+		);
+
 		return (
 			<BoxContainer>
 				<RowDiv alignItems={'center'}>
@@ -86,6 +101,7 @@ const NestedInput = memo(
 						disabled={isDisabled}
 						width={width}
 					>
+						{front && front}
 						<Input
 							{...register(name)}
 							onBlur={(e) => {
@@ -102,6 +118,7 @@ const NestedInput = memo(
 							width={width}
 							type={type}
 							readOnly={readOnly}
+							{...(onSubmit && {onKeyDown: handleKeyDown})}
 						/>
 					</SubContainer>
 					<TextBoxDescription>{description}</TextBoxDescription>
@@ -129,6 +146,9 @@ NestedInput.propTypes = {
 	width: PropTypes.number,
 	description: PropTypes.string,
 	type: PropTypes.string,
+	readOnly: PropTypes.string,
+	front: PropTypes.object,
+	onSubmit: PropTypes.func,
 };
 
 const RHF_Textbox = (

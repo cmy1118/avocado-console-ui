@@ -56,7 +56,7 @@ const DropButton = ({
 			if (preDataLength + selectDataLength > max) {
 				dispatch(
 					DIALOG_BOX.action.openAlert({
-						key: checkDropTypeAlertMessage(tableKey),
+						value: checkDropTypeAlertMessage(tableKey),
 					}),
 				);
 				return false;
@@ -95,9 +95,9 @@ const DropButton = ({
 					) {
 						dispatch(
 							DIALOG_BOX.action.openAlert({
-								key:
+								value:
 									confirmAlertMessages.singleCountGroupTypes
-										.key,
+										.value,
 							}),
 						);
 						return false;
@@ -118,9 +118,9 @@ const DropButton = ({
 					) {
 						dispatch(
 							DIALOG_BOX.action.openAlert({
-								key:
+								value:
 									confirmAlertMessages.singleCountRolesTypes
-										.key,
+										.value,
 							}),
 						);
 						return false;

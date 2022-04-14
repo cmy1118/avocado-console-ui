@@ -53,13 +53,13 @@ const LoginFailure = ({data, setTemplateData}) => {
 		name: 'loginFailureCount',
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//blockingType: 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'loginFailureBlockingType',
 		options: blockingTypeOptions,
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//accountNormalization: 계정 정상화
 	const [
@@ -70,7 +70,7 @@ const LoginFailure = ({data, setTemplateData}) => {
 		name: 'accountUnblockedHours',
 		//1 ~
 		regex: /^([1-9]|[1-9][0-9]*)$/,
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 
 	/**************************************************
@@ -80,10 +80,10 @@ const LoginFailure = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.attribute?.ruleType) {
 			const attributes = {
-				usage: usage === policyOption.usage.use.key,
+				usage: usage === policyOption.usage.use.value,
 			};
 			//사용 여부 true
-			if (usage === policyOption.usage.use.key) {
+			if (usage === policyOption.usage.use.value) {
 				attributes.failedCount = failedCount;
 				attributes.blockingType = blockingType;
 				attributes.unblockedHours = unblockedHours;
@@ -112,8 +112,8 @@ const LoginFailure = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data?.attribute,
 				'usage',
-				policyOption.usage.use.key,
-				policyOption.usage.none.key,
+				policyOption.usage.use.value,
+				policyOption.usage.none.value,
 			),
 		);
 		//로그인 실패 횟수 default value 있음

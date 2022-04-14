@@ -16,8 +16,8 @@ import {isFulfilled} from '../../../utils/redux';
 import ResourceGroup from '../../IAM/Policy/Components/Templates/PAM/Resource/ResourceGroup';
 import {Icon, IconButton} from '../../../styles/components/icons';
 import {closeIcon, searchIcon} from '../../../icons/icons';
-import TextBox from '../../RecycleComponents/New/TextBox';
-import Form from '../../RecycleComponents/New/Form';
+import RHF_Textbox from '../../RecycleComponents/ReactHookForm/RHF_Textbox';
+import {FormProvider, useForm} from 'react-hook-form';
 
 const _DialogBox = styled(DialogBox)`
 	display: flex;
@@ -73,10 +73,12 @@ const SelectResourceGroupDialogBox = ({
 	/**************************************************
 	 * ambacc244 - 자원 그룹 검색
 	 **************************************************/
-	const onSubmitSearchVal = useCallback((v) => {
-		console.log(v.search);
+	const onSubmitSearchVal = useCallback((data) => {
+		console.log(data.search);
 		//TODO: 그룹 검색
 	}, []);
+
+	const methods = useForm();
 
 	/**************************************************
 	 * ambacc244 - root에 존재하는 그룹들을 불러오기
@@ -113,12 +115,9 @@ const SelectResourceGroupDialogBox = ({
 			</DialogBoxHeader>
 
 			<_Contents>
-				<Form
-					onSubmit={onSubmitSearchVal}
-					innerRef={searchRef}
-					initialValues={{search: ''}}
-				>
-					<TextBox
+				<FormProvider {...methods}>
+					<RHF_Textbox
+						name={'search'}
 						placeholder={
 							selectResourceGroupDialogBox.searchBar.placeholder
 						}
@@ -127,9 +126,26 @@ const SelectResourceGroupDialogBox = ({
 								{searchIcon}
 							</Icon>
 						}
-						name={'search'}
+						onSubmit={methods.handleSubmit(onSubmitSearchVal)}
 					/>
-				</Form>
+				</FormProvider>
+				{/*<Form*/}
+				{/*	onSubmit={onSubmitSearchVal}*/}
+				{/*	innerRef={searchRef}*/}
+				{/*	initialValues={{search: ''}}*/}
+				{/*>*/}
+				{/*	<TextBox*/}
+				{/*		placeholder={*/}
+				{/*			selectResourceGroupDialogBox.searchBar.placeholder*/}
+				{/*		}*/}
+				{/*		front={*/}
+				{/*			<Icon size={'sm'} margin_right={'0px'}>*/}
+				{/*				{searchIcon}*/}
+				{/*			</Icon>*/}
+				{/*		}*/}
+				{/*		name={'search'}*/}
+				{/*	/>*/}
+				{/*</Form>*/}
 
 				{groups.map((v) => (
 					<ResourceGroup

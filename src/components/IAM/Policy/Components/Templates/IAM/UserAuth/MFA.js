@@ -55,67 +55,67 @@ const MFA = ({data, setTemplateData}) => {
 	const [authUsage1, authUsage1ComboBox, setAuthUsage1] = useComboBox({
 		options: authUsageOptions,
 		//mfa 인증 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//required1: 1차 추가인증 필수 여부
 	const [required1, required1ComboBox, setRequired1] = useComboBox({
 		options: requiredOptions,
 		//1차 추가인증 사용 여부 false일때 disabled
 		disabled:
-			usage === policyOption.usage.none.key ||
-			authUsage1 === policyOption.authUsage.none.key,
+			usage === policyOption.usage.none.value ||
+			authUsage1 === policyOption.authUsage.none.value,
 	});
 	//authMethod1: 1차 추가인증 수단
 	const [authMethod1, authMethod1CheckBox, setAuthMethod1] = useCheckBox({
 		options: additionalAuthMethodOptions,
 		//1차 추가인증 사용 여부 false일때 disabled
 		disabled:
-			usage === policyOption.usage.none.key ||
-			authUsage1 === policyOption.authUsage.none.key,
+			usage === policyOption.usage.none.value ||
+			authUsage1 === policyOption.authUsage.none.value,
 	});
 	//authUsage2: 2차 추가인증 사용 여부
 	const [authUsage2, authUsage2ComboBox, setAuthUsage2] = useComboBox({
 		options: authUsageOptions,
 		//mfa 인증 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//required2: 2차 추가인증 필수 여부
 	const [required2, required2ComboBox, setRequired2] = useComboBox({
 		options: requiredOptions,
 		//2차 추가인증 사용 여부 false일때 disabled
 		disabled:
-			usage === policyOption.usage.none.key ||
-			authUsage2 === policyOption.authUsage.none.key,
+			usage === policyOption.usage.none.value ||
+			authUsage2 === policyOption.authUsage.none.value,
 	});
 	//authMethod2: 2차 추가인증 수단
 	const [authMethod2, authMethod2CheckBox, setAuthMethod2] = useCheckBox({
 		options: additionalAuthMethodOptions,
 		//2차 추가인증 사용 여부 false일때 disabled
 		disabled:
-			usage === policyOption.usage.none.key ||
-			authUsage2 === policyOption.authUsage.none.key,
+			usage === policyOption.usage.none.value ||
+			authUsage2 === policyOption.authUsage.none.value,
 	});
 	//authUsage3: 3차 추가인증 사용 여부
 	const [authUsage3, authUsage3ComboBox, setAuthUsage3] = useComboBox({
 		options: authUsageOptions,
 		//mfa 인증 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//required3: 3차 추가인증 필수 여부
 	const [required3, required3ComboBox, setRequired3] = useComboBox({
 		options: requiredOptions,
 		//3차 추가인증 사용 여부 false일때 disabled
 		disabled:
-			usage === policyOption.usage.none.key ||
-			authUsage3 === policyOption.authUsage.none.key,
+			usage === policyOption.usage.none.value ||
+			authUsage3 === policyOption.authUsage.none.value,
 	});
 	//authMethod3: 3차 추가인증 수단
 	const [authMethod3, authMethod3CheckBox, setAuthMethod3] = useCheckBox({
 		options: additionalAuthMethodOptions,
 		//3차 추가인증 사용 여부 false일때 disabled
 		disabled:
-			usage === policyOption.usage.none.key ||
-			authUsage3 === policyOption.authUsage.none.key,
+			usage === policyOption.usage.none.value ||
+			authUsage3 === policyOption.authUsage.none.value,
 	});
 	//timeoutSeconds: 입력 대기 시간
 	const [
@@ -127,24 +127,24 @@ const MFA = ({data, setTemplateData}) => {
 		//1 - 180
 		regex: /^([1-9]|[1-9][0-9]|1[0-7][0-9]|180)$/,
 		//mfa 사용 여부 false일때 disabled
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//추가인증 화면을 그리기 위한 컴포넌트 배열
 	const additionalAuth = [
 		{
-			key: 'additionalAuth1',
+			value: 'additionalAuth1',
 			authUsage: authUsage1ComboBox,
 			required: required1ComboBox,
 			authMethod: authMethod1CheckBox,
 		},
 		{
-			key: 'additionalAuth2',
+			value: 'additionalAuth2',
 			authUsage: authUsage2ComboBox,
 			required: required2ComboBox,
 			authMethod: authMethod2CheckBox,
 		},
 		{
-			key: 'additionalAuth3',
+			value: 'additionalAuth3',
 			authUsage: authUsage3ComboBox,
 			required: required3ComboBox,
 			authMethod: authMethod3CheckBox,
@@ -157,23 +157,23 @@ const MFA = ({data, setTemplateData}) => {
 	useEffect(() => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.attribute?.ruleType) {
-			let attributes = {usage: usage === policyOption.usage.use.key};
+			let attributes = {usage: usage === policyOption.usage.use.value};
 			//사용 여부 true
-			if (usage === policyOption.usage.use.key) {
+			if (usage === policyOption.usage.use.value) {
 				//1차 추가 인증에 사용 여부 true
-				if (authUsage1 === policyOption.authUsage.use.key)
+				if (authUsage1 === policyOption.authUsage.use.value)
 					attributes[1] = {
 						types: authMethod1,
 						option: required1,
 					};
 				//2차 추가 인증에 사용 여부 true
-				if (authUsage2 === policyOption.authUsage.use.key)
+				if (authUsage2 === policyOption.authUsage.use.value)
 					attributes[2] = {
 						types: authMethod2,
 						option: required2,
 					};
 				//3차 추가 인증에 사용 여부 true
-				if (authUsage3 === policyOption.authUsage.use.key)
+				if (authUsage3 === policyOption.authUsage.use.value)
 					attributes[3] = {
 						types: authMethod3,
 						option: required3,
@@ -210,8 +210,8 @@ const MFA = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data?.attribute,
 				'usage',
-				policyOption.usage.use.key,
-				policyOption.usage.none.key,
+				policyOption.usage.use.value,
+				policyOption.usage.none.value,
 			),
 		);
 		// 추가인증 default value 있음
@@ -224,7 +224,7 @@ const MFA = ({data, setTemplateData}) => {
 				)
 			) {
 				//1차 추가 인증 세팅
-				setAuthUsage1(policyOption.authUsage.use.key);
+				setAuthUsage1(policyOption.authUsage.use.value);
 				setRequired1(data?.attribute.policies['1'].option);
 				setAuthMethod1(data?.attribute.policies['1'].types);
 			}
@@ -236,7 +236,7 @@ const MFA = ({data, setTemplateData}) => {
 				)
 			) {
 				//2차 추가 인증 세팅
-				setAuthUsage2(policyOption.authUsage.use.key);
+				setAuthUsage2(policyOption.authUsage.use.value);
 				setRequired2(data?.attribute.policies['2'].option);
 				setAuthMethod2(data?.attribute.policies['2'].types);
 			}
@@ -248,18 +248,18 @@ const MFA = ({data, setTemplateData}) => {
 				)
 			) {
 				//3차 추가 인증 세팅
-				setAuthUsage3(policyOption.authUsage.use.key);
+				setAuthUsage3(policyOption.authUsage.use.value);
 				setRequired3(data?.attribute.policies['3'].option);
 				setAuthMethod3(data?.attribute.policies['3'].types);
 			}
 			//mfa 인증 여부 false || 추가인증 default value 없음
 		} else {
-			setAuthUsage1(policyOption.authUsage.none.key);
-			// setRequired1(policyOption.required.none.key);
-			setAuthUsage2(policyOption.authUsage.none.key);
-			// setRequired2(policyOption.required.none.key);
-			setAuthUsage3(policyOption.authUsage.none.key);
-			// setRequired3(policyOption.required.none.key);
+			setAuthUsage1(policyOption.authUsage.none.value);
+			// setRequired1(policyOption.required.none.value);
+			setAuthUsage2(policyOption.authUsage.none.value);
+			// setRequired2(policyOption.required.none.value);
+			setAuthUsage3(policyOption.authUsage.none.value);
+			// setRequired3(policyOption.required.none.value);
 		}
 		//입력 대기 시간 default value 있음
 		if (data?.attribute?.timoutSeconds) {
@@ -296,8 +296,8 @@ const MFA = ({data, setTemplateData}) => {
 						</div>
 						{additionalAuth.map((v) => (
 							<TemplateElement
-								key={v.key}
-								title={mfa.contents[v.key].title}
+								key={v.value}
+								title={mfa.contents[v.value].title}
 								render={() => {
 									return (
 										<RowDiv>
