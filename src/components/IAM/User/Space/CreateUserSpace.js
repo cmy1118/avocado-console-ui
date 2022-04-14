@@ -21,7 +21,7 @@ const CreateUserSpace = () => {
 	return (
 		<CreateSpaceContainer>
 			<CurrentPathBar paths={paths} />
-			<TitleBar>사용자 추가</TitleBar>
+			<TitleBar>사용자 생성</TitleBar>
 
 			<IamContents>
 				<AddUser setIsOpened={setIsOpened} />

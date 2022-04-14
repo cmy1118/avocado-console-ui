@@ -1,5 +1,9 @@
 import React from 'react';
-import {IamContainer} from '../../../../styles/components/iam/iam';
+import {
+	IamContainer,
+	IamContents,
+	TitleBar,
+} from '../../../../styles/components/iam/iam';
 import CreatePolicy from '../Components/Create/CreatePolicy';
 import {CreatePageContainer} from '../../../../styles/components/iam/addPage';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
@@ -17,10 +21,11 @@ const CreatePolicySpace = () => {
 	return (
 		<IamContainer>
 			<CurrentPathBar paths={paths} />
+			<TitleBar>정책 생성</TitleBar>
 
-			<CreatePageContainer>
+			<IamContents>
 				<CreatePolicy />
-			</CreatePageContainer>
+			</IamContents>
 		</IamContainer>
 	);
 };

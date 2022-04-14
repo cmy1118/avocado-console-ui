@@ -3,7 +3,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 
 import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
-import GroupSummary from '../Components/GroupSummary';
+import GroupSummary from '../Components/Description/GroupSummary';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
 import {HoverIconButton} from '../../../../styles/components/icons';
 import {
@@ -14,9 +14,9 @@ import {LiText} from '../../../../styles/components/text';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import TabBar from '../../TabBar';
 import qs from 'qs';
-import GroupRolesTab from '../Components/GroupRolesTab';
-import GroupUsersTab from '../Components/GroupUsersTab';
-import GroupOnDescPageTags from '../Components/GroupOnDescPageTags';
+import GroupRoleTab from '../Components/Description/Tabs/GroupRoleTab';
+import GroupUserTab from '../Components/Description/Tabs/GroupUserTab';
+import GroupTagTab from '../Components/Description/Tabs/GroupTagTab';
 import PropTypes from 'prop-types';
 
 import {
@@ -183,21 +183,21 @@ const GroupDescriptionSpace = ({groupId}) => {
 					<TabContentSpace>
 						{qs.parse(location.search, {ignoreQueryPrefix: true})
 							.tabs === groupTabs.user && (
-							<GroupUsersTab
+							<GroupUserTab
 								groupId={groupId}
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
 						{qs.parse(location.search, {ignoreQueryPrefix: true})
 							.tabs === groupTabs.role && (
-							<GroupRolesTab
+							<GroupRoleTab
 								groupId={groupId}
 								isSummaryOpened={isSummaryOpened}
 							/>
 						)}
 						{qs.parse(location.search, {ignoreQueryPrefix: true})
 							.tabs === groupTabs.tag && (
-							<GroupOnDescPageTags
+							<GroupTagTab
 								groupId={groupId}
 								isSummaryOpened={isSummaryOpened}
 							/>

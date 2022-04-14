@@ -1,25 +1,30 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import Table from '../../../Table/Table';
+import Table from '../../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import DropButton from '../../../Table/DropButton';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
-import CURRENT_TARGET from '../../../../reducers/currentTarget';
-import {ColDiv, RowDiv, TableHeader} from '../../../../styles/components/style';
-import TableOptionText from '../../../Table/Options/TableOptionText';
+import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
+import DropButton from '../../../../Table/DropButton';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../Constants/Table/columns';
+import CURRENT_TARGET from '../../../../../reducers/currentTarget';
+import {
+	ColDiv,
+	RowDiv,
+	TableHeader,
+} from '../../../../../styles/components/style';
+import TableOptionText from '../../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import DragContainer from '../../../Table/DragContainer';
-import PAGINATION from '../../../../reducers/pagination';
+import DragContainer from '../../../../Table/DragContainer';
+import PAGINATION from '../../../../../reducers/pagination';
 import {
 	expiredConverter,
 	groupsConverter,
 	totalNumberConverter,
-} from '../../../../utils/tableDataConverter';
-import useSelectColumn from '../../../../hooks/table/useSelectColumn';
-import FoldableContainer from '../../../Table/Options/FoldableContainer';
+} from '../../../../../utils/tableDataConverter';
+import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
+import FoldableContainer from '../../../../Table/Options/FoldableContainer';
+import {CreatePageContainer} from '../../../../../styles/components/iam/addPage';
 
-const UsersIncludedInGroup = ({setValue}) => {
+const AddUsersToGroup = ({setValue}) => {
 	const dispatch = useDispatch();
 	const {users} = useSelector(IAM_USER.selector);
 	const {page} = useSelector(PAGINATION.selector);
@@ -27,9 +32,6 @@ const UsersIncludedInGroup = ({setValue}) => {
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
 	const [selected, setSelected] = useState({});
-
-	console.log(users);
-	console.log(includedDataIds);
 
 	const excludedData = useMemo(() => {
 		return (
@@ -113,8 +115,7 @@ const UsersIncludedInGroup = ({setValue}) => {
 	}, [excludeSelect, includeSelect]);
 
 	return (
-		<FoldableContainer title={'그룹에 사용자에 추가'}>
-			<TableOptionText data={'groups'} />
+		<FoldableContainer title={'그룹에 사용자에 추가'} bottomMargin={true}>
 			<DragContainer
 				selected={selected}
 				data={includedDataIds}
@@ -123,45 +124,52 @@ const UsersIncludedInGroup = ({setValue}) => {
 				excludedData={excludedData}
 				includedData={includedData}
 			>
-				<RowDiv>
-					<Table
-						isDraggable
-						data={excludedData}
-						tableKey={tableKeys.groups.add.users.exclude}
-						columns={excludeColumns}
-						isPaginable
-						isSearchable
-						// isSearchFilterable
-						isColumnFilterable
-					/>
-					<RowDiv alignItems={'center'}>
-						<DropButton
-							leftTableKey={tableKeys.groups.add.users.exclude}
-							RightTableKey={tableKeys.groups.add.users.include}
-							select={selected}
-							dataLeft={excludedData}
-							dataRight={includedData}
-							rightDataIds={includedDataIds}
-							setRightDataIds={setIncludedDataIds}
-						/>
-					</RowDiv>
-					<ColDiv>
-						<TableHeader>
-							추가 사용자: {includedDataIds.length}건
-						</TableHeader>
+				<CreatePageContainer>
+					<TableOptionText data={'groups'} />
+					<RowDiv>
 						<Table
 							isDraggable
-							data={includedData}
-							tableKey={tableKeys.groups.add.users.include}
-							columns={includeColumns}
+							data={excludedData}
+							tableKey={tableKeys.groups.add.users.exclude}
+							columns={excludeColumns}
+							isPaginable
+							isSearchable
+							// isSearchFilterable
+							isColumnFilterable
 						/>
-					</ColDiv>
-				</RowDiv>
+						<RowDiv alignItems={'center'}>
+							<DropButton
+								leftTableKey={
+									tableKeys.groups.add.users.exclude
+								}
+								RightTableKey={
+									tableKeys.groups.add.users.include
+								}
+								select={selected}
+								dataLeft={excludedData}
+								dataRight={includedData}
+								rightDataIds={includedDataIds}
+								setRightDataIds={setIncludedDataIds}
+							/>
+						</RowDiv>
+						<ColDiv>
+							<TableHeader>
+								추가 사용자: {includedDataIds.length}건
+							</TableHeader>
+							<Table
+								isDraggable
+								data={includedData}
+								tableKey={tableKeys.groups.add.users.include}
+								columns={includeColumns}
+							/>
+						</ColDiv>
+					</RowDiv>
+				</CreatePageContainer>
 			</DragContainer>
 		</FoldableContainer>
 	);
 };
-UsersIncludedInGroup.propTypes = {
+AddUsersToGroup.propTypes = {
 	setValue: PropTypes.func,
 };
-export default UsersIncludedInGroup;
+export default AddUsersToGroup;

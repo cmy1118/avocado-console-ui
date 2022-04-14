@@ -1,29 +1,28 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 
-import Table from '../../../Table/Table';
+import Table from '../../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../Constants/Table/columns';
+import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../Constants/Table/columns';
 import {useHistory, useLocation} from 'react-router-dom';
 import {
 	SummaryTablesContainer,
 	SummaryTableTitle,
-} from '../../../../styles/components/iam/descriptionPage';
-import PAGINATION from '../../../../reducers/pagination';
-import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
-import {TableMode} from '../../../../Constants/Table/mode';
-import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
-import {roleTypeConverter} from '../../../../utils/tableDataConverter';
-import {groupTabs} from '../../../../utils/tabs';
-import IAM_USER_GROUP_TAG from '../../../../reducers/api/IAM/User/Group/tags';
+} from '../../../../../styles/components/iam/descriptionPage';
+import PAGINATION from '../../../../../reducers/pagination';
+import IAM_USER_GROUP_MEMBER from '../../../../../reducers/api/IAM/User/Group/groupMember';
+import {TableMode} from '../../../../../Constants/Table/mode';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import {roleTypeConverter} from '../../../../../utils/tableDataConverter';
+import {groupTabs} from '../../../../../utils/tabs';
+import IAM_USER_GROUP_TAG from '../../../../../reducers/api/IAM/User/Group/tags';
 
 const GroupSummary = ({groupId}) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const location = useLocation();
-	const {page} = useSelector(PAGINATION.selector);
 	const [groupUserMembers, setGroupUserMembers] = useState([]);
 	const [groupRoleData, setGroupRoleData] = useState([]);
 	const [groupTags, setGroupTags] = useState([]);
@@ -67,12 +66,6 @@ const GroupSummary = ({groupId}) => {
 			createdTime: v.createdTag.createdTime,
 			[DRAGGABLE_KEY]: v.name,
 		}));
-		// return group.tags.map((v, i) => ({
-		// 	...v,
-		// 	id: v.name,
-		// 	numberOfPermissions: v.permissions.length,
-		// 	createdTime: dummyDates[i],
-		// }));
 	}, [groupTags]);
 
 	const onClickChangeTab = useCallback(

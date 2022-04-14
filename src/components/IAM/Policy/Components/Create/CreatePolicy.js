@@ -1,5 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+	IamSectionBottomMargin,
+	IamSectionTitleBar,
 	TitleBar,
 	TitleBarButtons,
 	TitleBarText,
@@ -9,6 +11,7 @@ import {
 	TransparentButton,
 } from '../../../../../styles/components/buttons';
 import {
+	CreatePageContainer,
 	CreatePageContent,
 	TextBoxDescription,
 } from '../../../../../styles/components/iam/addPage';
@@ -80,41 +83,44 @@ const CreatePolicy = () => {
 
 	return (
 		<>
-			<TitleBar>
-				<TitleBarText>정책 기본 정보</TitleBarText>
-				<TitleBarButtons>
-					<NormalButton onClick={onSubmitGatherPolicyTemplates}>
-						정책 생성
-					</NormalButton>
-					<TransparentButton
-						type={'button'}
-						margin='0px 0px 0px 5px'
-						onClick={onClickCancelAddPolicy}
-					>
-						취소
-					</TransparentButton>
-				</TitleBarButtons>
-			</TitleBar>
-			<CreatePageContent>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					{policyNameTextBox()}
-					<TextBoxDescription>
-						최대 100자, 영문 대소문자로 생성 가능합니다.
-					</TextBoxDescription>
-				</RowDiv>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					{policyDescriptionTextBox()}
-					<TextBoxDescription>
-						최대 200자 가능합니다.
-					</TextBoxDescription>
-				</RowDiv>
-				<RowDiv margin={'0px 0px 12px 0px'}>
-					{policyTypeComboBox()}
-					<TextBoxDescription>
-						정책 유형을 선택 합니다.
-					</TextBoxDescription>
-				</RowDiv>
-			</CreatePageContent>
+			<IamSectionBottomMargin>
+				<IamSectionTitleBar>
+					<TitleBarText>정책 기본 정보</TitleBarText>
+					<TitleBarButtons>
+						<NormalButton onClick={onSubmitGatherPolicyTemplates}>
+							정책 생성
+						</NormalButton>
+						<TransparentButton
+							type={'button'}
+							margin='0px 0px 0px 5px'
+							onClick={onClickCancelAddPolicy}
+						>
+							취소
+						</TransparentButton>
+					</TitleBarButtons>
+				</IamSectionTitleBar>
+				<CreatePageContainer>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						{policyNameTextBox()}
+						<TextBoxDescription>
+							최대 100자, 영문 대소문자로 생성 가능합니다.
+						</TextBoxDescription>
+					</RowDiv>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						{policyDescriptionTextBox()}
+						<TextBoxDescription>
+							최대 200자 가능합니다.
+						</TextBoxDescription>
+					</RowDiv>
+					<RowDiv margin={'0px 0px 12px 0px'}>
+						{policyTypeComboBox()}
+						<TextBoxDescription>
+							정책 유형을 선택 합니다.
+						</TextBoxDescription>
+					</RowDiv>
+				</CreatePageContainer>
+			</IamSectionBottomMargin>
+
 			<WritePolicy
 				title={createPolicy.title}
 				description={createPolicy.description}

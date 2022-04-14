@@ -1,16 +1,15 @@
 import React, {useCallback, useEffect, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import IAM_USER_GROUP_TYPE from '../../../../../reducers/api/IAM/User/Group/groupType';
 import PropTypes from 'prop-types';
 import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../../styles/components/buttons';
-import ComboBox from '../../../../RecycleComponents/New/ComboBox';
 import TextBox from '../../../../RecycleComponents/New/TextBox';
 import Form from '../../../../RecycleComponents/New/Form';
-import {ColDiv, Label, RowDiv} from '../../../../../styles/components/style';
+import {ColDiv, RowDiv} from '../../../../../styles/components/style';
 import * as yup from 'yup';
 import {
 	CreatePageContent,
@@ -24,17 +23,12 @@ import {
 import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
 import TemplateElement from '../../../Policy/Components/Templates/Layout/TemplateElement';
 import useRadio from '../../../../../hooks/useRadio';
-import {
-	patternTypeOptions,
-	usageOptions,
-} from '../../../../../utils/policy/options';
+import {usageOptions} from '../../../../../utils/policy/options';
 import useTextBox from '../../../../../hooks/useTextBox';
 
 const AddRole = ({values, groupMembers, setValues}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
-	const {groups} = useSelector(IAM_USER_GROUP.selector);
 	const formRef = useRef(null);
 
 	const constants = {

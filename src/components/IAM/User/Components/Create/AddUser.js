@@ -18,7 +18,6 @@ import {
 	TextBoxDescription,
 } from '../../../../../styles/components/iam/addPage';
 import {
-	IamSection,
 	IamSectionBottomMargin,
 	IamSectionTitleBar,
 	TitleBarButtons,

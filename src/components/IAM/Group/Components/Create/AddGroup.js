@@ -1,40 +1,42 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
-import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
+import {useDispatch} from 'react-redux';
+import IAM_USER_GROUP_TYPE from '../../../../../reducers/api/IAM/User/Group/groupType';
 import PropTypes from 'prop-types';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../styles/components/buttons';
+} from '../../../../../styles/components/buttons';
 import * as yup from 'yup';
 import * as Yup from 'yup';
-import {CreatePageContent} from '../../../../styles/components/iam/addPage';
 import {
-	TitleBar,
+	CreatePageContainer,
+	CreatePageContent,
+} from '../../../../../styles/components/iam/addPage';
+import {
+	IamSectionBottomMargin,
+	IamSectionTitleBar,
 	TitleBarButtons,
 	TitleBarText,
-} from '../../../../styles/components/iam/iam';
-import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
+} from '../../../../../styles/components/iam/iam';
+import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
 import {FormProvider, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import RHF_Textbox from '../../../RecycleComponents/ReactHookForm/RHF_Textbox';
-import RHF_Combobox from '../../../RecycleComponents/ReactHookForm/RHF_Combobox';
-import {ColDiv, RowDiv} from '../../../../styles/components/style';
-import useModal from '../../../../hooks/useModal';
-import ParentGroupDialogBox from '../../../DialogBoxs/Form/ParentGroupDialogBox';
-import {getIdFormLocation} from '../../../../utils/tableDataConverter';
-import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../reducers/api/IAM/User/Role/GrantRole/group';
-import IAM_USER_GROUP_TAG from '../../../../reducers/api/IAM/User/Group/tags';
+import RHF_Textbox from '../../../../RecycleComponents/ReactHookForm/RHF_Textbox';
+import RHF_Combobox from '../../../../RecycleComponents/ReactHookForm/RHF_Combobox';
+import {ColDiv, RowDiv} from '../../../../../styles/components/style';
+import useModal from '../../../../../hooks/useModal';
+import ParentGroupDialogBox from '../../../../DialogBoxs/Form/ParentGroupDialogBox';
+import {getIdFormLocation} from '../../../../../utils/tableDataConverter';
+import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
+import IAM_USER_GROUP_TAG from '../../../../../reducers/api/IAM/User/Group/tags';
 
 const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	// const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [groups, setGroups] = useState([]);
 	const [groupTypes, setGroupTypes] = useState([]);
 	const [parentGroupId, setParentGroupId] = useState(null);
-	// const {groups} = useSelector(IAM_USER_GROUP.selector);
 
 	console.log(groupMembers);
 	console.log(groupRoles);
@@ -169,8 +171,8 @@ const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 	}, [dispatch, methods, type]);
 
 	return (
-		<>
-			<TitleBar>
+		<IamSectionBottomMargin>
+			<IamSectionTitleBar>
 				<TitleBarText>사용자 그룹 이름 지정</TitleBarText>
 				<TitleBarButtons>
 					<NormalButton onClick={onClickManageGroupType}>
@@ -189,49 +191,46 @@ const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 						취소
 					</TransparentButton>
 				</TitleBarButtons>
-			</TitleBar>
-			<CreatePageContent>
-				<FormProvider {...methods}>
-					<RowDiv>
-						<RHF_Combobox
-							name={'type'}
-							placeholder={'조직'}
-							options={groupTypes.map((v) => {
-								return {value: v.id, label: v.name};
-							})}
-						/>
+			</IamSectionTitleBar>
+			<CreatePageContainer>
+				<CreatePageContent>
+					<FormProvider {...methods}>
+						<RowDiv>
+							<RHF_Combobox
+								name={'type'}
+								placeholder={'조직'}
+								options={groupTypes.map((v) => {
+									return {value: v.id, label: v.name};
+								})}
+							/>
 
-						{type && (
-							<ColDiv>
-								<RHF_Textbox
-									name={'parentGroup'}
-									placeholder={'상위 그룹선택'}
-									onFocus={handleFocus}
-								/>
-								<ParentGroupModal hiddenFooter width={300} />
-							</ColDiv>
-						)}
-						{/*<RHF_Combobox*/}
-						{/*	name={'parentId'}*/}
-						{/*	placeholder={'상위 그룹선택'}*/}
-						{/*	options={groups.map((v) => {*/}
-						{/*		return {value: v.id, label: v.name};*/}
-						{/*	})}*/}
-						{/*	width={300}*/}
-						{/*/>*/}
-					</RowDiv>
-					<RowDiv alignItems={'center'}>
-						<RHF_Textbox
-							name={'name'}
-							placeholder={'그룹 이름작성'}
-							description={
-								'최대 120자, 영문 숫자 사용 가능합니다.'
-							}
-						/>
-					</RowDiv>
-				</FormProvider>
-			</CreatePageContent>
-		</>
+							{type && (
+								<ColDiv>
+									<RHF_Textbox
+										name={'parentGroup'}
+										placeholder={'상위 그룹선택'}
+										onFocus={handleFocus}
+									/>
+									<ParentGroupModal
+										hiddenFooter
+										width={300}
+									/>
+								</ColDiv>
+							)}
+						</RowDiv>
+						<RowDiv alignItems={'center'}>
+							<RHF_Textbox
+								name={'name'}
+								placeholder={'그룹 이름작성'}
+								description={
+									'최대 120자, 영문 숫자 사용 가능합니다.'
+								}
+							/>
+						</RowDiv>
+					</FormProvider>
+				</CreatePageContent>
+			</CreatePageContainer>
+		</IamSectionBottomMargin>
 	);
 };
 

@@ -1,18 +1,19 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import Table from '../../../Table/Table';
-import {tableColumns} from '../../../../Constants/Table/columns';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../Constants/Table/keys';
-import CURRENT_TARGET from '../../../../reducers/currentTarget';
+import Table from '../../../../Table/Table';
+import {tableColumns} from '../../../../../Constants/Table/columns';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
+import CURRENT_TARGET from '../../../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../styles/components/buttons';
-import TableOptionText from '../../../Table/Options/TableOptionText';
+} from '../../../../../styles/components/buttons';
+import TableOptionText from '../../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import {TitleBarButtons} from '../../../../styles/components/iam/iam';
-import useSelectColumn from '../../../../hooks/table/useSelectColumn';
-import FoldableContainer from '../../../Table/Options/FoldableContainer';
+import {TitleBarButtons} from '../../../../../styles/components/iam/iam';
+import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
+import FoldableContainer from '../../../../Table/Options/FoldableContainer';
+import {CreatePageContainer} from '../../../../../styles/components/iam/addPage';
 
 const AddTagToGroup = ({setValue}) => {
 	const tableRefs = useRef([]);
@@ -22,7 +23,7 @@ const AddTagToGroup = ({setValue}) => {
 		tableColumns[tableKeys.groups.add.tag],
 		data,
 	);
-	// const [select, setSelect] = useState({});
+
 	const onClickAddRow = useCallback(() => {
 		setData([
 			...data,
@@ -37,8 +38,6 @@ const AddTagToGroup = ({setValue}) => {
 	}, [data]);
 
 	const onClickDeleteRow = useCallback(() => {
-		//	console.log(select[tableKeys.groups.add.tag]);
-		console.log(select);
 		setData((prev) =>
 			prev.filter((v) => !select.map((s) => s.id).includes(v.id)),
 		);
@@ -88,14 +87,16 @@ const AddTagToGroup = ({setValue}) => {
 				</TitleBarButtons>
 			)}
 		>
-			<TableOptionText data={'tags'} />
-			<Table
-				tableKey={tableKeys.groups.add.tag}
-				data={data}
-				setData={setData}
-				columns={columns}
-				tableRefs={tableRefs}
-			/>
+			<CreatePageContainer>
+				<TableOptionText data={'tags'} />
+				<Table
+					tableKey={tableKeys.groups.add.tag}
+					data={data}
+					setData={setData}
+					columns={columns}
+					tableRefs={tableRefs}
+				/>
+			</CreatePageContainer>
 		</FoldableContainer>
 	);
 };
