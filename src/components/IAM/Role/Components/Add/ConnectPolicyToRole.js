@@ -1,86 +1,98 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
 import DropButton from '../../../../Table/DropButton';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../../../reducers/currentTarget';
-import {
-	ColDiv,
-	RowDiv,
-	TableHeader,
-} from '../../../../../styles/components/style';
+import {ColDiv, CollapsbleContent, RowDiv, TableHeader} from '../../../../../styles/components/style';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import FoldableContainer from '../../../../Table/Options/FoldableContainer';
+import TableFold from '../../../../Table/Options/TableFold';
 import DragContainer from '../../../../Table/DragContainer';
+import {FoldableContainer} from '../../../../../styles/components/iam/iam';
 import PAGINATION from '../../../../../reducers/pagination';
-import {
-	expiredConverter,
-	groupsConverter,
-} from '../../../../../utils/tableDataConverter';
 
 const ConnectPolicyToRole = ({setValue}) => {
 	const dispatch = useDispatch();
-	const {users} = useSelector(IAM_USER.selector);
 	const {page} = useSelector(PAGINATION.selector);
-	const [includedDataIds, setIncludedDataIds] = useState([]);
-	const [select, setSelect] = useState({});
+	const [search, setSearch] = useState('');
 
+	const [policies,setPolicies] = useState([]);
+
+	const [select, setSelect] = useState({});
+	const [includedDataIds, setIncludedDataIds] = useState([]);
+	const APPLICATION_CODE = {
+		iam: 'IAM',
+		pam: 'PAM',
+	};
+
+	const includedData = useMemo(() =>{
+		return (
+			policies.filter((v) => includedDataIds.includes(v.id)).map((v) => ({
+				...v,
+				[DRAGGABLE_KEY]: v.id,
+			})) || []
+		)
+	},[policies,includedDataIds])
 	const excludedData = useMemo(() => {
 		return (
-			users
-				.filter((x) => !includedDataIds.includes(x.userUid))
-				.map((v) => ({
-					...v,
-					groupIds: groupsConverter(v.groups || []),
-					numberOfGroups: v.groups ? v.groups.length : 0,
-					status: v.status.code,
-					createdTime: v.createdTag.createdTime,
-					passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
-					[DRAGGABLE_KEY]: v.userUid,
-				})) || []
-		);
-	}, [includedDataIds, users]);
+			policies.filter((v) => !includedDataIds.includes(v.id)).map((v) => ({
+				...v,
+				[DRAGGABLE_KEY]: v.id,
+			})) || []
+		)
+	},[policies,includedDataIds])
 
-	const includedData = useMemo(() => {
-		return (
-			users
-				.filter((x) => includedDataIds.includes(x.userUid))
-				.map((v) => ({
-					...v,
-					id: v.id,
-					groupIds: groupsConverter(v.groups || []),
-					status: v.status.code,
-					createdTime: v.createdTag.createdTime,
-					passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
-					[DRAGGABLE_KEY]: v.userUid,
-				})) || []
-		);
-	}, [includedDataIds, users]);
+	const getPoliciesApi = useCallback(async (search) => {
+		if(page[tableKeys.roles.add.policies.exclude]){
+			const res = await dispatch(
+				IAM_POLICY_MANAGEMENT_POLICIES.asyncAction.findAll({
+					range: page[tableKeys.roles.add.policies.exclude],
+					...(search && {keyword: search})
+				})
+			)
+
+			if(isFulfilled(res)){
+				dispatch(
+					PAGINATION.action.setTotal({
+						tableKey: tableKeys.roles.add.policies.exclude,
+						element: totalNumberConverter(
+							res.payload.headers['content-range'],
+						),
+					}),
+				);
+				res.payload.data.length ? await getPoliciesDetailApi(res.payload) : setPolicies([])
+			}
+		}
+	},[dispatch, page])
+	const getPoliciesDetailApi = useCallback((res) => {
+		const arr = [];
+		res.data.map((v) => {
+			arr.push({
+				id: v.id,
+				name: v.name,
+				type: APPLICATION_CODE.iam,
+				description:v.description === '' ? '없음' : v.description,
+				numberOfUsers:v.grantCount,
+				createdTime:v.createdTag.createdTime,
+			})
+		})
+
+		setPolicies(arr)
+	},[])
 
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
-				title: tableKeys.groups.add.roles.include,
+				title: tableKeys.roles.add.policies.exclude,
 				data: includedData,
 			}),
 		);
-	}, [includedData, dispatch]);
-
-	useEffect(() => {
-		page[tableKeys.groups.add.users.exclude] &&
-			dispatch(
-				IAM_USER.asyncAction.findAllAction({
-					range: page[tableKeys.groups.add.users.exclude],
-				}),
-			);
-	}, [dispatch, page]);
-
-	useEffect(() => {
-		setValue(includedDataIds);
-	}, [includedDataIds, setValue]);
+	}, [dispatch, includedData]);
+	useEffect (() => {
+		getPoliciesApi(search);
+	},[getPoliciesApi, page, search])
 
 	return (
 		<FoldableContainer title={'역할에 정책 연결'}>
@@ -92,6 +104,7 @@ const ConnectPolicyToRole = ({setValue}) => {
 				includedKey={tableKeys.roles.add.policies.include}
 				excludedData={excludedData}
 				includedData={includedData}
+				maxCount={5}
 			>
 				<RowDiv>
 					<Table
@@ -106,6 +119,7 @@ const ConnectPolicyToRole = ({setValue}) => {
 						isSearchable
 						isSearchFilterable
 						isColumnFilterable
+						setSearch={setSearch}
 					/>
 					<RowDiv alignItems={'center'}>
 						<DropButton
@@ -116,6 +130,8 @@ const ConnectPolicyToRole = ({setValue}) => {
 							dataRight={includedData}
 							rightDataIds={includedDataIds}
 							setRightDataIds={setIncludedDataIds}
+							maxCount={5}
+
 						/>
 					</RowDiv>
 					<ColDiv>
@@ -140,6 +156,9 @@ const ConnectPolicyToRole = ({setValue}) => {
 	);
 };
 ConnectPolicyToRole.propTypes = {
+	isFold: PropTypes.object,
+	setIsFold: PropTypes.func,
+	space: PropTypes.string,
 	setValue: PropTypes.func,
 };
 export default ConnectPolicyToRole;

@@ -70,3 +70,9 @@ export const PermissionName = styled.div`
 	display: flex;
 	align-items: center;
 `;
+
+export const CollapsbleContent = styled.div`
+	max-height: ${(props) => (props.height ? props.height : '0px')};
+	overflow: scroll;
+	transition: max-height 0.2s ease-out;
+`;

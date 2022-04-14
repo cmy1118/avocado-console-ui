@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {
-	IamSectionContents,
-	CreateSpaceContainer,
+	AddPageContainer,
+	AddSpaceContainer,
 } from '../../../../styles/components/iam/addPage';
+import {FOLD_DATA} from '../../../../utils/data';
 import ConnectPolicyToRole from '../Components/Add/ConnectPolicyToRole';
 import ConnectUserToRole from '../Components/Add/ConnectUserToRole';
 import ConnectGroupToRole from '../Components/Add/ConnectGroupToRole';
@@ -17,6 +18,10 @@ const paths = [
 
 const AddRoleSpace = () => {
 	const [isOpened, setIsOpened] = useState(false);
+	const [isTableFold, setIsTableFold] = useState(FOLD_DATA);
+
+	const [usage , setUsage] = useState('restrict');
+	const [maxGrants , setMaxGrants] = useState(0);
 	const [values, setValues] = useState({
 		type: '',
 		parentId: '',
@@ -31,14 +36,24 @@ const AddRoleSpace = () => {
 			<IamSectionContents>
 				<AddRole
 					setIsOpened={setIsOpened}
-					values={values}
-					groupMembers={groupMembers}
-					setValues={setValues}
+					setUsage = {setUsage}
+					setMaxGrants = {setMaxGrants}
 				/>
 
-				<ConnectPolicyToRole setValue={setGroupMembers} />
-				<ConnectUserToRole setValue={setGroupMembers} />
-				<ConnectGroupToRole setValue={setGroupMembers} />
+				<ConnectPolicyToRole space={'ConnectPolicyToRole'}
+									 setValue={setGroupMembers}/>
+
+				<ConnectUserToRole space={'ConnectUserToRole'}
+								   usage = {usage}
+								   maxGrants = {maxGrants}
+								   setValue={setGroupMembers}
+				/>
+
+				<ConnectGroupToRole space={'ConnectGroupToRole'}
+									usage = {usage}
+									maxGrants = {maxGrants}
+									setValue={setGroupMembers}
+				/>
 			</IamSectionContents>
 		</CreateSpaceContainer>
 	);

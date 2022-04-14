@@ -1,86 +1,125 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Table from '../../../../Table/Table';
 import {useDispatch, useSelector} from 'react-redux';
-import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
 import DropButton from '../../../../Table/DropButton';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../../../reducers/currentTarget';
-import {
-	ColDiv,
-	RowDiv,
-	TableHeader,
-} from '../../../../../styles/components/style';
-import TableOptionText from '../../../../Table/Options/TableOptionText';
+import {ColDiv, CollapsbleContent, RowDiv, TableHeader} from '../../../../../styles/components/style';
 import PropTypes from 'prop-types';
 import FoldableContainer from '../../../../Table/Options/FoldableContainer';
 import DragContainer from '../../../../Table/DragContainer';
 import PAGINATION from '../../../../../reducers/pagination';
-import {
-	expiredConverter,
-	groupsConverter,
-} from '../../../../../utils/tableDataConverter';
+import {totalNumberConverter} from "../../../../../utils/tableDataConverter";
+import IAM_USER_GROUP from "../../../../../reducers/api/IAM/User/Group/group";
+import IAM_ROLES_GRANT_ROLE_GROUP from "../../../../../reducers/api/IAM/User/Role/GrantRole/group";
+import IAM_USER_GROUP_MEMBER from "../../../../../reducers/api/IAM/User/Group/groupMember";
+import {isFulfilled} from "../../../../../utils/redux";
 
-const ConnectGroupToRole = ({setValue}) => {
+const ConnectGroupToRole = ({setValue, usage , maxGrants}) => {
 	const dispatch = useDispatch();
-	const {users} = useSelector(IAM_USER.selector);
 	const {page} = useSelector(PAGINATION.selector);
-	const [includedDataIds, setIncludedDataIds] = useState([]);
-	const [select, setSelect] = useState({});
 
+	const [search, setSearch] = useState('');
+	const [userGroups,setUserGroups] = useState([]);
+	const [select, setSelect] = useState({});
+	const [includedDataIds, setIncludedDataIds] = useState([]);
+
+	const includedData = useMemo(() =>{
+		return (
+			userGroups.filter((v) => includedDataIds.includes(v.id)).map((v) => ({
+				...v,
+				[DRAGGABLE_KEY]: v.id,
+			})) || []
+		)
+	},[userGroups,includedDataIds])
 	const excludedData = useMemo(() => {
 		return (
-			users
-				.filter((x) => !includedDataIds.includes(x.userUid))
-				.map((v) => ({
-					...v,
-					groupIds: groupsConverter(v.groups || []),
-					numberOfGroups: v.groups ? v.groups.length : 0,
-					status: v.status.code,
-					createdTime: v.createdTag.createdTime,
-					passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
-					[DRAGGABLE_KEY]: v.userUid,
-				})) || []
-		);
-	}, [includedDataIds, users]);
-
-	const includedData = useMemo(() => {
-		return (
-			users
-				.filter((x) => includedDataIds.includes(x.userUid))
-				.map((v) => ({
-					...v,
-					id: v.id,
-					groupIds: groupsConverter(v.groups || []),
-					status: v.status.code,
-					createdTime: v.createdTag.createdTime,
-					passwordExpiryTime: expiredConverter(v.passwordExpiryTime),
-					[DRAGGABLE_KEY]: v.userUid,
-				})) || []
-		);
-	}, [includedDataIds, users]);
+			userGroups.filter((v) => !includedDataIds.includes(v.id)).map((v) => ({
+				...v,
+				[DRAGGABLE_KEY]: v.id,
+			})) || []
+		)
+	},[userGroups,includedDataIds])
 
 	useEffect(() => {
 		dispatch(
 			CURRENT_TARGET.action.addReadOnlyData({
-				title: tableKeys.groups.add.roles.include,
+				title: tableKeys.roles.add.groups.exclude,
 				data: includedData,
 			}),
 		);
-	}, [includedData, dispatch]);
+	}, [dispatch, includedData]);
 
-	useEffect(() => {
-		page[tableKeys.groups.add.users.exclude] &&
-			dispatch(
-				IAM_USER.asyncAction.findAllAction({
-					range: page[tableKeys.groups.add.users.exclude],
+	const getUserGroupsApi = useCallback( async (search) =>{
+		if(page[tableKeys.roles.add.groups.exclude]){
+			const res = await dispatch(
+				IAM_USER_GROUP.asyncAction.findAllAction({
+					range: page[tableKeys.roles.add.groups.exclude],
+					...(search && {keyword: search}),
 				}),
-			);
-	}, [dispatch, page]);
+			)
 
-	useEffect(() => {
-		setValue(includedDataIds);
-	}, [includedDataIds, setValue]);
+			if(isFulfilled(res)){
+				dispatch(
+					PAGINATION.action.setTotal({
+						tableKey: tableKeys.roles.add.groups.exclude,
+						element: totalNumberConverter(
+							res.payload.headers['content-range'],
+						),
+					}),
+				);
+				res.payload.data.length ? await getUserGroupsDetailApi(res.payload) : setUserGroups([]);
+			}
+		}
+	},[dispatch,page])
+	const getUserGroupsDetailApi = useCallback( async (groups) => {
+		const arr = []
+		groups.data.map((group) => {
+			getNumberOfUsers(group.id).then((user) =>{
+				getNumberOfRoles(group.id).then((role) => {
+					arr.push({
+						...group,
+						name: group.name,
+						userGroupType: group.userGroupType.name,
+						numberOfUsers: user,
+						roles: role === 0 ? '없음' : '정의됨',
+						createdTime: group.createdTag.createdTime,
+					})
+					if (groups.data.length === arr.length) {
+						setUserGroups(arr);
+					}
+				})
+			})
+		});
+	},[dispatch])
+
+	const getNumberOfUsers = useCallback(async (groupsId) => {
+		const res = await dispatch(
+			IAM_USER_GROUP_MEMBER.asyncAction.findAllAction(
+				{groupId: groupsId , range:'elements=0-1'}
+			)
+		)
+		if(isFulfilled(res)){
+			return totalNumberConverter(res.payload.headers['content-range'])
+		}
+	},[dispatch])
+	const getNumberOfRoles = useCallback(async (groupsId) => {
+		const res = await dispatch(
+			IAM_ROLES_GRANT_ROLE_GROUP.asyncAction.getsAction(
+				{id: groupsId, range: 'elements=0-1'},
+			),
+		)
+
+		if(isFulfilled(res)){
+			return totalNumberConverter(res.payload.headers['content-range']);
+		}
+
+	},[dispatch])
+
+	useEffect (() => {
+		getUserGroupsApi(search);
+	},[getUserGroupsApi, page, search])
 
 	return (
 		<FoldableContainer title={'역할에 사용자 그룹 연결'}>
@@ -92,6 +131,8 @@ const ConnectGroupToRole = ({setValue}) => {
 				includedKey={tableKeys.roles.add.groups.include}
 				excludedData={excludedData}
 				includedData={includedData}
+				maxCount = {maxGrants}
+				usage = {usage}
 			>
 				<RowDiv>
 					<Table
@@ -106,6 +147,7 @@ const ConnectGroupToRole = ({setValue}) => {
 						isSearchable
 						isSearchFilterable
 						isColumnFilterable
+						setSearch={setSearch}
 					/>
 					<RowDiv alignItems={'center'}>
 						<DropButton
@@ -116,6 +158,8 @@ const ConnectGroupToRole = ({setValue}) => {
 							dataRight={includedData}
 							rightDataIds={includedDataIds}
 							setRightDataIds={setIncludedDataIds}
+							maxCount = {maxGrants}
+							usage = {usage}
 						/>
 					</RowDiv>
 					<ColDiv>
@@ -137,7 +181,11 @@ const ConnectGroupToRole = ({setValue}) => {
 		</FoldableContainer>
 	);
 };
-ConnectGroupToRole.propTypes = {
-	setValue: PropTypes.func,
+ConnectPolicyToRole.propTypes = {
+	isFold: PropTypes.object,
+	setIsFold: PropTypes.func,
+	space: PropTypes.string,
+	usage:PropTypes.string,
+	maxGrants:PropTypes.number
 };
 export default ConnectGroupToRole;

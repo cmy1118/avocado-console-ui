@@ -19,6 +19,17 @@ export function checkArraysIsUniqueHasDuplicates(arrA, arrB, value) {
 	}
 }
 
+// 배열의 중복값 갯수 구하기
+export function countArrayDuplicates(arr){
+	const result = {};
+	arr.forEach((v) => {
+		result[v] = (result[v] || 0)+1;
+	})
+
+	return result;
+}
+
+
 /***********************************************************************************
  * 배열 객체 프로퍼티 분리
  * ex) [ {data:[{id:1, name:'홍길동' ...}]}] => [{id: 1 , data:[{id:1, name:'홍길동' ...}]]

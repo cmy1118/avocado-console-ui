@@ -10,8 +10,9 @@ const Form = ({
 	setValues,
 	innerRef,
 	validation,
-	children,
+	children
 }) => {
+
 	return (
 		<formik.Formik
 			initialValues={initialValues} // 초기값
@@ -19,8 +20,7 @@ const Form = ({
 				onSubmit(values); // values submit 처리
 				setSubmitting(false);
 			}}
-			validate={(values) => {
-				setValues && setValues(values); // 외부에서 데이터 변화 감지해야 하는 경우
+			validate={(values) => {setValues && setValues(values); // 외부에서 데이터 변화 감지해야 하는 경우
 			}}
 			innerRef={innerRef} // submit control 할 때
 			validationSchema={Yup.object(validation)}

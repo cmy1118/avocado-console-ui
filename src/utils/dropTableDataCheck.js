@@ -13,6 +13,8 @@ export const tableDropDataType = [
 			'GROUP_ADD_USERS_EXCLUDE',
 			'GROUP_SUMMARY_TABS_USERS_INCLUDE',
 			'GROUP_SUMMARY_TABS_USERS_EXCLUDE',
+			'ROLE_ADD_USER_INCLUDE',
+			'ROLE_ADD_USER_EXCLUDE'
 		],
 	},
 	{
@@ -20,6 +22,8 @@ export const tableDropDataType = [
 		tablekeys: [
 			'USER_ADD_GROUPS_INCLUDE',
 			'USER_SUMMARY_TABS_GROUPS_INCLUDE',
+			'ROLE_ADD_GROUP_INCLUDE',
+			'ROLE_ADD_GROUP_EXCLUDE',
 		],
 	},
 	{
@@ -29,6 +33,13 @@ export const tableDropDataType = [
 			'USER_SUMMARY_TABS_ROLES_INCLUDE',
 			'GROUP_ADD_ROLES_INCLUDE',
 			'GROUP_SUMMARY_TABS_ROLES_INCLUDE',
+		],
+	},
+
+	{
+		type:'policy',
+		tablekeys:[
+			'ROLE_ADD_POLICIES_INCLUDE'
 		],
 	},
 ];
@@ -81,14 +92,12 @@ export const isDropTypeLimited = (tableKey) => {
 		//사용자 상세
 		case tableKeys.users.summary.tabs.groups.exclude:
 			return confirmAlertMessages.singleCountGroupTypes;
-
 		case tableKeys.users.summary.tabs.roles.exclude:
 			return confirmAlertMessages.singleCountRolesTypes;
 
 		//사용자 생성
 		case tableKeys.users.add.groups.exclude:
 			return confirmAlertMessages.singleCountGroupTypes;
-
 		case tableKeys.users.add.roles.exclude:
 			return confirmAlertMessages.singleCountRolesTypes;
 
@@ -99,6 +108,7 @@ export const isDropTypeLimited = (tableKey) => {
 		//그룹 생성
 		case tableKeys.groups.add.roles.exclude:
 			return confirmAlertMessages.singleCountRolesTypes;
+
 		default:
 			return true;
 	}

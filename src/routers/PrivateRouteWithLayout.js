@@ -11,7 +11,9 @@ const PrivateRouteWithLayout = ({layout, component, ...rest}) => {
 		<Route
 			{...rest}
 			render={(props) =>
+
 				isLoggedIn ? (
+
 					React.createElement(
 						layout,
 						props,
