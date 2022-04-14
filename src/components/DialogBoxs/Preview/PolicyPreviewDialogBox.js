@@ -7,7 +7,7 @@ import {controlTypes, policyManageTypes} from '../../../utils/data';
 
 import {SummaryList} from '../../../styles/components/iam/descriptionPage';
 import {LiText} from '../../../styles/components/text';
-import {AddPageDialogBoxTitle} from '../../../styles/components/iam/addPage';
+import {CreatePageDialogBoxTitle} from '../../../styles/components/iam/addPage';
 import {tableColumns} from '../../../Constants/Table/columns';
 import {tableKeys} from '../../../Constants/Table/keys';
 import Table from '../../Table/Table';
@@ -412,9 +412,9 @@ const PolicyPreviewDialogBox = ({isOpened, setIsOpened, formData}) => {
 					</LiText>
 				</SummaryList>
 
-				<AddPageDialogBoxTitle>
+				<CreatePageDialogBoxTitle>
 					{policyPreviewDialogBox.detail.title} :{' '}
-				</AddPageDialogBoxTitle>
+				</CreatePageDialogBoxTitle>
 
 				<Table
 					readOnly

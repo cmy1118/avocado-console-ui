@@ -1,7 +1,7 @@
 import React from 'react';
 import {IamContainer} from '../../../../styles/components/iam/iam';
 import CreatePolicy from '../Components/Create/CreatePolicy';
-import {AddPageContainer} from '../../../../styles/components/iam/addPage';
+import {CreatePageContainer} from '../../../../styles/components/iam/addPage';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 
 const paths = [
@@ -18,9 +18,9 @@ const CreatePolicySpace = () => {
 		<IamContainer>
 			<CurrentPathBar paths={paths} />
 
-			<AddPageContainer>
+			<CreatePageContainer>
 				<CreatePolicy />
-			</AddPageContainer>
+			</CreatePageContainer>
 		</IamContainer>
 	);
 };

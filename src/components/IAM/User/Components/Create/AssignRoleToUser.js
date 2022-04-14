@@ -17,6 +17,7 @@ import PAGINATION from '../../../../../reducers/pagination';
 import CURRENT_TARGET from '../../../../../reducers/currentTarget';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 import FoldableContainer from '../../../../Table/Options/FoldableContainer';
+import {CreatePageContainer} from '../../../../../styles/components/iam/addPage';
 
 const AssignRoleToUser = () => {
 	const dispatch = useDispatch();
@@ -101,8 +102,7 @@ const AssignRoleToUser = () => {
 	}, [excludeSelect, includeSelect]);
 
 	return (
-		<FoldableContainer title={'권한 추가'}>
-			<TableOptionText data={'roles'} />
+		<FoldableContainer title={'권한 추가'} bottomMargin={true}>
 			<DragContainer
 				selected={selected}
 				data={includedDataIds}
@@ -111,40 +111,45 @@ const AssignRoleToUser = () => {
 				excludedData={excludedData}
 				includedData={includedData}
 			>
-				<RowDiv>
-					<Table
-						isDraggable
-						data={excludedData}
-						tableKey={tableKeys.users.add.roles.exclude}
-						columns={excludeColumns}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-					/>
-					<RowDiv alignItems={'center'}>
-						<DropButton
-							leftTableKey={tableKeys.users.add.roles.exclude}
-							RightTableKey={tableKeys.users.add.roles.include}
-							select={selected}
-							dataLeft={excludedData}
-							dataRight={includedData}
-							rightDataIds={includedDataIds}
-							setRightDataIds={setIncludedDataIds}
-						/>
-					</RowDiv>
-					<ColDiv>
-						<TableHeader>
-							추가 Roles: {includedDataIds.length}건
-						</TableHeader>
+				<CreatePageContainer>
+					<TableOptionText data={'roles'} />
+					<RowDiv>
 						<Table
 							isDraggable
-							data={includedData}
-							tableKey={tableKeys.users.add.roles.include}
-							columns={includeColumns}
+							data={excludedData}
+							tableKey={tableKeys.users.add.roles.exclude}
+							columns={excludeColumns}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
 						/>
-					</ColDiv>
-				</RowDiv>
+						<RowDiv alignItems={'center'}>
+							<DropButton
+								leftTableKey={tableKeys.users.add.roles.exclude}
+								RightTableKey={
+									tableKeys.users.add.roles.include
+								}
+								select={selected}
+								dataLeft={excludedData}
+								dataRight={includedData}
+								rightDataIds={includedDataIds}
+								setRightDataIds={setIncludedDataIds}
+							/>
+						</RowDiv>
+						<ColDiv>
+							<TableHeader>
+								추가 Roles: {includedDataIds.length}건
+							</TableHeader>
+							<Table
+								isDraggable
+								data={includedData}
+								tableKey={tableKeys.users.add.roles.include}
+								columns={includeColumns}
+							/>
+						</ColDiv>
+					</RowDiv>
+				</CreatePageContainer>
 			</DragContainer>
 		</FoldableContainer>
 	);

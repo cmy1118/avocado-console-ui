@@ -66,10 +66,3 @@ export const PermissionName = styled.div`
 	display: flex;
 	align-items: center;
 `;
-
-export const CollapsbleContent = styled.div`
-	height: ${(props) => (props.isOpened ? '474px' : '0px')};
-	// display: ${(props) => (props.isOpened ? 'block' : 'none')};
-	overflow: hidden;
-	transition: height 0.4s ease-out;
-`;

@@ -13,7 +13,7 @@ import Form from '../../../../RecycleComponents/New/Form';
 import {ColDiv, Label, RowDiv} from '../../../../../styles/components/style';
 import * as yup from 'yup';
 import {
-	AddPageContent,
+	CreatePageContent,
 	TextBoxDescription,
 } from '../../../../../styles/components/iam/addPage';
 import {
@@ -122,7 +122,7 @@ const AddRole = ({values, groupMembers, setValues}) => {
 					</TransparentButton>
 				</TitleBarButtons>
 			</TitleBar>
-			<AddPageContent>
+			<CreatePageContent>
 				<Form
 					initialValues={values}
 					setValues={setValues}
@@ -159,7 +159,7 @@ const AddRole = ({values, groupMembers, setValues}) => {
 						</RowDiv>
 					</ColDiv>
 				</Form>
-			</AddPageContent>
+			</CreatePageContent>
 		</>
 	);
 };

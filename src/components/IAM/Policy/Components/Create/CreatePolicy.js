@@ -9,7 +9,7 @@ import {
 	TransparentButton,
 } from '../../../../../styles/components/buttons';
 import {
-	AddPageContent,
+	CreatePageContent,
 	TextBoxDescription,
 } from '../../../../../styles/components/iam/addPage';
 import {RowDiv} from '../../../../../styles/components/style';
@@ -95,7 +95,7 @@ const CreatePolicy = () => {
 					</TransparentButton>
 				</TitleBarButtons>
 			</TitleBar>
-			<AddPageContent>
+			<CreatePageContent>
 				<RowDiv margin={'0px 0px 12px 0px'}>
 					{policyNameTextBox()}
 					<TextBoxDescription>
@@ -114,7 +114,7 @@ const CreatePolicy = () => {
 						정책 유형을 선택 합니다.
 					</TextBoxDescription>
 				</RowDiv>
-			</AddPageContent>
+			</CreatePageContent>
 			<WritePolicy
 				title={createPolicy.title}
 				description={createPolicy.description}

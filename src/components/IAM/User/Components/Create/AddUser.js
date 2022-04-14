@@ -13,11 +13,14 @@ import TextBox from '../../../../RecycleComponents/New/TextBox';
 import {RowDiv} from '../../../../../styles/components/style';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import {
-	AddPageContent,
+	CreatePageContainer,
+	CreatePageContent,
 	TextBoxDescription,
 } from '../../../../../styles/components/iam/addPage';
 import {
-	TitleBar,
+	IamSection,
+	IamSectionBottomMargin,
+	IamSectionTitleBar,
 	TitleBarButtons,
 	TitleBarText,
 } from '../../../../../styles/components/iam/iam';
@@ -72,8 +75,8 @@ const AddUser = ({setIsOpened}) => {
 	);
 
 	return (
-		<>
-			<TitleBar>
+		<IamSectionBottomMargin>
+			<IamSectionTitleBar>
 				<TitleBarText>사용자 기본 정보</TitleBarText>
 				<TitleBarButtons>
 					<NormalButton
@@ -89,74 +92,76 @@ const AddUser = ({setIsOpened}) => {
 						취소
 					</TransparentButton>
 				</TitleBarButtons>
-			</TitleBar>
-			<TableOptionText data={'usersInfo'} />
-			<AddPageContent>
-				<Form
-					initialValues={{
-						id: '',
-						name: '',
-						email: '',
-						telephone: '',
-						mobile: '',
-					}}
-					onSubmit={onSubmitUserData}
-					innerRef={formRef}
-					validation={validation}
-				>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<TextBox
-							name={'id'}
-							placeholder={'사용자 계정 ID'}
-							direction={'row'}
-						/>
-						<TextBoxDescription>
-							최대 40자, 영문 대소문자로 생성 가능합니다.
-						</TextBoxDescription>
-					</RowDiv>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<TextBox
-							name={'name'}
-							placeholder={'사용자 명'}
-							direction={'row'}
-						/>
-						<TextBoxDescription>
-							최대 30자, 영문 포함 가능합니다.
-						</TextBoxDescription>
-					</RowDiv>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<TextBox
-							name={'email'}
-							placeholder={'이메일 주소'}
-							direction={'row'}
-						/>
-						<TextBoxDescription>
-							최대 200자 가능합니다.
-						</TextBoxDescription>
-					</RowDiv>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<TextBox
-							name={'telephone'}
-							placeholder={'전화번호'}
-							direction={'row'}
-						/>
-						<TextBoxDescription>
-							+82-(0)70-4469-4469과 같이 입력합니다.
-						</TextBoxDescription>
-					</RowDiv>
-					<RowDiv margin={'0px 0px 12px 0px'}>
-						<TextBox
-							name={'mobile'}
-							placeholder={'모바일 전화번호'}
-							direction={'row'}
-						/>
-						<TextBoxDescription>
-							+82-(0)70-4469-4469과 같이 입력합니다.
-						</TextBoxDescription>
-					</RowDiv>
-				</Form>
-			</AddPageContent>
-		</>
+			</IamSectionTitleBar>
+			<CreatePageContainer>
+				<TableOptionText data={'usersInfo'} />
+				<CreatePageContent>
+					<Form
+						initialValues={{
+							id: '',
+							name: '',
+							email: '',
+							telephone: '',
+							mobile: '',
+						}}
+						onSubmit={onSubmitUserData}
+						innerRef={formRef}
+						validation={validation}
+					>
+						<RowDiv margin={'0px 0px 12px 0px'}>
+							<TextBox
+								name={'id'}
+								placeholder={'사용자 계정 ID'}
+								direction={'row'}
+							/>
+							<TextBoxDescription>
+								최대 40자, 영문 대소문자로 생성 가능합니다.
+							</TextBoxDescription>
+						</RowDiv>
+						<RowDiv margin={'0px 0px 12px 0px'}>
+							<TextBox
+								name={'name'}
+								placeholder={'사용자 명'}
+								direction={'row'}
+							/>
+							<TextBoxDescription>
+								최대 30자, 영문 포함 가능합니다.
+							</TextBoxDescription>
+						</RowDiv>
+						<RowDiv margin={'0px 0px 12px 0px'}>
+							<TextBox
+								name={'email'}
+								placeholder={'이메일 주소'}
+								direction={'row'}
+							/>
+							<TextBoxDescription>
+								최대 200자 가능합니다.
+							</TextBoxDescription>
+						</RowDiv>
+						<RowDiv margin={'0px 0px 12px 0px'}>
+							<TextBox
+								name={'telephone'}
+								placeholder={'전화번호'}
+								direction={'row'}
+							/>
+							<TextBoxDescription>
+								+82-(0)70-4469-4469과 같이 입력합니다.
+							</TextBoxDescription>
+						</RowDiv>
+						<RowDiv margin={'0px 0px 12px 0px'}>
+							<TextBox
+								name={'mobile'}
+								placeholder={'모바일 전화번호'}
+								direction={'row'}
+							/>
+							<TextBoxDescription>
+								+82-(0)70-4469-4469과 같이 입력합니다.
+							</TextBoxDescription>
+						</RowDiv>
+					</Form>
+				</CreatePageContent>
+			</CreatePageContainer>
+		</IamSectionBottomMargin>
 	);
 };
 

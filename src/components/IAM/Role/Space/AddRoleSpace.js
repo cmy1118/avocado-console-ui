@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {
-	AddPageContainer,
-	AddSpaceContainer,
+	CreatePageContainer,
+	CreateSpaceContainer,
 } from '../../../../styles/components/iam/addPage';
 import ConnectPolicyToRole from '../Components/Add/ConnectPolicyToRole';
 import ConnectUserToRole from '../Components/Add/ConnectUserToRole';
@@ -25,10 +25,10 @@ const AddRoleSpace = () => {
 	const [groupMembers, setGroupMembers] = useState([]);
 
 	return (
-		<AddSpaceContainer>
+		<CreateSpaceContainer>
 			<CurrentPathBar paths={paths} />
 
-			<AddPageContainer>
+			<CreatePageContainer>
 				<AddRole
 					setIsOpened={setIsOpened}
 					values={values}
@@ -39,8 +39,8 @@ const AddRoleSpace = () => {
 				<ConnectPolicyToRole setValue={setGroupMembers} />
 				<ConnectUserToRole setValue={setGroupMembers} />
 				<ConnectGroupToRole setValue={setGroupMembers} />
-			</AddPageContainer>
-		</AddSpaceContainer>
+			</CreatePageContainer>
+		</CreateSpaceContainer>
 	);
 };
 

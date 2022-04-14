@@ -19,22 +19,25 @@ export const IamSection = styled.div`
 	border: solid 1px #e1e7eb;
 `;
 
+export const IamSectionBottomMargin = styled(IamSection)`
+	margin-bottom: 16px;
+`;
+
 export const IamSectionTitleBar = styled.div`
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-	gap: 2px;
 	font-family: NotoSansCJKKR;
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: bold;
-	font-stretch: normal;
-	font-style: normal;
-	line-height: 1.31;
+	line-height: 1.4;
 	letter-spacing: -0.25px;
 	text-align: left;
+	height: 48px;
 	color: #1e2a42;
-	padding: 13.5px 16px;
+	padding: 0px 16px;
 	border-bottom: solid 1px #e1e7eb;
+	justify-content: space-between;
 `;
 
 export const Header = styled.div`

@@ -9,7 +9,7 @@ import {
 } from '../../../../styles/components/buttons';
 import * as yup from 'yup';
 import * as Yup from 'yup';
-import {AddPageContent} from '../../../../styles/components/iam/addPage';
+import {CreatePageContent} from '../../../../styles/components/iam/addPage';
 import {
 	TitleBar,
 	TitleBarButtons,
@@ -190,7 +190,7 @@ const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 					</TransparentButton>
 				</TitleBarButtons>
 			</TitleBar>
-			<AddPageContent>
+			<CreatePageContent>
 				<FormProvider {...methods}>
 					<RowDiv>
 						<RHF_Combobox
@@ -230,7 +230,7 @@ const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 						/>
 					</RowDiv>
 				</FormProvider>
-			</AddPageContent>
+			</CreatePageContent>
 		</>
 	);
 };

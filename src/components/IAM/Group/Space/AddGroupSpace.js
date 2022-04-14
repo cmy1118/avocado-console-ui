@@ -4,8 +4,8 @@ import AddTagToGroup from '../Components/AddTagToGroup';
 import UsersIncludedInGroup from '../Components/UsersIncludedInGroup';
 import ReadOnly from '../Components/ReadOnly';
 import {
-	AddPageContainer,
-	AddSpaceContainer,
+	CreatePageContainer,
+	CreateSpaceContainer,
 } from '../../../../styles/components/iam/addPage';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import AssignRoleToGroup from '../Components/AssignRoleToGroup';
@@ -24,10 +24,10 @@ const AddGroupSpace = () => {
 	const [groupTags, setGroupTags] = useState([]);
 
 	return (
-		<AddSpaceContainer>
+		<CreateSpaceContainer>
 			<CurrentPathBar paths={paths} />
 
-			<AddPageContainer>
+			<CreatePageContainer>
 				<AddGroup
 					setIsOpened={setIsOpened}
 					groupMembers={groupMembers}
@@ -37,9 +37,9 @@ const AddGroupSpace = () => {
 				<UsersIncludedInGroup setValue={setGroupMembers} />
 				<AssignRoleToGroup setValue={setGroupRoles} />
 				<AddTagToGroup setValue={setGroupTags} />
-			</AddPageContainer>
+			</CreatePageContainer>
 			<ReadOnly isOpened={isOpened} setIsOpened={setIsOpened} />
-		</AddSpaceContainer>
+		</CreateSpaceContainer>
 	);
 };
 

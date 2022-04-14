@@ -7,17 +7,13 @@ import {useDispatch} from 'react-redux';
 import IAM_ROLES from '../../../../reducers/api/IAM/User/Role/roles';
 import {HoverIconButton} from '../../../../styles/components/icons';
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../../styles/components/buttons';
+import {NormalButton} from '../../../../styles/components/buttons';
 
 import {
 	CoveredByTabContent,
 	TabContainer,
 } from '../../../../styles/components/iam/iamTab';
 import {
-	DescriptionPageContainer,
 	SummaryContainer,
 	SummaryList,
 	SummaryText,
@@ -28,7 +24,6 @@ import {
 	IamSection,
 	IamSectionTitleBar,
 	TitleBar,
-	TitleBarButtons,
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
 import useTextArea from '../../../../hooks/useTextArea';
