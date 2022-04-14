@@ -24,4 +24,8 @@ export const categoryTypes = {
 	collect: 'collect',
 	//pam - rule & action
 	access: 'access',
+	//pam - command
+	command: 'command',
+	//pam - file
+	file: 'file',
 };

@@ -9,7 +9,7 @@ const Container = styled.div``;
  *
  * name: 라디오 input name
  * options: 라디오 input의 value, label의 객체 배열
- * => ex) [{label:A,key:a},{label:B,key:b}...]
+ * => ex) [{label:A,value:a},{label:B,value:b}...]
  *
  * 사용예시)
  * const [value, Radio] = useRadio({
@@ -21,7 +21,7 @@ const Container = styled.div``;
  ***************************************************/
 const useRadio = ({name, options, disabled = false}) => {
 	// 현재 value
-	const [value, setValue] = useState(options[0].key);
+	const [value, setValue] = useState(options[0].value);
 
 	// 라디오 컴포넌트
 	const radio = () => (
@@ -32,12 +32,12 @@ const useRadio = ({name, options, disabled = false}) => {
 						type='radio'
 						name={name}
 						onChange={(e) => setValue(JSON.parse(e.target.value))}
-						value={JSON.stringify(ele.key)}
+						value={JSON.stringify(ele.value)}
 						checked={
 							// initialValue
-							// 	? ele.key === initialValue
+							// 	? ele.value === initialValue
 							// 	:
-							JSON.stringify(ele.key) === JSON.stringify(value)
+							JSON.stringify(ele.value) === JSON.stringify(value)
 						}
 						disabled={disabled}
 					/>

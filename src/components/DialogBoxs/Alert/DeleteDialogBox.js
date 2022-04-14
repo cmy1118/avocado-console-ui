@@ -40,7 +40,7 @@ const DeleteDialogBox = () => {
 				alert.open &&
 				Object.prototype.hasOwnProperty.call(
 					deleteAlertMessages,
-					alert.key,
+					alert.value,
 				)
 			}
 			onRequestClose={onClickCloseDialogBox}
@@ -48,7 +48,7 @@ const DeleteDialogBox = () => {
 			shouldCloseOnOverlayClick={false}
 		>
 			<DialogBoxHeader>
-				{confirmAlertMessages[alert.key]?.type ===
+				{confirmAlertMessages[alert.value]?.type ===
 				alertMessageTypes.confirm ? (
 					<div>Confirm</div>
 				) : (
@@ -64,14 +64,14 @@ const DeleteDialogBox = () => {
 			</DialogBoxHeader>
 
 			<AlertDialogBoxContent>
-				{confirmAlertMessages[alert.key]?.type ===
+				{confirmAlertMessages[alert.value]?.type ===
 				alertMessageTypes.confirm ? (
 					<Icon>{confirmIcon}</Icon>
 				) : (
 					<Icon>{alertIcon}</Icon>
 				)}
 				<AlertDialogBoxText>
-					{deleteAlertMessages[alert.key]?.message}
+					{deleteAlertMessages[alert.value]?.message}
 				</AlertDialogBoxText>
 			</AlertDialogBoxContent>
 
@@ -84,7 +84,7 @@ const DeleteDialogBox = () => {
 					Cancel
 				</TransparentButton>
 
-				{confirmAlertMessages[alert.key]?.type ===
+				{confirmAlertMessages[alert.value]?.type ===
 				alertMessageTypes.confirm ? (
 					<NormalButton
 						width={'120px'}

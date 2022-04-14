@@ -43,12 +43,12 @@ const UserIdPattern = ({data, setTemplateData}) => {
 	const [patternType, patternTypeRadioButton, setPatternType] = useRadio({
 		name: 'patternType',
 		options: patternTypeOptions,
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//pattern: 패턴
 	const [pattern, patternTextBox, setPattern] = useTextBox({
 		name: 'pattern',
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 
 	/**************************************************
@@ -58,10 +58,10 @@ const UserIdPattern = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.attribute?.ruleType) {
 			const attributes = {
-				usage: usage === policyOption.usage.use.key,
+				usage: usage === policyOption.usage.use.value,
 			};
 			//사용 여부 true
-			if (usage === policyOption.usage.use.key) {
+			if (usage === policyOption.usage.use.value) {
 				attributes.patternType = patternType;
 				attributes.pattern = pattern;
 			}
@@ -82,8 +82,8 @@ const UserIdPattern = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data?.attribute,
 				'usage',
-				policyOption.usage.use.key,
-				policyOption.usage.none.key,
+				policyOption.usage.use.value,
+				policyOption.usage.none.value,
 			),
 		);
 		//패턴 형식 default value 존재

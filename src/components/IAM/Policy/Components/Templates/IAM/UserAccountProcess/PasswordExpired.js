@@ -49,13 +49,13 @@ const PasswordExpired = ({data, setTemplateData}) => {
 	//expiryDays : 계정 사용 기간
 	const [expiryDays, expiryDaysTextBox, setExpiryDays] = useTextBox({
 		name: 'expiryDays',
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	//blockingType : 계정 처리 방법
 	const [blockingType, blockingTypeRadioButton, setBlockingType] = useRadio({
 		name: 'passwordExpiredBlockingType',
 		options: blockingTypeOptions,
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 	// accountNormalization : 계정 정상화
 	const [
@@ -65,7 +65,7 @@ const PasswordExpired = ({data, setTemplateData}) => {
 	] = useRadio({
 		name: 'passwordExpiredBlockingInitType',
 		options: blockingInitTypeOptions,
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 
 	/**************************************************
@@ -75,10 +75,10 @@ const PasswordExpired = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.attribute?.ruleType) {
 			const attributes = {
-				usage: usage === policyOption.usage.use.key,
+				usage: usage === policyOption.usage.use.value,
 			};
 			//사용 여부 true
-			if (usage === policyOption.usage.use.key) {
+			if (usage === policyOption.usage.use.value) {
 				attributes.blockingType = blockingType;
 				attributes.expiryDays = expiryDays;
 				attributes.blockingInitType = blockingInitType;
@@ -99,8 +99,8 @@ const PasswordExpired = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data?.attribute,
 				'usage',
-				policyOption.usage.use.key,
-				policyOption.usage.none.key,
+				policyOption.usage.use.value,
+				policyOption.usage.none.value,
 			),
 		);
 		//사용 기간

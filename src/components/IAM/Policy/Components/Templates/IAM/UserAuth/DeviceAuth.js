@@ -41,7 +41,7 @@ const DeviceAuth = ({data, setTemplateData}) => {
 	const [application, applicationCheckBox, setApplications] = useCheckBox({
 		options: applicationOptions,
 		//단말기 인증 사용 false일때 disabled
-		disabled: usage === policyOption.usage.none.key,
+		disabled: usage === policyOption.usage.none.value,
 	});
 
 	/**************************************************
@@ -51,10 +51,10 @@ const DeviceAuth = ({data, setTemplateData}) => {
 		//rule 생성을 위한 ruleType이 존재
 		if (data?.attribute?.ruleType) {
 			const attributes = {
-				usage: usage === policyOption.usage.use.key,
+				usage: usage === policyOption.usage.use.value,
 			};
 			//사용 여부 true
-			if (usage === policyOption.usage.use.key) {
+			if (usage === policyOption.usage.use.value) {
 				attributes.resource = application;
 			}
 
@@ -74,8 +74,8 @@ const DeviceAuth = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data?.attribute,
 				'usage',
-				policyOption.usage.use.key,
-				policyOption.usage.none.key,
+				policyOption.usage.use.value,
+				policyOption.usage.none.value,
 			),
 		);
 		// 인증 단말기가 존재

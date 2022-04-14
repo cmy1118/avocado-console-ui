@@ -42,9 +42,9 @@ export const ruleTypeDescription = {
 	[ruleTypes.resigned]: '퇴사(탈퇴)',
 	//iam - 사용자 접근
 	[ruleTypes.allowed_service_time +
-	policyOption.application['console-ui:*'].key]: 'Management Console',
+	policyOption.application['console-ui:*'].value]: 'Management Console',
 	[ruleTypes.allowed_service_time +
-	policyOption.application['web-terminal-ui:*'].key]: 'Web Terminal',
+	policyOption.application['web-terminal-ui:*'].value]: 'Web Terminal',
 	//iam - 세션 정책
 	[ruleTypes.session_timeout]: '세션 타임 아웃',
 	[ruleTypes.screen_saver]: '화면 보호기',

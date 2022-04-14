@@ -6,7 +6,6 @@ import {NormalBorderButton} from '../../../../../styles/components/buttons';
 import * as PropTypes from 'prop-types';
 
 import styled from 'styled-components';
-import {authType, mfa, status} from '../../../../../utils/data';
 
 const _Container = styled(RowDiv)`
 	padding: 10px 16px 10px 10px;
@@ -15,6 +14,8 @@ const _Container = styled(RowDiv)`
 	    margin-bottom: 10px;
 }
 `;
+import {authType, mfa, status} from '../../../../../utils/data';
+import {useFormContext} from 'react-hook-form';
 
 const FiltersContainer = styled(RowDiv)`
 	box-sizing: border-box;
@@ -83,19 +84,27 @@ const SearchFiltersBox = ({
 	setAllFilters,
 }) => {
 	//검색필터 닫기 버튼 핸들러
+
+	const methods = useFormContext();
+
 	const onClickCloseFilter = useCallback(
 		(v) => () => {
+			methods.setValue(
+				'searchFilters',
+				selected.filter((val) => val !== v),
+			);
 			setSelected(selected.filter((val) => val !== v));
 			setAllFilters(filters.filter((val) => val.id !== v));
 		},
-		[setSelected, selected, setAllFilters, filters],
+		[methods, selected, setSelected, setAllFilters, filters],
 	);
 
 	//검색필터 '모두삭제' 버튼 핸들러
 	const onClickResetFilters = useCallback(() => {
 		setSelected([]);
+		methods.setValue('searchFilters', []);
 		setAllFilters([]);
-	}, [setAllFilters, setSelected]);
+	}, [methods, setAllFilters, setSelected]);
 
 	return (
 		<_Container>
@@ -151,8 +160,8 @@ const SearchFiltersBox = ({
 	);
 };
 SearchFiltersBox.propTypes = {
-	headerGroups: PropTypes.object.isRequired,
-	selected: PropTypes.object.isRequired,
+	headerGroups: PropTypes.array.isRequired,
+	selected: PropTypes.array.isRequired,
 	setSelected: PropTypes.func.isRequired,
 	filters: PropTypes.array,
 	setAllFilters: PropTypes.func,

@@ -1,10 +1,12 @@
 import {useFormContext} from 'react-hook-form';
-import React, {memo, useState} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {ErrorMessage} from '@hookform/error-message';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {TextBoxDescription} from '../../../styles/components/iam/addPage';
 import {RowDiv} from '../../../styles/components/style';
+import {Icon} from '../../../styles/components/icons';
+import {searchIcon} from '../../../icons/icons';
 
 const BoxContainer = styled.div`
 	margin: 6px;
@@ -73,8 +75,23 @@ const NestedInput = memo(
 		description = '',
 		onFocus,
 		onBlur,
+		type,
+		readOnly,
+		front,
+		onSubmit,
 	}) => {
 		const [isFocused, setIsFocused] = useState(false);
+
+		const handleKeyDown = useCallback(
+			(e) => {
+				// Enter를 입력한 경우
+				if (e.keyCode === 13) {
+					onSubmit();
+				}
+			},
+			[onSubmit],
+		);
+
 		return (
 			<BoxContainer>
 				<RowDiv alignItems={'center'}>
@@ -84,6 +101,7 @@ const NestedInput = memo(
 						disabled={isDisabled}
 						width={width}
 					>
+						{front && front}
 						<Input
 							{...register(name)}
 							onBlur={(e) => {
@@ -98,6 +116,9 @@ const NestedInput = memo(
 							placeholder={placeholder}
 							disabled={isDisabled}
 							width={width}
+							type={type}
+							readOnly={readOnly}
+							{...(onSubmit && {onKeyDown: handleKeyDown})}
 						/>
 					</SubContainer>
 					<TextBoxDescription>{description}</TextBoxDescription>
@@ -124,28 +145,38 @@ NestedInput.propTypes = {
 	placeholder: PropTypes.string,
 	width: PropTypes.number,
 	description: PropTypes.string,
+	type: PropTypes.string,
+	readOnly: PropTypes.string,
+	front: PropTypes.object,
+	onSubmit: PropTypes.func,
 };
 
-const RHF_Textbox = ({
-	name,
-	placeholder,
-	description,
-	width,
-	isDisabled,
-	onFocus,
-	onBlur,
-}) => {
+const RHF_Textbox = (
+	props,
+	// {
+	// name,
+	// placeholder,
+	// description,
+	// width,
+	// isDisabled,
+	// onFocus,
+	// onBlur,
+	// type,
+	// }
+) => {
 	const methods = useFormContext();
 	return (
 		<NestedInput
 			{...methods}
-			name={name}
-			placeholder={placeholder}
-			isDisabled={isDisabled}
-			width={width}
-			description={description}
-			onFocus={onFocus}
-			onBlur={onBlur}
+			{...props}
+			// name={name}
+			// placeholder={placeholder}
+			// isDisabled={isDisabled}
+			// width={width}
+			// description={description}
+			// onFocus={onFocus}
+			// onBlur={onBlur}
+			// type={type}
 		/>
 	);
 };
@@ -158,6 +189,7 @@ RHF_Textbox.propTypes = {
 	description: PropTypes.string,
 	onFocus: PropTypes.func,
 	onBlur: PropTypes.func,
+	type: PropTypes.string,
 };
 
 export default RHF_Textbox;

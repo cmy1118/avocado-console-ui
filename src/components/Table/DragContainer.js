@@ -42,7 +42,7 @@ const DragContainer = ({
 			if (selected?.length + current?.length > max) {
 				dispatch(
 					DIALOG_BOX.action.openAlert({
-						key: checkDropTypeAlertMessage(tableKey),
+						value: checkDropTypeAlertMessage(tableKey),
 					}),
 				);
 				return true;
@@ -70,9 +70,9 @@ const DragContainer = ({
 					) {
 						dispatch(
 							DIALOG_BOX.action.openAlert({
-								key:
+								value:
 									confirmAlertMessages.singleCountGroupTypes
-										.key,
+										.value,
 							}),
 						);
 						return true;
@@ -97,9 +97,9 @@ const DragContainer = ({
 					) {
 						dispatch(
 							DIALOG_BOX.action.openAlert({
-								key:
+								value:
 									confirmAlertMessages.singleCountRolesTypes
-										.key,
+										.value,
 							}),
 						);
 						return true;

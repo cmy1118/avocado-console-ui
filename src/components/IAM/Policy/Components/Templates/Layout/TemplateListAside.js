@@ -55,14 +55,8 @@ const ruleTemplateComponents = {
 	[categoryTypes.authentication]: ConnectResource,
 	[categoryTypes.mfa]: MFA,
 	[categoryTypes.access]: ResourceAccessRule,
-};
-
-const fileTemplateComponents = {
-	[categoryTypes.categoryType6]: FileAccess,
-};
-
-const commandTemplateComponents = {
-	[categoryTypes.categoryType5]: CommandControl,
+	[categoryTypes.file]: FileAccess,
+	[categoryTypes.command]: CommandControl,
 };
 
 const actionTemplateComponents = {
@@ -92,10 +86,14 @@ const TemplateListAside = ({
 	const dispatch = useDispatch();
 	// 각 템플릿별 설명
 	const [templateDescription, setTemplateDescription] = useState('');
-	// IAM 규칙 템플릿 리스트
+	// 규칙 템플릿 리스트
 	const [ruleTemplates, setRuleTemplates] = useState([]);
-	// IAM 액션 템플릿 리스트
+	// 액션 템플릿 리스트
 	const [actionTemplates, setActionTemplates] = useState([]);
+	// 파일 템플릿 리스트
+	const [fileTemplates, setFileTemplates] = useState([]);
+	// 명령어 템플릿 리스트
+	const [commandTemplates, setCommandTemplates] = useState([]);
 	// 로딩처리 state
 	const [loading, setLoading] = useState(true);
 
@@ -106,20 +104,21 @@ const TemplateListAside = ({
 			description: template.description,
 		};
 
-		if (type === templateType.ACTION) {
-			//템플릿이 액션 템플릿의 경우 categoryType 추가
-			componentProps.categoryType = template.categoryType.code;
-		}
+		// if (type === templateType.ACTION) {
+		// 	//템플릿이 액션 템플릿의 경우 categoryType 추가
+		// 	componentProps.categoryType = template.categoryType.code;
+		// }
 
 		return React.createElement(
 			type === templateType.RULE
 				? ruleTemplateComponents[template.categoryType.code]
-				: type === templateType.FILE
-				? fileTemplateComponents[template.categoryType.code]
-				: type === templateType.COMMAND
-				? commandTemplateComponents[template.categoryType.code]
 				: type === templateType.ACTION &&
-				  actionTemplateComponents[template.categoryType.code],
+						actionTemplateComponents[template.categoryType.code],
+			// memo : 우선 file, command도 rule, action이랑 같이 온다고 해서 주석처리 해뒀습니다.
+			// : type === templateType.FILE
+			// ? fileTemplateComponents[template.categoryType.code]
+			// : type === templateType.COMMAND &&
+			//   commandTemplateComponents[template.categoryType.code],
 			componentProps,
 		);
 	}, []);
@@ -198,7 +197,7 @@ const TemplateListAside = ({
 	}, [dispatch, policyType]);
 
 	/**************************************************
-	 * seob - PAM 규칙 템플릿, 액션 템플릿 findAll api
+	 * seob - PAM 규칙 템플릿, 액션 템플릿, 파일 템플릿, 명령어 템플릿  findAll api
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
@@ -220,6 +219,34 @@ const TemplateListAside = ({
 					}),
 				).unwrap();
 				setActionTemplates(actionTemplates.data);
+
+				// memo : 우선 file, command도 rule, action이랑 같이 온다고 해서 주석처리 해뒀습니다.
+
+				// // 파일 템플릿 findAll
+				// const fileTemplates = await dispatch(
+				// 	PAM_FILE_MANAGEMENT_TEMPLATE.asyncAction.findAllAction({
+				// 		range: `elements=0-50`,
+				// 	}),
+				// ).unwrap();
+				// setFileTemplates(
+				// 	fileTemplates.data.map((v) => ({
+				// 		...v,
+				// 		categoryType: {code: 'file', name: 'File'},
+				// 	})),
+				// );
+				//
+				// // 명령어 템플릿 findAll
+				// const commandTemplates = await dispatch(
+				// 	PAM_COMMAND_MANAGEMENT_TEMPLATE.asyncAction.findAllAction({
+				// 		range: `elements=0-50`,
+				// 	}),
+				// ).unwrap();
+				// setCommandTemplates(
+				// 	commandTemplates.date.map((v) => ({
+				// 		...v,
+				// 		categoryType: {code: 'command', name: 'Command'},
+				// 	})),
+				// );
 			} catch (err) {
 				console.error(err);
 			}
@@ -275,6 +302,7 @@ const TemplateListAside = ({
 							</li>
 						))}
 					</ul>
+
 					<div>{templateDescription}</div>
 				</div>
 			)}

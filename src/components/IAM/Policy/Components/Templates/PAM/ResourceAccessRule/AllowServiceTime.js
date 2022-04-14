@@ -8,10 +8,8 @@ import {
 	restrictionOptions,
 	setUsageOptionByAttribute,
 } from '../../../../../../../utils/policy/options';
-import TimeInterval, {
-	dayOfWeekKey,
-	timeIntervalDefaultValue,
-} from './TimeInterval';
+import TimeInterval, {timeIntervalDefaultValue} from './TimeInterval';
+import {useForm, FormProvider} from 'react-hook-form';
 
 const allowServiceTime = {
 	title: '접속 가능 시간',
@@ -36,6 +34,13 @@ const AllowServiceTime = ({data, setTemplateData}) => {
 		options: restrictionOptions,
 	});
 	const [timezone, setTimezone] = useState({});
+	const methods = useForm({
+		defaultValues: {
+			checked: [],
+		},
+	});
+
+	console.log(timezone);
 
 	/**************************************************
 	 * ambacc244 - 접속 가능 시간 데이터가 바뀌면 정책 생성을 위한 값을 변경
@@ -45,10 +50,10 @@ const AllowServiceTime = ({data, setTemplateData}) => {
 		if (data?.attribute?.ruleType) {
 			const attributes = {
 				usage:
-					timeoutRistriction === policyOption.restrict.restrict.key,
+					timeoutRistriction === policyOption.restrict.restrict.value,
 			};
 			//제한 여부 true
-			if (timeoutRistriction === policyOption.restrict.restrict.key) {
+			if (timeoutRistriction === policyOption.restrict.restrict.value) {
 				const tempTimezone = {};
 				Object.keys(timezone).map((v) => {
 					if (timezone[v].checked) {
@@ -74,8 +79,8 @@ const AllowServiceTime = ({data, setTemplateData}) => {
 			setUsageOptionByAttribute(
 				data?.attribute,
 				'usage',
-				policyOption.usage.use.key,
-				policyOption.usage.none.key,
+				policyOption.usage.use.value,
+				policyOption.usage.none.value,
 			),
 		);
 
@@ -94,7 +99,7 @@ const AllowServiceTime = ({data, setTemplateData}) => {
 				...tempTimezone,
 			});
 		}
-	}, [data]);
+	}, [data, setTimeoutRistriction]);
 
 	return (
 		<TemplateLayout
@@ -108,14 +113,17 @@ const AllowServiceTime = ({data, setTemplateData}) => {
 							render={timeoutRistrictionRadioButton}
 						/>
 						<div>----------------------------------</div>
-						<TimeInterval
-							data={timezone}
-							setData={setTimezone}
-							disabled={
-								timeoutRistriction ===
-								policyOption.restrict.none.key
-							}
-						/>
+
+						<FormProvider {...methods}>
+							<TimeInterval
+								data={timezone}
+								setData={setTimezone}
+								disabled={
+									timeoutRistriction ===
+									policyOption.restrict.none.value
+								}
+							/>
+						</FormProvider>
 					</div>
 				);
 			}}

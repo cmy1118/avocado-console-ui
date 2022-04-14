@@ -1,13 +1,9 @@
 import {useFormContext} from 'react-hook-form';
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo} from 'react';
 import {ErrorMessage} from '@hookform/error-message';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import {
-	checkIcon,
-	checkOutlineIcon,
-	indeterminateIcon,
-} from '../../../icons/icons';
+import CheckBox from './CheckBox';
 
 const BoxContainer = styled.div`
 	margin: 6px;
@@ -15,33 +11,6 @@ const BoxContainer = styled.div`
 
 const Container = styled.div`
 	display: flex;
-`;
-
-const Label = styled.label`
-	display: flex !important;
-	align-items: center;
-	cursor: pointer;
-	z-index: 0;
-`;
-
-const InputContainer = styled.div`
-	line-height: 17px !important;
-	margin-right: 2px;
-	width: 15px;
-	height: 15px;
-	svg {
-		position: absolute !important;
-		top: -2.5px !important;
-		left: -2.5px !important;
-		fill: ${(props) =>
-			(props.type === 'indeterminate' && props.disabled && '#757575') ||
-			(props.type === 'indeterminate' && !props.disabled && '#178082') ||
-			(props.type === 'check' && '#178082') ||
-			(props.type === 'checkout' && '#757575')};
-		width: 15px !important;
-		height: 15px !important;
-		margin: 2.5px !important;
-	}
 `;
 
 const ErrorMessageText = styled.span`
@@ -57,76 +26,19 @@ const ErrorMessageText = styled.span`
 
 // eslint-disable-next-line react/display-name
 const NestedInput = memo(
-	({
-		name,
-		register,
-		formState: {errors},
-		isDisabled = false,
-		options,
-		getValues,
-	}) => {
-		const [indeterminate, setIndeterminate] = useState(false);
-		const [values, setValues] = useState([]);
-
-		useEffect(() => {
-			setValues(getValues(name) ? getValues(name) : []);
-		}, [getValues, name]);
-
+	({name, formState: {errors}, isDisabled = false, options}) => {
 		return (
 			<BoxContainer>
 				<Container>
 					{options.map((item) => {
 						return (
-							<Label
+							<CheckBox
 								key={item.value}
-								// opacity={isDisabled.toString()}
+								value={item.value}
 								label={item.label}
-								className='pretty p-svg p-curve p-plain p-toggle p-thick'
-							>
-								<input
-									type={'checkbox'}
-									value={item.value}
-									disabled={isDisabled}
-									{...register(name)}
-									onChange={(e) => {
-										if (isDisabled) return;
-										const {value} = e.target;
-										setValues((prev) =>
-											prev.includes(value)
-												? prev.filter(
-														(v) => v !== value,
-												  )
-												: [...prev, value],
-										);
-										register(name).onChange(e);
-									}}
-								/>
-								{indeterminate ? (
-									<InputContainer
-										type={'indeterminate'}
-										disabled={isDisabled}
-										className='state'
-									>
-										{indeterminateIcon}
-									</InputContainer>
-								) : values.includes(item.value) ? (
-									<InputContainer
-										type={'check'}
-										className='state'
-									>
-										{checkIcon}
-									</InputContainer>
-								) : (
-									<InputContainer
-										type={'checkout'}
-										className='state'
-									>
-										{checkOutlineIcon}
-									</InputContainer>
-								)}
-
-								{item.label}
-							</Label>
+								isDisabled={isDisabled}
+								name={name}
+							/>
 						);
 					})}
 				</Container>

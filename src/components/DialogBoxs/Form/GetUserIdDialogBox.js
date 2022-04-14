@@ -1,23 +1,13 @@
-import React, {
-	forwardRef,
-	useCallback,
-	useImperativeHandle,
-	useRef,
-} from 'react';
-import Form from '../../RecycleComponents/New/Form';
-import TextBox from '../../RecycleComponents/New/TextBox';
-import PropTypes from 'prop-types';
-import {
-	altAuthType,
-	googleAuth,
-	kakaoAuth,
-	naverAuth,
-} from '../../../utils/auth';
+import React, {forwardRef, useImperativeHandle,} from 'react';
+import {altAuthType, googleAuth, kakaoAuth, naverAuth,} from '../../../utils/auth';
+import {FormProvider, useForm} from 'react-hook-form';
+import RHF_Textbox from '../../RecycleComponents/ReactHookForm/RHF_Textbox';
+import PropTypes from "prop-types";
 
 const GetUserIdDialogBox = forwardRef(({type}, ref) => {
-	const formRef = useRef(null);
+	const methods = useForm();
 
-	const onSubmitUserId = useCallback((data) => {
+	const onSubmitUserId = methods.handleSubmit((data) => {
 		console.log(data);
 		localStorage.setItem('id', data.id);
 
@@ -48,16 +38,10 @@ const GetUserIdDialogBox = forwardRef(({type}, ref) => {
 	}));
 
 	return (
-		<div>
+		<FormProvider {...methods}>
 			<div>아이디를 입력하시오</div>
-			<Form
-				initialValues={{id: ''}}
-				onSubmit={onSubmitUserId}
-				innerRef={formRef}
-			>
-				<TextBox name={'id'} placeholder={'id'} />
-			</Form>
-		</div>
+			<RHF_Textbox name={'id'} />
+		</FormProvider>
 	);
 });
 

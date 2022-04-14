@@ -1,7 +1,6 @@
 import SelectionOption from '../../components/Table/Options/Search/searchFilters/SelectionOption';
 import CalenderOption from '../../components/Table/Options/Search/searchFilters/CalenderOption';
 import React from 'react';
-import checkboxColumn from '../../components/Table/tableCheckboxColumn';
 import TableLink from '../../components/Table/ColumnCells/TableLink';
 
 export const POLICY_COLUMN = [
@@ -283,10 +282,6 @@ export const POLICY_ADD_USER_MANAGEMEN_COLUMN = [
 		disableFilters: true,
 		disableChangeVisible: true,
 	},
-	checkboxColumn({
-		header: '전체 권한',
-		// tableKey: '1',
-	}),
 ];
 
 export const PAM_TEMPLATE_RESOURCE_GROUP_COLUMN = [

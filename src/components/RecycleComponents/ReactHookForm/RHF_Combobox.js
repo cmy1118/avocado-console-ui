@@ -32,6 +32,7 @@ const NestedInput = memo(
 		isDisabled,
 		placeholder,
 		width = 200,
+		onSubmit,
 	}) => {
 		const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -143,7 +144,10 @@ const NestedInput = memo(
 								value={options.find(
 									(c) => c.value === field.value,
 								)}
-								onChange={(e) => field.onChange(e.value)}
+								onChange={(e) => {
+									field.onChange(e.value);
+									onSubmit && onSubmit();
+								}}
 							/>
 						);
 					}}
@@ -169,9 +173,17 @@ NestedInput.propTypes = {
 	placeholder: PropTypes.string,
 	setValue: PropTypes.func,
 	width: PropTypes.number,
+	onSubmit: PropTypes.func,
 };
 
-const RHF_Combobox = ({name, options, placeholder, width, isDisabled}) => {
+const RHF_Combobox = ({
+	onSubmit,
+	name,
+	options,
+	placeholder,
+	width,
+	isDisabled,
+}) => {
 	const methods = useFormContext();
 	return (
 		<NestedInput
@@ -181,6 +193,7 @@ const RHF_Combobox = ({name, options, placeholder, width, isDisabled}) => {
 			placeholder={placeholder}
 			isDisabled={isDisabled}
 			width={width}
+			onSubmit={onSubmit}
 		/>
 	);
 };
@@ -191,6 +204,7 @@ RHF_Combobox.propTypes = {
 	isDisabled: PropTypes.bool,
 	placeholder: PropTypes.string,
 	width: PropTypes.number,
+	onSubmit: PropTypes.func,
 };
 
 export default RHF_Combobox;

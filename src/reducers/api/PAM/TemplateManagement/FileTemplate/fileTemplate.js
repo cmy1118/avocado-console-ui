@@ -90,7 +90,7 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 			Range: payload.range,
 		},
 		params: {
-			filter: payload.filter,
+			filter: payload.filter, // 검색시 이름, 설명
 		},
 		aseURL: process.env.REACT_APP_OPEN_API_URL,
 	});

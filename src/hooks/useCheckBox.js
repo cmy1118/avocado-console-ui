@@ -90,7 +90,7 @@ CheckComponent.propTypes = {
 /**************************************************
  * seob - 체크박스 hook
  *
- * options: 체크박스의 label 과 key값을 객체로 갖는 배열 ex) [{label:A,key:a},{label:B,key:b},...]
+ * options: 체크박스의 label 과 key값을 객체로 갖는 배열 ex) [{label:A,value:a},{label:B,value:b},...]
  * disabled: 전체 체크박스 disabled 여부
  *
  * 
@@ -98,9 +98,9 @@ CheckComponent.propTypes = {
  * 
  * const [checkedValue, CheckBox] = useCheckBox({
 		options: [ // 필수항목
-			{label: 'A', key: 'a'},
-			{label: 'B', key: 'b'},
-			{label: 'C', key: 'c'},
+			{label: 'A', value: 'a'},
+			{label: 'B', value: 'b'},
+			{label: 'C', value: 'c'},
 		],
 		disabled: true, // 필수 아님
 	});
@@ -113,7 +113,7 @@ const useCheckBox = ({options, disabled = false}) => {
 	/**************************************************
 	 * seob - 체크박스 아이템 클릭시 setCheckList하는 함수
 	 *
-	 * key: 클릭된 아이템의 key값
+	 * value: 클릭된 아이템의 key값
 	 ***************************************************/
 	const handleCheckClick = (key) => {
 		checkList.includes(key)
@@ -133,9 +133,11 @@ const useCheckBox = ({options, disabled = false}) => {
 					<CheckComponent
 						key={i}
 						label={c.label}
-						checkKey={c.key}
+						checkKey={c.value}
 						// checkLists에 포함되는 경우 checked true
-						checked={checkList ? checkList.includes(c.key) : false}
+						checked={
+							checkList ? checkList.includes(c.value) : false
+						}
 						onCheck={handleCheckClick}
 						disabled={disabled}
 					/>

@@ -25,15 +25,15 @@ import {
 export const checkDropTypeAlertMessage = (tableKey) => {
 	switch (CheckDropDataType(tableKey)) {
 		case 'users':
-			return confirmAlertMessages.maxNumberOfUsers.key;
+			return confirmAlertMessages.maxNumberOfUsers.value;
 		case 'groups':
-			return confirmAlertMessages.maxNumberOfGroups.key;
+			return confirmAlertMessages.maxNumberOfGroups.value;
 		case 'roles':
-			return confirmAlertMessages.maxNumberOfRoles.key;
+			return confirmAlertMessages.maxNumberOfRoles.value;
 		case 'tags':
-			return confirmAlertMessages.maxNumberOfTags.key;
+			return confirmAlertMessages.maxNumberOfTags.value;
 		default:
-			return confirmAlertMessages.maxNumberOfDatas.key;
+			return confirmAlertMessages.maxNumberOfDatas.value;
 	}
 };
 
@@ -51,7 +51,7 @@ const ConfirmDialogBox = () => {
 				alert.open &&
 				Object.prototype.hasOwnProperty.call(
 					confirmAlertMessages,
-					alert.key,
+					alert.value,
 				)
 			}
 			onRequestClose={onClickCloseDialogBox}
@@ -59,7 +59,7 @@ const ConfirmDialogBox = () => {
 			shouldCloseOnOverlayClick={false}
 		>
 			<DialogBoxHeader>
-				{confirmAlertMessages[alert.key]?.type ===
+				{confirmAlertMessages[alert.value]?.type ===
 				alertMessageTypes.alert ? (
 					<div>Alert</div>
 				) : (
@@ -71,14 +71,14 @@ const ConfirmDialogBox = () => {
 			</DialogBoxHeader>
 
 			<AlertDialogBoxContent>
-				{confirmAlertMessages[alert.key]?.type ===
+				{confirmAlertMessages[alert.value]?.type ===
 				alertMessageTypes.alert ? (
 					<Icon>{alertIcon}</Icon>
 				) : (
 					<Icon>{confirmIcon}</Icon>
 				)}
 				<AlertDialogBoxText>
-					{confirmAlertMessages[alert.key]?.message}
+					{confirmAlertMessages[alert.value]?.message}
 				</AlertDialogBoxText>
 			</AlertDialogBoxContent>
 
@@ -91,7 +91,7 @@ const ConfirmDialogBox = () => {
 					Cancel
 				</TransparentButton>
 
-				{confirmAlertMessages[alert.key]?.type ===
+				{confirmAlertMessages[alert.value]?.type ===
 				alertMessageTypes.alert ? (
 					<WarningButton
 						width={'120px'}

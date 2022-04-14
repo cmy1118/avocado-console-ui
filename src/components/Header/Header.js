@@ -1,11 +1,11 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {avocadoLogo_white, searchIcon} from '../../icons/icons';
 import {Icon} from '../../styles/components/icons';
 import MenuButtons from './MenuButtons';
-import TextBox from '../RecycleComponents/New/TextBox';
-import Form from '../RecycleComponents/New/Form';
 import {NavItem} from '../../styles/components/nav';
+import {FormProvider, useForm} from 'react-hook-form';
+import RHF_Textbox from '../RecycleComponents/ReactHookForm/RHF_Textbox';
 
 const _Container = styled.div`
 	height: 44px;
@@ -31,7 +31,7 @@ const _Logo = styled.div`
 const header = {search: {placeholder: '제품 및 리소스 검색'}};
 
 const Header = () => {
-	const ref = useRef(null);
+	const methods = useForm();
 
 	return (
 		<_Container>
@@ -40,17 +40,13 @@ const Header = () => {
 					<_Logo>{avocadoLogo_white}</_Logo>
 				</NavItem>
 			</_Title>
-			<Form
-				onSubmit={(data) => console.log(data)}
-				innerRef={ref}
-				initialValues={{search: ''}}
-			>
-				<TextBox
+			<FormProvider {...methods}>
+				<RHF_Textbox
 					// placeholder_text_color={'#D7D7D7'}
 					// border_color={'#0B6365'}
 					placeholder={header.search.placeholder}
-					placeholder_text_color={'rgba(255, 255, 255, 0.6)'}
-					background={'rgba(0, 0, 0, 0.22)'}
+					// placeholder_text_color={'rgba(255, 255, 255, 0.6)'}
+					// background={'rgba(0, 0, 0, 0.22)'}
 					front={
 						<Icon
 							color={'rgba(255, 255, 255, 0.6)'}
@@ -60,9 +56,33 @@ const Header = () => {
 							{searchIcon}
 						</Icon>
 					}
+					onSubmit={methods.handleSubmit((data) => console.log(data))}
 					name={'search'}
 				/>
-			</Form>
+			</FormProvider>
+			{/*<Form*/}
+			{/*	onSubmit={(data) => console.log(data)}*/}
+			{/*	innerRef={ref}*/}
+			{/*	initialValues={{search: ''}}*/}
+			{/*>*/}
+			{/*	<TextBox*/}
+			{/*		// placeholder_text_color={'#D7D7D7'}*/}
+			{/*		// border_color={'#0B6365'}*/}
+			{/*		placeholder={header.search.placeholder}*/}
+			{/*		placeholder_text_color={'rgba(255, 255, 255, 0.6)'}*/}
+			{/*		background={'rgba(0, 0, 0, 0.22)'}*/}
+			{/*		front={*/}
+			{/*			<Icon*/}
+			{/*				color={'rgba(255, 255, 255, 0.6)'}*/}
+			{/*				size={'14.2px'}*/}
+			{/*				margin_right={'0px'}*/}
+			{/*			>*/}
+			{/*				{searchIcon}*/}
+			{/*			</Icon>*/}
+			{/*		}*/}
+			{/*		name={'search'}*/}
+			{/*	/>*/}
+			{/*</Form>*/}
 			<MenuButtons />
 		</_Container>
 	);

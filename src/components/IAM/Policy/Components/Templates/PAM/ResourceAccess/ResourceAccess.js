@@ -31,7 +31,7 @@ const ResourceAccess = ({templateId, name, description, categoryType}) => {
 								isShow={
 									!(
 										resource ===
-										policyOption.resource.all.key
+										policyOption.resource.all.value
 									)
 								}
 							/>

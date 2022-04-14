@@ -68,8 +68,8 @@ const UserAccess = ({templateId, name, description}) => {
 	const WEBTERM_RADIO_NAME = 'webterm-radio-name';
 	// 라디오 버튼 옵션값
 	const radioOptions = [
-		{label: contents.restriction.yes, key: 'yes'},
-		{label: contents.restriction.no, key: 'no'},
+		{label: contents.restriction.yes, value: 'yes'},
+		{label: contents.restriction.no, value: 'no'},
 	];
 	// console 라디오 버튼 hook
 	const [consoleRadioValue, consoleRadio, setConsoleRadioValue] = useRadio({

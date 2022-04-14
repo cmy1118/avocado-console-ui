@@ -1,4 +1,10 @@
 import {tableKeys} from '../../../../Constants/Table/keys';
+import React from 'react';
+import PropTypes from 'prop-types';
+import {FormProvider, useForm} from 'react-hook-form';
+import RHF_Textbox from "../../../RecycleComponents/ReactHookForm/RHF_Textbox";
+import {Icon} from "../../../../styles/components/icons";
+import {searchIcon} from "../../../../icons/icons";
 
 export const placeholders = {
 	[tableKeys.users.basic]: '사용자 계정, 사용자 이름, 사용자 그룹, 태그명',
@@ -27,3 +33,38 @@ export const placeholders = {
 	[tableKeys.roles.summary.tabs.groups.include]: '그룹 이름, 그룹 유형',
 	[tableKeys.roles.summary.tabs.groups.exclude]: '그룹 이름, 그룹 유형',
 };
+
+function Search({tableKey, setGlobalFilter, setSearch}) {
+	const handleSubmit = (data) => {
+		//Api 검색
+		console.log("data['search'].trim():", data['search'].trim());
+		setSearch(data['search'].trim());
+		//setGlobalFilter  : React Table String Search 방법
+		//상세 Tab 검색시 사용
+		// setGlobalFilter(data['search'].trim());
+	};
+
+	const methods = useForm();
+
+	return (
+		<FormProvider {...methods}>
+			<form onSubmit={methods.handleSubmit(handleSubmit)}>
+				<RHF_Textbox
+					name={'search'}
+					placeholder={placeholders[tableKey]}
+					front={
+						<Icon size={'sm'} margin_right={'0px'}>
+							{searchIcon}
+						</Icon>
+					}
+				/>
+			</form>
+		</FormProvider>
+	);
+}
+Search.propTypes = {
+	tableKey: PropTypes.string,
+	setGlobalFilter: PropTypes.func,
+	setSearch: PropTypes.func,
+};
+export default Search;

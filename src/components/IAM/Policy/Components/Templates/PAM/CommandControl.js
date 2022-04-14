@@ -10,6 +10,8 @@ import TableContainer from '../../../../../Table/TableContainer';
 import Resource from './Resource/Resource';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 import TableComboBox from '../../../../../Table/ColumnCells/TableComboBox';
+import PAM_COMMAND_MANAGEMENT_TEMPLATE_DETAIL from '../../../../../../reducers/api/PAM/TemplateManagement/CommandTemplate/commandTemplateDetail';
+import PropTypes from 'prop-types';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -34,21 +36,33 @@ const contents = {
 // 임시 테이블 셀 id
 let ID = 4;
 
-const CommandControl = () => {
+const CommandControl = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
 
 	const [tableData, setTableData] = useState([
-		{[DRAGGABLE_KEY]: '0', controlCommand: 'kill'},
-		{[DRAGGABLE_KEY]: '1', controlCommand: 'command1'},
-		{[DRAGGABLE_KEY]: '2', controlCommand: 'command2'},
-		{[DRAGGABLE_KEY]: '3', controlCommand: 'command3'},
+		{[DRAGGABLE_KEY]: '0', controlCommand: 'kill', securityLevel: 'normal'},
+		{
+			[DRAGGABLE_KEY]: '1',
+			controlCommand: 'command1',
+			securityLevel: 'level1',
+		},
+		{
+			[DRAGGABLE_KEY]: '2',
+			controlCommand: 'command2',
+			securityLevel: 'normal',
+		},
+		{
+			[DRAGGABLE_KEY]: '3',
+			controlCommand: 'command3',
+			securityLevel: 'normal',
+		},
 	]);
 
 	const [controlTypeValue, controlTypeRadio, setControlTypeValue] = useRadio({
 		name: 'commandControlTemplate-controlType-Radio',
 		options: [
-			{label: '금지(Black)', key: 'black'},
-			{label: '허용(White)', key: 'white'},
+			{label: '금지(Black)', value: 'black'},
+			{label: '허용(White)', value: 'white'},
 		],
 	});
 	const [resourceData, setResourceData] = useState({});
@@ -72,10 +86,10 @@ const CommandControl = () => {
 						<TableComboBox
 							cell={cell}
 							options={[
-								{label: '기본등급', key: 'normal'},
-								{label: '1등급', key: 'level1'},
-								{label: '2등급', key: 'level2'},
-								{label: '3등급', key: 'level3'},
+								{label: '기본등급', value: 'normal'},
+								{label: '1등급', value: 'level1'},
+								{label: '2등급', value: 'level2'},
+								{label: '3등급', value: 'level3'},
 							]}
 							setData={setTableData}
 						/>
@@ -114,22 +128,19 @@ const CommandControl = () => {
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
-			console.log('api 작업');
-			// const res = await dispatch(
-			// 	PAM_RULE_MANAGEMENT_TEMPLATE.asyncAction.findById({
-			// 		// templateId,
-			// 	}),
-			// );
-			// if (isFulfilled(res)) {
-			// 	console.log(res.payload.data);
-			// } else {
-			// 	// 에러 핸들링
-			// 	console.log(res.error);
-			// }
-			setControlTypeValue('white');
+			try {
+				const res = await dispatch(
+					PAM_COMMAND_MANAGEMENT_TEMPLATE_DETAIL.asyncAction.findAllAction(
+						{templateId: templateId},
+					),
+				);
+				console.log(res);
+			} catch (err) {
+				console.error(err);
+			}
 		};
 		fetchData();
-	}, [dispatch, setControlTypeValue]);
+	}, [dispatch, setControlTypeValue, templateId]);
 	return (
 		<div>
 			<TemplateLayout
@@ -170,6 +181,12 @@ const CommandControl = () => {
 			/>
 		</div>
 	);
+};
+
+CommandControl.propTypes = {
+	templateId: PropTypes.string,
+	name: PropTypes.string,
+	description: PropTypes.string,
 };
 
 export default CommandControl;
