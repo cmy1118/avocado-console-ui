@@ -2,7 +2,7 @@ import React, {useCallback, useMemo, useRef, useState} from 'react';
 
 import {FormProvider, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
+import * as yup from 'yup';
 import RHF_Textbox from '../components/RecycleComponents/ReactHookForm/RHF_Textbox';
 import RHF_Combobox from '../components/RecycleComponents/ReactHookForm/RHF_Combobox';
 import RHF_Checkbox from '../components/RecycleComponents/ReactHookForm/RHF_Checkbox';
@@ -38,7 +38,8 @@ const FormExample = () => {
 				return (
 					<TableTextBox
 						cell={cell}
-						yup={Yup.string()
+						yup={yup
+							.string()
 							.min(5, '5자 이상 입력하셔야 합니다.')
 							.max(20, '20자 이하로 입력하셔야 합니다.')
 							.required('value값은 필수입니다.')}
@@ -53,7 +54,8 @@ const FormExample = () => {
 				return (
 					<TableTextBox
 						cell={cell}
-						yup={Yup.number()
+						yup={yup
+							.number()
 							.typeError('숫자만 입력이 가능합니다.')
 							.max(500, '500이하로 작성 가능합니다.')}
 					/>
@@ -94,19 +96,22 @@ const FormExample = () => {
 
 	// 유효성 검사 schema 작성방법
 	// memo : 주의사항 => 현재 폼에 없는 name값을 입력하시고 require하시면 submit이 정상 동작하지 않습니다.
-	const validationSchema = Yup.object()
+	const validationSchema = yup
+		.object()
 		.shape({
-			name: Yup.string()
+			name: yup
+				.string()
 				.min(5, '5자 이상 입력하셔야 합니다.')
 				.max(20, '20자 이하로 입력하셔야 합니다.')
 				.required('name값은 필수입니다.'),
 
-			color: Yup.string().required('color값은 필수입니다.'),
-			number: Yup.string().required('number값은 필수입니다.'),
-			checked2: Yup.array()
+			color: yup.string().required('color값은 필수입니다.'),
+			number: yup.string().required('number값은 필수입니다.'),
+			checked2: yup
+				.array()
 				.min(1, '1개 이상 체크하셔야 합니다.')
 				.max(2, '2개 이하 체크하셔야 합니다.'),
-			// radio2: Yup.string().required('체크하셔야합니다.').nullable(true),
+			// radio2: yup.string().required('체크하셔야합니다.').nullable(true),
 		})
 		.required();
 

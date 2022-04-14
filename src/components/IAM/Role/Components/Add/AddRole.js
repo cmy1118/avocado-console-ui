@@ -3,9 +3,16 @@ import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import IAM_USER_GROUP_TYPE from '../../../../../reducers/api/IAM/User/Group/groupType';
 import PropTypes from 'prop-types';
-import {NormalButton, TransparentButton,} from '../../../../../styles/components/buttons';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../../../styles/components/buttons';
 import {ColDiv, RowDiv} from '../../../../../styles/components/style';
-import {TitleBar, TitleBarButtons, TitleBarText,} from '../../../../../styles/components/iam/iam';
+import {
+	TitleBar,
+	TitleBarButtons,
+	TitleBarText,
+} from '../../../../../styles/components/iam/iam';
 import IAM_USER_GROUP from '../../../../../reducers/api/IAM/User/Group/group';
 import TemplateElement from '../../../Policy/Components/Templates/Layout/TemplateElement';
 import useRadio from '../../../../../hooks/useRadio';
@@ -15,8 +22,8 @@ import {FormProvider, useForm} from 'react-hook-form';
 import RHF_Textbox from '../../../../RecycleComponents/ReactHookForm/RHF_Textbox';
 import RHF_Radio from '../../../../RecycleComponents/ReactHookForm/RHF_Radio';
 import {yupResolver} from '@hookform/resolvers/yup';
-import * as Yup from "yup";
-import {CreatePageContent} from "../../../../../styles/components/iam/addPage";
+import * as yup from 'yup';
+import {CreatePageContent} from '../../../../../styles/components/iam/addPage';
 
 const AddRole = ({values, groupMembers, setValues}) => {
 	const dispatch = useDispatch();
@@ -48,11 +55,13 @@ const AddRole = ({values, groupMembers, setValues}) => {
 		name: 'patternInput',
 	});
 
-	const validationSchema = Yup.object()
+	const validationSchema = yup
+		.object()
 		.shape({
-			name: Yup.string().required('역할 이름은 필수입니다.'),
-			description: Yup.string().required('역할 설명은 필수값입니다.'),
-			grantCount: Yup.number()
+			name: yup.string().required('역할 이름은 필수입니다.'),
+			description: yup.string().required('역할 설명은 필수값입니다.'),
+			grantCount: yup
+				.number()
 				.max(10, '10 이하로 작성 가능합니다.')
 				.nullable(),
 		})

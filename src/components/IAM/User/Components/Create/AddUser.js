@@ -1,13 +1,19 @@
 import React, {useCallback} from 'react';
 import {useHistory} from 'react-router-dom';
-import * as Yup from 'yup';
+import * as yup from 'yup';
 import CURRENT_TARGET from '../../../../../reducers/currentTarget';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
-import {NormalButton, TransparentButton,} from '../../../../../styles/components/buttons';
+import {
+	NormalButton,
+	TransparentButton,
+} from '../../../../../styles/components/buttons';
 import {RowDiv} from '../../../../../styles/components/style';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
-import {CreatePageContent, IamSectionContents,} from '../../../../../styles/components/iam/addPage';
+import {
+	CreatePageContent,
+	IamSectionContents,
+} from '../../../../../styles/components/iam/addPage';
 import {
 	IamSectionBottomMargin,
 	IamSectionTitleBar,
@@ -26,7 +32,8 @@ const AddUser = ({setIsOpened}) => {
 	const telephoneRegex = /^\d{2,3}-\d{3,4}-\d{4}$/;
 	const mobileRegex = /^[0-9]{3}[-]+[0-9]{4}[-]+[0-9]{4}$/;
 
-	const validation = Yup.object()
+	const validation = yup
+		.object()
 		.shape({
 			id: yup
 				.string()
@@ -126,86 +133,88 @@ const AddUser = ({setIsOpened}) => {
 				</TitleBarButtons>
 			</IamSectionTitleBar>
 			<IamSectionContents>
-			<TableOptionText data={'usersInfo'} />
-			<CreatePageContent>
-				<FormProvider {...methods}>
-					{addUserContents.map((v) => {
-						return (
-							<RowDiv key={v.name} margin={'0px 0px 12px 0px'}>
-								<RHF_Textbox
-									name={v.name}
-									placeholder={v.placeholder}
-									description={v.description}
-								/>
-							</RowDiv>
-						);
-					})}
-				</FormProvider>
-				{/*<Form*/}
-				{/*	initialValues={{*/}
-				{/*		id: '',*/}
-				{/*		name: '',*/}
-				{/*		email: '',*/}
-				{/*		telephone: '',*/}
-				{/*		mobile: '',*/}
-				{/*	}}*/}
-				{/*	onSubmit={onSubmitUserData}*/}
-				{/*	innerRef={formRef}*/}
-				{/*	validation={validation}*/}
-				{/*>*/}
-				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
-				{/*		<TextBox*/}
-				{/*			name={'id'}*/}
-				{/*			placeholder={'사용자 계정 ID'}*/}
-				{/*			direction={'row'}*/}
-				{/*		/>*/}
-				{/*		<TextBoxDescription>*/}
-				{/*			최대 40자, 영문 대소문자로 생성 가능합니다.*/}
-				{/*		</TextBoxDescription>*/}
-				{/*	</RowDiv>*/}
-				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
-				{/*		<TextBox*/}
-				{/*			name={'name'}*/}
-				{/*			placeholder={'사용자 명'}*/}
-				{/*			direction={'row'}*/}
-				{/*		/>*/}
-				{/*		<TextBoxDescription>*/}
-				{/*			최대 30자, 영문 포함 가능합니다.*/}
-				{/*		</TextBoxDescription>*/}
-				{/*	</RowDiv>*/}
-				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
-				{/*		<TextBox*/}
-				{/*			name={'email'}*/}
-				{/*			placeholder={'이메일 주소'}*/}
-				{/*			direction={'row'}*/}
-				{/*		/>*/}
-				{/*		<TextBoxDescription>*/}
-				{/*			최대 200자 가능합니다.*/}
-				{/*		</TextBoxDescription>*/}
-				{/*	</RowDiv>*/}
-				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
-				{/*		<TextBox*/}
-				{/*			name={'telephone'}*/}
-				{/*			placeholder={'전화번호'}*/}
-				{/*			direction={'row'}*/}
-				{/*		/>*/}
-				{/*		<TextBoxDescription>*/}
-				{/*			+82-(0)70-4469-4469과 같이 입력합니다.*/}
-				{/*		</TextBoxDescription>*/}
-				{/*	</RowDiv>*/}
-				{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
-				{/*		<TextBox*/}
-				{/*			name={'mobile'}*/}
-				{/*			placeholder={'모바일 전화번호'}*/}
-				{/*			direction={'row'}*/}
-				{/*		/>*/}
-				{/*		<TextBoxDescription>*/}
-				{/*			+82-(0)70-4469-4469과 같이 입력합니다.*/}
-				{/*		</TextBoxDescription>*/}
-				{/*	</RowDiv>*/}
-				{/*</Form>*/}
-			</CreatePageContent>
-
+				<TableOptionText data={'usersInfo'} />
+				<CreatePageContent>
+					<FormProvider {...methods}>
+						{addUserContents.map((v) => {
+							return (
+								<RowDiv
+									key={v.name}
+									margin={'0px 0px 12px 0px'}
+								>
+									<RHF_Textbox
+										name={v.name}
+										placeholder={v.placeholder}
+										description={v.description}
+									/>
+								</RowDiv>
+							);
+						})}
+					</FormProvider>
+					{/*<Form*/}
+					{/*	initialValues={{*/}
+					{/*		id: '',*/}
+					{/*		name: '',*/}
+					{/*		email: '',*/}
+					{/*		telephone: '',*/}
+					{/*		mobile: '',*/}
+					{/*	}}*/}
+					{/*	onSubmit={onSubmitUserData}*/}
+					{/*	innerRef={formRef}*/}
+					{/*	validation={validation}*/}
+					{/*>*/}
+					{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
+					{/*		<TextBox*/}
+					{/*			name={'id'}*/}
+					{/*			placeholder={'사용자 계정 ID'}*/}
+					{/*			direction={'row'}*/}
+					{/*		/>*/}
+					{/*		<TextBoxDescription>*/}
+					{/*			최대 40자, 영문 대소문자로 생성 가능합니다.*/}
+					{/*		</TextBoxDescription>*/}
+					{/*	</RowDiv>*/}
+					{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
+					{/*		<TextBox*/}
+					{/*			name={'name'}*/}
+					{/*			placeholder={'사용자 명'}*/}
+					{/*			direction={'row'}*/}
+					{/*		/>*/}
+					{/*		<TextBoxDescription>*/}
+					{/*			최대 30자, 영문 포함 가능합니다.*/}
+					{/*		</TextBoxDescription>*/}
+					{/*	</RowDiv>*/}
+					{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
+					{/*		<TextBox*/}
+					{/*			name={'email'}*/}
+					{/*			placeholder={'이메일 주소'}*/}
+					{/*			direction={'row'}*/}
+					{/*		/>*/}
+					{/*		<TextBoxDescription>*/}
+					{/*			최대 200자 가능합니다.*/}
+					{/*		</TextBoxDescription>*/}
+					{/*	</RowDiv>*/}
+					{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
+					{/*		<TextBox*/}
+					{/*			name={'telephone'}*/}
+					{/*			placeholder={'전화번호'}*/}
+					{/*			direction={'row'}*/}
+					{/*		/>*/}
+					{/*		<TextBoxDescription>*/}
+					{/*			+82-(0)70-4469-4469과 같이 입력합니다.*/}
+					{/*		</TextBoxDescription>*/}
+					{/*	</RowDiv>*/}
+					{/*	<RowDiv margin={'0px 0px 12px 0px'}>*/}
+					{/*		<TextBox*/}
+					{/*			name={'mobile'}*/}
+					{/*			placeholder={'모바일 전화번호'}*/}
+					{/*			direction={'row'}*/}
+					{/*		/>*/}
+					{/*		<TextBoxDescription>*/}
+					{/*			+82-(0)70-4469-4469과 같이 입력합니다.*/}
+					{/*		</TextBoxDescription>*/}
+					{/*	</RowDiv>*/}
+					{/*</Form>*/}
+				</CreatePageContent>
 			</IamSectionContents>
 		</IamSectionBottomMargin>
 	);

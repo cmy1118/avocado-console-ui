@@ -1,10 +1,10 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import Form from '../../../RecycleComponents/New/Form';
-import TextBox from '../../../RecycleComponents/New/TextBox';
 import {searchIcon} from '../../../../icons/icons';
 import {Icon} from '../../../../styles/components/icons';
 import {placeholders} from './SearchConstants';
+import RHF_Textbox from '../../../RecycleComponents/ReactHookForm/RHF_Textbox';
+import {FormProvider, useForm} from 'react-hook-form';
 
 /******************************************************
  * Table string 검색을 위한 컴포넌트
@@ -13,18 +13,16 @@ import {placeholders} from './SearchConstants';
  * @param setGlobalFilter :react-table 제공함수 , string 검색기능
  *******************************************************/
 function StrSearch({tableKey, setGlobalFilter}) {
-	const ref = useRef(null);
 	const handleSubmit = (data) => {
 		console.log('검색:', data['search'].trim());
 		setGlobalFilter(data['search'].trim());
 	};
+
+	const methods = useForm();
+
 	return (
-		<Form
-			onSubmit={handleSubmit}
-			innerRef={ref}
-			initialValues={{search: ''}}
-		>
-			<TextBox
+		<FormProvider {...methods}>
+			<RHF_Textbox
 				placeholder={placeholders[tableKey]}
 				front={
 					<Icon size={'sm'} margin_right={'0px'}>
@@ -32,8 +30,9 @@ function StrSearch({tableKey, setGlobalFilter}) {
 					</Icon>
 				}
 				name={'search'}
+				onSubmit={methods.handleSubmit(handleSubmit)}
 			/>
-		</Form>
+		</FormProvider>
 	);
 }
 StrSearch.propTypes = {

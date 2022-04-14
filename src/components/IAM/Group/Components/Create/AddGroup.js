@@ -8,7 +8,6 @@ import {
 	TransparentButton,
 } from '../../../../../styles/components/buttons';
 import * as yup from 'yup';
-import * as Yup from 'yup';
 import {
 	IamSectionContents,
 	CreatePageContent,
@@ -41,7 +40,8 @@ const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 	// 상위그룹 선택하는 모달
 	const [ParentGroupModal, showParentGroupModal] = useModal();
 
-	const validationSchema = Yup.object()
+	const validationSchema = yup
+		.object()
 		.shape({
 			type: yup.string().required('그룹 유형은 필수값입니다.'),
 			name: yup.string().required('그룹명은 필수값입니다.'),

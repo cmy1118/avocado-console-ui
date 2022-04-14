@@ -23,7 +23,7 @@ import {FormProvider, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import RHF_Textbox from '../../RecycleComponents/ReactHookForm/RHF_Textbox';
 import RHF_Combobox from '../../RecycleComponents/ReactHookForm/RHF_Combobox';
-import * as Yup from 'yup';
+import * as yup from 'yup';
 
 const _DialogBox = styled(DialogBox)`
 	display: flex;
@@ -111,13 +111,14 @@ const SelectResourceDialogBox = ({isOpened, setIsOpened, setSelected}) => {
 		[dispatch],
 	);
 
-	const validationSchema = Yup.object()
+	const validationSchema = yup
+		.object()
 		.shape({
-			// search: Yup.string().matches('정규식'),
+			// search: yup.string().matches('정규식'),
 			// .min(2, '2자 이상 입력하셔야 합니다.')
 			// .notRequired(),
 			// .required('name값은 필수입니다.'),
-			// protocol: Yup.string().nullable(true),
+			// protocol: yup.string().nullable(true),
 		})
 		.required();
 

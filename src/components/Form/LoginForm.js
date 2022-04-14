@@ -21,10 +21,9 @@ import GetUserIdDialogBox from '../DialogBoxs/Form/GetUserIdDialogBox';
 import {FormProvider, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import RHF_Textbox from '../RecycleComponents/ReactHookForm/RHF_Textbox';
-import * as Yup from 'yup';
+import * as yup from 'yup';
 import {altAuthType} from '../../utils/auth';
-import CheckBox from "../RecycleComponents/Form/CheckBox";
-
+import CheckBox from '../RecycleComponents/ReactHookForm/CheckBox';
 
 const _CheckBoxContainer = styled.div`
 	display: flex;
@@ -126,10 +125,11 @@ const LoginForm = () => {
 	);
 
 	// memo : 주의사항 => 현재 폼에 없는 name값을 입력하시고 require하시면 submit이 정상 동작하지 않습니다.
-	const validationSchema = Yup.object()
+	const validationSchema = yup
+		.object()
 		.shape({
-			id: Yup.string().required('아이디를 입력하세요.'),
-			password: Yup.string().required('비밀번호를 입력하세요.'),
+			id: yup.string().required('아이디를 입력하세요.'),
+			password: yup.string().required('비밀번호를 입력하세요.'),
 		})
 		.required();
 
