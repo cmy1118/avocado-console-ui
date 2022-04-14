@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import {TitleBarButtons} from '../../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 import FoldableContainer from '../../../../Table/Options/FoldableContainer';
-import {CreatePageContainer} from '../../../../../styles/components/iam/addPage';
+import {IamSectionContents} from '../../../../../styles/components/iam/addPage';
 
 const AddTagToGroup = ({setValue}) => {
 	const tableRefs = useRef([]);
@@ -87,7 +87,7 @@ const AddTagToGroup = ({setValue}) => {
 				</TitleBarButtons>
 			)}
 		>
-			<CreatePageContainer>
+			<IamSectionContents>
 				<TableOptionText data={'tags'} />
 				<Table
 					tableKey={tableKeys.groups.add.tag}
@@ -96,7 +96,7 @@ const AddTagToGroup = ({setValue}) => {
 					columns={columns}
 					tableRefs={tableRefs}
 				/>
-			</CreatePageContainer>
+			</IamSectionContents>
 		</FoldableContainer>
 	);
 };

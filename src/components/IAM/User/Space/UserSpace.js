@@ -27,7 +27,7 @@ import PAM_SESSION from '../../../../reducers/api/PAM/session';
 import {RowDiv} from '../../../../styles/components/style';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
-import {CreatePageContainer} from '../../../../styles/components/iam/addPage';
+import {IamSectionContents} from '../../../../styles/components/iam/addPage';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -173,7 +173,7 @@ const UserSpace = () => {
 
 			<IamContents>
 				<IamSection>
-					<CreatePageContainer>
+					<IamSectionContents>
 						<Table
 							tableKey={tableKeys.users.basic}
 							columns={columns}
@@ -184,7 +184,7 @@ const UserSpace = () => {
 							isColumnFilterable
 							setSearch={setSearch}
 						/>
-					</CreatePageContainer>
+					</IamSectionContents>
 				</IamSection>
 			</IamContents>
 		</IamContainer>

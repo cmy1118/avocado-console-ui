@@ -13,7 +13,7 @@ import TextBox from '../../../../RecycleComponents/New/TextBox';
 import {RowDiv} from '../../../../../styles/components/style';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import {
-	CreatePageContainer,
+	IamSectionContents,
 	CreatePageContent,
 	TextBoxDescription,
 } from '../../../../../styles/components/iam/addPage';
@@ -92,7 +92,7 @@ const AddUser = ({setIsOpened}) => {
 					</TransparentButton>
 				</TitleBarButtons>
 			</IamSectionTitleBar>
-			<CreatePageContainer>
+			<IamSectionContents>
 				<TableOptionText data={'usersInfo'} />
 				<CreatePageContent>
 					<Form
@@ -147,7 +147,7 @@ const AddUser = ({setIsOpened}) => {
 								+82-(0)70-4469-4469과 같이 입력합니다.
 							</TextBoxDescription>
 						</RowDiv>
-						<RowDiv margin={'0px 0px 12px 0px'}>
+						<RowDiv margin={'0px'}>
 							<TextBox
 								name={'mobile'}
 								placeholder={'모바일 전화번호'}
@@ -159,7 +159,7 @@ const AddUser = ({setIsOpened}) => {
 						</RowDiv>
 					</Form>
 				</CreatePageContent>
-			</CreatePageContainer>
+			</IamSectionContents>
 		</IamSectionBottomMargin>
 	);
 };

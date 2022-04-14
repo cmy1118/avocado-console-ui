@@ -22,7 +22,7 @@ import {useHistory} from 'react-router-dom';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import useSelectColumn from '../../../../hooks/table/useSelectColumn';
 import {RowDiv} from '../../../../styles/components/style';
-import {CreatePageContainer} from '../../../../styles/components/iam/addPage';
+import {IamSectionContents} from '../../../../styles/components/iam/addPage';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -125,7 +125,7 @@ const RoleSpace = () => {
 			</TitleBar>
 			<IamContents>
 				<IamSection>
-					<CreatePageContainer>
+					<IamSectionContents>
 						<Table
 							tableKey={tableKeys.roles.basic}
 							columns={columns}
@@ -136,7 +136,7 @@ const RoleSpace = () => {
 							isSearchFilterable
 							isColumnFilterable
 						/>
-					</CreatePageContainer>
+					</IamSectionContents>
 				</IamSection>
 			</IamContents>
 		</IamContainer>

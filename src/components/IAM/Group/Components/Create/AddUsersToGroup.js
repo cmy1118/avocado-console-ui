@@ -22,7 +22,7 @@ import {
 } from '../../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 import FoldableContainer from '../../../../Table/Options/FoldableContainer';
-import {CreatePageContainer} from '../../../../../styles/components/iam/addPage';
+import {IamSectionContents} from '../../../../../styles/components/iam/addPage';
 
 const AddUsersToGroup = ({setValue}) => {
 	const dispatch = useDispatch();
@@ -124,7 +124,7 @@ const AddUsersToGroup = ({setValue}) => {
 				excludedData={excludedData}
 				includedData={includedData}
 			>
-				<CreatePageContainer>
+				<IamSectionContents>
 					<TableOptionText data={'groups'} />
 					<RowDiv>
 						<Table
@@ -164,7 +164,7 @@ const AddUsersToGroup = ({setValue}) => {
 							/>
 						</ColDiv>
 					</RowDiv>
-				</CreatePageContainer>
+				</IamSectionContents>
 			</DragContainer>
 		</FoldableContainer>
 	);

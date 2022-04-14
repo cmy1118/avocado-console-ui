@@ -10,7 +10,7 @@ import {
 import * as yup from 'yup';
 import * as Yup from 'yup';
 import {
-	CreatePageContainer,
+	IamSectionContents,
 	CreatePageContent,
 } from '../../../../../styles/components/iam/addPage';
 import {
@@ -37,10 +37,6 @@ const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 	const [groups, setGroups] = useState([]);
 	const [groupTypes, setGroupTypes] = useState([]);
 	const [parentGroupId, setParentGroupId] = useState(null);
-
-	console.log(groupMembers);
-	console.log(groupRoles);
-	console.log(groupTags);
 
 	// 상위그룹 선택하는 모달
 	const [ParentGroupModal, showParentGroupModal] = useModal();
@@ -192,7 +188,7 @@ const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 					</TransparentButton>
 				</TitleBarButtons>
 			</IamSectionTitleBar>
-			<CreatePageContainer>
+			<IamSectionContents>
 				<CreatePageContent>
 					<FormProvider {...methods}>
 						<RowDiv>
@@ -229,7 +225,7 @@ const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 						</RowDiv>
 					</FormProvider>
 				</CreatePageContent>
-			</CreatePageContainer>
+			</IamSectionContents>
 		</IamSectionBottomMargin>
 	);
 };
