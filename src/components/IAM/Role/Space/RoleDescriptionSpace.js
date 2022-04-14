@@ -104,11 +104,13 @@ const RoleDescriptionSpace = ({roleId}) => {
 	/**************************************************
 	 * 요약정보 열고 닫기
 	 **************************************************/
-	console.log('location.search:', location.search);
 	const isSummaryOpened = useMemo(() => {
 		if (location.search) return false;
 		else return true;
 	}, [location.search]);
+
+	console.log('location.search:', location.search);
+	console.log('isSummaryOpened:', isSummaryOpened);
 
 	const paths = useMemo(
 		() => [
@@ -180,27 +182,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 	return (
 		<IamContainer>
 			<CurrentPathBar paths={paths} />
-			{/*<TitleBar>*/}
-			{/*	<TitleBarText>*/}
-			{/*		<HoverIconButton*/}
-			{/*			color={'font'}*/}
-			{/*			size={'m'}*/}
-			{/*			margin={'0px'}*/}
-			{/*			onClick={onClickFoldSummary}*/}
-			{/*		>*/}
-			{/*			{isSummaryOpened ? arrowDownIcon : arrowUpIcon}*/}
-			{/*		</HoverIconButton>*/}
-			{/*		{roleDescriptionSpace.title} [ {role?.name} ]*/}
-			{/*	</TitleBarText>*/}
-			{/*	<TitleBarButtons>*/}
-			{/*		<NormalButton onClick={onClickLinkToAddRolePage}>*/}
-			{/*			{roleDescriptionSpace.button.create}*/}
-			{/*		</NormalButton>*/}
-			{/*		<TransparentButton margin={'0px 0px 0px 5px'}>*/}
-			{/*			{roleDescriptionSpace.button.delete}*/}
-			{/*		</TransparentButton>*/}
-			{/*	</TitleBarButtons>*/}
-			{/*</TitleBar>*/}
+
 			<TitleBar>
 				<RowDiv
 					alignItems={'center'}
@@ -308,10 +290,12 @@ const RoleDescriptionSpace = ({roleId}) => {
 				</IamSection>
 			</IamContents>
 			<IamContents>
-				<IamSection>
+				<IamSection
+					border={'1px solid transparent'}
+					background={'transparent'}
+				>
 					<TabContainer isOpened={!isSummaryOpened}>
 						<TabBar Tabs={TabBarInfo} />
-
 						<RoleTabContents
 							roleId={roleId}
 							isOpened={isSummaryOpened}

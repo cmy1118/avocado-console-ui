@@ -13,10 +13,10 @@ export const IamContents = styled.div`
 `;
 
 export const IamSection = styled.div`
-	background: #ffffff;
 	border-radius: 4px;
 	box-shadow: 0 3.5px 5.5px 0 rgba(0, 0, 0, 0.02);
-	border: solid 1px #e1e7eb;
+	border: ${(props) => (props.border ? props.border : 'solid 1px #e1e7eb')};
+	background: ${(props) => (props.background ? props.background : '#ffffff')};
 `;
 
 export const IamSectionTitleBar = styled.div`

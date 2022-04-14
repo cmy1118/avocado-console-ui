@@ -29,16 +29,22 @@ import {
 } from '../../../../styles/components/iam/iamTab';
 import {
 	DescriptionPageContainer,
+	SummaryContainer,
 	SummaryList,
 } from '../../../../styles/components/iam/descriptionPage';
 import {
 	IamContainer,
+	IamContents,
+	IamSection,
+	IamSectionTitleBar,
 	TitleBar,
 	TitleBarButtons,
 	TitleBarText,
 } from '../../../../styles/components/iam/iam';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
 import {userTabs} from '../../../../utils/tabs';
+import {RowDiv} from '../../../../styles/components/style';
+import TempTab from '../../TempTab';
 
 const UserDescriptionSpace = ({userUid}) => {
 	const dispatch = useDispatch();
@@ -114,9 +120,30 @@ const UserDescriptionSpace = ({userUid}) => {
 		<IamContainer>
 			<CurrentPathBar paths={paths} />
 
-			<DescriptionPageContainer>
-				<div>
-					<TitleBar>
+			<TitleBar>
+				<RowDiv
+					alignItems={'center'}
+					width={'100%'}
+					justifyContent={'space-between'}
+				>
+					<div>{user ? user.name : ''}</div>
+					<TitleBarButtons>
+						<NormalButton onClick={onClickLinkToAddUserPage}>
+							사용자 생성
+						</NormalButton>
+						<TransparentButton
+							onClick={onClickDeleteGroup}
+							margin={'0px 0px 0px 5px'}
+						>
+							삭제
+						</TransparentButton>
+					</TitleBarButtons>
+				</RowDiv>
+			</TitleBar>
+
+			<IamContents>
+				<IamSection>
+					<IamSectionTitleBar>
 						<TitleBarText>
 							<HoverIconButton
 								color={'font'}
@@ -126,9 +153,8 @@ const UserDescriptionSpace = ({userUid}) => {
 							>
 								{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
 							</HoverIconButton>
-							요약 [ {user?.id} ]
+							요약
 						</TitleBarText>
-
 						<TitleBarButtons>
 							<NormalButton onClick={onClickLinkToAddUserPage}>
 								사용자 생성
@@ -140,70 +166,90 @@ const UserDescriptionSpace = ({userUid}) => {
 								삭제
 							</TransparentButton>
 						</TitleBarButtons>
-					</TitleBar>
+					</IamSectionTitleBar>
 
-					<SummaryList className={'summaryList'}>
-						<LiText>
-							사용자 : {user?.name} ({user?.id})
-						</LiText>
-						<LiText>
-							사용자 계정 상태 :{' '}
-							{statusConverter(user?.status.code)}
-						</LiText>
-						<LiText>
-							마지막 콘솔 로그인 : {user?.lastConsoleLogin}
-						</LiText>
-						<LiText>
-							생성 일시 : {user?.createdTag.createdTime}
-						</LiText>
-						<LiText>
-							계정 사용기간 :{' '}
-							{expiredConverter(user?.accountExpiryTime)}
-						</LiText>
-						<LiText>
-							비밀번호 사용기간 :{' '}
-							{expiredConverter(user?.passwordExpiryTime)}
-						</LiText>
-					</SummaryList>
-				</div>
+					<SummaryContainer>
+						<SummaryList className={'summaryList'}>
+							<LiText>
+								사용자 : {user?.name} ({user?.id})
+							</LiText>
+							<LiText>
+								사용자 계정 상태 :{' '}
+								{statusConverter(user?.status.code)}
+							</LiText>
+							<LiText>
+								마지막 콘솔 로그인 : {user?.lastConsoleLogin}
+							</LiText>
+							<LiText>
+								생성 일시 : {user?.createdTag.createdTime}
+							</LiText>
+							<LiText>
+								계정 사용기간 :{' '}
+								{expiredConverter(user?.accountExpiryTime)}
+							</LiText>
+							<LiText>
+								비밀번호 사용기간 :{' '}
+								{expiredConverter(user?.passwordExpiryTime)}
+							</LiText>
+						</SummaryList>
+					</SummaryContainer>
 
-				<CoveredByTabContent isOpened={isSummaryOpened}>
-					<UserSummary userUid={userUid} />
-				</CoveredByTabContent>
-
-				<TabContainer isOpened={!isSummaryOpened}>
-					<TabBar Tabs={TabBarInfo} />
-
-					<TabContentSpace>
-						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === userTabs.user && (
-							<UserInfoTab user={user} userUid={userUid} />
-						)}
-						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === userTabs.group && (
-							<UserGroupTab
-								title
-								userUid={userUid}
-								isSummaryOpened={isSummaryOpened}
-							/>
-						)}
-						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === userTabs.role && (
-							<UserRoleTab
-								userUid={userUid}
-								isSummaryOpened={isSummaryOpened}
-							/>
-						)}
-						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === userTabs.tag && (
-							<UserOnDescPageTags
-								userUid={userUid}
-								isSummaryOpened={isSummaryOpened}
-							/>
-						)}
-					</TabContentSpace>
-				</TabContainer>
-			</DescriptionPageContainer>
+					<CoveredByTabContent isOpened={isSummaryOpened}>
+						<UserSummary userUid={userUid} />
+					</CoveredByTabContent>
+				</IamSection>
+			</IamContents>
+			<IamContents>
+				<IamSection
+					border={'1px solid transparent'}
+					background={'transparent'}
+				>
+					<TabContainer isOpened={!isSummaryOpened}>
+						<TabBar Tabs={TabBarInfo} />
+						<TabContentSpace>
+							{isSummaryOpened ? (
+								<TempTab data={'사용자'} />
+							) : (
+								<>
+									{qs.parse(location.search, {
+										ignoreQueryPrefix: true,
+									}).tabs === userTabs.user && (
+										<UserInfoTab
+											user={user}
+											userUid={userUid}
+										/>
+									)}
+									{qs.parse(location.search, {
+										ignoreQueryPrefix: true,
+									}).tabs === userTabs.group && (
+										<UserGroupTab
+											title
+											userUid={userUid}
+											isSummaryOpened={isSummaryOpened}
+										/>
+									)}
+									{qs.parse(location.search, {
+										ignoreQueryPrefix: true,
+									}).tabs === userTabs.role && (
+										<UserRoleTab
+											userUid={userUid}
+											isSummaryOpened={isSummaryOpened}
+										/>
+									)}
+									{qs.parse(location.search, {
+										ignoreQueryPrefix: true,
+									}).tabs === userTabs.tag && (
+										<UserOnDescPageTags
+											userUid={userUid}
+											isSummaryOpened={isSummaryOpened}
+										/>
+									)}
+								</>
+							)}
+						</TabContentSpace>
+					</TabContainer>
+				</IamSection>
+			</IamContents>
 		</IamContainer>
 	);
 };

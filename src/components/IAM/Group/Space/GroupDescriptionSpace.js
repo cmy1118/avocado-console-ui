@@ -26,10 +26,14 @@ import {
 } from '../../../../styles/components/iam/iamTab';
 import {
 	DescriptionPageContainer,
+	SummaryContainer,
 	SummaryList,
 } from '../../../../styles/components/iam/descriptionPage';
 import {
 	IamContainer,
+	IamContents,
+	IamSection,
+	IamSectionTitleBar,
 	TitleBar,
 	TitleBarButtons,
 	TitleBarText,
@@ -39,6 +43,8 @@ import CurrentPathBar from '../../../Header/CurrentPathBar';
 import {tableKeys} from '../../../../Constants/Table/keys';
 import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 import {groupTabs} from '../../../../utils/tabs';
+import {RowDiv} from '../../../../styles/components/style';
+import TempTab from '../../TempTab';
 
 const GroupDescriptionSpace = ({groupId}) => {
 	const dispatch = useDispatch();
@@ -137,9 +143,30 @@ const GroupDescriptionSpace = ({groupId}) => {
 		<IamContainer>
 			<CurrentPathBar paths={paths} />
 
-			<DescriptionPageContainer>
-				<div>
-					<TitleBar>
+			<TitleBar>
+				<RowDiv
+					alignItems={'center'}
+					width={'100%'}
+					justifyContent={'space-between'}
+				>
+					<div>{group ? group.name : ''}</div>
+					<TitleBarButtons>
+						<NormalButton onClick={onClickChangeGroupName}>
+							그룹 생성
+						</NormalButton>
+						<TransparentButton
+							onClick={onClickDeleteGroup}
+							margin={'0px 0px 0px 5px'}
+						>
+							삭제
+						</TransparentButton>
+					</TitleBarButtons>
+				</RowDiv>
+			</TitleBar>
+
+			<IamContents>
+				<IamSection>
+					<IamSectionTitleBar>
 						<TitleBarText>
 							<HoverIconButton
 								color={'font'}
@@ -149,62 +176,69 @@ const GroupDescriptionSpace = ({groupId}) => {
 							>
 								{isSummaryOpened ? arrowDownIcon : arrowUpIcon}
 							</HoverIconButton>
-							요약 [ {group?.name} ]
+							요약
 						</TitleBarText>
+					</IamSectionTitleBar>
 
-						<TitleBarButtons>
-							<NormalButton onClick={onClickChangeGroupName}>
-								그룹 생성
-							</NormalButton>
-							<TransparentButton
-								onClick={onClickDeleteGroup}
-								margin={'0px 0px 0px 5px'}
-							>
-								삭제
-							</TransparentButton>
-						</TitleBarButtons>
-					</TitleBar>
+					<SummaryContainer>
+						<SummaryList>
+							<LiText>그룹명 : {group?.name}</LiText>
+							<LiText>
+								그룹 유형 : {group?.userGroupType.name}
+							</LiText>
+							<LiText>
+								생성 일시 : {group?.createdTag.createdTime}
+							</LiText>
+						</SummaryList>
+					</SummaryContainer>
 
-					<SummaryList>
-						<LiText>그룹명 : {group?.name}</LiText>
-						<LiText>그룹 유형 : {group?.userGroupType.name}</LiText>
-						<LiText>
-							생성 일시 : {group?.createdTag.createdTime}
-						</LiText>
-					</SummaryList>
-				</div>
-
-				<CoveredByTabContent isOpened={isSummaryOpened}>
-					<GroupSummary groupId={groupId} />
-				</CoveredByTabContent>
-
-				<TabContainer isOpened={!isSummaryOpened}>
-					<TabBar Tabs={TabBarInfo} />
-					<TabContentSpace>
-						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === groupTabs.user && (
-							<GroupUsersTab
-								groupId={groupId}
-								isSummaryOpened={isSummaryOpened}
-							/>
-						)}
-						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === groupTabs.role && (
-							<GroupRolesTab
-								groupId={groupId}
-								isSummaryOpened={isSummaryOpened}
-							/>
-						)}
-						{qs.parse(location.search, {ignoreQueryPrefix: true})
-							.tabs === groupTabs.tag && (
-							<GroupOnDescPageTags
-								groupId={groupId}
-								isSummaryOpened={isSummaryOpened}
-							/>
-						)}
-					</TabContentSpace>
-				</TabContainer>
-			</DescriptionPageContainer>
+					<CoveredByTabContent isOpened={isSummaryOpened}>
+						<GroupSummary groupId={groupId} />
+					</CoveredByTabContent>
+				</IamSection>
+			</IamContents>
+			<IamContents>
+				<IamSection
+					border={'1px solid transparent'}
+					background={'transparent'}
+				>
+					<TabContainer isOpened={!isSummaryOpened}>
+						<TabBar Tabs={TabBarInfo} />
+						<TabContentSpace>
+							{isSummaryOpened ? (
+								<TempTab data={'그룹'} />
+							) : (
+								<>
+									{qs.parse(location.search, {
+										ignoreQueryPrefix: true,
+									}).tabs === groupTabs.user && (
+										<GroupUsersTab
+											groupId={groupId}
+											isSummaryOpened={isSummaryOpened}
+										/>
+									)}
+									{qs.parse(location.search, {
+										ignoreQueryPrefix: true,
+									}).tabs === groupTabs.role && (
+										<GroupRolesTab
+											groupId={groupId}
+											isSummaryOpened={isSummaryOpened}
+										/>
+									)}
+									{qs.parse(location.search, {
+										ignoreQueryPrefix: true,
+									}).tabs === groupTabs.tag && (
+										<GroupOnDescPageTags
+											groupId={groupId}
+											isSummaryOpened={isSummaryOpened}
+										/>
+									)}
+								</>
+							)}
+						</TabContentSpace>
+					</TabContainer>
+				</IamSection>
+			</IamContents>
 		</IamContainer>
 	);
 };

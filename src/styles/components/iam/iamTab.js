@@ -8,8 +8,21 @@ export const TabContainer = styled.div`
 `;
 export const TabContentSpace = styled.div`
 	flex: 1 1 auto;
-	height: 0;
+	// height: 0;
 	overflow: scroll;
+	height: 100%;
+	background: #ffffff;
+	border-radius: 0px 4px 4px 4px;
+`;
+export const TempTabContents = styled.div`
+	height: 72px;
+	padding: 25px;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
 `;
 export const CoveredByTabContent = styled.div`
 	overflow: scroll;
