@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {useHistory} from 'react-router-dom';
@@ -28,6 +28,7 @@ const paths = [
 const GroupTypeSpace = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const tableRefs = useRef([]);
 	// const {groups} = useSelector(IAM_USER_GROUP.selector);
 	// const {groupTypes} = useSelector(IAM_USER_GROUP_TYPE.selector);
 	const [initialGroupTypes, setInitialGroupTypes] = useState([]);
@@ -44,6 +45,8 @@ const GroupTypeSpace = () => {
 		[data],
 	);
 
+	console.log(tableData);
+
 	const [select, columns] = useSelectColumn(
 		tableColumns[tableKeys.groups.type],
 		tableData,
@@ -59,12 +62,11 @@ const GroupTypeSpace = () => {
 			now.getTime() - now.getTimezoneOffset() * 60000,
 		).toISOString(); //OUTPUT : 2015-02-20T19:29:31.238Z
 
-		console.log(data);
 		setData([
 			...data,
 			{
-				id: tableKeys.groups.type + data.length,
 				[DRAGGABLE_KEY]: tableKeys.groups.type + data.length,
+				id: tableKeys.groups.type + data.length,
 				name: '',
 				groupCount: 0,
 				description: '',
@@ -90,6 +92,7 @@ const GroupTypeSpace = () => {
 	}, [dispatch]);
 
 	const onClickSaveGroupTypes = useCallback(async () => {
+		console.log(data);
 		if (data.find((v) => v.name === '')) {
 			alert('그룹 유형이 입력되지 않은 태그가 있습니다.');
 			return;
@@ -215,6 +218,7 @@ const GroupTypeSpace = () => {
 				columns={columns}
 				data={tableData}
 				setData={setData}
+				tableRefs={tableRefs}
 			/>
 		</IamContainer>
 	);

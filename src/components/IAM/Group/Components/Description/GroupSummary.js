@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 
 import Table from '../../../../Table/Table';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
@@ -11,9 +11,7 @@ import {
 	SummaryTablesContainer,
 	SummaryTableTitle,
 } from '../../../../../styles/components/iam/descriptionPage';
-import PAGINATION from '../../../../../reducers/pagination';
 import IAM_USER_GROUP_MEMBER from '../../../../../reducers/api/IAM/User/Group/groupMember';
-import {TableMode} from '../../../../../Constants/Table/mode';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {roleTypeConverter} from '../../../../../utils/tableDataConverter';
 import {groupTabs} from '../../../../../utils/tabs';
@@ -46,7 +44,7 @@ const GroupSummary = ({groupId}) => {
 		}));
 	}, [groupUserMembers]);
 
-	const groupData = useMemo(() => {
+	const roleData = useMemo(() => {
 		return groupRoleData
 			? groupRoleData.map((v) => ({
 					...v,
@@ -57,8 +55,6 @@ const GroupSummary = ({groupId}) => {
 			  }))
 			: [];
 	}, [groupRoleData]);
-
-	const roleData = useMemo(() => [], []);
 
 	const tagData = useMemo(() => {
 		return groupTags.map((v) => ({
@@ -104,7 +100,7 @@ const GroupSummary = ({groupId}) => {
 				)
 					.unwrap()
 					.then((member) => {
-						//	console.log(member.data);
+						console.log(member.data);
 						return member.data.map((x) => x.userUid);
 					})
 					.then((uids) => {
@@ -179,7 +175,7 @@ const GroupSummary = ({groupId}) => {
 			</SummaryTableTitle>
 			<Table
 				readOnly
-				data={groupData}
+				data={roleData}
 				tableKey={tableKeys.groups.summary.permission}
 				columns={tableColumns[tableKeys.groups.summary.permission]}
 			/>

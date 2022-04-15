@@ -6,6 +6,8 @@ import useCheckBox from '../../../../../../hooks/useCheckBox';
 import TemplateElement from '../Layout/TemplateElement';
 import useTextBox from '../../../../../../hooks/useTextBox';
 import Resource from './Resource/Resource';
+import PropTypes from 'prop-types';
+import PAM_RULE_TEMPLATE_DETAIL from '../../../../../../reducers/api/PAM/TemplateManagement/RuleTemplate/ruleTemplateDetail';
 
 /**************************************************
  * seob - constant value 작성 (우선 각 컴포넌트 상위에 작성, 이후 별도의 파일로 관리)
@@ -26,7 +28,7 @@ const contents = {
 	},
 };
 
-const MFA = () => {
+const MFA = ({templateId, name, description}) => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
 
@@ -79,15 +81,26 @@ const MFA = () => {
 	 ***************************************************/
 	useEffect(() => {
 		const fetchData = async () => {
-			console.log('api 작업');
 			try {
+				const res = await dispatch(
+					PAM_RULE_TEMPLATE_DETAIL.asyncAction.findAllRuleTemplateDetail(
+						{
+							templateId: templateId,
+						},
+					),
+				);
+
+				console.log(res);
+				setUsage(res.attribute.usage ? 'use' : 'none');
+				setTimeoutSeconds(res.attribute.timeoutSeconds);
+				setData(res);
 				// await api
 			} catch (err) {
 				console.log(err);
 			}
 		};
 		fetchData();
-	}, [dispatch]);
+	}, [dispatch, setTimeoutSeconds, setUsage, templateId]);
 	return (
 		<div>
 			<TemplateLayout
@@ -117,6 +130,12 @@ const MFA = () => {
 			/>
 		</div>
 	);
+};
+
+MFA.propTypes = {
+	templateId: PropTypes.string,
+	name: PropTypes.string,
+	description: PropTypes.string,
 };
 
 export default MFA;

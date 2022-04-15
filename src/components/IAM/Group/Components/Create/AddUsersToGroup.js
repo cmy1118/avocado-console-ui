@@ -24,9 +24,10 @@ import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 import FoldableContainer from '../../../../Table/Options/FoldableContainer';
 import {IamSectionContents} from '../../../../../styles/components/iam/addPage';
 
-const AddUsersToGroup = ({setValue}) => {
+const AddUsersToGroup = ({setValue, currentGroupType}) => {
 	const dispatch = useDispatch();
-	const {users} = useSelector(IAM_USER.selector);
+	// const {users} = useSelector(IAM_USER.selector);
+	const [users, setUsers] = useState([]);
 	const {page} = useSelector(PAGINATION.selector);
 
 	const [includedDataIds, setIncludedDataIds] = useState([]);
@@ -84,24 +85,52 @@ const AddUsersToGroup = ({setValue}) => {
 	}, [includedData, dispatch]);
 
 	useEffect(() => {
-		page[tableKeys.groups.add.users.exclude] &&
-			dispatch(
-				IAM_USER.asyncAction.findAllAction({
-					range: page[tableKeys.groups.add.users.exclude],
-				}),
-			)
-				.unwrap()
-				.then((res) => {
-					dispatch(
-						PAGINATION.action.setTotal({
-							tableKey: tableKeys.groups.add.users.exclude,
-							element: totalNumberConverter(
-								res.headers['content-range'],
-							),
-						}),
-					);
-				});
-	}, [dispatch, page]);
+		console.log(currentGroupType);
+		const fetchData = async () => {
+			try {
+				const res = await dispatch(
+					IAM_USER.asyncAction.findAllAction({
+						range: page[tableKeys.groups.add.users.exclude],
+					}),
+				).unwrap();
+				console.log(res);
+
+				if (currentGroupType) {
+					const users = res.data.reduce((prev, next) => {
+						if (next.groups) {
+							if (
+								!next.groups
+									.map((v) => v.userGroupType.id)
+									.includes(currentGroupType)
+							) {
+								return [...prev, next];
+							} else {
+								return prev;
+							}
+						} else {
+							return [...prev, next];
+						}
+					}, []);
+
+					setUsers(users);
+				} else {
+					setUsers(res.data);
+				}
+
+				dispatch(
+					PAGINATION.action.setTotal({
+						tableKey: tableKeys.groups.add.users.exclude,
+						element: totalNumberConverter(
+							res.headers['content-range'],
+						),
+					}),
+				);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		page[tableKeys.groups.add.users.exclude] && fetchData();
+	}, [currentGroupType, dispatch, page]);
 
 	useEffect(() => {
 		setValue(includedDataIds);
@@ -174,5 +203,6 @@ const AddUsersToGroup = ({setValue}) => {
 };
 AddUsersToGroup.propTypes = {
 	setValue: PropTypes.func,
+	currentGroupType: PropTypes.string,
 };
 export default AddUsersToGroup;

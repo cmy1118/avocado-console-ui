@@ -30,7 +30,12 @@ import {getIdFormLocation} from '../../../../../utils/tableDataConverter';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import IAM_USER_GROUP_TAG from '../../../../../reducers/api/IAM/User/Group/tags';
 
-const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
+const AddGroup = ({
+	groupMembers,
+	groupRoles,
+	groupTags,
+	setCurrentGroupType,
+}) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [groups, setGroups] = useState([]);
@@ -163,8 +168,9 @@ const AddGroup = ({groupMembers, groupRoles, groupTags}) => {
 				setGroups([]);
 			}
 		};
+		setCurrentGroupType(type);
 		type && fetchData();
-	}, [dispatch, methods, type]);
+	}, [dispatch, methods, setCurrentGroupType, type]);
 
 	return (
 		<IamSectionBottomMargin>
@@ -234,6 +240,7 @@ AddGroup.propTypes = {
 	groupMembers: PropTypes.array.isRequired,
 	groupRoles: PropTypes.array.isRequired,
 	groupTags: PropTypes.array.isRequired,
+	setCurrentGroupType: PropTypes.func,
 };
 
 export default AddGroup;

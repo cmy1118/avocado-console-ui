@@ -6,26 +6,15 @@ import IAM_USER_GROUP from '../../../../reducers/api/IAM/User/Group/group';
 
 import {arrowDownIcon, arrowUpIcon} from '../../../../icons/icons';
 import {HoverIconButton} from '../../../../styles/components/icons';
-import {
-	NormalButton,
-	TransparentButton,
-} from '../../../../styles/components/buttons';
+import {NormalButton, TransparentButton,} from '../../../../styles/components/buttons';
 import {LiText} from '../../../../styles/components/text';
 import IAM_USER_GROUP_TYPE from '../../../../reducers/api/IAM/User/Group/groupType';
 import TabBar from '../../TabBar';
 import qs from 'qs';
 import PropTypes from 'prop-types';
 
-import {
-	CoveredByTabContent,
-	TabContainer,
-	TabContentSpace,
-} from '../../../../styles/components/iam/iamTab';
-import {
-	DescriptionPageContainer,
-	SummaryContainer,
-	SummaryList,
-} from '../../../../styles/components/iam/descriptionPage';
+import {CoveredByTabContent, TabContainer, TabContentSpace,} from '../../../../styles/components/iam/iamTab';
+import {SummaryContainer, SummaryList,} from '../../../../styles/components/iam/descriptionPage';
 import {
 	IamContainer,
 	IamContents,
@@ -37,8 +26,6 @@ import {
 } from '../../../../styles/components/iam/iam';
 import IAM_USER_GROUP_MEMBER from '../../../../reducers/api/IAM/User/Group/groupMember';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
-import {tableKeys} from '../../../../Constants/Table/keys';
-import IAM_USER_POLICY from '../../../../reducers/api/IAM/User/Policy/policy';
 import {groupTabs} from '../../../../utils/tabs';
 import {RowDiv} from '../../../../styles/components/style';
 import TempTab from '../../TempTab';
@@ -89,7 +76,7 @@ const GroupDescriptionSpace = ({groupId}) => {
 				pathname: location.pathname,
 			});
 		}
-	}, [isSummaryOpened, location]);
+	}, [history, isSummaryOpened, location.pathname]);
 
 	const onClickChangeGroupName = useCallback(() => {
 		history.push('/groups/add');
