@@ -126,7 +126,7 @@ const getEventsAction = createAsyncThunk(
 					clientId: payload.clientId,
 					uid: payload.uid,
 				},
-				aseURL: process.env.REACT_APP_OPEN_API_URL,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		console.log(response);

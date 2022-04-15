@@ -49,7 +49,7 @@ const revokeAction = createAsyncThunk(`${NAME}/REVOKE `, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
