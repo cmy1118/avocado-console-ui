@@ -132,6 +132,7 @@ const AddUser = ({setIsOpened}) => {
 					</TransparentButton>
 				</TitleBarButtons>
 			</IamSectionTitleBar>
+
 			<IamSectionContents>
 				<TableOptionText data={'usersInfo'} />
 				<CreatePageContent>

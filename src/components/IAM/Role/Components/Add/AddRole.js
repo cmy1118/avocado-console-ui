@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import IAM_USER_GROUP_TYPE from '../../../../../reducers/api/IAM/User/Group/groupType';
 import PropTypes from 'prop-types';
 import {
@@ -9,7 +9,8 @@ import {
 } from '../../../../../styles/components/buttons';
 import {ColDiv, RowDiv} from '../../../../../styles/components/style';
 import {
-	TitleBar,
+	IamSectionBottomMargin,
+	IamSectionTitleBar,
 	TitleBarButtons,
 	TitleBarText,
 } from '../../../../../styles/components/iam/iam';
@@ -23,7 +24,10 @@ import RHF_Textbox from '../../../../RecycleComponents/ReactHookForm/RHF_Textbox
 import RHF_Radio from '../../../../RecycleComponents/ReactHookForm/RHF_Radio';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {CreatePageContent} from '../../../../../styles/components/iam/addPage';
+import {
+	CreatePageContent,
+	IamSectionContents,
+} from '../../../../../styles/components/iam/addPage';
 
 const AddRole = ({values, groupMembers, setValues}) => {
 	const dispatch = useDispatch();
@@ -108,8 +112,8 @@ const AddRole = ({values, groupMembers, setValues}) => {
 	}, [dispatch]);
 
 	return (
-		<>
-			<TitleBar>
+		<IamSectionBottomMargin>
+			<IamSectionTitleBar>
 				<TitleBarText>역할 기본 정보</TitleBarText>
 				<TitleBarButtons>
 					<NormalButton
@@ -125,54 +129,58 @@ const AddRole = ({values, groupMembers, setValues}) => {
 						취소
 					</TransparentButton>
 				</TitleBarButtons>
-			</TitleBar>
-			<CreatePageContent>
-				<FormProvider {...methods}>
-					<ColDiv>
-						{/*<Label htmlFor={'name'}>그룹 명</Label>*/}
-						<RowDiv margin={'0px 0px 12px 0px'}>
-							<RHF_Textbox
-								name={'name'}
-								placeholder={'역할 이름'}
-								description={
-									'최대 100자, 영문 대소문자로 생성 가능합니다.'
-								}
-							/>
-						</RowDiv>
-						<RowDiv margin={'0px 0px 12px 0px'}>
-							<RHF_Textbox
-								name={'description'}
-								placeholder={'역할 설명'}
-								description={'최대 200자 가능합니다.'}
-							/>
-						</RowDiv>
-						<RowDiv>
-							<TemplateElement
-								title={constants.contents.usage.title}
-								render={() => (
-									<RHF_Radio
-										name={'usage'}
-										options={usageOptions}
-									/>
-								)}
-							/>
-							<TemplateElement
-								title={constants.contents.patternInput.title}
-								render={() => (
-									<RHF_Textbox
-										name={'grantCount'}
-										description={
-											'부여횟수를 제한할 경우 부여 가능 횟수를 입력합니다. (최대10)'
-										}
-										width={50}
-									/>
-								)}
-							/>
-						</RowDiv>
-					</ColDiv>
-				</FormProvider>
-			</CreatePageContent>
-		</>
+			</IamSectionTitleBar>
+
+			<IamSectionContents>
+				<CreatePageContent>
+					<FormProvider {...methods}>
+						<ColDiv>
+							<RowDiv margin={'0px 0px 12px 0px'}>
+								<RHF_Textbox
+									name={'name'}
+									placeholder={'역할 이름'}
+									description={
+										'최대 100자, 영문 대소문자로 생성 가능합니다.'
+									}
+								/>
+							</RowDiv>
+							<RowDiv margin={'0px 0px 12px 0px'}>
+								<RHF_Textbox
+									name={'description'}
+									placeholder={'역할 설명'}
+									description={'최대 200자 가능합니다.'}
+								/>
+							</RowDiv>
+							<RowDiv>
+								<TemplateElement
+									title={constants.contents.usage.title}
+									render={() => (
+										<RHF_Radio
+											name={'usage'}
+											options={usageOptions}
+										/>
+									)}
+								/>
+								<TemplateElement
+									title={
+										constants.contents.patternInput.title
+									}
+									render={() => (
+										<RHF_Textbox
+											name={'grantCount'}
+											description={
+												'부여횟수를 제한할 경우 부여 가능 횟수를 입력합니다. (최대10)'
+											}
+											width={50}
+										/>
+									)}
+								/>
+							</RowDiv>
+						</ColDiv>
+					</FormProvider>
+				</CreatePageContent>
+			</IamSectionContents>
+		</IamSectionBottomMargin>
 	);
 };
 

@@ -8,6 +8,11 @@ import ConnectUserToRole from '../Components/Add/ConnectUserToRole';
 import ConnectGroupToRole from '../Components/Add/ConnectGroupToRole';
 import AddRole from '../Components/Add/AddRole';
 import CurrentPathBar from '../../../Header/CurrentPathBar';
+import {
+	IamContainer,
+	IamContents,
+	TitleBar,
+} from '../../../../styles/components/iam/iam';
 
 const paths = [
 	{url: '/iam', label: 'IAM'},
@@ -25,22 +30,22 @@ const AddRoleSpace = () => {
 	const [groupMembers, setGroupMembers] = useState([]);
 
 	return (
-		<CreateSpaceContainer>
+		<IamContainer>
 			<CurrentPathBar paths={paths} />
+			<TitleBar>정책 생성</TitleBar>
 
-			<IamSectionContents>
+			<IamContents>
 				<AddRole
 					setIsOpened={setIsOpened}
 					values={values}
 					groupMembers={groupMembers}
 					setValues={setValues}
 				/>
-
 				<ConnectPolicyToRole setValue={setGroupMembers} />
 				<ConnectUserToRole setValue={setGroupMembers} />
 				<ConnectGroupToRole setValue={setGroupMembers} />
-			</IamSectionContents>
-		</CreateSpaceContainer>
+			</IamContents>
+		</IamContainer>
 	);
 };
 

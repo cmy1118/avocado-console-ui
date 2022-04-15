@@ -20,6 +20,7 @@ import {
 	expiredConverter,
 	groupsConverter,
 } from '../../../../../utils/tableDataConverter';
+import {IamSectionContents} from '../../../../../styles/components/iam/addPage';
 
 const ConnectPolicyToRole = ({setValue}) => {
 	const dispatch = useDispatch();
@@ -83,8 +84,7 @@ const ConnectPolicyToRole = ({setValue}) => {
 	}, [includedDataIds, setValue]);
 
 	return (
-		<FoldableContainer title={'역할에 정책 연결'}>
-			<TableOptionText data={'rolePolicy'} />
+		<FoldableContainer title={'역할에 정책 연결'} bottomMargin={true}>
 			<DragContainer
 				selected={select}
 				data={includedDataIds}
@@ -93,48 +93,57 @@ const ConnectPolicyToRole = ({setValue}) => {
 				excludedData={excludedData}
 				includedData={includedData}
 			>
-				<RowDiv>
-					<Table
-						setSelect={setSelect}
-						isDraggable
-						data={excludedData}
-						tableKey={tableKeys.roles.add.policies.exclude}
-						columns={
-							tableColumns[tableKeys.roles.add.policies.exclude]
-						}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-					/>
-					<RowDiv alignItems={'center'}>
-						<DropButton
-							leftTableKey={tableKeys.roles.add.policies.exclude}
-							RightTableKey={tableKeys.roles.add.policies.include}
-							select={select}
-							dataLeft={excludedData}
-							dataRight={includedData}
-							rightDataIds={includedDataIds}
-							setRightDataIds={setIncludedDataIds}
-						/>
-					</RowDiv>
-					<ColDiv>
-						<TableHeader>
-							추가 사용자: {includedDataIds.length}건
-						</TableHeader>
+				<IamSectionContents>
+					<TableOptionText data={'rolePolicy'} />
+					<RowDiv>
 						<Table
 							setSelect={setSelect}
 							isDraggable
-							data={includedData}
-							tableKey={tableKeys.roles.add.policies.include}
+							data={excludedData}
+							tableKey={tableKeys.roles.add.policies.exclude}
 							columns={
 								tableColumns[
-									tableKeys.roles.add.policies.include
+									tableKeys.roles.add.policies.exclude
 								]
 							}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
 						/>
-					</ColDiv>
-				</RowDiv>
+						<RowDiv alignItems={'center'}>
+							<DropButton
+								leftTableKey={
+									tableKeys.roles.add.policies.exclude
+								}
+								RightTableKey={
+									tableKeys.roles.add.policies.include
+								}
+								select={select}
+								dataLeft={excludedData}
+								dataRight={includedData}
+								rightDataIds={includedDataIds}
+								setRightDataIds={setIncludedDataIds}
+							/>
+						</RowDiv>
+						<ColDiv>
+							<TableHeader>
+								추가 사용자: {includedDataIds.length}건
+							</TableHeader>
+							<Table
+								setSelect={setSelect}
+								isDraggable
+								data={includedData}
+								tableKey={tableKeys.roles.add.policies.include}
+								columns={
+									tableColumns[
+										tableKeys.roles.add.policies.include
+									]
+								}
+							/>
+						</ColDiv>
+					</RowDiv>
+				</IamSectionContents>
 			</DragContainer>
 		</FoldableContainer>
 	);
