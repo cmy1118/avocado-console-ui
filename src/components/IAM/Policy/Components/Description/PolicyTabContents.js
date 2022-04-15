@@ -8,8 +8,9 @@ import PolicyDetailTab from './Tabs/PolicyDetailTab';
 import PolicyRoleTab from './Tabs/PolicyRoleTab';
 import PolicyTagTab from './Tabs/PolicyTagTab';
 import {policyTabs} from '../../../../../utils/tabs';
+import TempTab from '../../../TempTab';
 
-const PolicyTabContents = ({policyId}) => {
+const PolicyTabContents = ({policyId, isOpened}) => {
 	const {search} = useLocation();
 	const tab = useMemo(
 		() => qs.parse(search, {ignoreQueryPrefix: true}).tabs,
@@ -18,16 +19,27 @@ const PolicyTabContents = ({policyId}) => {
 
 	return (
 		<TabContentSpace>
-			{tab === policyTabs.detail && (
-				<PolicyDetailTab policyId={policyId} />
+			{isOpened ? (
+				<TempTab data={'정책'} />
+			) : (
+				<>
+					{tab === policyTabs.detail && (
+						<PolicyDetailTab policyId={policyId} />
+					)}
+					{tab === policyTabs.role && (
+						<PolicyRoleTab policyId={policyId} />
+					)}
+					{tab === policyTabs.tag && (
+						<PolicyTagTab policyId={policyId} />
+					)}
+				</>
 			)}
-			{tab === policyTabs.role && <PolicyRoleTab policyId={policyId} />}
-			{tab === policyTabs.tag && <PolicyTagTab policyId={policyId} />}
 		</TabContentSpace>
 	);
 };
 
 PolicyTabContents.propTypes = {
 	policyId: PropTypes.string.isRequired,
+	isOpened: PropTypes.bool,
 };
 export default PolicyTabContents;
