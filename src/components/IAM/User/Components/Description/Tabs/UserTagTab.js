@@ -1,27 +1,34 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import Table from '../../../../Table/Table';
+import Table from '../../../../../Table/Table';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
-import IAM_USER from '../../../../../reducers/api/IAM/User/User/user';
-import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
-import {tableColumns} from '../../../../../Constants/Table/columns';
+import IAM_USER from '../../../../../../reducers/api/IAM/User/User/user';
+import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
+import {tableColumns} from '../../../../../../Constants/Table/columns';
 import {
 	NormalButton,
 	TransparentButton,
-} from '../../../../../styles/components/buttons';
-import {TableTitle} from '../../../../../styles/components/table';
-import TableOptionText from '../../../../Table/Options/TableOptionText';
-import {TabContentContainer} from '../../../../../styles/components/iam/iamTab';
-import {TitleBarButtons} from '../../../../../styles/components/iam/iam';
-import IAM_USER_TAG from '../../../../../reducers/api/IAM/User/Tag/tags';
-import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
-import DragContainer from '../../../../Table/DragContainer';
-import FoldableContainer from '../../../../Table/Options/FoldableContainer';
-import IAM_GRANT_REVOKE_TAG from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeTag';
-import {ATTRIBUTE_TYPES} from '../../../../../utils/policy/policy';
-import {totalNumberConverter} from '../../../../../utils/tableDataConverter';
+} from '../../../../../../styles/components/buttons';
+import {
+	TableTitle,
+	TabTableTitle,
+} from '../../../../../../styles/components/table';
+import TableOptionText from '../../../../../Table/Options/TableOptionText';
+import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
+import {
+	IncludeTableContainer,
+	TitleBarButtons,
+} from '../../../../../../styles/components/iam/iam';
+import IAM_USER_TAG from '../../../../../../reducers/api/IAM/User/Tag/tags';
+import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
+import DragContainer from '../../../../../Table/DragContainer';
+import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
+import IAM_GRANT_REVOKE_TAG from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeTag';
+import {ATTRIBUTE_TYPES} from '../../../../../../utils/policy/policy';
+import {totalNumberConverter} from '../../../../../../utils/tableDataConverter';
+import {IamTabSectionContents} from '../../../../../../styles/components/iam/addPage';
 
-const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
+const UserTagTab = ({userUid, isSummaryOpened}) => {
 	const dispatch = useDispatch();
 	const tableRefs = useRef([]);
 	const [user, setUser] = useState(null);
@@ -221,34 +228,35 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 
 	return (
 		<TabContentContainer>
-			<TableTitle>
-				태그 추가
-				<TitleBarButtons>
-					<NormalButton onClick={onClickAddRow}>
-						태그 추가
-					</NormalButton>
-					<NormalButton onClick={onClickSaveRow}>
-						태그 저장
-					</NormalButton>
-					<TransparentButton
-						margin='0px 0px 0px 5px'
-						onClick={onClickDeleteRow}
-					>
-						태그 삭제
-					</TransparentButton>
-				</TitleBarButtons>
-			</TableTitle>
-			<TableOptionText data={'tags'} />
+			<IncludeTableContainer>
+				<TabTableTitle>
+					태그 추가
+					<TitleBarButtons>
+						<NormalButton onClick={onClickAddRow}>
+							태그 추가
+						</NormalButton>
+						<NormalButton onClick={onClickSaveRow}>
+							태그 저장
+						</NormalButton>
+						<TransparentButton
+							margin='0px 0px 0px 5px'
+							onClick={onClickDeleteRow}
+						>
+							태그 삭제
+						</TransparentButton>
+					</TitleBarButtons>
+				</TabTableTitle>
+				<TableOptionText data={'tags'} />
 
-			<Table
-				tableKey={tableKeys.users.summary.tabs.tags.basic}
-				data={data}
-				setData={setData}
-				columns={basicColumns}
-				tableRefs={tableRefs}
-				cellClick={handleCellClick}
-			/>
-			<TableTitle>{`태그 [${policiesInfo.name}] 의 정책 : ${policiesInfo.includeCount}`}</TableTitle>
+				<Table
+					tableKey={tableKeys.users.summary.tabs.tags.basic}
+					data={data}
+					setData={setData}
+					columns={basicColumns}
+					tableRefs={tableRefs}
+					cellClick={handleCellClick}
+				/>
+			</IncludeTableContainer>
 			<DragContainer
 				selected={selected}
 				data={includePoliciesIds}
@@ -259,18 +267,22 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 				excludedData={excludePolicies}
 				includedData={includePolicies}
 			>
-				<Table
-					isDraggable
-					data={includePolicies}
-					tableKey={
-						tableKeys.users.summary.tabs.tags.permissions.include
-					}
-					columns={includeColumns}
-					isPaginable
-					isSearchable
-					isSearchFilterable
-					isColumnFilterable
-				/>
+				<IncludeTableContainer>
+					<TabTableTitle>{`태그 [${policiesInfo.name}] 의 정책 : ${policiesInfo.includeCount}`}</TabTableTitle>
+					<Table
+						isDraggable
+						data={includePolicies}
+						tableKey={
+							tableKeys.users.summary.tabs.tags.permissions
+								.include
+						}
+						columns={includeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
+				</IncludeTableContainer>
 
 				<FoldableContainer
 					title={`태그 [${policiesInfo.name}] 의 다른 정책 : ${policiesInfo.excludeCount}`}
@@ -284,70 +296,32 @@ const UserOnDescPageTags = ({userUid, isSummaryOpened}) => {
 							</NormalButton>
 						</TitleBarButtons>
 					)}
+					type={'tab'}
 				>
-					<Table
-						isDraggable
-						data={excludePolicies}
-						tableKey={
-							tableKeys.users.summary.tabs.tags.permissions
-								.exclude
-						}
-						columns={excludeColumns}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-					/>
+					<IamTabSectionContents>
+						<Table
+							isDraggable
+							data={excludePolicies}
+							tableKey={
+								tableKeys.users.summary.tabs.tags.permissions
+									.exclude
+							}
+							columns={excludeColumns}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+						/>
+					</IamTabSectionContents>
 				</FoldableContainer>
 			</DragContainer>
-
-			{/*{basicSelect.length === 1 && (*/}
-			{/*	<div>*/}
-			{/*		<_TableSpace>*/}
-			{/*			태그 [{basicSelect[0].name} : {basicSelect[0].value}*/}
-			{/*			]의 정책 :*/}
-			{/*			<TransparentButton margin='0px 0px 0px 5px'>*/}
-			{/*				연결 해제*/}
-			{/*			</TransparentButton>*/}
-			{/*		</_TableSpace>*/}
-
-			{/*		<Table*/}
-			{/*			tableKey={*/}
-			{/*				tableKeys.users.summary.tabs.tags.permissions*/}
-			{/*					.include*/}
-			{/*			}*/}
-			{/*			data={[]}*/}
-			{/*			columns={includeColumns}*/}
-			{/*		/>*/}
-
-			{/*		<_TableSpace>*/}
-			{/*			태그 [{basicSelect[0].name} : {basicSelect[0].value}*/}
-			{/*			]의 다른 정책 :*/}
-			{/*			<TitleBarButtons>*/}
-			{/*				<NormalButton>정책 생성</NormalButton>*/}
-			{/*				<NormalButton margin='0px 0px 0px 5px'>*/}
-			{/*					정책 연결*/}
-			{/*				</NormalButton>*/}
-			{/*			</TitleBarButtons>*/}
-			{/*		</_TableSpace>*/}
-
-			{/*		<Table*/}
-			{/*			tableKey={*/}
-			{/*				tableKeys.users.summary.tabs.tags.permissions*/}
-			{/*					.exclude*/}
-			{/*			}*/}
-			{/*			data={[]}*/}
-			{/*			columns={excludeColumns}*/}
-			{/*		/>*/}
-			{/*	</div>*/}
-			{/*)}*/}
 		</TabContentContainer>
 	);
 };
 
-UserOnDescPageTags.propTypes = {
+UserTagTab.propTypes = {
 	userUid: PropTypes.string,
 	isSummaryOpened: PropTypes.bool,
 };
 
-export default UserOnDescPageTags;
+export default UserTagTab;

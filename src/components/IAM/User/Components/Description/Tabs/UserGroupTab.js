@@ -22,10 +22,7 @@ import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
 import styled from 'styled-components';
 import {IamTabSectionContents} from '../../../../../../styles/components/iam/addPage';
-
-const _IncludeTableContainer = styled.div`
-	margin-bottom: 16px;
-`;
+import {IncludeTableContainer} from '../../../../../../styles/components/iam/iam';
 
 const UserGroupTab = ({userUid, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -193,7 +190,7 @@ const UserGroupTab = ({userUid, isSummaryOpened}) => {
 				joinFunction={onClickAddGroupToUser}
 				disjointFunction={onClickDeleteGroupFromUser}
 			>
-				<_IncludeTableContainer>
+				<IncludeTableContainer>
 					<TabTableTitle>
 						이 사용자의 그룹: {includedData.length}{' '}
 						<TransparentButton
@@ -218,7 +215,8 @@ const UserGroupTab = ({userUid, isSummaryOpened}) => {
 						isColumnFilterable
 						setSearch={setSearch}
 					/>
-				</_IncludeTableContainer>
+				</IncludeTableContainer>
+
 				<FoldableContainer
 					title={<>이 사용자의 다른그룹 : {excludedData.length}</>}
 					buttons={() => (
@@ -233,6 +231,7 @@ const UserGroupTab = ({userUid, isSummaryOpened}) => {
 							그룹 추가
 						</NormalButton>
 					)}
+					type={'tab'}
 				>
 					<IamTabSectionContents>
 						<TableOptionText data={'groups'} />

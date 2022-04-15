@@ -1,17 +1,23 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Table from '../../../../../Table/Table';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
-import {TableTitle} from '../../../../../../styles/components/table';
+import {
+	TableTitle,
+	TabTableTitle,
+} from '../../../../../../styles/components/table';
 import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../../../styles/components/buttons';
 import TableOptionText from '../../../../../Table/Options/TableOptionText';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
-import {TitleBarButtons} from '../../../../../../styles/components/iam/iam';
+import {
+	IncludeTableContainer,
+	TitleBarButtons,
+} from '../../../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 import IAM_USER_GROUP_TAG from '../../../../../../reducers/api/IAM/User/Group/tags';
 import DragContainer from '../../../../../Table/DragContainer';
@@ -19,6 +25,7 @@ import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
 import IAM_GRANT_REVOKE_TAG from '../../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/grantRevokeTag';
 import {ATTRIBUTE_TYPES} from '../../../../../../utils/policy/policy';
 import {totalNumberConverter} from '../../../../../../utils/tableDataConverter';
+import {IamTabSectionContents} from '../../../../../../styles/components/iam/addPage';
 
 const TAG_TABLE_KEY = tableKeys.groups.summary.tabs.tags.basic;
 const ROLE_INCLUDE_KEY = tableKeys.groups.summary.tabs.tags.permissions.include;
@@ -182,7 +189,6 @@ const GroupTagTab = ({groupId}) => {
 						.map((s) => JSON.stringify(s))
 						.includes(JSON.stringify(v)),
 			);
-			console.log(result);
 			setTags(result);
 		} else {
 			alert('선택된 값이 없습니다.');
@@ -222,34 +228,35 @@ const GroupTagTab = ({groupId}) => {
 
 	return (
 		<TabContentContainer>
-			<TableTitle>
-				태그 추가
-				<TitleBarButtons>
-					<NormalButton onClick={onClickAddRow}>
-						태그 추가
-					</NormalButton>
-					<NormalButton onClick={onClickSaveRow}>
-						태그 저장
-					</NormalButton>
-					<TransparentButton
-						margin='0px 0px 0px 5px'
-						onClick={onClickDeleteRow}
-					>
-						태그 삭제
-					</TransparentButton>
-				</TitleBarButtons>
-			</TableTitle>
-			<TableOptionText data={'tags'} />
-			<Table
-				tableKey={TAG_TABLE_KEY}
-				data={tags}
-				columns={columns}
-				setData={setTags}
-				tableRefs={tableRefs}
-				cellClick={handleCellClick}
-			/>
+			<IncludeTableContainer>
+				<TabTableTitle>
+					태그 추가
+					<TitleBarButtons>
+						<NormalButton onClick={onClickAddRow}>
+							태그 추가
+						</NormalButton>
+						<NormalButton onClick={onClickSaveRow}>
+							태그 저장
+						</NormalButton>
+						<TransparentButton
+							margin='0px 0px 0px 5px'
+							onClick={onClickDeleteRow}
+						>
+							태그 삭제
+						</TransparentButton>
+					</TitleBarButtons>
+				</TabTableTitle>
+				<TableOptionText data={'tags'} />
+				<Table
+					tableKey={TAG_TABLE_KEY}
+					data={tags}
+					columns={columns}
+					setData={setTags}
+					tableRefs={tableRefs}
+					cellClick={handleCellClick}
+				/>
+			</IncludeTableContainer>
 
-			<TableTitle>{`태그 [${policiesInfo.name}] 의 정책 : ${policiesInfo.includeCount}`}</TableTitle>
 			<DragContainer
 				selected={selected}
 				data={includePoliciesIds}
@@ -258,16 +265,19 @@ const GroupTagTab = ({groupId}) => {
 				excludedData={excludePolicies}
 				includedData={includePolicies}
 			>
-				<Table
-					isDraggable
-					data={includePolicies}
-					tableKey={ROLE_INCLUDE_KEY}
-					columns={includeColumns}
-					isPaginable
-					isSearchable
-					isSearchFilterable
-					isColumnFilterable
-				/>
+				<IncludeTableContainer>
+					<TabTableTitle>{`태그 [${policiesInfo.name}] 의 정책 : ${policiesInfo.includeCount}`}</TabTableTitle>
+					<Table
+						isDraggable
+						data={includePolicies}
+						tableKey={ROLE_INCLUDE_KEY}
+						columns={includeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
+				</IncludeTableContainer>
 
 				<FoldableContainer
 					title={`태그 [${policiesInfo.name}] 의 다른 정책 : ${policiesInfo.excludeCount}`}
@@ -281,17 +291,20 @@ const GroupTagTab = ({groupId}) => {
 							</NormalButton>
 						</TitleBarButtons>
 					)}
+					type={'tab'}
 				>
-					<Table
-						isDraggable
-						data={excludePolicies}
-						tableKey={ROLE_EXCLUDE_KEY}
-						columns={excludeColumns}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-					/>
+					<IamTabSectionContents>
+						<Table
+							isDraggable
+							data={excludePolicies}
+							tableKey={ROLE_EXCLUDE_KEY}
+							columns={excludeColumns}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+						/>
+					</IamTabSectionContents>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>

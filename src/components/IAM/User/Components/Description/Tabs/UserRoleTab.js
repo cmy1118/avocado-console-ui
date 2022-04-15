@@ -8,13 +8,18 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../../../styles/components/buttons';
-import {TableTitle} from '../../../../../../styles/components/table';
+import {
+	TableTitle,
+	TabTableTitle,
+} from '../../../../../../styles/components/table';
 import TableOptionText from '../../../../../Table/Options/TableOptionText';
 import DragContainer from '../../../../../Table/DragContainer';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
 import IAM_ROLES_GRANT_ROLE_USER from '../../../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
+import {IamTabSectionContents} from '../../../../../../styles/components/iam/addPage';
+import {IncludeTableContainer} from '../../../../../../styles/components/iam/iam';
 
 const UserRoleTab = ({userUid, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -156,19 +161,6 @@ const UserRoleTab = ({userUid, isSummaryOpened}) => {
 
 	return (
 		<TabContentContainer>
-			<TableTitle>
-				이 사용자의 권한: {includedData.length}{' '}
-				<TransparentButton
-					margin='0px 0px 0px 5px'
-					onClick={() =>
-						onClickDeleteRolesFromUser(
-							includeSelect.map((v) => v.id),
-						)
-					}
-				>
-					삭제
-				</TransparentButton>
-			</TableTitle>
 			<DragContainer
 				selected={selected}
 				data={includedDataIds}
@@ -179,16 +171,32 @@ const UserRoleTab = ({userUid, isSummaryOpened}) => {
 				joinFunction={onClickAddRolesToUser}
 				disjointFunction={onClickDeleteRolesFromUser}
 			>
-				<Table
-					isDraggable
-					data={includedData}
-					tableKey={tableKeys.users.summary.tabs.roles.include}
-					columns={includeColumns}
-					isPaginable
-					isSearchable
-					isSearchFilterable
-					isColumnFilterable
-				/>
+				<IncludeTableContainer>
+					<TabTableTitle>
+						이 사용자의 권한: {includedData.length}{' '}
+						<TransparentButton
+							margin='0px 0px 0px 5px'
+							onClick={() =>
+								onClickDeleteRolesFromUser(
+									includeSelect.map((v) => v.id),
+								)
+							}
+						>
+							삭제
+						</TransparentButton>
+					</TabTableTitle>
+					<Table
+						isDraggable
+						data={includedData}
+						tableKey={tableKeys.users.summary.tabs.roles.include}
+						columns={includeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
+				</IncludeTableContainer>
+
 				<FoldableContainer
 					title={<>이 사용자의 다른권한 : {excludedData.length}</>}
 					buttons={(isDisabled) => (
@@ -204,19 +212,23 @@ const UserRoleTab = ({userUid, isSummaryOpened}) => {
 							권한 추가
 						</NormalButton>
 					)}
+					type={'tab'}
 				>
-					<TableOptionText data={'roles'} />
-
-					<Table
-						isDraggable
-						data={excludedData}
-						tableKey={tableKeys.users.summary.tabs.roles.exclude}
-						columns={excludeColumns}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-					/>
+					<IamTabSectionContents>
+						<TableOptionText data={'roles'} />
+						<Table
+							isDraggable
+							data={excludedData}
+							tableKey={
+								tableKeys.users.summary.tabs.roles.exclude
+							}
+							columns={excludeColumns}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+						/>
+					</IamTabSectionContents>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>

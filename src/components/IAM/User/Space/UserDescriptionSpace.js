@@ -7,7 +7,7 @@ import qs from 'qs';
 import UserInfoTab from '../Components/Description/Tabs/UserInfoTab';
 import UserGroupTab from '../Components/Description/Tabs/UserGroupTab';
 import IAM_USER from '../../../../reducers/api/IAM/User/User/user';
-import UserOnDescPageTags from '../Components/Description/UserOnDescPageTags';
+import UserTagTab from '../Components/Description/Tabs/UserTagTab';
 import UserSummary from '../Components/Description/UserSummary';
 import UserRoleTab from '../Components/Description/Tabs/UserRoleTab';
 import {HoverIconButton} from '../../../../styles/components/icons';
@@ -239,7 +239,7 @@ const UserDescriptionSpace = ({userUid}) => {
 									{qs.parse(location.search, {
 										ignoreQueryPrefix: true,
 									}).tabs === userTabs.tag && (
-										<UserOnDescPageTags
+										<UserTagTab
 											userUid={userUid}
 											isSummaryOpened={isSummaryOpened}
 										/>

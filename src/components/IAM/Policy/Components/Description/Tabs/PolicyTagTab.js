@@ -10,9 +10,13 @@ import {tableKeys} from '../../../../../../Constants/Table/keys';
 import DragContainer from '../../../../../Table/DragContainer';
 import Table from '../../../../../Table/Table';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
-import {TitleBarButtons} from '../../../../../../styles/components/iam/iam';
+import {
+	IncludeTableContainer,
+	TitleBarButtons,
+} from '../../../../../../styles/components/iam/iam';
 import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
+import {IamTabSectionContents} from '../../../../../../styles/components/iam/addPage';
 
 const policyTagTab = {
 	include: {
@@ -49,16 +53,6 @@ const PolicyTagTab = ({policyId}) => {
 
 	return (
 		<TabContentContainer>
-			<TableTitle>
-				{policyTagTab.include.title}
-				<NormalBorderButton
-					onClick={onClickDeleteTag}
-					margin={'0px 0px 0px 5px'}
-				>
-					{policyTagTab.include.button.delete}
-				</NormalBorderButton>
-			</TableTitle>
-
 			<DragContainer
 				selected={selected}
 				data={inTagIds}
@@ -67,16 +61,27 @@ const PolicyTagTab = ({policyId}) => {
 				excludedData={exTag}
 				includedData={inTag}
 			>
-				<Table
-					isDraggable
-					data={inTag}
-					tableKey={tableKeys.policy.summary.tabs.role.include}
-					columns={includeColumns}
-					isPaginable
-					isSearchable
-					isSearchFilterable
-					isColumnFilterable
-				/>
+				<IncludeTableContainer>
+					<TableTitle>
+						{policyTagTab.include.title}
+						<NormalBorderButton
+							onClick={onClickDeleteTag}
+							margin={'0px 0px 0px 5px'}
+						>
+							{policyTagTab.include.button.delete}
+						</NormalBorderButton>
+					</TableTitle>
+					<Table
+						isDraggable
+						data={inTag}
+						tableKey={tableKeys.policy.summary.tabs.role.include}
+						columns={includeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
+				</IncludeTableContainer>
 
 				<FoldableContainer
 					title={policyTagTab.include.title + exTag.length}
@@ -90,17 +95,22 @@ const PolicyTagTab = ({policyId}) => {
 							</NormalButton>
 						</TitleBarButtons>
 					)}
+					type={'tab'}
 				>
-					<Table
-						isDraggable
-						data={exTag}
-						tableKey={tableKeys.policy.summary.tabs.role.exclude}
-						columns={excludeColumns}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-					/>
+					<IamTabSectionContents>
+						<Table
+							isDraggable
+							data={exTag}
+							tableKey={
+								tableKeys.policy.summary.tabs.role.exclude
+							}
+							columns={excludeColumns}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+						/>
+					</IamTabSectionContents>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>
