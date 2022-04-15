@@ -27,6 +27,7 @@ const CreateGroupSpace = () => {
 	const [groupMembers, setGroupMembers] = useState([]);
 	const [groupRoles, setGroupRoles] = useState([]);
 	const [groupTags, setGroupTags] = useState([]);
+	const [currentGroupType, setCurrentGroupType] = useState('');
 
 	return (
 		<IamContainer>
@@ -39,8 +40,12 @@ const CreateGroupSpace = () => {
 					groupMembers={groupMembers}
 					groupRoles={groupRoles}
 					groupTags={groupTags}
+					setCurrentGroupType={setCurrentGroupType}
 				/>
-				<AddUsersToGroup setValue={setGroupMembers} />
+				<AddUsersToGroup
+					setValue={setGroupMembers}
+					currentGroupType={currentGroupType}
+				/>
 				<AssignRoleToGroup setValue={setGroupRoles} />
 				<AddTagToGroup setValue={setGroupTags} />
 			</IamContents>

@@ -40,7 +40,7 @@ const GroupTypeSpace = () => {
 			data.map((v) => ({
 				...v,
 				createdTime: v.createdTag.createdTime,
-				[DRAGGABLE_KEY]: v.name || v[DRAGGABLE_KEY],
+				[DRAGGABLE_KEY]: v.id,
 			})),
 		[data],
 	);
@@ -66,6 +66,7 @@ const GroupTypeSpace = () => {
 			...data,
 			{
 				[DRAGGABLE_KEY]: tableKeys.groups.type + data.length,
+				id: tableKeys.groups.type + data.length,
 				name: '',
 				groupCount: 0,
 				description: '',
