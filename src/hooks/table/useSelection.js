@@ -232,6 +232,7 @@ const SelectionCheckBox = ({
 			className='pretty p-svg p-curve p-plain p-toggle p-thick'
 		>
 			<input
+				tabIndex={-1}
 				type='checkbox'
 				checked={cell.value}
 				onChange={handleChange}
@@ -239,7 +240,7 @@ const SelectionCheckBox = ({
 				{...(refs && {
 					ref: (ele) =>
 						(refs.current[
-							`${cell.row.id}/${cell.column.id}`
+							`${cell.row.index}/${cell.column.id}`
 						] = ele),
 				})}
 			/>

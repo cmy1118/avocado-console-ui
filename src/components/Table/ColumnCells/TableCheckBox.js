@@ -125,14 +125,15 @@ const TableCheckBox = ({
 			}
 			// lastCheckedKey 수정
 			if (cell.column.id === allCheckKey) {
-				setLastCheckedKey(`${cell.row.id}/${cell.column.id}`);
+				setLastCheckedKey(`${cell.row.index}/${cell.column.id}`);
 			}
 		}
 		// 이외의 체크박스를 누른 경우
 		else {
 			// excludedCurrentEle : row의 check input ele중에서 전체 체크에 대한 ele, 현재 ele를 제외한 엘리먼트들
 			const excludedCurrentEle = rowChecks.filter(
-				(v) => v !== refs.current[`${cell.row.id}/${cell.column.id}`],
+				(v) =>
+					v !== refs.current[`${cell.row.index}/${cell.column.id}`],
 			);
 
 			// isExcludedTrue : 전체 input, 현재 input을 제외한 나머지가 전부 true인지 체크
@@ -218,7 +219,7 @@ const TableCheckBox = ({
 					// lastCheckedKey 값이 존재하는 경우
 					if (lastCheckedKey) {
 						// currentKey : 현재 체크박스의 ref.current 키
-						const currentKey = `${cell.row.id}/${cell.column.id}`;
+						const currentKey = `${cell.row.index}/${cell.column.id}`;
 
 						if (lastCheckedKey === currentKey) {
 							handleSetData();
@@ -238,8 +239,9 @@ const TableCheckBox = ({
 							let process = PROCESS_STATE.READY;
 							// currentInputChecked : 현재 input element의 체크 유무
 							const currentInputChecked =
-								refs.current[`${cell.row.id}/${cell.column.id}`]
-									.checked;
+								refs.current[
+									`${cell.row.index}/${cell.column.id}`
+								].checked;
 							// 현재 컬럼에 속한 전체 체크박스를 순회하며 중간에 위치한 input을 클릭하기 위한 반복문
 							for (let [key, value] of currentColumnInputs) {
 								// 컬럼 element 리스트중 key값이 이전에 저장한 lastKey와 동일할 경우 혹은,
@@ -249,7 +251,7 @@ const TableCheckBox = ({
 									key === lastCheckedKey ||
 									value ===
 										refs.current[
-											`${cell.row.id}/${cell.column.id}`
+											`${cell.row.index}/${cell.column.id}`
 										]
 								) {
 									// 현재 클릭과 마지막 클릭 사이에 진입하기 전인경우
@@ -336,7 +338,7 @@ const TableCheckBox = ({
 									// lastCheckedKey 수정
 									if (cell.column.id === allCheckKey) {
 										setLastCheckedKey(
-											`${cell.row.id}/${cell.column.id}`,
+											`${cell.row.index}/${cell.column.id}`,
 										);
 									}
 									// 처리 과정 종료로 변경
@@ -429,7 +431,7 @@ const TableCheckBox = ({
 				{...(refs && {
 					ref: (ele) =>
 						(refs.current[
-							`${cell.row.id}/${cell.column.id}`
+							`${cell.row.index}/${cell.column.id}`
 						] = ele),
 				})}
 			/>

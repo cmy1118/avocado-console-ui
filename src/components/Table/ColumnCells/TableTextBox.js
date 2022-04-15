@@ -69,6 +69,11 @@ const TableTextBox = ({cell, isEditable = true, yup}) => {
 	const [errorMessage, setErrorMessage] = useState('');
 	const [isFocused, setIsFocused] = useState(false);
 
+	// console.log('==============');
+	// console.log(cell.row.index);
+	// console.log(cell.row.original[cell.column.id]);
+	// console.log(cell.rows.map((v) => v.original));
+
 	const handleChange = useCallback((e) => {
 		const {value} = e.target;
 		setValue(value);
@@ -79,15 +84,15 @@ const TableTextBox = ({cell, isEditable = true, yup}) => {
 	}, []);
 
 	const handleBlur = useCallback(() => {
-		cell.setData((prev) =>
-			prev.map((v) => {
-				if (JSON.stringify(v) === JSON.stringify(cell.row.original)) {
-					return {...v, [cell.column.id]: value};
-				} else {
-					return v;
-				}
-			}),
-		);
+		console.log(value);
+
+		const data = cell.rows.map((v, i) => {
+			if (i === cell.row.index)
+				return {...v.original, [cell.column.id]: value};
+			else return v.original;
+		});
+
+		cell.setData(data);
 		setIsFocused(false);
 	}, [cell, value]);
 
@@ -98,7 +103,7 @@ const TableTextBox = ({cell, isEditable = true, yup}) => {
 			let toggle = false;
 			if (e.keyCode === 9) {
 				for (const k of Object.keys(cell.tableRefs.current)) {
-					if (k === `${cell.row.id}/${cell.column.id}`) {
+					if (k === `${cell.row.index}/${cell.column.id}`) {
 						toggle = true;
 						continue;
 					}
@@ -111,7 +116,7 @@ const TableTextBox = ({cell, isEditable = true, yup}) => {
 			console.log(key);
 			if (key !== '') cell.tableRefs.current[key].click();
 		},
-		[cell.column.id, cell.row.id, cell.tableRefs],
+		[cell.column.id, cell.row.index, cell.tableRefs],
 	);
 
 	useEffect(() => {
@@ -128,6 +133,17 @@ const TableTextBox = ({cell, isEditable = true, yup}) => {
 		yup && validate();
 	}, [value, yup]);
 
+	useEffect(() => {
+		console.log(cell.tableRefs.current);
+		for (let v of Object.values(cell.tableRefs.current)) {
+			if (!v) return;
+			if (v.value === '') {
+				v.focus();
+				return;
+			}
+		}
+	}, [cell.tableRefs]);
+
 	return (
 		<_Container error={errorMessage !== ''}>
 			<SubContainer error={errorMessage !== ''} isFocused={isFocused}>
@@ -142,7 +158,7 @@ const TableTextBox = ({cell, isEditable = true, yup}) => {
 					{...(cell.tableRefs && {
 						ref: (ele) =>
 							(cell.tableRefs.current[
-								`${cell.row.id}/${cell.column.id}`
+								`${cell.row.index}/${cell.column.id}`
 							] = ele),
 					})}
 				/>

@@ -162,6 +162,7 @@ const LoginForm = () => {
 						type={'password'}
 						placeholder={'사용자 비밀번호'}
 						width={360}
+						onSubmit={methods.handleSubmit(onSubmitLogin)}
 					/>
 				</RowDiv>
 
