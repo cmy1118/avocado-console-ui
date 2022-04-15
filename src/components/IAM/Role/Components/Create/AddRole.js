@@ -84,7 +84,7 @@ const AddRole = ({setIsOpened, setUsage, setMaxGrants}) => {
 	return (
 		<IamSectionBottomMargin>
 			<IamSectionTitleBar>
-				<TitleBarText>역할 기본 정보 입니다.</TitleBarText>
+				<TitleBarText>역할 기본 정보 다</TitleBarText>
 				<TitleBarButtons>
 					<NormalButton onClick={() => formRef.current.handleSubmit()}>역할 생성</NormalButton>
 					<TransparentButton margin='0px 0px 0px 5px' onClick={onClickCancelAddGroup}>취소</TransparentButton>
