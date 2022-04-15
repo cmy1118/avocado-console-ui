@@ -25,7 +25,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	console.log(response);
@@ -43,7 +43,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	console.log(response);
@@ -57,7 +57,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 	const response = await Axios.delete(
 		`/open-api/v1/pam/file-template/${payload.templateId}`,
 		{
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	console.log(response);
@@ -73,7 +73,7 @@ const findByIdAction = createAsyncThunk(
 		const response = await Axios.get(
 			`/open-api/v1/pam/file-template/${payload.templateId}`,
 			{
-				aseURL: process.env.REACT_APP_OPEN_API_URL,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		console.log(response);
@@ -92,7 +92,7 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 		params: {
 			filter: payload.filter, // 검색시 이름, 설명
 		},
-		aseURL: process.env.REACT_APP_OPEN_API_URL,
+		baseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 	console.log(response);
 	return response;
@@ -117,7 +117,7 @@ const getEventsAction = createAsyncThunk(
 					templateId: payload.templateId,
 					filter: payload.filter,
 				},
-				aseURL: process.env.REACT_APP_OPEN_API_URL,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		console.log(response);

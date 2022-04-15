@@ -30,7 +30,7 @@ const createRule = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response;
@@ -40,7 +40,7 @@ const findById = createAsyncThunk(`${NAME}/FIND_BY_ID`, async (payload) => {
 	return await Axios.get(
 		`/open-api/v1/iam/rule-templates/${payload.templateId}`,
 		{
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 });

@@ -40,7 +40,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -54,7 +54,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -70,7 +70,7 @@ const findByIdAction = createAsyncThunk(
 				headers: {
 					'Content-Type': contentType.JSON,
 				},
-				aseURL: process.env.REACT_APP_OPEN_API_URL,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;
@@ -92,7 +92,7 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 			'Content-Type': contentType.JSON,
 			Range: payload.range,
 		},
-		aseURL: process.env.REACT_APP_OPEN_API_URL,
+		baseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 	console.log(response);
 
