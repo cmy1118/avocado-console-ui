@@ -14,7 +14,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -31,7 +31,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	return response.data;
@@ -42,7 +42,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 		headers: {
 			'Content-Type': contentType.JSON,
 		},
-		aseURL: process.env.REACT_APP_OPEN_API_URL,
+		baseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 	return response.data;
 });
@@ -53,7 +53,7 @@ const findRolesByIdsAction = createAsyncThunk(
 		const response = await Axios.get(
 			`/open-api/v1/pam/roles/${payload.id}`,
 			{
-				aseURL: process.env.REACT_APP_OPEN_API_URL,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		return response.data;
@@ -71,7 +71,7 @@ const getAllRolesAction = createAsyncThunk(
 			headers: {
 				Range: payload.range,
 			},
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		});
 		return {data: response.data, headers: response.headers};
 	},

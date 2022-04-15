@@ -18,7 +18,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 	console.log('createAction:', response);
@@ -36,7 +36,7 @@ const findAllAction = createAsyncThunk(`${NAME}/FIND_ALL`, async (payload) => {
 			Range: payload.range,
 			// 'Content-Type': contentType.JSON,
 		},
-		aseURL: process.env.REACT_APP_OPEN_API_URL,
+		baseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 });
 
@@ -51,7 +51,7 @@ const findByIdAction = createAsyncThunk(
 					Range: payload.range,
 					// 'Content-Type': contentType.JSON,
 				},
-				aseURL: process.env.REACT_APP_OPEN_API_URL,
+				baseURL: process.env.REACT_APP_OPEN_API_URL,
 			},
 		);
 		console.log('findByIdAction:', response);

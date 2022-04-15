@@ -14,7 +14,7 @@ const findAllRuleTemplateDetail = createAsyncThunk(
 				templateId: payload.templateId,
 			},
 
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		});
 	},
 );

@@ -16,7 +16,7 @@ const createAction = createAsyncThunk(`${NAME}/CREATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 });
@@ -31,7 +31,7 @@ const updateAction = createAsyncThunk(`${NAME}/UPDATE`, async (payload) => {
 			headers: {
 				'Content-Type': contentType.JSON,
 			},
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 });
@@ -40,7 +40,7 @@ const deleteAction = createAsyncThunk(`${NAME}/DELETE`, async (payload) => {
 	return await Axios.delete(
 		`open-api/v1/iam/user-groups/${payload.groupId}/tags/${payload.name}`,
 		{
-			aseURL: process.env.REACT_APP_OPEN_API_URL,
+			baseURL: process.env.REACT_APP_OPEN_API_URL,
 		},
 	);
 });
@@ -52,7 +52,7 @@ const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
 			Range: payload.range,
 		},
 		params: {groupId: payload.groupId},
-		aseURL: process.env.REACT_APP_OPEN_API_URL,
+		baseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
 });
 

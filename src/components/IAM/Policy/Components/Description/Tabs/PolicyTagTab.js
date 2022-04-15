@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
-import {TableTitle} from '../../../../../../styles/components/table';
+import {
+	TableTitle,
+	TabTableTitle,
+} from '../../../../../../styles/components/table';
 import {
 	NormalBorderButton,
 	NormalButton,
@@ -62,7 +65,7 @@ const PolicyTagTab = ({policyId}) => {
 				includedData={inTag}
 			>
 				<IncludeTableContainer>
-					<TableTitle>
+					<TabTableTitle>
 						{policyTagTab.include.title}
 						<NormalBorderButton
 							onClick={onClickDeleteTag}
@@ -70,7 +73,7 @@ const PolicyTagTab = ({policyId}) => {
 						>
 							{policyTagTab.include.button.delete}
 						</NormalBorderButton>
-					</TableTitle>
+					</TabTableTitle>
 					<Table
 						isDraggable
 						data={inTag}
