@@ -6,7 +6,10 @@ import IAM_USER_GROUP from '../../../../../../reducers/api/IAM/User/Group/group'
 import IAM_USER from '../../../../../../reducers/api/IAM/User/User/user';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
-import {TableTitle} from '../../../../../../styles/components/table';
+import {
+	TableTitle,
+	TabTableTitle,
+} from '../../../../../../styles/components/table';
 import {
 	NormalButton,
 	TransparentButton,
@@ -18,6 +21,8 @@ import IAM_USER_GROUP_MEMBER from '../../../../../../reducers/api/IAM/User/Group
 import PAGINATION from '../../../../../../reducers/pagination';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
+import {IncludeTableContainer} from '../../../../../../styles/components/iam/iam';
+import {IamTabSectionContents} from '../../../../../../styles/components/iam/addPage';
 
 const GroupUserTab = ({groupId, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -191,30 +196,33 @@ const GroupUserTab = ({groupId, isSummaryOpened}) => {
 				joinFunction={onClickAddUsersToGroup}
 				disjointFunction={onClickDeleteUsersFromGroup}
 			>
-				<TableTitle>
-					이 그룹의 사용자 : {includedData.length}
-					<TransparentButton
-						margin='0px 0px 0px 5px'
-						onClick={() =>
-							onClickDeleteUsersFromGroup(
-								includeSelect.map((v) => v.userUid),
-							)
-						}
-					>
-						사용자 삭제
-					</TransparentButton>
-				</TableTitle>
-				<Table
-					isDraggable
-					data={includedData}
-					tableKey={tableKeys.groups.summary.tabs.users.include}
-					columns={includeColumns}
-					isPaginable
-					isSearchable
-					isSearchFilterable
-					isColumnFilterable
-					setSearch={setSearch}
-				/>
+				<IncludeTableContainer>
+					<TabTableTitle>
+						이 그룹의 사용자 : {includedData.length}
+						<TransparentButton
+							margin='0px 0px 0px 5px'
+							onClick={() =>
+								onClickDeleteUsersFromGroup(
+									includeSelect.map((v) => v.userUid),
+								)
+							}
+						>
+							사용자 삭제
+						</TransparentButton>
+					</TabTableTitle>
+					<Table
+						isDraggable
+						data={includedData}
+						tableKey={tableKeys.groups.summary.tabs.users.include}
+						columns={includeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+						setSearch={setSearch}
+					/>
+				</IncludeTableContainer>
+
 				<FoldableContainer
 					title={<>이 그룹의 다른 사용자 : {excludedData.length}</>}
 					buttons={(isDisabled) => (
@@ -230,19 +238,24 @@ const GroupUserTab = ({groupId, isSummaryOpened}) => {
 							사용자 추가
 						</NormalButton>
 					)}
+					type={'tab'}
 				>
-					<TableOptionText data={'usersGroups'} />
-					<Table
-						isDraggable
-						data={excludedData}
-						tableKey={tableKeys.groups.summary.tabs.users.exclude}
-						columns={excludeColumns}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-						setSearch={setSearch}
-					/>
+					<IamTabSectionContents>
+						<TableOptionText data={'usersGroups'} />
+						<Table
+							isDraggable
+							data={excludedData}
+							tableKey={
+								tableKeys.groups.summary.tabs.users.exclude
+							}
+							columns={excludeColumns}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+							setSearch={setSearch}
+						/>
+					</IamTabSectionContents>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>

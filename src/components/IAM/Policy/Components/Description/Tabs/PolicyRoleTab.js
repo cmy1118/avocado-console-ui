@@ -1,12 +1,18 @@
 import PropTypes from 'prop-types';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
-import {TableTitle} from '../../../../../../styles/components/table';
+import {
+	TableTitle,
+	TabTableTitle,
+} from '../../../../../../styles/components/table';
 import {
 	NormalBorderButton,
 	NormalButton,
 } from '../../../../../../styles/components/buttons';
 import React, {useCallback, useEffect, useState} from 'react';
-import {TitleBarButtons} from '../../../../../../styles/components/iam/iam';
+import {
+	IncludeTableContainer,
+	TitleBarButtons,
+} from '../../../../../../styles/components/iam/iam';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
 import Table from '../../../../../Table/Table';
@@ -16,6 +22,7 @@ import IAM_GRAN_REVOKE_ROLE from '../../../../../../reducers/api/IAM/Policy/IAM/
 import {isFulfilled} from '../../../../../../utils/redux';
 import {useDispatch} from 'react-redux';
 import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
+import {IamTabSectionContents} from '../../../../../../styles/components/iam/addPage';
 
 const policyRoleTab = {
 	include: {
@@ -167,16 +174,6 @@ const PolicyRoleTab = ({policyId}) => {
 
 	return (
 		<TabContentContainer>
-			<TableTitle>
-				{policyRoleTab.include.title + inRoles.length}
-				<NormalBorderButton
-					onClick={onClickRevokeRoles}
-					margin={'0px 0px 0px 5px'}
-				>
-					{policyRoleTab.include.button.delete}
-				</NormalBorderButton>
-			</TableTitle>
-
 			<DragContainer
 				selected={selected}
 				data={inRoleIds}
@@ -187,16 +184,27 @@ const PolicyRoleTab = ({policyId}) => {
 				joinFunction={onClickGrantRoles}
 				disjointFunction={onClickRevokeRoles}
 			>
-				<Table
-					isDraggable
-					data={inRoles}
-					tableKey={tableKeys.policy.summary.tabs.role.include}
-					columns={includeColumns}
-					isPaginable
-					isSearchable
-					isSearchFilterable
-					isColumnFilterable
-				/>
+				<IncludeTableContainer>
+					<TabTableTitle>
+						{policyRoleTab.include.title + inRoles.length}
+						<NormalBorderButton
+							onClick={onClickRevokeRoles}
+							margin={'0px 0px 0px 5px'}
+						>
+							{policyRoleTab.include.button.delete}
+						</NormalBorderButton>
+					</TabTableTitle>
+					<Table
+						isDraggable
+						data={inRoles}
+						tableKey={tableKeys.policy.summary.tabs.role.include}
+						columns={includeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
+				</IncludeTableContainer>
 
 				<FoldableContainer
 					title={policyRoleTab.include.title + exRoles.length}
@@ -211,17 +219,22 @@ const PolicyRoleTab = ({policyId}) => {
 							</NormalButton>
 						</TitleBarButtons>
 					)}
+					type={'tab'}
 				>
-					<Table
-						isDraggable
-						data={exRoles}
-						tableKey={tableKeys.policy.summary.tabs.role.exclude}
-						columns={excludeColumns}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-					/>
+					<IamTabSectionContents>
+						<Table
+							isDraggable
+							data={exRoles}
+							tableKey={
+								tableKeys.policy.summary.tabs.role.exclude
+							}
+							columns={excludeColumns}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+						/>
+					</IamTabSectionContents>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>

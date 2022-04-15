@@ -9,16 +9,22 @@ import Table from '../../../../../Table/Table';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
 import DragContainer from '../../../../../Table/DragContainer';
-import {TableTitle} from '../../../../../../styles/components/table';
+import {
+	TableTitle,
+	TabTableTitle,
+} from '../../../../../../styles/components/table';
 import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
 import TableOptionText from '../../../../../Table/Options/TableOptionText';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
-import {TitleBarButtons} from '../../../../../../styles/components/iam/iam';
+import {
+	IncludeTableContainer,
+	TitleBarButtons,
+} from '../../../../../../styles/components/iam/iam';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
-import IAM_ROLES_GRANT_ROLE_USER from '../../../../../../reducers/api/IAM/User/Role/GrantRole/user';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
+import {IamTabSectionContents} from '../../../../../../styles/components/iam/addPage';
 
 const roleGroupTab = {
 	include: {title: '이 역할의 그룹 : ', button: {delete: '연결 해제'}},
@@ -206,20 +212,7 @@ const RoleGroupTab = ({roleId, isSummaryOpened}) => {
 
 	return (
 		<TabContentContainer>
-			<TableTitle>
-				{roleGroupTab.include.title}
-				{includedData.length}
-				<NormalBorderButton
-					margin={'0px 0px 0px 5px'}
-					onClick={() =>
-						onClickDeleteData(
-							includeSelect.map((v) => v.userGroupId),
-						)
-					}
-				>
-					{roleGroupTab.include.button.delete}
-				</NormalBorderButton>
-			</TableTitle>
+			{' '}
 			<DragContainer
 				selected={selected}
 				data={includedDataIds}
@@ -230,16 +223,33 @@ const RoleGroupTab = ({roleId, isSummaryOpened}) => {
 				joinFunction={onClickAddData}
 				disjointFunction={onClickDeleteData}
 			>
-				<Table
-					isDraggable
-					data={includedData}
-					tableKey={tableKeys.roles.summary.tabs.groups.include}
-					columns={includeColumns}
-					isPaginable
-					isSearchable
-					isSearchFilterable
-					isColumnFilterable
-				/>
+				<IncludeTableContainer>
+					<TabTableTitle>
+						{roleGroupTab.include.title}
+						{includedData.length}
+						<NormalBorderButton
+							margin={'0px 0px 0px 5px'}
+							onClick={() =>
+								onClickDeleteData(
+									includeSelect.map((v) => v.userGroupId),
+								)
+							}
+						>
+							{roleGroupTab.include.button.delete}
+						</NormalBorderButton>
+					</TabTableTitle>
+					<Table
+						isDraggable
+						data={includedData}
+						tableKey={tableKeys.roles.summary.tabs.groups.include}
+						columns={includeColumns}
+						isPaginable
+						isSearchable
+						isSearchFilterable
+						isColumnFilterable
+					/>
+				</IncludeTableContainer>
+
 				<FoldableContainer
 					title={roleGroupTab.exclude.title + excludedData.length}
 					buttons={(isDisabled) => (
@@ -263,18 +273,23 @@ const RoleGroupTab = ({roleId, isSummaryOpened}) => {
 							</NormalButton>
 						</TitleBarButtons>
 					)}
+					type={'tab'}
 				>
-					<TableOptionText data={'groups'} />
-					<Table
-						isDraggable
-						data={excludedData}
-						tableKey={tableKeys.roles.summary.tabs.groups.exclude}
-						columns={excludeColumns}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-					/>
+					<IamTabSectionContents>
+						<TableOptionText data={'groups'} />
+						<Table
+							isDraggable
+							data={excludedData}
+							tableKey={
+								tableKeys.roles.summary.tabs.groups.exclude
+							}
+							columns={excludeColumns}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+						/>
+					</IamTabSectionContents>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>

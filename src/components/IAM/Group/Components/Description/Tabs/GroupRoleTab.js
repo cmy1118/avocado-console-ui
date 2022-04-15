@@ -11,13 +11,18 @@ import {
 	NormalButton,
 	TransparentButton,
 } from '../../../../../../styles/components/buttons';
-import {TableTitle} from '../../../../../../styles/components/table';
+import {
+	TableTitle,
+	TabTableTitle,
+} from '../../../../../../styles/components/table';
 import TableOptionText from '../../../../../Table/Options/TableOptionText';
 import DragContainer from '../../../../../Table/DragContainer';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
 import useSelectColumn from '../../../../../../hooks/table/useSelectColumn';
 import IAM_ROLES_GRANT_ROLE_GROUP from '../../../../../../reducers/api/IAM/User/Role/GrantRole/group';
 import FoldableContainer from '../../../../../Table/Options/FoldableContainer';
+import {IncludeTableContainer} from '../../../../../../styles/components/iam/iam';
+import {IamTabSectionContents} from '../../../../../../styles/components/iam/addPage';
 
 const GroupRoleTab = ({groupId, isSummaryOpened}) => {
 	const dispatch = useDispatch();
@@ -165,6 +170,7 @@ const GroupRoleTab = ({groupId, isSummaryOpened}) => {
 			groupRolesApi();
 		}
 	}, [groupRolesApi, isSummaryOpened]);
+
 	return (
 		<TabContentContainer>
 			<DragContainer
@@ -177,48 +183,56 @@ const GroupRoleTab = ({groupId, isSummaryOpened}) => {
 				joinFunction={onClickAddRolesToGroup}
 				disjointFunction={onClickDeleteRolesFromGroup}
 			>
-				<TableTitle>
-					이 그룹의 권한 : {includedData.length}
-					<TransparentButton
-						margin='0px 0px 0px 5px'
-						onClick={() =>
-							onClickDeleteRolesFromGroup(
-								includeSelect.map((v) => v.id),
-							)
-						}
-					>
-						삭제
-					</TransparentButton>
-				</TableTitle>
-				<Table
-					isDraggable
-					data={includedData}
-					tableKey={tableKeys.groups.summary.tabs.roles.include}
-					columns={includeColumns}
-				/>
+				<IncludeTableContainer>
+					<TabTableTitle>
+						이 그룹의 권한 : {includedData.length}
+						<TransparentButton
+							margin='0px 0px 0px 5px'
+							onClick={() =>
+								onClickDeleteRolesFromGroup(
+									includeSelect.map((v) => v.id),
+								)
+							}
+						>
+							삭제
+						</TransparentButton>
+					</TabTableTitle>
+					<Table
+						isDraggable
+						data={includedData}
+						tableKey={tableKeys.groups.summary.tabs.roles.include}
+						columns={includeColumns}
+					/>
+				</IncludeTableContainer>
+
 				<FoldableContainer
 					title={<>이 그룹의 다른권한 : {excludedData.length}</>}
 					buttons={(isDisabled) => (
 						<NormalButton
 							margin='0px 0px 0px 5px'
-							disabled={isDisabled}
 							onClick={() =>
 								onClickAddRolesToGroup(
 									excludeSelect.map((v) => v.id),
 								)
 							}
+							disabled={isDisabled}
 						>
 							권한 추가
 						</NormalButton>
 					)}
+					type={'tab'}
 				>
-					<TableOptionText data={'roles'} />
-					<Table
-						isDraggable
-						data={excludedData}
-						tableKey={tableKeys.groups.summary.tabs.roles.exclude}
-						columns={excludeColumns}
-					/>
+					<IamTabSectionContents>
+						<TableOptionText data={'roles'} />
+						<Table
+							isDraggable
+							data={excludedData}
+							tableKey={
+								tableKeys.groups.summary.tabs.roles.exclude
+							}
+							columns={excludeColumns}
+						/>
+					</IamTabSectionContents>
 				</FoldableContainer>
 			</DragContainer>
 		</TabContentContainer>

@@ -14,3 +14,7 @@ export const TableTitle = styled.div`
 	color: #1e2a42;
 	border-bottom: 'solid 1px #e1e7eb';
 `;
+
+export const TabTableTitle = styled(TableTitle)`
+	padding: 0px;
+`;

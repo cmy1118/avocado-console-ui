@@ -1,7 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {NormalBorderButton} from '../../../../../../styles/components/buttons';
-import {TableTitle} from '../../../../../../styles/components/table';
+import {
+	TableTitle,
+	TabTableTitle,
+} from '../../../../../../styles/components/table';
 import {TabContentContainer} from '../../../../../../styles/components/iam/iamTab';
 import Table from '../../../../../Table/Table';
 import {tableColumns} from '../../../../../../Constants/Table/columns';
@@ -46,7 +49,7 @@ const PolicyDetailTab = ({policyId}) => {
 
 	return (
 		<TabContentContainer>
-			<TableTitle>
+			<TabTableTitle>
 				{policyDetailTab.title}
 				<NormalBorderButton
 					onClick={onClickEditPolicy}
@@ -54,7 +57,7 @@ const PolicyDetailTab = ({policyId}) => {
 				>
 					{policyDetailTab.button.edit}
 				</NormalBorderButton>
-			</TableTitle>
+			</TabTableTitle>
 
 			<Table
 				columns={tableColumns[tableKeys.policy.summary.tabs.permission]}

@@ -40,6 +40,10 @@ export const IamSectionTitleBar = styled.div`
 	justify-content: space-between;
 `;
 
+export const IncludeTableContainer = styled.div`
+	margin-bottom: 16px;
+`;
+
 export const Header = styled.div`
 	flex-grow: 0;
 	font-family: NotoSansCJKKR;
