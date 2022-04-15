@@ -187,6 +187,7 @@ const RoleDescriptionSpace = ({roleId}) => {
 					<div>{role ? role.name : ''}</div>
 				</RowDiv>
 			</TitleBar>
+
 			<IamContents>
 				<IamSection>
 					<IamSectionTitleBar>

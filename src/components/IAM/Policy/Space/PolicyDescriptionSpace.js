@@ -5,6 +5,9 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {
 	IamContainer,
+	IamContents,
+	IamSection,
+	IamSectionTitleBar,
 	TitleBar,
 	TitleBarButtons,
 	TitleBarText,
@@ -30,6 +33,7 @@ import PolicySummary from '../Components/Description/PolicySummary';
 import DIALOG_BOX from '../../../../reducers/dialogBoxs';
 import {deleteAlertMessages} from '../../../../utils/alertMessage';
 import {policyTabs} from '../../../../utils/tabs';
+import {RowDiv} from '../../../../styles/components/style';
 
 const policyDescriptionSpace = {
 	button: {create: '정책 생성', delete: '삭제'},
@@ -156,9 +160,19 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 		<IamContainer>
 			<CurrentPathBar paths={paths} />
 
-			<DescriptionPageContainer>
-				<div>
-					<TitleBar>
+			<TitleBar>
+				<RowDiv
+					alignItems={'center'}
+					width={'100%'}
+					justifyContent={'space-between'}
+				>
+					<div>{policy ? policy.name : ''}</div>
+				</RowDiv>
+			</TitleBar>
+
+			<IamContents>
+				<IamSection>
+					<IamSectionTitleBar>
 						<TitleBarText>
 							<HoverIconButton
 								color={'font'}
@@ -183,22 +197,31 @@ const PolicyDescriptionSpace = ({policyId, type}) => {
 								{policyDescriptionSpace.button.delete}
 							</TransparentButton>
 						</TitleBarButtons>
-					</TitleBar>
+					</IamSectionTitleBar>
 
 					{policy && (
 						<PolicySummary policy={policy} setPolicy={setPolicy} />
 					)}
-				</div>
 
-				<CoveredByTabContent isOpened={isSummaryOpened}>
-					<PolicyDetail policyId={policyId} />
-				</CoveredByTabContent>
-
-				<TabContainer isOpened={!isSummaryOpened}>
-					<TabBar Tabs={TabBarInfo} />
-					<PolicyTabContents policyId={policyId} />
-				</TabContainer>
-			</DescriptionPageContainer>
+					<CoveredByTabContent isOpened={isSummaryOpened}>
+						<PolicyDetail policyId={policyId} />
+					</CoveredByTabContent>
+				</IamSection>
+			</IamContents>
+			<IamContents>
+				<IamSection
+					border={'1px solid transparent'}
+					background={'transparent'}
+				>
+					<TabContainer isOpened={!isSummaryOpened}>
+						<TabBar Tabs={TabBarInfo} />
+						<PolicyTabContents
+							policyId={policyId}
+							isOpened={isSummaryOpened}
+						/>
+					</TabContainer>
+				</IamSection>
+			</IamContents>
 		</IamContainer>
 	);
 };
