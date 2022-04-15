@@ -100,7 +100,7 @@ const GroupSummary = ({groupId}) => {
 				)
 					.unwrap()
 					.then((member) => {
-						//	console.log(member.data);
+						console.log(member.data);
 						return member.data.map((x) => x.userUid);
 					})
 					.then((uids) => {

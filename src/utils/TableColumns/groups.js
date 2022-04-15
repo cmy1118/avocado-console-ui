@@ -350,7 +350,7 @@ export const GROUP_SUMMARY_TABS_ROLES_INCLUDE_COLUMN = [
 	},
 	{
 		Header: '사용자 수',
-		accessor: 'numberOfUsers',
+		accessor: 'grantedCount',
 	},
 	{
 		Header: '생성 일시',
@@ -377,7 +377,7 @@ export const GROUP_SUMMARY_TABS_ROLES_EXCLUDE_COLUMN = [
 	},
 	{
 		Header: '사용자 수',
-		accessor: 'numberOfUsers',
+		accessor: 'grantedCount',
 	},
 	{
 		Header: '생성 일시',
