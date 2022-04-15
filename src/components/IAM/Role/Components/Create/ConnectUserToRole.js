@@ -24,23 +24,18 @@ import {
 } from '../../../../../utils/tableDataConverter';
 import useSelectColumn from '../../../../../hooks/table/useSelectColumn';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
+import {IamSectionContents} from "../../../../../styles/components/iam/addPage";
 
 const ConnectUserToRole = ({setValue, usage, maxGrants}) => {
+	const [selectExCludeColumns, exCludeColumns] = useSelectColumn(tableColumns[tableKeys.roles.add.users.exclude]);
+	const [selectIncludeColumns, includeColumns] = useSelectColumn(tableColumns[tableKeys.roles.add.users.include]);
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
 	const [search, setSearch] = useState('');
 
 	const [users, setUsers] = useState([]);
-
-	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 
-	const [includeSelect, includeColumns] = useSelectColumn(
-		tableColumns[tableKeys.roles.add.users.include],
-	);
-	const [excludeSelect, excludeColumns] = useSelectColumn(
-		tableColumns[tableKeys.roles.add.users.exclude],
-	);
 	const [selected, setSelected] = useState({});
 
 	const includedData = useMemo(() => {
@@ -120,62 +115,64 @@ const ConnectUserToRole = ({setValue, usage, maxGrants}) => {
 
 	useEffect(() => {
 		setSelected({
-			[tableKeys.roles.add.users.include]: includeSelect,
-			[tableKeys.roles.add.users.exclude]: excludeSelect,
+			[tableKeys.roles.add.users.include]: selectIncludeColumns,
+			[tableKeys.roles.add.users.exclude]: selectExCludeColumns,
 		});
-	}, [excludeSelect, includeSelect]);
+	}, [selectIncludeColumns, selectExCludeColumns]);
 
 	return (
-		<FoldableContainer title={'역할에 사용자 연결'}>
-			<TableOptionText data={'rolePolicy'} />
+		<FoldableContainer title={'사용자 연결'} bottomMargin={true}>
 			<DragContainer
-				selected={selected}
 				data={includedDataIds}
 				setData={setIncludedDataIds}
 				includedKey={tableKeys.roles.add.users.include}
 				excludedData={excludedData}
 				includedData={includedData}
-				maxCount={maxGrants}
+				maxCount={5}
 				usage={usage}
 			>
-				<RowDiv>
-					<Table
-						isDraggable
-						data={excludedData}
-						tableKey={tableKeys.roles.add.users.exclude}
-						columns={excludeColumns}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-						setSearch={setSearch}
-					/>
-					<RowDiv alignItems={'center'}>
-						<DropButton
-							leftTableKey={tableKeys.roles.add.users.exclude}
-							RightTableKey={tableKeys.roles.add.users.include}
-							select={selected}
-							dataLeft={excludedData}
-							dataRight={includedData}
-							rightDataIds={includedDataIds}
-							setRightDataIds={setIncludedDataIds}
-							maxCount={maxGrants}
-							usage={usage}
-						/>
-					</RowDiv>
-					<ColDiv>
-						<TableHeader>
-							추가 사용자: {includedDataIds.length}건
-						</TableHeader>
+				<IamSectionContents>
+					<RowDiv>
 						<Table
 							isDraggable
-							data={includedData}
+							tableKey={tableKeys.roles.add.users.exclude}
+							columns={exCludeColumns}
+							data={excludedData}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+							setSearch={setSearch}
+						/>
+
+						<RowDiv alignItems={'center'}>
+							<DropButton
+								leftTableKey={tableKeys.roles.add.users.exclude}
+								rightTableKey={tableKeys.roles.add.users.include}
+								select={selected}
+								dataLeft={excludedData}
+								dataRight={includedData}
+								rightDataIds={includedDataIds}
+								setRightDataIds={setIncludedDataIds}
+								maxCount={maxGrants}
+								usage={usage}
+							/>
+						</RowDiv>
+
+						<ColDiv>
+							<TableHeader>
+								추가 사용자: {includedDataIds.length}건
+							</TableHeader>
+						</ColDiv>
+
+						<Table
+							isDraggable
 							tableKey={tableKeys.roles.add.users.include}
 							columns={includeColumns}
-							setSelect={setSelect}
+							data={includedData}
 						/>
-					</ColDiv>
-				</RowDiv>
+					</RowDiv>
+				</IamSectionContents>
 			</DragContainer>
 		</FoldableContainer>
 	);

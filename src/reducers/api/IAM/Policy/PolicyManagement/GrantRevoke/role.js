@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
 import axios from "axios";
 import {contentType} from "../../../../../../utils/auth";
-import {baseURL} from "../../../../../../api/constants";
+
 
 const NAME = 'IAM_POLICY_GRANT_REVOKE_ROLE';
 
@@ -21,7 +21,7 @@ const grantAction = createAsyncThunk(
                     Authorization: `${userAuth.token_type} ${userAuth.access_token}`,
                     'Content-Type': contentType.JSON,
                 },
-                baseURL: baseURL.openApi,
+                baseURL: process.env.REACT_APP_OPEN_API_URL,
             });
             return response;
     },

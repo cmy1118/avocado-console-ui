@@ -2,13 +2,13 @@ import React, {useCallback, useMemo} from 'react';
 import ModalTableContainer from '../../RecycleComponents/ModalTableContainer';
 import {useDispatch, useSelector} from "react-redux";
 import PropTypes from "prop-types";
+import {CreatePageDialogBoxTitle} from '../../../styles/components/iam/addPage';
 
 import CURRENT_TARGET from "../../../reducers/currentTarget";
 
 import {TitleBar} from "../../../styles/components/iam/iam";
 import {SummaryList} from "../../../styles/components/iam/descriptionPage";
 import {LiText} from "../../../styles/components/text";
-import {AddPageDialogBoxTitle} from "../../../styles/components/iam/addPage";
 import {tableKeys} from "../../../Constants/Table/keys";
 import {tableColumns} from "../../../Constants/Table/columns";
 import Table from "../../Table/Table";
@@ -126,9 +126,9 @@ const RolePreviewDialogBox = ({isOpened, setIsOpened}) => {
                 <LiText>부여 제한 : {(readOnlyData['role'].usage === 'restrict') ? readOnlyData['role'].maxGrants : '제한안함'}</LiText>
             </SummaryList>
 
-            <AddPageDialogBoxTitle>
+            <CreatePageDialogBoxTitle>
                 역할에 정책 연결 : {readOnlyData[tableKeys.roles.add.policies.exclude]?.length}
-            </AddPageDialogBoxTitle>
+            </CreatePageDialogBoxTitle>
 
             <Table
                 readOnly
@@ -137,9 +137,9 @@ const RolePreviewDialogBox = ({isOpened, setIsOpened}) => {
                 columns={tableColumns[tableKeys.roles.add.policies.exclude]}
             />
 
-            <AddPageDialogBoxTitle>
+            <CreatePageDialogBoxTitle>
                 역할에 사용자 연결 : {readOnlyData[tableKeys.roles.add.users.exclude]?.length}
-            </AddPageDialogBoxTitle>
+            </CreatePageDialogBoxTitle>
 
             <Table
                 readOnly
@@ -148,9 +148,9 @@ const RolePreviewDialogBox = ({isOpened, setIsOpened}) => {
                 columns={tableColumns[tableKeys.roles.add.users.exclude]}
             />
 
-            <AddPageDialogBoxTitle>
+            <CreatePageDialogBoxTitle>
                 역할에 사용자 그룹 연결 : {readOnlyData[tableKeys.roles.add.groups.exclude]?.length}
-            </AddPageDialogBoxTitle>
+            </CreatePageDialogBoxTitle>
 
             <Table
                 readOnly

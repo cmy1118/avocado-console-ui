@@ -34,6 +34,8 @@ const RoleSpace = () => {
 	const [selectColumns, columns] = useSelectColumn(
 		tableColumns[tableKeys.roles.basic],
 	);
+
+
 	const dispatch = useDispatch();
 	const history = useHistory();
 
@@ -41,7 +43,7 @@ const RoleSpace = () => {
 	const [roles, setRoles] = useState([]);
 	const [total, setTotal] = useState(0);
 	const [search, setSearch] = useState('');
-	const [select, setSelect] = useState({});
+	// const [select, setSelect] = useState({});
 
 	const data = useMemo(() => {
 		return (
@@ -105,8 +107,8 @@ const RoleSpace = () => {
 	}, [history]);
 
 	const onClickDeleteRoles = useCallback(() => {
-		if (select[tableKeys.roles.basic].length > 0) {
-			select[tableKeys.roles.basic].forEach(async (v) => {
+		if (selectColumns.length > 0) {
+			selectColumns.forEach(async (v) => {
 				const res = await dispatch(
 					IAM_ROLES.asyncAction.deleteAction({
 						id: v.id,
@@ -114,7 +116,7 @@ const RoleSpace = () => {
 				);
 			});
 		}
-	}, [dispatch, select]);
+	}, [dispatch, selectColumns]);
 
 	useEffect(() => {
 		getRoleApi(search);
@@ -156,7 +158,7 @@ const RoleSpace = () => {
 							setSearch={setSearch}
 							isSearchFilterable
 							isColumnFilterable
-							setSelect={setSelect}
+							isSelectable
 						/>
 					</IamSectionContents>
 				</IamSection>

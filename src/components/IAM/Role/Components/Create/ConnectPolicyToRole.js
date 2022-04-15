@@ -5,30 +5,29 @@ import DropButton from '../../../../Table/DropButton';
 import {DRAGGABLE_KEY, tableKeys} from '../../../../../Constants/Table/keys';
 import {tableColumns} from '../../../../../Constants/Table/columns';
 import CURRENT_TARGET from '../../../../../reducers/currentTarget';
-import {
-	ColDiv,
-	CollapsbleContent,
-	RowDiv,
-	TableHeader,
-} from '../../../../../styles/components/style';
+import {ColDiv, RowDiv, TableHeader} from '../../../../../styles/components/style';
 import TableOptionText from '../../../../Table/Options/TableOptionText';
 import PropTypes from 'prop-types';
-import TableFold from '../../../../Table/Options/TableFold';
 import DragContainer from '../../../../Table/DragContainer';
 import PAGINATION from '../../../../../reducers/pagination';
 import IAM_POLICY_MANAGEMENT_POLICIES from '../../../../../reducers/api/IAM/Policy/IAM/PolicyManagement/policies';
 import {isFulfilled} from '../../../../../utils/redux';
 import {totalNumberConverter} from '../../../../../utils/tableDataConverter';
 import FoldableContainer from '../../../../Table/Options/FoldableContainer';
+import useSelectColumn from "../../../../../hooks/table/useSelectColumn";
+import {IamSectionContents} from "../../../../../styles/components/iam/addPage";
 
 const ConnectPolicyToRole = ({setValue}) => {
+	const [selectExCludeColumns, exCludeColumns] = useSelectColumn(tableColumns[tableKeys.roles.add.policies.exclude]);
+	const [selectIncludeColumns, includeColumns] = useSelectColumn(tableColumns[tableKeys.roles.add.policies.include]);
+
 	const dispatch = useDispatch();
 	const {page} = useSelector(PAGINATION.selector);
 	const [search, setSearch] = useState('');
 
 	const [policies, setPolicies] = useState([]);
+	const [selected, setSelected] = useState({});
 
-	const [select, setSelect] = useState({});
 	const [includedDataIds, setIncludedDataIds] = useState([]);
 	const APPLICATION_CODE = {
 		iam: 'IAM',
@@ -47,12 +46,10 @@ const ConnectPolicyToRole = ({setValue}) => {
 	}, [policies, includedDataIds]);
 	const excludedData = useMemo(() => {
 		return (
-			policies
-				.filter((v) => !includedDataIds.includes(v.id))
-				.map((v) => ({
-					...v,
-					[DRAGGABLE_KEY]: v.id,
-				})) || []
+			policies.filter((v) => !includedDataIds.includes(v.id)).map((v) => ({
+				...v,
+				[DRAGGABLE_KEY]: v.id,
+			})) || []
 		);
 	}, [policies, includedDataIds]);
 
@@ -83,6 +80,7 @@ const ConnectPolicyToRole = ({setValue}) => {
 		},
 		[dispatch, page],
 	);
+
 	const getPoliciesDetailApi = useCallback((res) => {
 		const arr = [];
 		res.data.map((v) => {
@@ -112,10 +110,8 @@ const ConnectPolicyToRole = ({setValue}) => {
 	}, [getPoliciesApi, page, search]);
 
 	return (
-		<FoldableContainer title={'역할에 정책 연결'}>
-			<TableOptionText data={'rolePolicy'} />
+		<FoldableContainer title={'역할에 정책 연결'} bottomMargin={true}>
 			<DragContainer
-				selected={select}
 				data={includedDataIds}
 				setData={setIncludedDataIds}
 				includedKey={tableKeys.roles.add.policies.include}
@@ -123,50 +119,46 @@ const ConnectPolicyToRole = ({setValue}) => {
 				includedData={includedData}
 				maxCount={5}
 			>
-				<RowDiv>
-					<Table
-						setSelect={setSelect}
-						isDraggable
-						data={excludedData}
-						tableKey={tableKeys.roles.add.policies.exclude}
-						columns={
-							tableColumns[tableKeys.roles.add.policies.exclude]
-						}
-						isPaginable
-						isSearchable
-						isSearchFilterable
-						isColumnFilterable
-						setSearch={setSearch}
-					/>
-					<RowDiv alignItems={'center'}>
-						<DropButton
-							leftTableKey={tableKeys.roles.add.policies.exclude}
-							RightTableKey={tableKeys.roles.add.policies.include}
-							select={select}
-							dataLeft={excludedData}
-							dataRight={includedData}
-							rightDataIds={includedDataIds}
-							setRightDataIds={setIncludedDataIds}
-							maxCount={5}
+				<IamSectionContents>
+					<TableOptionText data={'rolePolicy'} />
+					<RowDiv>
+						<Table
+							isDraggable
+							tableKey={tableKeys.roles.add.policies.exclude}
+							columns={exCludeColumns}
+							data={excludedData}
+							isPaginable
+							isSearchable
+							isSearchFilterable
+							isColumnFilterable
+							setSearch={setSearch}
+						/>
+
+						<RowDiv alignItems={'center'}>
+							<DropButton
+								leftTableKey={tableKeys.roles.add.policies.exclude}
+								rightTableKey={tableKeys.roles.add.policies.include}
+								select={selected}
+								dataLeft={excludedData}
+								dataRight={includedData}
+								rightDataIds={includedDataIds}
+								setRightDataIds={setIncludedDataIds}
+							/>
+						</RowDiv>
+						<ColDiv>
+							<TableHeader>
+								추가 정책: {includedDataIds.length}건
+							</TableHeader>
+						</ColDiv>
+
+						<Table
+							isDraggable
+							tableKey={tableKeys.roles.add.policies.include}
+							columns={includeColumns}
+							data={includedData}
 						/>
 					</RowDiv>
-					<ColDiv>
-						<TableHeader>
-							추가 사용자: {includedDataIds.length}건
-						</TableHeader>
-						<Table
-							setSelect={setSelect}
-							isDraggable
-							data={includedData}
-							tableKey={tableKeys.roles.add.policies.include}
-							columns={
-								tableColumns[
-									tableKeys.roles.add.policies.include
-								]
-							}
-						/>
-					</ColDiv>
-				</RowDiv>
+				</IamSectionContents>
 			</DragContainer>
 		</FoldableContainer>
 	);
