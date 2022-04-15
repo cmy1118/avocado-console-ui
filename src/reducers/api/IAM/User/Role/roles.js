@@ -94,7 +94,6 @@ const getsAction = createAsyncThunk(`${NAME}/GETS`, async (payload) => {
 
 		baseURL: process.env.REACT_APP_OPEN_API_URL,
 	});
-	console.log(response);
 	return response;
 });
 

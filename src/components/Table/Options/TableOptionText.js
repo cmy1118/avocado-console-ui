@@ -35,7 +35,6 @@ const ROLE_POLICY = ['유형별 5개까지만 연결 가능합니다'];
 const _TableOptionTextContainer = styled.div`
 	padding: 0px 0px 16px 0px;
 `;
-
 const _TableOptionTextContants = styled.div`
 	padding: 0px 4px;
 	display: flex;

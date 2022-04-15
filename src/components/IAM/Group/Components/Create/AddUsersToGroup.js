@@ -150,6 +150,9 @@ const AddUsersToGroup = ({setValue}) => {
 								dataRight={includedData}
 								rightDataIds={includedDataIds}
 								setRightDataIds={setIncludedDataIds}
+								rightTableKey={
+									tableKeys.groups.add.users.include
+								}
 							/>
 						</RowDiv>
 						<ColDiv>

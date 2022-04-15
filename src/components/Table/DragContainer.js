@@ -9,10 +9,11 @@ import {
 	checkArrayhasDuplicates,
 	checkArrayIsUniqueHasDuplicates,
 	checkArraysIsUniqueHasDuplicates,
+	countArrayDuplicates,
 } from '../../utils/dataFitering';
 import styled from 'styled-components';
 import {confirmAlertMessages} from '../../utils/alertMessage';
-import {DRAGGABLE_KEY} from '../../Constants/Table/keys';
+import {DRAGGABLE_KEY, tableKeys} from '../../Constants/Table/keys';
 
 const Container = styled(DragDropContext)`
 	height: 300px;
@@ -28,6 +29,8 @@ const DragContainer = ({
 	includedData,
 	joinFunction,
 	disjointFunction,
+	maxCount,
+	usage,
 }) => {
 	const dispatch = useDispatch();
 	const [selectedItems, setSelectedItems] = useState([]);
@@ -57,8 +60,10 @@ const DragContainer = ({
 			const GROUP = 'groups';
 			const ROLES = 'roles';
 			const UESRS = 'users';
+			const POLICY = 'policy';
 			const FILTER_TYPE = 'Private';
 			//  API : groups 일때 - 그룹 유형 검사 : 그룹유형별 1개의 그룹만 추가
+
 			if (CheckDropDataType(tableKey)) {
 				if (CheckDropDataType(tableKey) === GROUP) {
 					if (
@@ -114,6 +119,92 @@ const DragContainer = ({
 		[dispatch, excludedData, includedData],
 	);
 
+	// 역할 > 역할생성 > 역할+정책 연결 Table [22.04.01 12:17 최미영]
+	const connectPolicyToRole = useCallback(
+		(selected, data) => {
+			return onClickMaxTypeLimited(selected, data, maxCount);
+		},
+		[dispatch, excludedData, includedData],
+	);
+
+	// 역할 > 역할생성 > 역할+사용자/그룹 연결 Table [22.04.01 12:17 최미영]
+	const connectUserGroupToRole = useCallback(
+		(selected, data) => {
+			return onClickMaxNumberLimited(selected, data);
+		},
+		[usage, maxCount],
+	);
+
+	// 역할 > 역할생성 > 역할+정책 연결 Table / 정책유형별 최대 추가 갯수 Validation [22.04.01 11:55 최미영]
+	const onClickMaxTypeLimited = useCallback(
+		(selected, data, maxCount) => {
+			// 새로 선택한 데이터의 유형
+			const newType = excludedData
+				.filter((v) => selected.includes(v.id))
+				.map((v) => v.type);
+
+			// 이미 선택된 데이터의 유형
+			const preType = includedData
+				.filter((v) => data.includes(v.id))
+				.map((v) => v.type);
+
+			// 새로 선택한 데이터 유형 + 이미 선택된 데이터 유형
+			const totalType = [...newType, ...preType];
+
+			// totalType의 중복 데이터 갯수 확인
+			const checkDuplicateType = countArrayDuplicates(totalType);
+			let flag = false;
+			Object.keys(checkDuplicateType).forEach((k) => {
+				if (Number(checkDuplicateType[k]) > maxCount) {
+					dispatch(
+						DIALOG_BOX.action.openAlert({
+							key: confirmAlertMessages.maxNumberOfPolicy.key,
+						}),
+					);
+					flag = true;
+					return;
+				}
+			});
+			return flag;
+		},
+		[dispatch, excludedData, includedData],
+	);
+
+	// 역할 > 역할생성 > 역할+사용자/그룹 연결 Table / 부여제한 횟수에 따른 최대 추가 갯수 Validation [22.04.01 11:55 최미영]
+	const onClickMaxNumberLimited = useCallback(
+		(selected, data) => {
+			if (usage === 'restrict') {
+				let flag = false;
+				if (maxCount > 0) {
+					const selectDataLength = selected && selected.length;
+
+					let preDataLength = 0;
+					if (data) preDataLength = data.length;
+
+					if (preDataLength + selectDataLength > maxCount) {
+						dispatch(
+							DIALOG_BOX.action.openAlert({
+								key: 'limitedNumberOfUsers',
+							}),
+						);
+						flag = true;
+					}
+					return flag;
+				} else {
+					dispatch(
+						DIALOG_BOX.action.openAlert({
+							key: 'limitedNumberCheck',
+						}),
+					);
+					return true;
+				}
+			} else {
+				return false;
+			}
+		},
+		[usage, maxCount],
+	);
+
 	const onDragStart = useCallback(
 		(result) => {
 			const items = selected[result.source.droppableId]?.map(
@@ -149,18 +240,34 @@ const DragContainer = ({
 
 			if (destination.droppableId !== source.droppableId) {
 				if (destination.droppableId === includedKey) {
-					//		console.log('check');
-					if (onDropCheckMaxNumber(selectedItems, data, includedKey))
-						return;
-					if (
-						onDropCheckTypeLimited(selectedItems, data, includedKey)
+					if (includedKey === tableKeys.roles.add.policies.include) {
+						if (connectPolicyToRole(selectedItems, data, maxCount))
+							return;
+					} else if (
+						includedKey === tableKeys.roles.add.users.include ||
+						includedKey === tableKeys.roles.add.groups.include
 					) {
-						return;
+						if (connectUserGroupToRole(selectedItems, data)) return;
+					} else {
+						if (
+							onDropCheckMaxNumber(
+								selectedItems,
+								data,
+								includedKey,
+							)
+						)
+							return;
+						if (
+							onDropCheckTypeLimited(
+								selectedItems,
+								data,
+								includedKey,
+							)
+						)
+							return;
 					}
 				}
 
-				//	console.log('selectedItems :: ', selectedItems);
-				//	console.log('data:', data);
 				if (destination.droppableId === includedKey) {
 					joinFunction && joinFunction(selectedItems);
 					//:TODO joinFunction 내부에서 데이터 처리해줌
@@ -183,6 +290,8 @@ const DragContainer = ({
 			joinFunction,
 			setData,
 			disjointFunction,
+			usage,
+			maxCount,
 		],
 	);
 
@@ -203,6 +312,8 @@ DragContainer.propTypes = {
 	excludedData: PropTypes.array,
 	includedData: PropTypes.array,
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	maxCount: PropTypes.number,
+	usage: PropTypes.string,
 };
 
 export default DragContainer;

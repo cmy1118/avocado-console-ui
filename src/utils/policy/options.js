@@ -32,7 +32,6 @@ export const policyOption = {
 		sms: {value: 'sms', label: '인증번호(SMS)'},
 		kakao: {value: 'kakao', label: '인증번호(Kakao)'},
 	},
-
 	authMethod: {
 		none: {value: 'none', label: '없음'},
 		mail: {value: 'mail', label: '인증번호(Mail)'},

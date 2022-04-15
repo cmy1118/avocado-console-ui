@@ -47,11 +47,7 @@ const IamLayout = ({children}) => {
 		<DragDropContext>
 			<_Container>
 				<Header />
-				<_Space
-					className={
-						isNavOpened ? 'mainContainer' : 'mainContainer close'
-					}
-				>
+				<_Space className={isNavOpened ? 'mainContainer' : 'mainContainer close'}>
 					<IamNav
 						isOpened={isNavOpened}
 						setIsOpened={setIsNavOpened}

@@ -68,7 +68,6 @@ const _Container = styled.div`
 
 const _contentsContainer = styled.div`
 	padding: 55px 0px;
-
 	height: 100%;
 	margin: 0 auto;
 	// @media ${device.laptopL} {
@@ -103,24 +102,32 @@ const Main = () => {
 	const history = useHistory();
 	const {companyId} = useSelector(AUTH.selector);
 	const utils = [
-		{title: 'IAM', text: '신원 및 접근 관리', img: IAM_green, url: 'iam'},
+		{
+			title: 'IAM',
+			text: '신원 및 접근 관리',
+			img: IAM_green,
+			url: 'iam'
+		},
+
 		{
 			title: 'Bastion',
 			text: '서버 보안 접근',
 			img: PAM_green,
-			href: 'ssh://',
+			href: 'ssh://'
 		},
+
 		{
 			title: '장비 접속',
 			text: '장비 접속',
 			img: PAM_green,
-			href: 'telnet://',
+			href: 'telnet://'
 		},
+
 		{
 			title: 'Web Terminal ',
 			text: '웹터미널',
 			img: Approal_green,
-			href: `http://ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com:3002/webterm/login/${companyId}`,
+			href: `http://ec2-3-36-98-38.ap-northeast-2.compute.amazonaws.com:3002/webterm/login/${companyId}`
 		},
 
 		// {
@@ -129,8 +136,20 @@ const Main = () => {
 		// 	img: Approal_green,
 		// 	url: 'iam',
 		// },
-		{title: 'RRM', text: '원격 자원 관리', img: RRM_green, url: 'iam'},
-		{title: 'PAM', text: '특권 접근 관리', img: PAM_green, url: 'iam'},
+
+		{
+			title: 'RRM',
+			text: '원격 자원 관리',
+			img: RRM_green,
+			url: 'iam'
+		},
+
+		{
+			title: 'PAM',
+			text: '특권 접근 관리',
+			img: PAM_green,
+			url: 'iam'
+		}
 	];
 	const favorite = [
 		{title: 'IAM', text: '신원 및 접근 관리', img: IAM_grey, url: 'iam'},
@@ -197,6 +216,7 @@ const Main = () => {
 						})}
 					</_contentsItem>
 				</_contents>
+
 				<_contents>
 					<_contentsTitle>즐겨찾기</_contentsTitle>
 					<_contentsItem>
@@ -214,6 +234,7 @@ const Main = () => {
 						})}
 					</_contentsItem>
 				</_contents>
+
 				<_contents>
 					<_contentsTitle>모든 서비스</_contentsTitle>
 					<_contentsItem>

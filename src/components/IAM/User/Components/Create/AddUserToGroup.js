@@ -145,7 +145,6 @@ const AddUserToGroup = () => {
 	return (
 		<FoldableContainer title={'그룹에 사용자에 추가'} bottomMargin={true}>
 			<DragContainer
-				selected={selected}
 				data={includedDataIds}
 				setData={setIncludedDataIds}
 				includedKey={tableKeys.users.add.groups.include}

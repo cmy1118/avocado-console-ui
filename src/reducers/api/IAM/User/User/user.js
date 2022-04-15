@@ -213,6 +213,7 @@ const slice = createSlice({
 			state.error = action.payload;
 			state.loading = false;
 		},
+
 		[getUserGroupsAction.pending]: (state) => {
 			state.loading = true;
 		},
